@@ -235,7 +235,7 @@ public interface ShadowApi
 
    GenericConverter convert(Generic generic);
 
-   VariableConverter convert(Variable variable);
+   VariableConverter convert(Variable<?> variable);
 
    WildcardConverter convert(Wildcard wildcard);
 

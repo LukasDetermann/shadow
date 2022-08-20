@@ -14,8 +14,8 @@ import javax.lang.model.type.TypeMirror;
  *    <li>{@link Parameter}</li>
  * </ul>
  */
-public interface Variable<RETURN> extends Shadow<TypeMirror>,
-                                          Annotationable<VariableElement>
+public interface Variable<SURROUNDING extends Shadow<? extends TypeMirror>> extends Shadow<TypeMirror>,
+                                                                          Annotationable<VariableElement>
 {
    /**
     * returns true if this can be cast to that.
@@ -35,9 +35,9 @@ public interface Variable<RETURN> extends Shadow<TypeMirror>,
    Package getPackage();
 
    /**
-    * The {@link RETURN} surrounding this {@link Variable}
+    * The {@link SURROUNDING} surrounding this {@link Variable}
     */
-   RETURN getSurrounding();
+   SURROUNDING getSurrounding();
 
    /**
     * be careful using this equals

@@ -509,7 +509,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public VariableConverter convert(Variable variable)
+   public VariableConverter convert(Variable<?> variable)
    {
       return new ConverterImpl(this, variable);
    }

@@ -261,11 +261,12 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Variable> toVariable()
+   public Optional<Variable<Shadow<TypeMirror>>> toVariable()
    {
       if (shadow.getTypeKind().isVariable())
       {
-         return Optional.of((Variable) shadow);
+         //noinspection unchecked
+         return Optional.of((Variable<Shadow<TypeMirror>>) shadow);
       }
       return Optional.empty();
    }

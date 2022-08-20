@@ -2,16 +2,18 @@ package org.determann.shadow.example.processor.test.shadow;
 
 import org.determann.shadow.api.shadow.Field;
 import org.determann.shadow.api.shadow.Parameter;
+import org.determann.shadow.api.shadow.Shadow;
 import org.determann.shadow.api.shadow.Variable;
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.type.TypeMirror;
 import java.util.function.Supplier;
 
 import static org.determann.shadow.example.processor.test.TestProcessor.SHADOW_API;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class VariableTest<RETURN, VARIABLE extends Variable<RETURN>> extends ShadowTest<VARIABLE>
+public class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VARIABLE extends Variable<SURROUNDING>> extends ShadowTest<VARIABLE>
 {
    protected VariableTest(Supplier<VARIABLE> variableSupplier)
    {

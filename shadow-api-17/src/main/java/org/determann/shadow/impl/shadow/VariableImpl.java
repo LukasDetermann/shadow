@@ -10,7 +10,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
 
-public abstract class VariableImpl<RETURN> extends ShadowImpl<TypeMirror> implements Variable<RETURN>
+public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirror>> extends ShadowImpl<TypeMirror>
+      implements Variable<SURROUNDING>
 {
    private final VariableElement variableElement;
 
@@ -31,7 +32,6 @@ public abstract class VariableImpl<RETURN> extends ShadowImpl<TypeMirror> implem
    {
       return getApi().getJdkApiContext().types().isAssignable(shadow.getMirror(), getMirror());
    }
-
 
    @Override
    public Shadow<TypeMirror> getType()
@@ -70,9 +70,8 @@ public abstract class VariableImpl<RETURN> extends ShadowImpl<TypeMirror> implem
    }
 
    @Override
-   public RETURN getSurrounding()
+   public SURROUNDING getSurrounding()
    {
-      //noinspection unchecked
       return getApi().getShadowFactory().shadowFromElement(getElement().getEnclosingElement());
    }
 
