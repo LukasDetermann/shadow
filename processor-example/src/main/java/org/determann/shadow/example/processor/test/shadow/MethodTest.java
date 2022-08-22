@@ -19,11 +19,18 @@ public class MethodTest extends ExecutableTest<Method>
    @Test
    void testisSubSignatureOf()
    {
-      Method outer = SHADOW_API.getClass("org.determann.shadow.example.processed.test.method.SubSignature").getMethods().get(0);
-      Method inner = SHADOW_API.getClass("org.determann.shadow.example.processed.test.method.SubSignature.Inner").getMethods().get(0);
+      List<Method> methods = SHADOW_API.getClass("org.determann.shadow.example.processed.test.method.SubSignature").getMethods();
+      Method first = methods.get(0);
+      Method second = methods.get(1);
+      Method third = methods.get(2);
+      Method four = methods.get(3);
+      Method five = methods.get(4);
 
-      assertTrue(outer.isSubSignatureOf(inner));
-      assertTrue(inner.isSubSignatureOf(outer));
+      assertTrue(first.sameParameterTypes(second));
+      assertTrue(second.sameParameterTypes(first));
+      assertFalse(third.sameParameterTypes(four));
+      assertFalse(four.sameParameterTypes(third));
+      assertTrue(four.sameParameterTypes(five));
    }
 
    @Test

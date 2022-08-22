@@ -102,9 +102,9 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public boolean isSubSignatureOf(Method method)
+   public boolean sameParameterTypes(Method method)
    {
-      return getApi().getJdkApiContext().types().isSubsignature(this.getMirror(), method.getMirror());
+      return getApi().getJdkApiContext().types().isSubsignature(getMirror(), method.getMirror());
    }
 
    @Override

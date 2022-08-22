@@ -18,22 +18,13 @@ public interface Method extends Executable,
    boolean overrides(Method method);
 
    /**
-    * <pre>
-    * {@code
-    * public abstract class Outer {
-    *    public abstract void foo();
-    *
-    *    public static class Inner extends Outer {
-    *       @Override
-    *       public void foo() { }
-    *    }
-    * }
-    * }
-    * </pre>
-    * <li> Outer.foo.isSubSignatureOf(Inner.foo) == true
-    * <li> Inner.foo.isSubSignatureOf(Outer.foo) == true
+    * Do both methods have the same parameter types in the same order?
+    * a() && b() -> true
+    * a(String name) && b() -> false
+    * a(String name, Long id) && b(Long id, String name) -> false
+    * a(String name) && b(String name2) -> true
     */
-   boolean isSubSignatureOf(Method method);
+   boolean sameParameterTypes(Method method);
 
    /**
     * be careful using this equals
