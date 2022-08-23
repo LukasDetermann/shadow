@@ -13,6 +13,7 @@
         <module>processed-example</module>
         <module>shadow-api-17</module>
         <module>shadow-api-11</module>
+        <module>shadow-api-8</module>
     </modules>
 
     <properties>
