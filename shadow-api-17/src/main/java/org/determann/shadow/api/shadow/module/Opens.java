@@ -16,7 +16,7 @@ public interface Opens extends Directive
    Package getPackage();
 
    /**
-    * Modules allowed to acces {@link #getPackage()} or {@link #toAll()} if the list is empty
+    * Modules allowed to access {@link #getPackage()} or {@link #toAll()} if the list is empty
     */
    List<Module> getTargetModules();
 

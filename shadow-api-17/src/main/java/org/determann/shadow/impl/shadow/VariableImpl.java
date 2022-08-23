@@ -15,7 +15,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirr
 {
    private final VariableElement variableElement;
 
-   public VariableImpl(ShadowApi shadowApi, VariableElement variableElement)
+   protected VariableImpl(ShadowApi shadowApi, VariableElement variableElement)
    {
       super(shadowApi, variableElement.asType());
       this.variableElement = variableElement;

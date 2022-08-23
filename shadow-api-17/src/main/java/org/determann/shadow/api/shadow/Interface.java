@@ -19,6 +19,7 @@ public interface Interface extends Declared,
     * {@code shadowApi.getDeclared("java.util.List")} represents {@code List}
     * {@code shadowApi.getDeclared("java.util.List").withGenerics(shadowApi.getDeclared("java.lang.String"))} represents {@code List<String>}
     */
+   @SuppressWarnings("unchecked")
    Interface withGenerics(Shadow<? extends TypeMirror>... generics);
 
    /**
