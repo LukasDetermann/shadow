@@ -7,7 +7,8 @@ import org.determann.shadow.api.shadow.Module;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * The {@link ShadowApi} is transient to the java annotation processor api. meaning you can get the api used my this api.
@@ -22,7 +23,7 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
    @Override
    default Set<Modifier> getModifiers()
    {
-      return getElement().getModifiers().stream().map(Modifier::mapModifier).collect(Collectors.toSet());
+      return getElement().getModifiers().stream().map(Modifier::mapModifier).collect(toUnmodifiableSet());
    }
 
    /**

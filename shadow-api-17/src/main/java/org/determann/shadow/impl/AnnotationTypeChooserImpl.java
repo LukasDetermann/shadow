@@ -15,7 +15,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
 {
@@ -28,7 +29,7 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
       this.shadows = elements
             .stream()
             .map(element -> shadowApi.getShadowFactory().<Shadow<TypeMirror>>shadowFromElement(element))
-            .collect(Collectors.toSet());
+            .collect(toUnmodifiableSet());
    }
 
    @Override
@@ -127,6 +128,6 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
                     .map(mapper)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .collect(Collectors.toSet());
+                    .collect(toUnmodifiableSet());
    }
 }
