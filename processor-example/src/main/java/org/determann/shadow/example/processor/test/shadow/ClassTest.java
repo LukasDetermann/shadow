@@ -104,6 +104,12 @@ public class ClassTest extends DeclaredTest<Class>
 
       assertThrows(IllegalArgumentException.class, () -> SHADOW_API.getClass("java.lang.String").withGenerics("java.lang.String"));
 
+      assertEquals(SHADOW_API.getClass("java.lang.String"),
+                   SHADOW_API.getClass("org.determann.shadow.example.processed.test.clazz.WithGenericsExample.Inner")
+                             .withGenerics("java.lang.String")
+                             .getGenerics()
+                             .get(0));
+
       assertEquals(List.of(SHADOW_API.getClass("java.lang.String")),
                    SHADOW_API.getClass("org.determann.shadow.example.processed.test.clazz.InterpolateGenericsExample.IndependentGeneric")
                              .withGenerics("java.lang.String")

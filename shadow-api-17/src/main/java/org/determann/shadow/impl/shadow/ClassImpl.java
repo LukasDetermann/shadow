@@ -82,12 +82,12 @@ public class ClassImpl extends DeclaredImpl implements Class
                                             generics.length +
                                             " are provided");
       }
-      if (getOuterType().map(typeMirrorShadow -> getApi()
+      if (getOuterType().flatMap(typeMirrorShadow -> getApi()
                               .convert(typeMirrorShadow)
                               .toInterface()
                               .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
                               .or(() -> getApi().convert(typeMirrorShadow).toClass().map(aClass -> !aClass.getGenerics().isEmpty())))
-                        .isPresent())
+                        .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +

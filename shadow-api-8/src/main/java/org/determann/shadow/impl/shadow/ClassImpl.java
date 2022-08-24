@@ -10,7 +10,10 @@ import org.determann.shadow.impl.shadow.wraper.PropertyImpl;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toCollection;
@@ -78,11 +81,8 @@ public class ClassImpl extends DeclaredImpl implements Class
                               .convert(typeMirrorShadow)
                               .toInterface()
                               .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                              .orElse(getApi().convert(typeMirrorShadow)
-                                              .toClass()
-                                              .map(aClass -> !aClass.getGenerics().isEmpty())
-                                              .orElseThrow(NoSuchElementException::new)))
-                        .isPresent())
+                              .orElseGet(() -> getApi().convert(typeMirrorShadow).toClass().map(aClass -> !aClass.getGenerics().isEmpty()).orElse(false)))
+                        .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +
