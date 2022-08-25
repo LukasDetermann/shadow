@@ -4,6 +4,7 @@ import org.determann.shadow.impl.ProcessorDiagnosticsRenderer;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.time.Duration;
@@ -29,6 +30,15 @@ public abstract class ShadowProcessor extends AbstractProcessor
    public Set<String> getSupportedAnnotationTypes()
    {
       return new HashSet<>(Collections.singletonList("*"));
+   }
+
+   /**
+    * Needs to be at least the version of the compiled code. otherwise the processor will be ignored
+    */
+   @Override
+   public SourceVersion getSupportedSourceVersion()
+   {
+      return SourceVersion.latest();
    }
 
    /**
