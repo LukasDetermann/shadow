@@ -23,6 +23,8 @@ public interface Method extends Executable,
     * a(String name) && b() -> false
     * a(String name, Long id) && b(Long id, String name) -> false
     * a(String name) && b(String name2) -> true
+    * a(List list) && b(List<String> strings) -> true
+    * a(List<String> strings) b(List list) -> false
     */
    boolean sameParameterTypes(Method method);
 

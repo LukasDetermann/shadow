@@ -25,12 +25,16 @@ public class MethodTest extends ExecutableTest<Method>
       Method third = methods.get(2);
       Method four = methods.get(3);
       Method five = methods.get(4);
+      Method six = methods.get(5);
+      Method seven = methods.get(6);
 
       assertTrue(first.sameParameterTypes(second));
       assertTrue(second.sameParameterTypes(first));
       assertFalse(third.sameParameterTypes(four));
       assertFalse(four.sameParameterTypes(third));
       assertTrue(four.sameParameterTypes(five));
+      assertTrue(six.sameParameterTypes(seven));
+      assertFalse(seven.sameParameterTypes(six));
    }
 
    @Test
