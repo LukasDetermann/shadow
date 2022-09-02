@@ -37,8 +37,7 @@ Make annotation processing more accessible and easier to comprehend.
 
 ## Project status
 
-Not production ready! At the moment it's all about finalising the API. There will most likely be breaking changes during that period. 
-Going forward, it would be nice to have a version for not only java 17 but also 8 and 11.
+Not production ready! At the moment it's all about finalising the API. There will most likely be breaking changes during that period.
 
 ## Getting started
 
