@@ -128,7 +128,7 @@ public class ShadowApiImpl implements ShadowApi
       ModuleElement moduleElement = jdkApiContext.elements().getModuleElement(name);
       if (moduleElement == null)
       {
-         throw new IllegalArgumentException("no module fond with name" + name);
+         throw new IllegalArgumentException("no module fond with name \"" + name + "\"");
       }
       return getShadowFactory().shadowFromElement(moduleElement);
    }
