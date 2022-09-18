@@ -1,6 +1,7 @@
 package org.determann.shadow.api.test;
 
 import org.determann.shadow.impl.test.CompilationTestImpl;
+import org.intellij.lang.annotations.Language;
 
 import java.io.File;
 
@@ -29,7 +30,7 @@ public interface CompilationTest
     *
     * @return a new {@link CompilationTest}
     */
-   CompilationTest withCodeToCompile(String fileName, String code);
+   CompilationTest withCodeToCompile(String fileName, @Language("JAVA") String code);
 
    /**
     * This already compiled class will also be processed
