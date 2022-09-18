@@ -6,6 +6,7 @@ import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.modifier.AccessModifiable;
 import org.determann.shadow.api.modifier.StrictfpModifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -43,23 +44,23 @@ public interface Declared extends Shadow<DeclaredType>,
 
    Field getField(String simpleName);
 
-   List<Field> getFields();
+   @UnmodifiableView List<Field> getFields();
 
-   List<Method> getMethods(String simpleName);
+   @UnmodifiableView List<Method> getMethods(String simpleName);
 
-   List<Method> getMethods();
+   @UnmodifiableView List<Method> getMethods();
 
-   List<Constructor> getConstructors();
+   @UnmodifiableView List<Constructor> getConstructors();
 
    /**
     * returns the parentClass including interfaces
     */
-   List<Declared> getDirectSuperTypes();
+   @UnmodifiableView List<Declared> getDirectSuperTypes();
 
    /**
     * returns all distinct supertypes including interfaces
     */
-   Set<Declared> getSuperTypes();
+   @UnmodifiableView Set<Declared> getSuperTypes();
 
    Package getPackage();
 

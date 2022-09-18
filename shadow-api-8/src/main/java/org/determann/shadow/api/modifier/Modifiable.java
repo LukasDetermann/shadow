@@ -1,10 +1,12 @@
 package org.determann.shadow.api.modifier;
 
+import org.jetbrains.annotations.UnmodifiableView;
+
 import java.util.Set;
 
 public interface Modifiable
 {
-   Set<Modifier> getModifiers();
+   @UnmodifiableView Set<Modifier> getModifiers();
 
    default boolean hasModifier(Modifier modifier)
    {

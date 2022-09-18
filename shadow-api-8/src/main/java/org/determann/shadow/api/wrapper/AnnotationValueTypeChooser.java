@@ -4,6 +4,7 @@ import org.determann.shadow.api.JdkApi;
 import org.determann.shadow.api.shadow.AnnotationUsage;
 import org.determann.shadow.api.shadow.EnumConstant;
 import org.determann.shadow.api.shadow.Shadow;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.type.TypeMirror;
@@ -40,7 +41,7 @@ public interface AnnotationValueTypeChooser
 
    AnnotationUsage asAnnotationUsage();
 
-   List<AnnotationValueTypeChooser> asListOfValues();
+   @UnmodifiableView List<AnnotationValueTypeChooser> asListOfValues();
 
    @JdkApi
    AnnotationValue getAnnotationValue();

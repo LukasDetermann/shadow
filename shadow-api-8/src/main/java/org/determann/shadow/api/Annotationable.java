@@ -1,6 +1,7 @@
 package org.determann.shadow.api;
 
 import org.determann.shadow.api.shadow.AnnotationUsage;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.Element;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
-   default List<AnnotationUsage> getAnnotations()
+   default @UnmodifiableView List<AnnotationUsage> getAnnotations()
    {
       return getApi()
             .getShadowFactory()
@@ -25,7 +26,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
     *
     * @see #getAnnotations()
     */
-   default List<AnnotationUsage> getDirectAnnotations()
+   default @UnmodifiableView List<AnnotationUsage> getDirectAnnotations()
    {
       return getApi().getShadowFactory().annotationUsage(getElement().getAnnotationMirrors());
    }

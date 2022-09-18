@@ -1,5 +1,7 @@
 package org.determann.shadow.api.shadow;
 
+import org.jetbrains.annotations.UnmodifiableView;
+
 import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -20,5 +22,5 @@ public interface Intersection extends Shadow<IntersectionType>
    /**
     * {@code T extends} <b> Collection & Serializable</b>{@code >}
     */
-   List<Shadow<TypeMirror>> getBounds();
+   @UnmodifiableView List<Shadow<TypeMirror>> getBounds();
 }

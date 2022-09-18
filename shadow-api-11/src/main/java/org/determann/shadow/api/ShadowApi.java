@@ -10,6 +10,7 @@ import org.determann.shadow.api.shadow.Void;
 import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.api.shadow.module.*;
 import org.determann.shadow.impl.ShadowApiImpl;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -65,7 +66,7 @@ public interface ShadowApi
    AnnotationTypeChooser annotatedWith(String qualifiedAnnotation);
 
    @Scope(ALL)
-   List<Module> getModules();
+   @UnmodifiableView List<Module> getModules();
 
    @Scope(ALL)
    Module getModule(String name);
@@ -74,10 +75,10 @@ public interface ShadowApi
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
    @Scope(ALL)
-   List<Package> getPackages(String qualifiedName);
+   @UnmodifiableView List<Package> getPackages(String qualifiedName);
 
    @Scope(ALL)
-   List<Package> getPackages();
+   @UnmodifiableView List<Package> getPackages();
 
    @Scope(ALL)
    Package getPackage(String qualifiedModuleName, String qualifiedPackageName);
@@ -101,7 +102,7 @@ public interface ShadowApi
    Interface getInterface(String qualifiedName);
 
    @Scope(ALL)
-   List<Declared> getDeclared();
+   @UnmodifiableView List<Declared> getDeclared();
 
    ShadowConstants getConstants();
 

@@ -2,6 +2,7 @@ package org.determann.shadow.api.shadow.module;
 
 import org.determann.shadow.api.shadow.Module;
 import org.determann.shadow.api.shadow.Package;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface Opens extends Directive
    /**
     * Modules allowed to access {@link #getPackage()} or {@link #toAll()} if the list is empty
     */
-   List<Module> getTargetModules();
+   @UnmodifiableView List<Module> getTargetModules();
 
    boolean toAll();
 }

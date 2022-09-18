@@ -2,6 +2,7 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.modifier.FinalModifiable;
 import org.determann.shadow.api.modifier.StaticModifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface Record extends Declared,
 {
    RecordComponent getRecordComponent(String simpleName);
 
-   List<RecordComponent> getRecordComponents();
+   @UnmodifiableView List<RecordComponent> getRecordComponents();
 
-   List<Interface> getDirectInterfaces();
+   @UnmodifiableView List<Interface> getDirectInterfaces();
 
    /**
     * be careful using this equals

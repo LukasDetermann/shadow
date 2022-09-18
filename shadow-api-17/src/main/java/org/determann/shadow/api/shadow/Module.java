@@ -5,6 +5,7 @@ import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.shadow.module.Directive;
 import org.determann.shadow.api.shadow.module.DirectiveConsumer;
 import org.determann.shadow.api.shadow.module.DirectiveMapper;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.type.NoType;
@@ -14,7 +15,7 @@ public interface Module extends Shadow<NoType>,
                                 QualifiedNameable<ModuleElement>,
                                 Annotationable<ModuleElement>
 {
-   List<Package> getPackages();
+   @UnmodifiableView List<Package> getPackages();
 
    /**
     * returns a {@link Declared} from this module
@@ -60,9 +61,9 @@ public interface Module extends Shadow<NoType>,
    /**
     * Relations between modules
     */
-   List<Directive> getDirectives();
+   @UnmodifiableView  List<Directive> getDirectives();
 
-   <T> List<T> mapDirectives(DirectiveMapper<T> mapper);
+   <T> @UnmodifiableView  List<T> mapDirectives(DirectiveMapper<T> mapper);
 
    void consumeDirectives(DirectiveConsumer consumer);
 

@@ -1,15 +1,16 @@
 package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.modifier.StaticModifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
 public interface Enum extends Declared,
                               StaticModifiable
 {
-   List<Interface> getDirectInterfaces();
+   @UnmodifiableView List<Interface> getDirectInterfaces();
 
-   List<EnumConstant> getEumConstants();
+   @UnmodifiableView List<EnumConstant> getEumConstants();
 
    EnumConstant getEnumConstant(String simpleName);
 

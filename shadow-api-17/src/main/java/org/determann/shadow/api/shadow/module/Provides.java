@@ -1,6 +1,7 @@
 package org.determann.shadow.api.shadow.module;
 
 import org.determann.shadow.api.shadow.Declared;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface Provides extends Directive
    /**
     * Implementations of the provided service
     */
-   List<Declared> getImplementations();
+   @UnmodifiableView List<Declared> getImplementations();
 }

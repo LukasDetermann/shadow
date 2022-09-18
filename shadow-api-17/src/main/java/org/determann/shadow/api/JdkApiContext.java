@@ -1,5 +1,7 @@
 package org.determann.shadow.api;
 
+import org.jetbrains.annotations.UnmodifiableView;
+
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
@@ -52,7 +54,7 @@ public record JdkApiContext(RoundEnvironment roundEnv,
 
    @JdkApi
    @Override
-   public Map<String, String> options()
+   public @UnmodifiableView Map<String, String> options()
    {
       return options;
    }

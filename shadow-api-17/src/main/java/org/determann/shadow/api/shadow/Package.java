@@ -2,6 +2,7 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.Annotationable;
 import org.determann.shadow.api.QualifiedNameable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.NoType;
@@ -14,7 +15,7 @@ public interface Package extends Shadow<NoType>,
    /**
     * returns everything in this package
     */
-   List<Declared> getContent();
+   @UnmodifiableView List<Declared> getContent();
 
    /**
     * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects

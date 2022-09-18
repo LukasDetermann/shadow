@@ -2,6 +2,7 @@ package org.determann.shadow.api;
 
 import org.determann.shadow.api.modifier.Modifiable;
 import org.determann.shadow.api.modifier.Modifier;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
@@ -22,7 +23,7 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
    ELEMENT getElement();
 
    @Override
-   default Set<Modifier> getModifiers()
+   default @UnmodifiableView Set<Modifier> getModifiers()
    {
       return getElement().getModifiers().stream().map(Modifier::mapModifier).collect(toCollection(() -> unmodifiableSet(new HashSet<>())));
    }

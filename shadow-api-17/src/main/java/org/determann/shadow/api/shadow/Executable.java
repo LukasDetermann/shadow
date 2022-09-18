@@ -2,6 +2,7 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.ElementBacked;
 import org.determann.shadow.api.ShadowApi;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ExecutableType;
@@ -23,15 +24,15 @@ public interface Executable extends Shadow<ExecutableType>,
    /**
     * {@code public MyObject(}<b>String param<b/>{@code )}
     */
-   List<Parameter> getParameters();
+   @UnmodifiableView List<Parameter> getParameters();
 
    Parameter getParameter(String name);
 
    Shadow<TypeMirror> getReturnType();
 
-   List<Shadow<TypeMirror>> getParameterTypes();
+   @UnmodifiableView List<Shadow<TypeMirror>> getParameterTypes();
 
-   List<Shadow<TypeMirror>> getThrows();
+   @UnmodifiableView List<Shadow<TypeMirror>> getThrows();
 
    /**
     * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap
@@ -53,7 +54,7 @@ public interface Executable extends Shadow<ExecutableType>,
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   List<Generic> getFormalGenerics();
+   @UnmodifiableView List<Generic> getFormalGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".
