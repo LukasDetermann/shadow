@@ -1,5 +1,6 @@
 package org.determann.shadow.api;
 
+import org.determann.shadow.api.metadata.JdkApi;
 import org.determann.shadow.api.modifier.Modifiable;
 import org.determann.shadow.api.modifier.Modifier;
 import org.jetbrains.annotations.UnmodifiableView;

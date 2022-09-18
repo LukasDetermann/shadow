@@ -1,5 +1,7 @@
 package org.determann.shadow.api;
 
+import org.determann.shadow.api.metadata.JdkApi;
+
 import javax.lang.model.type.TypeMirror;
 
 

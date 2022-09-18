@@ -1,4 +1,6 @@
-package org.determann.shadow.api;
+package org.determann.shadow.api.metadata;
+
+import org.determann.shadow.api.ShadowApi;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

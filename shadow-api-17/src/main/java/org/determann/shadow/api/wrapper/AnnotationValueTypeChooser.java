@@ -1,6 +1,6 @@
 package org.determann.shadow.api.wrapper;
 
-import org.determann.shadow.api.JdkApi;
+import org.determann.shadow.api.metadata.JdkApi;
 import org.determann.shadow.api.shadow.AnnotationUsage;
 import org.determann.shadow.api.shadow.EnumConstant;
 import org.determann.shadow.api.shadow.Shadow;

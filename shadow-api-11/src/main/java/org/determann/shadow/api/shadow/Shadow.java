@@ -1,6 +1,10 @@
 package org.determann.shadow.api.shadow;
 
-import org.determann.shadow.api.*;
+import org.determann.shadow.api.ApiHolder;
+import org.determann.shadow.api.MirrorBacked;
+import org.determann.shadow.api.ShadowApi;
+import org.determann.shadow.api.TypeKind;
+import org.determann.shadow.api.metadata.JdkApi;
 
 import javax.lang.model.type.TypeMirror;
 

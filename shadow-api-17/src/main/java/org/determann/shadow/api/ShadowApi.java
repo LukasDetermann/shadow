@@ -2,6 +2,8 @@ package org.determann.shadow.api;
 
 import org.determann.shadow.api.converter.*;
 import org.determann.shadow.api.converter.module.*;
+import org.determann.shadow.api.metadata.JdkApi;
+import org.determann.shadow.api.metadata.Scope;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Module;
@@ -11,6 +13,7 @@ import org.determann.shadow.api.shadow.Void;
 import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.api.shadow.module.*;
 import org.determann.shadow.impl.ShadowApiImpl;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -21,8 +24,8 @@ import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.List;
 
-import static org.determann.shadow.api.Scope.ScopeType.ALL;
-import static org.determann.shadow.api.Scope.ScopeType.CURRENT_COMPILATION;
+import static org.determann.shadow.api.metadata.Scope.ScopeType.ALL;
+import static org.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATION;
 
 /**
  * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link ShadowApi} is transient. Meaning you can
@@ -94,7 +97,7 @@ public interface ShadowApi
    Annotation getAnnotation(String qualifiedName);
 
    @Scope(ALL)
-   Class getClass(String qualifiedName);
+   Class getClass(@Pattern("^([a-zA-Z_$][a-zA-Z\\d_$]*\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*$") String qualifiedName);
 
    @Scope(ALL)
    Enum getEnum(String qualifiedName);

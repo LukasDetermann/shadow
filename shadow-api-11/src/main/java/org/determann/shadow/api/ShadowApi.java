@@ -2,6 +2,8 @@ package org.determann.shadow.api;
 
 import org.determann.shadow.api.converter.*;
 import org.determann.shadow.api.converter.module.*;
+import org.determann.shadow.api.metadata.JdkApi;
+import org.determann.shadow.api.metadata.Scope;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Module;
@@ -20,8 +22,8 @@ import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.List;
 
-import static org.determann.shadow.api.Scope.ScopeType.ALL;
-import static org.determann.shadow.api.Scope.ScopeType.CURRENT_COMPILATION;
+import static org.determann.shadow.api.metadata.Scope.ScopeType.ALL;
+import static org.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATION;
 
 /**
  * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link ShadowApi} is transient. Meaning you can

@@ -1,5 +1,6 @@
 package org.determann.shadow.api;
 
+import org.determann.shadow.api.metadata.JdkApi;
 import org.determann.shadow.api.shadow.AnnotationUsage;
 import org.determann.shadow.api.shadow.Shadow;
 import org.jetbrains.annotations.UnmodifiableView;
