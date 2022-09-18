@@ -2,7 +2,7 @@ package org.determann.shadow.impl.test;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.ShadowProcessor;
-import org.determann.shadow.api.test.CompilationTestBuilder;
+import org.determann.shadow.api.test.CompilationTest;
 import org.determann.shadow.api.test.ProcessingCallback;
 
 import javax.annotation.processing.Processor;
@@ -19,20 +19,34 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class CompilationTestBuilderImpl implements CompilationTestBuilder
+public class CompilationTestImpl implements CompilationTest
 {
    private final ProcessingCallback processingCallback;
-   private final List<JavaFileObject> toCompile = new ArrayList<>();
-   private final List<String> options = new ArrayList<>();
-   private final List<String> compiledClassNames = new ArrayList<>();
+   private final List<JavaFileObject> toCompile;
+   private final List<String> options;
+   private final List<String> compiledClassNames;
 
-   public CompilationTestBuilderImpl(ProcessingCallback processingCallback)
+   private CompilationTestImpl(ProcessingCallback processingCallback,
+                               List<JavaFileObject> toCompile,
+                               List<String> options,
+                               List<String> compiledClassNames)
    {
       this.processingCallback = processingCallback;
+      this.toCompile = toCompile;
+      this.options = options;
+      this.compiledClassNames = compiledClassNames;
+   }
+
+   public CompilationTestImpl(ProcessingCallback processingCallback)
+   {
+      this.processingCallback = processingCallback;
+      toCompile = new ArrayList<>();
+      options = new ArrayList<>();
+      compiledClassNames = new ArrayList<>();
    }
 
    @Override
-   public CompilationTestBuilder withFileToCompile(File fileToCompile)
+   public CompilationTest withCodeToCompile(File fileToCompile)
    {
       if (!fileToCompile.getName().endsWith(".java"))
       {
@@ -50,35 +64,35 @@ public class CompilationTestBuilderImpl implements CompilationTestBuilder
       }
 
       toCompile.add(createJavaFileObject(fileToCompile.toURI(), sourceCode));
-      return this;
+      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTestBuilder withFileToCompile(String fileName, String sourceCode)
+   public CompilationTest withCodeToCompile(String fileName, String code)
    {
-      toCompile.add(createJavaFileObject(createUri(fileName), sourceCode));
-      return this;
+      toCompile.add(createJavaFileObject(createUri(fileName), code));
+      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTestBuilder withOption(String option)
+   public CompilationTest withOption(String option)
    {
       this.options.add(option);
-      return this;
+      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTestBuilder withCompiledClassName(String withCompiledClassName)
+   public CompilationTest withCompiledClass(String qualifiedName)
    {
-      this.compiledClassNames.add(withCompiledClassName);
-      return this;
+      this.compiledClassNames.add(qualifiedName);
+      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTestBuilder withCompiledClassName(Class<?> withCompiledClass)
+   public CompilationTest withCompiledClass(Class<?> aClass)
    {
-      this.compiledClassNames.add(withCompiledClass.getName());
-      return this;
+      this.compiledClassNames.add(aClass.getName());
+      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
