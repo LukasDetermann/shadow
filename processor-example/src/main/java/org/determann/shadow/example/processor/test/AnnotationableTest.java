@@ -15,10 +15,10 @@ public class AnnotationableTest
    @Test
    void getAnnotationsTest()
    {
-      assertTrue(SHADOW_API.getInterface("java.util.List").getAnnotations().isEmpty());
+      assertTrue(SHADOW_API.getInterface("java.util.List").getAnnotationUsages().isEmpty());
 
       assertTrue(SHADOW_API.getClass("jdk.jfr.events.DirectBufferStatisticsEvent")
-                           .getAnnotations()
+                           .getAnnotationUsages()
                            .stream()
                            .map(QualifiedNameable::getQualifiedName)
                            .anyMatch(name -> name.equals("jdk.jfr.Category")));
@@ -27,9 +27,9 @@ public class AnnotationableTest
    @Test
    void getDirectAnnotationsTest()
    {
-      assertTrue(SHADOW_API.getInterface("java.util.List").getAnnotations().isEmpty());
+      assertTrue(SHADOW_API.getInterface("java.util.List").getAnnotationUsages().isEmpty());
 
-      List<AnnotationUsage> directAnnotations = SHADOW_API.getAnnotation("java.lang.annotation.Documented").getDirectAnnotations();
+      List<AnnotationUsage> directAnnotations = SHADOW_API.getAnnotation("java.lang.annotation.Documented").getDirectAnnotationUsages();
 
       assertEquals(3, directAnnotations.size());
       assertEquals("java.lang.annotation.Documented", directAnnotations.get(0).getQualifiedName());
@@ -38,7 +38,7 @@ public class AnnotationableTest
 
       //not contains inherited annotations
       assertTrue(SHADOW_API.getClass("jdk.jfr.events.DirectBufferStatisticsEvent")
-                           .getDirectAnnotations()
+                           .getDirectAnnotationUsages()
                            .stream()
                            .map(QualifiedNameable::getQualifiedName)
                            .noneMatch(name -> name.equals("jdk.jfr.Category")));

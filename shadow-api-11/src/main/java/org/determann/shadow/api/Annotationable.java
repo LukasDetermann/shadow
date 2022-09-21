@@ -14,7 +14,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
-   default @UnmodifiableView List<AnnotationUsage> getAnnotations()
+   default @UnmodifiableView List<AnnotationUsage> getAnnotationUsages()
    {
       return getApi()
             .getShadowFactory()
@@ -24,9 +24,9 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    /**
     * returns all direkt annotations
     *
-    * @see #getAnnotations()
+    * @see #getAnnotationUsages()
     */
-   default @UnmodifiableView List<AnnotationUsage> getDirectAnnotations()
+   default @UnmodifiableView List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return getApi().getShadowFactory().annotationUsage(getElement().getAnnotationMirrors());
    }

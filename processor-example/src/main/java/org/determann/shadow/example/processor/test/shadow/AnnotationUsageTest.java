@@ -20,7 +20,7 @@ public class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                              .classes()
                              .iterator()
                              .next()
-                             .getAnnotations()
+                             .getAnnotationUsages()
                              .get(0);
    }
 
@@ -57,7 +57,7 @@ public class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
             .fields()
             .iterator()
             .next()
-            .getAnnotations()
+            .getAnnotationUsages()
             .get(0);
 
       AnnotationValueTypeChooser overwrittenValueTypeChooser = overwrittenStringValue.getValue("stingValue");
