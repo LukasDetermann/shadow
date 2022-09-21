@@ -3,6 +3,7 @@ package org.determann.shadow.api;
 import org.determann.shadow.api.converter.*;
 import org.determann.shadow.api.converter.module.*;
 import org.determann.shadow.api.metadata.JdkApi;
+import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.metadata.Scope;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
@@ -13,7 +14,6 @@ import org.determann.shadow.api.shadow.Void;
 import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.api.shadow.module.*;
 import org.determann.shadow.impl.ShadowApiImpl;
-import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -52,7 +52,7 @@ import static org.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILAT
  * @see Shadow
  * @see Scope
  */
-public interface ShadowApi
+public interface ShadowApi extends DeclaredHolder
 {
    static ShadowApi create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRoundNumber)
    {
@@ -79,7 +79,7 @@ public interface ShadowApi
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
    @Scope(ALL)
-   @UnmodifiableView List<Package> getPackages(String qualifiedName);
+   @UnmodifiableView List<Package> getPackages(@QualifiedName String qualifiedName);
 
    @Scope(ALL)
    @UnmodifiableView List<Package> getPackages();
@@ -89,27 +89,6 @@ public interface ShadowApi
 
    @Scope(ALL)
    Package getPackage(Module module, String qualifiedPackageName);
-
-   @Scope(ALL)
-   Declared getDeclared(String qualifiedName);
-
-   @Scope(ALL)
-   Annotation getAnnotation(String qualifiedName);
-
-   @Scope(ALL)
-   Class getClass(@Pattern("^([a-zA-Z_$][a-zA-Z\\d_$]*\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*$") String qualifiedName);
-
-   @Scope(ALL)
-   Enum getEnum(String qualifiedName);
-
-   @Scope(ALL)
-   Interface getInterface(String qualifiedName);
-
-   @Scope(ALL)
-   Record getRecord(String qualifiedName);
-
-   @Scope(ALL)
-   @UnmodifiableView List<Declared> getDeclared();
 
    ShadowConstants getConstants();
 
@@ -164,12 +143,12 @@ public interface ShadowApi
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
     */
-   void writeSourceFile(String qualifiedName, String content);
+   void writeSourceFile(@QualifiedName String qualifiedName, String content);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .class files
     */
-   void writeClassFile(String qualifiedName, String content);
+   void writeClassFile(@QualifiedName String qualifiedName, String content);
 
    /**
     * the created file will NOT be registered for the next annotation processor round. writes anything

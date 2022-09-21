@@ -1,6 +1,7 @@
 package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.Annotationable;
+import org.determann.shadow.api.DeclaredHolder;
 import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.shadow.module.Directive;
 import org.determann.shadow.api.shadow.module.DirectiveConsumer;
@@ -13,36 +14,10 @@ import java.util.List;
 
 public interface Module extends Shadow<NoType>,
                                 QualifiedNameable<ModuleElement>,
-                                Annotationable<ModuleElement>
+                                Annotationable<ModuleElement>,
+                                DeclaredHolder
 {
    @UnmodifiableView List<Package> getPackages();
-
-   /**
-    * returns a {@link Declared} from this module
-    *
-    * @param qualifiedName e.g. org.example.MyClass
-    */
-   Declared getDeclared(String qualifiedName);
-
-   /**
-    * @see #getDeclared(String)
-    */
-   Annotation getAnnotation(String qualifiedName);
-
-   /**
-    * @see #getDeclared(String)
-    */
-   Class getClass(String qualifiedName);
-
-   /**
-    * @see #getDeclared(String)
-    */
-   Enum getEnum(String qualifiedName);
-
-   /**
-    * @see #getDeclared(String)
-    */
-   Interface getInterface(String qualifiedName);
 
    /**
     * can everybody use reflection on this module?

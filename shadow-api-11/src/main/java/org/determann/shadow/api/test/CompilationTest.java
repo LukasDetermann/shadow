@@ -1,5 +1,6 @@
 package org.determann.shadow.api.test;
 
+import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.impl.test.CompilationTestImpl;
 import org.intellij.lang.annotations.Language;
 
@@ -39,7 +40,7 @@ public interface CompilationTest
     *
     * @return a new {@link CompilationTest}
     */
-   CompilationTest withCompiledClass(String qualifiedName);
+   CompilationTest withCompiledClass(@QualifiedName String qualifiedName);
 
    /**
     * This already compiled class will also be processed

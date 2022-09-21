@@ -181,50 +181,6 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Annotation getAnnotation(String qualifiedName)
-   {
-      TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.ANNOTATION_TYPE))
-      {
-         throw new IllegalArgumentException("no Annotation found for \"" + qualifiedName + "\"");
-      }
-      return getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Class getClass(String qualifiedName)
-   {
-      TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.CLASS))
-      {
-         throw new IllegalArgumentException("no Class found for \"" + qualifiedName + "\"");
-      }
-      return getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Enum getEnum(String qualifiedName)
-   {
-      TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.ENUM))
-      {
-         throw new IllegalArgumentException("no Enum found for \"" + qualifiedName + "\"");
-      }
-      return getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Interface getInterface(String qualifiedName)
-   {
-      TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.INTERFACE))
-      {
-         throw new IllegalArgumentException("no Interface found for \"" + qualifiedName + "\"");
-      }
-      return getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
    public List<Declared> getDeclared()
    {
       return getPackages()
@@ -531,5 +487,11 @@ public class ShadowApiImpl implements ShadowApi
    public UsesConverter convert(Uses usesShadow)
    {
       return new DirectiveConverterImpl(this, usesShadow);
+   }
+
+   @Override
+   public ShadowApi getApi()
+   {
+      return this;
    }
 }

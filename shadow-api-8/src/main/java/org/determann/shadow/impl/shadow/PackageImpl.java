@@ -64,6 +64,17 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
+   public Declared getDeclared(String qualifiedName)
+   {
+      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(qualifiedName);
+      if (typeElement == null)
+      {
+         throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
+      }
+      return getApi().getShadowFactory().shadowFromElement(typeElement);
+   }
+
+   @Override
    public String toString()
    {
       return getElement().toString();

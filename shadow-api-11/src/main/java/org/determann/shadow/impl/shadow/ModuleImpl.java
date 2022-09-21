@@ -2,17 +2,16 @@ package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
-import org.determann.shadow.api.shadow.Class;
-import org.determann.shadow.api.shadow.Enum;
+import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Module;
 import org.determann.shadow.api.shadow.Package;
-import org.determann.shadow.api.shadow.*;
+import org.determann.shadow.api.shadow.Shadow;
 import org.determann.shadow.api.shadow.module.Directive;
 import org.determann.shadow.api.shadow.module.DirectiveConsumer;
 import org.determann.shadow.api.shadow.module.DirectiveMapper;
 import org.determann.shadow.impl.shadow.module.*;
+import org.jetbrains.annotations.UnmodifiableView;
 
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.NoType;
@@ -64,56 +63,18 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
+   public @UnmodifiableView List<Declared> getDeclared()
+   {
+      return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).collect(toUnmodifiableList());
+   }
+
+   @Override
    public Declared getDeclared(String qualifiedName)
    {
       TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
       if (typeElement == null)
       {
          throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Annotation getAnnotation(String qualifiedName)
-   {
-      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.ANNOTATION_TYPE))
-      {
-         throw new IllegalArgumentException("no Annotation found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Class getClass(String qualifiedName)
-   {
-      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.CLASS))
-      {
-         throw new IllegalArgumentException("no Class found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Enum getEnum(String qualifiedName)
-   {
-      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.ENUM))
-      {
-         throw new IllegalArgumentException("no Enum found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
-   }
-
-   @Override
-   public Interface getInterface(String qualifiedName)
-   {
-      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
-      if (typeElement == null || !typeElement.getKind().equals(ElementKind.INTERFACE))
-      {
-         throw new IllegalArgumentException("no Interface found for \"" + qualifiedName + "\"");
       }
       return getApi().getShadowFactory().shadowFromElement(typeElement);
    }

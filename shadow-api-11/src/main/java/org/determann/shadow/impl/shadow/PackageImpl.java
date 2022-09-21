@@ -4,6 +4,7 @@ import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
 import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Package;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -59,6 +60,23 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    public TypeKind getTypeKind()
    {
       return TypeKind.PACKAGE;
+   }
+
+   @Override
+   public @UnmodifiableView List<Declared> getDeclared()
+   {
+      return getContent();
+   }
+
+   @Override
+   public Declared getDeclared(String qualifiedName)
+   {
+      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getModule().getElement(), qualifiedName);
+      if (typeElement == null)
+      {
+         throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
+      }
+      return getApi().getShadowFactory().shadowFromElement(typeElement);
    }
 
    @Override
