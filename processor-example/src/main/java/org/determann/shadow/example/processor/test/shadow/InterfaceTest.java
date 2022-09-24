@@ -45,7 +45,7 @@ public class InterfaceTest extends DeclaredTest<Interface>
                                          "org.determann.shadow.example.processed.test.interfase.InterpolateGenericsExample.DependentGeneric")
                                    .withGenerics("java.lang.String"));
 
-      assertThrows(IllegalArgumentException.class, () -> SHADOW_API.getClass("java.io.Serializable").withGenerics("java.io.Serializable"));
+      assertThrows(IllegalArgumentException.class, () -> SHADOW_API.getInterface("java.io.Serializable").withGenerics("java.io.Serializable"));
 
       assertEquals(List.of(SHADOW_API.getClass("java.lang.String")),
                    SHADOW_API.getInterface("org.determann.shadow.example.processed.test.interfase.InterpolateGenericsExample.IndependentGeneric")

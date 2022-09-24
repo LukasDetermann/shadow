@@ -20,8 +20,7 @@ public class GenericTest extends ShadowTest<Generic>
                    SHADOW_API.convert(SHADOW_API.getClass("org.determann.shadow.example.processed.test.generics.GenericsExample")
                                                 .getGenerics()
                                                 .get(0))
-                             .toOptionalGeneric()
-                             .orElseThrow()
+                             .toGeneric()
                              .getExtends());
    }
 
@@ -32,8 +31,7 @@ public class GenericTest extends ShadowTest<Generic>
                    SHADOW_API.convert(SHADOW_API.getClass("org.determann.shadow.example.processed.test.generics.GenericsExample")
                                                 .getGenerics()
                                                 .get(0))
-                             .toOptionalGeneric()
-                             .orElseThrow()
+                             .toGeneric()
                              .getEnclosing());
    }
 
@@ -44,8 +42,7 @@ public class GenericTest extends ShadowTest<Generic>
                    SHADOW_API.convert(SHADOW_API.getClass("org.determann.shadow.example.processed.test.generics.GenericsExample")
                                                 .getGenerics()
                                                 .get(0))
-                             .toOptionalGeneric()
-                             .orElseThrow()
+                             .toGeneric()
                              .getPackage());
    }
 }

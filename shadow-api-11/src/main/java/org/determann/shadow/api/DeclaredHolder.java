@@ -21,61 +21,53 @@ public interface DeclaredHolder extends ApiHolder
 
    default Annotation getAnnotation(@QualifiedName String qualifiedName)
    {
-      return getApi().convert(getDeclared(qualifiedName))
-                     .toOptionalAnnotation()
-                     .orElseThrow(() -> new IllegalArgumentException("No Annotation found for " + qualifiedName));
+      return getApi().convert(getDeclared(qualifiedName)).toAnnotation();
    }
 
    default @UnmodifiableView List<Annotation> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toOptionalAnnotation().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toAnnotation())
                           .collect(toUnmodifiableList());
    }
 
    default Class getClass(@QualifiedName String qualifiedName)
    {
-      return getApi().convert(getDeclared(qualifiedName))
-                     .toOptionalClass()
-                     .orElseThrow(() -> new IllegalArgumentException("No Class found for " + qualifiedName));
+      return getApi().convert(getDeclared(qualifiedName)).toClass();
    }
 
    default @UnmodifiableView List<Class> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toOptionalClass().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toClass())
                           .collect(toUnmodifiableList());
    }
 
    default Enum getEnum(@QualifiedName String qualifiedName)
    {
-      return getApi().convert(getDeclared(qualifiedName))
-                     .toOptionalEnum()
-                     .orElseThrow(() -> new IllegalArgumentException("No getEnum found for " + qualifiedName));
+      return getApi().convert(getDeclared(qualifiedName)).toEnum();
    }
 
    default @UnmodifiableView List<Enum> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toOptionalEnum().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toEnum())
                           .collect(toUnmodifiableList());
    }
 
    default Interface getInterface(@QualifiedName String qualifiedName)
    {
-      return getApi().convert(getDeclared(qualifiedName))
-                     .toOptionalInterface()
-                     .orElseThrow(() -> new IllegalArgumentException("No Interface found for " + qualifiedName));
+      return getApi().convert(getDeclared(qualifiedName)).toInterface();
    }
 
    default @UnmodifiableView List<Interface> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toOptionalInterface().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toInterface())
                           .collect(toUnmodifiableList());
    }
 }

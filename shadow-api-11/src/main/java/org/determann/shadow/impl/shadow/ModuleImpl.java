@@ -127,15 +127,15 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                     switch (directive.getKind())
                                     {
                                        case REQUIRES:
-                                          return mapper.requires(getApi().convert(directive).toOptionalRequires().orElseThrow());
+                                          return mapper.requires(getApi().convert(directive).toRequires());
                                        case EXPORTS:
-                                          return mapper.exports(getApi().convert(directive).toOptionalExports().orElseThrow());
+                                          return mapper.exports(getApi().convert(directive).toExports());
                                        case OPENS:
-                                          return mapper.opens(getApi().convert(directive).toOptionalOpens().orElseThrow());
+                                          return mapper.opens(getApi().convert(directive).toOpens());
                                        case USES:
-                                          return mapper.uses(getApi().convert(directive).toOptionalUses().orElseThrow());
+                                          return mapper.uses(getApi().convert(directive).toUses());
                                        case PROVIDES:
-                                          return mapper.provides(getApi().convert(directive).toOptionalProvides().orElseThrow());
+                                          return mapper.provides(getApi().convert(directive).toProvides());
                                        default:
                                           throw new IllegalArgumentException();
                                     }
@@ -151,19 +151,19 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                  switch (directive.getKind())
                                  {
                                     case REQUIRES:
-                                       consumer.requires(getApi().convert(directive).toOptionalRequires().orElseThrow());
+                                       consumer.requires(getApi().convert(directive).toRequires());
                                        break;
                                     case EXPORTS:
-                                       consumer.exports(getApi().convert(directive).toOptionalExports().orElseThrow());
+                                       consumer.exports(getApi().convert(directive).toExports());
                                        break;
                                     case OPENS:
-                                       consumer.opens(getApi().convert(directive).toOptionalOpens().orElseThrow());
+                                       consumer.opens(getApi().convert(directive).toOpens());
                                        break;
                                     case USES:
-                                       consumer.uses(getApi().convert(directive).toOptionalUses().orElseThrow());
+                                       consumer.uses(getApi().convert(directive).toUses());
                                        break;
                                     case PROVIDES:
-                                       consumer.provides(getApi().convert(directive).toOptionalProvides().orElseThrow());
+                                       consumer.provides(getApi().convert(directive).toProvides());
                                        break;
                                  }
                               });

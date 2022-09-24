@@ -30,9 +30,9 @@ public class ClassTest extends DeclaredTest<Class>
       assertEquals(integer.getSuperClass(), number);
 
       Declared object = SHADOW_API.getClass("java.lang.Object");
-      assertNull(SHADOW_API.convert(object).toOptionalClass().orElseThrow().getSuperClass());
+      assertNull(SHADOW_API.convert(object).toClass().getSuperClass());
 
-      assertEquals(object, SHADOW_API.convert(number).toOptionalClass().orElseThrow().getSuperClass());
+      assertEquals(object, SHADOW_API.convert(number).toClass().getSuperClass());
    }
 
    @Test
