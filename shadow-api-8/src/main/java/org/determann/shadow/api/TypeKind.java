@@ -34,7 +34,7 @@ public enum TypeKind
 
    ARRAY(false, false, false, false, false),
 
-   GENERIC_TYPE(false, false, false, false, false),
+   GENERIC(false, false, false, false, false),
 
    UNION(false, false, false, false, false),
 
