@@ -16,7 +16,7 @@ public class IntersectionTest extends ShadowTest<Intersection>
                                                .getFormalGenerics()
                                                .get(0)
                                                .getExtends())
-                            .toIntersection()
+                            .toOptionalIntersection()
                             .orElseThrow());
    }
 

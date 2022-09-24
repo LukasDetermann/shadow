@@ -30,9 +30,9 @@ public class ClassTest extends DeclaredTest<Class>
       assertEquals(integer.getSuperClass(), number);
 
       Declared object = SHADOW_API.getClass("java.lang.Object");
-      assertNull(SHADOW_API.convert(object).toClass().orElseThrow().getSuperClass());
+      assertNull(SHADOW_API.convert(object).toOptionalClass().orElseThrow().getSuperClass());
 
-      assertEquals(object, SHADOW_API.convert(number).toClass().orElseThrow().getSuperClass());
+      assertEquals(object, SHADOW_API.convert(number).toOptionalClass().orElseThrow().getSuperClass());
    }
 
    @Test
@@ -129,10 +129,10 @@ public class ClassTest extends DeclaredTest<Class>
                                                SHADOW_API.getConstants().getUnboundWildcard());
       Class capture = declared.interpolateGenerics();
       Shadow<TypeMirror> interpolated = SHADOW_API.convert(capture.getGenerics().get(1))
-                                                  .toGeneric()
+                                                  .toOptionalGeneric()
                                                   .map(Generic::getExtends)
                                                   .map(SHADOW_API::convert)
-                                                  .flatMap(ShadowConverter::toInterface)
+                                                  .flatMap(ShadowConverter::toOptionalInterface)
                                                   .map(Interface::getGenerics)
                                                   .map(shadows -> shadows.get(0))
                                                   .orElseThrow();
@@ -143,7 +143,7 @@ public class ClassTest extends DeclaredTest<Class>
                                            .withGenerics(SHADOW_API.getConstants().getUnboundWildcard());
       Class independentCapture = independentExample.interpolateGenerics();
       Shadow<TypeMirror> interpolatedIndependent = SHADOW_API.convert(independentCapture.getGenerics().get(0))
-                                                             .toGeneric()
+                                                             .toOptionalGeneric()
                                                              .map(Generic::getExtends)
                                                              .orElseThrow();
       assertEquals(SHADOW_API.getClass("java.lang.Object"), interpolatedIndependent);
@@ -154,7 +154,7 @@ public class ClassTest extends DeclaredTest<Class>
                                                        SHADOW_API.getClass("java.lang.String"));
       Class dependentCapture = dependentExample.interpolateGenerics();
       Shadow<TypeMirror> interpolatedDependent = SHADOW_API.convert(dependentCapture.getGenerics().get(0))
-                                                           .toGeneric()
+                                                           .toOptionalGeneric()
                                                            .map(Generic::getExtends)
                                                            .orElseThrow();
       assertEquals(SHADOW_API.getClass("java.lang.String"), interpolatedDependent);

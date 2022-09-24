@@ -46,9 +46,8 @@ public class ConverterImpl implements ShadowConverter,
       this.shadow = shadow;
    }
 
-   //other representation
    @Override
-   public Optional<Annotation> toAnnotation()
+   public Optional<Annotation> toOptionalAnnotation()
    {
       if (shadow.isTypeKind(TypeKind.ANNOTATION))
       {
@@ -58,7 +57,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Array> toArray()
+   public Optional<Array> toOptionalArray()
    {
       if (shadow.getTypeKind().equals(TypeKind.ARRAY))
       {
@@ -68,7 +67,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Class> toClass()
+   public Optional<Class> toOptionalClass()
    {
       if (shadow.isTypeKind(TypeKind.CLASS))
       {
@@ -78,7 +77,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Constructor> toConstructor()
+   public Optional<Constructor> toOptionalConstructor()
    {
       if (shadow.isTypeKind(TypeKind.CONSTRUCTOR))
       {
@@ -88,7 +87,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Declared> toDeclared()
+   public Optional<Declared> toOptionalDeclared()
    {
       if (shadow.getTypeKind().isDeclared())
       {
@@ -98,7 +97,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<EnumConstant> toEnumConstant()
+   public Optional<EnumConstant> toOptionalEnumConstant()
    {
       if (shadow.getTypeKind().equals(TypeKind.ENUM_CONSTANT))
       {
@@ -108,7 +107,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Enum> toEnum()
+   public Optional<Enum> toOptionalEnum()
    {
       if (shadow.isTypeKind(TypeKind.ENUM))
       {
@@ -118,7 +117,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Executable> toExecutable()
+   public Optional<Executable> toOptionalExecutable()
    {
       if (shadow.getTypeKind().isExecutable())
       {
@@ -128,7 +127,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Field> toField()
+   public Optional<Field> toOptionalField()
    {
       if (shadow.getTypeKind().equals(TypeKind.FIELD))
       {
@@ -138,7 +137,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Interface> toInterface()
+   public Optional<Interface> toOptionalInterface()
    {
       if (shadow.isTypeKind(TypeKind.INTERFACE))
       {
@@ -148,7 +147,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Intersection> toIntersection()
+   public Optional<Intersection> toOptionalIntersection()
    {
       if (shadow.getTypeKind().equals(TypeKind.INTERSECTION))
       {
@@ -158,7 +157,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Method> toMethod()
+   public Optional<Method> toOptionalMethod()
    {
       if (shadow.isTypeKind(TypeKind.METHOD))
       {
@@ -168,7 +167,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Module> toModule()
+   public Optional<Module> toOptionalModule()
    {
       if (shadow.isTypeKind(TypeKind.MODULE))
       {
@@ -178,7 +177,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Package> toPackage()
+   public Optional<Package> toOptionalPackage()
    {
       if (shadow.isTypeKind(TypeKind.PACKAGE))
       {
@@ -188,7 +187,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Parameter> toParameter()
+   public Optional<Parameter> toOptionalParameter()
    {
       if (shadow.getTypeKind().equals(TypeKind.PARAMETER))
       {
@@ -198,7 +197,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Void> toVoid()
+   public Optional<Void> toOptionalVoid()
    {
       if (shadow.getTypeKind().equals(TypeKind.VOID))
       {
@@ -208,7 +207,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Null> toNull()
+   public Optional<Null> toOptionalNull()
    {
       if (shadow.getTypeKind().equals(TypeKind.NULL))
       {
@@ -218,7 +217,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Primitive> toPrimitive()
+   public Optional<Primitive> toOptionalPrimitive()
    {
       if (shadow.getTypeKind().isPrimitive())
       {
@@ -228,7 +227,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Generic> toGeneric()
+   public Optional<Generic> toOptionalGeneric()
    {
       if (shadow.getTypeKind().equals(TypeKind.GENERIC_TYPE))
       {
@@ -238,7 +237,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Variable<Shadow<TypeMirror>>> toVariable()
+   public Optional<Variable<Shadow<TypeMirror>>> toOptionalVariable()
    {
       if (shadow.getTypeKind().isVariable())
       {
@@ -249,7 +248,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Optional<Wildcard> toWildcard()
+   public Optional<Wildcard> toOptionalWildcard()
    {
       if (shadow.getTypeKind().equals(TypeKind.WILDCARD))
       {
@@ -263,21 +262,21 @@ public class ConverterImpl implements ShadowConverter,
    @Override
    public void consumer(DeclaredConsumer consumer)
    {
-      toClass().ifPresent(consumer::classType);
-      toInterface().ifPresent(consumer::interfaceType);
-      toEnum().ifPresent(consumer::enumType);
-      toAnnotation().ifPresent(consumer::annotationType);
+      toOptionalClass().ifPresent(consumer::classType);
+      toOptionalInterface().ifPresent(consumer::interfaceType);
+      toOptionalEnum().ifPresent(consumer::enumType);
+      toOptionalAnnotation().ifPresent(consumer::annotationType);
    }
 
    @Override
    public <T> T mapper(DeclaredMapper<T> mapper)
    {
-      return toClass().map(mapper::classType)
-                      .orElse(toInterface()
+      return toOptionalClass().map(mapper::classType)
+                      .orElse(toOptionalInterface()
                                     .map(mapper::interfaceType)
-                                    .orElse(toEnum()
+                                    .orElse(toOptionalEnum()
                                                   .map(mapper::enumType)
-                                                  .orElse(toAnnotation()
+                                                  .orElse(toOptionalAnnotation()
                                                                 .map(mapper::annotationType)
                                                                 .orElse((null)))));
    }
@@ -285,15 +284,15 @@ public class ConverterImpl implements ShadowConverter,
    @Override
    public void consumer(ExecutableConsumer consumer)
    {
-      toMethod().ifPresent(consumer::method);
-      toConstructor().ifPresent(consumer::constructor);
+      toOptionalMethod().ifPresent(consumer::method);
+      toOptionalConstructor().ifPresent(consumer::constructor);
    }
 
    @Override
    public <T> T mapper(ExecutableMapper<T> mapper)
    {
-      return toMethod().map(mapper::method)
-                       .orElse(toConstructor()
+      return toOptionalMethod().map(mapper::method)
+                       .orElse(toOptionalConstructor()
                                      .map(mapper::constructor)
                                      .orElse(null));
    }
@@ -301,18 +300,18 @@ public class ConverterImpl implements ShadowConverter,
    @Override
    public void consumer(VariableConsumer consumer)
    {
-      toEnumConstant().ifPresent(consumer::enumConstant);
-      toField().ifPresent(consumer::field);
-      toParameter().ifPresent(consumer::parameter);
+      toOptionalEnumConstant().ifPresent(consumer::enumConstant);
+      toOptionalField().ifPresent(consumer::field);
+      toOptionalParameter().ifPresent(consumer::parameter);
    }
 
    @Override
    public <T> T mapper(VariableMapper<T> mapper)
    {
-      return toEnumConstant().map(mapper::enumConstant)
-                             .orElse(toField()
+      return toOptionalEnumConstant().map(mapper::enumConstant)
+                             .orElse(toOptionalField()
                                            .map(mapper::field)
-                                           .orElse(toParameter()
+                                           .orElse(toOptionalParameter()
                                                          .map(mapper::parameter)
                                                          .orElse(null)));
    }

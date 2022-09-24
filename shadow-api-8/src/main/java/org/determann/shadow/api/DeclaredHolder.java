@@ -15,28 +15,28 @@ public interface DeclaredHolder extends ApiHolder
    default Annotation getAnnotation(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toAnnotation()
+                     .toOptionalAnnotation()
                      .orElseThrow(() -> new IllegalArgumentException("No Annotation found for " + qualifiedName));
    }
 
    default Class getClass(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toClass()
+                     .toOptionalClass()
                      .orElseThrow(() -> new IllegalArgumentException("No Class found for " + qualifiedName));
    }
 
    default Enum getEnum(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toEnum()
+                     .toOptionalEnum()
                      .orElseThrow(() -> new IllegalArgumentException("No getEnum found for " + qualifiedName));
    }
 
    default Interface getInterface(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toInterface()
+                     .toOptionalInterface()
                      .orElseThrow(() -> new IllegalArgumentException("No Interface found for " + qualifiedName));
    }
 }

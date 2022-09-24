@@ -77,9 +77,9 @@ public class ClassImpl extends DeclaredImpl implements Class
       }
       if (getOuterType().flatMap(typeMirrorShadow -> getApi()
                               .convert(typeMirrorShadow)
-                              .toInterface()
+                              .toOptionalInterface()
                               .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                              .or(() -> getApi().convert(typeMirrorShadow).toClass().map(aClass -> !aClass.getGenerics().isEmpty())))
+                              .or(() -> getApi().convert(typeMirrorShadow).toOptionalClass().map(aClass -> !aClass.getGenerics().isEmpty())))
                         .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +

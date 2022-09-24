@@ -56,7 +56,7 @@ public class ArrayTest
 
       List<Shadow<TypeMirror>> directSupertypes = intArray.getDirectSuperTypes();
       assertEquals(1, directSupertypes.size());
-      assertEquals(primitiveArraySuper, SHADOW_API.convert(directSupertypes.get(0)).toIntersection().orElseThrow().getBounds());
+      assertEquals(primitiveArraySuper, SHADOW_API.convert(directSupertypes.get(0)).toOptionalIntersection().orElseThrow().getBounds());
    }
 
    @Test

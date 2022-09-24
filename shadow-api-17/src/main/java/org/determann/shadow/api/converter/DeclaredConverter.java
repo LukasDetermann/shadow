@@ -9,15 +9,15 @@ import java.util.Optional;
 
 public interface DeclaredConverter
 {
-   Optional<Annotation> toAnnotation();
+   Optional<Annotation> toOptionalAnnotation();
 
-   Optional<Enum> toEnum();
+   Optional<Enum> toOptionalEnum();
 
-   Optional<Class> toClass();
+   Optional<Class> toOptionalClass();
 
-   Optional<Interface> toInterface();
+   Optional<Interface> toOptionalInterface();
 
-   Optional<Record> toRecord();
+   Optional<Record> toOptionalRecord();
 
    /**
     * consumes all leafs of {@link Declared}

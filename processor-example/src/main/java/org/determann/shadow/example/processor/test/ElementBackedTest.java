@@ -42,7 +42,7 @@ public class ElementBackedTest
       assertEquals(" Class level doc\n", aClass.getJavaDoc());
       assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
       assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
-      assertNull(SHADOW_API.convert(aClass.getGenerics().get(0)).toGeneric().get().getJavaDoc());
+      assertNull(SHADOW_API.convert(aClass.getGenerics().get(0)).toOptionalGeneric().get().getJavaDoc());
       assertNull(aClass.getConstructors().get(0).getParameters().get(0).getJavaDoc());
    }
 }

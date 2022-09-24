@@ -6,13 +6,13 @@ import java.util.Optional;
 
 public interface DirectiveConverter
 {
-   Optional<Exports> toExports();
+   Optional<Exports> toOptionalExports();
 
-   Optional<Opens> toOpens();
+   Optional<Opens> toOptionalOpens();
 
-   Optional<Provides> toProvides();
+   Optional<Provides> toOptionalProvides();
 
-   Optional<Requires> toRequires();
+   Optional<Requires> toOptionalRequires();
 
-   Optional<Uses> toUses();
+   Optional<Uses> toOptionalUses();
 }

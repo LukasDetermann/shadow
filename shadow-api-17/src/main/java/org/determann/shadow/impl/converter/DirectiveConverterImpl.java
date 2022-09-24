@@ -26,7 +26,7 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Optional<Exports> toExports()
+   public Optional<Exports> toOptionalExports()
    {
       if (directive.getKind().equals(DirectiveKind.REQUIRES))
       {
@@ -36,7 +36,7 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Optional<Opens> toOpens()
+   public Optional<Opens> toOptionalOpens()
    {
       if (directive.getKind().equals(DirectiveKind.REQUIRES))
       {
@@ -46,7 +46,7 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Optional<Provides> toProvides()
+   public Optional<Provides> toOptionalProvides()
    {
       if (directive.getKind().equals(DirectiveKind.REQUIRES))
       {
@@ -56,7 +56,7 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Optional<Requires> toRequires()
+   public Optional<Requires> toOptionalRequires()
    {
       if (directive.getKind().equals(DirectiveKind.REQUIRES))
       {
@@ -66,7 +66,7 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Optional<Uses> toUses()
+   public Optional<Uses> toOptionalUses()
    {
       if (directive.getKind().equals(DirectiveKind.REQUIRES))
       {

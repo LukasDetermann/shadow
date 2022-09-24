@@ -23,10 +23,10 @@ public class WildcardTest extends ShadowTest<Wildcard>
                                                 .get(0)
                                                 .getParameter("numbers")
                                                 .getType())
-                             .toInterface()
+                             .toOptionalInterface()
                              .map(anInterface -> anInterface.getGenerics().get(0))
                              .map(SHADOW_API::convert)
-                             .flatMap(ShadowConverter::toWildcard)
+                             .flatMap(ShadowConverter::toOptionalWildcard)
                              .flatMap(Wildcard::getExtends)
                              .orElseThrow());
    }
@@ -40,10 +40,10 @@ public class WildcardTest extends ShadowTest<Wildcard>
                                                 .get(0)
                                                 .getParameter("numbers")
                                                 .getType())
-                             .toInterface()
+                             .toOptionalInterface()
                              .map(anInterface -> anInterface.getGenerics().get(0))
                              .map(SHADOW_API::convert)
-                             .flatMap(ShadowConverter::toWildcard)
+                             .flatMap(ShadowConverter::toOptionalWildcard)
                              .flatMap(Wildcard::getSuper)
                              .orElseThrow());
    }

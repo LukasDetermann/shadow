@@ -21,7 +21,7 @@ public interface DeclaredHolder extends ApiHolder
    default Annotation getAnnotation(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toAnnotation()
+                     .toOptionalAnnotation()
                      .orElseThrow(() -> new IllegalArgumentException("No Annotation found for " + qualifiedName));
    }
 
@@ -29,14 +29,14 @@ public interface DeclaredHolder extends ApiHolder
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toAnnotation().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toOptionalAnnotation().orElseThrow())
                           .toList();
    }
 
    default Class getClass(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toClass()
+                     .toOptionalClass()
                      .orElseThrow(() -> new IllegalArgumentException("No Class found for " + qualifiedName));
    }
 
@@ -44,14 +44,14 @@ public interface DeclaredHolder extends ApiHolder
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toClass().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toOptionalClass().orElseThrow())
                           .toList();
    }
 
    default Enum getEnum(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toEnum()
+                     .toOptionalEnum()
                      .orElseThrow(() -> new IllegalArgumentException("No getEnum found for " + qualifiedName));
    }
 
@@ -59,14 +59,14 @@ public interface DeclaredHolder extends ApiHolder
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toEnum().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toOptionalEnum().orElseThrow())
                           .toList();
    }
 
    default Interface getInterface(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toInterface()
+                     .toOptionalInterface()
                      .orElseThrow(() -> new IllegalArgumentException("No Interface found for " + qualifiedName));
    }
 
@@ -74,14 +74,14 @@ public interface DeclaredHolder extends ApiHolder
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toInterface().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toOptionalInterface().orElseThrow())
                           .toList();
    }
 
    default Record getRecord(@QualifiedName String qualifiedName)
    {
       return getApi().convert(getDeclared(qualifiedName))
-                     .toRecord()
+                     .toOptionalRecord()
                      .orElseThrow(() -> new IllegalArgumentException("No Record found for " + qualifiedName));
    }
 
@@ -89,7 +89,7 @@ public interface DeclaredHolder extends ApiHolder
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(declared.getTypeKind()))
-                          .map(declared -> getApi().convert(declared).toRecord().orElseThrow())
+                          .map(declared -> getApi().convert(declared).toOptionalRecord().orElseThrow())
                           .toList();
    }
 }

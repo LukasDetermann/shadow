@@ -13,50 +13,49 @@ import java.util.Optional;
 
 public interface ShadowConverter
 {
-   //other representation
-   Optional<Annotation> toAnnotation();
+   Optional<Annotation> toOptionalAnnotation();
 
-   Optional<Array> toArray();
+   Optional<Array> toOptionalArray();
 
-   Optional<Class> toClass();
+   Optional<Class> toOptionalClass();
 
-   Optional<Constructor> toConstructor();
+   Optional<Constructor> toOptionalConstructor();
 
-   Optional<Declared> toDeclared();
+   Optional<Declared> toOptionalDeclared();
 
-   Optional<EnumConstant> toEnumConstant();
+   Optional<EnumConstant> toOptionalEnumConstant();
 
-   Optional<Enum> toEnum();
+   Optional<Enum> toOptionalEnum();
 
-   Optional<Executable> toExecutable();
+   Optional<Executable> toOptionalExecutable();
 
-   Optional<Field> toField();
+   Optional<Field> toOptionalField();
 
-   Optional<Interface> toInterface();
+   Optional<Interface> toOptionalInterface();
 
-   Optional<Intersection> toIntersection();
+   Optional<Intersection> toOptionalIntersection();
 
-   Optional<Method> toMethod();
+   Optional<Method> toOptionalMethod();
 
-   Optional<Module> toModule();
+   Optional<Module> toOptionalModule();
 
-   Optional<Void> toVoid();
+   Optional<Void> toOptionalVoid();
 
-   Optional<Null> toNull();
+   Optional<Null> toOptionalNull();
 
-   Optional<Package> toPackage();
+   Optional<Package> toOptionalPackage();
 
-   Optional<Parameter> toParameter();
+   Optional<Parameter> toOptionalParameter();
 
-   Optional<Primitive> toPrimitive();
+   Optional<Primitive> toOptionalPrimitive();
 
-   Optional<RecordComponent> toRecordComponent();
+   Optional<RecordComponent> toOptionalRecordComponent();
 
-   Optional<Record> toRecord();
+   Optional<Record> toOptionalRecord();
 
-   Optional<Generic> toGeneric();
+   Optional<Generic> toOptionalGeneric();
 
-   Optional<Variable<Shadow<TypeMirror>>> toVariable();
+   Optional<Variable<Shadow<TypeMirror>>> toOptionalVariable();
 
-   Optional<Wildcard> toWildcard();
+   Optional<Wildcard> toOptionalWildcard();
 }

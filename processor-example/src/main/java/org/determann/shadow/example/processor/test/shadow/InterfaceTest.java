@@ -66,10 +66,10 @@ public class InterfaceTest extends DeclaredTest<Interface>
                                                    SHADOW_API.getConstants().getUnboundWildcard());
       Interface capture = declared.interpolateGenerics();
       Shadow<TypeMirror> interpolated = SHADOW_API.convert(capture.getGenerics().get(1))
-                                                  .toGeneric()
+                                                  .toOptionalGeneric()
                                                   .map(Generic::getExtends)
                                                   .map(SHADOW_API::convert)
-                                                  .flatMap(ShadowConverter::toInterface)
+                                                  .flatMap(ShadowConverter::toOptionalInterface)
                                                   .map(Interface::getGenerics)
                                                   .map(shadows -> shadows.get(0))
                                                   .orElseThrow();
@@ -80,7 +80,7 @@ public class InterfaceTest extends DeclaredTest<Interface>
                                                .withGenerics(SHADOW_API.getConstants().getUnboundWildcard());
       Interface independentCapture = independentExample.interpolateGenerics();
       Shadow<TypeMirror> interpolatedIndependent = SHADOW_API.convert(independentCapture.getGenerics().get(0))
-                                                             .toGeneric()
+                                                             .toOptionalGeneric()
                                                              .map(Generic::getExtends)
                                                              .orElseThrow();
       assertEquals(SHADOW_API.getClass("java.lang.Object"), interpolatedIndependent);
@@ -91,7 +91,7 @@ public class InterfaceTest extends DeclaredTest<Interface>
                                                            SHADOW_API.getClass("java.lang.String"));
       Interface dependentCapture = dependentExample.interpolateGenerics();
       Shadow<TypeMirror> interpolatedDependent = SHADOW_API.convert(dependentCapture.getGenerics().get(0))
-                                                           .toGeneric()
+                                                           .toOptionalGeneric()
                                                            .map(Generic::getExtends)
                                                            .orElseThrow();
       assertEquals(SHADOW_API.getClass("java.lang.String"), interpolatedDependent);
