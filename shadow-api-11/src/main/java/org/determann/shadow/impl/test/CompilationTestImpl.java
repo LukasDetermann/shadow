@@ -13,6 +13,7 @@ import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,8 +141,20 @@ public class CompilationTestImpl implements CompilationTest
       };
    }
 
-   private static URI createUri(String fileName)
+   private URI createUri(String fileName)
    {
-      return URI.create(fileName);
+      try
+      {
+         return processingCallback.getClass()
+                                  .getProtectionDomain()
+                                  .getCodeSource()
+                                  .getLocation()
+                                  .toURI()
+                                  .resolve(fileName);
+      }
+      catch (SecurityException | URISyntaxException e)
+      {
+         return URI.create(fileName);
+      }
    }
 }
