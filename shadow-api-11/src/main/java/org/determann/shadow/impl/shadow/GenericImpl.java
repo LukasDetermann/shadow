@@ -48,7 +48,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public TypeKind getTypeKind()
    {
-      return TypeKind.GENERIC_TYPE;
+      return TypeKind.GENERIC;
    }
 
    @Override

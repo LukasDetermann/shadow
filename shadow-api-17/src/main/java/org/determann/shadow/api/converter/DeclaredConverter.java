@@ -9,13 +9,23 @@ import java.util.Optional;
 
 public interface DeclaredConverter
 {
+   Annotation toAnnotation();
+
    Optional<Annotation> toOptionalAnnotation();
+
+   Enum toEnum();
 
    Optional<Enum> toOptionalEnum();
 
+   Class toClass();
+
    Optional<Class> toOptionalClass();
 
+   Interface toInterface();
+
    Optional<Interface> toOptionalInterface();
+
+   Record toRecord();
 
    Optional<Record> toOptionalRecord();
 

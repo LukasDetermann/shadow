@@ -12,7 +12,11 @@ import org.determann.shadow.api.shadow.*;
 
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ConverterImpl implements ShadowConverter,
                                       AnnotationConverter,
@@ -47,202 +51,276 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
+   public Annotation toAnnotation()
+   {
+      return to(TypeKind.ANNOTATION);
+   }
+
+   @Override
    public Optional<Annotation> toOptionalAnnotation()
    {
-      if (shadow.isTypeKind(TypeKind.ANNOTATION))
-      {
-         return Optional.of((Annotation) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.ANNOTATION);
+   }
+
+   @Override
+   public Array toArray()
+   {
+      return to(TypeKind.ARRAY);
    }
 
    @Override
    public Optional<Array> toOptionalArray()
    {
-      if (shadow.getTypeKind().equals(TypeKind.ARRAY))
-      {
-         return Optional.of((Array) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.ARRAY);
+   }
+
+   @Override
+   public Class toClass()
+   {
+      return to(TypeKind.CLASS);
    }
 
    @Override
    public Optional<Class> toOptionalClass()
    {
-      if (shadow.isTypeKind(TypeKind.CLASS))
-      {
-         return Optional.of((Class) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.CLASS);
+   }
+
+   @Override
+   public Constructor toConstructor()
+   {
+      return to(TypeKind.CONSTRUCTOR);
    }
 
    @Override
    public Optional<Constructor> toOptionalConstructor()
    {
-      if (shadow.isTypeKind(TypeKind.CONSTRUCTOR))
-      {
-         return Optional.of((Constructor) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.CONSTRUCTOR);
+   }
+
+   @Override
+   public Declared toDeclared()
+   {
+      return to(TypeKind::isDeclared);
    }
 
    @Override
    public Optional<Declared> toOptionalDeclared()
    {
-      if (shadow.getTypeKind().isDeclared())
-      {
-         return Optional.of((Declared) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind::isDeclared);
+   }
+
+   @Override
+   public EnumConstant toEnumConstant()
+   {
+      return to(TypeKind.ENUM_CONSTANT);
    }
 
    @Override
    public Optional<EnumConstant> toOptionalEnumConstant()
    {
-      if (shadow.getTypeKind().equals(TypeKind.ENUM_CONSTANT))
-      {
-         return Optional.of((EnumConstant) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.ENUM_CONSTANT);
+   }
+
+   @Override
+   public Enum toEnum()
+   {
+      return to(TypeKind.ENUM);
    }
 
    @Override
    public Optional<Enum> toOptionalEnum()
    {
-      if (shadow.isTypeKind(TypeKind.ENUM))
-      {
-         return Optional.of((Enum) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.ENUM);
+   }
+
+   @Override
+   public Executable toExecutable()
+   {
+      return to(TypeKind::isExecutable);
    }
 
    @Override
    public Optional<Executable> toOptionalExecutable()
    {
-      if (shadow.getTypeKind().isExecutable())
-      {
-         return Optional.of((Executable) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind::isExecutable);
+   }
+
+   @Override
+   public Field toField()
+   {
+      return to(TypeKind.FIELD);
    }
 
    @Override
    public Optional<Field> toOptionalField()
    {
-      if (shadow.getTypeKind().equals(TypeKind.FIELD))
-      {
-         return Optional.of((Field) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.FIELD);
+   }
+
+   @Override
+   public Interface toInterface()
+   {
+      return to(TypeKind.INTERFACE);
    }
 
    @Override
    public Optional<Interface> toOptionalInterface()
    {
-      if (shadow.isTypeKind(TypeKind.INTERFACE))
-      {
-         return Optional.of((Interface) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.INTERFACE);
+   }
+
+   @Override
+   public Intersection toIntersection()
+   {
+      return to(TypeKind.INTERSECTION);
    }
 
    @Override
    public Optional<Intersection> toOptionalIntersection()
    {
-      if (shadow.getTypeKind().equals(TypeKind.INTERSECTION))
-      {
-         return Optional.of((Intersection) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.INTERSECTION);
+   }
+
+   @Override
+   public Method toMethod()
+   {
+      return to(TypeKind.METHOD);
    }
 
    @Override
    public Optional<Method> toOptionalMethod()
    {
-      if (shadow.isTypeKind(TypeKind.METHOD))
-      {
-         return Optional.of((Method) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.METHOD);
+   }
+
+   @Override
+   public Module toModule()
+   {
+      return to(TypeKind.MODULE);
    }
 
    @Override
    public Optional<Module> toOptionalModule()
    {
-      if (shadow.isTypeKind(TypeKind.MODULE))
-      {
-         return Optional.of((Module) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.MODULE);
+   }
+
+   @Override
+   public Void toVoid()
+   {
+      return to(TypeKind.VOID);
    }
 
    @Override
    public Optional<Package> toOptionalPackage()
    {
-      if (shadow.isTypeKind(TypeKind.PACKAGE))
-      {
-         return Optional.of((Package) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.PACKAGE);
+   }
+
+   @Override
+   public Parameter toParameter()
+   {
+      return to(TypeKind.PARAMETER);
    }
 
    @Override
    public Optional<Parameter> toOptionalParameter()
    {
-      if (shadow.getTypeKind().equals(TypeKind.PARAMETER))
-      {
-         return Optional.of((Parameter) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.PARAMETER);
+   }
+
+   @Override
+   public Primitive toPrimitive()
+   {
+      return to(TypeKind::isPrimitive);
    }
 
    @Override
    public Optional<Void> toOptionalVoid()
    {
-      if (shadow.getTypeKind().equals(TypeKind.VOID))
-      {
-         return Optional.of((Void) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.VOID);
+   }
+
+   @Override
+   public Null toNull()
+   {
+      return to(TypeKind.NULL);
    }
 
    @Override
    public Optional<Null> toOptionalNull()
    {
-      if (shadow.getTypeKind().equals(TypeKind.NULL))
-      {
-         return Optional.of((Null) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.NULL);
+   }
+
+   @Override
+   public Package toPackage()
+   {
+      return to(TypeKind.PACKAGE);
    }
 
    @Override
    public Optional<Primitive> toOptionalPrimitive()
    {
-      if (shadow.getTypeKind().isPrimitive())
-      {
-         return Optional.of((Primitive) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind::isPrimitive);
+   }
+
+   @Override
+   public Generic toGeneric()
+   {
+      return to(TypeKind.GENERIC);
    }
 
    @Override
    public Optional<Generic> toOptionalGeneric()
    {
-      if (shadow.getTypeKind().equals(TypeKind.GENERIC_TYPE))
-      {
-         return Optional.of((Generic) shadow);
-      }
-      return Optional.empty();
+      return toOptional(TypeKind.GENERIC);
+   }
+
+   @Override
+   public Variable<Shadow<TypeMirror>> toVariable()
+   {
+      return to(TypeKind::isVariable);
    }
 
    @Override
    public Optional<Variable<Shadow<TypeMirror>>> toOptionalVariable()
    {
-      if (shadow.getTypeKind().isVariable())
+      return toOptional(TypeKind::isVariable);
+   }
+
+   @Override
+   public Wildcard toWildcard()
+   {
+      return to(TypeKind.WILDCARD);
+   }
+
+   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> SHADOW to(TypeKind typeKind)
+   {
+      //noinspection unchecked
+      return (SHADOW) toOptional(typeKind).orElseThrow(() -> new IllegalStateException(shadow.getTypeKind() + " is not a " + typeKind));
+   }
+
+   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> SHADOW to(Predicate<TypeKind> typeKindPredicate)
+   {
+      List<TypeKind> typeKinds = Arrays.stream(TypeKind.values()).filter(typeKindPredicate).collect(Collectors.toUnmodifiableList());
+      //noinspection unchecked
+      return (SHADOW) toOptional(typeKindPredicate)
+            .orElseThrow(() -> new IllegalStateException(shadow.getTypeKind() + " is none of " + typeKinds));
+   }
+
+   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> Optional<SHADOW> toOptional(TypeKind typeKind)
+   {
+      return toOptional(typeKind1 -> typeKind1.equals(typeKind));
+   }
+
+   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> Optional<SHADOW> toOptional(Predicate<TypeKind> typeKindPredicate)
+   {
+      if (typeKindPredicate.test(shadow.getTypeKind()))
       {
          //noinspection unchecked
-         return Optional.of((Variable<Shadow<TypeMirror>>) shadow);
+         return Optional.of((SHADOW) shadow);
       }
       return Optional.empty();
    }
@@ -292,9 +370,9 @@ public class ConverterImpl implements ShadowConverter,
    public <T> T mapper(ExecutableMapper<T> mapper)
    {
       return toOptionalMethod().map(mapper::method)
-                       .orElse(toOptionalConstructor()
-                                     .map(mapper::constructor)
-                                     .orElse(null));
+                               .orElse(toOptionalConstructor()
+                                             .map(mapper::constructor)
+                                             .orElse(null));
    }
 
    @Override
@@ -309,11 +387,11 @@ public class ConverterImpl implements ShadowConverter,
    public <T> T mapper(VariableMapper<T> mapper)
    {
       return toOptionalEnumConstant().map(mapper::enumConstant)
-                             .orElse(toOptionalField()
-                                           .map(mapper::field)
-                                           .orElse(toOptionalParameter()
-                                                         .map(mapper::parameter)
-                                                         .orElse(null)));
+                                     .orElse(toOptionalField()
+                                                   .map(mapper::field)
+                                                   .orElse(toOptionalParameter()
+                                                                 .map(mapper::parameter)
+                                                                 .orElse(null)));
    }
 
    //conversion

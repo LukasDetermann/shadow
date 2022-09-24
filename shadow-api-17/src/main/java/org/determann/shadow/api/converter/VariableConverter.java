@@ -9,9 +9,15 @@ import java.util.Optional;
 
 public interface VariableConverter
 {
+   EnumConstant toEnumConstant();
+
    Optional<EnumConstant> toOptionalEnumConstant();
 
+   Field toField();
+
    Optional<Field> toOptionalField();
+
+   Parameter toParameter();
 
    Optional<Parameter> toOptionalParameter();
 

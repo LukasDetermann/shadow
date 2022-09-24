@@ -127,7 +127,7 @@ public class ShadowApiImpl implements ShadowApi
       ModuleElement moduleElement = jdkApiContext.elements().getModuleElement(name);
       if (moduleElement == null)
       {
-         throw new IllegalArgumentException("no module fond with name \"" + name+ "\"");
+         throw new IllegalArgumentException("no module fond with name \"" + name + "\"");
       }
       return getShadowFactory().shadowFromElement(moduleElement);
    }
@@ -456,37 +456,37 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public DirectiveConverter convert(Directive directive)
    {
-      return new DirectiveConverterImpl(this, directive);
+      return new DirectiveConverterImpl(directive);
    }
 
    @Override
    public ExportsConverter convert(Exports exportsShadow)
    {
-      return new DirectiveConverterImpl(this, exportsShadow);
+      return new DirectiveConverterImpl(exportsShadow);
    }
 
    @Override
    public OpensConverter convert(Opens opensShadow)
    {
-      return new DirectiveConverterImpl(this, opensShadow);
+      return new DirectiveConverterImpl(opensShadow);
    }
 
    @Override
    public ProvidesConverter convert(Provides providesShadow)
    {
-      return new DirectiveConverterImpl(this, providesShadow);
+      return new DirectiveConverterImpl(providesShadow);
    }
 
    @Override
    public RequiresConverter convert(Requires requiresShadow)
    {
-      return new DirectiveConverterImpl(this, requiresShadow);
+      return new DirectiveConverterImpl(requiresShadow);
    }
 
    @Override
    public UsesConverter convert(Uses usesShadow)
    {
-      return new DirectiveConverterImpl(this, usesShadow);
+      return new DirectiveConverterImpl(usesShadow);
    }
 
    @Override

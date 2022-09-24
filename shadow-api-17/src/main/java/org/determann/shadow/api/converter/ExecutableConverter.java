@@ -8,7 +8,11 @@ import java.util.Optional;
 
 public interface ExecutableConverter
 {
+   Constructor toConstructor();
+
    Optional<Constructor> toOptionalConstructor();
+
+   Method toMethod();
 
    Optional<Method> toOptionalMethod();
 
