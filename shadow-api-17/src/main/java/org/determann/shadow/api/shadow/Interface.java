@@ -2,6 +2,7 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.modifier.AbstractModifiable;
+import org.determann.shadow.api.modifier.Sealable;
 import org.determann.shadow.api.modifier.StaticModifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -10,7 +11,8 @@ import java.util.List;
 
 public interface Interface extends Declared,
                                    AbstractModifiable,
-                                   StaticModifiable
+                                   StaticModifiable,
+                                   Sealable
 {
    @UnmodifiableView List<Interface> getDirectInterfaces();
 
