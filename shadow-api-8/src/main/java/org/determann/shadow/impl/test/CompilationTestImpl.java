@@ -6,10 +6,7 @@ import org.determann.shadow.api.test.CompilationTest;
 import org.determann.shadow.api.test.ProcessingCallback;
 
 import javax.annotation.processing.Processor;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.SimpleJavaFileObject;
-import javax.tools.ToolProvider;
+import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -104,7 +101,13 @@ public class CompilationTestImpl implements CompilationTest
       Objects.requireNonNull(compiler);
       JavaCompiler.CompilationTask compilerTask = compiler.getTask(null,
                                                                    null,
-                                                                   null,
+                                                                   diagnostic ->
+                                                                   {
+                                                                      if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR))
+                                                                      {
+                                                                         throw new IllegalStateException(diagnostic.toString());
+                                                                      }
+                                                                   },
                                                                    options,
                                                                    compiledClassNames,
                                                                    toCompile);
