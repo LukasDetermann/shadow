@@ -44,6 +44,7 @@ public class CompilationTestImpl implements CompilationTest
       toCompile = new ArrayList<>();
       options = new ArrayList<>();
       compiledClassNames = new ArrayList<>();
+      compiledClassNames.add(Object.class.getName());
    }
 
    @Override
@@ -99,11 +100,6 @@ public class CompilationTestImpl implements CompilationTest
    @Override
    public void compile()
    {
-      if (toCompile.isEmpty() && compiledClassNames.isEmpty())
-      {
-         throw new IllegalStateException("Noting to compile");
-      }
-
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
       Objects.requireNonNull(compiler);
       JavaCompiler.CompilationTask compilerTask = compiler.getTask(null,
