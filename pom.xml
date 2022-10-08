@@ -20,6 +20,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <org.jetbrains.annotations.version>23.0.0</org.jetbrains.annotations.version>
+        <org.junit.jupiter.junit-jupiter-api>5.9.1</org.junit.jupiter.junit-jupiter-api>
     </properties>
 
     <dependencyManagement>
@@ -29,6 +30,12 @@
                 <artifactId>annotations</artifactId>
                 <version>${org.jetbrains.annotations.version}</version>
                 <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${org.junit.jupiter.junit-jupiter-api}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
