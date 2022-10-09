@@ -10,13 +10,13 @@ import org.determann.shadow.impl.shadow.wraper.PropertyImpl;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class ClassImpl extends DeclaredImpl implements Class
 {
@@ -110,7 +110,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       return getMirror().getTypeArguments()
                         .stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
-                        .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -119,7 +119,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       return getElement().getTypeParameters()
                          .stream()
                          .map(element -> getApi().getShadowFactory().<Generic>shadowFromElement(element))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

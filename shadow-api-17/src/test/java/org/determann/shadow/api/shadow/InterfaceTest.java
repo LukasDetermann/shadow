@@ -10,9 +10,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InterfaceTest extends DeclaredTest<Interface>
+class InterfaceTest extends DeclaredTest<Interface>
 {
-   protected InterfaceTest()
+   InterfaceTest()
    {
       super(shadowApi -> shadowApi.getInterface("java.util.function.Function"));
    }

@@ -8,12 +8,12 @@ import org.determann.shadow.api.shadow.Package;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.NoType;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class PackageImpl extends ShadowImpl<NoType> implements Package
 {
@@ -42,7 +42,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
                          .stream()
                          .map(TypeElement.class::cast)
                          .map(typeElement -> getApi().getShadowFactory().<Declared>shadowFromElement(typeElement))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

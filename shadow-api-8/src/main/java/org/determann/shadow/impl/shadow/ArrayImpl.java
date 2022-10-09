@@ -7,12 +7,12 @@ import org.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
 {
@@ -41,7 +41,7 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
                      .directSupertypes(getMirror())
                      .stream()
                      .map(typeMirror1 -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror1))
-                     .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                     .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

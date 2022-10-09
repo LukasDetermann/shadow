@@ -7,11 +7,11 @@ import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
-import static java.util.Collections.unmodifiableSet;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * The {@link ShadowApi} is transient to the java annotation processor api. meaning you can get the api used my this api.
@@ -26,7 +26,10 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
    @Override
    default @UnmodifiableView Set<Modifier> getModifiers()
    {
-      return getElement().getModifiers().stream().map(Modifier::mapModifier).collect(toCollection(() -> unmodifiableSet(new HashSet<>())));
+      return getElement().getModifiers()
+                         .stream()
+                         .map(Modifier::mapModifier)
+                         .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 
    default String getSimpleName()

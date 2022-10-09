@@ -11,8 +11,8 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 {
@@ -24,7 +24,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    {
       return annotationMirrors.stream()
                               .map(annotationMirror -> from(shadowApi, annotationMirror))
-                              .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                              .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    static AnnotationUsage from(ShadowApi shadowApi, AnnotationMirror annotationMirror)

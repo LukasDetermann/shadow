@@ -10,13 +10,13 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChooser
 {
@@ -111,7 +111,7 @@ public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChoose
             .stream()
             .map(annotationValue1 -> new AnnotationValueTypeChooserImpl(shadowApi, annotationValue1, isDefaultValue()))
             .map(AnnotationValueTypeChooser.class::cast)
-            .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+            .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
 

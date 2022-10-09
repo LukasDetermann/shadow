@@ -6,13 +6,13 @@ import org.determann.shadow.api.shadow.Field;
 import org.determann.shadow.api.shadow.Method;
 import org.determann.shadow.api.wrapper.Property;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class PropertyImpl implements Property
 {
@@ -60,7 +60,7 @@ public class PropertyImpl implements Property
                    .filter(Optional::isPresent)
                    .map(Optional::get)
                    .map(Property.class::cast)
-                   .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                   .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    private PropertyImpl(ShadowApi shadowApi, Field field, Method getter, Method setter)

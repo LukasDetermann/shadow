@@ -20,7 +20,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <org.jetbrains.annotations.version>23.0.0</org.jetbrains.annotations.version>
-        <org.junit.jupiter.junit-jupiter-api>5.9.1</org.junit.jupiter.junit-jupiter-api>
+        <org.junit.jupiter.junit-jupiter-api.version>5.9.1</org.junit.jupiter.junit-jupiter-api.version>
+        <org.apache.maven.plugins.maven-surefire-plugin.version>3.0.0-M7</org.apache.maven.plugins.maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -34,9 +35,21 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${org.junit.jupiter.junit-jupiter-api}</version>
+                <version>${org.junit.jupiter.junit-jupiter-api.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${org.apache.maven.plugins.maven-surefire-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

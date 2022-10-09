@@ -10,9 +10,9 @@ class ParameterTest extends VariableTest<Executable, Parameter>
    ParameterTest()
    {
       super(shadowApi -> shadowApi.getClass("ParameterExample")
-                            .getMethods("foo")
-                            .get(0)
-                            .getParameter("foo"));
+                                  .getMethods("foo")
+                                  .get(0)
+                                  .getParameter("foo"));
    }
 
    @Test
@@ -21,8 +21,8 @@ class ParameterTest extends VariableTest<Executable, Parameter>
       CompilationTest.process(shadowApi ->
                               {
                                  Method method = shadowApi.getClass("ParameterExample")
-                                       .getMethods("foo")
-                                       .get(0);
+                                                          .getMethods("foo")
+                                                          .get(0);
 
                                  Parameter methodParameter = method.getParameter("foo");
 

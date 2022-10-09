@@ -15,8 +15,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.*;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
                                                                       Enum
@@ -92,13 +92,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
                          .map(variableElement -> getApi().getShadowFactory().<Field>shadowFromElement(variableElement))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
    public List<Method> getMethods(String simpleName)
    {
-      return getMethods().stream().filter(field -> field.getSimpleName().equals(simpleName)).collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+      return getMethods().stream().filter(field -> field.getSimpleName().equals(simpleName)).collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -107,7 +107,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> getApi().getShadowFactory().<Method>shadowFromElement(element))
-                          .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -116,7 +116,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> getApi().getShadowFactory().<Constructor>shadowFromElement(element))
-                          .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -126,7 +126,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                      .directSupertypes(getMirror())
                      .stream()
                      .map(typeMirror1 -> getApi().getShadowFactory().<Declared>shadowFromType(typeMirror1))
-                     .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                     .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -158,7 +158,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return getElement().getInterfaces()
                          .stream()
                          .map(typeMirror -> getApi().getShadowFactory().<Interface>shadowFromType(typeMirror))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -169,7 +169,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .filter(element -> element.getKind().equals(ElementKind.ENUM_CONSTANT))
                          .map(VariableElement.class::cast)
                          .map(variableElement -> getApi().getShadowFactory().<EnumConstant>shadowFromElement(variableElement))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

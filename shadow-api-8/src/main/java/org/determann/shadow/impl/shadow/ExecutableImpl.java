@@ -10,8 +10,8 @@ import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import java.util.*;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 
 public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constructor,
@@ -38,7 +38,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return getMirror().getParameterTypes()
                         .stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
-                        .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -58,7 +58,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return getMirror().getThrownTypes()
                         .stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
-                        .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -111,7 +111,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return getElement().getParameters()
                          .stream()
                          .map(variableElement -> getApi().getShadowFactory().<Parameter>shadowFromElement(variableElement))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -126,7 +126,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return getElement().getTypeParameters()
                          .stream()
                          .map(element -> getApi().getShadowFactory().<Generic>shadowFromElement(element))
-                         .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

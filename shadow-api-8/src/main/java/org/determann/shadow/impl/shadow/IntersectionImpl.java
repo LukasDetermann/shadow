@@ -7,12 +7,12 @@ import org.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class IntersectionImpl extends ShadowImpl<IntersectionType> implements Intersection
 {
@@ -33,7 +33,7 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    {
       return getMirror().getBounds().stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
-                        .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override

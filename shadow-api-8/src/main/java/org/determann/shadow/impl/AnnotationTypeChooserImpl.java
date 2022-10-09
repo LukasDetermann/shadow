@@ -9,13 +9,14 @@ import org.determann.shadow.api.shadow.*;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import static java.util.Collections.unmodifiableSet;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toSet;
 
 public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
 {
@@ -28,7 +29,7 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
       this.shadows = elements
             .stream()
             .map(element -> shadowApi.getShadowFactory().<Shadow<TypeMirror>>shadowFromElement(element))
-            .collect(toCollection(() -> unmodifiableSet(new HashSet<>())));
+            .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 
    @Override
@@ -109,6 +110,6 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
                     .map(mapper)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .collect(toCollection(() -> unmodifiableSet(new HashSet<>())));
+                    .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 }

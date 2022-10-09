@@ -11,14 +11,14 @@ import org.determann.shadow.api.shadow.*;
 
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class ConverterImpl implements ShadowConverter,
                                       AnnotationConverter,
@@ -295,7 +295,7 @@ public class ConverterImpl implements ShadowConverter,
    {
       List<TypeKind> typeKinds = Arrays.stream(TypeKind.values())
                                        .filter(typeKindPredicate)
-                                       .collect(toCollection(() -> unmodifiableList(new ArrayList<>())));
+                                       .collect(collectingAndThen(toList(), Collections::unmodifiableList));
       //noinspection unchecked
       return (SHADOW) toOptional(typeKindPredicate)
             .orElseThrow(() -> new IllegalStateException(shadow.getTypeKind() + " is none of " + typeKinds));
