@@ -61,9 +61,9 @@ public interface Shadow<MIRROR extends TypeMirror> extends MirrorBacked<MIRROR>,
    boolean representsSameType(Shadow<? extends TypeMirror> shadow);
 
    /**
-    * After the compilation information about generics is lost. so {@code List<String>} becomes {@code List}. This method erasures
-    * all generic information this Shadow holds. This can be useful if you want to check if a shadow implements for example a
-    * {@link java.util.Collection} {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclared("java.util.Collection").erasure())}
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclared("java.util.Collection").erasure())}
     */
    Shadow<TypeMirror> erasure();
 

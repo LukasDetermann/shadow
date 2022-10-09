@@ -23,11 +23,290 @@ Annotation processing is powerful, but the JDK APIs
 did not age well.
 
 Shadow API offers:
-- A simplified data structure
-- Safe conversion between objects 
-- Better documentation, especially at hard to understand points
-- Good interoperability with `javax.lang.model`
-- No additional support for creating source files over `javax.lang.model`
+
+<details><summary>Straightforward data structure</summary>
+<table>
+<tr>
+<th>Shadow API</th>
+<th>JDK</th>
+</tr>
+<tr>
+<td width="280">
+<pre>
+
+- Shadow
+  - Declared
+    - Class 
+    - Enum 
+    - Record 
+    - Annotation
+        - AnnotationUsage
+  - Array
+  - Executable
+    - Constructor
+    - Method
+  - Intersection
+  - Void
+  - Module
+  - Package
+  - RecordComponent
+  - Null
+  - Primitive
+  - Generic
+  - Wildcard
+  - Variable
+    - EnumConstant
+    - Field
+    - Parameter
+</pre>
+</td>
+<td width="280">
+<pre>
+
+- TypeMirror
+  - ReferenceType
+    - ArrayType  
+    - DeclaredType  
+    - ErrorType  
+    - NullType  
+    - TypeVariable
+  - ExecutableType
+  - IntersectionType
+  - NoType
+  - PrimitiveType
+  - UnionType
+  - WildcardType
+  
+
+- AnnotationMirror
+
+
+- Element
+  - ExecutableElement
+  - ModuleElement
+  - PackageElement
+  - RecordComponentElement
+  - TypeElement
+  - TypeParameterElement
+  - VariableElement
+</pre>
+</td>
+</tr>
+</table>
+</details>
+<details><summary>Safe conversion between objects </summary>
+
+**Let's say you process the following class and want to get the type of the list**
+
+````java
+import java.util.List;
+
+class MyClass
+{
+   private final List<String> myField;
+}
+````
+<br/>
+<table>
+<tr>
+<th>Shadow API</th>
+<th>JDK</th>
+</tr>
+<tr>
+<td width="50%">
+
+````java
+class ConversionTest
+{
+  @Test
+  void testConversion()
+  {
+    CompilationTest
+            .process(shadowApi ->
+                     {
+                       Shadow<TypeMirror> myField = shadowApi.getClass("MyClass")
+                                                             .getField("myField")
+                                                             .getType();
+
+                       //Converters limit the conversion to possible types
+                       Shadow<TypeMirror> genericType = shadowApi.convert(myField)
+                                                                 .toInterface()
+                                                                 .getGenerics()
+                                                                 .get(0);
+
+                       assertEquals(shadowApi.getClass("java.lang.String"), genericType);
+                     })
+            .withCodeToCompile("MyClass.java", """
+                    import java.util.List;
+
+                    class MyClass {
+                       private List<String> myField;
+                    }""")
+            .compile();
+  }
+}
+````
+</td>
+<td width="50%">
+
+````java
+class ConversionTest
+{
+  @Test
+  void testConversion()
+  {
+    CompilationTest
+            .process(shadowApi ->
+                     {
+                       Elements elements = shadowApi.getJdkApiContext().elements();
+
+                       //get a type -> Element data structure 
+                       List<? extends Element> myClass = elements.getTypeElement("MyClass")
+                                                                 .getEnclosedElements();
+
+                       //get fields of that type -> Element data structure 
+                       VariableElement myField = ElementFilter
+                               .fieldsIn(myClass)
+                               .stream()
+                               .filter(field -> field.getSimpleName()
+                                                     .toString()
+                                                     .equals("myField"))
+                               .findAny()
+                               .orElseThrow();
+
+                       //get Generic -> switch to Type data structure  
+                       TypeMirror genericType = ((DeclaredType) myField.asType())
+                               .getTypeArguments().get(0);
+
+                       //switch back to Element data structure for comparison
+                       Element genericElement = ((DeclaredType) genericType).asElement();
+
+                       assertEquals(elements.getTypeElement("java.lang.String"), 
+                                    genericElement);
+                     })
+            .withCodeToCompile("MyClass.java", """
+                    import java.util.List;
+
+                    class MyClass {
+                       private List<String> myField;
+                    }""")
+            .compile();
+  }
+}
+````
+</td>
+</tr>
+</table>
+</details>
+<details><summary>Better documentation, especially at hard to understand points</summary>
+
+<table>
+<tr>
+<th>Shadow API</th>
+<th>JDK</th>
+</tr>
+<tr>
+<td width="50%">
+
+````java
+public interface Shadow
+{
+   //..
+  /**
+   * Information regarding generics is lost after the compilation. For Example 
+   * {@code List<String>} becomes {@code List}. This method Does the same.
+   * This can be useful if you want to check if a shadow implements for example 
+   * {@link java.util.Collection} 
+   * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclared("java.util.Collection").erasure())}
+   */
+  Shadow<TypeMirror> erasure();
+  //...
+}
+````
+</td>
+<td width="50%">
+
+````java
+public interface Types {
+   //...
+  /**
+   * {@return the erasure of a type}
+   *
+   * @param t  the type to be erased
+   * @throws IllegalArgumentException if given a type for a package or module
+   * @jls 4.6 Type Erasure
+   */
+  TypeMirror erasure(TypeMirror t);
+  //...
+}
+````
+</td>
+</tr>
+</table>
+</details>
+<details><summary>Good interoperability with `javax.lang.model`</summary>
+
+<table>
+<tr>
+<th>Shadow API</th>
+<th>JDK</th>
+</tr>
+<tr>
+<td width="50%">
+
+````java
+class ConversionTest
+{
+  @Test
+  void testConversion1()
+  {
+    CompilationTest
+            .process(shadowApi ->
+                     {
+                       //shadow -> jdk
+                       RoundEnvironment roundEnv = shadowApi.getJdkApiContext().roundEnv();
+                       Elements elements = shadowApi.getJdkApiContext().elements();
+                       Types types = shadowApi.getJdkApiContext().types();
+                       Messager messager = shadowApi.getJdkApiContext().messager();
+                       Map<String, String> options = shadowApi.getJdkApiContext().options();
+                       Filer filer = shadowApi.getJdkApiContext().filer();
+                       SourceVersion sourceVersion = shadowApi.getJdkApiContext().sourceVersion();
+                       Locale locale = shadowApi.getJdkApiContext().locale();
+                       boolean previewEnabled = shadowApi.getJdkApiContext().isPreviewEnabled();
+
+                       Element typeElement = shadowApi.getClass("java.lang.String").getElement();
+                       TypeMirror mNyClass1 = shadowApi.getClass("java.lang.String").getMirror();
+                     })
+            .compile();
+  }
+}
+````
+</td>
+<td width="50%">
+
+````java
+class ConversionTest extends AbstractProcessor
+{
+  @Override
+  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
+  {
+    //jdk -> shadow
+    ShadowApi shadowApi = ShadowApi.create(processingEnv, roundEnv, 0);
+
+    Shadow<? extends TypeMirror> shadow = shadowApi.getShadowFactory().shadowFromElement(null);
+    Shadow<? extends TypeMirror> shadow1 = shadowApi.getShadowFactory().shadowFromType(null);
+    List<AnnotationUsage> annotationUsages = shadowApi.getShadowFactory().annotationUsage(null);
+
+    return false;
+  }
+}
+````
+</td>
+</tr>
+</table>
+</details>
+<details><summary>No additional support for creating source files over `javax.lang.model`</summary>
+</details>
 
 
 ## API Goals
