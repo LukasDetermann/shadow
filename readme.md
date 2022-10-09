@@ -32,7 +32,6 @@ Shadow API offers:
 </tr>
 <tr>
 <td width="280">
-<pre>
 
 - Shadow
   - Declared
@@ -58,10 +57,8 @@ Shadow API offers:
     - EnumConstant
     - Field
     - Parameter
-</pre>
 </td>
 <td width="280">
-<pre>
 
 - TypeMirror
   - ReferenceType
@@ -89,12 +86,12 @@ Shadow API offers:
   - TypeElement
   - TypeParameterElement
   - VariableElement
-</pre>
 </td>
 </tr>
 </table>
 </details>
 <details><summary>Safe conversion between objects </summary>
+<br/>
 
 **Let's say you process the following class and want to get the type of the list**
 
@@ -122,27 +119,27 @@ class ConversionTest
   void testConversion()
   {
     CompilationTest
-            .process(shadowApi ->
-                     {
-                       Shadow<TypeMirror> myField = shadowApi.getClass("MyClass")
-                                                             .getField("myField")
-                                                             .getType();
-
-                       //Converters limit the conversion to possible types
-                       Shadow<TypeMirror> genericType = shadowApi.convert(myField)
-                                                                 .toInterface()
-                                                                 .getGenerics()
-                                                                 .get(0);
-
-                       assertEquals(shadowApi.getClass("java.lang.String"), genericType);
-                     })
-            .withCodeToCompile("MyClass.java", """
-                    import java.util.List;
-
-                    class MyClass {
-                       private List<String> myField;
-                    }""")
-            .compile();
+      .process(shadowApi ->
+         {
+           Shadow<TypeMirror> myField = shadowApi.getClass("MyClass")
+                                                 .getField("myField")
+                                                 .getType();
+           //Converters limit the conversion to possible types
+           Shadow<TypeMirror> genericType = shadowApi
+                   .convert(myField)
+                   .toInterface()
+                   .getGenerics()
+                   .get(0);
+                   
+           assertEquals(shadowApi.getClass("java.lang.String"), 
+                        genericType);
+         })
+      .withCodeToCompile("MyClass.java", """
+         import java.util.List;
+         class MyClass {
+            private List<String> myField;
+         }""")
+      .compile();
   }
 }
 ````
@@ -156,41 +153,39 @@ class ConversionTest
   void testConversion()
   {
     CompilationTest
-            .process(shadowApi ->
-                     {
-                       Elements elements = shadowApi.getJdkApiContext().elements();
+      .process(shadowApi ->
+         {
+           Elements elements = shadowApi.getJdkApiContext().elements();
+           //get a type -> Element data structure 
+           List<? extends Element> myClass = elements.getTypeElement("MyClass")
+                                                     .getEnclosedElements();
 
-                       //get a type -> Element data structure 
-                       List<? extends Element> myClass = elements.getTypeElement("MyClass")
-                                                                 .getEnclosedElements();
-
-                       //get fields of that type -> Element data structure 
-                       VariableElement myField = ElementFilter
-                               .fieldsIn(myClass)
-                               .stream()
-                               .filter(field -> field.getSimpleName()
-                                                     .toString()
-                                                     .equals("myField"))
-                               .findAny()
-                               .orElseThrow();
-
-                       //get Generic -> switch to Type data structure  
-                       TypeMirror genericType = ((DeclaredType) myField.asType())
-                               .getTypeArguments().get(0);
-
-                       //switch back to Element data structure for comparison
-                       Element genericElement = ((DeclaredType) genericType).asElement();
-
-                       assertEquals(elements.getTypeElement("java.lang.String"), 
-                                    genericElement);
-                     })
-            .withCodeToCompile("MyClass.java", """
-                    import java.util.List;
-
-                    class MyClass {
-                       private List<String> myField;
-                    }""")
-            .compile();
+           //get fields of that type -> Element data structure 
+           VariableElement myField = ElementFilter
+                   .fieldsIn(myClass)
+                   .stream()
+                   .filter(field -> field.getSimpleName()
+                                         .toString()
+                                         .equals("myField"))
+                   .findAny()
+                   .orElseThrow();
+           
+           //get Generic -> switch to Type data structure  
+           TypeMirror genericType = ((DeclaredType) myField.asType())
+                   .getTypeArguments().get(0);
+                   
+           //switch back to Element data structure for comparison
+           Element genericElement = ((DeclaredType) genericType).asElement();
+           
+           assertEquals(elements.getTypeElement("java.lang.String"),
+                        genericElement);
+         })
+      .withCodeToCompile("MyClass.java", """
+         import java.util.List;
+         class MyClass {
+            private List<String> myField;
+         }""")
+      .compile();
   }
 }
 ````
@@ -261,23 +256,23 @@ class ConversionTest
   void testConversion1()
   {
     CompilationTest
-            .process(shadowApi ->
-                     {
-                       //shadow -> jdk
-                       RoundEnvironment roundEnv = shadowApi.getJdkApiContext().roundEnv();
-                       Elements elements = shadowApi.getJdkApiContext().elements();
-                       Types types = shadowApi.getJdkApiContext().types();
-                       Messager messager = shadowApi.getJdkApiContext().messager();
-                       Map<String, String> options = shadowApi.getJdkApiContext().options();
-                       Filer filer = shadowApi.getJdkApiContext().filer();
-                       SourceVersion sourceVersion = shadowApi.getJdkApiContext().sourceVersion();
-                       Locale locale = shadowApi.getJdkApiContext().locale();
-                       boolean previewEnabled = shadowApi.getJdkApiContext().isPreviewEnabled();
+      .process(shadowApi ->
+         {
+           //shadow -> jdk
+           RoundEnvironment roundEnv = shadowApi.getJdkApiContext().roundEnv();
+           Elements elements = shadowApi.getJdkApiContext().elements();
+           Types types = shadowApi.getJdkApiContext().types();
+           Messager messager = shadowApi.getJdkApiContext().messager();
+           Map<String, String> options = shadowApi.getJdkApiContext().options();
+           Filer filer = shadowApi.getJdkApiContext().filer();
+           SourceVersion sourceVersion = shadowApi.getJdkApiContext().sourceVersion();
+           Locale locale = shadowApi.getJdkApiContext().locale();
+           boolean previewEnabled = shadowApi.getJdkApiContext().isPreviewEnabled();
 
-                       Element typeElement = shadowApi.getClass("java.lang.String").getElement();
-                       TypeMirror mNyClass1 = shadowApi.getClass("java.lang.String").getMirror();
-                     })
-            .compile();
+           Element typeElement = shadowApi.getClass("java.lang.String").getElement();
+           TypeMirror mNyClass1 = shadowApi.getClass("java.lang.String").getMirror();
+         })
+      .compile();
   }
 }
 ````
