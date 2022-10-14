@@ -22,6 +22,8 @@ public interface AnnotationUsage extends Annotation
 
    AnnotationValueTypeChooser getValue(String methodName);
 
+   Annotation getAnnotation();
+
    @JdkApi
    AnnotationMirror getAnnotationMirror();
 }

@@ -1,6 +1,7 @@
 package org.determann.shadow.impl.shadow.wraper;
 
 import org.determann.shadow.api.ShadowApi;
+import org.determann.shadow.api.shadow.Annotation;
 import org.determann.shadow.api.shadow.AnnotationUsage;
 import org.determann.shadow.api.shadow.Method;
 import org.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
@@ -66,6 +67,12 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
                         .map(Map.Entry::getValue)
                         .findAny()
                         .orElseThrow(NoSuchElementException::new);
+   }
+
+   @Override
+   public Annotation getAnnotation()
+   {
+      return getApi().getShadowFactory().shadowFromElement(getElement());
    }
 
    @Override
