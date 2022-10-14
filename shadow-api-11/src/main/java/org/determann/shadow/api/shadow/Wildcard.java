@@ -21,7 +21,7 @@ public interface Wildcard extends Shadow<WildcardType>
 
    /**
     * <pre>{@code
-    *    shadowApi.convert(shadowApi.getClass("java.lang.Number"))
+    *    convert(shadowApi.getClass("java.lang.Number"))
     *          .asExtendsWildcard()
     *          .contains(shadowApi.getDeclared("java.lang.Long"));
     * }</pre>

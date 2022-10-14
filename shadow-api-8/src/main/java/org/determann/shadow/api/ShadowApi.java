@@ -10,6 +10,7 @@ import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.Void;
 import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.impl.ShadowApiImpl;
+import org.determann.shadow.impl.converter.ConverterImpl;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -153,45 +154,108 @@ public interface ShadowApi extends DeclaredHolder
    int roundNumber();
 
    //convert Shadows
-   AnnotationConverter convert(Annotation annotationShadow);
+   static AnnotationConverter convert(Annotation annotationShadow)
+   {
+      return new ConverterImpl(annotationShadow);
+   }
 
-   ArrayConverter convert(Array array);
+   static ArrayConverter convert(Array array)
+   {
+      return new ConverterImpl(array);
+   }
 
-   ClassConverter convert(Class aClass);
+   static ClassConverter convert(Class aClass)
+   {
+      return new ConverterImpl(aClass);
+   }
 
-   ConstructorConverter convert(Constructor constructor);
+   static ConstructorConverter convert(Constructor constructor)
+   {
+      return new ConverterImpl(constructor);
+   }
 
-   DeclaredConverter convert(Declared declared);
+   static DeclaredConverter convert(Declared declared)
+   {
+      return new ConverterImpl(declared);
+   }
 
-   EnumConstantConverter convert(EnumConstant enumConstant);
+   static EnumConstantConverter convert(EnumConstant enumConstant)
+   {
+      return new ConverterImpl(enumConstant);
+   }
 
-   EnumConverter convert(Enum enumShadow);
+   static EnumConverter convert(Enum enumShadow)
+   {
+      return new ConverterImpl(enumShadow);
+   }
 
-   ExecutableConverter convert(Executable executable);
+   static ExecutableConverter convert(Executable executable)
+   {
+      return new ConverterImpl(executable);
+   }
 
-   FieldConverter convert(Field field);
+   static FieldConverter convert(Field field)
+   {
+      return new ConverterImpl(field);
+   }
 
-   InterfaceConverter convert(Interface interfaceShadow);
+   static InterfaceConverter convert(Interface interfaceShadow)
+   {
+      return new ConverterImpl(interfaceShadow);
+   }
 
-   IntersectionConverter convert(Intersection intersection);
+   static IntersectionConverter convert(Intersection intersection)
+   {
+      return new ConverterImpl(intersection);
+   }
 
-   MethodConverter convert(Method methodShadow);
+   static MethodConverter convert(Method methodShadow)
+   {
+      return new ConverterImpl(methodShadow);
+   }
 
-   VoidConverter convert(Void aVoid);
+   static VoidConverter convert(Void aVoid)
+   {
+      return new ConverterImpl(aVoid);
+   }
 
-   NullConverter convert(Null aNull);
+   static NullConverter convert(Null aNull)
+   {
+      return new ConverterImpl(aNull);
+   }
 
-   PackageConverter convert(Package packageShadow);
+   static PackageConverter convert(Package packageShadow)
+   {
+      return new ConverterImpl(packageShadow);
+   }
 
-   ParameterConverter convert(Parameter parameter);
+   static ParameterConverter convert(Parameter parameter)
+   {
+      return new ConverterImpl(parameter);
+   }
 
-   PrimitiveConverter convert(Primitive primitive);
+   static PrimitiveConverter convert(Primitive primitive)
+   {
+      return new ConverterImpl(primitive);
+   }
 
-   ShadowConverter convert(Shadow<? extends TypeMirror> shadow);
+   static ShadowConverter convert(Shadow<? extends TypeMirror> shadow)
+   {
+      return new ConverterImpl(shadow);
+   }
 
-   GenericConverter convert(Generic generic);
+   static GenericConverter convert(Generic generic)
+   {
+      return new ConverterImpl(generic);
+   }
 
-   VariableConverter convert(Variable<?> variable);
+   static VariableConverter convert(Variable<?> variable)
+   {
+      return new ConverterImpl(variable);
+   }
 
-   WildcardConverter convert(Wildcard wildcard);
+   static WildcardConverter convert(Wildcard wildcard)
+   {
+      return new ConverterImpl(wildcard);
+   }
 }

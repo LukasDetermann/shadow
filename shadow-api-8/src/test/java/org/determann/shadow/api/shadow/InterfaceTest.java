@@ -1,5 +1,6 @@
 package org.determann.shadow.api.shadow;
 
+import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.converter.ShadowConverter;
 import org.determann.shadow.api.test.CompilationTest;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
+import static org.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest extends DeclaredTest<Interface>
@@ -87,10 +89,10 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                .withGenerics(shadowApi.getClass("java.lang.String"),
                                                                              shadowApi.getConstants().getUnboundWildcard());
                                  Interface capture = declared.interpolateGenerics();
-                                 Shadow<TypeMirror> interpolated = shadowApi.convert(capture.getGenerics().get(1))
+                                 Shadow<TypeMirror> interpolated = convert(capture.getGenerics().get(1))
                                                                             .toOptionalGeneric()
                                                                             .map(Generic::getExtends)
-                                                                            .map(shadowApi::convert)
+                                                                            .map(ShadowApi::convert)
                                                                             .flatMap(ShadowConverter::toOptionalInterface)
                                                                             .map(Interface::getGenerics)
                                                                             .map(shadows -> shadows.get(0))
@@ -100,7 +102,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                  Interface independentExample = shadowApi.getInterface("InterpolateGenericsExample.IndependentGeneric")
                                                                          .withGenerics(shadowApi.getConstants().getUnboundWildcard());
                                  Interface independentCapture = independentExample.interpolateGenerics();
-                                 Shadow<TypeMirror> interpolatedIndependent = shadowApi.convert(independentCapture.getGenerics().get(0))
+                                 Shadow<TypeMirror> interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
                                                                                        .toOptionalGeneric()
                                                                                        .map(Generic::getExtends)
                                                                                        .orElseThrow(IllegalStateException::new);
@@ -110,7 +112,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                        .withGenerics(shadowApi.getConstants().getUnboundWildcard(),
                                                                                      shadowApi.getClass("java.lang.String"));
                                  Interface dependentCapture = dependentExample.interpolateGenerics();
-                                 Shadow<TypeMirror> interpolatedDependent = shadowApi.convert(dependentCapture.getGenerics().get(0))
+                                 Shadow<TypeMirror> interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
                                                                                      .toOptionalGeneric()
                                                                                      .map(Generic::getExtends)
                                                                                      .orElseThrow(IllegalStateException::new);

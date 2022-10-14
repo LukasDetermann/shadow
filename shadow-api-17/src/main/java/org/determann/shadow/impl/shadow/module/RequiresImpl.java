@@ -33,7 +33,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    @Override
    public Module getDependency()
    {
-      return shadowApi.getShadowFactory().shadowFromElement(requiresDirective.getDependency());
+      return getApi().getShadowFactory().shadowFromElement(requiresDirective.getDependency());
    }
 
    @Override

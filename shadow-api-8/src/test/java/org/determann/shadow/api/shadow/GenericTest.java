@@ -3,6 +3,7 @@ package org.determann.shadow.api.shadow;
 import org.determann.shadow.api.test.CompilationTest;
 import org.junit.jupiter.api.Test;
 
+import static org.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericTest extends ShadowTest<Generic>
@@ -16,7 +17,7 @@ class GenericTest extends ShadowTest<Generic>
    void testGetExtends()
    {
       CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("java.lang.Number"),
-                                                        shadowApi.convert(shadowApi.getClass("GenericsExample")
+                                                        convert(shadowApi.getClass("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGeneric()
@@ -34,7 +35,7 @@ class GenericTest extends ShadowTest<Generic>
    void testGetEnclosing()
    {
       CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("GenericsExample"),
-                                                        shadowApi.convert(shadowApi.getClass("GenericsExample")
+                                                        convert(shadowApi.getClass("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGeneric()

@@ -68,7 +68,7 @@ public interface Class extends Declared,
     *                                                  shadowApi.getConstants().getUnboundWildcard());
     *       Class capture = declared.interpolateGenerics();
     *
-    *       Shadow<TypeMirror> stringRep = shadowApi.convert(capture.getGenerics().get(1))
+    *       Shadow<TypeMirror> stringRep = convert(capture.getGenerics().get(1))
     *                                                      .toOptionalGeneric()
     *                                                      .map(Generic::getExtends)
     *                                                      .map(shadowApi::convert)

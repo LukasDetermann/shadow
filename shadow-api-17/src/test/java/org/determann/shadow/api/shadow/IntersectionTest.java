@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntersectionTest extends ShadowTest<Intersection>
 {
    IntersectionTest()
    {
-      super(shadowApi -> shadowApi.convert(shadowApi.getClass("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersection());
+      super(shadowApi -> convert(shadowApi.getClass("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersection());
    }
 
    @Test

@@ -22,7 +22,7 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
    @Override
    public Declared getService()
    {
-      return shadowApi.getShadowFactory().shadowFromElement(providesDirective.getService());
+      return getApi().getShadowFactory().shadowFromElement(providesDirective.getService());
    }
 
    @Override
@@ -30,7 +30,7 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
    {
       return providesDirective.getImplementations()
                               .stream()
-                              .map(typeElement -> shadowApi.getShadowFactory().<Declared>shadowFromElement(typeElement))
+                              .map(typeElement -> getApi().getShadowFactory().<Declared>shadowFromElement(typeElement))
                               .toList();
    }
 

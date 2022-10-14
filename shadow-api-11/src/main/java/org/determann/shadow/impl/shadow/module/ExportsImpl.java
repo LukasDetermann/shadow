@@ -27,7 +27,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return shadowApi.getShadowFactory().shadowFromElement(exportsDirective.getPackage());
+      return getApi().getShadowFactory().shadowFromElement(exportsDirective.getPackage());
    }
 
    @Override
@@ -37,7 +37,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> shadowApi.getShadowFactory().<Module>shadowFromElement(moduleElement))
+                             .map(moduleElement -> getApi().getShadowFactory().<Module>shadowFromElement(moduleElement))
                              .collect(toUnmodifiableList());
    }
 

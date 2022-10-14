@@ -21,7 +21,7 @@ public class UsesImpl extends DirectiveImpl implements Uses
    @Override
    public Declared getService()
    {
-      return shadowApi.getShadowFactory().shadowFromElement(usesDirective.getService());
+      return getApi().getShadowFactory().shadowFromElement(usesDirective.getService());
    }
 
    @Override

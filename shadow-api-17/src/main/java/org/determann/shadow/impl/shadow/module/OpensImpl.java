@@ -23,7 +23,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    @Override
    public Package getPackage()
    {
-      return shadowApi.getShadowFactory().shadowFromElement(opensDirective.getPackage());
+      return getApi().getShadowFactory().shadowFromElement(opensDirective.getPackage());
    }
 
    @Override
@@ -31,7 +31,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> shadowApi.getShadowFactory().<Module>shadowFromElement(moduleElement))
+                           .map(moduleElement -> getApi().getShadowFactory().<Module>shadowFromElement(moduleElement))
                            .toList();
    }
 

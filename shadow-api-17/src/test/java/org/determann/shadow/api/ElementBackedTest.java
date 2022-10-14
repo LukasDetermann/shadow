@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
+import static org.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -50,7 +51,7 @@ class ElementBackedTest
                                  assertEquals(" Class level doc\n", aClass.getJavaDoc());
                                  assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
                                  assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
-                                 assertNull(shadowApi.convert(aClass.getGenerics().get(0)).toOptionalGeneric().get().getJavaDoc());
+                                 assertNull(convert(aClass.getGenerics().get(0)).toOptionalGeneric().get().getJavaDoc());
                                  assertNull(aClass.getConstructors().get(0).getParameters().get(0).getJavaDoc());
                               })
                      .withCodeToCompile("JavaDocExample.java", """

@@ -44,9 +44,9 @@ public class ConverterImpl implements ShadowConverter,
    private final ShadowApi shadowApi;
    private final Shadow<? extends TypeMirror> shadow;
 
-   public ConverterImpl(ShadowApi shadowApi, Shadow<? extends TypeMirror> shadow)
+   public ConverterImpl(Shadow<? extends TypeMirror> shadow)
    {
-      this.shadowApi = shadowApi;
+      this.shadowApi = shadow.getApi();
       this.shadow = shadow;
    }
 

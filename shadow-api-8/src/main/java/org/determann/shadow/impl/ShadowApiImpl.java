@@ -1,20 +1,14 @@
 package org.determann.shadow.impl;
 
 import org.determann.shadow.api.*;
-import org.determann.shadow.api.converter.*;
-import org.determann.shadow.api.shadow.Class;
-import org.determann.shadow.api.shadow.Enum;
+import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Package;
-import org.determann.shadow.api.shadow.Void;
-import org.determann.shadow.api.shadow.*;
-import org.determann.shadow.impl.converter.ConverterImpl;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -250,133 +244,6 @@ public class ShadowApiImpl implements ShadowApi
    public int roundNumber()
    {
       return processingRoundNumber;
-   }
-
-   //convert Shadows
-   @Override
-   public AnnotationConverter convert(Annotation annotationShadow)
-   {
-      return new ConverterImpl(this, annotationShadow);
-   }
-
-   @Override
-   public ArrayConverter convert(Array array)
-   {
-      return new ConverterImpl(this, array);
-   }
-
-   @Override
-   public ClassConverter convert(Class aClass)
-   {
-      return new ConverterImpl(this, aClass);
-   }
-
-   @Override
-   public ConstructorConverter convert(Constructor constructor)
-   {
-      return new ConverterImpl(this, constructor);
-   }
-
-   @Override
-   public DeclaredConverter convert(Declared declared)
-   {
-      return new ConverterImpl(this, declared);
-   }
-
-   @Override
-   public EnumConstantConverter convert(EnumConstant enumConstant)
-   {
-      return new ConverterImpl(this, enumConstant);
-   }
-
-   @Override
-   public EnumConverter convert(Enum enumShadow)
-   {
-      return new ConverterImpl(this, enumShadow);
-   }
-
-   @Override
-   public ExecutableConverter convert(Executable executable)
-   {
-      return new ConverterImpl(this, executable);
-   }
-
-   @Override
-   public FieldConverter convert(Field field)
-   {
-      return new ConverterImpl(this, field);
-   }
-
-   @Override
-   public InterfaceConverter convert(Interface interfaceShadow)
-   {
-      return new ConverterImpl(this, interfaceShadow);
-   }
-
-   @Override
-   public IntersectionConverter convert(Intersection intersection)
-   {
-      return new ConverterImpl(this, intersection);
-   }
-
-   @Override
-   public MethodConverter convert(Method methodShadow)
-   {
-      return new ConverterImpl(this, methodShadow);
-   }
-
-   @Override
-   public VoidConverter convert(Void aVoid)
-   {
-      return new ConverterImpl(this, aVoid);
-   }
-
-   @Override
-   public NullConverter convert(Null aNull)
-   {
-      return new ConverterImpl(this, aNull);
-   }
-
-   @Override
-   public PackageConverter convert(Package packageShadow)
-   {
-      return new ConverterImpl(this, packageShadow);
-   }
-
-   @Override
-   public ParameterConverter convert(Parameter parameter)
-   {
-      return new ConverterImpl(this, parameter);
-   }
-
-   @Override
-   public PrimitiveConverter convert(Primitive primitive)
-   {
-      return new ConverterImpl(this, primitive);
-   }
-
-   @Override
-   public ShadowConverter convert(Shadow<? extends TypeMirror> shadow)
-   {
-      return new ConverterImpl(this, shadow);
-   }
-
-   @Override
-   public GenericConverter convert(Generic generic)
-   {
-      return new ConverterImpl(this, generic);
-   }
-
-   @Override
-   public VariableConverter convert(Variable<?> variable)
-   {
-      return new ConverterImpl(this, variable);
-   }
-
-   @Override
-   public WildcardConverter convert(Wildcard wildcard)
-   {
-      return new ConverterImpl(this, wildcard);
    }
 
    @Override

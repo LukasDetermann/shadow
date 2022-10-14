@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
+import static org.determann.shadow.api.ShadowApi.convert;
 
 public class ClassImpl extends DeclaredImpl implements Class
 {
@@ -77,11 +78,10 @@ public class ClassImpl extends DeclaredImpl implements Class
                                             generics.length +
                                             " are provided");
       }
-      if (getOuterType().map(typeMirrorShadow -> getApi()
-                              .convert(typeMirrorShadow)
+      if (getOuterType().map(typeMirrorShadow -> convert(typeMirrorShadow)
                               .toOptionalInterface()
                               .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                              .orElseGet(() -> getApi().convert(typeMirrorShadow).toOptionalClass().map(aClass -> !aClass.getGenerics().isEmpty()).orElse(false)))
+                              .orElseGet(() -> convert(typeMirrorShadow).toOptionalClass().map(aClass -> !aClass.getGenerics().isEmpty()).orElse(false)))
                         .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +
