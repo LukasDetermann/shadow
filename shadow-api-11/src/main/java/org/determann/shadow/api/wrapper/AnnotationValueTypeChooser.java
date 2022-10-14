@@ -45,4 +45,9 @@ public interface AnnotationValueTypeChooser
 
    @JdkApi
    AnnotationValue getAnnotationValue();
+
+   /**
+    * calls {@code toString} on the underlying value
+    */
+   String toString();
 }
