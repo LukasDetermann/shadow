@@ -3,9 +3,11 @@ package org.determann.shadow.impl.shadow;
 import org.determann.shadow.api.NestingKind;
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
+import org.determann.shadow.api.converter.DeclaredConverter;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.*;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -159,6 +161,34 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .stream()
                          .map(typeMirror -> getApi().getShadowFactory().<Interface>shadowFromType(typeMirror))
                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+   }
+
+   @Override
+   public @UnmodifiableView List<Interface> getInterfaces()
+   {
+      return getSuperTypes().stream()
+                            .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))
+                            .map(ShadowApi::convert)
+                            .map(DeclaredConverter::toInterface)
+                            .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+   }
+
+   @Override
+   public Interface getInterface(String qualifiedName)
+   {
+      return getInterfaces().stream()
+                            .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                            .findAny()
+                            .orElseThrow(NoSuchElementException::new);
+   }
+
+   @Override
+   public Interface getDirectInterface(String qualifiedName)
+   {
+      return getDirectInterfaces().stream()
+                                  .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                                  .findAny()
+                                  .orElseThrow(NoSuchElementException::new);
    }
 
    @Override

@@ -8,8 +8,6 @@ import java.util.List;
 public interface Enum extends Declared,
                               StaticModifiable
 {
-   @UnmodifiableView List<Interface> getDirectInterfaces();
-
    @UnmodifiableView List<EnumConstant> getEumConstants();
 
    EnumConstant getEnumConstant(String simpleName);

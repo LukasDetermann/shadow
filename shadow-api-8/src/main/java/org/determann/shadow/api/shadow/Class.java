@@ -20,8 +20,6 @@ public interface Class extends Declared,
 
    @UnmodifiableView List<Property> getProperties();
 
-   @UnmodifiableView List<Interface> getDirectInterfaces();
-
    /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.
     * if one is a primitive and the other is not it tries to convert them

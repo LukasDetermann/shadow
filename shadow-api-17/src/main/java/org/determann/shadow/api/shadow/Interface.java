@@ -14,8 +14,6 @@ public interface Interface extends Declared,
                                    StaticModifiable,
                                    Sealable
 {
-   @UnmodifiableView List<Interface> getDirectInterfaces();
-
    boolean isFunctional();
 
    /**

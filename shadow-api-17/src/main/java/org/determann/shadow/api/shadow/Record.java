@@ -14,8 +14,6 @@ public interface Record extends Declared,
 
    @UnmodifiableView List<RecordComponent> getRecordComponents();
 
-   @UnmodifiableView List<Interface> getDirectInterfaces();
-
    /**
     * be careful using this equals
     *

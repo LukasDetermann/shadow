@@ -4,6 +4,7 @@ import org.determann.shadow.api.Annotationable;
 import org.determann.shadow.api.NestingKind;
 import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.ShadowApi;
+import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.modifier.AccessModifiable;
 import org.determann.shadow.api.modifier.StrictfpModifiable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -60,6 +61,15 @@ public interface Declared extends Shadow<DeclaredType>,
     * returns all distinct supertypes including interfaces
     */
    @UnmodifiableView Set<Declared> getSuperTypes();
+
+   @UnmodifiableView List<Interface> getInterfaces();
+
+   Interface getInterface(@QualifiedName String qualifiedName);
+
+   @UnmodifiableView List<Interface> getDirectInterfaces();
+
+
+   Interface getDirectInterface(@QualifiedName String qualifiedName);
 
    Package getPackage();
 

@@ -12,8 +12,6 @@ public interface Interface extends Declared,
                                    AbstractModifiable,
                                    StaticModifiable
 {
-   @UnmodifiableView List<Interface> getDirectInterfaces();
-
    boolean isFunctional();
 
    /**
