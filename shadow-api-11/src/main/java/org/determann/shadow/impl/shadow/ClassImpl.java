@@ -77,9 +77,9 @@ public class ClassImpl extends DeclaredImpl implements Class
                                             " are provided");
       }
       if (getOuterType().flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
-                              .toOptionalInterface()
+                              .toInterface()
                               .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                              .or(() -> convert(typeMirrorShadow).toOptionalClass().map(aClass -> !aClass.getGenerics().isEmpty())))
+                              .or(() -> convert(typeMirrorShadow).toClass().map(aClass -> !aClass.getGenerics().isEmpty())))
                         .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +

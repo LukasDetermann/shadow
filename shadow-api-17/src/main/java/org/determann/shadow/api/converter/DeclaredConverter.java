@@ -9,25 +9,25 @@ import java.util.Optional;
 
 public interface DeclaredConverter
 {
-   Annotation toAnnotation();
+   Annotation toAnnotationOrThrow();
 
-   Optional<Annotation> toOptionalAnnotation();
+   Optional<Annotation> toAnnotation();
 
-   Enum toEnum();
+   Enum toEnumOrThrow();
 
-   Optional<Enum> toOptionalEnum();
+   Optional<Enum> toEnum();
 
-   Class toClass();
+   Class toClassOrThrow();
 
-   Optional<Class> toOptionalClass();
+   Optional<Class> toClass();
 
-   Interface toInterface();
+   Interface toInterfaceThrowOrThrow();
 
-   Optional<Interface> toOptionalInterface();
+   Optional<Interface> toInterface();
 
-   Record toRecord();
+   Record toRecordOrThrow();
 
-   Optional<Record> toOptionalRecord();
+   Optional<Record> toRecord();
 
    /**
     * consumes all leafs of {@link Declared}

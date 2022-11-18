@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface ExecutableConverter
 {
-   Constructor toConstructor();
+   Constructor toConstructorOrThrow();
 
-   Optional<Constructor> toOptionalConstructor();
+   Optional<Constructor> toConstructor();
 
-   Method toMethod();
+   Method toMethodOrThrow();
 
-   Optional<Method> toOptionalMethod();
+   Optional<Method> toMethod();
 
    /**
     * consumes all leafs of {@link Executable}

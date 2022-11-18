@@ -16,21 +16,21 @@ public interface DeclaredHolder extends ApiHolder
 
    default Annotation getAnnotationOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
    }
 
    default Class getClassOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
+      return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
    }
 
    default Enum getEnumOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
    }
 
    default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceThrowOrThrow();
    }
 }

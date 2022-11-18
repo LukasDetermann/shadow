@@ -29,9 +29,9 @@ class ClassTest extends DeclaredTest<Class>
                                  assertEquals(integer.getSuperClass(), number);
 
                                  Declared object = shadowApi.getClassOrThrow("java.lang.Object");
-                                 assertNull(convert(object).toClass().getSuperClass());
+                                 assertNull(convert(object).toClassOrThrow().getSuperClass());
 
-                                 assertEquals(object, convert(number).toClass().getSuperClass());
+                                 assertEquals(object, convert(number).toClassOrThrow().getSuperClass());
                               })
                      .compile();
    }
@@ -159,10 +159,10 @@ class ClassTest extends DeclaredTest<Class>
                                                                          shadowApi.getConstants().getUnboundWildcard());
                                  Class capture = declared.interpolateGenerics();
                                  Shadow<TypeMirror> interpolated = convert(capture.getGenerics().get(1))
-                                                                            .toOptionalGeneric()
+                                                                            .toGeneric()
                                                                             .map(Generic::getExtends)
                                                                             .map(ShadowApi::convert)
-                                                                            .flatMap(ShadowConverter::toOptionalInterface)
+                                                                            .flatMap(ShadowConverter::toInterface)
                                                                             .map(Interface::getGenerics)
                                                                             .map(shadows -> shadows.get(0))
                                                                             .orElseThrow(IllegalStateException::new);
@@ -172,7 +172,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                      .withGenerics(shadowApi.getConstants().getUnboundWildcard());
                                  Class independentCapture = independentExample.interpolateGenerics();
                                  Shadow<TypeMirror> interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
-                                                                                       .toOptionalGeneric()
+                                                                                       .toGeneric()
                                                                                        .map(Generic::getExtends)
                                                                                        .orElseThrow(IllegalStateException::new);
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
@@ -182,7 +182,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                  shadowApi.getClassOrThrow("java.lang.String"));
                                  Class dependentCapture = dependentExample.interpolateGenerics();
                                  Shadow<TypeMirror> interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
-                                                                                     .toOptionalGeneric()
+                                                                                     .toGeneric()
                                                                                      .map(Generic::getExtends)
                                                                                      .orElseThrow(IllegalStateException::new);
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);

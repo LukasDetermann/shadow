@@ -12,87 +12,87 @@ import java.util.Optional;
 
 public interface ShadowConverter
 {
-   Annotation toAnnotation();
+   Annotation toAnnotationOrThrow();
 
-   Optional<Annotation> toOptionalAnnotation();
+   Optional<Annotation> toAnnotation();
 
-   Array toArray();
+   Array toArrayOrThrow();
 
-   Optional<Array> toOptionalArray();
+   Optional<Array> toArray();
 
-   Class toClass();
+   Class toClassOrThrow();
 
-   Optional<Class> toOptionalClass();
+   Optional<Class> toClass();
 
-   Constructor toConstructor();
+   Constructor toConstructorOrThrow();
 
-   Optional<Constructor> toOptionalConstructor();
+   Optional<Constructor> toConstructor();
 
-   Declared toDeclared();
+   Declared toDeclaredOrThrow();
 
-   Optional<Declared> toOptionalDeclared();
+   Optional<Declared> toDeclared();
 
-   EnumConstant toEnumConstant();
+   EnumConstant toEnumOrThrowConstantOrThrow();
 
-   Optional<EnumConstant> toOptionalEnumConstant();
+   Optional<EnumConstant> toEnumConstant();
 
-   Enum toEnum();
+   Enum toEnumOrThrow();
 
-   Optional<Enum> toOptionalEnum();
+   Optional<Enum> toEnum();
 
-   Executable toExecutable();
+   Executable toExecutableOrThrow();
 
-   Optional<Executable> toOptionalExecutable();
+   Optional<Executable> toExecutable();
 
-   Field toField();
+   Field toFieldOrThrow();
 
-   Optional<Field> toOptionalField();
+   Optional<Field> toField();
 
-   Interface toInterface();
+   Interface toInterfaceThrowOrThrow();
 
-   Optional<Interface> toOptionalInterface();
+   Optional<Interface> toInterface();
 
-   Intersection toIntersection();
+   Intersection toIntersectionOrThrow();
 
-   Optional<Intersection> toOptionalIntersection();
+   Optional<Intersection> toIntersection();
 
-   Method toMethod();
+   Method toMethodOrThrow();
 
-   Optional<Method> toOptionalMethod();
+   Optional<Method> toMethod();
 
-   Module toModule();
+   Module toModuleOrThrow();
 
-   Optional<Module> toOptionalModule();
+   Optional<Module> toModule();
 
-   Void toVoid();
+   Void toVoidOrThrow();
 
-   Optional<Void> toOptionalVoid();
+   Optional<Void> toVoid();
 
-   Null toNull();
+   Null toNullOrThrow();
 
-   Optional<Null> toOptionalNull();
+   Optional<Null> toNull();
 
-   Package toPackage();
+   Package toPackageOrThrow();
 
-   Optional<Package> toOptionalPackage();
+   Optional<Package> toPackage();
 
-   Parameter toParameter();
+   Parameter toParameterOrThrow();
 
-   Optional<Parameter> toOptionalParameter();
+   Optional<Parameter> toParameter();
 
-   Primitive toPrimitive();
+   Primitive toPrimitiveOrThrow();
 
-   Optional<Primitive> toOptionalPrimitive();
+   Optional<Primitive> toPrimitive();
 
-   Generic toGeneric();
+   Generic toGenericOrThrow();
 
-   Optional<Generic> toOptionalGeneric();
+   Optional<Generic> toGeneric();
 
-   Variable<Shadow<TypeMirror>> toVariable();
+   Variable<Shadow<TypeMirror>> toVariableOrThrow();
 
-   Optional<Variable<Shadow<TypeMirror>>> toOptionalVariable();
+   Optional<Variable<Shadow<TypeMirror>>> toVariable();
 
-   Wildcard toWildcard();
+   Wildcard toWildcardOrThrow();
 
-   Optional<Wildcard> toOptionalWildcard();
+   Optional<Wildcard> toWildcard();
 }

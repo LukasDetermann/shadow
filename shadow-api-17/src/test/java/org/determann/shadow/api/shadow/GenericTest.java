@@ -20,7 +20,7 @@ class GenericTest extends ShadowTest<Generic>
                                                         convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
-                                                                 .toGeneric()
+                                                                 .toGenericOrThrow()
                                                                  .getExtends()))
                      .withCodeToCompile("GenericsExample.java", """
                            import java.util.List;
@@ -39,7 +39,7 @@ class GenericTest extends ShadowTest<Generic>
                                                         convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
-                                                                 .toGeneric()
+                                                                 .toGenericOrThrow()
                                                                  .getEnclosing()))
                      .withCodeToCompile("GenericsExample.java", """
                            import java.util.List;
@@ -59,7 +59,7 @@ class GenericTest extends ShadowTest<Generic>
                                                                                          "org.determann.shadow.example.processed.test.generics.GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
-                                                                 .toGeneric()
+                                                                 .toGenericOrThrow()
                                                                  .getPackage()))
                      .withCodeToCompile("GenericsExample.java", """
                            package org.determann.shadow.example.processed.test.generics;

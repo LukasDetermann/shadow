@@ -39,73 +39,73 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
    @Override
    public Set<Declared> declaredTypes()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalDeclared());
+      return findShadows(shadow -> convert(shadow).toDeclared());
    }
 
    @Override
    public Set<Class> classes()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalClass());
+      return findShadows(shadow -> convert(shadow).toClass());
    }
 
    @Override
    public Set<Enum> enums()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalEnum());
+      return findShadows(shadow -> convert(shadow).toEnum());
    }
 
    @Override
    public Set<Interface> interfaces()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalInterface());
+      return findShadows(shadow -> convert(shadow).toInterface());
    }
 
    @Override
    public Set<Field> fields()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalField());
+      return findShadows(shadow -> convert(shadow).toField());
    }
 
    @Override
    public Set<Parameter> parameters()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalParameter());
+      return findShadows(shadow -> convert(shadow).toParameter());
    }
 
    @Override
    public Set<Method> methods()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalMethod());
+      return findShadows(shadow -> convert(shadow).toMethod());
    }
 
    @Override
    public Set<Constructor> constructors()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalConstructor());
+      return findShadows(shadow -> convert(shadow).toConstructor());
    }
 
    @Override
    public Set<Annotation> annotations()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalAnnotation());
+      return findShadows(shadow -> convert(shadow).toAnnotation());
    }
 
    @Override
    public Set<Package> packages()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalPackage());
+      return findShadows(shadow -> convert(shadow).toPackage());
    }
 
    @Override
    public Set<Generic> generics()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalGeneric());
+      return findShadows(shadow -> convert(shadow).toGeneric());
    }
 
    @Override
    public Set<Module> modules()
    {
-      return findShadows(shadow -> convert(shadow).toOptionalModule());
+      return findShadows(shadow -> convert(shadow).toModule());
    }
 
    private <SHADOW> Set<SHADOW> findShadows(Function<? super Shadow<TypeMirror>, Optional<SHADOW>> mapper)

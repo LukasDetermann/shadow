@@ -20,7 +20,7 @@ class GenericTest extends ShadowTest<Generic>
                                                         convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
-                                                                 .toGeneric()
+                                                                 .toGenericOrThrow()
                                                                  .getExtends()))
                      .withCodeToCompile("GenericsExample.java", "                           import java.util.List;\n" +
                                                                 "\n" +
@@ -38,7 +38,7 @@ class GenericTest extends ShadowTest<Generic>
                                                         convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
-                                                                 .toGeneric()
+                                                                 .toGenericOrThrow()
                                                                  .getEnclosing()))
                      .withCodeToCompile("GenericsExample.java", "                           import java.util.List;\n" +
                                                                 "\n" +

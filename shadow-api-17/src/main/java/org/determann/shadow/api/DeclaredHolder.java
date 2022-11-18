@@ -22,66 +22,66 @@ public interface DeclaredHolder extends ApiHolder
 
    default Annotation getAnnotationOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
    }
 
    default @UnmodifiableView List<Annotation> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toAnnotation())
+                          .map(declared -> convert(declared).toAnnotationOrThrow())
                           .toList();
    }
 
    default Class getClassOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
+      return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
    }
 
    default @UnmodifiableView List<Class> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toClass())
+                          .map(declared -> convert(declared).toClassOrThrow())
                           .toList();
    }
 
    default Enum getEnumOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
    }
 
    default @UnmodifiableView List<Enum> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toEnum())
+                          .map(declared -> convert(declared).toEnumOrThrow())
                           .toList();
    }
 
    default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceThrowOrThrow();
    }
 
    default @UnmodifiableView List<Interface> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toInterface())
+                          .map(declared -> convert(declared).toInterfaceThrowOrThrow())
                           .toList();
    }
 
    default Record getRecordOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toRecord();
+      return convert(getDeclaredOrThrow(qualifiedName)).toRecordOrThrow();
    }
 
    default @UnmodifiableView List<Record> getRecords()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toRecord())
+                          .map(declared -> convert(declared).toRecordOrThrow())
                           .toList();
    }
 }

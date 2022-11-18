@@ -21,61 +21,61 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    }
 
    @Override
-   public Exports toExports()
+   public Exports toExportsOrThrow()
    {
       return to(DirectiveKind.EXPORTS);
    }
 
    @Override
-   public Optional<Exports> toOptionalExports()
+   public Optional<Exports> toExports()
    {
       return toOptional(DirectiveKind.EXPORTS);
    }
 
    @Override
-   public Opens toOpens()
+   public Opens toOpensOrThrow()
    {
       return to(DirectiveKind.OPENS);
    }
 
    @Override
-   public Optional<Opens> toOptionalOpens()
+   public Optional<Opens> toOpens()
    {
       return toOptional(DirectiveKind.OPENS);
    }
 
    @Override
-   public Provides toProvides()
+   public Provides toProvidesOrThrow()
    {
       return to(DirectiveKind.PROVIDES);
    }
 
    @Override
-   public Optional<Provides> toOptionalProvides()
+   public Optional<Provides> toProvides()
    {
       return toOptional(DirectiveKind.PROVIDES);
    }
 
    @Override
-   public Requires toRequires()
+   public Requires toRequiresOrThrow()
    {
       return to(DirectiveKind.REQUIRES);
    }
 
    @Override
-   public Optional<Requires> toOptionalRequires()
+   public Optional<Requires> toRequires()
    {
       return toOptional(DirectiveKind.REQUIRES);
    }
 
    @Override
-   public Uses toUses()
+   public Uses toUsesOrThrow()
    {
       return to(DirectiveKind.USES);
    }
 
    @Override
-   public Optional<Uses> toOptionalUses()
+   public Optional<Uses> toUses()
    {
       return toOptional(DirectiveKind.USES);
    }

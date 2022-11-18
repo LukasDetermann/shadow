@@ -12,7 +12,7 @@ class IntersectionTest extends ShadowTest<Intersection>
 {
    IntersectionTest()
    {
-      super(shadowApi -> convert(shadowApi.getClassOrThrow("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersection());
+      super(shadowApi -> convert(shadowApi.getClassOrThrow("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersectionOrThrow());
    }
 
    @Test

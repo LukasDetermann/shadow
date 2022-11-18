@@ -9,17 +9,17 @@ import java.util.Optional;
 
 public interface VariableConverter
 {
-   EnumConstant toEnumConstant();
+   EnumConstant toEnumOrThrowConstantOrThrow();
 
-   Optional<EnumConstant> toOptionalEnumConstant();
+   Optional<EnumConstant> toEnumConstant();
 
-   Field toField();
+   Field toFieldOrThrow();
 
-   Optional<Field> toOptionalField();
+   Optional<Field> toField();
 
-   Parameter toParameter();
+   Parameter toParameterOrThrow();
 
-   Optional<Parameter> toOptionalParameter();
+   Optional<Parameter> toParameter();
 
    /**
     * consumes all leafs of {@link Variable}

@@ -67,10 +67,10 @@ public interface Class extends Declared,
     *       Class capture = declared.interpolateGenerics();
     *
     *       Shadow<TypeMirror> stringRep = shadowApi.convert(capture.getGenerics().get(1))
-    *                                                      .toOptionalGeneric()
+    *                                                      .toGeneric()
     *                                                      .map(Generic::getExtends)
     *                                                      .map(shadowApi::convert)
-    *                                                      .flatMap(ShadowConverter::toClass)
+    *                                                      .flatMap(ShadowConverter::toClassOrThrow)
     *                                                      .map(Class::getGenerics)
     *                                                      .map(shadows -> shadows.get(0))
     *                                                      .orElseThrow();

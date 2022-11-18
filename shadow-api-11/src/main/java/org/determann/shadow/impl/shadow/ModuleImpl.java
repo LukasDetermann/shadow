@@ -128,15 +128,15 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                     switch (directive.getKind())
                                     {
                                        case REQUIRES:
-                                          return mapper.requires(convert(directive).toRequires());
+                                          return mapper.requires(convert(directive).toRequiresOrThrow());
                                        case EXPORTS:
-                                          return mapper.exports(convert(directive).toExports());
+                                          return mapper.exports(convert(directive).toExportsOrThrow());
                                        case OPENS:
-                                          return mapper.opens(convert(directive).toOpens());
+                                          return mapper.opens(convert(directive).toOpensOrThrow());
                                        case USES:
-                                          return mapper.uses(convert(directive).toUses());
+                                          return mapper.uses(convert(directive).toUsesOrThrow());
                                        case PROVIDES:
-                                          return mapper.provides(convert(directive).toProvides());
+                                          return mapper.provides(convert(directive).toProvidesOrThrow());
                                        default:
                                           throw new IllegalArgumentException();
                                     }
@@ -152,19 +152,19 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                  switch (directive.getKind())
                                  {
                                     case REQUIRES:
-                                       consumer.requires(convert(directive).toRequires());
+                                       consumer.requires(convert(directive).toRequiresOrThrow());
                                        break;
                                     case EXPORTS:
-                                       consumer.exports(convert(directive).toExports());
+                                       consumer.exports(convert(directive).toExportsOrThrow());
                                        break;
                                     case OPENS:
-                                       consumer.opens(convert(directive).toOpens());
+                                       consumer.opens(convert(directive).toOpensOrThrow());
                                        break;
                                     case USES:
-                                       consumer.uses(convert(directive).toUses());
+                                       consumer.uses(convert(directive).toUsesOrThrow());
                                        break;
                                     case PROVIDES:
-                                       consumer.provides(convert(directive).toProvides());
+                                       consumer.provides(convert(directive).toProvidesOrThrow());
                                        break;
                                  }
                               });

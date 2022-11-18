@@ -164,7 +164,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return getSuperTypes().stream()
                             .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))
                             .map(ShadowApi::convert)
-                            .map(DeclaredConverter::toInterface)
+                            .map(DeclaredConverter::toInterfaceThrowOrThrow)
                             .toList();
    }
 
