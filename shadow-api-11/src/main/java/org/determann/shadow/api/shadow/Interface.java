@@ -15,14 +15,14 @@ public interface Interface extends Declared,
    boolean isFunctional();
 
    /**
-    * {@code shadowApi.getDeclared("java.util.List")} represents {@code List}
-    * {@code shadowApi.getDeclared("java.util.List").withGenerics(shadowApi.getDeclared("java.lang.String"))} represents {@code List<String>}
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
    @SuppressWarnings("unchecked")
    Interface withGenerics(Shadow<? extends TypeMirror>... generics);
 
    /**
-    * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclared(String)}
+    * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
     */
    Interface withGenerics(String... qualifiedGenerics);
 
@@ -44,8 +44,8 @@ public interface Interface extends Declared,
     * <p>
     * The code for the example
     * <pre>{@code
-    *       Class declared = shadowApi.getClass("org.determann.shadow.example.processed.MyClass")
-    *                                 .withGenerics(shadowApi.getDeclared("java.lang.String"),
+    *       Class declared = shadowApi.getClassOrThrow("org.determann.shadow.example.processed.MyClass")
+    *                                 .withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"),
     *                                                  shadowApi.getConstants().getUnboundWildcard());
     *       Class capture = declared.interpolateGenerics();
     *
@@ -58,7 +58,7 @@ public interface Interface extends Declared,
     *                                                      .map(shadows -> shadows.get(0))
     *                                                      .orElseThrow();
     *
-    *       System.out.println(stringRep.representsSameType(shadowApi.getDeclared("java.lang.String")));
+    *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
     * }<pre/>
     * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
     */

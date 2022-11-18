@@ -99,14 +99,14 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Package getPackage(String qualifiedName)
+   public Package getPackageOrThrow(String qualifiedName)
    {
       return getShadowFactory().shadowFromElement(jdkApiContext.elements().getPackageElement(qualifiedName));
 
    }
 
    @Override
-   public Declared getDeclared(String qualifiedName)
+   public Declared getDeclaredOrThrow(String qualifiedName)
    {
       TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
       if (typeElement == null)

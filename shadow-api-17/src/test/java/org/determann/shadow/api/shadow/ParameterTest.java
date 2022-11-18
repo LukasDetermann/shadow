@@ -9,7 +9,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
 {
    ParameterTest()
    {
-      super(shadowApi -> shadowApi.getClass("ParameterExample")
+      super(shadowApi -> shadowApi.getClassOrThrow("ParameterExample")
                                   .getMethods("foo")
                                   .get(0)
                                   .getParameter("foo"));
@@ -20,7 +20,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Method method = shadowApi.getClass("ParameterExample")
+                                 Method method = shadowApi.getClassOrThrow("ParameterExample")
                                                           .getMethods("foo")
                                                           .get(0);
 
@@ -28,7 +28,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
 
                                  assertEquals(method, methodParameter.getSurrounding());
 
-                                 Constructor constructor = shadowApi.getClass("ParameterExample")
+                                 Constructor constructor = shadowApi.getClassOrThrow("ParameterExample")
                                                                     .getConstructors()
                                                                     .get(0);
                                  Parameter constructorParameter = constructor.getParameters().get(0);

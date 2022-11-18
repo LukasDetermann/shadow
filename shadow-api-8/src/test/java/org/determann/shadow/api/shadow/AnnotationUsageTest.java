@@ -17,7 +17,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
    protected Function<ShadowApi, AnnotationUsage> getShadowSupplier()
    {
       //junit doesn't like multiple constructors. Therefore, AnnotationTest can only supply its supplier to its parent
-      return shadowApi -> shadowApi.getClass("AnnotationUsageExample")
+      return shadowApi -> shadowApi.getClassOrThrow("AnnotationUsageExample")
                                    .getAnnotationUsages()
                                    .get(0);
    }
@@ -38,10 +38,10 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                  assertEquals('a', defaultValues.getValue("charValue").asCharacter());
                                  assertEquals(5f, defaultValues.getValue("floatValue").asFloat());
                                  assertEquals(6D, defaultValues.getValue("doubleValue").asDouble());
-                                 assertEquals(shadowApi.getClass("java.lang.String"), defaultValues.getValue("typeValue").asType());
-                                 assertEquals(shadowApi.getEnum("java.lang.annotation.ElementType").getEnumConstant("ANNOTATION_TYPE"),
+                                 assertEquals(shadowApi.getClassOrThrow("java.lang.String"), defaultValues.getValue("typeValue").asType());
+                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType").getEnumConstant("ANNOTATION_TYPE"),
                                               defaultValues.getValue("enumConstantValue").asEnumConstant());
-                                 assertEquals(shadowApi.getEnum("java.lang.annotation.RetentionPolicy").getEnumConstant("CLASS"),
+                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstant("CLASS"),
                                               defaultValues.getValue("annotationUsageValue")
                                                            .asAnnotationUsage()
                                                            .getValue("value")
@@ -55,7 +55,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
 
                                  assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValueTypeChooser::isDefaultValue));
 
-                                 AnnotationUsage overwrittenStringValue = shadowApi.getClass("AnnotationUsageExample")
+                                 AnnotationUsage overwrittenStringValue = shadowApi.getClassOrThrow("AnnotationUsageExample")
                                                                                    .getField("testField")
                                                                                    .getAnnotationUsages()
                                                                                    .get(0);

@@ -176,7 +176,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Interface getInterface(String qualifiedName)
+   public Interface getInterfaceOrThrow(String qualifiedName)
    {
       return getInterfaces().stream()
                             .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
@@ -185,7 +185,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Interface getDirectInterface(String qualifiedName)
+   public Interface getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
                                   .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))

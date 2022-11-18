@@ -56,7 +56,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    {
       //noinspection unchecked
       return withGenerics(Arrays.stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclared(qualifiedName))
+                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
                                 .toArray(Shadow[]::new));
    }
 

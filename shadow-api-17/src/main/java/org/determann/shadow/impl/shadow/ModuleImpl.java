@@ -69,7 +69,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
-   public Declared getDeclared(String qualifiedName)
+   public Declared getDeclaredOrThrow(String qualifiedName)
    {
       TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
       if (typeElement == null)

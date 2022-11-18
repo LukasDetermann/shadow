@@ -124,7 +124,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public List<Package> getPackages(String qualifiedName)
+   public List<Package> getPackagesOrThrow(String qualifiedName)
    {
       return jdkApiContext.elements()
                           .getAllPackageElements(qualifiedName)
@@ -145,7 +145,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Package getPackage(String qualifiedModuleName, String qualifiedPackageName)
+   public Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getShadowFactory().shadowFromElement(jdkApiContext.elements()
                                                                .getPackageElement(getModule(qualifiedModuleName).getElement(),
@@ -153,7 +153,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Package getPackage(Module module, String qualifiedPackageName)
+   public Package getPackageOrThrow(Module module, String qualifiedPackageName)
    {
       return getShadowFactory().shadowFromElement(jdkApiContext.elements()
                                                                .getPackageElement(module.getElement(),
@@ -161,7 +161,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Declared getDeclared(String qualifiedName)
+   public Declared getDeclaredOrThrow(String qualifiedName)
    {
       TypeElement typeElement = getJdkApiContext().elements().getTypeElement(qualifiedName);
       if (typeElement == null)

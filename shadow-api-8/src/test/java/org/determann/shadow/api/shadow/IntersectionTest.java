@@ -12,14 +12,14 @@ class IntersectionTest extends ShadowTest<Intersection>
 {
    IntersectionTest()
    {
-      super(shadowApi -> convert(shadowApi.getClass("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersection());
+      super(shadowApi -> convert(shadowApi.getClassOrThrow("IntersectionExample").getFormalGenerics().get(0).getExtends()).toIntersection());
    }
 
    @Test
    void testGetBounds()
    {
-      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getInterface("java.util.Collection"),
-                                                                  shadowApi.getInterface("java.io.Serializable")),
+      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                                                                  shadowApi.getInterfaceOrThrow("java.io.Serializable")),
                                                         getShadowSupplier().apply(shadowApi).getBounds()))
                      .withCodeToCompile("IntersectionExample.java", "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                      .compile();

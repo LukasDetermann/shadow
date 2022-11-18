@@ -81,16 +81,16 @@ public interface ShadowApi extends DeclaredHolder
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
    @Scope(ALL)
-   @UnmodifiableView List<Package> getPackages(@QualifiedName String qualifiedName);
+   @UnmodifiableView List<Package> getPackagesOrThrow(@QualifiedName String qualifiedName);
 
    @Scope(ALL)
    @UnmodifiableView List<Package> getPackages();
 
    @Scope(ALL)
-   Package getPackage(String qualifiedModuleName, String qualifiedPackageName);
+   Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
 
    @Scope(ALL)
-   Package getPackage(Module module, String qualifiedPackageName);
+   Package getPackageOrThrow(Module module, String qualifiedPackageName);
 
    ShadowConstants getConstants();
 

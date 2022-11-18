@@ -10,7 +10,7 @@ class FieldTest extends VariableTest<Declared, Field>
 {
    FieldTest()
    {
-      super(shadowApi -> shadowApi.getClass("java.lang.String").getField("value"));
+      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getField("value"));
    }
 
    @Test
@@ -18,7 +18,7 @@ class FieldTest extends VariableTest<Declared, Field>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Class aClass = shadowApi.getClass("FieldExample");
+                                 Class aClass = shadowApi.getClassOrThrow("FieldExample");
                                  assertEquals(aClass, aClass.getField("ID").getSurrounding());
                               })
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
@@ -28,7 +28,7 @@ class FieldTest extends VariableTest<Declared, Field>
    @Test
    void testIsConstant()
    {
-      CompilationTest.process(shadowApi -> assertTrue(shadowApi.getClass("FieldExample")
+      CompilationTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow("FieldExample")
                                                                .getField("ID")
                                                                .isConstant()))
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
@@ -38,7 +38,7 @@ class FieldTest extends VariableTest<Declared, Field>
    @Test
    void testGetConstantValue()
    {
-      CompilationTest.process(shadowApi -> assertEquals(2, shadowApi.getClass("FieldExample")
+      CompilationTest.process(shadowApi -> assertEquals(2, shadowApi.getClassOrThrow("FieldExample")
                                                                     .getField("ID")
                                                                     .getConstantValue()))
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")

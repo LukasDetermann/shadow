@@ -20,7 +20,7 @@ class ElementBackedTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Declared arrayList = shadowApi.getClass("java.util.ArrayList");
+                                 Declared arrayList = shadowApi.getClassOrThrow("java.util.ArrayList");
                                  assertEquals(Set.of(Modifier.PUBLIC), arrayList.getModifiers());
 
                                  Field serialVersionUID = arrayList.getFields().stream()
@@ -36,7 +36,7 @@ class ElementBackedTest
    void getModuleTest()
    {
       CompilationTest.process(shadowApi -> assertEquals("java.base",
-                                                        shadowApi.getInterface("java.util.Collection").getModule().getQualifiedName()))
+                                                        shadowApi.getInterfaceOrThrow("java.util.Collection").getModule().getQualifiedName()))
                      .compile();
    }
 
@@ -45,9 +45,9 @@ class ElementBackedTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertNull(shadowApi.getInterface("java.util.Collection").getJavaDoc());
+                                 assertNull(shadowApi.getInterfaceOrThrow("java.util.Collection").getJavaDoc());
 
-                                 Class aClass = shadowApi.getClass("JavaDocExample");
+                                 Class aClass = shadowApi.getClassOrThrow("JavaDocExample");
                                  assertEquals(" Class level doc\n", aClass.getJavaDoc());
                                  assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
                                  assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());

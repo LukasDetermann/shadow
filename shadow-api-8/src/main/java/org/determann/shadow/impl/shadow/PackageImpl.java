@@ -64,7 +64,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public Declared getDeclared(String qualifiedName)
+   public Declared getDeclaredOrThrow(String qualifiedName)
    {
       TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(qualifiedName);
       if (typeElement == null)

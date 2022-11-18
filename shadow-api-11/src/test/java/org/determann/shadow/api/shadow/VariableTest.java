@@ -23,10 +23,10 @@ abstract class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VA
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Parameter parameter = shadowApi.getClass("ParameterExample")
+                                 Parameter parameter = shadowApi.getClassOrThrow("ParameterExample")
                                                                 .getConstructors().get(0)
                                                                 .getParameters().get(0);
-                                 assertTrue(parameter.isSubtypeOf(shadowApi.getClass("java.lang.String")));
+                                 assertTrue(parameter.isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
                               })
                      .withCodeToCompile("ParameterExample.java", "              public class ParameterExample\n" +
                                                                  "                           {\n" +
@@ -42,9 +42,9 @@ abstract class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VA
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Field field = shadowApi.getClass("FieldExample")
+                                 Field field = shadowApi.getClassOrThrow("FieldExample")
                                                         .getFields().get(0);
-                                 assertTrue(field.isAssignableFrom(shadowApi.getClass("java.lang.Integer")));
+                                 assertTrue(field.isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Integer")));
                               })
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .compile();
@@ -53,8 +53,8 @@ abstract class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VA
    @Test
    void testGetPackage()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackages("org.determann.shadow.example.processed.test.field").get(0),
-                                                        shadowApi.getClass("org.determann.shadow.example.processed.test.field.FieldExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("org.determann.shadow.example.processed.test.field").get(0),
+                                                        shadowApi.getClassOrThrow("org.determann.shadow.example.processed.test.field.FieldExample")
                                                                  .getFields().get(0)
                                                                  .getPackage()))
                      .withCodeToCompile("FieldExample.java", "    package org.determann.shadow.example.processed.test.field;\n" +

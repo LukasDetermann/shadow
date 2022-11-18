@@ -12,25 +12,25 @@ import static org.determann.shadow.api.ShadowApi.convert;
  */
 public interface DeclaredHolder extends ApiHolder
 {
-   Declared getDeclared(@QualifiedName String qualifiedName);
+   Declared getDeclaredOrThrow(@QualifiedName String qualifiedName);
 
-   default Annotation getAnnotation(@QualifiedName String qualifiedName)
+   default Annotation getAnnotationOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toAnnotation();
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
    }
 
-   default Class getClass(@QualifiedName String qualifiedName)
+   default Class getClassOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toClass();
+      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
    }
 
-   default Enum getEnum(@QualifiedName String qualifiedName)
+   default Enum getEnumOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toEnum();
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
    }
 
-   default Interface getInterface(@QualifiedName String qualifiedName)
+   default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toInterface();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
    }
 }

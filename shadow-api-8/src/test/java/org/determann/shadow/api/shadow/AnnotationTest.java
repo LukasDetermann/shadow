@@ -13,7 +13,7 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    AnnotationTest()
    {
       //noinspection unchecked
-      super(shadowApi -> (ANNOTATION) shadowApi.getAnnotation("java.lang.annotation.Retention"));
+      super(shadowApi -> (ANNOTATION) shadowApi.getAnnotationOrThrow("java.lang.annotation.Retention"));
    }
 
    @Test
@@ -22,11 +22,11 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getAnnotation("java.lang.Override")
-                                                     .isSubtypeOf(shadowApi.getInterface("java.lang.annotation.Annotation")));
-                                 assertTrue(shadowApi.getAnnotation("java.lang.Override")
-                                                     .isSubtypeOf(shadowApi.getAnnotation("java.lang.Override")));
-                                 assertFalse(shadowApi.getAnnotation("java.lang.Override").isSubtypeOf(shadowApi.getClass("java.lang.Number")));
+                                 assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
+                                                     .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
+                                 assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
+                                                     .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
+                                 assertFalse(shadowApi.getAnnotationOrThrow("java.lang.Override").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                               })
                      .compile();
    }
@@ -35,9 +35,9 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    @Override
    void testGetDirectSuperTypes()
    {
-      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getClass("java.lang.Object"),
-                                                                      shadowApi.getInterface("java.lang.annotation.Annotation")),
-                                                        shadowApi.getAnnotation("DirektSuperTypeExample.AnnotationNoParent")
+      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                      shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
+                                                        shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                                  .getDirectSuperTypes()))
                      .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
                                                                        "                              @interface AnnotationNoParent {}\n" +
@@ -49,9 +49,9 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    @Override
    void testGetSuperTypes()
    {
-      CompilationTest.process(shadowApi -> assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClass("java.lang.Object"),
-                                                                                    shadowApi.getInterface("java.lang.annotation.Annotation"))),
-                                                        shadowApi.getAnnotation("DirektSuperTypeExample.AnnotationNoParent")
+      CompilationTest.process(shadowApi -> assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                                    shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation"))),
+                                                        shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                                  .getSuperTypes()))
                      .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
                                                                        "                              @interface AnnotationNoParent {}\n" +

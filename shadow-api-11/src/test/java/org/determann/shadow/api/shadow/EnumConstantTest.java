@@ -9,7 +9,7 @@ class EnumConstantTest extends VariableTest<Enum, EnumConstant>
 {
    EnumConstantTest()
    {
-      super(shadowApi -> shadowApi.getEnum("java.lang.annotation.RetentionPolicy").getEnumConstant("SOURCE"));
+      super(shadowApi -> shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstant("SOURCE"));
    }
 
    @Test
@@ -17,7 +17,7 @@ class EnumConstantTest extends VariableTest<Enum, EnumConstant>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Enum anEnum = shadowApi.getEnum("java.lang.annotation.RetentionPolicy");
+                                 Enum anEnum = shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
                                  assertEquals(anEnum, anEnum.getEnumConstant("SOURCE").getSurrounding());
                               })
                      .compile();

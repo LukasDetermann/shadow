@@ -22,7 +22,7 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                               {
                                  assertTrue(getShadowSupplier().apply(shadowApi).representsSameType(getShadowSupplier().apply(shadowApi)));
                                  assertFalse(getShadowSupplier().apply(shadowApi)
-                                                                .representsSameType(shadowApi.getClass("java.util.jar.Attributes")));
+                                                                .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
                                  assertFalse(getShadowSupplier().apply(shadowApi)
                                                                 .representsSameType(shadowApi.getConstants().getUnboundWildcard()));
                               })
@@ -69,7 +69,7 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
       CompilationTest.process(shadowApi ->
                               {
                                  assertEquals(getShadowSupplier().apply(shadowApi), getShadowSupplier().apply(shadowApi));
-                                 assertNotEquals(getShadowSupplier().apply(shadowApi), shadowApi.getClass("java.util.jar.Attributes"));
+                                 assertNotEquals(getShadowSupplier().apply(shadowApi), shadowApi.getClassOrThrow("java.util.jar.Attributes"));
                               })
                      .withCodeToCompile("IntersectionExample.java",
                                         "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
@@ -113,11 +113,11 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertEquals(shadowApi.getInterface("java.util.Collection"),
-                                              shadowApi.getInterface("java.util.Collection").withGenerics("java.lang.Object").erasure());
+                                 assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                                              shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object").erasure());
 
-                                 assertEquals(shadowApi.getInterface("java.util.Collection"),
-                                              shadowApi.getInterface("java.util.Collection").withGenerics("java.lang.Object"));
+                                 assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                                              shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object"));
                               })
                      .compile();
    }

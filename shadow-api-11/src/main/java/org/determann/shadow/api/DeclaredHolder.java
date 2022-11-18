@@ -18,11 +18,11 @@ public interface DeclaredHolder extends ApiHolder
 {
    @UnmodifiableView List<Declared> getDeclared();
 
-   Declared getDeclared(@QualifiedName String qualifiedName);
+   Declared getDeclaredOrThrow(@QualifiedName String qualifiedName);
 
-   default Annotation getAnnotation(@QualifiedName String qualifiedName)
+   default Annotation getAnnotationOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toAnnotation();
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
    }
 
    default @UnmodifiableView List<Annotation> getAnnotations()
@@ -33,9 +33,9 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Class getClass(@QualifiedName String qualifiedName)
+   default Class getClassOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toClass();
+      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
    }
 
    default @UnmodifiableView List<Class> getClasses()
@@ -46,9 +46,9 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Enum getEnum(@QualifiedName String qualifiedName)
+   default Enum getEnumOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toEnum();
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
    }
 
    default @UnmodifiableView List<Enum> getEnums()
@@ -59,9 +59,9 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Interface getInterface(@QualifiedName String qualifiedName)
+   default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclared(qualifiedName)).toInterface();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
    }
 
    default @UnmodifiableView List<Interface> getInterfaces()

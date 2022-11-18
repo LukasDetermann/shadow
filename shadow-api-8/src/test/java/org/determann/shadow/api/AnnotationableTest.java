@@ -16,9 +16,9 @@ class AnnotationableTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getInterface("java.util.List").getAnnotationUsages().isEmpty());
+                                 assertTrue(shadowApi.getInterfaceOrThrow("java.util.List").getAnnotationUsages().isEmpty());
 
-                                 assertTrue(shadowApi.getClass("jdk.jfr.events.DirectBufferStatisticsEvent")
+                                 assertTrue(shadowApi.getClassOrThrow("jdk.jfr.events.DirectBufferStatisticsEvent")
                                                      .getAnnotationUsages()
                                                      .stream()
                                                      .map(QualifiedNameable::getQualifiedName)
@@ -32,9 +32,9 @@ class AnnotationableTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getInterface("java.util.List").getAnnotationUsages().isEmpty());
+                                 assertTrue(shadowApi.getInterfaceOrThrow("java.util.List").getAnnotationUsages().isEmpty());
 
-                                 List<AnnotationUsage> directAnnotations = shadowApi.getAnnotation("java.lang.annotation.Documented").getDirectAnnotationUsages();
+                                 List<AnnotationUsage> directAnnotations = shadowApi.getAnnotationOrThrow("java.lang.annotation.Documented").getDirectAnnotationUsages();
 
                                  assertEquals(3, directAnnotations.size());
                                  assertEquals("java.lang.annotation.Documented", directAnnotations.get(0).getQualifiedName());
@@ -42,7 +42,7 @@ class AnnotationableTest
                                  assertEquals("java.lang.annotation.Target", directAnnotations.get(2).getQualifiedName());
 
                                  //not contains inherited annotations
-                                 assertTrue(shadowApi.getClass("jdk.jfr.events.DirectBufferStatisticsEvent")
+                                 assertTrue(shadowApi.getClassOrThrow("jdk.jfr.events.DirectBufferStatisticsEvent")
                                                      .getDirectAnnotationUsages()
                                                      .stream()
                                                      .map(QualifiedNameable::getQualifiedName)

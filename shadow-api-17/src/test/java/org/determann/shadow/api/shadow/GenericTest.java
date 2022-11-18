@@ -10,14 +10,14 @@ class GenericTest extends ShadowTest<Generic>
 {
    GenericTest()
    {
-      super(shadowApi -> shadowApi.getInterface("java.lang.Comparable").getFormalGenerics().get(0));
+      super(shadowApi -> shadowApi.getInterfaceOrThrow("java.lang.Comparable").getFormalGenerics().get(0));
    }
 
    @Test
    void testGetExtends()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("java.lang.Number"),
-                                                        convert(shadowApi.getClass("GenericsExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
+                                                        convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGeneric()
@@ -35,8 +35,8 @@ class GenericTest extends ShadowTest<Generic>
    @Test
    void testGetEnclosing()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("GenericsExample"),
-                                                        convert(shadowApi.getClass("GenericsExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
+                                                        convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGeneric()
@@ -54,8 +54,8 @@ class GenericTest extends ShadowTest<Generic>
    @Test
    void testGetPackage()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackages("org.determann.shadow.example.processed.test.generics").get(0),
-                                                        convert(shadowApi.getClass(
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("org.determann.shadow.example.processed.test.generics").get(0),
+                                                        convert(shadowApi.getClassOrThrow(
                                                                                          "org.determann.shadow.example.processed.test.generics.GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))

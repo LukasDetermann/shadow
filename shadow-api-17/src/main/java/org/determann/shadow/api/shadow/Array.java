@@ -11,7 +11,7 @@ public interface Array extends Shadow<ArrayType>
    /**
     * returns true if this can be cast to that.
     * This can be useful if you want to check if a shadow implements for example a
-    * {@link java.util.Collection} {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclared("java.util.Collection").erasure())}
+    * {@link java.util.Collection} {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     */
    boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow);
 

@@ -13,7 +13,7 @@ class PackageTest extends ShadowTest<Package>
 {
    PackageTest()
    {
-      super(shadowApi -> shadowApi.getPackage("java.base", "java.lang"));
+      super(shadowApi -> shadowApi.getPackageOrThrow("java.base", "java.lang"));
    }
 
    @Test
@@ -21,11 +21,11 @@ class PackageTest extends ShadowTest<Package>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getPackages("asdkfh").isEmpty());
+                                 assertTrue(shadowApi.getPackagesOrThrow("asdkfh").isEmpty());
 
-                                 assertEquals(List.of(shadowApi.getClass(
+                                 assertEquals(List.of(shadowApi.getClassOrThrow(
                                                     "org.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
-                                              shadowApi.getPackages("org.determann.shadow.example.processed.test.packagee.not_empty")
+                                              shadowApi.getPackagesOrThrow("org.determann.shadow.example.processed.test.packagee.not_empty")
                                                        .get(0)
                                                        .getContent());
                               })

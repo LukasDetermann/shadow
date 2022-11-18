@@ -19,9 +19,9 @@ class PrimitiveTest extends ShadowTest<Primitive>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClass("java.lang.Number")));
+                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
-                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClass("java.lang.String")));
+                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
                               })
                      .compile();
    }
@@ -31,9 +31,9 @@ class PrimitiveTest extends ShadowTest<Primitive>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClass("java.lang.Number")));
+                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
-                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClass("java.lang.String")));
+                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
 
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
                               })

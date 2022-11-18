@@ -121,7 +121,7 @@ class ConversionTest
     CompilationTest
       .process(shadowApi ->
          {
-           Shadow<TypeMirror> myField = shadowApi.getClass("MyClass")
+           Shadow<TypeMirror> myField = shadowApi.getClassOrThrow("MyClass")
                                                  .getField("myField")
                                                  .getType();
            //Converters limit the conversion to possible types
@@ -130,7 +130,7 @@ class ConversionTest
                    .getGenerics()
                    .get(0);
                    
-           assertEquals(shadowApi.getClass("java.lang.String"), 
+           assertEquals(shadowApi.getClassOrThrow("java.lang.String"), 
                         genericType);
          })
       .withCodeToCompile("MyClass.java", """
@@ -211,7 +211,7 @@ public interface Shadow
    * {@code List<String>} becomes {@code List}. This method Does the same.
    * This can be useful if you want to check if a shadow implements for example 
    * {@link java.util.Collection} 
-   * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclared("java.util.Collection").erasure())}
+   * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
    */
   Shadow<TypeMirror> erasure();
   //...
@@ -268,8 +268,8 @@ class ConversionTest
            Locale locale = shadowApi.getJdkApiContext().locale();
            boolean previewEnabled = shadowApi.getJdkApiContext().isPreviewEnabled();
 
-           Element typeElement = shadowApi.getClass("java.lang.String").getElement();
-           TypeMirror mNyClass1 = shadowApi.getClass("java.lang.String").getMirror();
+           Element typeElement = shadowApi.getClassOrThrow("java.lang.String").getElement();
+           TypeMirror mNyClass1 = shadowApi.getClassOrThrow("java.lang.String").getMirror();
          })
       .compile();
   }

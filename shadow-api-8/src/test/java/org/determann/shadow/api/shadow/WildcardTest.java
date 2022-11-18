@@ -18,8 +18,8 @@ class WildcardTest extends ShadowTest<Wildcard>
    @Test
    void testGetExtends()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("java.lang.Number"),
-                                                        convert(shadowApi.getClass("BoundsExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
+                                                        convert(shadowApi.getClassOrThrow("BoundsExample")
                                                                                    .getMethods("extendsExample")
                                                                                    .get(0)
                                                                                    .getParameter("numbers")
@@ -41,8 +41,8 @@ class WildcardTest extends ShadowTest<Wildcard>
    @Test
    void testGetSupper()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClass("java.lang.Number"),
-                                                        convert(shadowApi.getClass("BoundsExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
+                                                        convert(shadowApi.getClassOrThrow("BoundsExample")
                                                                                    .getMethods("superExample")
                                                                                    .get(0)
                                                                                    .getParameter("numbers")
@@ -66,21 +66,21 @@ class WildcardTest extends ShadowTest<Wildcard>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(convert(shadowApi.getClass("java.lang.Number"))
+                                 assertTrue(convert(shadowApi.getClassOrThrow("java.lang.Number"))
                                                      .asExtendsWildcard()
-                                                     .contains(shadowApi.getClass("java.lang.Long")));
+                                                     .contains(shadowApi.getClassOrThrow("java.lang.Long")));
 
-                                 assertFalse(convert(shadowApi.getClass("java.lang.Long"))
+                                 assertFalse(convert(shadowApi.getClassOrThrow("java.lang.Long"))
                                                       .asExtendsWildcard()
-                                                      .contains(shadowApi.getClass("java.lang.Number")));
+                                                      .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                                 assertTrue(convert(shadowApi.getClass("java.lang.Long"))
+                                 assertTrue(convert(shadowApi.getClassOrThrow("java.lang.Long"))
                                                      .asSuperWildcard()
-                                                     .contains(shadowApi.getClass("java.lang.Number")));
+                                                     .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                                 assertFalse(convert(shadowApi.getClass("java.lang.Number"))
+                                 assertFalse(convert(shadowApi.getClassOrThrow("java.lang.Number"))
                                                       .asSuperWildcard()
-                                                      .contains(shadowApi.getClass("java.lang.Long")));
+                                                      .contains(shadowApi.getClassOrThrow("java.lang.Long")));
                               })
                      .compile();
    }
@@ -92,7 +92,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                               {
                                  assertFalse(getShadowSupplier().apply(shadowApi).representsSameType(getShadowSupplier().apply(shadowApi)));
                                  assertFalse(getShadowSupplier().apply(shadowApi)
-                                                                .representsSameType(shadowApi.getClass("java.util.jar.Attributes")));
+                                                                .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
                               })
                      .compile();
    }

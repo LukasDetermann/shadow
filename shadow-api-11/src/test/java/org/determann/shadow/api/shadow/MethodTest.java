@@ -12,7 +12,7 @@ class MethodTest extends ExecutableTest<Method>
 {
    MethodTest()
    {
-      super(shadowApi -> shadowApi.getClass("java.lang.String").getMethods("toString").get(0));
+      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getMethods("toString").get(0));
    }
 
    @Test
@@ -20,7 +20,7 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 List<Method> methods = shadowApi.getClass("SubSignature").getMethods();
+                                 List<Method> methods = shadowApi.getClassOrThrow("SubSignature").getMethods();
                                  Method first = methods.get(0);
                                  Method second = methods.get(1);
                                  Method third = methods.get(2);
@@ -56,13 +56,13 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getClass("MethodExample")
+                                 assertTrue(shadowApi.getClassOrThrow("MethodExample")
                                                      .getMethods("toString").get(0)
-                                                     .overrides(shadowApi.getClass("java.lang.Object").getMethods("toString").get(0)));
+                                                     .overrides(shadowApi.getClassOrThrow("java.lang.Object").getMethods("toString").get(0)));
 
-                                 assertFalse(shadowApi.getClass("MethodExample")
+                                 assertFalse(shadowApi.getClassOrThrow("MethodExample")
                                                       .getMethods("toString").get(0)
-                                                      .overrides(shadowApi.getClass("java.lang.Object").getMethods("clone").get(0)));
+                                                      .overrides(shadowApi.getClassOrThrow("java.lang.Object").getMethods("clone").get(0)));
                               })
                      .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
@@ -83,7 +83,7 @@ class MethodTest extends ExecutableTest<Method>
    void testGetParameters()
    {
       CompilationTest.process(shadowApi -> assertEquals("[args]",
-                                                        shadowApi.getClass("MethodExample")
+                                                        shadowApi.getClassOrThrow("MethodExample")
                                                                  .getMethods("varArgsMethod").get(0).getParameters().toString()))
                      .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
@@ -104,8 +104,8 @@ class MethodTest extends ExecutableTest<Method>
    void testGetParameterTypes()
    {
       CompilationTest.process(shadowApi ->
-                                    assertEquals(List.of(convert(shadowApi.getClass("java.lang.String")).asArray()),
-                                                 shadowApi.getClass("MethodExample")
+                                    assertEquals(List.of(convert(shadowApi.getClassOrThrow("java.lang.String")).asArray()),
+                                                 shadowApi.getClassOrThrow("MethodExample")
                                                           .getMethods("varArgsMethod").get(0).getParameterTypes()))
                      .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
@@ -127,13 +127,13 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertEquals(shadowApi.getClass("java.lang.String"),
-                                              shadowApi.getClass("java.lang.String")
+                                 assertEquals(shadowApi.getClassOrThrow("java.lang.String"),
+                                              shadowApi.getClassOrThrow("java.lang.String")
                                                        .getMethods("toString").get(0)
                                                        .getReturnType());
 
-                                 assertNotEquals(shadowApi.getClass("java.lang.Long"),
-                                                 shadowApi.getClass("java.lang.String")
+                                 assertNotEquals(shadowApi.getClassOrThrow("java.lang.Long"),
+                                                 shadowApi.getClassOrThrow("java.lang.String")
                                                           .getMethods("toString").get(0)
                                                           .getReturnType());
                               })
@@ -147,12 +147,12 @@ class MethodTest extends ExecutableTest<Method>
       CompilationTest.process(shadowApi ->
                               {
                                  assertEquals(List.of(),
-                                              shadowApi.getClass("java.lang.Object")
+                                              shadowApi.getClassOrThrow("java.lang.Object")
                                                        .getMethods("toString").get(0)
                                                        .getThrows());
 
-                                 assertEquals(List.of(shadowApi.getClass("java.lang.InterruptedException")),
-                                              shadowApi.getClass("java.lang.Object")
+                                 assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.InterruptedException")),
+                                              shadowApi.getClassOrThrow("java.lang.Object")
                                                        .getMethods("wait").get(0)
                                                        .getThrows());
                               })
@@ -165,10 +165,10 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertFalse(shadowApi.getClass("java.lang.Object")
+                                 assertFalse(shadowApi.getClassOrThrow("java.lang.Object")
                                                       .getMethods("toString").get(0)
                                                       .isVarArgs());
-                                 assertTrue(shadowApi.getClass("MethodExample")
+                                 assertTrue(shadowApi.getClassOrThrow("MethodExample")
                                                      .getMethods("varArgsMethod").get(0)
                                                      .isVarArgs());
                               })
@@ -192,7 +192,7 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Class aClass = shadowApi.getClass("MethodExample");
+                                 Class aClass = shadowApi.getClassOrThrow("MethodExample");
                                  assertEquals(aClass, aClass.getMethods("toString").get(0)
                                                             .getSurrounding());
                               })
@@ -214,8 +214,8 @@ class MethodTest extends ExecutableTest<Method>
    @Override
    void testGetPackage()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackages("org.determann.shadow.example.processed.test.method").get(0),
-                                                        shadowApi.getClass("org.determann.shadow.example.processed.test.method.MethodExample")
+      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("org.determann.shadow.example.processed.test.method").get(0),
+                                                        shadowApi.getClassOrThrow("org.determann.shadow.example.processed.test.method.MethodExample")
                                                                  .getMethods("toString")
                                                                  .get(0)
                                                                  .getPackage()))
@@ -242,7 +242,7 @@ class MethodTest extends ExecutableTest<Method>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 Class aClass = shadowApi.getClass("MethodExample");
+                                 Class aClass = shadowApi.getClassOrThrow("MethodExample");
 
                                  assertTrue(aClass.getMethods("toString").get(0).getReceiverType().isEmpty());
                                  assertEquals(aClass, aClass.getMethods("receiver").get(0).getReceiverType().orElseThrow());
