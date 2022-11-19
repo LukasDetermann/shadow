@@ -75,7 +75,7 @@ public interface ShadowApi extends DeclaredHolder
    @UnmodifiableView List<Module> getModules();
 
    @Scope(ALL)
-   Module getModule(String name);
+   Module getModuleOrThrow(String name);
 
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name

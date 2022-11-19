@@ -26,7 +26,7 @@ public interface Executable extends Shadow<ExecutableType>,
     */
    @UnmodifiableView List<Parameter> getParameters();
 
-   Parameter getParameter(String name);
+   Parameter getParameterOrThrow(String name);
 
    Shadow<TypeMirror> getReturnType();
 

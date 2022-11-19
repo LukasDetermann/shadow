@@ -53,12 +53,12 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    }
 
    @Test
-   void testGetField()
+   void testgetFieldOrThrow()
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertEquals(2.7182818284590452354D, shadowApi.getClassOrThrow("java.lang.Math").getField("E").getConstantValue());
-                                 assertThrows(NoSuchElementException.class, () -> shadowApi.getClassOrThrow("java.lang.Math").getField("EEEE"));
+                                 assertEquals(2.7182818284590452354D, shadowApi.getClassOrThrow("java.lang.Math").getFieldOrThrow("E").getConstantValue());
+                                 assertThrows(NoSuchElementException.class, () -> shadowApi.getClassOrThrow("java.lang.Math").getFieldOrThrow("EEEE"));
                               })
                      .compile();
    }

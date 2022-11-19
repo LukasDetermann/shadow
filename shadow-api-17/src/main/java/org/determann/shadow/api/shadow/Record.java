@@ -10,7 +10,7 @@ public interface Record extends Declared,
                                 StaticModifiable,
                                 FinalModifiable
 {
-   RecordComponent getRecordComponent(String simpleName);
+   RecordComponent getRecordComponentOrThrow(String simpleName);
 
    @UnmodifiableView List<RecordComponent> getRecordComponents();
 

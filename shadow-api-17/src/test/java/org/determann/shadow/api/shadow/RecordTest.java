@@ -17,16 +17,16 @@ class RecordTest extends DeclaredTest<Record>
    }
 
    @Test
-   void testGetRecordComponent()
+   void testgetRecordComponentOrThrow()
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 RecordComponent idComponent = getShadowSupplier().apply(shadowApi).getRecordComponent("id");
+                                 RecordComponent idComponent = getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("id");
                                  assertEquals("id", idComponent.getSimpleName());
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                  assertThrows(NoSuchElementException.class,
-                                              () -> getShadowSupplier().apply(shadowApi).getRecordComponent("asdf"));
+                                              () -> getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("asdf"));
                               })
                      .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                      .compile();

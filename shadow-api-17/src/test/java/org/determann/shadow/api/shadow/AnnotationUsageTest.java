@@ -38,9 +38,9 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                  assertEquals(5f, defaultValues.getValue("floatValue").asFloat());
                                  assertEquals(6D, defaultValues.getValue("doubleValue").asDouble());
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.String"), defaultValues.getValue("typeValue").asType());
-                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType").getEnumConstant("ANNOTATION_TYPE"),
+                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType").getEnumConstantOrThrow("ANNOTATION_TYPE"),
                                               defaultValues.getValue("enumConstantValue").asEnumConstant());
-                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstant("CLASS"),
+                                 assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow("CLASS"),
                                               defaultValues.getValue("annotationUsageValue")
                                                            .asAnnotationUsage()
                                                            .getValue("value")
@@ -55,7 +55,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                  assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValueTypeChooser::isDefaultValue));
 
                                  AnnotationUsage overwrittenStringValue = shadowApi.getClassOrThrow("AnnotationUsageExample")
-                                                                                   .getField("testField")
+                                                                                   .getFieldOrThrow("testField")
                                                                                    .getAnnotationUsages()
                                                                                    .get(0);
 

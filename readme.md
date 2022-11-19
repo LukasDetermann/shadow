@@ -122,7 +122,7 @@ class ConversionTest
       .process(shadowApi ->
          {
            Shadow<TypeMirror> myField = shadowApi.getClassOrThrow("MyClass")
-                                                 .getField("myField")
+                                                 .getFieldOrThrow("myField")
                                                  .getType();
            //Converters limit the conversion to possible types
            Shadow<TypeMirror> genericType = convert(myField)

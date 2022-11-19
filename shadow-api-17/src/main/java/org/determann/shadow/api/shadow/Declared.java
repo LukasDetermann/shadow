@@ -43,7 +43,7 @@ public interface Declared extends Shadow<DeclaredType>,
     */
    NestingKind getNesting();
 
-   Field getField(String simpleName);
+   Field getFieldOrThrow(String simpleName);
 
    @UnmodifiableView List<Field> getFields();
 

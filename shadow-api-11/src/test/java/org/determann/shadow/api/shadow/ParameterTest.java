@@ -12,7 +12,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
       super(shadowApi -> shadowApi.getClassOrThrow("ParameterExample")
                                   .getMethods("foo")
                                   .get(0)
-                                  .getParameter("foo"));
+                                  .getParameterOrThrow("foo"));
    }
 
    @Test
@@ -24,7 +24,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
                                                           .getMethods("foo")
                                                           .get(0);
 
-                                 Parameter methodParameter = method.getParameter("foo");
+                                 Parameter methodParameter = method.getParameterOrThrow("foo");
 
                                  assertEquals(method, methodParameter.getSurrounding());
 

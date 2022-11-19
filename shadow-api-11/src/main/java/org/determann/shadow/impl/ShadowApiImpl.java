@@ -113,7 +113,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Module getModule(String name)
+   public Module getModuleOrThrow(String name)
    {
       ModuleElement moduleElement = jdkApiContext.elements().getModuleElement(name);
       if (moduleElement == null)
@@ -148,7 +148,7 @@ public class ShadowApiImpl implements ShadowApi
    public Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getShadowFactory().shadowFromElement(jdkApiContext.elements()
-                                                               .getPackageElement(getModule(qualifiedModuleName).getElement(),
+                                                               .getPackageElement(getModuleOrThrow(qualifiedModuleName).getElement(),
                                                                                   qualifiedPackageName));
    }
 

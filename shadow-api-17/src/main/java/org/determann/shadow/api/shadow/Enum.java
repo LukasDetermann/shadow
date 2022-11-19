@@ -10,7 +10,7 @@ public interface Enum extends Declared,
 {
    @UnmodifiableView List<EnumConstant> getEumConstants();
 
-   EnumConstant getEnumConstant(String simpleName);
+   EnumConstant getEnumConstantOrThrow(String simpleName);
 
    /**
     * be careful using this equals

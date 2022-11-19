@@ -82,7 +82,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Field getField(String simpleName)
+   public Field getFieldOrThrow(String simpleName)
    {
       return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
    }
@@ -203,7 +203,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public EnumConstant getEnumConstant(String simpleName)
+   public EnumConstant getEnumConstantOrThrow(String simpleName)
    {
       return getEumConstants().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
    }

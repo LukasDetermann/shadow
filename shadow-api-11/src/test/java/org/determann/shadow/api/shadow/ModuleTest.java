@@ -10,14 +10,14 @@ class ModuleTest extends ShadowTest<Module>
 {
    ModuleTest()
    {
-      super(shadowApi -> shadowApi.getModule("java.base"));
+      super(shadowApi -> shadowApi.getModuleOrThrow("java.base"));
    }
 
    @Test
    void testGetPackages()
    {
       CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("java.util.logging"),
-                                                        shadowApi.getModule("java.logging").getPackages()))
+                                                        shadowApi.getModuleOrThrow("java.logging").getPackages()))
                      .compile();
    }
 
@@ -41,7 +41,7 @@ class ModuleTest extends ShadowTest<Module>
       CompilationTest.process(shadowApi ->
                                     assertEquals(
                                           "[Requires[[ACC_MANDATED (0x8000],java.base], Exports[java.util.logging], Provides[jdk.internal.logger.DefaultLoggerFinder,sun.util.logging.internal.LoggingProviderImpl]]",
-                                          shadowApi.getModule("java.logging").getDirectives().toString()))
+                                          shadowApi.getModuleOrThrow("java.logging").getDirectives().toString()))
                      .compile();
    }
 }

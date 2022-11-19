@@ -10,7 +10,7 @@ class FieldTest extends VariableTest<Declared, Field>
 {
    FieldTest()
    {
-      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getField("value"));
+      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getFieldOrThrow("value"));
    }
 
    @Test
@@ -19,7 +19,7 @@ class FieldTest extends VariableTest<Declared, Field>
       CompilationTest.process(shadowApi ->
                               {
                                  Class aClass = shadowApi.getClassOrThrow("FieldExample");
-                                 assertEquals(aClass, aClass.getField("ID").getSurrounding());
+                                 assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
                               })
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .compile();
@@ -29,7 +29,7 @@ class FieldTest extends VariableTest<Declared, Field>
    void testIsConstant()
    {
       CompilationTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow("FieldExample")
-                                                               .getField("ID")
+                                                               .getFieldOrThrow("ID")
                                                                .isConstant()))
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .compile();
@@ -39,7 +39,7 @@ class FieldTest extends VariableTest<Declared, Field>
    void testGetConstantValue()
    {
       CompilationTest.process(shadowApi -> assertEquals(2, shadowApi.getClassOrThrow("FieldExample")
-                                                                    .getField("ID")
+                                                                    .getFieldOrThrow("ID")
                                                                     .getConstantValue()))
                      .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .compile();
