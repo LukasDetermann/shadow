@@ -1,13 +1,11 @@
 package org.determann.shadow.api.converter;
 
 import org.determann.shadow.api.shadow.Array;
-import org.determann.shadow.api.shadow.Shadow;
-
-import javax.lang.model.type.TypeMirror;
+import org.determann.shadow.api.shadow.Class;
 
 public interface PrimitiveConverter
 {
-   Shadow<TypeMirror> asBoxed();
+   Class asBoxed();
 
    Array asArray();
 }

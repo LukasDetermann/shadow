@@ -443,7 +443,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Shadow<TypeMirror> asBoxed()
+   public Class asBoxed()
    {
       return shadowApi.getShadowFactory().shadowFromType(
             shadowApi.getJdkApiContext().types().boxedClass((PrimitiveType) shadow.getMirror()).asType());

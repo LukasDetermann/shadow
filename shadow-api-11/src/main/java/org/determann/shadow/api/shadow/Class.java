@@ -29,7 +29,7 @@ public interface Class extends Declared,
    /**
     * returns the outer type for not static classes
     */
-   Optional<Shadow<TypeMirror>> getOuterType();
+   Optional<Declared> getOuterType();
 
    /**
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}

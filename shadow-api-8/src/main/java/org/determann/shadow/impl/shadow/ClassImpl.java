@@ -2,6 +2,7 @@ package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.shadow.Class;
+import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Generic;
 import org.determann.shadow.api.shadow.Shadow;
 import org.determann.shadow.api.wrapper.Property;
@@ -55,7 +56,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public Optional<Shadow<TypeMirror>> getOuterType()
+   public Optional<Declared> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
       if (enclosingType.getKind().equals(javax.lang.model.type.TypeKind.NONE))

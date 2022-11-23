@@ -32,7 +32,7 @@ public interface Executable extends Shadow<ExecutableType>,
 
    @UnmodifiableView List<Shadow<TypeMirror>> getParameterTypes();
 
-   @UnmodifiableView List<Shadow<TypeMirror>> getThrows();
+   @UnmodifiableView List<Class> getThrows();
 
    /**
     * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap

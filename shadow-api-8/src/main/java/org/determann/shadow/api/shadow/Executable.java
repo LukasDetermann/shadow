@@ -32,7 +32,7 @@ public interface Executable extends Shadow<ExecutableType>,
 
    @UnmodifiableView List<Shadow<TypeMirror>> getParameterTypes();
 
-   @UnmodifiableView List<Shadow<TypeMirror>> getThrows();
+   @UnmodifiableView List<Class> getThrows();
 
    /**
     * {@link java.util.Arrays#asList(Object[])}

@@ -2,6 +2,8 @@ package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
+import org.determann.shadow.api.converter.ShadowConverter;
+import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.*;
 
@@ -52,11 +54,13 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getThrows()
+   public List<Class> getThrows()
    {
       return getMirror().getThrownTypes()
                         .stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(ShadowApi::convert)
+                        .map(ShadowConverter::toClassOrThrow)
                         .toList();
    }
 
