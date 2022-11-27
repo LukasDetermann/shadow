@@ -56,14 +56,19 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    }
 
    @Override
-   public AnnotationValueTypeChooser getValue(String methodName)
+   public Optional<AnnotationValueTypeChooser> getValue(String methodName)
    {
       return getValues().entrySet()
                         .stream()
                         .filter(entry -> entry.getKey().getSimpleName().equals(methodName))
                         .map(Map.Entry::getValue)
-                        .findAny()
-                        .orElseThrow();
+                        .findAny();
+   }
+
+   @Override
+   public AnnotationValueTypeChooser getValueOrThrow(String methodName)
+   {
+      return getValue(methodName).orElseThrow();
    }
 
    @Override

@@ -29,25 +29,25 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                               {
                                  AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
 
-                                 assertEquals("string Value", defaultValues.getValue("stingValue").asString());
-                                 assertEquals(false, defaultValues.getValue("booleanValue").asBoolean());
-                                 assertEquals((byte) 1, defaultValues.getValue("byteValue").asByte());
-                                 assertEquals((short) 2, defaultValues.getValue("shortValue").asShort());
-                                 assertEquals(3, defaultValues.getValue("intValue").asInteger());
-                                 assertEquals(4L, defaultValues.getValue("longValue").asLong());
-                                 assertEquals('a', defaultValues.getValue("charValue").asCharacter());
-                                 assertEquals(5f, defaultValues.getValue("floatValue").asFloat());
-                                 assertEquals(6D, defaultValues.getValue("doubleValue").asDouble());
-                                 assertEquals(shadowApi.getClassOrThrow("java.lang.String"), defaultValues.getValue("typeValue").asType());
+                                 assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").asString());
+                                 assertEquals(false, defaultValues.getValueOrThrow("booleanValue").asBoolean());
+                                 assertEquals((byte) 1, defaultValues.getValueOrThrow("byteValue").asByte());
+                                 assertEquals((short) 2, defaultValues.getValueOrThrow("shortValue").asShort());
+                                 assertEquals(3, defaultValues.getValueOrThrow("intValue").asInteger());
+                                 assertEquals(4L, defaultValues.getValueOrThrow("longValue").asLong());
+                                 assertEquals('a', defaultValues.getValueOrThrow("charValue").asCharacter());
+                                 assertEquals(5f, defaultValues.getValueOrThrow("floatValue").asFloat());
+                                 assertEquals(6D, defaultValues.getValueOrThrow("doubleValue").asDouble());
+                                 assertEquals(shadowApi.getClassOrThrow("java.lang.String"), defaultValues.getValueOrThrow("typeValue").asType());
                                  assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType").getEnumConstantOrThrow("ANNOTATION_TYPE"),
-                                              defaultValues.getValue("enumConstantValue").asEnumConstant());
+                                              defaultValues.getValueOrThrow("enumConstantValue").asEnumConstant());
                                  assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow("CLASS"),
-                                              defaultValues.getValue("annotationUsageValue")
+                                              defaultValues.getValueOrThrow("annotationUsageValue")
                                                            .asAnnotationUsage()
-                                                           .getValue("value")
+                                                           .getValueOrThrow("value")
                                                            .asEnumConstant());
                                  assertEquals(Arrays.asList('b', 'c'),
-                                              defaultValues.getValue("asListOfValues")
+                                              defaultValues.getValueOrThrow("asListOfValues")
                                                            .asListOfValues()
                                                            .stream()
                                                            .map(AnnotationValueTypeChooser::asCharacter)
@@ -60,7 +60,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                                                                    .getAnnotationUsages()
                                                                                    .get(0);
 
-                                 AnnotationValueTypeChooser overwrittenValueTypeChooser = overwrittenStringValue.getValue("stingValue");
+                                 AnnotationValueTypeChooser overwrittenValueTypeChooser = overwrittenStringValue.getValueOrThrow("stingValue");
                                  assertFalse(overwrittenValueTypeChooser.isDefaultValue());
                                  assertEquals("custom Value", overwrittenValueTypeChooser.asString());
                               })

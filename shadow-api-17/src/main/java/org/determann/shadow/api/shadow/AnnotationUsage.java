@@ -6,6 +6,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.AnnotationMirror;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * {@link Annotation} represents the java file for the java concept of an annotation. This on the other hand represents
@@ -20,7 +21,9 @@ public interface AnnotationUsage extends Annotation
 {
    @UnmodifiableView Map<Method, AnnotationValueTypeChooser> getValues();
 
-   AnnotationValueTypeChooser getValue(String methodName);
+   AnnotationValueTypeChooser getValueOrThrow(String methodName);
+
+   Optional<AnnotationValueTypeChooser> getValue(String methodName);
 
    Annotation getAnnotation();
 
