@@ -113,7 +113,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public EnumConstant toEnumOrThrowConstantOrThrow()
+   public EnumConstant toEnumConstantOrThrow()
    {
       return to(TypeKind.ENUM_CONSTANT);
    }
@@ -161,7 +161,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Interface toInterfaceThrowOrThrow()
+   public Interface toInterfaceThrow()
    {
       return to(TypeKind.INTERFACE);
    }

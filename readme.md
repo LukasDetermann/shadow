@@ -126,7 +126,7 @@ class ConversionTest
                                                  .getType();
            //Converters limit the conversion to possible types
            Shadow<TypeMirror> genericType = convert(myField)
-                   .toInterfaceThrowOrThrow()
+                   .toInterfaceThrow()
                    .getGenerics()
                    .get(0);
                    

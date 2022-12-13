@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface VariableConverter
 {
-   EnumConstant toEnumOrThrowConstantOrThrow();
+   EnumConstant toEnumConstantOrThrow();
 
    Optional<EnumConstant> toEnumConstant();
 

@@ -21,7 +21,7 @@ public interface DeclaredConverter
 
    Optional<Class> toClass();
 
-   Interface toInterfaceThrowOrThrow();
+   Interface toInterfaceThrow();
 
    Optional<Interface> toInterface();
 

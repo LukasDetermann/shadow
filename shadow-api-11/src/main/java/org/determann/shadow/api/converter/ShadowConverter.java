@@ -32,7 +32,7 @@ public interface ShadowConverter
 
    Optional<Declared> toDeclared();
 
-   EnumConstant toEnumOrThrowConstantOrThrow();
+   EnumConstant toEnumConstantOrThrow();
 
    Optional<EnumConstant> toEnumConstant();
 
@@ -48,7 +48,7 @@ public interface ShadowConverter
 
    Optional<Field> toField();
 
-   Interface toInterfaceThrowOrThrow();
+   Interface toInterfaceThrow();
 
    Optional<Interface> toInterface();
 
