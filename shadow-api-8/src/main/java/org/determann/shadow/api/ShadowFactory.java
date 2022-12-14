@@ -27,5 +27,5 @@ public interface ShadowFactory
     */
    public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromType(@JdkApi TypeMirror typeMirror);
 
-   public @UnmodifiableView List<AnnotationUsage> annotationUsage(@JdkApi List<? extends AnnotationMirror> annotationMirrors);
+   public @UnmodifiableView List<AnnotationUsage> annotationUsages(@JdkApi List<? extends AnnotationMirror> annotationMirrors);
 }

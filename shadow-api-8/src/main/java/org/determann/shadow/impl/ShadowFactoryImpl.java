@@ -112,7 +112,7 @@ class ShadowFactoryImpl implements ShadowFactory
    }
 
    @Override
-   public List<AnnotationUsage> annotationUsage(List<? extends AnnotationMirror> annotationMirrors)
+   public List<AnnotationUsage> annotationUsages(List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
    }

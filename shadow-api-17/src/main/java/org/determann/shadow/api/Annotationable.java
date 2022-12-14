@@ -19,7 +19,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    {
       return getApi()
             .getShadowFactory()
-            .annotationUsage(getApi().getJdkApiContext().elements().getAllAnnotationMirrors(getElement()));
+            .annotationUsages(getApi().getJdkApiContext().elements().getAllAnnotationMirrors(getElement()));
    }
 
    default AnnotationUsage getAnnotationUsage(Annotation annotation)
@@ -44,7 +44,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
     */
    default @UnmodifiableView List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return getApi().getShadowFactory().annotationUsage(getElement().getAnnotationMirrors());
+      return getApi().getShadowFactory().annotationUsages(getElement().getAnnotationMirrors());
    }
 
    default AnnotationUsage getDirectAnnotationUsage(Annotation annotation)

@@ -289,7 +289,7 @@ class ConversionTest extends AbstractProcessor
 
     Shadow<? extends TypeMirror> shadow = shadowApi.getShadowFactory().shadowFromElement(null);
     Shadow<? extends TypeMirror> shadow1 = shadowApi.getShadowFactory().shadowFromType(null);
-    List<AnnotationUsage> annotationUsages = shadowApi.getShadowFactory().annotationUsage(null);
+    List<AnnotationUsage> annotationUsages = shadowApi.getShadowFactory().annotationUsages(null);
 
     return false;
   }
