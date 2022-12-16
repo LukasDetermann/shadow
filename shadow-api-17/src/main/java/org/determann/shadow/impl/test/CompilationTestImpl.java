@@ -100,7 +100,7 @@ public class CompilationTestImpl implements CompilationTest
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
       Objects.requireNonNull(compiler);
       JavaCompiler.CompilationTask compilerTask = compiler.getTask(null,
-                                                                   null,
+                                                                   new NonWritingFileManager(compiler.getStandardFileManager(null, null, null)),
                                                                    diagnostic ->
                                                                    {
                                                                       if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR))
