@@ -628,3 +628,45 @@ public class CustomerShadowBuilder{
 ````
 </p>
 </details>
+
+## Build
+
+To build this you need a maven [toolchains.xml](https://maven.apache.org/guides/mini/guide-using-toolchains.html) like 
+<details><summary>this</summary>
+
+````xml
+<?xml version="1.0" encoding="UTF-8"?>
+<toolchains>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <version>1.8</version>
+            <vendor>azul</vendor>
+        </provides>
+        <configuration>
+            <jdkHome>my/path/to/jdk/8</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <version>11</version>
+            <vendor>azul</vendor>
+        </provides>
+        <configuration>
+            <jdkHome>my/path/to/jdk/11</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <version>17</version>
+            <vendor>azul</vendor>
+        </provides>
+        <configuration>
+            <jdkHome>my/path/to/jdk/17</jdkHome>
+        </configuration>
+    </toolchain>
+</toolchains>
+````
+</details>

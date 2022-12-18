@@ -100,7 +100,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    public Class withGenerics(String... qualifiedGenerics)
    {
       //noinspection unchecked
-      return withGenerics(Arrays.stream(qualifiedGenerics)
+      return withGenerics((Shadow[])Arrays.stream(qualifiedGenerics)
                                 .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
                                 .toArray(Shadow[]::new));
    }
