@@ -4,7 +4,9 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -90,71 +92,9 @@ class NonWritingFileManager implements StandardJavaFileManager
    }
 
    @Override
-   public FileObject getFileForOutput(Location location, String packageName, String relativeName, FileObject sibling)
+   public FileObject getFileForOutput(Location location, String packageName, String relativeName, FileObject sibling) throws IOException
    {
-      return new FileObject()
-      {
-         @Override
-         public URI toUri()
-         {
-            return URI.create(relativeName);
-         }
-
-         @Override
-         public String getName()
-         {
-            return relativeName;
-         }
-
-         @Override
-         public InputStream openInputStream()
-         {
-            throw new IllegalArgumentException();
-         }
-
-         @Override
-         public OutputStream openOutputStream()
-         {
-            return new OutputStream()
-            {
-               @Override
-               public void write(int b)
-               {
-                  //noop
-               }
-            };
-         }
-
-         @Override
-         public Reader openReader(boolean ignoreEncodingErrors)
-         {
-            return new InputStreamReader(openInputStream());
-         }
-
-         @Override
-         public CharSequence getCharContent(boolean ignoreEncodingErrors)
-         {
-            throw new IllegalArgumentException();
-         }
-
-         @Override
-         public Writer openWriter()
-         {
-            return new OutputStreamWriter(openOutputStream());
-         }
-
-         @Override
-         public long getLastModified()
-         {
-            return 0;
-         }
-
-         @Override
-         public boolean delete()
-         {
-            return true;
-         }
-      };
+      return new NonWritingFileObject(delegate.getFileForOutput(location, packageName, relativeName, sibling));
    }
 
    @Override
