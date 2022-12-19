@@ -16,14 +16,20 @@ class AnnotationableTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getInterfaceOrThrow("java.util.List").getAnnotationUsages().isEmpty());
+                                 assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
 
-                                 assertTrue(shadowApi.getClassOrThrow("jdk.jfr.events.DirectBufferStatisticsEvent")
-                                                     .getAnnotationUsages()
-                                                     .stream()
-                                                     .map(QualifiedNameable::getQualifiedName)
-                                                     .anyMatch(name -> name.equals("jdk.jfr.Category")));
+                                 List<AnnotationUsage> annotations = shadowApi.getClassOrThrow("Child")
+                                                                              .getAnnotationUsages();
+
+                                 assertEquals(2, annotations.size());
+                                 assertEquals("ParentAnnotation", annotations.get(0).getQualifiedName());
+                                 assertEquals("ChildAnnotation", annotations.get(1).getQualifiedName());
                               })
+                     .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
+                     .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
+                     .withCodeToCompile("ChildAnnotation.java", "@interface ChildAnnotation{}")
+                     .withCodeToCompile("Parent.java", "@ParentAnnotation class Parent{}")
+                     .withCodeToCompile("Child.java", "@ChildAnnotation class Child extends Parent{}")
                      .compile();
    }
 
@@ -32,22 +38,19 @@ class AnnotationableTest
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getInterfaceOrThrow("java.util.List").getAnnotationUsages().isEmpty());
+                                 assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
 
-                                 List<AnnotationUsage> directAnnotations = shadowApi.getAnnotationOrThrow("java.lang.annotation.Documented").getDirectAnnotationUsages();
+                                 List<AnnotationUsage> directAnnotations = shadowApi.getClassOrThrow("Child")
+                                                                                    .getDirectAnnotationUsages();
 
-                                 assertEquals(3, directAnnotations.size());
-                                 assertEquals("java.lang.annotation.Documented", directAnnotations.get(0).getQualifiedName());
-                                 assertEquals("java.lang.annotation.Retention", directAnnotations.get(1).getQualifiedName());
-                                 assertEquals("java.lang.annotation.Target", directAnnotations.get(2).getQualifiedName());
-
-                                 //not contains inherited annotations
-                                 assertTrue(shadowApi.getClassOrThrow("jdk.jfr.events.DirectBufferStatisticsEvent")
-                                                     .getDirectAnnotationUsages()
-                                                     .stream()
-                                                     .map(QualifiedNameable::getQualifiedName)
-                                                     .noneMatch(name -> name.equals("jdk.jfr.Category")));
+                                 assertEquals(1, directAnnotations.size());
+                                 assertEquals("ChildAnnotation", directAnnotations.get(0).getQualifiedName());
                               })
+                     .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
+                     .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
+                     .withCodeToCompile("ChildAnnotation.java", "@interface ChildAnnotation{}")
+                     .withCodeToCompile("Parent.java", "@ParentAnnotation class Parent{}")
+                     .withCodeToCompile("Child.java", "@ChildAnnotation class Child extends Parent{}")
                      .compile();
    }
 }

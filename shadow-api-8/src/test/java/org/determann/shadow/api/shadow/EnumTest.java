@@ -64,14 +64,12 @@ class EnumTest extends DeclaredTest<Enum>
       CompilationTest.process(shadowApi ->
                               {
                                  assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                          shadowApi.getInterfaceOrThrow("java.lang.constant.Constable"),
                                                                           shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                                           shadowApi.getInterfaceOrThrow("java.io.Serializable"),
                                                                           shadowApi.getClassOrThrow("java.lang.Enum"))),
                                               shadowApi.getEnumOrThrow("EnumNoParent").getSuperTypes());
 
                                  assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                          shadowApi.getInterfaceOrThrow("java.lang.constant.Constable"),
                                                                           shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                                           shadowApi.getInterfaceOrThrow("java.io.Serializable"),
                                                                           shadowApi.getClassOrThrow("java.lang.Enum"),

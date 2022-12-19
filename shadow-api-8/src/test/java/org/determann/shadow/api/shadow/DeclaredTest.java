@@ -67,19 +67,15 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    void testGetFields()
    {
       CompilationTest.process(shadowApi ->
-                                    assertEquals(Arrays.asList("E",
-                                                               "PI",
-                                                               "DEGREES_TO_RADIANS",
-                                                               "RADIANS_TO_DEGREES",
-                                                               "negativeZeroFloatBits",
-                                                               "negativeZeroDoubleBits",
-                                                               "twoToTheDoubleScaleUp",
-                                                               "twoToTheDoubleScaleDown"),
-                                                 shadowApi.getClassOrThrow("java.lang.Math")
+                                    assertEquals(Arrays.asList("a",
+                                                               "b",
+                                                               "C"),
+                                                 shadowApi.getClassOrThrow("MyClass")
                                                           .getFields()
                                                           .stream()
                                                           .map(ElementBacked::getSimpleName)
                                                           .collect(Collectors.toList())))
+                     .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                      .compile();
    }
 
@@ -94,27 +90,21 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                               shadowApi.getClassOrThrow("java.lang.Object").getMethods("wait")
                                                        .stream()
                                                        .map(Object::toString)
+                                                       .sorted()
                                                        .collect(Collectors.toList()));
 
                                  assertEquals(0, shadowApi.getClassOrThrow("java.lang.Object").getMethods("asdf").size());
 
-                                 assertEquals(Arrays.asList("getClass()",
-                                                            "hashCode()",
-                                                            "equals(java.lang.Object)",
-                                                            "clone()",
-                                                            "toString()",
-                                                            "notify()",
-                                                            "notifyAll()",
-                                                            "wait()",
-                                                            "wait(long)",
-                                                            "wait(long,int)",
-                                                            "finalize()"),
-                                              shadowApi.getClassOrThrow("java.lang.Object")
+                                 assertEquals(Arrays.asList("fooMethod()",
+                                                            "toString()"),
+                                              shadowApi.getClassOrThrow("MyClass")
                                                        .getMethods()
                                                        .stream()
                                                        .map(Object::toString)
                                                        .collect(Collectors.toList()));
                               })
+                     .withCodeToCompile("MyClass.java",
+                                        "class MyClass{int fooMethod(){return 0;}@Override public String toString() {return \"\";}}")
                      .compile();
    }
 
