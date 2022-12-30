@@ -84,9 +84,21 @@ public class PropertyImpl implements Property
    }
 
    @Override
-   public Method getSetter()
+   public Method getSetterOrThrow()
    {
-      return setter;
+      return getSetter().orElseThrow(IllegalStateException::new);
+   }
+
+   @Override
+   public Optional<Method> getSetter()
+   {
+      return Optional.ofNullable(setter);
+   }
+
+   @Override
+   public boolean isMutable()
+   {
+      return getSetter().isPresent();
    }
 
    @Override
@@ -103,13 +115,13 @@ public class PropertyImpl implements Property
       PropertyImpl otherProperty = (PropertyImpl) other;
       return Objects.equals(getField(), otherProperty.getField()) &&
              Objects.equals(getGetter(), otherProperty.getGetter()) &&
-             Objects.equals(getSetter(), otherProperty.getSetter());
+             Objects.equals(getSetterOrThrow(), otherProperty.getSetterOrThrow());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getField(), getGetter(), getSetter());
+      return Objects.hash(getField(), getGetter(), getSetterOrThrow());
    }
 
    @Override

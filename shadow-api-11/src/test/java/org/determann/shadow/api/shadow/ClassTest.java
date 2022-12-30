@@ -56,9 +56,9 @@ class ClassTest extends DeclaredTest<Class>
                                  assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());
                                  assertEquals(Collections.emptyList(), id.getGetter().getParameters());
 
-                                 assertEquals("setId", id.getSetter().getSimpleName());
-                                 assertEquals(shadowApi.getConstants().getVoid(), id.getSetter().getReturnType());
-                                 assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetter().getParameterTypes());
+                                 assertEquals("setId", id.getSetterOrThrow().getSimpleName());
+                                 assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
+                                 assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetterOrThrow().getParameterTypes());
                               })
                      .withCodeToCompile("PropertiesExample.java", "                           public class PropertiesExample {\n" +
                                                                   "                              private int id;\n" +

@@ -96,7 +96,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetter().getSimpleName() +
+      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetterOrThrow().getSimpleName() +
                              "(" +
                              propertyName +
                              ");";
