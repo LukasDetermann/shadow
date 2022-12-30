@@ -7,6 +7,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import javax.lang.model.element.Element;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * anything that can be annotated
@@ -23,11 +24,26 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
             .annotationUsages(getApi().getJdkApiContext().elements().getAllAnnotationMirrors(getElement()));
    }
 
-   default Optional<AnnotationUsage> getUsageOf(Annotation annotation)
+   default List<AnnotationUsage> getUsagesOf(Annotation annotation)
    {
       return getAnnotationUsages().stream()
                                   .filter(usage -> usage.getAnnotation().equals(annotation))
-                                  .findAny();
+                                  .collect(Collectors.toUnmodifiableList());
+   }
+
+   default Optional<AnnotationUsage> getUsageOf(Annotation annotation)
+   {
+      List<AnnotationUsage> usages = getUsagesOf(annotation);
+
+      if (usages.isEmpty())
+      {
+         return Optional.empty();
+      }
+      if (usages.size() == 1)
+      {
+         return Optional.of(usages.get(0));
+      }
+      throw new IllegalArgumentException();
    }
 
    default AnnotationUsage getUsageOfOrThrow(Annotation annotation)
