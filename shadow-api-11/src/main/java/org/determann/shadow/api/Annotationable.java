@@ -24,7 +24,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
             .annotationUsages(getApi().getJdkApiContext().elements().getAllAnnotationMirrors(getElement()));
    }
 
-   default List<AnnotationUsage> getUsagesOf(Annotation annotation)
+   default @UnmodifiableView List<AnnotationUsage> getUsagesOf(Annotation annotation)
    {
       return getAnnotationUsages().stream()
                                   .filter(usage -> usage.getAnnotation().equals(annotation))
