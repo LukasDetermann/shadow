@@ -37,6 +37,18 @@
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <configuration>
+                    <toolchains>
+                        <jdk>
+                            <version>17</version>
+                            <vendor>azul</vendor>
+                        </jdk>
+                    </toolchains>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
