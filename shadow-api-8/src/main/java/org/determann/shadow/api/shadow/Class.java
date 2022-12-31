@@ -21,6 +21,16 @@ public interface Class extends Declared,
    @UnmodifiableView List<Property> getProperties();
 
    /**
+    * @see Property#isMutable()
+    */
+   @UnmodifiableView List<Property> getMutableProperties();
+
+   /**
+    * @see Property#isMutable()
+    */
+   @UnmodifiableView List<Property> getImmutableProperties();
+
+   /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.
     * if one is a primitive and the other is not it tries to convert them
     */

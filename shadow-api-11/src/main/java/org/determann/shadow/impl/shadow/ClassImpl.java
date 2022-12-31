@@ -54,6 +54,18 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
+   public List<Property> getMutableProperties()
+   {
+      return getProperties().stream().filter(Property::isMutable).collect(toUnmodifiableList());
+   }
+
+   @Override
+   public List<Property> getImmutableProperties()
+   {
+      return getProperties().stream().filter(property -> !property.isMutable()).collect(toUnmodifiableList());
+   }
+
+   @Override
    public Optional<Declared> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
