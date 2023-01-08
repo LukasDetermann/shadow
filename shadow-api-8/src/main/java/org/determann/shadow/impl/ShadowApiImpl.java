@@ -1,6 +1,7 @@
 package org.determann.shadow.impl;
 
 import org.determann.shadow.api.*;
+import org.determann.shadow.api.shadow.Annotation;
 import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Package;
 
@@ -96,6 +97,12 @@ public class ShadowApiImpl implements ShadowApi
          throw new IllegalArgumentException("No annotation found with qualified name \"" + qualifiedAnnotation + "\"");
       }
       return new AnnotationTypeChooserImpl(this, jdkApiContext.roundEnv().getElementsAnnotatedWith(annotation));
+   }
+
+   @Override
+   public AnnotationTypeChooser annotatedWith(Annotation annotation)
+   {
+      return annotatedWith(annotation.getQualifiedName());
    }
 
    @Override

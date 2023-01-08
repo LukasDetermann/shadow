@@ -70,6 +70,9 @@ public interface ShadowApi extends DeclaredHolder
    @Scope(CURRENT_COMPILATION)
    AnnotationTypeChooser annotatedWith(String qualifiedAnnotation);
 
+   @Scope(CURRENT_COMPILATION)
+   AnnotationTypeChooser annotatedWith(Annotation annotation);
+
    @Scope(ALL)
    @UnmodifiableView List<Module> getModules();
 

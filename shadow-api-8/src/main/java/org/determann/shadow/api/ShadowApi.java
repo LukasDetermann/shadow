@@ -64,6 +64,9 @@ public interface ShadowApi extends DeclaredHolder
    @Scope(CURRENT_COMPILATION)
    AnnotationTypeChooser annotatedWith(String qualifiedAnnotation);
 
+   @Scope(CURRENT_COMPILATION)
+   AnnotationTypeChooser annotatedWith(Annotation annotation);
+
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
