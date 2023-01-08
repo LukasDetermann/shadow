@@ -68,12 +68,23 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
       return getApi().getShadowFactory().annotationUsages(getElement().getAnnotationMirrors());
    }
 
-   default AnnotationUsage getDirectAnnotationUsage(Annotation annotation)
+   default @UnmodifiableView List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
    {
-      return getAnnotationUsages().stream()
-                                  .filter(usage -> usage.getAnnotation().equals(annotation))
-                                  .findAny()
-                                  .orElseThrow(IllegalArgumentException::new);
+      return getDirectAnnotationUsages().stream()
+                                        .filter(usage -> usage.getAnnotation().equals(annotation))
+                                        .collect(Collectors.toUnmodifiableList());
+   }
+
+   default Optional<AnnotationUsage> getDirectUsageOf(Annotation annotation)
+   {
+      return getDirectAnnotationUsages().stream()
+                                        .filter(usage -> usage.getAnnotation().equals(annotation))
+                                        .findAny();
+   }
+
+   default AnnotationUsage getDirectUsageOfOrThrow(Annotation annotation)
+   {
+      return getDirectUsageOf(annotation).orElseThrow(IllegalArgumentException::new);
    }
 
    default boolean isDirectlyAnnotatedWith(Annotation annotation)
