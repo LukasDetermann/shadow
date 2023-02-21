@@ -2,8 +2,8 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.converter.ShadowConverter;
+import org.determann.shadow.api.property.Property;
 import org.determann.shadow.api.test.CompilationTest;
-import org.determann.shadow.api.wrapper.Property;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.type.TypeMirror;
@@ -64,11 +64,11 @@ class ClassTest extends DeclaredTest<Class>
                               {
                                  List<Property> properties = shadowApi.getClassOrThrow("PropertiesExample").getProperties();
 
-                                 assertEquals(1, properties.size());
+                                 assertEquals(2, properties.size());
 
-                                 Property id = properties.get(0);
-                                 assertEquals("id", id.getField().getSimpleName());
-                                 assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().getType());
+                                 Property id = properties.get(1);
+                                 assertEquals("id", id.getField().get().getSimpleName());
+                                 assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
 
                                  assertEquals("getId", id.getGetter().getSimpleName());
                                  assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());

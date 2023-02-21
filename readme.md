@@ -487,7 +487,7 @@ A Processor creating a simple Builder companion object
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.ShadowProcessor;
 import org.determann.shadow.api.shadow.Class;
-import org.determann.shadow.api.wrapper.Property;
+import org.determann.shadow.api.property.MutableProperty;
 
 /**
  * Builds a companion Builder class for each annotated class
@@ -504,7 +504,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
 
          //create a record holding the code needed to render a property in the builder
-         List<BuilderElement> builderElements = aClass.getProperties()
+         List<BuilderElement> builderElements = aClass.getMutableProperties()
                                                       .stream()
                                                       .map(property -> renderProperty(builderSimpleName, toBuildQualifiedName, property))
                                                       .toList();
@@ -559,9 +559,9 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    /**
     * Creates a {@link BuilderElement} for each property of the annotated pojo
     */
-   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final Property property) {
-      String propertyName = property.getField().getSimpleName();
-      String type = property.getField().getType().toString();
+   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final MutableProperty property) {
+      String propertyName = property.getSimpleName();
+      String type = property.getType().toString();
       String field = "private " + type + " " + propertyName + ";";
 
       String mutator = """

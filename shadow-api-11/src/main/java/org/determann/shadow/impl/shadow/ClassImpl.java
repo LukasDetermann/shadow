@@ -1,12 +1,17 @@
 package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
+import org.determann.shadow.api.property.ImmutableProperty;
+import org.determann.shadow.api.property.MutableProperty;
+import org.determann.shadow.api.property.Property;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Generic;
 import org.determann.shadow.api.shadow.Shadow;
-import org.determann.shadow.api.wrapper.Property;
-import org.determann.shadow.impl.shadow.wraper.PropertyImpl;
+import org.determann.shadow.impl.property.ImmutablePropertyImpl;
+import org.determann.shadow.impl.property.MutablePropertyImpl;
+import org.determann.shadow.impl.property.PropertyImpl;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -50,19 +55,19 @@ public class ClassImpl extends DeclaredImpl implements Class
    @Override
    public List<Property> getProperties()
    {
-      return PropertyImpl.of(getApi(), this);
+      return PropertyImpl.of(this);
    }
 
    @Override
-   public List<Property> getMutableProperties()
+   public @UnmodifiableView List<MutableProperty> getMutableProperties()
    {
-      return getProperties().stream().filter(Property::isMutable).collect(toUnmodifiableList());
+      return MutablePropertyImpl.of(this);
    }
 
    @Override
-   public List<Property> getImmutableProperties()
+   public @UnmodifiableView List<ImmutableProperty> getImmutableProperties()
    {
-      return getProperties().stream().filter(property -> !property.isMutable()).collect(toUnmodifiableList());
+      return ImmutablePropertyImpl.of(this);
    }
 
    @Override

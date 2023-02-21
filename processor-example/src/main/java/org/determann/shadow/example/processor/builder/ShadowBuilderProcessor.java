@@ -2,8 +2,8 @@ package org.determann.shadow.example.processor.builder;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.ShadowProcessor;
+import org.determann.shadow.api.property.MutableProperty;
 import org.determann.shadow.api.shadow.Class;
-import org.determann.shadow.api.wrapper.Property;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
 
          //create a record holding the code needed to render a property in the builder
-         List<BuilderElement> builderElements = aClass.getProperties()
+         List<BuilderElement> builderElements = aClass.getMutableProperties()
                                                       .stream()
                                                       .map(property -> renderProperty(builderSimpleName, toBuildQualifiedName, property))
                                                       .toList();
@@ -80,10 +80,10 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    /**
     * Creates a {@link BuilderElement} for each property of the annotated pojo
     */
-   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final Property property)
+   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final MutableProperty property)
    {
-      String propertyName = property.getField().getSimpleName();
-      String type = property.getField().getType().toString();
+      String propertyName = property.getSimpleName();
+      String type = property.getType().toString();
       String field = "private " + type + " " + propertyName + ";";
 
       String mutator = """
@@ -96,7 +96,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetterOrThrow().getSimpleName() +
+      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetter().getSimpleName() +
                              "(" +
                              propertyName +
                              ");";

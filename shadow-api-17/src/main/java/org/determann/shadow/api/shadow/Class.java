@@ -5,7 +5,9 @@ import org.determann.shadow.api.modifier.AbstractModifiable;
 import org.determann.shadow.api.modifier.FinalModifiable;
 import org.determann.shadow.api.modifier.Sealable;
 import org.determann.shadow.api.modifier.StaticModifiable;
-import org.determann.shadow.api.wrapper.Property;
+import org.determann.shadow.api.property.ImmutableProperty;
+import org.determann.shadow.api.property.MutableProperty;
+import org.determann.shadow.api.property.Property;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.type.TypeMirror;
@@ -24,15 +26,9 @@ public interface Class extends Declared,
 
    @UnmodifiableView List<Property> getProperties();
 
-   /**
-    * @see Property#isMutable()
-    */
-   @UnmodifiableView List<Property> getMutableProperties();
+   @UnmodifiableView List<MutableProperty> getMutableProperties();
 
-   /**
-    * @see Property#isMutable()
-    */
-   @UnmodifiableView List<Property> getImmutableProperties();
+   @UnmodifiableView List<ImmutableProperty> getImmutableProperties();
 
    /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.
