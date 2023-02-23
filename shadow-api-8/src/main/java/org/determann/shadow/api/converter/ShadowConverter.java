@@ -47,7 +47,7 @@ public interface ShadowConverter
 
    Optional<Field> toField();
 
-   Interface toInterfaceThrow();
+   Interface toInterfaceOrThrow();
 
    Optional<Interface> toInterface();
 

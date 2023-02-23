@@ -61,14 +61,14 @@ public interface DeclaredHolder extends ApiHolder
 
    default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
    }
 
    default @UnmodifiableView List<Interface> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))
-                          .map(declared -> convert(declared).toInterfaceThrow())
+                          .map(declared -> convert(declared).toInterfaceOrThrow())
                           .collect(toUnmodifiableList());
    }
 }

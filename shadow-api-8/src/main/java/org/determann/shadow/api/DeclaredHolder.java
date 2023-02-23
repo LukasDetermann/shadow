@@ -31,6 +31,6 @@ public interface DeclaredHolder extends ApiHolder
 
    default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
    }
 }

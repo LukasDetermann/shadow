@@ -160,7 +160,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Interface toInterfaceThrow()
+   public Interface toInterfaceOrThrow()
    {
       return to(TypeKind.INTERFACE);
    }
