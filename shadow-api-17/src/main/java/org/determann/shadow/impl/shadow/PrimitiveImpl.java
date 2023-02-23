@@ -2,6 +2,7 @@ package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
+import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Primitive;
 import org.determann.shadow.api.shadow.Shadow;
 
@@ -26,6 +27,12 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
    {
       return getApi().getJdkApiContext().types().isAssignable(getMirror(), shadow.getMirror());
+   }
+
+   @Override
+   public Class asBoxed()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().boxedClass(getMirror()).asType());
    }
 
    @Override

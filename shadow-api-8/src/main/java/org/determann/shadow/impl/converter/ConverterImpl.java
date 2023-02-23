@@ -9,7 +9,6 @@ import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.Void;
 import org.determann.shadow.api.shadow.*;
 
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.Collections;
@@ -402,13 +401,6 @@ public class ConverterImpl implements ShadowConverter,
    public Primitive asUnboxed()
    {
       return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().unboxedType(shadow.getMirror()));
-   }
-
-   @Override
-   public Class asBoxed()
-   {
-      return shadowApi.getShadowFactory().shadowFromType(
-            shadowApi.getJdkApiContext().types().boxedClass((PrimitiveType) shadow.getMirror()).asType());
    }
 
    @Override

@@ -20,6 +20,14 @@ public interface Primitive extends Shadow<PrimitiveType>
     * if one is a primitive and the other is not it tries to convert them
     */
    boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow);
+
+   /**
+    * int -> Integer
+    * long -> Long
+    * etc...
+    */
+   Class asBoxed();
+
    /**
     * be careful using this equals
     *
