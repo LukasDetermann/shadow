@@ -39,6 +39,4 @@ public interface DeclaredConverter
    Wildcard asExtendsWildcard();
 
    Wildcard asSuperWildcard();
-
-   Primitive asUnboxed();
 }

@@ -5,9 +5,7 @@ import org.determann.shadow.api.property.ImmutableProperty;
 import org.determann.shadow.api.property.MutableProperty;
 import org.determann.shadow.api.property.Property;
 import org.determann.shadow.api.shadow.Class;
-import org.determann.shadow.api.shadow.Declared;
-import org.determann.shadow.api.shadow.Generic;
-import org.determann.shadow.api.shadow.Shadow;
+import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.impl.property.ImmutablePropertyImpl;
 import org.determann.shadow.impl.property.MutablePropertyImpl;
 import org.determann.shadow.impl.property.PropertyImpl;
@@ -142,5 +140,11 @@ public class ClassImpl extends DeclaredImpl implements Class
    public Class interpolateGenerics()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().capture(getMirror()));
+   }
+
+   @Override
+   public Primitive asUnboxed()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().unboxedType(getMirror()));
    }
 }

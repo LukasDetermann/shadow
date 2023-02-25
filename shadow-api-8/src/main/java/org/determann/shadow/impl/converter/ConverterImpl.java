@@ -398,12 +398,6 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Primitive asUnboxed()
-   {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().unboxedType(shadow.getMirror()));
-   }
-
-   @Override
    public Array asArray()
    {
       return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().getArrayType(shadow.getMirror()));

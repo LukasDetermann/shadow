@@ -92,6 +92,13 @@ public interface Class extends Declared,
    Class interpolateGenerics();
 
    /**
+    * Integer -> int
+    * Long -> long
+    * etc...
+    */
+   Primitive asUnboxed();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)
