@@ -26,6 +26,10 @@ public interface Array extends Shadow<ArrayType>
     */
    @UnmodifiableView List<Shadow<TypeMirror>> getDirectSuperTypes();
 
+   Wildcard asExtendsWildcard();
+
+   Wildcard asSuperWildcard();
+
    /**
     * be careful using this equals
     *

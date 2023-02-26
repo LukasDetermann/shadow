@@ -66,19 +66,19 @@ class WildcardTest extends ShadowTest<Wildcard>
    {
       CompilationTest.process(shadowApi ->
                               {
-                                 assertTrue(convert(shadowApi.getClassOrThrow("java.lang.Number"))
+                                 assertTrue(shadowApi.getClassOrThrow("java.lang.Number")
                                                      .asExtendsWildcard()
                                                      .contains(shadowApi.getClassOrThrow("java.lang.Long")));
 
-                                 assertFalse(convert(shadowApi.getClassOrThrow("java.lang.Long"))
+                                 assertFalse(shadowApi.getClassOrThrow("java.lang.Long")
                                                       .asExtendsWildcard()
                                                       .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                                 assertTrue(convert(shadowApi.getClassOrThrow("java.lang.Long"))
+                                 assertTrue(shadowApi.getClassOrThrow("java.lang.Long")
                                                      .asSuperWildcard()
                                                      .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                                 assertFalse(convert(shadowApi.getClassOrThrow("java.lang.Number"))
+                                 assertFalse(shadowApi.getClassOrThrow("java.lang.Number")
                                                       .asSuperWildcard()
                                                       .contains(shadowApi.getClassOrThrow("java.lang.Long")));
                               })

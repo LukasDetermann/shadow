@@ -155,6 +155,18 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
+   public Wildcard asExtendsWildcard()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getWildcardType(getMirror(), null));
+   }
+
+   @Override
+   public Wildcard asSuperWildcard()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getWildcardType(null, getMirror()));
+   }
+
+   @Override
    public List<Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()

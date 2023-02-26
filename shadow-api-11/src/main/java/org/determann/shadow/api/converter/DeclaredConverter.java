@@ -35,8 +35,4 @@ public interface DeclaredConverter
    <T> T mapper(DeclaredMapper<T> mapper);
 
    Array asArray();
-
-   Wildcard asExtendsWildcard();
-
-   Wildcard asSuperWildcard();
 }

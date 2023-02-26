@@ -395,18 +395,6 @@ public class ConverterImpl implements ShadowConverter,
 
    //conversion
    @Override
-   public Wildcard asExtendsWildcard()
-   {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().getWildcardType(shadow.getMirror(), null));
-   }
-
-   @Override
-   public Wildcard asSuperWildcard()
-   {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().getWildcardType(null, shadow.getMirror()));
-   }
-
-   @Override
    public Array asArray()
    {
       return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().getArrayType(shadow.getMirror()));

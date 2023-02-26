@@ -4,6 +4,7 @@ import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
 import org.determann.shadow.api.shadow.Array;
 import org.determann.shadow.api.shadow.Shadow;
+import org.determann.shadow.api.shadow.Wildcard;
 
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
@@ -38,6 +39,18 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
                      .stream()
                      .map(typeMirror1 -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror1))
                      .toList();
+   }
+
+   @Override
+   public Wildcard asExtendsWildcard()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getWildcardType(getMirror(), null));
+   }
+
+   @Override
+   public Wildcard asSuperWildcard()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getWildcardType(null, getMirror()));
    }
 
    @Override

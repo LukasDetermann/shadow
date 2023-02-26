@@ -82,6 +82,10 @@ public interface Declared extends Shadow<DeclaredType>,
     */
    String getBinaryName();
 
+   Wildcard asExtendsWildcard();
+
+   Wildcard asSuperWildcard();
+
    /**
     * be careful using this equals
     *

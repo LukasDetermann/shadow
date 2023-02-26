@@ -21,9 +21,9 @@ public interface Wildcard extends Shadow<WildcardType>
 
    /**
     * <pre>{@code
-    *    shadowApi.convert(shadowApi.getClassOrThrow("java.lang.Number"))
-    *          .asExtendsWildcard()
-    *          .contains(shadowApi.getDeclaredOrThrow("java.lang.Long"));
+    *    shadowApi.getClassOrThrow("java.lang.Number")
+    *             .asExtendsWildcard()
+    *             .contains(shadowApi.getDeclaredOrThrow("java.lang.Long"));
     * }</pre>
     */
    boolean contains(Shadow<? extends TypeMirror> shadow);
