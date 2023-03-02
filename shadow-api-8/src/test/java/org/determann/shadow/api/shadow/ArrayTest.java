@@ -14,7 +14,7 @@ class ArrayTest extends ShadowTest<Array>
 {
    ArrayTest()
    {
-      super(shadowApi -> convert(shadowApi.getClassOrThrow("java.lang.String")).asArray());
+      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").asArray());
    }
 
    @Test
@@ -23,13 +23,13 @@ class ArrayTest extends ShadowTest<Array>
       CompilationTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
-                                 Array stringArray1 = convert(string).asArray();
-                                 Array stringArray2 = convert(string).asArray();
+                                 Array stringArray1 = string.asArray();
+                                 Array stringArray2 = string.asArray();
 
                                  assertTrue(stringArray1.isSubtypeOf(stringArray2));
 
-                                 Array collectionArray = convert(shadowApi.getInterfaceOrThrow("java.util.Collection")).asArray();
-                                 Array iterableArray = convert(shadowApi.getInterfaceOrThrow("java.lang.Iterable")).asArray();
+                                 Array collectionArray = shadowApi.getInterfaceOrThrow("java.util.Collection").asArray();
+                                 Array iterableArray = shadowApi.getInterfaceOrThrow("java.lang.Iterable").asArray();
                                  assertFalse(collectionArray.isSubtypeOf(iterableArray));
                               })
                      .compile();
@@ -41,7 +41,7 @@ class ArrayTest extends ShadowTest<Array>
       CompilationTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
-                                 Array stringArray = convert(string).asArray();
+                                 Array stringArray = string.asArray();
 
                                  assertEquals(string, stringArray.getComponentType());
                               })
@@ -55,15 +55,15 @@ class ArrayTest extends ShadowTest<Array>
                               {
                                  //declared array -> Object[]
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
-                                 Array objectArray = convert(shadowApi.getClassOrThrow("java.lang.Object")).asArray();
-                                 Array stringArray = convert(string).asArray();
+                                 Array objectArray = shadowApi.getClassOrThrow("java.lang.Object").asArray();
+                                 Array stringArray = string.asArray();
 
                                  List<Shadow<TypeMirror>> stringArraySupertypes = stringArray.getDirectSuperTypes();
                                  assertEquals(1, stringArraySupertypes.size());
                                  assertEquals(objectArray, stringArraySupertypes.get(0));
 
                                  //primitive array -> intersection of java.io.Serializable&java.lang.Cloneable
-                                 Array intArray = convert(shadowApi.getConstants().getPrimitiveInt()).asArray();
+                                 Array intArray = shadowApi.getConstants().getPrimitiveInt().asArray();
                                  Declared serializable = shadowApi.getInterfaceOrThrow("java.io.Serializable");
                                  Declared cloneable = shadowApi.getInterfaceOrThrow("java.lang.Cloneable");
                                  List<Declared> primitiveArraySuper = Arrays.asList(serializable, cloneable);
@@ -81,11 +81,11 @@ class ArrayTest extends ShadowTest<Array>
       CompilationTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
-                                 Array stringArray1 = convert(string).asArray();
-                                 Array stringArray2 = convert(string).asArray();
+                                 Array stringArray1 = string.asArray();
+                                 Array stringArray2 = string.asArray();
                                  assertEquals(stringArray1, stringArray2);
 
-                                 Array objectArray = convert(shadowApi.getClassOrThrow("java.lang.Object")).asArray();
+                                 Array objectArray = shadowApi.getClassOrThrow("java.lang.Object").asArray();
                                  assertNotEquals(stringArray1, objectArray);
                               })
                      .compile();

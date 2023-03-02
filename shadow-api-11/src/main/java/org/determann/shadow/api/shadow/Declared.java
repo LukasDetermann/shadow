@@ -86,6 +86,11 @@ public interface Declared extends Shadow<DeclaredType>,
    Wildcard asSuperWildcard();
 
    /**
+    * String -> String[]
+    */
+   Array asArray();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)

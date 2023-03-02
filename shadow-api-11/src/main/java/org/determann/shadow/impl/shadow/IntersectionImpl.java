@@ -2,6 +2,7 @@ package org.determann.shadow.impl.shadow;
 
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
+import org.determann.shadow.api.shadow.Array;
 import org.determann.shadow.api.shadow.Intersection;
 import org.determann.shadow.api.shadow.Shadow;
 
@@ -32,6 +33,12 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
       return getMirror().getBounds().stream()
                         .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
                         .collect(toUnmodifiableList());
+   }
+
+   @Override
+   public Array asArray()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getArrayType(getMirror()));
    }
 
    @Override

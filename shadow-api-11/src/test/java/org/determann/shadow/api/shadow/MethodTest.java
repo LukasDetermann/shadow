@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MethodTest extends ExecutableTest<Method>
@@ -104,7 +103,7 @@ class MethodTest extends ExecutableTest<Method>
    void testGetParameterTypes()
    {
       CompilationTest.process(shadowApi ->
-                                    assertEquals(List.of(convert(shadowApi.getClassOrThrow("java.lang.String")).asArray()),
+                                    assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String").asArray()),
                                                  shadowApi.getClassOrThrow("MethodExample")
                                                           .getMethods("varArgsMethod").get(0).getParameterTypes()))
                      .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +

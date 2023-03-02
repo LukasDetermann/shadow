@@ -33,6 +33,4 @@ public interface DeclaredConverter
     * consumes all leafs of {@link Declared}
     */
    <T> T mapper(DeclaredMapper<T> mapper);
-
-   Array asArray();
 }

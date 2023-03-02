@@ -392,11 +392,4 @@ public class ConverterImpl implements ShadowConverter,
                                                                  .map(mapper::parameter)
                                                                  .orElse(null)));
    }
-
-   //conversion
-   @Override
-   public Array asArray()
-   {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().types().getArrayType(shadow.getMirror()));
-   }
 }

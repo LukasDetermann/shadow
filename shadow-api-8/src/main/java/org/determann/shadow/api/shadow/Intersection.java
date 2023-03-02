@@ -12,6 +12,11 @@ import java.util.List;
 public interface Intersection extends Shadow<IntersectionType>
 {
    /**
+    *  Collection & Serializable -> Collection & Serializable[]
+    */
+   Array asArray();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)

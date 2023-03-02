@@ -29,6 +29,11 @@ public interface Primitive extends Shadow<PrimitiveType>
    Class asBoxed();
 
    /**
+    * int -> int[]
+    */
+   Array asArray();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)

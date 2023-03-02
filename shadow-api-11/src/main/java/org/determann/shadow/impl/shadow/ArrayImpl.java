@@ -56,6 +56,12 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    }
 
    @Override
+   public Array asArray()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getArrayType(getMirror()));
+   }
+
+   @Override
    public TypeKind getTypeKind()
    {
       return TypeKind.ARRAY;

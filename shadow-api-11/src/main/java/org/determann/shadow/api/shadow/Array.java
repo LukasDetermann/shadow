@@ -31,6 +31,11 @@ public interface Array extends Shadow<ArrayType>
    Wildcard asSuperWildcard();
 
    /**
+    * String[] -> String[][]
+    */
+   Array asArray();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)
