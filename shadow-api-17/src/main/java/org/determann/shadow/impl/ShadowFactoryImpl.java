@@ -63,7 +63,7 @@ class ShadowFactoryImpl implements ShadowFactory
                case NULL -> new NullImpl(shadowApi, (NullType) typeMirror);
                case TYPEVAR -> new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
                case INTERSECTION -> new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
-               case EXECUTABLE, NONE -> throw new IllegalArgumentException("bug in this api: executables should be created for elements");
+               case EXECUTABLE, NONE -> throw new IllegalArgumentException("bug in this api: executables should be created using elements");
                case ERROR, OTHER, UNION -> throw new IllegalArgumentException("not implemented");
             };
    }

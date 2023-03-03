@@ -105,7 +105,7 @@ class ShadowFactoryImpl implements ShadowFactory
             return (SHADOW)new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
          case EXECUTABLE:
          case NONE:
-            throw new IllegalArgumentException("bug in this api: executables should be created for elements");
+            throw new IllegalArgumentException("bug in this api: executables should be created using elements");
          case ERROR:
          case OTHER:
          case UNION:
