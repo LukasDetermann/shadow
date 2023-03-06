@@ -44,6 +44,12 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    }
 
    @Override
+   public Array erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
+
+   @Override
    public Wildcard asExtendsWildcard()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getWildcardType(getMirror(), null));

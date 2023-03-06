@@ -145,6 +145,12 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
+   public Class erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
+
+   @Override
    public Primitive asUnboxed()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().unboxedType(getMirror()));

@@ -6,7 +6,6 @@ import org.determann.shadow.api.TypeKind;
 import org.determann.shadow.api.converter.DeclaredConverter;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Package;
-import org.determann.shadow.api.shadow.Record;
 import org.determann.shadow.api.shadow.*;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -22,8 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
-                                                                      Enum,
-                                                                      Record
+                                                                      Enum
 {
    private final TypeElement typeElement;
 
@@ -225,21 +223,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    public Package getPackage()
    {
       return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().elements().getPackageOf(getElement()));
-   }
-
-   @Override
-   public RecordComponent getRecordComponentOrThrow(String simpleName)
-   {
-      return getRecordComponents().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
-   }
-
-   @Override
-   public List<RecordComponent> getRecordComponents()
-   {
-      return getElement().getRecordComponents()
-                         .stream()
-                         .map(recordComponentElement -> getApi().getShadowFactory().<RecordComponent>shadowFromElement(recordComponentElement))
-                         .toList();
    }
 
    @Override

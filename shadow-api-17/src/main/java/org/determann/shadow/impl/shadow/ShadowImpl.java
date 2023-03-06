@@ -31,12 +31,6 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow<MI
    }
 
    @Override
-   public Shadow<TypeMirror> erasure()
-   {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
-   }
-
-   @Override
    public MIRROR getMirror()
    {
       return typeMirror;

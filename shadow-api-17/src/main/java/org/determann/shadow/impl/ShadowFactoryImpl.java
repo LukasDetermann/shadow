@@ -26,7 +26,8 @@ class ShadowFactoryImpl implements ShadowFactory
       return (SHADOW) switch (element.getKind())
             {
                case PACKAGE -> new PackageImpl(shadowApi, (PackageElement) element);
-               case ENUM, ANNOTATION_TYPE, RECORD -> new DeclaredImpl(shadowApi, (TypeElement) element);
+               case ENUM, ANNOTATION_TYPE -> new DeclaredImpl(shadowApi, (TypeElement) element);
+               case RECORD -> new RecordImpl(shadowApi, (TypeElement) element);
                case CLASS -> new ClassImpl(shadowApi, (TypeElement) element);
                case INTERFACE -> new InterfaceImpl(shadowApi, (TypeElement) element);
                case METHOD, CONSTRUCTOR -> new ExecutableImpl(shadowApi, ((ExecutableElement) element));
@@ -53,7 +54,8 @@ class ShadowFactoryImpl implements ShadowFactory
                      {
                         case CLASS -> new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
                         case INTERFACE -> new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
-                        case ANNOTATION_TYPE, RECORD, ENUM -> new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
+                        case RECORD -> new RecordImpl(shadowApi, (DeclaredType) typeMirror);
+                        case ANNOTATION_TYPE, ENUM -> new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
                         default -> throw new IllegalArgumentException("not implemented");
                      };
                case WILDCARD -> new WildcardImpl(shadowApi, (WildcardType) typeMirror);

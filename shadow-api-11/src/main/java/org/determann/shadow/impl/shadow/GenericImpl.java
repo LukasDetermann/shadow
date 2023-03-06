@@ -58,6 +58,12 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    }
 
    @Override
+   public Shadow<TypeMirror> erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
+
+   @Override
    public TypeParameterElement getElement()
    {
       return typeParameterElement;

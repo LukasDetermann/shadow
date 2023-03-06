@@ -52,6 +52,12 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
+   public Shadow<TypeMirror> erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
+
+   @Override
    public int hashCode()
    {
       return Objects.hash(getExtends(),

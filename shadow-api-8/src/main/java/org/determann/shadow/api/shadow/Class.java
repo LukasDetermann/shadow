@@ -88,6 +88,15 @@ public interface Class extends Declared,
    Class interpolateGenerics();
 
    /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link Class}s this means for example {@code class MyClass<T>{}} -> {@code class MyClass{}}
+    */
+   Class erasure();
+
+   /**
     * Integer -> int
     * Long -> long
     * etc...

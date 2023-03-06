@@ -81,4 +81,10 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().capture(getMirror()));
    }
+
+   @Override
+   public Interface erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
 }

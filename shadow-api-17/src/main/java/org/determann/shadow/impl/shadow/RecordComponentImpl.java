@@ -59,6 +59,12 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
+   public RecordComponent erasure()
+   {
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+   }
+
+   @Override
    public RecordComponentElement getElement()
    {
       return recordComponentElement;
