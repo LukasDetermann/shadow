@@ -1,12 +1,9 @@
 package org.determann.shadow.api;
 
-import org.determann.shadow.impl.ProcessorDiagnosticsRenderer;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
@@ -22,7 +19,7 @@ import java.util.Set;
  */
 public abstract class ShadowProcessor extends AbstractProcessor
 {
-   private int processingRoundNumber = 0;
+   private int processingRound = 1;
 
    @Override
    public Set<String> getSupportedAnnotationTypes()
@@ -47,10 +44,11 @@ public abstract class ShadowProcessor extends AbstractProcessor
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
    {
       Instant start = Instant.now();
+      ShadowApi api = ShadowApi.create(processingEnv, roundEnv, processingRound);
       //noinspection OverlyBroadCatchBlock
       try
       {
-         process(ShadowApi.create(processingEnv, roundEnv, processingRoundNumber));
+         process(api);
       }
       //the compiler can crash when an uncaught exception is thrown. so it is just printed here and will raise an error
       //using the proxied err outputStream in the ShadowApi
@@ -62,19 +60,23 @@ public abstract class ShadowProcessor extends AbstractProcessor
       }
       if (!roundEnv.processingOver())
       {
-         printDiagnostics(start);
+         String processorName = getClass().isAnonymousClass() ? "anonymousProcessor" : getClass().getSimpleName();
+         printDiagnostics(api, processorName, processingRound, start, Instant.now());
       }
+      processingRound++;
+
       //claiming annotations is kinda useless
       return false;
    }
 
-   private void printDiagnostics(Instant start)
+   protected void printDiagnostics(ShadowApi api, String processorName, int processingRound, Instant start, Instant end)
    {
-      processingEnv.getMessager()
-                   .printMessage(Diagnostic.Kind.MANDATORY_WARNING,
-                                 ProcessorDiagnosticsRenderer.render(getClass().getSimpleName(),
-                                                                     ++processingRoundNumber,
-                                                                     Duration.between(start, Instant.now())));
+      String duration = Duration.between(start, end).toString()
+                                .substring(2)
+                                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
+                                .toLowerCase();
+
+      api.logInfo(processorName + " took " + duration + " in round " + processingRound + "\n");
    }
 
    /**

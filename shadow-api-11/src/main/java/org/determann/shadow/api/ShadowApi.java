@@ -53,9 +53,9 @@ import static org.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILAT
  */
 public interface ShadowApi extends DeclaredHolder
 {
-   static ShadowApi create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRoundNumber)
+   static ShadowApi create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
-      return new ShadowApiImpl(processingEnv, roundEnv, processingRoundNumber);
+      return new ShadowApiImpl(processingEnv, roundEnv, processingRound);
    }
 
    JdkApiContext getJdkApiContext();
@@ -171,9 +171,9 @@ public interface ShadowApi extends DeclaredHolder
    boolean isFirstRound();
 
    /**
-    * Number of processing round
+    * starts at 1
     */
-   int roundNumber();
+   int getProcessingRound();
 
    //convert Shadows
    static AnnotationConverter convert(Annotation annotationShadow)

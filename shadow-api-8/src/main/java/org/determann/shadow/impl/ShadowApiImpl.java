@@ -24,12 +24,12 @@ public class ShadowApiImpl implements ShadowApi
 {
    private final JdkApiContext jdkApiContext;
    private final ShadowFactory shadowFactory = new ShadowFactoryImpl(this);
-   private final int processingRoundNumber;
+   private final int processingRound;
 
 
-   public ShadowApiImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRoundNumber)
+   public ShadowApiImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
-      this.processingRoundNumber = processingRoundNumber;
+      this.processingRound = processingRound;
       this.jdkApiContext = new JdkApiContext(
             roundEnv,
             processingEnv.getElementUtils(),
@@ -244,13 +244,13 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public boolean isFirstRound()
    {
-      return processingRoundNumber == 0;
+      return processingRound == 0;
    }
 
    @Override
-   public int roundNumber()
+   public int getProcessingRound()
    {
-      return processingRoundNumber;
+      return processingRound;
    }
 
    @Override
