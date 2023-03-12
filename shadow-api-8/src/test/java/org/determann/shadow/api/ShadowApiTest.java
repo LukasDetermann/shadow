@@ -32,16 +32,12 @@ class ShadowApiTest
 
    private void testStringConversion(String expected, UnaryOperator<String> conversion)
    {
-      CompilationTest.process(shadowApi ->
-                              {
-                                 Assertions.assertEquals(expected, conversion.apply("ExampleName"));
-                                 Assertions.assertEquals(expected, conversion.apply("org.example.ExampleName"));
-                                 Assertions.assertEquals(expected, conversion.apply("exampleName"));
-                                 Assertions.assertEquals(expected, conversion.apply("org.example.exampleName"));
-                                 Assertions.assertEquals(expected, conversion.apply("EXAMPLE_NAME"));
-                                 Assertions.assertEquals(expected, conversion.apply("org.example.EXAMPLE_NAME"));
-                              })
-                     .compile();
+      Assertions.assertEquals(expected, conversion.apply("ExampleName"));
+      Assertions.assertEquals(expected, conversion.apply("org.example.ExampleName"));
+      Assertions.assertEquals(expected, conversion.apply("exampleName"));
+      Assertions.assertEquals(expected, conversion.apply("org.example.exampleName"));
+      Assertions.assertEquals(expected, conversion.apply("EXAMPLE_NAME"));
+      Assertions.assertEquals(expected, conversion.apply("org.example.EXAMPLE_NAME"));
    }
 }
 
