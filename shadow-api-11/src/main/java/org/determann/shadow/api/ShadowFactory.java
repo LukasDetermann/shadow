@@ -3,7 +3,6 @@ package org.determann.shadow.api;
 import org.determann.shadow.api.metadata.JdkApi;
 import org.determann.shadow.api.shadow.AnnotationUsage;
 import org.determann.shadow.api.shadow.Shadow;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -27,5 +26,5 @@ public interface ShadowFactory
     */
    public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromType(@JdkApi TypeMirror typeMirror);
 
-   public @UnmodifiableView List<AnnotationUsage> annotationUsages(@JdkApi List<? extends AnnotationMirror> annotationMirrors);
+   public List<AnnotationUsage> annotationUsages(@JdkApi List<? extends AnnotationMirror> annotationMirrors);
 }

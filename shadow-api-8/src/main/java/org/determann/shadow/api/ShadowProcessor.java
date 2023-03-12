@@ -1,7 +1,6 @@
 package org.determann.shadow.api;
 
 import org.determann.shadow.impl.ProcessorDiagnosticsRenderer;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -28,7 +27,7 @@ public abstract class ShadowProcessor extends AbstractProcessor
    private int processingRoundNumber = 0;
 
    @Override
-   public @UnmodifiableView Set<String> getSupportedAnnotationTypes()
+   public Set<String> getSupportedAnnotationTypes()
    {
       return new HashSet<>(Collections.singletonList("*"));
    }

@@ -3,7 +3,6 @@ package org.determann.shadow.api.shadow;
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.modifier.AbstractModifiable;
 import org.determann.shadow.api.modifier.StaticModifiable;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -29,12 +28,12 @@ public interface Interface extends Declared,
    /**
     * {@code List<}<b>String</b>{@code >}
     */
-   @UnmodifiableView List<Shadow<TypeMirror>> getGenerics();
+   List<Shadow<TypeMirror>> getGenerics();
 
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   @UnmodifiableView List<Generic> getFormalGenerics();
+   List<Generic> getFormalGenerics();
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.

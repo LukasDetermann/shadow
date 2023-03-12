@@ -28,12 +28,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jetbrains</groupId>
-                <artifactId>annotations</artifactId>
-                <version>${org.jetbrains.annotations.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${org.junit.jupiter.junit-jupiter-api.version}</version>

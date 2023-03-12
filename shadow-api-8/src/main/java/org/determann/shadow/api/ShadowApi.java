@@ -2,7 +2,6 @@ package org.determann.shadow.api;
 
 import org.determann.shadow.api.converter.*;
 import org.determann.shadow.api.metadata.JdkApi;
-import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.metadata.Scope;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
@@ -71,7 +70,7 @@ public interface ShadowApi extends DeclaredHolder
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
    @Scope(ALL)
-   Package getPackageOrThrow(@QualifiedName String qualifiedName);
+   Package getPackageOrThrow(String qualifiedName);
 
    ShadowConstants getConstants();
 
@@ -126,12 +125,12 @@ public interface ShadowApi extends DeclaredHolder
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
     */
-   void writeSourceFile(@QualifiedName String qualifiedName, String content);
+   void writeSourceFile(String qualifiedName, String content);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .class files
     */
-   void writeClassFile(@QualifiedName String qualifiedName, String content);
+   void writeClassFile(String qualifiedName, String content);
 
    /**
     * the created file will NOT be registered for the next annotation processor round. writes anything

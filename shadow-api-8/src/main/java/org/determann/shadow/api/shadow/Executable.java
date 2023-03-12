@@ -2,7 +2,6 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.ElementBacked;
 import org.determann.shadow.api.ShadowApi;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ExecutableType;
@@ -24,15 +23,15 @@ public interface Executable extends Shadow<ExecutableType>,
    /**
     * {@code public MyObject(}<b>String param<b/>{@code )}
     */
-   @UnmodifiableView List<Parameter> getParameters();
+   List<Parameter> getParameters();
 
    Parameter getParameterOrThrow(String name);
 
    Shadow<TypeMirror> getReturnType();
 
-   @UnmodifiableView List<Shadow<TypeMirror>> getParameterTypes();
+   List<Shadow<TypeMirror>> getParameterTypes();
 
-   @UnmodifiableView List<Class> getThrows();
+   List<Class> getThrows();
 
    /**
     * {@link java.util.Arrays#asList(Object[])}
@@ -49,7 +48,7 @@ public interface Executable extends Shadow<ExecutableType>,
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   @UnmodifiableView List<Generic> getFormalGenerics();
+   List<Generic> getFormalGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".

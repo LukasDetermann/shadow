@@ -1,7 +1,5 @@
 package org.determann.shadow.api.shadow;
 
-import org.jetbrains.annotations.UnmodifiableView;
-
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -24,7 +22,7 @@ public interface Array extends Shadow<ArrayType>
     * returns Object[] for declared arrays and an {@link Intersection} of {@code java.io.Serializable&java.lang.Cloneable}
     * for primitives
     */
-   @UnmodifiableView List<Shadow<TypeMirror>> getDirectSuperTypes();
+   List<Shadow<TypeMirror>> getDirectSuperTypes();
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.

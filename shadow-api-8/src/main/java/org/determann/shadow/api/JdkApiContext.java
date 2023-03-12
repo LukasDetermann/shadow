@@ -1,7 +1,6 @@
 package org.determann.shadow.api;
 
 import org.determann.shadow.api.metadata.JdkApi;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -70,7 +69,7 @@ public final class JdkApiContext
    }
 
    @JdkApi
-   public @UnmodifiableView Map<String, String> options()
+   public Map<String, String> options()
    {
       return options;
    }

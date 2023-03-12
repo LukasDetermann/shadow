@@ -8,7 +8,6 @@ import org.determann.shadow.api.modifier.StaticModifiable;
 import org.determann.shadow.api.property.ImmutableProperty;
 import org.determann.shadow.api.property.MutableProperty;
 import org.determann.shadow.api.property.Property;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -22,13 +21,13 @@ public interface Class extends Declared,
 {
    Class getSuperClass();
 
-   @UnmodifiableView List<Class> getPermittedSubClasses();
+   List<Class> getPermittedSubClasses();
 
-   @UnmodifiableView List<Property> getProperties();
+   List<Property> getProperties();
 
-   @UnmodifiableView List<MutableProperty> getMutableProperties();
+   List<MutableProperty> getMutableProperties();
 
-   @UnmodifiableView List<ImmutableProperty> getImmutableProperties();
+   List<ImmutableProperty> getImmutableProperties();
 
    /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.
@@ -56,12 +55,12 @@ public interface Class extends Declared,
    /**
     * {@code List<}<b>String</b>{@code >}
     */
-   @UnmodifiableView List<Shadow<TypeMirror>> getGenerics();
+   List<Shadow<TypeMirror>> getGenerics();
 
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   @UnmodifiableView List<Generic> getFormalGenerics();
+   List<Generic> getFormalGenerics();
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.

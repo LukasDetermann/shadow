@@ -4,7 +4,6 @@ import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.TypeKind;
 import org.determann.shadow.api.shadow.Declared;
 import org.determann.shadow.api.shadow.Package;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -63,7 +62,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public @UnmodifiableView List<Declared> getDeclared()
+   public List<Declared> getDeclared()
    {
       return getContent();
    }

@@ -3,7 +3,6 @@ package org.determann.shadow.api;
 import org.determann.shadow.api.converter.*;
 import org.determann.shadow.api.converter.module.*;
 import org.determann.shadow.api.metadata.JdkApi;
-import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.metadata.Scope;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
@@ -15,7 +14,6 @@ import org.determann.shadow.api.shadow.module.*;
 import org.determann.shadow.impl.ShadowApiImpl;
 import org.determann.shadow.impl.converter.ConverterImpl;
 import org.determann.shadow.impl.converter.DirectiveConverterImpl;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -74,7 +72,7 @@ public interface ShadowApi extends DeclaredHolder
    AnnotationTypeChooser annotatedWith(Annotation annotation);
 
    @Scope(ALL)
-   @UnmodifiableView List<Module> getModules();
+   List<Module> getModules();
 
    @Scope(ALL)
    Module getModuleOrThrow(String name);
@@ -83,10 +81,10 @@ public interface ShadowApi extends DeclaredHolder
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
    @Scope(ALL)
-   @UnmodifiableView List<Package> getPackagesOrThrow(@QualifiedName String qualifiedName);
+   List<Package> getPackagesOrThrow(String qualifiedName);
 
    @Scope(ALL)
-   @UnmodifiableView List<Package> getPackages();
+   List<Package> getPackages();
 
    @Scope(ALL)
    Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
@@ -147,12 +145,12 @@ public interface ShadowApi extends DeclaredHolder
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
     */
-   void writeSourceFile(@QualifiedName String qualifiedName, String content);
+   void writeSourceFile(String qualifiedName, String content);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .class files
     */
-   void writeClassFile(@QualifiedName String qualifiedName, String content);
+   void writeClassFile(String qualifiedName, String content);
 
    /**
     * the created file will NOT be registered for the next annotation processor round. writes anything

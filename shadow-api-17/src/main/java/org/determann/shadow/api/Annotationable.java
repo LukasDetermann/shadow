@@ -2,7 +2,6 @@ package org.determann.shadow.api;
 
 import org.determann.shadow.api.shadow.Annotation;
 import org.determann.shadow.api.shadow.AnnotationUsage;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.Element;
 import java.util.List;
@@ -16,14 +15,14 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
-   default @UnmodifiableView List<AnnotationUsage> getAnnotationUsages()
+   default List<AnnotationUsage> getAnnotationUsages()
    {
       return getApi()
             .getShadowFactory()
             .annotationUsages(getApi().getJdkApiContext().elements().getAllAnnotationMirrors(getElement()));
    }
 
-   default @UnmodifiableView List<AnnotationUsage> getUsagesOf(Annotation annotation)
+   default List<AnnotationUsage> getUsagesOf(Annotation annotation)
    {
       return getAnnotationUsages().stream()
                                   .filter(usage -> usage.getAnnotation().equals(annotation))
@@ -62,12 +61,12 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
     *
     * @see #getAnnotationUsages()
     */
-   default @UnmodifiableView List<AnnotationUsage> getDirectAnnotationUsages()
+   default List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return getApi().getShadowFactory().annotationUsages(getElement().getAnnotationMirrors());
    }
 
-   default @UnmodifiableView List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
+   default List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
                                         .filter(usage -> usage.getAnnotation().equals(annotation))

@@ -2,7 +2,6 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.metadata.JdkApi;
 import org.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.AnnotationMirror;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Optional;
  */
 public interface AnnotationUsage extends Annotation
 {
-   @UnmodifiableView Map<Method, AnnotationValueTypeChooser> getValues();
+   Map<Method, AnnotationValueTypeChooser> getValues();
 
    AnnotationValueTypeChooser getValueOrThrow(String methodName);
 

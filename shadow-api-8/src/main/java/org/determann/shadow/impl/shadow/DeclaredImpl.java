@@ -7,7 +7,6 @@ import org.determann.shadow.api.converter.DeclaredConverter;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.*;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -182,7 +181,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public @UnmodifiableView List<Interface> getInterfaces()
+   public List<Interface> getInterfaces()
    {
       return getSuperTypes().stream()
                             .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))

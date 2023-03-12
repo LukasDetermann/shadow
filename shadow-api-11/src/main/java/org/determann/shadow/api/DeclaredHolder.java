@@ -1,10 +1,8 @@
 package org.determann.shadow.api;
 
-import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.*;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
@@ -16,16 +14,16 @@ import static org.determann.shadow.api.ShadowApi.convert;
  */
 public interface DeclaredHolder extends ApiHolder
 {
-   @UnmodifiableView List<Declared> getDeclared();
+   List<Declared> getDeclared();
 
-   Declared getDeclaredOrThrow(@QualifiedName String qualifiedName);
+   Declared getDeclaredOrThrow(String qualifiedName);
 
-   default Annotation getAnnotationOrThrow(@QualifiedName String qualifiedName)
+   default Annotation getAnnotationOrThrow(String qualifiedName)
    {
       return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
    }
 
-   default @UnmodifiableView List<Annotation> getAnnotations()
+   default List<Annotation> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(declared.getTypeKind()))
@@ -33,12 +31,12 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Class getClassOrThrow(@QualifiedName String qualifiedName)
+   default Class getClassOrThrow(String qualifiedName)
    {
       return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
    }
 
-   default @UnmodifiableView List<Class> getClasses()
+   default List<Class> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(declared.getTypeKind()))
@@ -46,12 +44,12 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Enum getEnumOrThrow(@QualifiedName String qualifiedName)
+   default Enum getEnumOrThrow(String qualifiedName)
    {
       return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
    }
 
-   default @UnmodifiableView List<Enum> getEnums()
+   default List<Enum> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(declared.getTypeKind()))
@@ -59,12 +57,12 @@ public interface DeclaredHolder extends ApiHolder
                           .collect(toUnmodifiableList());
    }
 
-   default Interface getInterfaceOrThrow(@QualifiedName String qualifiedName)
+   default Interface getInterfaceOrThrow(String qualifiedName)
    {
       return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
    }
 
-   default @UnmodifiableView List<Interface> getInterfaces()
+   default List<Interface> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))

@@ -6,7 +6,6 @@ import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.shadow.module.Directive;
 import org.determann.shadow.api.shadow.module.DirectiveConsumer;
 import org.determann.shadow.api.shadow.module.DirectiveMapper;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.type.NoType;
@@ -17,7 +16,7 @@ public interface Module extends Shadow<NoType>,
                                 Annotationable<ModuleElement>,
                                 DeclaredHolder
 {
-   @UnmodifiableView List<Package> getPackages();
+   List<Package> getPackages();
 
    /**
     * can everybody use reflection on this module?
@@ -31,9 +30,9 @@ public interface Module extends Shadow<NoType>,
    /**
     * Relations between modules
     */
-   @UnmodifiableView  List<Directive> getDirectives();
+   List<Directive> getDirectives();
 
-   <T> @UnmodifiableView  List<T> mapDirectives(DirectiveMapper<T> mapper);
+   <T> List<T> mapDirectives(DirectiveMapper<T> mapper);
 
    void consumeDirectives(DirectiveConsumer consumer);
 

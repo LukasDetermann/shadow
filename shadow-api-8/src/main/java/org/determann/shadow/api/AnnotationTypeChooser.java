@@ -4,7 +4,6 @@ import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.shadow.Enum;
 import org.determann.shadow.api.shadow.Package;
 import org.determann.shadow.api.shadow.*;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.ElementType;
@@ -20,60 +19,60 @@ import java.util.Set;
  */
 public interface AnnotationTypeChooser
 {
-   @UnmodifiableView Set<Shadow<TypeMirror>> all();
+   Set<Shadow<TypeMirror>> all();
 
    /**
     * Annotations for {@link ElementType#TYPE}
     */
-   @UnmodifiableView Set<Declared> declaredTypes();
+   Set<Declared> declaredTypes();
 
    /**
     * Annotations for {@link ElementType#TYPE}
     */
-   @UnmodifiableView Set<Class> classes();
+   Set<Class> classes();
 
    /**
     * Annotations for {@link ElementType#TYPE}
     */
-   @UnmodifiableView Set<Enum> enums();
+   Set<Enum> enums();
 
    /**
     * Annotations for {@link ElementType#TYPE}
     */
-   @UnmodifiableView Set<Interface> interfaces();
+   Set<Interface> interfaces();
 
    /**
     * Annotations for {@link ElementType#FIELD}
     */
-   @UnmodifiableView Set<Field> fields();
+   Set<Field> fields();
 
    /**
     * Annotations for {@link ElementType#PARAMETER}
     */
-   @UnmodifiableView Set<Parameter> parameters();
+   Set<Parameter> parameters();
 
    /**
     * Annotations for {@link ElementType#METHOD}
     */
-   @UnmodifiableView Set<Method> methods();
+   Set<Method> methods();
 
    /**
     * Annotations for {@link ElementType#CONSTRUCTOR}
     */
-   @UnmodifiableView Set<Constructor> constructors();
+   Set<Constructor> constructors();
 
    /**
     * Annotations for {@link ElementType#ANNOTATION_TYPE}
     */
-   @UnmodifiableView Set<Annotation> annotations();
+   Set<Annotation> annotations();
 
    /**
     * Annotations for {@link ElementType#PACKAGE}
     */
-   @UnmodifiableView Set<Package> packages();
+   Set<Package> packages();
 
    /**
     * Annotations for {@link ElementType#TYPE_PARAMETER}
     */
-   @UnmodifiableView Set<Generic> generics();
+   Set<Generic> generics();
 }

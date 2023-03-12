@@ -10,7 +10,6 @@ import org.determann.shadow.api.shadow.module.Directive;
 import org.determann.shadow.api.shadow.module.DirectiveConsumer;
 import org.determann.shadow.api.shadow.module.DirectiveMapper;
 import org.determann.shadow.impl.shadow.module.*;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.TypeElement;
@@ -64,7 +63,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
-   public @UnmodifiableView List<Declared> getDeclared()
+   public List<Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).collect(toUnmodifiableList());
    }

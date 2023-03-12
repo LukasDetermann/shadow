@@ -9,7 +9,6 @@ import org.determann.shadow.api.shadow.*;
 import org.determann.shadow.impl.property.ImmutablePropertyImpl;
 import org.determann.shadow.impl.property.MutablePropertyImpl;
 import org.determann.shadow.impl.property.PropertyImpl;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -59,13 +58,13 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public @UnmodifiableView List<MutableProperty> getMutableProperties()
+   public List<MutableProperty> getMutableProperties()
    {
       return MutablePropertyImpl.of(this);
    }
 
    @Override
-   public @UnmodifiableView List<ImmutableProperty> getImmutableProperties()
+   public List<ImmutableProperty> getImmutableProperties()
    {
       return ImmutablePropertyImpl.of(this);
    }

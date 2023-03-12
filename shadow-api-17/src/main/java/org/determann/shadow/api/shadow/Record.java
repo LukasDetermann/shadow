@@ -2,7 +2,6 @@ package org.determann.shadow.api.shadow;
 
 import org.determann.shadow.api.modifier.FinalModifiable;
 import org.determann.shadow.api.modifier.StaticModifiable;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface Record extends Declared,
 {
    RecordComponent getRecordComponentOrThrow(String simpleName);
 
-   @UnmodifiableView List<RecordComponent> getRecordComponents();
+   List<RecordComponent> getRecordComponents();
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.

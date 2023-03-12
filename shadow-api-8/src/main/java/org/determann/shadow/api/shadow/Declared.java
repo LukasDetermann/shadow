@@ -4,10 +4,8 @@ import org.determann.shadow.api.Annotationable;
 import org.determann.shadow.api.NestingKind;
 import org.determann.shadow.api.QualifiedNameable;
 import org.determann.shadow.api.ShadowApi;
-import org.determann.shadow.api.metadata.QualifiedName;
 import org.determann.shadow.api.modifier.AccessModifiable;
 import org.determann.shadow.api.modifier.StrictfpModifiable;
-import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -44,32 +42,32 @@ public interface Declared extends Shadow<DeclaredType>,
 
    Field getFieldOrThrow(String simpleName);
 
-   @UnmodifiableView List<Field> getFields();
+   List<Field> getFields();
 
-   @UnmodifiableView List<Method> getMethods(String simpleName);
+   List<Method> getMethods(String simpleName);
 
-   @UnmodifiableView List<Method> getMethods();
+   List<Method> getMethods();
 
-   @UnmodifiableView List<Constructor> getConstructors();
+   List<Constructor> getConstructors();
 
    /**
     * returns the parentClass including interfaces
     */
-   @UnmodifiableView List<Declared> getDirectSuperTypes();
+   List<Declared> getDirectSuperTypes();
 
    /**
     * returns all distinct supertypes including interfaces
     */
-   @UnmodifiableView Set<Declared> getSuperTypes();
+   Set<Declared> getSuperTypes();
 
-   @UnmodifiableView List<Interface> getInterfaces();
+   List<Interface> getInterfaces();
 
-   Interface getInterfaceOrThrow(@QualifiedName String qualifiedName);
+   Interface getInterfaceOrThrow(String qualifiedName);
 
-   @UnmodifiableView List<Interface> getDirectInterfaces();
+   List<Interface> getDirectInterfaces();
 
 
-   Interface getDirectInterfaceOrThrow(@QualifiedName String qualifiedName);
+   Interface getDirectInterfaceOrThrow(String qualifiedName);
 
    Package getPackage();
 
