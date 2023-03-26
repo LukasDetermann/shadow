@@ -8,6 +8,9 @@ import org.determann.shadow.api.shadow.Class;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
+
 /**
  * Builds a companion Builder class for each annotated class
  */
@@ -22,15 +25,19 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
          String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
+         String builderVariableName = uncapitalize(builderSimpleName);
 
          //create a record holding the code needed to render a property in the builder
          List<BuilderElement> builderElements = aClass.getMutableProperties()
                                                       .stream()
-                                                      .map(property -> renderProperty(builderSimpleName, toBuildQualifiedName, property))
+                                                      .map(property -> renderProperty(builderSimpleName,
+                                                                                      builderVariableName,
+                                                                                      property))
                                                       .toList();
 
          //writes the builder
-         shadowApi.writeSourceFile(builderQualifiedName, renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderElements));
+         shadowApi.writeSourceFile(builderQualifiedName,
+                                   renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
       }
    }
 
@@ -40,9 +47,9 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    private String renderBuilder(final Class aClass,
                                 final String toBuildQualifiedName,
                                 final String builderSimpleName,
+                                final String builderVariableName,
                                 final List<BuilderElement> builderElements)
    {
-
       String fields = builderElements.stream()
                                      .map(BuilderElement::field)
                                      .collect(Collectors.joining("\n\n"));
@@ -73,14 +80,16 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           fields,
                           mutators,
                           toBuildQualifiedName,
-                          aClass.getApi().to_lowerCamelCase(toBuildQualifiedName),
+                          builderVariableName,
                           setterInvocations);
    }
 
    /**
     * Creates a {@link BuilderElement} for each property of the annotated pojo
     */
-   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final MutableProperty property)
+   private BuilderElement renderProperty(final String builderSimpleName,
+                                         final String builderVariableName,
+                                         final MutableProperty property)
    {
       String propertyName = property.getSimpleName();
       String type = property.getType().toString();
@@ -92,14 +101,11 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                   return this;
                }
             """.formatted(builderSimpleName,
-                          property.getApi().to_UpperCamelCase(propertyName),
+                          capitalize(propertyName),
                           type,
                           propertyName);
 
-      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetter().getSimpleName() +
-                             "(" +
-                             propertyName +
-                             ");";
+      String toBuildSetter = builderVariableName + "." + property.getSetter().getSimpleName() + "(" + propertyName + ");";
 
       return new BuilderElement(field, mutator, toBuildSetter);
    }

@@ -96,38 +96,6 @@ public interface ShadowApi extends DeclaredHolder
 
    ShadowFactory getShadowFactory();
 
-   //String conversion
-
-   /**
-    * ExampleName -> ExampleName
-    * org.example.ExampleName -> ExampleName
-    * exampleName -> ExampleName
-    * org.example.exampleName -> ExampleName
-    * EXAMPLE_NAME -> ExampleName
-    * org.example.EXAMPLE_NAME -> ExampleName
-    */
-   String to_UpperCamelCase(String toModify);
-
-   /**
-    * ExampleName -> exampleName
-    * org.example.ExampleName -> exampleName
-    * exampleName -> exampleName
-    * org.example.exampleName -> exampleName
-    * EXAMPLE_NAME -> exampleName
-    * org.example.EXAMPLE_NAME -> exampleName
-    */
-   String to_lowerCamelCase(String toModify);
-
-   /**
-    * ExampleName -> EXAMPLE_NAME
-    * org.example.ExampleName -> EXAMPLE_NAME
-    * exampleName -> exampleName
-    * org.example.exampleName -> EXAMPLE_NAME
-    * EXAMPLE_NAME -> exampleName
-    * org.example.EXAMPLE_NAME -> EXAMPLE_NAME
-    */
-   String to_SCREAMING_SNAKE_CASE(String toModify);
-
    //logging
    void logError(String msg);
 

@@ -486,54 +486,66 @@ A Processor creating a simple Builder companion object
 ````java
 import org.determann.shadow.api.ShadowApi;
 import org.determann.shadow.api.ShadowProcessor;
-import org.determann.shadow.api.shadow.Class;
 import org.determann.shadow.api.property.MutableProperty;
+import org.determann.shadow.api.shadow.Class;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /**
  * Builds a companion Builder class for each annotated class
  */
 public class ShadowBuilderProcessor extends ShadowProcessor
 {
-   @Override
-   public void process(final ShadowApi shadowApi) {
-      //iterate over every class annotated with the BuilderPattern annotation
-      for (Class aClass : shadowApi.annotatedWith("org.determann.shadow.example.processor.builder.BuilderPattern").classes())
-      {
-         String toBuildQualifiedName = aClass.getQualifiedName();
-         String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
-         String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
+  @Override
+  public void process(final ShadowApi shadowApi)
+  {
+    //iterate over every class annotated with the BuilderPattern annotation
+    for (Class aClass : shadowApi.annotatedWith("org.determann.shadow.example.processor.builder.BuilderPattern").classes())
+    {
+      String toBuildQualifiedName = aClass.getQualifiedName();
+      String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
+      String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
+      String builderVariableName = uncapitalize(builderSimpleName);
 
-         //create a record holding the code needed to render a property in the builder
-         List<BuilderElement> builderElements = aClass.getMutableProperties()
-                                                      .stream()
-                                                      .map(property -> renderProperty(builderSimpleName, toBuildQualifiedName, property))
-                                                      .toList();
+      //create a record holding the code needed to render a property in the builder
+      List<BuilderElement> builderElements = aClass.getMutableProperties()
+                                                   .stream()
+                                                   .map(property -> renderProperty(builderSimpleName,
+                                                                                   builderVariableName,
+                                                                                   property))
+                                                   .toList();
 
-         //writes the builder
-         shadowApi.writeSourceFile(builderQualifiedName, renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderElements));
-      }
-   }
+      //writes the builder
+      shadowApi.writeSourceFile(builderQualifiedName,
+                                renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
+    }
+  }
 
-   /**
-    * renders a companion builder class
-    */
-   private String renderBuilder(final Class aClass,
-                                final String toBuildQualifiedName,
-                                final String builderSimpleName,
-                                final List<BuilderElement> builderElements) {
+  /**
+   * renders a companion builder class
+   */
+  private String renderBuilder(final Class aClass,
+                               final String toBuildQualifiedName,
+                               final String builderSimpleName,
+                               final String builderVariableName,
+                               final List<BuilderElement> builderElements)
+  {
+    String fields = builderElements.stream()
+                                   .map(BuilderElement::field)
+                                   .collect(Collectors.joining("\n\n"));
 
-      String fields = builderElements.stream()
-                                     .map(BuilderElement::field)
+    String mutators = builderElements.stream()
+                                     .map(BuilderElement::mutator)
                                      .collect(Collectors.joining("\n\n"));
 
-      String mutators = builderElements.stream()
-                                       .map(BuilderElement::mutator)
-                                       .collect(Collectors.joining("\n\n"));
-
-      String setterInvocations = builderElements.stream()
-                                                .map(BuilderElement::toBuildSetter)
-                                                .collect(Collectors.joining("\n\n"));
-      return """
+    String setterInvocations = builderElements.stream()
+                                              .map(BuilderElement::toBuildSetter)
+                                              .collect(Collectors.joining("\n\n"));
+    return """
             package %1$s;
                   
             public class %2$s{
@@ -552,44 +564,44 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           fields,
                           mutators,
                           toBuildQualifiedName,
-                          aClass.getApi().to_lowerCamelCase(toBuildQualifiedName),
+                          builderVariableName,
                           setterInvocations);
-   }
+  }
 
-   /**
-    * Creates a {@link BuilderElement} for each property of the annotated pojo
-    */
-   private BuilderElement renderProperty(final String builderSimpleName, final String toBuildQualifiedName, final MutableProperty property) {
-      String propertyName = property.getSimpleName();
-      String type = property.getType().toString();
-      String field = "private " + type + " " + propertyName + ";";
+  /**
+   * Creates a {@link BuilderElement} for each property of the annotated pojo
+   */
+  private BuilderElement renderProperty(final String builderSimpleName,
+                                        final String builderVariableName,
+                                        final MutableProperty property)
+  {
+    String propertyName = property.getSimpleName();
+    String type = property.getType().toString();
+    String field = "private " + type + " " + propertyName + ";";
 
-      String mutator = """
+    String mutator = """
                public %1$s with%2$s(%3$s %4$s) {
                   this.%4$s = %4$s;
                   return this;
                }
             """.formatted(builderSimpleName,
-                          property.getApi().to_UpperCamelCase(propertyName),
+                          capitalize(propertyName),
                           type,
                           propertyName);
 
-      String toBuildSetter = property.getApi().to_lowerCamelCase(toBuildQualifiedName) + "." + property.getSetter().getSimpleName() +
-                             "(" +
-                             propertyName +
-                             ");";
+    String toBuildSetter = builderVariableName + "." + property.getSetter().getSimpleName() + "(" + propertyName + ");";
 
-      return new BuilderElement(field, mutator, toBuildSetter);
-   }
+    return new BuilderElement(field, mutator, toBuildSetter);
+  }
 
-   /**
-    * Used to render the code needed to render a property in the builder
-    *
-    * @param field ones rendered will hold the values being used to build the pojo
-    * @param mutator ones rendered will set the value of the {@link #field}
-    * @param toBuildSetter ones rendered will modify the build pojo
-    */
-   private record BuilderElement(String field, String mutator, String toBuildSetter) {}
+  /**
+   * Used to render the code needed to render a property in the builder
+   *
+   * @param field ones rendered will hold the values being used to build the pojo
+   * @param mutator ones rendered will set the value of the {@link #field}
+   * @param toBuildSetter ones rendered will modify the build pojo
+   */
+  private record BuilderElement(String field, String mutator, String toBuildSetter) {}
 }
 ````
 For a simple pojo like

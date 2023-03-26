@@ -199,25 +199,6 @@ public class ShadowApiImpl implements ShadowApi
       return new ShadowConstantsImpl(this);
    }
 
-
-   @Override
-   public String to_UpperCamelCase(String toModify)
-   {
-      return StringUtils.to_UpperCamelCase(toModify);
-   }
-
-   @Override
-   public String to_lowerCamelCase(String toModify)
-   {
-      return StringUtils.to_lowerCamelCase(toModify);
-   }
-
-   @Override
-   public String to_SCREAMING_SNAKE_CASE(String toModify)
-   {
-      return StringUtils.to_SCREAMING_SNAKE_CASE(toModify);
-   }
-
    @Override
    public void logError(String msg)
    {
