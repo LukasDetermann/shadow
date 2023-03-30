@@ -33,7 +33,6 @@
                     <toolchains>
                         <jdk>
                             <version>11</version>
-                            <vendor>azul</vendor>
                         </jdk>
                     </toolchains>
                 </configuration>

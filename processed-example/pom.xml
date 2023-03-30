@@ -47,7 +47,6 @@
                     <toolchains>
                         <jdk>
                             <version>17</version>
-                            <vendor>azul</vendor>
                         </jdk>
                     </toolchains>
                 </configuration>
