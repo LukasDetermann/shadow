@@ -339,7 +339,7 @@ Create two Maven modules for that. One having the code to process and one contai
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.determann</groupId>
+    <groupId>io.determann</groupId>
     <artifactId>processor-example</artifactId>
     <version>1.0-SNAPSHOT</version>
 </project>
@@ -352,7 +352,7 @@ Create two Maven modules for that. One having the code to process and one contai
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.determann</groupId>
+    <groupId>io.determann</groupId>
     <artifactId>processed-example</artifactId>
     <version>1.0-SNAPSHOT</version>
 </project>
@@ -363,7 +363,7 @@ Create two Maven modules for that. One having the code to process and one contai
 The processor needs to depend on the `shadow-api`
 ````xml
         <dependency>
-            <groupId>org.determann</groupId>
+            <groupId>io.determann</groupId>
             <artifactId>shadow</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -372,7 +372,7 @@ The processor needs to depend on the `shadow-api`
 And the processed module need to depend on the processor module
 ````xml
         <dependency>
-            <groupId>org.determann</groupId>
+            <groupId>io.determann</groupId>
             <artifactId>processor-example</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -391,7 +391,7 @@ The module being processed needs to know the module it's processed by
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>org.determann</groupId>
+                            <groupId>io.determann</groupId>
                             <artifactId>processor-example</artifactId>
                             <version>1.0-SNAPSHOT</version>
                         </path>
