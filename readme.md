@@ -316,7 +316,7 @@ Not production ready! At the moment it's all about finalising the API. There wil
 
 It's normal annotation processing with a better API. The setup is the same. The differences only start when extending
 `io.determann.shadow.api.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.<br>
-A good starting point for your own processor is `ShadowApi.annotatedWith(String qualifiedAnnotation)`.
+A good starting point for your own processor is `ShadowApi.getAnnotatedWith(String qualifiedAnnotation)`.
 
 
 ## Examples
@@ -464,7 +464,7 @@ public class MyProcessor extends ShadowProcessor
 {
    @Override
    public void process(final ShadowApi shadowApi) {
-      for (Shadow<TypeMirror> shadow : shadowApi.annotatedWith("io.determann.shadow.example.processor.MyAnnotation").all())
+      for (Shadow<TypeMirror> shadow : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.MyAnnotation").all())
       {
       }
    }
@@ -504,7 +504,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
   public void process(final ShadowApi shadowApi)
   {
     //iterate over every class annotated with the BuilderPattern annotation
-    for (Class aClass : shadowApi.annotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
+    for (Class aClass : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
     {
       String toBuildQualifiedName = aClass.getQualifiedName();
       String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
