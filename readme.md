@@ -321,7 +321,7 @@ A good starting point for your own processor is `ShadowApi.annotatedWith(String 
 
 ## Examples
 
-There are a lot of examples for how to use specific parts of the API in the [tests](/shadow-api-17/src/test/java/org/determann/shadow/api).
+There are a lot of examples for how to use specific parts of the API in the [tests](/shadow-api-17/src/test/java/io/determann/shadow/api).
 
 <details><summary>Show setup</summary>
 <p>
