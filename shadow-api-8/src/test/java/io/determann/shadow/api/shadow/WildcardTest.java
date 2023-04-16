@@ -29,7 +29,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                                  .map(ShadowApi::convert)
                                                                  .flatMap(ShadowConverter::toWildcard)
                                                                  .flatMap(Wildcard::getExtends)
-                                                                 .orElseThrow()))
+                                                                 .orElseThrow(IllegalStateException::new)))
                      .withCodeToCompile("BoundsExample.java",
                                         " public class BoundsExample {\n" +
                                         "                              public static void extendsExample(java.util.List<? extends Number> numbers) {}\n" +
@@ -52,7 +52,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                                  .map(ShadowApi::convert)
                                                                  .flatMap(ShadowConverter::toWildcard)
                                                                  .flatMap(Wildcard::getSuper)
-                                                                 .orElseThrow()))
+                                                                 .orElseThrow(IllegalStateException::new)))
                      .withCodeToCompile("BoundsExample.java",
                                         "                      public class BoundsExample {\n" +
                                         "                              public static void extendsExample(java.util.List<? extends Number> numbers) {}\n" +
