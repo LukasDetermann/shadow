@@ -315,7 +315,7 @@ Not production ready! At the moment it's all about finalising the API. There wil
 ## Getting started
 
 It's normal annotation processing with a better API. The setup is the same. The differences only start when extending
-`org.determann.shadow.api.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.<br>
+`io.determann.shadow.api.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.<br>
 A good starting point for your own processor is `ShadowApi.annotatedWith(String qualifiedAnnotation)`.
 
 
@@ -427,8 +427,8 @@ Disable annotation processing in the processor module. Otherwise, the annotation
 
 Extend `ShadowProcessor` for your own processor and override `process()`
 ````java
-import org.determann.shadow.api.ShadowApi;
-import org.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
@@ -443,7 +443,7 @@ public class MyProcessor extends ShadowProcessor
 create a file in `src/main/resources/META-INF/services/` called `javax.annotation.processing.Processor` and add your qualified path
 
 ````text
-org.determann.shadow.example.processor.MyProcessor
+io.determann.shadow.example.processor.MyProcessor
 ````
 
 ### 7) Annotation
@@ -457,14 +457,14 @@ public @interface MyAnnotation {}
 
 And finally process anything annotated with that annotation 
 ````java
-import org.determann.shadow.api.ShadowApi;
-import org.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
    @Override
    public void process(final ShadowApi shadowApi) {
-      for (Shadow<TypeMirror> shadow : shadowApi.annotatedWith("org.determann.shadow.example.processor.MyAnnotation").all())
+      for (Shadow<TypeMirror> shadow : shadowApi.annotatedWith("io.determann.shadow.example.processor.MyAnnotation").all())
       {
       }
    }
@@ -484,10 +484,10 @@ public @interface BuilderPattern {}
 ````
 A Processor creating a simple Builder companion object
 ````java
-import org.determann.shadow.api.ShadowApi;
-import org.determann.shadow.api.ShadowProcessor;
-import org.determann.shadow.api.property.MutableProperty;
-import org.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.property.MutableProperty;
+import io.determann.shadow.api.shadow.Class;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -504,7 +504,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
   public void process(final ShadowApi shadowApi)
   {
     //iterate over every class annotated with the BuilderPattern annotation
-    for (Class aClass : shadowApi.annotatedWith("org.determann.shadow.example.processor.builder.BuilderPattern").classes())
+    for (Class aClass : shadowApi.annotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
     {
       String toBuildQualifiedName = aClass.getQualifiedName();
       String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
@@ -631,8 +631,8 @@ public class CustomerShadowBuilder{
       return this;
    }
 
-   public org.determann.shadow.example.processed.Customer build() {
-      org.determann.shadow.example.processed.Customer customer = new org.determann.shadow.example.processed.Customer();
+   public io.determann.shadow.example.processed.Customer build() {
+     io.determann.shadow.example.processed.Customer customer = new io.determann.shadow.example.processed.Customer();
       customer.setName(name);
       return customer;
    }

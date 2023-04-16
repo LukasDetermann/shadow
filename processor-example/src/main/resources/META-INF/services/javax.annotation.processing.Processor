@@ -1,2 +1,2 @@
-org.determann.shadow.example.processor.builder.ShadowBuilderProcessor
-org.determann.shadow.example.processor.builder.JdkBuilderProcessor
+io.determann.shadow.example.processor.builder.ShadowBuilderProcessor
+io.determann.shadow.example.processor.builder.JdkBuilderProcessor
