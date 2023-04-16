@@ -89,7 +89,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public AnnotationTypeChooser annotatedWith(String qualifiedAnnotation)
+   public AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation)
    {
       TypeElement annotation = jdkApiContext.elements().getTypeElement(qualifiedAnnotation);
       if (annotation == null || !annotation.getKind().equals(ElementKind.ANNOTATION_TYPE))
@@ -100,9 +100,9 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public AnnotationTypeChooser annotatedWith(Annotation annotation)
+   public AnnotationTypeChooser getAnnotatedWith(Annotation annotation)
    {
-      return annotatedWith(annotation.getQualifiedName());
+      return getAnnotatedWith(annotation.getQualifiedName());
    }
 
    @Override

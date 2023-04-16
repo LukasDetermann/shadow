@@ -35,7 +35,7 @@ import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATI
  * <h2>Usage:</h2>
  *
  * <ul>
- *    <li>get anything that is annotated {@link #annotatedWith(String)}</li>
+ *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
  *    <li>get already compiled sources {@link Scope.ScopeType#ALL}</li>
  *    <li>get constants {@link #getConstants()}</li>
  *    <li>log using {@link #logError(String)} or log at {@link #logErrorAt(ElementBacked, String)}</li>
@@ -66,10 +66,10 @@ public interface ShadowApi extends DeclaredHolder
     * @see #writeClassFile(String, String)
     */
    @Scope(CURRENT_COMPILATION)
-   AnnotationTypeChooser annotatedWith(String qualifiedAnnotation);
+   AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation);
 
    @Scope(CURRENT_COMPILATION)
-   AnnotationTypeChooser annotatedWith(Annotation annotation);
+   AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
 
    @Scope(ALL)
    List<Module> getModules();

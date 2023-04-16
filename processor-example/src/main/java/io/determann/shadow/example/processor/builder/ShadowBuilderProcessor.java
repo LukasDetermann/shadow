@@ -20,7 +20,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    public void process(final ShadowApi shadowApi)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (Class aClass : shadowApi.annotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
+      for (Class aClass : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
