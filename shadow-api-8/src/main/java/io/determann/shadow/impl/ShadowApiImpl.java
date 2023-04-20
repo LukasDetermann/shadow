@@ -211,7 +211,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public FileObject readOResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException
+   public FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException
    {
       return getJdkApiContext().filer().getResource(location, moduleAndPkg, relativPath);
    }

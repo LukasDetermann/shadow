@@ -127,7 +127,7 @@ public interface ShadowApi extends DeclaredHolder
    void writeResource(@JdkApi StandardLocation location, String moduleAndPkg, String relativPath, String content);
 
    @JdkApi
-   FileObject readOResource(@JdkApi StandardLocation location, String moduleAndPkg, String relativPath) throws IOException;
+   FileObject readResource(@JdkApi StandardLocation location, String moduleAndPkg, String relativPath) throws IOException;
 
    /**
     * Last round of annotation processing
