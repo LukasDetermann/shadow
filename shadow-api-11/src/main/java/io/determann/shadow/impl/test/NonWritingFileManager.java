@@ -1,6 +1,6 @@
 package io.determann.shadow.impl.test;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -15,7 +15,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 /**
- * The compiler wants to write java sources it compiles. This is not needed for {@link CompilationTest}s.
+ * The compiler wants to write java sources it compiles. This is not needed for {@link ProcessorTest}s.
  * Furthermore, tests should be isolated from each other. Removing some potential for coupling should help with that.
  */
 class NonWritingFileManager implements StandardJavaFileManager

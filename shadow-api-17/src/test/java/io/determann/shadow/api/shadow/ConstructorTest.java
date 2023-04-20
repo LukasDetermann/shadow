@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,7 +21,7 @@ class ConstructorTest extends ExecutableTest<Constructor>
    @Test
    void testGetParameters()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(0,
                                               shadowApi.getClassOrThrow("DefaultConstructorExample")
@@ -39,8 +39,8 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                           .get(0)
                                                           .getType());
                               })
-                     .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -49,19 +49,19 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetReturnType()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getConstants().getVoid(),
-                                                        shadowApi.getClassOrThrow("ConstructorExample")
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getConstants().getVoid(),
+                                                      shadowApi.getClassOrThrow("ConstructorExample")
                                                                  .getConstructors()
                                                                  .get(0)
                                                                  .getReturnType()))
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -70,19 +70,19 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetParameterTypes()
    {
-      CompilationTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Long")),
-                                                        shadowApi.getClassOrThrow("ConstructorExample")
+      ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Long")),
+                                                      shadowApi.getClassOrThrow("ConstructorExample")
                                                                  .getConstructors()
                                                                  .get(0)
                                                                  .getParameterTypes()))
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -91,14 +91,14 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetThrows()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(List.of(),
                                               shadowApi.getClassOrThrow("ConstructorExample")
@@ -112,7 +112,7 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                        .get(1)
                                                        .getThrows());
                               })
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -121,19 +121,19 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testIsVarArgs()
    {
-      CompilationTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow(
+      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow(
                                                                      "ConstructorExample")
-                                                               .getConstructors()
-                                                               .get(2)
-                                                               .isVarArgs()))
-                     .withCodeToCompile("ConstructorExample.java", """
+                                                             .getConstructors()
+                                                             .get(2)
+                                                             .isVarArgs()))
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -142,19 +142,19 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetSurrounding()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class aClass = shadowApi.getClassOrThrow("ConstructorExample");
                                  assertEquals(aClass, aClass.getConstructors().get(0).getSurrounding());
                               })
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("ConstructorExample.java", """
                            import java.io.IOException;
 
                            public class ConstructorExample {
@@ -163,18 +163,18 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetPackage()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.constructor").get(0),
-                                                        shadowApi.getClassOrThrow(
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.constructor").get(0),
+                                                      shadowApi.getClassOrThrow(
                                                                        "io.determann.shadow.example.processed.test.constructor.ConstructorExample")
                                                                  .getPackage()))
-                     .withCodeToCompile("ConstructorExample.java", """
+                   .withCodeToCompile("ConstructorExample.java", """
                            package io.determann.shadow.example.processed.test.constructor;
                                                       
                            import java.io.IOException;
@@ -185,13 +185,13 @@ class ConstructorTest extends ExecutableTest<Constructor>
                               public ConstructorExample(String... names) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testGetReceiverType()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(Optional.empty(),
                                               shadowApi.getClassOrThrow("DefaultConstructorExample")
@@ -206,14 +206,14 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                        .getReceiverType()
                                                        .orElseThrow());
                               })
-                     .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
-                     .withCodeToCompile("ReceiverExample.java", """
+                   .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
+                   .withCodeToCompile("ReceiverExample.java", """
                            public class ReceiverExample {
                               public class Inner {
                                  public Inner(ReceiverExample ReceiverExample.this) {}
                               }
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 }

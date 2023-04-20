@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,7 +20,7 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    @Override
    void testisSubtypeOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
                                                      .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
@@ -28,34 +28,34 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
                                                      .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
                                  assertFalse(shadowApi.getAnnotationOrThrow("java.lang.Override").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetDirectSuperTypes()
    {
-      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                      shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
-                                                        shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
+      ProcessorTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                    shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
+                                                      shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                                  .getDirectSuperTypes()))
-                     .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
+                   .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
                                                                        "                              @interface AnnotationNoParent {}\n" +
                                                                        "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetSuperTypes()
    {
-      CompilationTest.process(shadowApi -> assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                                    shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation"))),
-                                                        shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
+      ProcessorTest.process(shadowApi -> assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                                  shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation"))),
+                                                      shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                                  .getSuperTypes()))
-                     .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
+                   .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
                                                                        "                              @interface AnnotationNoParent {}\n" +
                                                                        "                           }")
-                     .compile();
+                   .compile();
    }
 }

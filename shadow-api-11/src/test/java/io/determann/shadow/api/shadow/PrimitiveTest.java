@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,19 +17,19 @@ class PrimitiveTest extends ShadowTest<Primitive>
    @Test
    void testIsSubtypeOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
                                  assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testIsAssignableFrom()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
@@ -37,6 +37,6 @@ class PrimitiveTest extends ShadowTest<Primitive>
 
                                  assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
                               })
-                     .compile();
+                   .compile();
    }
 }

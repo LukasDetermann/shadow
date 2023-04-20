@@ -3,7 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.property.Property;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.type.TypeMirror;
@@ -25,7 +25,7 @@ class ClassTest extends DeclaredTest<Class>
    @Test
    void getSuperClassTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class integer = shadowApi.getClassOrThrow("java.lang.Integer");
                                  Declared number = shadowApi.getClassOrThrow("java.lang.Number");
@@ -36,31 +36,31 @@ class ClassTest extends DeclaredTest<Class>
 
                                  assertEquals(object, convert(number).toClassOrThrow().getSuperClass());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getPermittedSubClassesTest()
    {
-      CompilationTest.process(shadowApi -> assertEquals(List.of("PermittedSubClassesExample.Child"),
-                                                        shadowApi.getClassOrThrow("PermittedSubClassesExample")
+      ProcessorTest.process(shadowApi -> assertEquals(List.of("PermittedSubClassesExample.Child"),
+                                                      shadowApi.getClassOrThrow("PermittedSubClassesExample")
                                                                  .getPermittedSubClasses()
                                                                  .stream()
                                                                  .map(Object::toString)
                                                                  .toList()))
-                     .withCodeToCompile("PermittedSubClassesExample.java", """
+                   .withCodeToCompile("PermittedSubClassesExample.java", """
                            public sealed class PermittedSubClassesExample permits PermittedSubClassesExample.Child
                            {
                               public static final class Child extends PermittedSubClassesExample {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getPropertiesTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  List<Property> properties = shadowApi.getClassOrThrow("PropertiesExample").getProperties();
 
@@ -78,7 +78,7 @@ class ClassTest extends DeclaredTest<Class>
                                  assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
                                  assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetterOrThrow().getParameterTypes());
                               })
-                     .withCodeToCompile("PropertiesExample.java", """
+                   .withCodeToCompile("PropertiesExample.java", """
                            public class PropertiesExample {
                               private int id;
 
@@ -86,13 +86,13 @@ class ClassTest extends DeclaredTest<Class>
                               public void setId(int id) {this.id = id;}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testGetOuterType()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(shadowApi.getClassOrThrow("OuterTypeExample"),
                                               shadowApi.getClassOrThrow("OuterTypeExample.InnerClass").getOuterType().orElseThrow());
@@ -103,19 +103,19 @@ class ClassTest extends DeclaredTest<Class>
                                  assertEquals(Optional.empty(),
                                               shadowApi.getClassOrThrow("OuterTypeExample.StaticInnerClass").getOuterType());
                               })
-                     .withCodeToCompile("OuterTypeExample.java", """
+                   .withCodeToCompile("OuterTypeExample.java", """
                            public class OuterTypeExample {
                               private class InnerClass {}
                               private static class StaticInnerClass {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getDirectInterfacesTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  List<Interface> directInterfaces = shadowApi.getClassOrThrow("DirectInterfacesExample.Child")
                                                                              .getDirectInterfaces();
@@ -123,20 +123,20 @@ class ClassTest extends DeclaredTest<Class>
                                  assertEquals(1, directInterfaces.size());
                                  assertEquals(shadowApi.getInterfaceOrThrow("Direct"), directInterfaces.get(0));
                               })
-                     .withCodeToCompile("Direct.java", "public interface Direct{}")
-                     .withCodeToCompile("InDirect.java", "public interface InDirect{}")
-                     .withCodeToCompile("DirectInterfacesExample.java", """
+                   .withCodeToCompile("Direct.java", "public interface Direct{}")
+                   .withCodeToCompile("InDirect.java", "public interface InDirect{}")
+                   .withCodeToCompile("DirectInterfacesExample.java", """
                            public class DirectInterfacesExample implements InDirect {
                               public static class Child extends DirectInterfacesExample implements Direct {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testWithGenerics()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertThrows(IllegalArgumentException.class,
                                               () -> shadowApi.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
@@ -161,24 +161,24 @@ class ClassTest extends DeclaredTest<Class>
                                                        .withGenerics("java.lang.String", "java.lang.Number")
                                                        .getGenerics());
                               })
-                     .withCodeToCompile("InterpolateGenericsExample.java", """
+                   .withCodeToCompile("InterpolateGenericsExample.java", """
                            public class InterpolateGenericsExample <A extends java.lang.Comparable<B>, B extends java.lang.Comparable<A>> {
                                 static class IndependentGeneric<C> {}
                                 static class DependentGeneric<D extends E, E> {}
                              }
                             """)
-                     .withCodeToCompile("WithGenericsExample.java", """
+                   .withCodeToCompile("WithGenericsExample.java", """
                            public class WithGenericsExample {
                               class Inner<T> {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testInterpolateGenerics()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class declared = shadowApi.getClassOrThrow("InterpolateGenericsExample")
                                                            .withGenerics(shadowApi.getClassOrThrow("java.lang.String"),
@@ -213,32 +213,32 @@ class ClassTest extends DeclaredTest<Class>
                                                                                      .orElseThrow();
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);
                               })
-                     .withCodeToCompile("InterpolateGenericsExample.java", """
+                   .withCodeToCompile("InterpolateGenericsExample.java", """
                            public class InterpolateGenericsExample <A extends Comparable<B>, B extends Comparable<A>> {
                                 static class IndependentGeneric<C> {}
                                 static class DependentGeneric<D extends E, E> {}
                              }
                             """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testisSubtypeOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getClassOrThrow("java.lang.Long").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                                  assertTrue(shadowApi.getClassOrThrow("java.lang.Long").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
                                  assertFalse(shadowApi.getClassOrThrow("java.lang.Number").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testIsAssignableFrom()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  //same as isSubtypeOF
                                  assertTrue(shadowApi.getClassOrThrow("java.lang.Long").isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
@@ -248,14 +248,14 @@ class ClassTest extends DeclaredTest<Class>
                                  assertTrue(shadowApi.getClassOrThrow("java.lang.Integer")
                                                      .isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetDirectSuperTypes()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Number")),
                                               shadowApi.getClassOrThrow(
@@ -269,17 +269,17 @@ class ClassTest extends DeclaredTest<Class>
                                                              "ClassMixedParent")
                                                        .getDirectSuperTypes());
                               })
-                     .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")
-                     .withCodeToCompile("ClassMixedParent.java",
+                   .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")
+                   .withCodeToCompile("ClassMixedParent.java",
                                         "abstract class ClassMixedParent extends Number implements java.lang.Comparable<ClassMixedParent>, java.util.function.Consumer<ClassMixedParent> {}")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetSuperTypes()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(Set.of(),
                                               shadowApi.getClassOrThrow("java.lang.Object").getSuperTypes());
@@ -296,10 +296,10 @@ class ClassTest extends DeclaredTest<Class>
                                                      shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
                                               shadowApi.getClassOrThrow("ClassMixedParent").getSuperTypes());
                               })
-                     .withCodeToCompile("ClassNoParent.java", "class ClassNoParent {}")
-                     .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")
-                     .withCodeToCompile("ClassMixedParent.java",
+                   .withCodeToCompile("ClassNoParent.java", "class ClassNoParent {}")
+                   .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")
+                   .withCodeToCompile("ClassMixedParent.java",
                                         "abstract class ClassMixedParent extends Number implements java.lang.Comparable<ClassMixedParent>, java.util.function.Consumer<ClassMixedParent> {}")
-                     .compile();
+                   .compile();
    }
 }

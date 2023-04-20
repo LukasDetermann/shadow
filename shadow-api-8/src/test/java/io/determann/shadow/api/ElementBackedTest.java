@@ -4,7 +4,7 @@ import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Field;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,7 +20,7 @@ class ElementBackedTest
    @Test
    void getModifiersTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Declared arrayList = shadowApi.getClassOrThrow("java.util.ArrayList");
                                  assertEquals(new HashSet<>(Collections.singletonList(Modifier.PUBLIC)), arrayList.getModifiers());
@@ -32,13 +32,13 @@ class ElementBackedTest
                                  assertEquals(new HashSet<>(Arrays.asList(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)),
                                               serialVersionUID.getModifiers());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getJavaDocTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertNull(shadowApi.getInterfaceOrThrow("java.util.Collection").getJavaDoc());
 
@@ -49,7 +49,7 @@ class ElementBackedTest
                                  assertNull(convert(aClass.getGenerics().get(0)).toGeneric().get().getJavaDoc());
                                  assertNull(aClass.getConstructors().get(0).getParameters().get(0).getJavaDoc());
                               })
-                     .withCodeToCompile("JavaDocExample.java",
+                   .withCodeToCompile("JavaDocExample.java",
                                         "/**\n" +
                                         "                            * Class level doc\n" +
                                         "                            */\n" +
@@ -76,6 +76,6 @@ class ElementBackedTest
                                         "                                 return \"JavaDocExample{}\";\n" +
                                         "                              }\n" +
                                         "                           }")
-                     .compile();
+                   .compile();
    }
 }

@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.type.TypeMirror;
@@ -19,7 +19,7 @@ class ArrayTest extends ShadowTest<Array>
    @Test
    void isSubtypeOfTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
                                  Array stringArray1 = string.asArray();
@@ -31,26 +31,26 @@ class ArrayTest extends ShadowTest<Array>
                                  Array iterableArray = shadowApi.getInterfaceOrThrow("java.lang.Iterable").asArray();
                                  assertFalse(collectionArray.isSubtypeOf(iterableArray));
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getComponentTypeTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
                                  Array stringArray = string.asArray();
 
                                  assertEquals(string, stringArray.getComponentType());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void getDirectSuperTypesTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  //declared array -> Object[]
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
@@ -71,13 +71,13 @@ class ArrayTest extends ShadowTest<Array>
                                  assertEquals(1, directSupertypes.size());
                                  assertEquals(primitiveArraySuper, convert(directSupertypes.get(0)).toIntersectionOrThrow().getBounds());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    void equalsTest()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Declared string = shadowApi.getClassOrThrow("java.lang.String");
                                  Array stringArray1 = string.asArray();
@@ -87,6 +87,6 @@ class ArrayTest extends ShadowTest<Array>
                                  Array objectArray = shadowApi.getClassOrThrow("java.lang.Object").asArray();
                                  assertNotEquals(stringArray1, objectArray);
                               })
-                     .compile();
+                   .compile();
    }
 }

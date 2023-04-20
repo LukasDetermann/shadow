@@ -118,7 +118,7 @@ class ConversionTest
   @Test
   void testConversion()
   {
-    CompilationTest
+    ProcessorTest
       .process(shadowApi ->
          {
            Shadow<TypeMirror> myField = shadowApi.getClassOrThrow("MyClass")
@@ -151,7 +151,7 @@ class ConversionTest
   @Test
   void testConversion()
   {
-    CompilationTest
+    ProcessorTest
       .process(shadowApi ->
          {
            Elements elements = shadowApi.getJdkApiContext().elements();
@@ -254,7 +254,7 @@ class ConversionTest
   @Test
   void testConversion1()
   {
-    CompilationTest
+    ProcessorTest
       .process(shadowApi ->
          {
            //shadow -> jdk

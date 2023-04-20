@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.type.TypeMirror;
@@ -18,7 +18,7 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
    @Test
    void testRepresentsSameType()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(getShadowSupplier().apply(shadowApi).representsSameType(getShadowSupplier().apply(shadowApi)));
                                  assertFalse(getShadowSupplier().apply(shadowApi)
@@ -26,11 +26,11 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                                  assertFalse(getShadowSupplier().apply(shadowApi)
                                                                 .representsSameType(shadowApi.getConstants().getUnboundWildcard()));
                               })
-                     .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
-                     .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
-                     .withCodeToCompile("IntersectionExample.java",
+                   .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
+                   .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
+                   .withCodeToCompile("IntersectionExample.java",
                                         "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
-                     .withCodeToCompile("ParameterExample.java", """
+                   .withCodeToCompile("ParameterExample.java", """
                            public class ParameterExample
                            {
                               public ParameterExample(String name) {}
@@ -38,8 +38,8 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                               public void foo(Long foo) { }
                            }
                            """)
-                     .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
-                     .withCodeToCompile("AnnotationUsageAnnotation.java", """
+                   .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
+                   .withCodeToCompile("AnnotationUsageAnnotation.java", """
                            import java.lang.annotation.ElementType;
                            import java.lang.annotation.Retention;
                            import java.lang.annotation.RetentionPolicy;
@@ -60,29 +60,29 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                               char[] asListOfValues() default {'b', 'c'};
                            }
                            """)
-                     .withCodeToCompile("AnnotationUsageExample.java", """
+                   .withCodeToCompile("AnnotationUsageExample.java", """
                            @AnnotationUsageAnnotation
                            public class AnnotationUsageExample {
                               @AnnotationUsageAnnotation(stingValue = "custom Value")
                               private String testField;
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testEquals()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(getShadowSupplier().apply(shadowApi), getShadowSupplier().apply(shadowApi));
                                  assertNotEquals(getShadowSupplier().apply(shadowApi), shadowApi.getClassOrThrow("java.util.jar.Attributes"));
                               })
-                     .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
-                     .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
-                     .withCodeToCompile("IntersectionExample.java",
+                   .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
+                   .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
+                   .withCodeToCompile("IntersectionExample.java",
                                         "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
-                     .withCodeToCompile("ParameterExample.java", """
+                   .withCodeToCompile("ParameterExample.java", """
                            public class ParameterExample
                            {
                               public ParameterExample(String name) {}
@@ -90,8 +90,8 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                               public void foo(Long foo) { }
                            }
                            """)
-                     .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
-                     .withCodeToCompile("AnnotationUsageAnnotation.java", """
+                   .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
+                   .withCodeToCompile("AnnotationUsageAnnotation.java", """
                            import java.lang.annotation.ElementType;
                            import java.lang.annotation.Retention;
                            import java.lang.annotation.RetentionPolicy;
@@ -112,20 +112,20 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                               char[] asListOfValues() default {'b', 'c'};
                            }
                            """)
-                     .withCodeToCompile("AnnotationUsageExample.java", """
+                   .withCodeToCompile("AnnotationUsageExample.java", """
                            @AnnotationUsageAnnotation
                            public class AnnotationUsageExample {
                               @AnnotationUsageAnnotation(stingValue = "custom Value")
                               private String testField;
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testErasure()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
                                               shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object").erasure());
@@ -133,7 +133,7 @@ abstract class ShadowTest<SHADOW extends Shadow<? extends TypeMirror>>
                                  assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
                                               shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object"));
                               })
-                     .compile();
+                   .compile();
    }
 
    protected Function<ShadowApi, SHADOW> getShadowSupplier()

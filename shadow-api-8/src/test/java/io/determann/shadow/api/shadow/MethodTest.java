@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ class MethodTest extends ExecutableTest<Method>
    @Test
    void testisSubSignatureOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  List<Method> methods = shadowApi.getClassOrThrow("SubSignature").getMethods();
                                  Method first = methods.get(0);
@@ -38,7 +38,7 @@ class MethodTest extends ExecutableTest<Method>
                                  assertTrue(six.sameParameterTypes(seven));
                                  assertFalse(seven.sameParameterTypes(six));
                               })
-                     .withCodeToCompile("SubSignature.java", "        import java.util.List;\n" +
+                   .withCodeToCompile("SubSignature.java", "        import java.util.List;\n" +
                                                              "\n" +
                                                              "                           public abstract class SubSignature {\n" +
                                                              "                              public abstract void first();\n" +
@@ -49,13 +49,13 @@ class MethodTest extends ExecutableTest<Method>
                                                              "                              public abstract void six(List list);\n" +
                                                              "                              public abstract void seven(List<String> strings);\n" +
                                                              "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testOverrides()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getClassOrThrow("MethodExample")
                                                      .getMethods("toString").get(0)
@@ -65,7 +65,7 @@ class MethodTest extends ExecutableTest<Method>
                                                       .getMethods("toString").get(0)
                                                       .overrides(shadowApi.getClassOrThrow("java.lang.Object").getMethods("clone").get(0)));
                               })
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -76,17 +76,17 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetParameters()
    {
-      CompilationTest.process(shadowApi -> assertEquals("[args]",
-                                                        shadowApi.getClassOrThrow("MethodExample")
+      ProcessorTest.process(shadowApi -> assertEquals("[args]",
+                                                      shadowApi.getClassOrThrow("MethodExample")
                                                                  .getMethods("varArgsMethod").get(0).getParameters().toString()))
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -97,18 +97,18 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetParameterTypes()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                                     assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.String").asArray()),
                                                  shadowApi.getClassOrThrow("MethodExample")
                                                           .getMethods("varArgsMethod").get(0).getParameterTypes()))
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -119,14 +119,14 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetReturnType()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(shadowApi.getClassOrThrow("java.lang.String"),
                                               shadowApi.getClassOrThrow("java.lang.String")
@@ -138,14 +138,14 @@ class MethodTest extends ExecutableTest<Method>
                                                           .getMethods("toString").get(0)
                                                           .getReturnType());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetThrows()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(Collections.emptyList(),
                                               shadowApi.getClassOrThrow("java.lang.Object")
@@ -157,14 +157,14 @@ class MethodTest extends ExecutableTest<Method>
                                                        .getMethods("wait").get(0)
                                                        .getThrows());
                               })
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testIsVarArgs()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertFalse(shadowApi.getClassOrThrow("java.lang.Object")
                                                       .getMethods("toString").get(0)
@@ -173,7 +173,7 @@ class MethodTest extends ExecutableTest<Method>
                                                      .getMethods("varArgsMethod").get(0)
                                                      .isVarArgs());
                               })
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -184,20 +184,20 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetSurrounding()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class aClass = shadowApi.getClassOrThrow("MethodExample");
                                  assertEquals(aClass, aClass.getMethods("toString").get(0)
                                                             .getSurrounding());
                               })
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -208,14 +208,14 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetReceiverType()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class aClass = shadowApi.getClassOrThrow("MethodExample");
 
@@ -223,7 +223,7 @@ class MethodTest extends ExecutableTest<Method>
                                  assertEquals(aClass,
                                               aClass.getMethods("receiver").get(0).getReceiverType().orElseThrow(IllegalStateException::new));
                               })
-                     .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
+                   .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
                                                               "                              private void varArgsMethod(String... args) {}\n" +
                                                               "\n" +
                                                               "                              private void receiver(MethodExample MethodExample.this) {}\n" +
@@ -234,6 +234,6 @@ class MethodTest extends ExecutableTest<Method>
                                                               "                                 return \"MethodExample{}\";\n" +
                                                               "                              }\n" +
                                                               "                           }")
-                     .compile();
+                   .compile();
    }
 }

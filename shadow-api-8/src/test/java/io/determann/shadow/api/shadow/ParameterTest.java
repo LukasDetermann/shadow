@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +18,7 @@ class ParameterTest extends VariableTest<Executable, Parameter>
    @Test
    void testGetSurrounding()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Method method = shadowApi.getClassOrThrow("ParameterExample")
                                                           .getMethods("foo")
@@ -34,12 +34,12 @@ class ParameterTest extends VariableTest<Executable, Parameter>
                                  Parameter constructorParameter = constructor.getParameters().get(0);
                                  assertEquals(constructor, constructorParameter.getSurrounding());
                               })
-                     .withCodeToCompile("ParameterExample.java", "     public class ParameterExample\n" +
+                   .withCodeToCompile("ParameterExample.java", "     public class ParameterExample\n" +
                                                                  "                           {\n" +
                                                                  "                              public ParameterExample(String name) {}\n" +
                                                                  "\n" +
                                                                  "                              public void foo(Long foo) { }\n" +
                                                                  "                           }")
-                     .compile();
+                   .compile();
    }
 }

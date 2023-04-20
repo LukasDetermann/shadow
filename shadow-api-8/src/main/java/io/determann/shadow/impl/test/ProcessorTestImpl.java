@@ -2,8 +2,8 @@ package io.determann.shadow.impl.test;
 
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowProcessor;
-import io.determann.shadow.api.test.CompilationTest;
 import io.determann.shadow.api.test.ProcessingCallback;
+import io.determann.shadow.api.test.ProcessorTest;
 
 import javax.annotation.processing.Processor;
 import javax.tools.*;
@@ -17,17 +17,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class CompilationTestImpl implements CompilationTest
+public class ProcessorTestImpl implements ProcessorTest
 {
    private final ProcessingCallback processingCallback;
    private final List<JavaFileObject> toCompile;
    private final List<String> options;
    private final List<String> compiledClassNames;
 
-   private CompilationTestImpl(ProcessingCallback processingCallback,
-                               List<JavaFileObject> toCompile,
-                               List<String> options,
-                               List<String> compiledClassNames)
+   private ProcessorTestImpl(ProcessingCallback processingCallback,
+                             List<JavaFileObject> toCompile,
+                             List<String> options,
+                             List<String> compiledClassNames)
    {
       this.processingCallback = processingCallback;
       this.toCompile = toCompile;
@@ -35,7 +35,7 @@ public class CompilationTestImpl implements CompilationTest
       this.compiledClassNames = compiledClassNames;
    }
 
-   public CompilationTestImpl(ProcessingCallback processingCallback)
+   public ProcessorTestImpl(ProcessingCallback processingCallback)
    {
       this.processingCallback = processingCallback;
       toCompile = new ArrayList<>();
@@ -45,7 +45,7 @@ public class CompilationTestImpl implements CompilationTest
    }
 
    @Override
-   public CompilationTest withCodeToCompile(File fileToCompile)
+   public ProcessorTest withCodeToCompile(File fileToCompile)
    {
       if (!fileToCompile.getName().endsWith(".java"))
       {
@@ -63,35 +63,35 @@ public class CompilationTestImpl implements CompilationTest
       }
 
       toCompile.add(createJavaFileObject(fileToCompile.toURI(), sourceCode));
-      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
+      return new ProcessorTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTest withCodeToCompile(String fileName, String code)
+   public ProcessorTest withCodeToCompile(String fileName, String code)
    {
       toCompile.add(createJavaFileObject(createUri(fileName), code));
-      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
+      return new ProcessorTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTest withOption(String option)
+   public ProcessorTest withOption(String option)
    {
       this.options.add(option);
-      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
+      return new ProcessorTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTest withCompiledClass(String qualifiedName)
+   public ProcessorTest withCompiledClass(String qualifiedName)
    {
       this.compiledClassNames.add(qualifiedName);
-      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
+      return new ProcessorTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override
-   public CompilationTest withCompiledClass(Class<?> aClass)
+   public ProcessorTest withCompiledClass(Class<?> aClass)
    {
       this.compiledClassNames.add(aClass.getName());
-      return new CompilationTestImpl(processingCallback, toCompile, options, compiledClassNames);
+      return new ProcessorTestImpl(processingCallback, toCompile, options, compiledClassNames);
    }
 
    @Override

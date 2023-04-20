@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +19,7 @@ class PackageTest extends ShadowTest<Package>
    @Test
    void testGetContent()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(shadowApi.getPackagesOrThrow("asdkfh").isEmpty());
 
@@ -29,10 +29,10 @@ class PackageTest extends ShadowTest<Package>
                                                        .get(0)
                                                        .getContent());
                               })
-                     .withCodeToCompile("AnyClass.java", """
+                   .withCodeToCompile("AnyClass.java", """
                            package io.determann.shadow.example.processed.test.packagee.not_empty;
 
                            public class AnyClass {}""")
-                     .compile();
+                   .compile();
    }
 }

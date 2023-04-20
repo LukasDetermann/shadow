@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.type.TypeMirror;
@@ -20,32 +20,32 @@ abstract class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VA
    @Test
    void testIsSubtypeOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Parameter parameter = shadowApi.getClassOrThrow("ParameterExample")
                                                                 .getConstructors().get(0)
                                                                 .getParameters().get(0);
                                  assertTrue(parameter.isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
                               })
-                     .withCodeToCompile("ParameterExample.java", "              public class ParameterExample\n" +
+                   .withCodeToCompile("ParameterExample.java", "              public class ParameterExample\n" +
                                                                  "                           {\n" +
                                                                  "                              public ParameterExample(String name) {}\n" +
                                                                  "\n" +
                                                                  "                              public void foo(Long foo) { }\n" +
                                                                  "                           }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testIsAssignableFrom()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Field field = shadowApi.getClassOrThrow("FieldExample")
                                                         .getFields().get(0);
                                  assertTrue(field.isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Integer")));
                               })
-                     .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
-                     .compile();
+                   .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
+                   .compile();
    }
 }

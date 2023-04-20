@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.ShadowApi.convert;
@@ -16,52 +16,52 @@ class GenericTest extends ShadowTest<Generic>
    @Test
    void testGetExtends()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                        convert(shadowApi.getClassOrThrow("GenericsExample")
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
+                                                      convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGenericOrThrow()
                                                                  .getExtends()))
-                     .withCodeToCompile("GenericsExample.java", """
+                   .withCodeToCompile("GenericsExample.java", """
                            import java.util.List;
 
                            public class GenericsExample<T extends Number>
                            {
                               public static void foo(List<? super Number> a){ }
                            }""")
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testGetEnclosing()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
-                                                        convert(shadowApi.getClassOrThrow("GenericsExample")
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
+                                                      convert(shadowApi.getClassOrThrow("GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGenericOrThrow()
                                                                  .getEnclosing()))
-                     .withCodeToCompile("GenericsExample.java", """
+                   .withCodeToCompile("GenericsExample.java", """
                            import java.util.List;
 
                            public class GenericsExample<T extends Number>
                            {
                               public static void foo(List<? super Number> a){ }
                            }""")
-                     .compile();
+                   .compile();
    }
 
    @Test
    void testGetPackage()
    {
-      CompilationTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.generics").get(0),
-                                                        convert(shadowApi.getClassOrThrow(
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.generics").get(0),
+                                                      convert(shadowApi.getClassOrThrow(
                                                                                          "io.determann.shadow.example.processed.test.generics.GenericsExample")
                                                                                    .getGenerics()
                                                                                    .get(0))
                                                                  .toGenericOrThrow()
                                                                  .getPackage()))
-                     .withCodeToCompile("GenericsExample.java", """
+                   .withCodeToCompile("GenericsExample.java", """
                            package io.determann.shadow.example.processed.test.generics;
 
                            import java.util.List;
@@ -71,6 +71,6 @@ class GenericTest extends ShadowTest<Generic>
                               public static void foo(List<? super Number> a) {}
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 }

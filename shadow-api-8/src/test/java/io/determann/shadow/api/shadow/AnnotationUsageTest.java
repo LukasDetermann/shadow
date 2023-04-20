@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
    @Test
    void testGetValues()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
 
@@ -64,7 +64,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                  assertFalse(overwrittenValueTypeChooser.isDefaultValue());
                                  assertEquals("custom Value", overwrittenValueTypeChooser.asString());
                               })
-                     .withCodeToCompile("AnnotationUsageAnnotation.java",
+                   .withCodeToCompile("AnnotationUsageAnnotation.java",
                                         "                           import java.lang.annotation.ElementType;\n" +
                                         "                           import java.lang.annotation.Retention;\n" +
                                         "                           import java.lang.annotation.RetentionPolicy;\n" +
@@ -84,11 +84,11 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                         "                              Retention annotationUsageValue() default @Retention(RetentionPolicy.CLASS);\n" +
                                         "                              char[] asListOfValues() default {'b', 'c'};\n" +
                                         "                           }")
-                     .withCodeToCompile("AnnotationUsageExample.java", "                           @AnnotationUsageAnnotation\n" +
+                   .withCodeToCompile("AnnotationUsageExample.java", "                           @AnnotationUsageAnnotation\n" +
                                                                        "                           public class AnnotationUsageExample {\n" +
                                                                        "                              @AnnotationUsageAnnotation(stingValue = \"custom Value\")\n" +
                                                                        "                              private String testField;\n" +
                                                                        "                           }")
-                     .compile();
+                   .compile();
    }
 }

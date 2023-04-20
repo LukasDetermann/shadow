@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
    @Test
    void testGetValues()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
 
@@ -63,7 +63,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                  assertFalse(overwrittenValueTypeChooser.isDefaultValue());
                                  assertEquals("custom Value", overwrittenValueTypeChooser.asString());
                               })
-                     .withCodeToCompile("AnnotationUsageAnnotation.java", """
+                   .withCodeToCompile("AnnotationUsageAnnotation.java", """
                            import java.lang.annotation.ElementType;
                            import java.lang.annotation.Retention;
                            import java.lang.annotation.RetentionPolicy;
@@ -84,13 +84,13 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                               char[] asListOfValues() default {'b', 'c'};
                            }
                            """)
-                     .withCodeToCompile("AnnotationUsageExample.java", """
+                   .withCodeToCompile("AnnotationUsageExample.java", """
                            @AnnotationUsageAnnotation
                            public class AnnotationUsageExample {
                               @AnnotationUsageAnnotation(stingValue = "custom Value")
                               private String testField;
                            }
                            """)
-                     .compile();
+                   .compile();
    }
 }

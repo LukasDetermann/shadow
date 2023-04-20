@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,32 +16,32 @@ class FieldTest extends VariableTest<Declared, Field>
    @Test
    void testGetSurrounding()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  Class aClass = shadowApi.getClassOrThrow("FieldExample");
                                  assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
                               })
-                     .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
-                     .compile();
+                   .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
+                   .compile();
    }
 
    @Test
    void testIsConstant()
    {
-      CompilationTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow("FieldExample")
-                                                               .getFieldOrThrow("ID")
-                                                               .isConstant()))
-                     .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
-                     .compile();
+      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow("FieldExample")
+                                                             .getFieldOrThrow("ID")
+                                                             .isConstant()))
+                   .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
+                   .compile();
    }
 
    @Test
    void testGetConstantValue()
    {
-      CompilationTest.process(shadowApi -> assertEquals(2, shadowApi.getClassOrThrow("FieldExample")
-                                                                    .getFieldOrThrow("ID")
-                                                                    .getConstantValue()))
-                     .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
-                     .compile();
+      ProcessorTest.process(shadowApi -> assertEquals(2, shadowApi.getClassOrThrow("FieldExample")
+                                                                  .getFieldOrThrow("ID")
+                                                                  .getConstantValue()))
+                   .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
+                   .compile();
    }
 }

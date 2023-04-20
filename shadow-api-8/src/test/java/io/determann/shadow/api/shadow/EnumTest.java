@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,7 +20,7 @@ class EnumTest extends DeclaredTest<Enum>
    @Override
    void testisSubtypeOf()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
                                  assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
@@ -32,7 +32,7 @@ class EnumTest extends DeclaredTest<Enum>
    @Override
    void testGetDirectSuperTypes()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.Enum")),
                                               shadowApi.getEnumOrThrow("EnumNoParent")
@@ -44,8 +44,8 @@ class EnumTest extends DeclaredTest<Enum>
                                               shadowApi.getEnumOrThrow("EnumMultiParent")
                                                        .getDirectSuperTypes());
                               })
-                     .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
-                     .withCodeToCompile("EnumMultiParent.java",
+                   .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
+                   .withCodeToCompile("EnumMultiParent.java",
                                         "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
                                         "                                 ;\n" +
                                         "                                 @Override\n" +
@@ -54,14 +54,14 @@ class EnumTest extends DeclaredTest<Enum>
                                         "                                 @Override\n" +
                                         "                                 public EnumMultiParent get() {return null;}\n" +
                                         "                              }")
-                     .compile();
+                   .compile();
    }
 
    @Test
    @Override
    void testGetSuperTypes()
    {
-      CompilationTest.process(shadowApi ->
+      ProcessorTest.process(shadowApi ->
                               {
                                  assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
                                                                           shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
@@ -78,8 +78,8 @@ class EnumTest extends DeclaredTest<Enum>
                                               shadowApi.getEnumOrThrow("EnumMultiParent")
                                                        .getSuperTypes());
                               })
-                     .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
-                     .withCodeToCompile("",
+                   .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
+                   .withCodeToCompile("",
                                         "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
                                         "                                 ;\n" +
                                         "                                 @Override\n" +
@@ -88,6 +88,6 @@ class EnumTest extends DeclaredTest<Enum>
                                         "                                 @Override\n" +
                                         "                                 public EnumMultiParent get() {return null;}\n" +
                                         "                              }")
-                     .compile();
+                   .compile();
    }
 }

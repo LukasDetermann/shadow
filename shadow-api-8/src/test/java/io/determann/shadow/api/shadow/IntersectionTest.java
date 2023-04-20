@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -18,10 +18,10 @@ class IntersectionTest extends ShadowTest<Intersection>
    @Test
    void testGetBounds()
    {
-      CompilationTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                                                  shadowApi.getInterfaceOrThrow("java.io.Serializable")),
-                                                        getShadowSupplier().apply(shadowApi).getBounds()))
-                     .withCodeToCompile("IntersectionExample.java", "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
-                     .compile();
+      ProcessorTest.process(shadowApi -> assertEquals(Arrays.asList(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                                                                    shadowApi.getInterfaceOrThrow("java.io.Serializable")),
+                                                      getShadowSupplier().apply(shadowApi).getBounds()))
+                   .withCodeToCompile("IntersectionExample.java", "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
+                   .compile();
    }
 }

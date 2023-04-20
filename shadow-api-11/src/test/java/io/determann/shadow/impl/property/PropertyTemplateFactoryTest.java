@@ -1,6 +1,6 @@
 package io.determann.shadow.impl.property;
 
-import io.determann.shadow.api.test.CompilationTest;
+import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.beans.BeanInfo;
@@ -21,7 +21,7 @@ class PropertyTemplateFactoryTest
    @Test
    void templatesFor()
    {
-      CompilationTest.process(api ->
+      ProcessorTest.process(api ->
                               {
                                  BeanInfo beanInfo = getBeanInfo(Pojo.class);
                                  List<PropertyTemplate> templates =
@@ -52,8 +52,8 @@ class PropertyTemplateFactoryTest
                                     }
                                  }
                               })
-                     .withCompiledClass(Pojo.class)
-                     .compile();
+                   .withCompiledClass(Pojo.class)
+                   .compile();
    }
 
    private static BeanInfo getBeanInfo(Class<Pojo> clazz)
