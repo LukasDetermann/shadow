@@ -17,6 +17,8 @@ public interface Method extends Executable,
 {
    boolean overrides(Method method);
 
+   boolean overwrittenBy(Method method);
+
    /**
     * Do both methods have the same parameter types in the same order?
     * a() && b() -> true
