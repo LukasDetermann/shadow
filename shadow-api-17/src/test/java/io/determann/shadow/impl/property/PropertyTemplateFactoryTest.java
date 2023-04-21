@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.property;
 
+import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
@@ -66,5 +67,22 @@ class PropertyTemplateFactoryTest
       {
          throw new RuntimeException(e);
       }
+   }
+
+   @Test
+   void overwrittenAccessor()
+   {
+      ProcessorTest.process(shadowApi ->
+                            {
+                               List<ImmutableProperty> properties = shadowApi.getClassOrThrow("Child").getImmutableProperties();
+
+                               assertEquals(2, properties.size());
+                               assertEquals("class", properties.get(0).getSimpleName());
+                               assertEquals("id", properties.get(1).getSimpleName());
+                               assertEquals("Child", properties.get(1).getGetter().getSurrounding().getSimpleName());
+                            })
+                   .withCodeToCompile("Parent", "abstract class Parent{public abstract Long getId();}")
+                   .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")
+                   .compile();
    }
 }

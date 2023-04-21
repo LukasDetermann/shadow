@@ -109,9 +109,13 @@ class PropertyTemplateFactory
 
       Collections.reverse(superClasses);
 
-      return superClasses.stream()
-                         .flatMap(aClass -> aClass.getMethods().stream())
-                         .collect(toList());
+      List<Method> methods = superClasses.stream()
+                                         .flatMap(aClass -> aClass.getMethods().stream())
+                                         .collect(toList());
+
+      return methods.stream()
+                    .filter(method -> methods.stream().noneMatch(method::overwrittenBy))
+                    .collect(toList());
    }
 
    private static Optional<Field> findField(Map<String, Field> nameField, Shadow<TypeMirror> type, String name)

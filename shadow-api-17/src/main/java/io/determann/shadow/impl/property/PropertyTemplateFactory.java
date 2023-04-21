@@ -20,6 +20,7 @@ import static io.determann.shadow.impl.property.PropertyTemplateFactory.Accessor
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 class PropertyTemplateFactory
 {
@@ -82,13 +83,17 @@ class PropertyTemplateFactory
       {
          return declared.getMethods();
       }
-      List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(), Objects::nonNull, Class::getSuperClass).collect(Collectors.toList());
+      List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(), Objects::nonNull, Class::getSuperClass).collect(toList());
 
       Collections.reverse(superClasses);
 
-      return superClasses.stream()
-                         .flatMap(aClass -> aClass.getMethods().stream())
-                         .toList();
+      List<Method> methods = superClasses.stream()
+                                      .flatMap(aClass -> aClass.getMethods().stream())
+                                      .toList();
+
+      return methods.stream()
+                    .filter(method -> methods.stream().noneMatch(method::overwrittenBy))
+                    .toList();
    }
 
    private static Optional<Field> findField(Map<String, Field> nameField, Shadow<TypeMirror> type, String name)
