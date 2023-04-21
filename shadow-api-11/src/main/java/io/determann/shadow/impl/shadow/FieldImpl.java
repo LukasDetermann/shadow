@@ -30,6 +30,6 @@ public class FieldImpl extends VariableImpl<Declared> implements Field
    @Override
    public Shadow<TypeMirror> erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().erasure(getMirror()));
    }
 }

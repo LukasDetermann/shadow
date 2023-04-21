@@ -154,7 +154,9 @@ class ConversionTest
     ProcessorTest
       .process(shadowApi ->
          {
-           Elements elements = shadowApi.getJdkApiContext().elements();
+           Elements elements = shadowApi.getJdkApiContext()
+                                        .processingEnv()
+                                        .getElementUtils();
            //get a type -> Element data structure 
            List<? extends Element> myClass = elements.getTypeElement("MyClass")
                                                      .getEnclosedElements();
@@ -258,15 +260,8 @@ class ConversionTest
       .process(shadowApi ->
          {
            //shadow -> jdk
+           ProcessingEnvironment processingEnv = shadowApi.processingEnv();
            RoundEnvironment roundEnv = shadowApi.getJdkApiContext().roundEnv();
-           Elements elements = shadowApi.getJdkApiContext().elements();
-           Types types = shadowApi.getJdkApiContext().types();
-           Messager messager = shadowApi.getJdkApiContext().messager();
-           Map<String, String> options = shadowApi.getJdkApiContext().options();
-           Filer filer = shadowApi.getJdkApiContext().filer();
-           SourceVersion sourceVersion = shadowApi.getJdkApiContext().sourceVersion();
-           Locale locale = shadowApi.getJdkApiContext().locale();
-           boolean previewEnabled = shadowApi.getJdkApiContext().isPreviewEnabled();
 
            Element typeElement = shadowApi.getClassOrThrow("java.lang.String").getElement();
            TypeMirror mNyClass1 = shadowApi.getClassOrThrow("java.lang.String").getMirror();

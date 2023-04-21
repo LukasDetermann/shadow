@@ -41,21 +41,21 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
     */
    default String getJavaDoc()
    {
-      return getApi().getJdkApiContext().elements().getDocComment(getElement());
+      return getApi().getJdkApiContext().processingEnv().getElementUtils().getDocComment(getElement());
    }
 
    default void logError(String msg)
    {
-      getApi().getJdkApiContext().messager().printMessage(Diagnostic.Kind.ERROR, msg, getElement());
+      getApi().getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg, getElement());
    }
 
    default void logInfo(String msg)
    {
-      getApi().getJdkApiContext().messager().printMessage(Diagnostic.Kind.NOTE, msg, getElement());
+      getApi().getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg, getElement());
    }
 
    default void logWarning(String msg)
    {
-      getApi().getJdkApiContext().messager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement());
+      getApi().getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement());
    }
 }

@@ -27,7 +27,7 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow<MI
    @Override
    public boolean representsSameType(Shadow<? extends TypeMirror> shadow)
    {
-      return getApi().getJdkApiContext().types().isSameType(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isSameType(getMirror(), shadow.getMirror());
    }
 
    @Override

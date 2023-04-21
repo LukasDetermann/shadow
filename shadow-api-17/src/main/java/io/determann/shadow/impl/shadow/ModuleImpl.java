@@ -33,7 +33,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    public ModuleImpl(ShadowApi shadowApi, NoType noType)
    {
       super(shadowApi, noType);
-      this.moduleElement = getApi().getJdkApiContext().elements().getModuleElement(noType.toString());
+      this.moduleElement = getApi().getJdkApiContext().processingEnv().getElementUtils().getModuleElement(noType.toString());
       if (moduleElement == null)
       {
          throw new IllegalStateException(noType + " is not unique");
@@ -70,7 +70,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public Declared getDeclaredOrThrow(String qualifiedName)
    {
-      TypeElement typeElement = getApi().getJdkApiContext().elements().getTypeElement(getElement(), qualifiedName);
+      TypeElement typeElement = getApi().getJdkApiContext().processingEnv().getElementUtils().getTypeElement(getElement(), qualifiedName);
       if (typeElement == null)
       {
          throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
@@ -93,7 +93,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public boolean isAutomatic()
    {
-      return getApi().getJdkApiContext().elements().isAutomaticModule(getElement());
+      return getApi().getJdkApiContext().processingEnv().getElementUtils().isAutomaticModule(getElement());
    }
 
    @Override

@@ -28,7 +28,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public boolean isFunctional()
    {
-      return getApi().getJdkApiContext().elements().isFunctionalInterface(getElement());
+      return getApi().getJdkApiContext().processingEnv().getElementUtils().isFunctionalInterface(getElement());
    }
 
    @Override
@@ -48,7 +48,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
                                        .map(Shadow::getMirror)
                                        .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().getDeclaredType(getElement(), typeMirrors));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -81,12 +81,12 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public Interface interpolateGenerics()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().capture(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Interface erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().erasure(getMirror()));
    }
 }

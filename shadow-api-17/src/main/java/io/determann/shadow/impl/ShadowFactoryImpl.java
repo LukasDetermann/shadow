@@ -50,7 +50,7 @@ class ShadowFactoryImpl implements ShadowFactory
             {
                case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
                case ARRAY -> new ArrayImpl(shadowApi, (ArrayType) typeMirror);
-               case DECLARED -> switch (shadowApi.getJdkApiContext().types().asElement(typeMirror).getKind())
+               case DECLARED -> switch (shadowApi.getJdkApiContext().processingEnv().getTypeUtils().asElement(typeMirror).getKind())
                      {
                         case CLASS -> new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
                         case INTERFACE -> new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);

@@ -67,7 +67,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean isBridge()
    {
-      return getApi().getJdkApiContext().elements().isBridge(getElement());
+      return getApi().getJdkApiContext().processingEnv().getElementUtils().isBridge(getElement());
    }
 
    @Override
@@ -102,13 +102,13 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean overrides(Method method)
    {
-      return getApi().getJdkApiContext().elements().overrides(getElement(), method.getElement(), getSurrounding().getElement());
+      return getApi().getJdkApiContext().processingEnv().getElementUtils().overrides(getElement(), method.getElement(), getSurrounding().getElement());
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return getApi().getJdkApiContext().types().isSubsignature(getMirror(), method.getMirror());
+      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isSubsignature(getMirror(), method.getMirror());
    }
 
    @Override
@@ -138,7 +138,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().elements().getPackageOf(getElement()));
+      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().processingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

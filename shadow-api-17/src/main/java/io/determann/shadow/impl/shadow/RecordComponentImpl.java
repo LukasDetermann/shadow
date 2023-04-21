@@ -25,13 +25,13 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
    {
-      return getApi().getJdkApiContext().types().isSubtype(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
    {
-      return getApi().getJdkApiContext().types().isAssignable(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isAssignable(getMirror(), shadow.getMirror());
    }
 
    @Override
@@ -55,13 +55,13 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().elements().getPackageOf(getElement()));
+      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().processingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
    public RecordComponent erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    @Override

@@ -38,6 +38,6 @@ public class RecordImpl extends DeclaredImpl implements Record
    @Override
    public Record erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().types().erasure(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().erasure(getMirror()));
    }
 }
