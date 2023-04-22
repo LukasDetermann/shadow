@@ -20,13 +20,13 @@ public final class JdkApiContext
    }
 
    @JdkApi
-   public ProcessingEnvironment processingEnv()
+   public ProcessingEnvironment getProcessingEnv()
    {
       return processingEnv;
    }
 
    @JdkApi
-   public RoundEnvironment roundEnv()
+   public RoundEnvironment getRoundEnv()
    {
       return roundEnv;
    }

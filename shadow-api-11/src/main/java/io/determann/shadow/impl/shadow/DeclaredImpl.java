@@ -41,7 +41,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
    {
-      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
    }
 
    @Override
@@ -125,7 +125,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public List<Declared> getDirectSuperTypes()
    {
-      return getApi().getJdkApiContext().processingEnv().getTypeUtils()
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils()
                      .directSupertypes(getMirror())
                      .stream()
                      .map(typeMirror1 -> getApi().getShadowFactory().<Declared>shadowFromType(typeMirror1))
@@ -152,25 +152,25 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public String getBinaryName()
    {
-      return getApi().getJdkApiContext().processingEnv().getElementUtils().getBinaryName(getElement()).toString();
+      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getBinaryName(getElement()).toString();
    }
 
    @Override
    public Wildcard asExtendsWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().getWildcardType(getMirror(), null));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
    }
 
    @Override
    public Wildcard asSuperWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().getWildcardType(null, getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override
    public Array asArray()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().getArrayType(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override
@@ -230,7 +230,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().processingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

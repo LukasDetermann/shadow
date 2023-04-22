@@ -67,7 +67,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean isBridge()
    {
-      return getApi().getJdkApiContext().processingEnv().getElementUtils().isBridge(getElement());
+      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().isBridge(getElement());
    }
 
    @Override
@@ -102,19 +102,19 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean overrides(Method method)
    {
-      return getApi().getJdkApiContext().processingEnv().getElementUtils().overrides(getElement(), method.getElement(), getSurrounding().getElement());
+      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().overrides(getElement(), method.getElement(), getSurrounding().getElement());
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return getApi().getJdkApiContext().processingEnv().getElementUtils().overrides(method.getElement(), getElement(), method.getSurrounding().getElement());
+      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().overrides(method.getElement(), getElement(), method.getSurrounding().getElement());
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return getApi().getJdkApiContext().processingEnv().getTypeUtils().isSubsignature(getMirror(), method.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubsignature(getMirror(), method.getMirror());
    }
 
    @Override
@@ -144,7 +144,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().processingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

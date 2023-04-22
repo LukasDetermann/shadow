@@ -26,7 +26,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    public PackageImpl(ShadowApi shadowApi, NoType noTypeMirror)
    {
       super(shadowApi, noTypeMirror);
-      this.packageElement = getApi().getJdkApiContext().processingEnv().getElementUtils().getPackageElement(noTypeMirror.toString());
+      this.packageElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageElement(noTypeMirror.toString());
       if (packageElement == null)
       {
          throw new IllegalStateException(noTypeMirror + " is not unique");
@@ -70,7 +70,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    @Override
    public Declared getDeclaredOrThrow(String qualifiedName)
    {
-      TypeElement typeElement = getApi().getJdkApiContext().processingEnv().getElementUtils().getTypeElement(getModule().getElement(), qualifiedName);
+      TypeElement typeElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(getModule().getElement(), qualifiedName);
       if (typeElement == null)
       {
          throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");

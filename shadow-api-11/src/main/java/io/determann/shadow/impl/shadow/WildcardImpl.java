@@ -48,13 +48,13 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    @Override
    public boolean contains(Shadow<? extends TypeMirror> shadow)
    {
-      return getApi().getJdkApiContext().processingEnv().getTypeUtils().contains(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().contains(getMirror(), shadow.getMirror());
    }
 
    @Override
    public Shadow<TypeMirror> erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().processingEnv().getTypeUtils().erasure(getMirror()));
+      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    @Override

@@ -38,9 +38,9 @@ public class ShadowApiImpl implements ShadowApi
 
       if (!processingEnv.toString().startsWith("javac"))
       {
-         proxySystemOut(getJdkApiContext().processingEnv().getMessager());
+         proxySystemOut(getJdkApiContext().getProcessingEnv().getMessager());
       }
-      proxySystemErr(getJdkApiContext().processingEnv().getMessager());
+      proxySystemErr(getJdkApiContext().getProcessingEnv().getMessager());
    }
 
    @Override
@@ -87,12 +87,12 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation)
    {
-      TypeElement annotation = getJdkApiContext().processingEnv().getElementUtils().getTypeElement(qualifiedAnnotation);
+      TypeElement annotation = getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedAnnotation);
       if (annotation == null || !annotation.getKind().equals(ElementKind.ANNOTATION_TYPE))
       {
          throw new IllegalArgumentException("No annotation found with qualified name \"" + qualifiedAnnotation + "\"");
       }
-      return new AnnotationTypeChooserImpl(this, jdkApiContext.roundEnv().getElementsAnnotatedWith(annotation));
+      return new AnnotationTypeChooserImpl(this, jdkApiContext.getRoundEnv().getElementsAnnotatedWith(annotation));
    }
 
    @Override
@@ -104,17 +104,17 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public List<Module> getModules()
    {
-      return getJdkApiContext().processingEnv().getElementUtils()
-                          .getAllModuleElements()
-                          .stream()
-                          .map(moduleElement -> getShadowFactory().<Module>shadowFromElement(moduleElement))
-                          .collect(toUnmodifiableList());
+      return getJdkApiContext().getProcessingEnv().getElementUtils()
+                               .getAllModuleElements()
+                               .stream()
+                               .map(moduleElement -> getShadowFactory().<Module>shadowFromElement(moduleElement))
+                               .collect(toUnmodifiableList());
    }
 
    @Override
    public Module getModuleOrThrow(String name)
    {
-      ModuleElement moduleElement = getJdkApiContext().processingEnv().getElementUtils().getModuleElement(name);
+      ModuleElement moduleElement = getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(name);
       if (moduleElement == null)
       {
          throw new IllegalArgumentException("no module fond with name \"" + name + "\"");
@@ -125,44 +125,44 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public List<Package> getPackagesOrThrow(String qualifiedName)
    {
-      return getJdkApiContext().processingEnv().getElementUtils()
-                          .getAllPackageElements(qualifiedName)
-                          .stream()
-                          .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
-                          .collect(toUnmodifiableList());
+      return getJdkApiContext().getProcessingEnv().getElementUtils()
+                               .getAllPackageElements(qualifiedName)
+                               .stream()
+                               .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
+                               .collect(toUnmodifiableList());
    }
 
    @Override
    public List<Package> getPackages()
    {
-      return getJdkApiContext().processingEnv().getElementUtils()
-                          .getAllModuleElements()
-                          .stream()
-                          .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
-                          .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
-                          .collect(toUnmodifiableList());
+      return getJdkApiContext().getProcessingEnv().getElementUtils()
+                               .getAllModuleElements()
+                               .stream()
+                               .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
+                               .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
+                               .collect(toUnmodifiableList());
    }
 
    @Override
    public Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
-      return getShadowFactory().shadowFromElement(getJdkApiContext().processingEnv().getElementUtils()
-                                                               .getPackageElement(getModuleOrThrow(qualifiedModuleName).getElement(),
+      return getShadowFactory().shadowFromElement(getJdkApiContext().getProcessingEnv().getElementUtils()
+                                                                    .getPackageElement(getModuleOrThrow(qualifiedModuleName).getElement(),
                                                                                   qualifiedPackageName));
    }
 
    @Override
    public Package getPackageOrThrow(Module module, String qualifiedPackageName)
    {
-      return getShadowFactory().shadowFromElement(getJdkApiContext().processingEnv().getElementUtils()
-                                                               .getPackageElement(module.getElement(),
+      return getShadowFactory().shadowFromElement(getJdkApiContext().getProcessingEnv().getElementUtils()
+                                                                    .getPackageElement(module.getElement(),
                                                                                   qualifiedPackageName));
    }
 
    @Override
    public Declared getDeclaredOrThrow(String qualifiedName)
    {
-      TypeElement typeElement = getJdkApiContext().processingEnv().getElementUtils().getTypeElement(qualifiedName);
+      TypeElement typeElement = getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName);
       if (typeElement == null)
       {
          throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
@@ -194,19 +194,19 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void logError(String msg)
    {
-      getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
+      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
    }
 
    @Override
    public void logInfo(String msg)
    {
-      getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
+      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
    }
 
    @Override
    public void logWarning(String msg)
    {
-      getJdkApiContext().processingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg);
+      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg);
    }
 
    @Override
@@ -230,7 +230,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeSourceFile(String qualifiedName, String content)
    {
-      try (Writer writer = getJdkApiContext().processingEnv().getFiler().createSourceFile(qualifiedName).openWriter())
+      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createSourceFile(qualifiedName).openWriter())
       {
          writer.write(content);
       }
@@ -243,7 +243,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeClassFile(String qualifiedName, String content)
    {
-      try (Writer writer = getJdkApiContext().processingEnv().getFiler().createClassFile(qualifiedName).openWriter())
+      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createClassFile(qualifiedName).openWriter())
       {
          writer.write(content);
       }
@@ -256,7 +256,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeResource(StandardLocation location, String moduleAndPkg, String relativPath, String content)
    {
-      try (Writer writer = getJdkApiContext().processingEnv().getFiler().createResource(location, moduleAndPkg, relativPath).openWriter())
+      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createResource(location, moduleAndPkg, relativPath).openWriter())
       {
          writer.write(content);
       }
@@ -269,13 +269,13 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException
    {
-      return getJdkApiContext().processingEnv().getFiler().getResource(location, moduleAndPkg, relativPath);
+      return getJdkApiContext().getProcessingEnv().getFiler().getResource(location, moduleAndPkg, relativPath);
    }
 
    @Override
    public boolean isLastRound()
    {
-      return getJdkApiContext().roundEnv().processingOver();
+      return getJdkApiContext().getRoundEnv().processingOver();
    }
 
    @Override

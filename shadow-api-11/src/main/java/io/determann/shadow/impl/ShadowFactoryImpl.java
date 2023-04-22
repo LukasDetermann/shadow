@@ -77,7 +77,7 @@ class ShadowFactoryImpl implements ShadowFactory
          case ARRAY:
             return(SHADOW) new ArrayImpl(shadowApi, (ArrayType) typeMirror);
          case DECLARED:
-            switch (shadowApi.getJdkApiContext().processingEnv().getTypeUtils().asElement(typeMirror).getKind())
+            switch (shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().asElement(typeMirror).getKind())
             {
                case CLASS:
                   return(SHADOW) new ClassImpl(shadowApi, ((DeclaredType) typeMirror));

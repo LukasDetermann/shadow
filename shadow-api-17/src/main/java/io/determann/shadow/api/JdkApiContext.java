@@ -8,18 +8,25 @@ import javax.annotation.processing.RoundEnvironment;
 /**
  * Holds all the parts of the java annotation processor api
  */
-public record JdkApiContext(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv)
+public final class JdkApiContext
 {
+   private final ProcessingEnvironment processingEnv;
+   private final RoundEnvironment roundEnv;
+
+   public JdkApiContext(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv)
+   {
+      this.processingEnv = processingEnv;
+      this.roundEnv = roundEnv;
+   }
+
    @JdkApi
-   @Override
-   public ProcessingEnvironment processingEnv()
+   public ProcessingEnvironment getProcessingEnv()
    {
       return processingEnv;
    }
 
    @JdkApi
-   @Override
-   public RoundEnvironment roundEnv()
+   public RoundEnvironment getRoundEnv()
    {
       return roundEnv;
    }

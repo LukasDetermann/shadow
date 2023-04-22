@@ -23,7 +23,7 @@ public interface Annotationable<ELEMENT extends Element> extends ElementBacked<E
    {
       return getApi()
             .getShadowFactory()
-            .annotationUsages(getApi().getJdkApiContext().processingEnv().getElementUtils().getAllAnnotationMirrors(getElement()));
+            .annotationUsages(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(getElement()));
    }
 
    default List<AnnotationUsage> getUsagesOf(Annotation annotation)

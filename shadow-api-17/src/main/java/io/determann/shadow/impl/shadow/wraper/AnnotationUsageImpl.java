@@ -43,7 +43,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       Map<? extends ExecutableElement, ? extends AnnotationValue> withoutDefaults = annotationMirror.getElementValues();
 
       Map<? extends ExecutableElement, ? extends AnnotationValue> withDefaults =
-            shadowApi.getJdkApiContext().processingEnv().getElementUtils().getElementValuesWithDefaults(annotationMirror);
+            shadowApi.getJdkApiContext().getProcessingEnv().getElementUtils().getElementValuesWithDefaults(annotationMirror);
 
       for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : withDefaults.entrySet())
       {
