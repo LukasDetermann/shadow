@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Interface;
 
 /**
- * @see DeclaredConverter#mapper(DeclaredMapper)
+ * @see DeclaredConverter#map(DeclaredMapper)
  */
 public interface DeclaredMapper<T>
 {

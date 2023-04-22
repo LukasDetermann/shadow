@@ -5,7 +5,7 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Parameter;
 
 /**
- * @see VariableConverter#consumer(VariableConsumer)
+ * @see VariableConverter#consume(VariableConsumer)
  */
 public abstract class VariableConsumerDefault implements VariableConsumer
 {

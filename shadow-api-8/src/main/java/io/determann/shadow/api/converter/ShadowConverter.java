@@ -90,4 +90,34 @@ public interface ShadowConverter
    Wildcard toWildcardOrThrow();
 
    Optional<Wildcard> toWildcard();
+
+   /**
+    * consumes all leafs of {@link Declared}
+    */
+   void consume(DeclaredConsumer adapter);
+
+   /**
+    * consumes all leafs of {@link Declared}
+    */
+   <T> T map(DeclaredMapper<T> mapper);
+
+   /**
+    * consumes all leafs of {@link Variable}
+    */
+   void consume(VariableConsumer consumer);
+
+   /**
+    * maps all leafs of {@link Variable}
+    */
+   <T> T map(VariableMapper<T> mapper);
+
+   /**
+    * consumes all leafs of {@link Executable}
+    */
+   void consume(ExecutableConsumer adapter);
+
+   /**
+    * consumes all leafs of {@link Executable}
+    */
+   <T> T map(ExecutableMapper<T> mapper);
 }

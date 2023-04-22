@@ -4,7 +4,7 @@ import io.determann.shadow.api.shadow.Constructor;
 import io.determann.shadow.api.shadow.Method;
 
 /**
- * @see ExecutableConverter#mapper(ExecutableMapper)
+ * @see ExecutableConverter#map(ExecutableMapper)
  */
 public abstract class ExecutableMapperDefault<T> implements ExecutableMapper<T>
 {

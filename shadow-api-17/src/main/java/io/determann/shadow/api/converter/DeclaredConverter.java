@@ -32,10 +32,10 @@ public interface DeclaredConverter
    /**
     * consumes all leafs of {@link Declared}
     */
-   void consumer(DeclaredConsumer adapter);
+   void consume(DeclaredConsumer adapter);
 
    /**
     * consumes all leafs of {@link Declared}
     */
-   <T> T mapper(DeclaredMapper<T> mapper);
+   <T> T map(DeclaredMapper<T> mapper);
 }

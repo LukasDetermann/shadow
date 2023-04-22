@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Interface;
 
 /**
- * @see DeclaredConverter#consumer(DeclaredConsumer)
+ * @see DeclaredConverter#consume(DeclaredConsumer)
  */
 public interface DeclaredConsumer
 {

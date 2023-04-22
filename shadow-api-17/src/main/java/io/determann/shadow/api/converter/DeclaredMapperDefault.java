@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 /**
- * @see DeclaredConverter#mapper(DeclaredMapper)
+ * @see DeclaredConverter#map(DeclaredMapper)
  */
 public abstract class DeclaredMapperDefault<T> implements DeclaredMapper<T>
 {

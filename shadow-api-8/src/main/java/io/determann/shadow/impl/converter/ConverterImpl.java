@@ -328,7 +328,7 @@ public class ConverterImpl implements ShadowConverter,
    //mapper and adapter
 
    @Override
-   public void consumer(DeclaredConsumer consumer)
+   public void consume(DeclaredConsumer consumer)
    {
       toClass().ifPresent(consumer::classType);
       toInterface().ifPresent(consumer::interfaceType);
@@ -337,7 +337,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public <T> T mapper(DeclaredMapper<T> mapper)
+   public <T> T map(DeclaredMapper<T> mapper)
    {
       return toClass().map(mapper::classType)
                       .orElse(toInterface()
@@ -350,14 +350,14 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public void consumer(ExecutableConsumer consumer)
+   public void consume(ExecutableConsumer consumer)
    {
       toMethod().ifPresent(consumer::method);
       toConstructor().ifPresent(consumer::constructor);
    }
 
    @Override
-   public <T> T mapper(ExecutableMapper<T> mapper)
+   public <T> T map(ExecutableMapper<T> mapper)
    {
       return toMethod().map(mapper::method)
                                .orElse(toConstructor()
@@ -366,7 +366,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public void consumer(VariableConsumer consumer)
+   public void consume(VariableConsumer consumer)
    {
       toEnumConstant().ifPresent(consumer::enumConstant);
       toField().ifPresent(consumer::field);
@@ -374,7 +374,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public <T> T mapper(VariableMapper<T> mapper)
+   public <T> T map(VariableMapper<T> mapper)
    {
       return toEnumConstant().map(mapper::enumConstant)
                                      .orElse(toField()

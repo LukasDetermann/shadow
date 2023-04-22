@@ -24,10 +24,10 @@ public interface VariableConverter
    /**
     * consumes all leafs of {@link Variable}
     */
-   void consumer(VariableConsumer consumer);
+   void consume(VariableConsumer consumer);
 
    /**
     * maps all leafs of {@link Variable}
     */
-   <T> T mapper(VariableMapper<T> mapper);
+   <T> T map(VariableMapper<T> mapper);
 }

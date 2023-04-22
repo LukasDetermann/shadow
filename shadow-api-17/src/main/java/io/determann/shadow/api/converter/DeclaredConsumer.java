@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 /**
- * @see DeclaredConverter#consumer(DeclaredConsumer)
+ * @see DeclaredConverter#consume(DeclaredConsumer)
  */
 public interface DeclaredConsumer
 {

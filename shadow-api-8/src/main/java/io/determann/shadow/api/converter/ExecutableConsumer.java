@@ -4,7 +4,7 @@ import io.determann.shadow.api.shadow.Constructor;
 import io.determann.shadow.api.shadow.Method;
 
 /**
- * @see ExecutableConverter#consumer(ExecutableConsumer)
+ * @see ExecutableConverter#consume(ExecutableConsumer)
  */
 public interface ExecutableConsumer
 {

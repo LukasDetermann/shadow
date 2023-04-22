@@ -19,10 +19,10 @@ public interface ExecutableConverter
    /**
     * consumes all leafs of {@link Executable}
     */
-   void consumer(ExecutableConsumer adapter);
+   void consume(ExecutableConsumer adapter);
 
    /**
     * consumes all leafs of {@link Executable}
     */
-   <T> T mapper(ExecutableMapper<T> mapper);
+   <T> T map(ExecutableMapper<T> mapper);
 }

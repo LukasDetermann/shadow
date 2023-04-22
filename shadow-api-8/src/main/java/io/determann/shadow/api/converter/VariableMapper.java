@@ -5,7 +5,7 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Parameter;
 
 /**
- * @see VariableConverter#mapper(VariableMapper)
+ * @see VariableConverter#map(VariableMapper)
  */
 public interface VariableMapper<T>
 {
