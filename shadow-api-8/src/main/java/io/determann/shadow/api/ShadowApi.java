@@ -123,6 +123,14 @@ public interface ShadowApi extends DeclaredHolder
     */
    int getProcessingRound();
 
+   /**
+    * Convince method that performs erasure on all declared types that support it
+    *
+    * @see Class#erasure()
+    * @see Interface#erasure()
+    */
+   Declared erasure(Declared declared);
+
    //convert Shadows
    static AnnotationConverter convert(Annotation annotationShadow)
    {

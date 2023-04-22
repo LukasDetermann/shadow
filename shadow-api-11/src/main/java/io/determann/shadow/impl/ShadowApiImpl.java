@@ -1,10 +1,11 @@
 package io.determann.shadow.impl;
 
 import io.determann.shadow.api.*;
-import io.determann.shadow.api.shadow.Annotation;
-import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.converter.DeclaredMapper;
+import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.*;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -288,6 +289,37 @@ public class ShadowApiImpl implements ShadowApi
    public int getProcessingRound()
    {
       return processingRound;
+   }
+
+   @Override
+   public Declared erasure(Declared declared)
+   {
+      return ShadowApi.convert(declared).map(new DeclaredMapper<>()
+      {
+         @Override
+         public Declared annotationType(Annotation annotation)
+         {
+            return annotation;
+         }
+
+         @Override
+         public Declared enumType(io.determann.shadow.api.shadow.Enum aEnum)
+         {
+            return aEnum;
+         }
+
+         @Override
+         public Declared classType(Class aClass)
+         {
+            return aClass.erasure();
+         }
+
+         @Override
+         public Declared interfaceType(Interface aInterface)
+         {
+            return aInterface.erasure();
+         }
+      });
    }
 
    @Override
