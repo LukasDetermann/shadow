@@ -151,7 +151,10 @@ public interface ShadowApi extends DeclaredHolder
     * @see Interface#erasure()
     * @see Record#erasure()
     */
-   Declared erasure(Declared declared);
+   static Declared erasure(Declared declared)
+   {
+      return ShadowApiImpl.erasure(declared);
+   }
 
    //convert Shadows
    static AnnotationConverter convert(Annotation annotationShadow)

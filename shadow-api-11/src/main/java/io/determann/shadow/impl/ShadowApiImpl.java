@@ -291,8 +291,7 @@ public class ShadowApiImpl implements ShadowApi
       return processingRound;
    }
 
-   @Override
-   public Declared erasure(Declared declared)
+   public static Declared erasure(Declared declared)
    {
       return ShadowApi.convert(declared).map(new DeclaredMapper<>()
       {
