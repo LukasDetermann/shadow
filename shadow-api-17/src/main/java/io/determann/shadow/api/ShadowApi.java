@@ -23,6 +23,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static io.determann.shadow.api.metadata.Scope.ScopeType.ALL;
 import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATION;
@@ -44,8 +45,8 @@ import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATI
  * </ul>
  *
  * <h2>fyi:</h2>
- * <li>{@link System#out} is proxied and redirected to the logger as warning during the compilation</li>
- * <li>{@link System#err} is proxied and redirected to the logger as error during the compilation</li>
+ * <li>{@link System#out} is proxied and redirected to the logger as warning</li>
+ * <li>{@link System#err} is proxied and redirected to the logger as error</li>
  *
  * @see ShadowProcessor
  * @see JdkApi
@@ -132,7 +133,7 @@ public interface ShadowApi extends DeclaredHolder
    /**
     * Last round of annotation processing
     */
-   boolean isLastRound();
+   boolean isProcessingOver();
 
    /**
     * First round of annotation processing
@@ -143,6 +144,48 @@ public interface ShadowApi extends DeclaredHolder
     * starts at 1
     */
    int getProcessingRound();
+
+   /**
+    * Consumer to handle exceptions that occur in this annotation processor.
+    * If you want the compilation to stop because of it just throw any expedition.
+    */
+   void setExceptionHandler(BiConsumer<ShadowApi, Throwable> exceptionHandler);
+
+   /**
+    * @see #setExceptionHandler(BiConsumer)
+    */
+   BiConsumer<ShadowApi, Throwable> getExceptionHandler();
+
+   /**
+    * Executed at the end of each round.
+    * When the processing is over each Processor gets called one more time with {@link #isProcessingOver()} = true.
+    */
+   void setDiagnosticHandler(BiConsumer<ShadowApi, DiagnosticContext> diagnosticHandler);
+
+   /**
+    * @see #setDiagnosticHandler(BiConsumer)
+    */
+   BiConsumer<ShadowApi, DiagnosticContext> getDiagnosticHandler();
+
+   /**
+    * Some {@link javax.tools.Tool} don't support {@link System#out}. By default, it is proxied and redirected to the logger as warning
+    */
+   void setSystemOutHandler(BiConsumer<ShadowApi, String> systemOutHandler);
+
+   /**
+    * @see #setSystemOutHandler(BiConsumer)
+    */
+   BiConsumer<ShadowApi, String> getSystemOutHandler();
+
+   /**
+    * Some {@link javax.tools.Tool} don't support {@link System#err}. By default, it is proxied and redirected to the logger as error during
+    */
+   void setSystemErrorHandler(BiConsumer<ShadowApi, String> systemErrorHandler);
+
+   /**
+    * @see #setSystemErrorHandler(BiConsumer)
+    */
+   BiConsumer<ShadowApi, String> getSystemErrorHandler();
 
    /**
     * Convince method that performs erasure on all declared types that support it

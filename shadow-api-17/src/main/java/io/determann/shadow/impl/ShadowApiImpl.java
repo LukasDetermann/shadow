@@ -9,7 +9,6 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
-import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
@@ -18,10 +17,10 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.Writer;
+import java.io.*;
+import java.time.Duration;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -31,6 +30,39 @@ public class ShadowApiImpl implements ShadowApi
    private final JdkApiContext jdkApiContext;
    private final ShadowFactory shadowFactory = new ShadowFactoryImpl(this);
    private final int processingRound;
+   private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
+   {
+      StringWriter stringWriter = new StringWriter();
+      PrintWriter printWriter = new PrintWriter(stringWriter);
+      throwable.printStackTrace(printWriter);
+      shadowApi.logError(stringWriter.toString());
+      throw new RuntimeException(throwable);
+   };
+   private BiConsumer<ShadowApi, DiagnosticContext> diagnosticHandler = (shadowApi, diagnosticContext) ->
+   {
+      if (!shadowApi.isProcessingOver())
+      {
+         String duration = Duration.between(diagnosticContext.getStart(), diagnosticContext.getEnd()).toString()
+                                   .substring(2)
+                                   .replaceAll("(\\d[HMS])(?!$)", "$1 ")
+                                   .toLowerCase();
+
+         shadowApi.logInfo(diagnosticContext.getProcessorName() +
+                           " took " +
+                           duration +
+                           " in round " +
+                           diagnosticContext.getProcessingRound() +
+                           "\n");
+      }
+   };
+   private BiConsumer<ShadowApi, String> systemOutHandler = (shadowApi, s) ->
+   {
+      if (!shadowApi.getJdkApiContext().getProcessingEnv().toString().startsWith("javac"))
+      {
+         shadowApi.logWarning(s);
+      }
+   };
+   private BiConsumer<ShadowApi, String> systemErrorHandler = ShadowApi::logError;
 
 
    public ShadowApiImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
@@ -38,11 +70,8 @@ public class ShadowApiImpl implements ShadowApi
       this.processingRound = processingRound;
       this.jdkApiContext = new JdkApiContext(processingEnv, roundEnv);
 
-      if (!processingEnv.toString().startsWith("javac"))
-      {
-         proxySystemOut(getJdkApiContext().getProcessingEnv().getMessager());
-      }
-      proxySystemErr(getJdkApiContext().getProcessingEnv().getMessager());
+      proxySystemOut();
+      proxySystemErr();
    }
 
    @Override
@@ -51,7 +80,7 @@ public class ShadowApiImpl implements ShadowApi
       return jdkApiContext;
    }
 
-   private void proxySystemOut(Messager messager)
+   private void proxySystemOut()
    {
       //in >= java 18 out.getCharset()
       PrintStream printStream = new PrintStream(out)
@@ -60,16 +89,16 @@ public class ShadowApiImpl implements ShadowApi
          public void println(String x)
          {
             super.println(x);
-            if (x != null)
+            if (x != null && systemOutHandler != null)
             {
-               messager.printMessage(Diagnostic.Kind.MANDATORY_WARNING, x);
+               systemOutHandler.accept(ShadowApiImpl.this, x);
             }
          }
       };
       System.setOut(printStream);
    }
 
-   private void proxySystemErr(Messager messager)
+   private void proxySystemErr()
    {
       //in >= java 18 out.getCharset()
       PrintStream printStream = new PrintStream(err)
@@ -77,9 +106,10 @@ public class ShadowApiImpl implements ShadowApi
          @Override
          public void println(String x)
          {
-            if (x != null)
+            super.println(x);
+            if (x != null && systemErrorHandler != null)
             {
-               messager.printMessage(Diagnostic.Kind.ERROR, x);
+               systemErrorHandler.accept(ShadowApiImpl.this,x);
             }
          }
       };
@@ -275,7 +305,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public boolean isLastRound()
+   public boolean isProcessingOver()
    {
       return getJdkApiContext().getRoundEnv().processingOver();
    }
@@ -326,6 +356,54 @@ public class ShadowApiImpl implements ShadowApi
             return aRecord.erasure();
          }
       });
+   }
+
+   @Override
+   public void setExceptionHandler(BiConsumer<ShadowApi, Throwable> exceptionHandler)
+   {
+      this.exceptionHandler = exceptionHandler;
+   }
+
+   @Override
+   public BiConsumer<ShadowApi, Throwable> getExceptionHandler()
+   {
+      return exceptionHandler;
+   }
+
+   @Override
+   public void setDiagnosticHandler(BiConsumer<ShadowApi, DiagnosticContext> diagnosticHandler)
+   {
+      this.diagnosticHandler = diagnosticHandler;
+   }
+
+   @Override
+   public BiConsumer<ShadowApi, DiagnosticContext> getDiagnosticHandler()
+   {
+      return diagnosticHandler;
+   }
+
+   @Override
+   public void setSystemOutHandler(BiConsumer<ShadowApi, String> systemOutHandler)
+   {
+      this.systemOutHandler = systemOutHandler;
+   }
+
+   @Override
+   public BiConsumer<ShadowApi, String> getSystemOutHandler()
+   {
+      return systemOutHandler;
+   }
+
+   @Override
+   public void setSystemErrorHandler(BiConsumer<ShadowApi, String> systemErrorHandler)
+   {
+      this.systemErrorHandler = systemErrorHandler;
+   }
+
+   @Override
+   public BiConsumer<ShadowApi, String> getSystemErrorHandler()
+   {
+      return systemErrorHandler;
    }
 
    @Override

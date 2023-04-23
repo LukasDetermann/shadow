@@ -4,7 +4,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
@@ -54,29 +53,20 @@ public abstract class ShadowProcessor extends AbstractProcessor
       //using the proxied err outputStream in the ShadowApi
       catch (Throwable t)
       {
-         //noinspection CallToPrintStackTrace
-         t.printStackTrace();
-         throw new RuntimeException(t);
+         if (api.getExceptionHandler() != null)
+         {
+            api.getExceptionHandler().accept(api, t);
+         }
       }
-      if (!roundEnv.processingOver())
+      if (api.getDiagnosticHandler() != null)
       {
          String processorName = getClass().isAnonymousClass() ? "anonymousProcessor" : getClass().getSimpleName();
-         printDiagnostics(api, processorName, processingRound, start, Instant.now());
+         api.getDiagnosticHandler().accept(api, new DiagnosticContext(api, processorName, processingRound, start, Instant.now()));
       }
       processingRound++;
 
       //claiming annotations is kinda useless
       return false;
-   }
-
-   protected void printDiagnostics(ShadowApi api, String processorName, int processingRound, Instant start, Instant end)
-   {
-      String duration = Duration.between(start, end).toString()
-                                .substring(2)
-                                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
-                                .toLowerCase();
-
-      api.logInfo(processorName + " took " + duration + " in round " + processingRound + "\n");
    }
 
    /**
