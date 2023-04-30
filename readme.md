@@ -305,7 +305,7 @@ Make annotation processing more accessible and easier to comprehend.
 
 ## Project status
 
-Not production ready! At the moment it's all about finalising the API. There will most likely be breaking changes during that period.
+The api is close to final. Just waiting for more feedback before the 1.0 release
 
 ## Getting started
 
@@ -336,7 +336,7 @@ Create two Maven modules for that. One having the code to process and one contai
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processor-example</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 </project>
 ````
 
@@ -349,7 +349,7 @@ Create two Maven modules for that. One having the code to process and one contai
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processed-example</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 </project>
 ````
 
@@ -360,7 +360,7 @@ The processor needs to depend on the `shadow-api`
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>shadow</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 ````
 
@@ -369,7 +369,7 @@ And the processed module need to depend on the processor module
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>processor-example</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 ````
 
@@ -388,7 +388,7 @@ The module being processed needs to know the module it's processed by
                         <path>
                             <groupId>io.determann</groupId>
                             <artifactId>processor-example</artifactId>
-                            <version>1.0-SNAPSHOT</version>
+                            <version>0.1.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
