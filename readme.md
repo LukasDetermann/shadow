@@ -11,8 +11,8 @@
 
 #### What do annotation processors do?
 
-Annotation-processors run at compile time. They process representations of the source code that is being compiled. And can create 
-new Files, including source files, and raise errors or warnings.
+Annotation-processors run at compile time. They process representations of the source code that is being compiled. 
+They also can create new Files, including source files, and raise errors or warnings.
 
 
 ## Why Shadow API?
@@ -194,7 +194,7 @@ class ConversionTest
 </tr>
 </table>
 </details>
-<details><summary>Better documentation, especially at hard to understand points</summary>
+<details><summary>Better documentation, especially for hard to understand topics</summary>
 
 <table>
 <tr>
@@ -305,7 +305,7 @@ Make annotation processing more accessible and easier to comprehend.
 
 ## Project status
 
-The api is close to final. Just waiting for more feedback before the 1.0 release
+The API is close to final. Just waiting for more feedback before the 1.0 release.
 
 ## Getting started
 
@@ -316,7 +316,7 @@ A good starting point for your own processor is `ShadowApi.getAnnotatedWith(Stri
 
 ## Examples
 
-There are a lot of examples for how to use specific parts of the API in the [tests](/shadow-api-17/src/test/java/io/determann/shadow/api).
+There are many examples for how to use specific parts of the API within the [tests](/shadow-api-17/src/test/java/io/determann/shadow/api).
 
 <details><summary>Show setup</summary>
 <p>
@@ -324,8 +324,9 @@ We will create everything you need to get started with your first annotation pro
 
 ### 1) Two Modules
 
-In order to use the annotation processor to process the code that will be built later, the annotation processor must first be compiled.
-Create two Maven modules for that. One having the code to process and one containing the annotation processor
+The annotation processor must be compiled first.
+Create two maven modules. 
+One having the code to process and one containing the annotation processor.
 
 #### processor module
 ````xml
@@ -364,7 +365,7 @@ The processor needs to depend on the `shadow-api`
         </dependency>
 ````
 
-And the processed module need to depend on the processor module
+And the processed module needs to depend on the processor module
 ````xml
         <dependency>
             <groupId>io.determann</groupId>
@@ -399,7 +400,7 @@ The module being processed needs to know the module it's processed by
 
 ### 4) Disable annotation processing
 
-Disable annotation processing in the processor module. Otherwise, the annotation processor would be used to process itself
+Disable annotation processing in the processor module, otherwise the annotation processor would be used to process itself
 ````xml
     <build>
         <plugins>
@@ -435,7 +436,7 @@ public class MyProcessor extends ShadowProcessor
 
 ### 6) Register this processor
 
-create a file in `src/main/resources/META-INF/services/` called `javax.annotation.processing.Processor` and add your qualified path
+Create a file in `src/main/resources/META-INF/services/` called `javax.annotation.processing.Processor` and add your qualified path
 
 ````text
 io.determann.shadow.example.processor.MyProcessor
@@ -638,7 +639,7 @@ public class CustomerShadowBuilder{
 
 ## Build
 
-To build this you need a maven [toolchains.xml](https://maven.apache.org/guides/mini/guide-using-toolchains.html) like 
+To build this project you need a maven [toolchains.xml](https://maven.apache.org/guides/mini/guide-using-toolchains.html) like 
 <details><summary>this</summary>
 
 ````xml
