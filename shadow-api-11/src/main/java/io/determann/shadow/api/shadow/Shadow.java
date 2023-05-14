@@ -11,9 +11,9 @@ import javax.lang.model.type.TypeMirror;
 /**
  * Represents sourceCode that is being complied. A {@link Shadow} can be converted only in one of its children using
  * {@link ShadowApi#convert(Shadow)}. Every {@link Shadow} has a {@link TypeKind} indicating its Type.
- * {@link TypeKind#ARRAY} -> {@link Array}. To check for equality use {@link #representsSameType(Shadow)}.
- *
- * <h4>subtypes</h4>
+ * {@link TypeKind#ARRAY} -&gt; {@link Array}. To check for equality use {@link #representsSameType(Shadow)}.
+ * <br><br>
+ * <b>subtypes</b>
  * <ul>
  *     <li>{@link Declared} anything that can be a file
  *       <ul>
@@ -30,7 +30,7 @@ import javax.lang.model.type.TypeMirror;
  *          <li>{@link Method}</li>
  *       </ul>
  *     </li>
- *     <li>{@link Intersection} {@code T extends} <b> Collection & Serializable</b>{@code >}</li>
+ *     <li>{@link Intersection} {@code T extends} <b> Collection &amp; Serializable</b>{@code >}</li>
  *     <li>{@link Void}</li>
  *     <li>{@link Module}</li>
  *     <li>{@link Package}</li>

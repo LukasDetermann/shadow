@@ -34,7 +34,7 @@ public interface Generic extends Shadow<TypeVariable>,
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
-    * for {@link Generic}s this means for example {@code T extends Number} -> {@code Number}
+    * for {@link Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
     */
    Shadow<TypeMirror> erasure();
 

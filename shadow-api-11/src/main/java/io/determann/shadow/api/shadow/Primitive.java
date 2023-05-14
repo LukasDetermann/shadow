@@ -22,14 +22,14 @@ public interface Primitive extends Shadow<PrimitiveType>
    boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow);
 
    /**
-    * int -> Integer
-    * long -> Long
+    * int -&gt; Integer<br>
+    * long -&gt; Long
     * etc...
     */
    Class asBoxed();
 
    /**
-    * int -> int[]
+    * int -&gt; int[]
     */
    Array asArray();
 

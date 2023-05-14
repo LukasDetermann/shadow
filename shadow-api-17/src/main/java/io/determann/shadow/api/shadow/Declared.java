@@ -85,7 +85,7 @@ public interface Declared extends Shadow<DeclaredType>,
    Wildcard asSuperWildcard();
 
    /**
-    * String -> String[]
+    * String -&gt; String[]
     */
    Array asArray();
 

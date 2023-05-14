@@ -285,8 +285,6 @@ class ConversionTest extends AbstractProcessor
     Shadow<? extends TypeMirror> shadow = shadowApi.getShadowFactory().shadowFromElement(null);
     Shadow<? extends TypeMirror> shadow1 = shadowApi.getShadowFactory().shadowFromType(null);
     List<AnnotationUsage> annotationUsages = shadowApi.getShadowFactory().annotationUsages(null);
-
-    return false;
   }
 }
 ````
@@ -411,7 +409,7 @@ Disable annotation processing in the processor module, otherwise the annotation 
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <!--                    don't compile the annotation processor using the annotation processor-->
+                    <!--don't compile the annotation processor using the annotation processor-->
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>

@@ -85,7 +85,7 @@ public interface Class extends Declared,
     *                                                      .orElseThrow();
     *
     *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
-    * }<pre/>
+    * }</pre>
     * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
     */
    Class interpolateGenerics();
@@ -95,13 +95,13 @@ public interface Class extends Declared,
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
-    * for {@link Class}s this means for example {@code class MyClass<T>{}} -> {@code class MyClass{}}
+    * for {@link Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
     */
    Class erasure();
 
    /**
-    * Integer -> int
-    * Long -> long
+    * Integer -&gt; int<br>
+    * Long -&gt; long
     * etc...
     */
    Primitive asUnboxed();

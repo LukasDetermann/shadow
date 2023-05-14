@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public abstract class ShadowProcessor extends AbstractProcessor
 {
-   private int processingRound = 1;
+   private int processingRound = 0;
 
    @Override
    public Set<String> getSupportedAnnotationTypes()

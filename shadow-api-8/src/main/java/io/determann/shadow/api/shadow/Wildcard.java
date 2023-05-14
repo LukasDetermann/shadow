@@ -33,7 +33,7 @@ public interface Wildcard extends Shadow<WildcardType>
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
-    * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -> {@code java.lang.Number}
+    * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
     */
    Shadow<TypeMirror> erasure();
 

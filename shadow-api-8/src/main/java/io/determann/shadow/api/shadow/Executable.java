@@ -21,7 +21,7 @@ public interface Executable extends Shadow<ExecutableType>,
                                     ElementBacked<ExecutableElement>
 {
    /**
-    * {@code public MyObject(}<b>String param<b/>{@code )}
+    * {@code public MyObject(}<b>String param</b>{@code )}
     */
    List<Parameter> getParameters();
 

@@ -46,8 +46,10 @@ public interface ImmutableProperty extends ApiHolder
 
    /**
     * 2 possible types of getters
+    * <ul>
     * <li>return type boolean, name prefix "is" and no parameters</li>
     * <li>name prefix is "get" and no parameters</li>
+    * </ul>
     * when both are present "is" is preferred over get
     */
    Method getGetter();

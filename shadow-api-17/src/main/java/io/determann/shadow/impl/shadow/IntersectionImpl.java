@@ -11,14 +11,6 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * {@link javax.lang.model.util.Types#erasure(TypeMirror)} works on Intersection
- *
- * public class IntersectionExample<T extends Collection & Serializable>{} -> Collection
- * public class IntersectionExample<T extends Serializable & Collection>{} -> Serializable
- *
- * this seems strange at best. I don't think anybody wants to use this behavior. therefore I will not expose erasure for {@link Intersection} types
- */
 public class IntersectionImpl extends ShadowImpl<IntersectionType> implements Intersection
 {
 

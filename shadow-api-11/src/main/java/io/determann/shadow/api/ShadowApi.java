@@ -43,10 +43,6 @@ import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATI
  *    <li>convert between sourceCode representations. So called {@link Shadow}s {@link #convert(Shadow)}</li>
  * </ul>
  *
- * <h2>fyi:</h2>
- * <li>{@link System#out} is proxied and redirected to the logger as warning</li>
- * <li>{@link System#err} is proxied and redirected to the logger as error</li>
- *
  * @see ShadowProcessor
  * @see JdkApi
  * @see Shadow
@@ -140,7 +136,7 @@ public interface ShadowApi extends DeclaredHolder
    boolean isFirstRound();
 
    /**
-    * starts at 1
+    * starts at 0
     */
    int getProcessingRound();
 

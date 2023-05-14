@@ -60,7 +60,7 @@ public interface Interface extends Declared,
     *                                                      .orElseThrow();
     *
     *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
-    * }<pre/>
+    * }</pre>
     * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
     */
    Interface interpolateGenerics();
@@ -70,7 +70,7 @@ public interface Interface extends Declared,
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
-    * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -> {@code interface MyInterface{}}
+    * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
    Interface erasure();
 

@@ -9,12 +9,8 @@ import java.util.Optional;
 
 /**
  * {@link Annotation} represents the java file for the java concept of an annotation. This on the other hand represents
- * a usage of such an annotation. like
- * {@code
- * @Docmuented("testValue)
- * public class Test{
- *
- * }}
+ * a usage of such an annotation. like <br>
+ * {@code @Documented("testValue) public class Test{ }}
  */
 public interface AnnotationUsage extends Annotation
 {

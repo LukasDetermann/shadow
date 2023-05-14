@@ -29,7 +29,7 @@ public interface Array extends Shadow<ArrayType>
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
-    * for {@link Array}s this means for example {@code T[]} -> {@code java.lang.Object[]}
+    * for {@link Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
     */
    Array erasure();
 
@@ -38,7 +38,7 @@ public interface Array extends Shadow<ArrayType>
    Wildcard asSuperWildcard();
 
    /**
-    * String[] -> String[][]
+    * String[] -&gt; String[][]
     */
    Array asArray();
 
