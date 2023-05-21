@@ -2,7 +2,6 @@ package io.determann.shadow.api;
 
 import io.determann.shadow.api.converter.*;
 import io.determann.shadow.api.metadata.JdkApi;
-import io.determann.shadow.api.metadata.Scope;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
@@ -19,9 +18,6 @@ import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.metadata.Scope.ScopeType.ALL;
-import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATION;
-
 /**
  * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link ShadowApi} is transient. Meaning you can
  * transition between using the shadow and the java annotation processor api from line to line if you so wish. Methods in the ShadowApi that leak
@@ -32,7 +28,7 @@ import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATI
  *
  * <ul>
  *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
- *    <li>get already compiled sources {@link Scope.ScopeType#ALL}</li>
+ *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
  *    <li>log using {@link #logError(String)} or log at {@link #logErrorAt(ElementBacked, String)}</li>
  *    <li>convert between sourceCode representations. So called {@link Shadow}s {@link #convert(Shadow)}</li>
@@ -41,7 +37,6 @@ import static io.determann.shadow.api.metadata.Scope.ScopeType.CURRENT_COMPILATI
  * @see ShadowProcessor
  * @see JdkApi
  * @see Shadow
- * @see Scope
  */
 public interface ShadowApi extends DeclaredHolder
 {
@@ -53,20 +48,28 @@ public interface ShadowApi extends DeclaredHolder
    JdkApiContext getJdkApiContext();
 
    /**
-    * @see Scope.ScopeType#CURRENT_COMPILATION
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
     * @see #writeSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   @Scope(CURRENT_COMPILATION)
    AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation);
 
-   @Scope(CURRENT_COMPILATION)
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
    AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
 
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
-   @Scope(ALL)
    Package getPackageOrThrow(String qualifiedName);
 
    ShadowConstants getConstants();
