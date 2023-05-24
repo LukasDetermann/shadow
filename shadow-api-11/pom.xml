@@ -2,28 +2,63 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>shadow</artifactId>
-        <groupId>io.determann</groupId>
-        <version>0.1.0</version>
-    </parent>
+
+    <groupId>io.determann</groupId>
     <artifactId>shadow-api-11</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <name>${project.artifactId}</name>
+    <name>shadow-api-11</name>
+    <version>0.1.1</version>
     <description>Annotation Processing API</description>
     <url>https://github.com/LukasDetermann/shadow</url>
     <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Lukas Determann</name>
+            <email>determann@protonmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com//LukasDetermann/shadow.git</connection>
+        <developerConnection>scm:git:ssh://github.com:/LukasDetermann/shadow.git</developerConnection>
+        <url>https://github.com/LukasDetermann/shadow</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.apache.maven.plugins.maven-toolchains-plugin>3.1.0</org.apache.maven.plugins.maven-toolchains-plugin>
+        <org.junit.jupiter.junit-jupiter-api.version>5.9.1</org.junit.jupiter.junit-jupiter-api.version>
+        <org.apache.maven.plugins.maven-surefire-plugin.version>3.1.0</org.apache.maven.plugins.maven-surefire-plugin.version>
+        <org.apache.maven.plugins.maven-source-plugin.version>2.2.1</org.apache.maven.plugins.maven-source-plugin.version>
+        <org.apache.maven.plugins.maven-javadoc-plugin>2.9.1</org.apache.maven.plugins.maven-javadoc-plugin>
+        <org.apache.maven.plugins.maven-gpg-plugin>1.5</org.apache.maven.plugins.maven-gpg-plugin>
+        <org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</org.sonatype.plugins.nexus-staging-maven-plugin>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>${org.junit.jupiter.junit-jupiter-api.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -38,6 +73,14 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-toolchains-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-toolchains-plugin}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>toolchain</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
                             <toolchains>
                                 <jdk>
@@ -49,6 +92,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-surefire-plugin.version}</version>
                     </plugin>
                 </plugins>
             </build>
@@ -60,6 +104,14 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-toolchains-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-toolchains-plugin}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>toolchain</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
                             <toolchains>
                                 <jdk>
@@ -71,22 +123,60 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-surefire-plugin.version}</version>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-javadoc-plugin}</version>
+                        <configuration>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${org.apache.maven.plugins.maven-gpg-plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${org.sonatype.plugins.nexus-staging-maven-plugin}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

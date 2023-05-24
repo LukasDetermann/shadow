@@ -20,7 +20,7 @@ public interface Class extends Declared,
                                FinalModifiable
 {
    /**
-    * reruns the super class of this class. calling {@code getSuperClass()) on {@link Integer} will return {@link Number}.
+    * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
     * For {@link Object} null will be returned
     */
    Class getSuperClass();
