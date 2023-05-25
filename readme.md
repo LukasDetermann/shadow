@@ -8,7 +8,7 @@
 
 # Shadow API <br><b style="font-size: 65%">An easy way to write your annotation processor</b>
 
-[maven central](https://mvnrepository.com/artifact/io.determann)
+[maven central](https://central.sonatype.com/namespace/io.determann)
 
 #### What do annotation processors do?
 
