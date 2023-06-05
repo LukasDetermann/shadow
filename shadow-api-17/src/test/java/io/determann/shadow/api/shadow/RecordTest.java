@@ -1,12 +1,16 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static io.determann.shadow.api.ShadowApi.convert;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecordTest extends DeclaredTest<Record>
@@ -105,6 +109,88 @@ class RecordTest extends DeclaredTest<Record>
                                  @Override
                                  public RecordMultiParent get() {return null;}
                               }""")
+                   .compile();
+   }
+
+   @Test
+   void testWithGenerics()
+   {
+      ProcessorTest.process(shadowApi ->
+                            {
+                               assertThrows(IllegalArgumentException.class,
+                                            () -> shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                           .withGenerics("java.lang.String"));
+
+                               assertThrows(IllegalArgumentException.class,
+                                            () -> shadowApi.getRecordOrThrow("SimpleRecord").withGenerics("java.io.Serializable"));
+
+                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
+                                            shadowApi.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                     .withGenerics("java.lang.String")
+                                                     .getGenerics());
+
+                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
+                                                    shadowApi.getClassOrThrow("java.lang.Number")),
+                                            shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                     .withGenerics("java.lang.String", "java.lang.Number")
+                                                     .getGenerics());
+                            })
+                   .withCodeToCompile("InterpolateGenericsExample.java", """
+                         public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
+                            record IndependentGeneric<C> () {}
+                            record DependentGeneric<D extends E, E> () {}
+                         }
+                         """)
+                   .withCodeToCompile("SimpleRecord.java", """
+                         public record SimpleRecord () {}
+                         """)
+                   .compile();
+   }
+
+   @Test
+   void testInterpolateGenerics()
+   {
+      ProcessorTest.process(shadowApi ->
+                            {
+                               Record declared = shadowApi.getRecordOrThrow("InterpolateGenericsExample")
+                                                          .withGenerics(shadowApi.getClassOrThrow("java.lang.String"),
+                                                                        shadowApi.getConstants().getUnboundWildcard());
+                               Record capture = declared.interpolateGenerics();
+                               Shadow<TypeMirror> interpolated = convert(capture.getGenerics().get(1))
+                                     .toGeneric()
+                                     .map(Generic::getExtends)
+                                     .map(ShadowApi::convert)
+                                     .flatMap(ShadowConverter::toInterface)
+                                     .map(Interface::getGenerics)
+                                     .map(shadows -> shadows.get(0))
+                                     .orElseThrow();
+                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
+
+                               Record independentExample = shadowApi.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                    .withGenerics(shadowApi.getConstants().getUnboundWildcard());
+                               Record independentCapture = independentExample.interpolateGenerics();
+                               Shadow<TypeMirror> interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
+                                     .toGeneric()
+                                     .map(Generic::getExtends)
+                                     .orElseThrow();
+                               assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
+
+                               Record dependentExample = shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                  .withGenerics(shadowApi.getConstants().getUnboundWildcard(),
+                                                                                shadowApi.getClassOrThrow("java.lang.String"));
+                               Record dependentCapture = dependentExample.interpolateGenerics();
+                               Shadow<TypeMirror> interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
+                                     .toGeneric()
+                                     .map(Generic::getExtends)
+                                     .orElseThrow();
+                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);
+                            })
+                   .withCodeToCompile("InterpolateGenericsExample.java", """
+                         public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
+                            record IndependentGeneric<C> () {}
+                            record DependentGeneric<D extends E, E> () {}
+                         }
+                         """)
                    .compile();
    }
 }
