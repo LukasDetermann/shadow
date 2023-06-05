@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static io.determann.shadow.api.ShadowApi.convert;
 
@@ -16,11 +17,11 @@ public interface DeclaredHolder extends ApiHolder
 {
    List<Declared> getDeclared();
 
-   Declared getDeclaredOrThrow(String qualifiedName);
+   Optional<Declared> getDeclared(String qualifiedName);
 
-   default Annotation getAnnotationOrThrow(String qualifiedName)
+   default Declared getDeclaredOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
+      return getDeclared(qualifiedName).orElseThrow();
    }
 
    default List<Annotation> getAnnotations()
@@ -31,9 +32,14 @@ public interface DeclaredHolder extends ApiHolder
                           .toList();
    }
 
-   default Class getClassOrThrow(String qualifiedName)
+   default Optional<Annotation> getAnnotation(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
+   }
+
+   default Annotation getAnnotationOrThrow(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
    }
 
    default List<Class> getClasses()
@@ -44,9 +50,14 @@ public interface DeclaredHolder extends ApiHolder
                           .toList();
    }
 
-   default Enum getEnumOrThrow(String qualifiedName)
+   default Optional<Class> getClass(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
+   }
+
+   default Class getClassOrThrow(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
    }
 
    default List<Enum> getEnums()
@@ -57,9 +68,14 @@ public interface DeclaredHolder extends ApiHolder
                           .toList();
    }
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default Optional<Enum> getEnum(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
+   }
+
+   default Enum getEnumOrThrow(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
    }
 
    default List<Interface> getInterfaces()
@@ -70,9 +86,14 @@ public interface DeclaredHolder extends ApiHolder
                           .toList();
    }
 
-   default Record getRecordOrThrow(String qualifiedName)
+   default Optional<Interface> getInterface(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toRecordOrThrow();
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
+   }
+
+   default Interface getInterfaceOrThrow(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
    }
 
    default List<Record> getRecords()
@@ -81,5 +102,15 @@ public interface DeclaredHolder extends ApiHolder
                           .filter(declared -> TypeKind.RECORD.equals(declared.getTypeKind()))
                           .map(declared -> convert(declared).toRecordOrThrow())
                           .toList();
+   }
+
+   default Optional<Record> getRecord(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toRecord();
+   }
+
+   default Record getRecordOrThrow(String qualifiedName)
+   {
+      return convert(getDeclaredOrThrow(qualifiedName)).toRecordOrThrow();
    }
 }

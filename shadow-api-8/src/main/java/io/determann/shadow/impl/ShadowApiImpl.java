@@ -16,10 +16,12 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.*;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static java.util.Optional.ofNullable;
 
 public class ShadowApiImpl implements ShadowApi
 {
@@ -137,14 +139,10 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public Declared getDeclaredOrThrow(String qualifiedName)
+   public Optional<Declared> getDeclared(String qualifiedName)
    {
-      TypeElement typeElement = getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName);
-      if (typeElement == null)
-      {
-         throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
-      }
-      return getShadowFactory().shadowFromElement(typeElement);
+      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+            .map(typeElement -> getShadowFactory().shadowFromElement(typeElement));
    }
 
    @Override

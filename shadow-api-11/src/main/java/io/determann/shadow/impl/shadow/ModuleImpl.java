@@ -12,13 +12,14 @@ import io.determann.shadow.api.shadow.module.DirectiveMapper;
 import io.determann.shadow.impl.shadow.module.*;
 
 import javax.lang.model.element.ModuleElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static io.determann.shadow.api.ShadowApi.convert;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class ModuleImpl extends ShadowImpl<NoType> implements Module
@@ -69,14 +70,10 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
-   public Declared getDeclaredOrThrow(String qualifiedName)
+   public Optional<Declared> getDeclared(String qualifiedName)
    {
-      TypeElement typeElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(getElement(), qualifiedName);
-      if (typeElement == null)
-      {
-         throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
+      return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+            .map(typeElement -> getApi().getShadowFactory().shadowFromElement(typeElement));
    }
 
    @Override

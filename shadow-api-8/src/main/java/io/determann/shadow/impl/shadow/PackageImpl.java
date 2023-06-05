@@ -11,7 +11,9 @@ import javax.lang.model.type.NoType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
@@ -64,14 +66,10 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public Declared getDeclaredOrThrow(String qualifiedName)
+   public Optional<Declared> getDeclared(String qualifiedName)
    {
-      TypeElement typeElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName);
-      if (typeElement == null)
-      {
-         throw new IllegalArgumentException("no Declared found for \"" + qualifiedName + "\"");
-      }
-      return getApi().getShadowFactory().shadowFromElement(typeElement);
+      return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+            .map(typeElement -> getApi().getShadowFactory().shadowFromElement(typeElement));
    }
 
    @Override
