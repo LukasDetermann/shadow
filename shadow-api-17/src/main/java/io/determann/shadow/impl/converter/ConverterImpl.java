@@ -268,7 +268,7 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public RecordComponent toRecordOrThrowComponentOrThrow()
+   public RecordComponent toRecordComponentOrThrow()
    {
       return to(TypeKind.RECORD_COMPONENT);
    }

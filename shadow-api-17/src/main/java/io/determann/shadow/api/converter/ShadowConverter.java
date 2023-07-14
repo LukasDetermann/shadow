@@ -85,7 +85,7 @@ public interface ShadowConverter
 
    Optional<Primitive> toPrimitive();
 
-   RecordComponent toRecordOrThrowComponentOrThrow();
+   RecordComponent toRecordComponentOrThrow();
 
    Optional<RecordComponent> toRecordComponent();
 
