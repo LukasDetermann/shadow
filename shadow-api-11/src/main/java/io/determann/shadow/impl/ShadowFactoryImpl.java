@@ -4,8 +4,8 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowFactory;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.shadow.*;
-import io.determann.shadow.impl.shadow.wraper.AnnotationUsageImpl;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;

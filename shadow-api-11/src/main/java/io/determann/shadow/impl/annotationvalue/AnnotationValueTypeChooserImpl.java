@@ -1,10 +1,10 @@
-package io.determann.shadow.impl.shadow.wraper;
+package io.determann.shadow.impl.annotationvalue;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;

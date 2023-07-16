@@ -1,8 +1,8 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.test.ProcessorTest;
-import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

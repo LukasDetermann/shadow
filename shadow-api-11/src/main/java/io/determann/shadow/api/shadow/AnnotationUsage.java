@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.metadata.JdkApi;
-import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 
 import javax.lang.model.element.AnnotationMirror;
 import java.util.Map;

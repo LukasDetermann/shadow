@@ -1,4 +1,4 @@
-package io.determann.shadow.api.wrapper;
+package io.determann.shadow.api.annotationvalue;
 
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.AnnotationUsage;

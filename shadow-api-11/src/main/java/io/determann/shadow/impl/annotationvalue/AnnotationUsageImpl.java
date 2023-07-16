@@ -1,10 +1,10 @@
-package io.determann.shadow.impl.shadow.wraper;
+package io.determann.shadow.impl.annotationvalue;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.api.wrapper.AnnotationValueTypeChooser;
 import io.determann.shadow.impl.shadow.DeclaredImpl;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -12,8 +12,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 {
@@ -23,9 +22,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    public static List<AnnotationUsage> from(ShadowApi shadowApi,
                                             Collection<? extends AnnotationMirror> annotationMirrors)
    {
-      return annotationMirrors.stream()
-                              .map(annotationMirror -> from(shadowApi, annotationMirror))
-                              .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+      return annotationMirrors.stream().map(annotationMirror -> from(shadowApi, annotationMirror)).collect(toUnmodifiableList());
    }
 
    static AnnotationUsage from(ShadowApi shadowApi, AnnotationMirror annotationMirror)
@@ -71,7 +68,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public AnnotationValueTypeChooser getValueOrThrow(String methodName)
    {
-      return getValue(methodName).orElseThrow(NoSuchElementException::new);
+      return getValue(methodName).orElseThrow();
    }
 
    @Override
@@ -97,6 +94,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    {
       return Objects.hash(getTypeKind(),
                           getQualifiedName(),
+                          getModule(),
                           getValues());
    }
 
@@ -114,6 +112,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       AnnotationUsageImpl otherAnnotationUsage = (AnnotationUsageImpl) other;
       return Objects.equals(getQualifiedName(), otherAnnotationUsage.getQualifiedName()) &&
              Objects.equals(getTypeKind(), otherAnnotationUsage.getTypeKind()) &&
+             Objects.equals(getModule(), otherAnnotationUsage.getModule()) &&
              Objects.equals(getValues(), otherAnnotationUsage.getValues());
    }
 }
