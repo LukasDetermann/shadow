@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface AnnotationValueTypeChooser
 {
+   void consume(AnnotationValueConsumer consumer);
+
+   public <T> T map(AnnotationValueMapper<T> mapper);
+
    /**
     * is this the default value specified in the annotation?
     */

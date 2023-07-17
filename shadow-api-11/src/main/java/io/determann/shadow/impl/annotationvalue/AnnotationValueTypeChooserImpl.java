@@ -1,6 +1,8 @@
 package io.determann.shadow.impl.annotationvalue;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
+import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
 import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
@@ -117,6 +119,125 @@ public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChoose
    public boolean isDefaultValue()
    {
       return defaultValue;
+   }
+
+   @Override
+   public void consume(AnnotationValueConsumer consumer)
+   {
+      Object value = annotationValue.getValue();
+
+      if (value instanceof String)
+      {
+         consumer.string(asString());
+      }
+      else if (value instanceof Boolean)
+      {
+         consumer.aBoolean(asBoolean());
+      }
+      else if (value instanceof Byte)
+      {
+         consumer.aByte(asByte());
+      }
+      else if (value instanceof Short)
+      {
+         consumer.aShort(asShort());
+      }
+      else if (value instanceof Integer)
+      {
+         consumer.integer(asInteger());
+      }
+      else if (value instanceof Long)
+      {
+         consumer.aLong(asLong());
+      }
+      else if (value instanceof Character)
+      {
+         consumer.character(asCharacter());
+      }
+      else if (value instanceof Float)
+      {
+         consumer.aFloat(asFloat());
+      }
+      else if (value instanceof Double)
+      {
+         consumer.aDouble(asDouble());
+      }
+      else if (value instanceof TypeMirror)
+      {
+         consumer.type(asType());
+      }
+      else if (value instanceof Element)
+      {
+         consumer.enumConstant(asEnumConstant());
+      }
+      else if (value instanceof AnnotationMirror)
+      {
+         consumer.annotationUsage(asAnnotationUsage());
+      }
+      else if (value instanceof Collection)
+      {
+         consumer.values(asListOfValues());
+      }
+   }
+
+   @Override
+   public <T> T map(AnnotationValueMapper<T> mapper)
+   {
+      Object value = annotationValue.getValue();
+
+      if (value instanceof String)
+      {
+         return mapper.string(asString());
+      }
+      if (value instanceof Boolean)
+      {
+         return mapper.aBoolean(asBoolean());
+      }
+      if (value instanceof Byte)
+      {
+         return mapper.aByte(asByte());
+      }
+      if (value instanceof Short)
+      {
+         return mapper.aShort(asShort());
+      }
+      if (value instanceof Integer)
+      {
+         return mapper.integer(asInteger());
+      }
+      if (value instanceof Long)
+      {
+         return mapper.aLong(asLong());
+      }
+      if (value instanceof Character)
+      {
+         return mapper.character(asCharacter());
+      }
+      if (value instanceof Float)
+      {
+         return mapper.aFloat(asFloat());
+      }
+      if (value instanceof Double)
+      {
+         return mapper.aDouble(asDouble());
+      }
+      if (value instanceof TypeMirror)
+      {
+         return mapper.type(asType());
+      }
+      if (value instanceof Element)
+      {
+         return mapper.enumConstant(asEnumConstant());
+      }
+      if (value instanceof AnnotationMirror)
+      {
+         return mapper.annotationUsage(asAnnotationUsage());
+      }
+      if (value instanceof Collection)
+      {
+         return mapper.values(asListOfValues());
+      }
+      throw new IllegalStateException();
    }
 
    @Override
