@@ -82,7 +82,7 @@ public abstract class AnnotationValueMapperDefault<T> implements AnnotationValue
    }
 
    @Override
-   public T values(List<AnnotationValueTypeChooser> values)
+   public T values(List<AnnotationValue> values)
    {
       return null;
    }

@@ -33,5 +33,5 @@ public interface AnnotationValueConsumer
 
    void annotationUsage(AnnotationUsage value);
 
-   void values(List<AnnotationValueTypeChooser> values);
+   void values(List<AnnotationValue> values);
 }

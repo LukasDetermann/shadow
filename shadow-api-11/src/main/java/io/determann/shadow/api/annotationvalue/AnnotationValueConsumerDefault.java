@@ -70,7 +70,7 @@ public abstract class AnnotationValueConsumerDefault implements AnnotationValueC
    }
 
    @Override
-   public void values(List<AnnotationValueTypeChooser> values)
+   public void values(List<AnnotationValue> values)
    {
    }
 }

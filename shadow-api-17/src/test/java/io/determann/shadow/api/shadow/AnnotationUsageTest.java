@@ -1,9 +1,9 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
-import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
@@ -53,17 +53,17 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                               defaultValues.getValueOrThrow("asListOfValues")
                                                            .asListOfValues()
                                                            .stream()
-                                                           .map(AnnotationValueTypeChooser::asCharacter)
+                                                           .map(AnnotationValue::asCharacter)
                                                            .toList());
 
-                                 assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValueTypeChooser::isDefaultValue));
+                                 assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValue::isDefaultValue));
 
                                  AnnotationUsage overwrittenStringValue = shadowApi.getClassOrThrow("AnnotationUsageExample")
                                                                                    .getFieldOrThrow("testField")
                                                                                    .getAnnotationUsages()
                                                                                    .get(0);
 
-                                 AnnotationValueTypeChooser overwrittenValueTypeChooser = overwrittenStringValue.getValueOrThrow("stingValue");
+                                 AnnotationValue overwrittenValueTypeChooser = overwrittenStringValue.getValueOrThrow("stingValue");
                                  assertFalse(overwrittenValueTypeChooser.isDefaultValue());
                                  assertEquals("custom Value", overwrittenValueTypeChooser.asString());
                               })
@@ -180,7 +180,7 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                     }
 
                                     @Override
-                                    public Integer values(List<AnnotationValueTypeChooser> values)
+                                    public Integer values(List<AnnotationValue> values)
                                     {
                                        return 12;
                                     }
@@ -331,10 +331,10 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
                                     }
 
                                     @Override
-                                    public void values(List<AnnotationValueTypeChooser> values)
+                                    public void values(List<AnnotationValue> values)
                                     {
                                        assertEquals(List.of('b', 'c'),
-                                                    values.stream().map(AnnotationValueTypeChooser::asCharacter).toList());
+                                                    values.stream().map(AnnotationValue::asCharacter).toList());
                                        counter.incrementAndGet();
                                     }
                                  };

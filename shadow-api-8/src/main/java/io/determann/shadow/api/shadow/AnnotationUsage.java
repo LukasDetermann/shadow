@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
+import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.metadata.JdkApi;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -14,11 +14,11 @@ import java.util.Optional;
  */
 public interface AnnotationUsage extends Annotation
 {
-   Map<Method, AnnotationValueTypeChooser> getValues();
+   Map<Method, AnnotationValue> getValues();
 
-   AnnotationValueTypeChooser getValueOrThrow(String methodName);
+   AnnotationValue getValueOrThrow(String methodName);
 
-   Optional<AnnotationValueTypeChooser> getValue(String methodName);
+   Optional<AnnotationValue> getValue(String methodName);
 
    Annotation getAnnotation();
 

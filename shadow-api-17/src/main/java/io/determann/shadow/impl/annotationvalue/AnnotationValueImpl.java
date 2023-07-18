@@ -1,28 +1,27 @@
 package io.determann.shadow.impl.annotationvalue;
 
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
-import io.determann.shadow.api.annotationvalue.AnnotationValueTypeChooser;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChooser
+public class AnnotationValueImpl implements AnnotationValue
 {
    private final ShadowApi shadowApi;
-   private final AnnotationValue annotationValue;
+   private final javax.lang.model.element.AnnotationValue annotationValue;
    private final boolean defaultValue;
 
-   AnnotationValueTypeChooserImpl(ShadowApi shadowApi, AnnotationValue annotationValue, boolean defaultValue)
+   AnnotationValueImpl(ShadowApi shadowApi, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
    {
       this.shadowApi = shadowApi;
       this.annotationValue = annotationValue;
@@ -102,13 +101,13 @@ public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChoose
    }
 
    @Override
-   public List<AnnotationValueTypeChooser> asListOfValues()
+   public List<AnnotationValue> asListOfValues()
    {
       //noinspection unchecked
-      return ((Collection<AnnotationValue>) annotationValue.getValue())
+      return ((Collection<javax.lang.model.element.AnnotationValue>) annotationValue.getValue())
             .stream()
-            .map(annotationValue1 -> new AnnotationValueTypeChooserImpl(shadowApi, annotationValue1, isDefaultValue()))
-            .map(AnnotationValueTypeChooser.class::cast)
+            .map(annotationValue1 -> new AnnotationValueImpl(shadowApi, annotationValue1, isDefaultValue()))
+            .map(AnnotationValue.class::cast)
             .toList();
    }
 
@@ -239,7 +238,7 @@ public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChoose
    }
 
    @Override
-   public AnnotationValue getAnnotationValue()
+   public javax.lang.model.element.AnnotationValue getAnnotationValue()
    {
       return annotationValue;
    }
@@ -247,7 +246,7 @@ public class AnnotationValueTypeChooserImpl implements AnnotationValueTypeChoose
    @Override
    public boolean equals(Object o)
    {
-      return this == o || o instanceof AnnotationValueTypeChooserImpl that &&
+      return this == o || o instanceof AnnotationValueImpl that &&
                           isDefaultValue() == that.isDefaultValue() &&
                           Objects.equals(getAnnotationValue(), that.getAnnotationValue());
    }

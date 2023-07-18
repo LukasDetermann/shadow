@@ -5,11 +5,10 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
-public interface AnnotationValueTypeChooser
+public interface AnnotationValue
 {
    void consume(AnnotationValueConsumer consumer);
 
@@ -44,10 +43,10 @@ public interface AnnotationValueTypeChooser
 
    AnnotationUsage asAnnotationUsage();
 
-   List<AnnotationValueTypeChooser> asListOfValues();
+   List<AnnotationValue> asListOfValues();
 
    @JdkApi
-   AnnotationValue getAnnotationValue();
+   javax.lang.model.element.AnnotationValue getAnnotationValue();
 
    /**
     * calls {@code toString} on the underlying value

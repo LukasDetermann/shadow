@@ -33,5 +33,5 @@ public interface AnnotationValueMapper<T>
 
    T annotationUsage(AnnotationUsage value);
 
-   T values(List<AnnotationValueTypeChooser> values);
+   T values(List<AnnotationValue> values);
 }
