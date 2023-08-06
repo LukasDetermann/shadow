@@ -21,6 +21,11 @@ public interface Parameter extends Variable<Executable>,
    Shadow<TypeMirror> erasure();
 
    /**
+    * {@link java.util.Arrays#asList(Object[])}
+    */
+   boolean isVarArgs();
+
+   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)

@@ -3,6 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.modifier.FinalModifiable;
 
 import javax.lang.model.type.TypeMirror;
+import java.util.List;
 
 /**
  * Parameter of a method or constructor
@@ -19,6 +20,11 @@ public interface Parameter extends Variable<Executable>,
     * @see Class#erasure() for example for more information on erasure
     */
    Shadow<TypeMirror> erasure();
+
+   /**
+    * {@link List#of(Object[])}
+    */
+   boolean isVarArgs();
 
    /**
     * be careful using this equals
