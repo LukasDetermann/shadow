@@ -42,7 +42,6 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.apache.maven.plugins.maven-toolchains-plugin>3.1.0</org.apache.maven.plugins.maven-toolchains-plugin>
         <org.junit.jupiter.junit-jupiter-api.version>5.9.1</org.junit.jupiter.junit-jupiter-api.version>
