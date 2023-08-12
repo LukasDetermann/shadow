@@ -2,24 +2,24 @@ package io.determann.shadow.impl.shadow;
 
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.module.Directive;
-import io.determann.shadow.api.shadow.module.DirectiveConsumer;
-import io.determann.shadow.api.shadow.module.DirectiveMapper;
+import io.determann.shadow.api.shadow.module.*;
 import io.determann.shadow.impl.shadow.module.*;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import static io.determann.shadow.api.ShadowApi.convert;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collector.of;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class ModuleImpl extends ShadowImpl<NoType> implements Module
@@ -112,7 +112,44 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                  }
                               })
                          .map(Directive.class::cast)
-                         .collect(toUnmodifiableList());
+                         .collect(of((Supplier<List<Directive>>) ArrayList::new,
+                                     (directives, directive) ->
+                                     {
+                                        if (!directive.getKind().equals(DirectiveKind.PROVIDES))
+                                        {
+                                           directives.add(directive);
+                                           return;
+                                        }
+                                        Provides provides = convert(directive).toProvidesOrThrow();
+
+                                        Optional<Provides> existing =
+                                              directives.stream()
+                                                        .filter(collected -> collected.getKind().equals(DirectiveKind.PROVIDES))
+                                                        .map(ShadowApi::convert)
+                                                        .map(DirectiveConverter::toProvidesOrThrow)
+                                                        .filter(collected -> collected.getService().representsSameType(provides.getService()))
+                                                        .findAny();
+
+                                        if (existing.isEmpty())
+                                        {
+                                           directives.add(directive);
+                                           return;
+                                        }
+                                        if (existing.get().getImplementations().size() > directives.size())
+                                        {
+                                           return;
+                                        }
+                                        int index = directives.indexOf(existing.get());
+                                        directives.remove(index);
+                                        directives.add(index, directive);
+                                     },
+                                     (directives, directives2) ->
+                                     {
+                                        directives.addAll(directives2);
+                                        return directives;
+                                     },
+                                     Collections::unmodifiableList,
+                                     Collector.Characteristics.IDENTITY_FINISH));
    }
 
    @Override
