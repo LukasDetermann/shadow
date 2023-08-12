@@ -131,7 +131,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                            directives.add(directive);
                                            return;
                                         }
-                                        if (existing.get().getImplementations().size() > directives.size())
+                                        if (existing.get().getImplementations().size() > provides.getImplementations().size())
                                         {
                                            return;
                                         }
