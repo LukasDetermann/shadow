@@ -21,6 +21,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
@@ -73,6 +74,8 @@ public interface ShadowApi extends DeclaredHolder
    AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
 
    List<Module> getModules();
+
+   Optional<Module> getModule(String name);
 
    Module getModuleOrThrow(String name);
 

@@ -12,7 +12,6 @@ import io.determann.shadow.api.shadow.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
@@ -146,14 +145,16 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
+   public Optional<Module> getModule(String name)
+   {
+      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(name))
+            .map(moduleElement -> getShadowFactory().shadowFromElement(moduleElement));
+   }
+
+   @Override
    public Module getModuleOrThrow(String name)
    {
-      ModuleElement moduleElement = getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(name);
-      if (moduleElement == null)
-      {
-         throw new IllegalArgumentException("no module fond with name \"" + name + "\"");
-      }
-      return getShadowFactory().shadowFromElement(moduleElement);
+      return getModule(name).orElseThrow();
    }
 
    @Override
