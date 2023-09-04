@@ -83,11 +83,15 @@ public interface ShadowApi extends DeclaredHolder
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
-   List<Package> getPackagesOrThrow(String qualifiedName);
+   List<Package> getPackages(String qualifiedName);
 
    List<Package> getPackages();
 
+   Optional<Package> getPackage(String qualifiedModuleName, String qualifiedPackageName);
+
    Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
+
+   Optional<Package> getPackage(Module module, String qualifiedPackageName);
 
    Package getPackageOrThrow(Module module, String qualifiedPackageName);
 

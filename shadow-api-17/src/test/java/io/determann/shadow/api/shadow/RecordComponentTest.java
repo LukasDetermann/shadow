@@ -68,7 +68,7 @@ class RecordComponentTest extends ShadowTest<RecordComponent>
    @Test
    void testGetPackage()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.recordcomponent")
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.recordcomponent")
                                                                .get(0),
                                                       shadowApi.getRecordOrThrow(
                                                                        "io.determann.shadow.example.processed.test.recordcomponent.RecordComponentExample")

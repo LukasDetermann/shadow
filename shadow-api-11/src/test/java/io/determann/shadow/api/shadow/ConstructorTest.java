@@ -158,7 +158,7 @@ class ConstructorTest extends ExecutableTest<Constructor>
    @Override
    void testGetPackage()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.constructor").get(0),
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.constructor").get(0),
                                                       shadowApi.getClassOrThrow(
                                                                        "io.determann.shadow.example.processed.test.constructor.ConstructorExample")
                                                                  .getPackage()))

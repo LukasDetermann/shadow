@@ -16,6 +16,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
@@ -67,9 +68,8 @@ public interface ShadowApi extends DeclaredHolder
     */
    AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
 
-   /**
-    * a package is unique per module. With multiple modules there can be multiple packages with the same name
-    */
+   Optional<Package> getPackage(String qualifiedName);
+
    Package getPackageOrThrow(String qualifiedName);
 
    ShadowConstants getConstants();

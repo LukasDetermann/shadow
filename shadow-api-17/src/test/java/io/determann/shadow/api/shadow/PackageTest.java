@@ -21,11 +21,11 @@ class PackageTest extends ShadowTest<Package>
    {
       ProcessorTest.process(shadowApi ->
                               {
-                                 assertTrue(shadowApi.getPackagesOrThrow("asdkfh").isEmpty());
+                                 assertTrue(shadowApi.getPackages("asdkfh").isEmpty());
 
                                  assertEquals(List.of(shadowApi.getClassOrThrow(
                                                     "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
-                                              shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.packagee.not_empty")
+                                              shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
                                                        .get(0)
                                                        .getContent());
                               })

@@ -158,7 +158,7 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public List<Package> getPackagesOrThrow(String qualifiedName)
+   public List<Package> getPackages(String qualifiedName)
    {
       return getJdkApiContext().getProcessingEnv().getElementUtils()
                                .getAllPackageElements(qualifiedName)
@@ -179,19 +179,30 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
+   public Optional<Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
+   {
+      return getPackage(getModuleOrThrow(qualifiedModuleName), qualifiedPackageName);
+   }
+
+   @Override
    public Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
-      return getShadowFactory().shadowFromElement(getJdkApiContext().getProcessingEnv().getElementUtils()
-                                                                    .getPackageElement(getModuleOrThrow(qualifiedModuleName).getElement(),
-                                                                                  qualifiedPackageName));
+      return getPackage(qualifiedModuleName, qualifiedPackageName).orElseThrow();
+   }
+
+   @Override
+   public Optional<Package> getPackage(Module module, String qualifiedPackageName)
+   {
+      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils()
+                                          .getPackageElement(module.getElement(),
+                                                             qualifiedPackageName))
+            .map(packageElement -> getShadowFactory().shadowFromElement(packageElement));
    }
 
    @Override
    public Package getPackageOrThrow(Module module, String qualifiedPackageName)
    {
-      return getShadowFactory().shadowFromElement(getJdkApiContext().getProcessingEnv().getElementUtils()
-                                                                    .getPackageElement(module.getElement(),
-                                                                                  qualifiedPackageName));
+      return getPackage(module, qualifiedPackageName).orElseThrow();
    }
 
    @Override

@@ -53,7 +53,7 @@ abstract class VariableTest<SURROUNDING extends Shadow<? extends TypeMirror>, VA
    @Test
    void testGetPackage()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.field").get(0),
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.field").get(0),
                                                       shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.field.FieldExample")
                                                                  .getFields().get(0)
                                                                  .getPackage()))

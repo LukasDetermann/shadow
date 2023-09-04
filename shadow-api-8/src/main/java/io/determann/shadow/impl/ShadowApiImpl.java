@@ -16,6 +16,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.*;
 import java.time.Duration;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -132,9 +133,16 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
+   public Optional<Package> getPackage(String qualifiedName)
+   {
+      return Optional.ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getPackageElement(qualifiedName))
+                     .map(packageElement -> getShadowFactory().shadowFromElement(packageElement));
+   }
+
+   @Override
    public Package getPackageOrThrow(String qualifiedName)
    {
-      return getShadowFactory().shadowFromElement(getJdkApiContext().getProcessingEnv().getElementUtils().getPackageElement(qualifiedName));
+      return getPackage(qualifiedName).orElseThrow(NoSuchElementException::new);
 
    }
 

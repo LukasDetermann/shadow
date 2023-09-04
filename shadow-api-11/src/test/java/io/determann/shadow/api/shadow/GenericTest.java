@@ -52,7 +52,7 @@ class GenericTest extends ShadowTest<Generic>
    @Test
    void testGetPackage()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("io.determann.shadow.example.processed.test.generics").get(0),
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.generics").get(0),
                                                       convert(shadowApi.getClassOrThrow(
                                                                                          "io.determann.shadow.example.processed.test.generics.GenericsExample")
                                                                                    .getGenerics()

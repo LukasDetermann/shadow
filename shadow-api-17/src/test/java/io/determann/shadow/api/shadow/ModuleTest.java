@@ -16,7 +16,7 @@ class ModuleTest extends ShadowTest<Module>
    @Test
    void testGetPackages()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackagesOrThrow("java.util.logging"),
+      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("java.util.logging"),
                                                       shadowApi.getModuleOrThrow("java.logging").getPackages()))
                    .compile();
    }
