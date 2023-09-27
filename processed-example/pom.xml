@@ -6,7 +6,7 @@
     <groupId>io.determann</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>processed-example</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>processor-example</artifactId>
-            <version>0.1.2</version>
+            <version>0.2.0</version>
         </dependency>
     </dependencies>
 
@@ -33,7 +33,7 @@
                         <path>
                             <groupId>io.determann</groupId>
                             <artifactId>processor-example</artifactId>
-                            <version>0.1.2</version>
+                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

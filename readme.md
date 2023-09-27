@@ -462,7 +462,7 @@ One having the code to process and one containing the annotation processor.
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processor-example</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
 </project>
 ````
 
@@ -475,7 +475,7 @@ One having the code to process and one containing the annotation processor.
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processed-example</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
 </project>
 ````
 
@@ -486,7 +486,7 @@ The processor needs to depend on the `shadow-api`
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>shadow</artifactId>
-            <version>0.1.2</version>
+            <version>0.2.0</version>
         </dependency>
 ````
 
@@ -495,7 +495,7 @@ And the processed module needs to depend on the processor module
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>processor-example</artifactId>
-            <version>0.1.2</version>
+            <version>0.2.0</version>
         </dependency>
 ````
 
@@ -514,7 +514,7 @@ The module being processed needs to know the module it's processed by
                         <path>
                             <groupId>io.determann</groupId>
                             <artifactId>processor-example</artifactId>
-                            <version>0.1.2</version>
+                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

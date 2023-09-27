@@ -7,7 +7,7 @@
     <groupId>io.determann</groupId>
     <artifactId>shadow</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
     <modules>
         <module>processor-example</module>
         <module>processed-example</module>
