@@ -2,6 +2,7 @@ package io.determann.shadow.api;
 
 import io.determann.shadow.api.converter.*;
 import io.determann.shadow.api.metadata.JdkApi;
+import io.determann.shadow.api.renderer.*;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
@@ -9,6 +10,7 @@ import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.impl.ShadowApiImpl;
 import io.determann.shadow.impl.converter.ConverterImpl;
+import io.determann.shadow.impl.renderer.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -18,6 +20,7 @@ import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link ShadowApi} is transient. Meaning you can
@@ -44,6 +47,15 @@ public interface ShadowApi extends DeclaredHolder
    static ShadowApi create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
       return new ShadowApiImpl(processingEnv, roundEnv, processingRound);
+   }
+
+   static ShadowApi create(ShadowApi apiFromPreviousRound, ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
+   {
+      if (apiFromPreviousRound == null)
+      {
+         return create(processingEnv, roundEnv, processingRound);
+      }
+      return ((ShadowApiImpl) apiFromPreviousRound).update(processingEnv, roundEnv, processingRound);
    }
 
    JdkApiContext getJdkApiContext();
@@ -175,6 +187,124 @@ public interface ShadowApi extends DeclaredHolder
    {
       return ShadowApiImpl.erasure(declared);
    }
+
+   /**
+    * all render methods produce qualified names
+    * default is {@link #renderNamesWithoutNeedingImports()}
+    *
+    * @see #renderSimpleNames()
+    * @see #renderNamesWithoutNeedingImports()
+    * @see #onNameRendered(Consumer)
+    */
+   void renderQualifiedNames();
+
+   /**
+    * all render methods produce simple names.
+    * default is {@link #renderNamesWithoutNeedingImports()}
+    *
+    * @see #renderQualifiedNames()
+    * @see #renderNamesWithoutNeedingImports()
+    * @see #onNameRendered(Consumer)
+    */
+   void renderSimpleNames();
+
+   /**
+    * all render methods produce qualified names except for the content of {@code java.lang}.
+    * this is the default
+    *
+    * @see #renderSimpleNames()
+    * @see #renderQualifiedNames()
+    * @see #onNameRendered(Consumer)
+    */
+   void renderNamesWithoutNeedingImports();
+
+   /**
+    * @see #renderQualifiedNames()
+    * @see #renderSimpleNames()
+    * @see #renderNamesWithoutNeedingImports()
+    */
+   void onNameRendered(Consumer<NameRenderedEvent> onNameRendered);
+
+   static AnnotationRenderer render(Annotation annotation)
+   {
+      return new AnnotationRendererImpl(annotation);
+   }
+
+   static AnnotationUsageRenderer render(AnnotationUsage annotationUsage)
+   {
+      return new AnnotationUsageRendererImpl(annotationUsage);
+   }
+
+   static ArrayRenderer render(Array array)
+   {
+      return new ArrayRendererImpl(array);
+   }
+
+   static ClassRenderer render(Class clazz)
+   {
+      return new ClassRendererImpl(clazz);
+   }
+
+   static ConstructorRenderer render(Constructor constructor)
+   {
+      return new ConstructorRendererImpl(constructor);
+   }
+
+   static EnumRenderer render(Enum enumType)
+   {
+      return new EnumRendererImpl(enumType);
+   }
+
+   static EnumConstantRenderer render(EnumConstant enumConstant)
+   {
+      return new EnumConstantRendererImpl(enumConstant);
+   }
+
+   static FieldRenderer render(Field field)
+   {
+      return new FieldRendererImpl(field);
+   }
+
+   static GenericRenderer render(Generic generic)
+   {
+      return new GenericRendererImpl(generic);
+   }
+
+   static InterfaceRenderer render(Interface interfaceType)
+   {
+      return new InterfaceRendererImpl(interfaceType);
+   }
+
+   static IntersectionRenderer render(Intersection intersection)
+   {
+      return new IntersectionRendererImpl(intersection);
+   }
+
+   static MethodRenderer render(Method method)
+   {
+      return new MethodRendererImpl(method);
+   }
+
+   static PackageRenderer render(Package packageType)
+   {
+      return new PackageRendererImpl(packageType);
+   }
+
+   static ParameterRenderer render(Parameter parameter)
+   {
+      return new ParameterRendererImpl(parameter);
+   }
+
+   static PrimitiveRenderer render(Primitive primitive)
+   {
+      return new PrimitiveRendererImpl(primitive);
+   }
+
+   static WildcardRenderer render(Wildcard wildcard)
+   {
+      return new WildcardRendererImpl(wildcard);
+   }
+
 
    //convert Shadows
    static AnnotationConverter convert(Annotation annotationShadow)

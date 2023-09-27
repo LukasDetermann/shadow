@@ -2,12 +2,14 @@ package io.determann.shadow.impl;
 
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.converter.DeclaredMapper;
+import io.determann.shadow.api.renderer.NameRenderedEvent;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.impl.renderer.Context;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -21,6 +23,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -28,9 +31,10 @@ import static java.util.Optional.ofNullable;
 
 public class ShadowApiImpl implements ShadowApi
 {
-   private final JdkApiContext jdkApiContext;
+   private JdkApiContext jdkApiContext;
    private final ShadowFactory shadowFactory = new ShadowFactoryImpl(this);
-   private final int processingRound;
+   private int processingRound;
+   private Context renderingContext = Context.builder().withMostlyQualifiedNames().build();
    private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
@@ -68,11 +72,17 @@ public class ShadowApiImpl implements ShadowApi
 
    public ShadowApiImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
-      this.processingRound = processingRound;
-      this.jdkApiContext = new JdkApiContext(processingEnv, roundEnv);
+      update(processingEnv, roundEnv, processingRound);
 
       proxySystemOut();
       proxySystemErr();
+   }
+
+   public ShadowApi update(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
+   {
+      this.processingRound = processingRound;
+      this.jdkApiContext = new JdkApiContext(processingEnv, roundEnv);
+      return this;
    }
 
    @Override
@@ -420,5 +430,34 @@ public class ShadowApiImpl implements ShadowApi
    public ShadowApi getApi()
    {
       return this;
+   }
+
+   @Override
+   public void renderQualifiedNames()
+   {
+      renderingContext = Context.builder(renderingContext).withQualifiedNames().build();
+   }
+
+   @Override
+   public void renderSimpleNames()
+   {
+      renderingContext = Context.builder(renderingContext).withSimpleNames().build();
+   }
+
+   @Override
+   public void renderNamesWithoutNeedingImports()
+   {
+      renderingContext = Context.builder(renderingContext).withMostlyQualifiedNames().build();
+   }
+
+   @Override
+   public void onNameRendered(Consumer<NameRenderedEvent> onNameRendered)
+   {
+      renderingContext = Context.builder(renderingContext).withNameRenderedListener(onNameRendered).build();
+   }
+
+   public Context getRenderingContext()
+   {
+      return renderingContext;
    }
 }

@@ -293,9 +293,135 @@ class ConversionTest extends AbstractProcessor
 </tr>
 </table>
 </details>
-<details><summary>No additional support for creating source files over `javax.lang.model`</summary>
-</details>
+<details><summary>Better rendering of existing sources</summary>
 
+A simple method like this
+
+````java
+public abstract class MyClass {
+   
+  @MyAnnotation
+  public abstract <T> T get(int index);
+}
+````
+can be rendered in the following ways
+
+<table>
+<tr>
+<th>Rendering</th>
+<th>Shadow API</th>
+<th>JDK</th>
+</tr>
+<tr>
+<td>
+
+````java
+@MyAnnotation
+public abstract <T> T get(int index);
+````
+</td>
+<td>
+
+````java
+render(method).declaration()
+````
+</td>
+</tr>
+<tr>
+<td>
+
+````java
+@MyAnnotation
+public <T> T get(int index) {
+//do stuff
+}
+````
+</td>
+<td>
+
+````java
+render(method).declaration("//do stuff")
+````
+</td>
+</tr>
+<tr>
+<td>
+
+````java
+get()
+````
+</td>
+<td>
+
+````java
+render(method).invocation()
+````
+</td>
+</tr>
+<tr>
+<td>
+
+````java
+get(5413)
+````
+</td>
+<td>
+
+````java
+render(method).invocation("5413")
+````
+</td>
+</tr>
+<tr>
+<td>
+
+````
+<T>get(int)
+````
+</td>
+<td>
+
+````java
+method.toString()
+method.getElement().toString()
+````
+</td>
+<td>
+
+````java
+methodElement.toString()
+````
+</td>
+</tr>
+<tr>
+<td>
+
+````
+<T>(int)T
+````
+</td>
+<td>
+
+````java
+method.getMirror().toString()
+````
+</td>
+<td>
+
+````java
+methodMirror.toString()
+````
+</td>
+</tr>
+</table>
+
+Names can be rendered as
+- QualifiedNames
+- SimpleNames
+- WithoutNeedingImports (default)
+
+and a Callback can be registered for NameRenderedEvents to create for example imports.
+</details>
 
 ## API Goals
 

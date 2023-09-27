@@ -19,6 +19,7 @@ import java.util.Set;
 public abstract class ShadowProcessor extends AbstractProcessor
 {
    private int processingRound = 0;
+   private ShadowApi api;
 
    @Override
    public Set<String> getSupportedAnnotationTypes()
@@ -43,7 +44,7 @@ public abstract class ShadowProcessor extends AbstractProcessor
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
    {
       Instant start = Instant.now();
-      ShadowApi api = ShadowApi.create(processingEnv, roundEnv, processingRound);
+      api = ShadowApi.create(api, processingEnv, roundEnv, processingRound);
       //noinspection OverlyBroadCatchBlock
       try
       {

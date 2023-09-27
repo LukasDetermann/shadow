@@ -38,8 +38,6 @@ public enum TypeKind
 
    GENERIC(false, false, false, false),
 
-   UNION(false, false, false, false),
-
    WILDCARD(false, false, false, false),
 
    INTERSECTION(false, false, false, false),
