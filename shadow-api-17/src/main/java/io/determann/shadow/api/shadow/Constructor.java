@@ -1,13 +1,9 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.modifier.AccessModifiable;
 
-import javax.lang.model.element.ExecutableElement;
-
 public interface Constructor extends Executable,
-                                     AccessModifiable,
-                                     Annotationable<ExecutableElement>
+                                     AccessModifiable
 {
    /**
     * be careful using this equals

@@ -1,12 +1,8 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.modifier.*;
 
-import javax.lang.model.element.ExecutableElement;
-
 public interface Method extends Executable,
-                                Annotationable<ExecutableElement>,
                                 StaticModifiable,
                                 DefaultModifiable,
                                 AccessModifiable,
