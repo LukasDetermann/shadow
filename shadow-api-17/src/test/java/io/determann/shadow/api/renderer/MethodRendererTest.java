@@ -18,8 +18,9 @@ class MethodRendererTest
                             {
                                List<Method> methods = shadowApi.getClassOrThrow("MethodExample").getMethods();
 
-                               assertEquals("@MyAnnotation\nabstract <T> void varArgsMethod(String... args) throws java.io.FileNotFoundException;\n",
-                                            render(methods.get(0)).declaration());
+                               assertEquals(
+                                     "@MyAnnotation\nabstract <T> void varArgsMethod(String... args) throws java.io.FileNotFoundException;\n",
+                                     render(methods.get(0)).declaration());
                                assertEquals("public void six(java.util.List list) {}\n",
                                             render(methods.get(1)).declaration());
                                assertEquals("public void seven(java.util.List<String> strings) {\ntest\n}\n",
@@ -27,8 +28,8 @@ class MethodRendererTest
 
                                assertEquals("private void receiver(ReceiverExample ReceiverExample.this) {}\n",
                                             render(shadowApi.getClassOrThrow("ReceiverExample")
-                                                         .getMethods()
-                                                         .get(0))
+                                                            .getMethods()
+                                                            .get(0))
                                                   .declaration());
                             })
                    .withCodeToCompile("MethodExample.java", """
@@ -41,10 +42,10 @@ class MethodRendererTest
                          """)
                    .withCodeToCompile("MyAnnotation.java", "@interface MyAnnotation {} ")
                    .withCodeToCompile("ReceiverExample.java", """
-                           public class ReceiverExample {
-                              private void receiver(ReceiverExample ReceiverExample.this) {}
-                           }
-                           """)
+                         public class ReceiverExample {
+                            private void receiver(ReceiverExample ReceiverExample.this) {}
+                         }
+                         """)
                    .compile();
    }
 

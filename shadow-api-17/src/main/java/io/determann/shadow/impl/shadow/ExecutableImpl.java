@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.ShadowConverter;
@@ -28,17 +29,17 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public Shadow<TypeMirror> getReturnType()
+   public Shadow getReturnType()
    {
       return getApi().getShadowFactory().shadowFromType(getMirror().getReturnType());
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getParameterTypes()
+   public List<Shadow> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .toList();
    }
 
@@ -58,7 +59,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .map(ShadowApi::convert)
                         .map(ShadowConverter::toClassOrThrow)
                         .toList();
@@ -92,29 +93,35 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    public TypeKind getTypeKind()
    {
       return switch (getElement().getKind())
-            {
-               case CONSTRUCTOR -> TypeKind.CONSTRUCTOR;
-               case METHOD -> TypeKind.METHOD;
-               default -> throw new IllegalStateException();
-            };
+      {
+         case CONSTRUCTOR -> TypeKind.CONSTRUCTOR;
+         case METHOD -> TypeKind.METHOD;
+         default -> throw new IllegalStateException();
+      };
    }
 
    @Override
    public boolean overrides(Method method)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().overrides(getElement(), method.getElement(), getSurrounding().getElement());
+      return getApi().getJdkApiContext()
+                     .getProcessingEnv()
+                     .getElementUtils()
+                     .overrides(getElement(), method.getElement(), getSurrounding().getElement());
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().overrides(method.getElement(), getElement(), method.getSurrounding().getElement());
+      return getApi().getJdkApiContext()
+                     .getProcessingEnv()
+                     .getElementUtils()
+                     .overrides(method.getElement(), getElement(), method.getSurrounding().getElement());
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubsignature(getMirror(), method.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubsignature(getMirror(), MirrorAdapter.getType(method));
    }
 
    @Override
@@ -144,7 +151,8 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

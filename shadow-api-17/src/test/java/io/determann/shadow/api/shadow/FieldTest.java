@@ -17,10 +17,10 @@ class FieldTest extends VariableTest<Declared, Field>
    void testGetSurrounding()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 Class aClass = shadowApi.getClassOrThrow("FieldExample");
-                                 assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
-                              })
+                            {
+                               Class aClass = shadowApi.getClassOrThrow("FieldExample");
+                               assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
+                            })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
    }

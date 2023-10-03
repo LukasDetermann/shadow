@@ -14,7 +14,7 @@ public interface AnnotationUsageRenderer
 
    /**
     * {@code @MyAnnotation(name = "myName")}
-    *
+    * <p>
     * if an empty optional is supplied the value of the original AnnotationUsage will be used
     */
    String usage(Function<Method, Optional<String>> valueRenderer);

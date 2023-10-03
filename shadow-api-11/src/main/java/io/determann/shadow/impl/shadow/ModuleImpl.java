@@ -12,7 +12,6 @@ import io.determann.shadow.impl.shadow.module.*;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.type.NoType;
-import javax.lang.model.type.TypeMirror;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -205,7 +204,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
 
    //com.sun.tools.javac.code.Types.TypeRelation#visitType throes exceptions for modules
    @Override
-   public boolean representsSameType(Shadow<? extends TypeMirror> shadow)
+   public boolean representsSameType(Shadow shadow)
    {
       return equals(shadow);
    }

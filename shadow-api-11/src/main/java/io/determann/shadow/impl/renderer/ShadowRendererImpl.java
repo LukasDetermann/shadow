@@ -7,7 +7,7 @@ import static io.determann.shadow.api.ShadowApi.convert;
 
 public class ShadowRendererImpl
 {
-   public static String type(Context context, Shadow<?> shadow)
+   public static String type(Context context, Shadow shadow)
    {
       switch (shadow.getTypeKind())
       {

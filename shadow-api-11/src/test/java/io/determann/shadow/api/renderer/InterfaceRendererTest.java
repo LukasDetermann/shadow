@@ -13,8 +13,9 @@ class InterfaceRendererTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertEquals("public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {}\n",
-                                            render(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample")).declaration());
+                               assertEquals(
+                                     "public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {}\n",
+                                     render(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample")).declaration());
 
                                assertEquals("@FunctionalInterface\n" +
                                             "public interface Function<T, R> {\n" +

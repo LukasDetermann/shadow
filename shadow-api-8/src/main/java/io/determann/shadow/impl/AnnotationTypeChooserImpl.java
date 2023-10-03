@@ -8,7 +8,6 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.type.TypeMirror;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -21,18 +20,18 @@ import static java.util.stream.Collectors.toSet;
 
 public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
 {
-   private final Set<Shadow<TypeMirror>> shadows;
+   private final Set<Shadow> shadows;
 
    AnnotationTypeChooserImpl(ShadowApi shadowApi, Set<? extends Element> elements)
    {
       this.shadows = elements
             .stream()
-            .map(element -> shadowApi.getShadowFactory().<Shadow<TypeMirror>>shadowFromElement(element))
+            .map(element -> shadowApi.getShadowFactory().<Shadow>shadowFromElement(element))
             .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 
    @Override
-   public Set<Shadow<TypeMirror>> all()
+   public Set<Shadow> all()
    {
       return new HashSet<>(shadows);
    }
@@ -103,7 +102,7 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
       return findShadows(shadow -> convert(shadow).toGeneric());
    }
 
-   private <SHADOW> Set<SHADOW> findShadows(Function<? super Shadow<TypeMirror>, Optional<SHADOW>> mapper)
+   private <SHADOW> Set<SHADOW> findShadows(Function<? super Shadow, Optional<SHADOW>> mapper)
    {
       return shadows.stream()
                     .map(mapper)

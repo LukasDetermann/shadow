@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public class ImmutablePropertyImpl implements ImmutableProperty
 {
    private final ShadowApi api;
    private final String name;
-   private final Shadow<TypeMirror> type;
+   private final Shadow type;
    private final Field field;
    private final Method getter;
 
@@ -26,15 +25,15 @@ public class ImmutablePropertyImpl implements ImmutableProperty
       return PropertyTemplateFactory.templatesFor(declared).stream()
                                     .filter(template -> template.getSetter() == null)
                                     .map(template -> new ImmutablePropertyImpl(declared.getApi(),
-                                                                    template.getName(),
-                                                                    template.getType(),
-                                                                    template.getField(),
-                                                                    template.getGetter()))
+                                                                               template.getName(),
+                                                                               template.getType(),
+                                                                               template.getField(),
+                                                                               template.getGetter()))
                                     .map(ImmutableProperty.class::cast)
                                     .collect(toUnmodifiableList());
    }
 
-   private ImmutablePropertyImpl(ShadowApi api, String name, Shadow<TypeMirror> type, Field field, Method getter)
+   private ImmutablePropertyImpl(ShadowApi api, String name, Shadow type, Field field, Method getter)
    {
       this.api = api;
       this.name = name;
@@ -56,7 +55,7 @@ public class ImmutablePropertyImpl implements ImmutableProperty
    }
 
    @Override
-   public Shadow<TypeMirror> getType()
+   public Shadow getType()
    {
       return type;
    }

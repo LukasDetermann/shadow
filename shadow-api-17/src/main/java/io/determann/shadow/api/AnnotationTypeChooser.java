@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
-import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.ElementType;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ import java.util.Set;
  */
 public interface AnnotationTypeChooser
 {
-   Set<Shadow<TypeMirror>> all();
+   Set<Shadow> all();
 
    /**
     * Annotations for {@link ElementType#TYPE}

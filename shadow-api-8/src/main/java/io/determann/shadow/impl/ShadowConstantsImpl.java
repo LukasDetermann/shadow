@@ -21,7 +21,8 @@ public class ShadowConstantsImpl implements ShadowConstants
    @Override
    public Wildcard getUnboundWildcard()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, null));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, null));
    }
 
 
@@ -34,54 +35,63 @@ public class ShadowConstantsImpl implements ShadowConstants
    @Override
    public Void getVoid()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getNoType(TypeKind.VOID));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getNoType(TypeKind.VOID));
    }
 
    @Override
    public Primitive getPrimitiveBoolean()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
    }
 
    @Override
    public Primitive getPrimitiveByte()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BYTE));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BYTE));
    }
 
    @Override
    public Primitive getPrimitiveShort()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.SHORT));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.SHORT));
    }
 
    @Override
    public Primitive getPrimitiveInt()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.INT));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.INT));
    }
 
    @Override
    public Primitive getPrimitiveLong()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.LONG));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.LONG));
    }
 
    @Override
    public Primitive getPrimitiveChar()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.CHAR));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.CHAR));
    }
 
    @Override
    public Primitive getPrimitiveFloat()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
    }
 
    @Override
    public Primitive getPrimitiveDouble()
    {
-      return shadowApi.getShadowFactory().shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
+      return shadowApi.getShadowFactory()
+                      .shadowFromType(shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
    }
 }

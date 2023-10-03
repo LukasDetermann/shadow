@@ -29,13 +29,13 @@ class WildcardRendererTest
                                      .toWildcardOrThrow();
 
                                Wildcard superExample = convert(convert(boundsExample.getMethods("superExample")
-                                                                                      .get(0)
-                                                                                      .getParameters()
-                                                                                      .get(0)
-                                                                                      .getType())
-                                                                       .toInterfaceOrThrow()
-                                                                       .getGenerics()
-                                                                       .get(0))
+                                                                                    .get(0)
+                                                                                    .getParameters()
+                                                                                    .get(0)
+                                                                                    .getType())
+                                                                     .toInterfaceOrThrow()
+                                                                     .getGenerics()
+                                                                     .get(0))
                                      .toWildcardOrThrow();
 
                                Wildcard unboundExample = convert(convert(boundsExample.getMethods("unboundExample")

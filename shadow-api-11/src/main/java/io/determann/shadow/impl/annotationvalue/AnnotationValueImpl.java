@@ -85,7 +85,7 @@ public class AnnotationValueImpl implements AnnotationValue
    }
 
    @Override
-   public Shadow<TypeMirror> asType()
+   public Shadow asType()
    {
       return shadowApi.getShadowFactory().shadowFromType((TypeMirror) annotationValue.getValue());
    }

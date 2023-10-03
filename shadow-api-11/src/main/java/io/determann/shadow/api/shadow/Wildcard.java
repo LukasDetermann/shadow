@@ -1,23 +1,21 @@
 package io.determann.shadow.api.shadow;
 
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.WildcardType;
 import java.util.Optional;
 
 /**
  * {@code List<}<b>? extends Number</b>{@code >}
  */
-public interface Wildcard extends Shadow<WildcardType>
+public interface Wildcard extends Shadow
 {
    /**
     * {@code List<}<b>? extends Number</b>{@code >}
     */
-   Optional<Shadow<TypeMirror>> getExtends();
+   Optional<Shadow> getExtends();
 
    /**
     * {@code List<}<b>? super Number</b>{@code >}
     */
-   Optional<Shadow<TypeMirror>> getSuper();
+   Optional<Shadow> getSuper();
 
    /**
     * <pre>{@code
@@ -26,7 +24,7 @@ public interface Wildcard extends Shadow<WildcardType>
     *             .contains(shadowApi.getDeclaredOrThrow("java.lang.Long"));
     * }</pre>
     */
-   boolean contains(Shadow<? extends TypeMirror> shadow);
+   boolean contains(Shadow shadow);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -35,7 +33,7 @@ public interface Wildcard extends Shadow<WildcardType>
     * <p>
     * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
     */
-   Shadow<TypeMirror> erasure();
+   Shadow erasure();
 
    /**
     * be careful using this equals

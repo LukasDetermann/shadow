@@ -30,13 +30,13 @@ class WildcardRendererTest
                                      .toWildcardOrThrow();
 
                                Wildcard superExample = convert(convert(boundsExample.getMethods("superExample")
-                                                                                      .get(0)
-                                                                                      .getParameters()
-                                                                                      .get(0)
-                                                                                      .getType())
-                                                                       .toInterfaceOrThrow()
-                                                                       .getGenerics()
-                                                                       .get(0))
+                                                                                    .get(0)
+                                                                                    .getParameters()
+                                                                                    .get(0)
+                                                                                    .getType())
+                                                                     .toInterfaceOrThrow()
+                                                                     .getGenerics()
+                                                                     .get(0))
                                      .toWildcardOrThrow();
 
                                Wildcard unboundExample = convert(convert(boundsExample.getMethods("unboundExample")
@@ -54,12 +54,12 @@ class WildcardRendererTest
                                assertEquals("?", ShadowApi.render(unboundExample).type());
                             })
                    .withCodeToCompile("BoundsExample.java", """
-                           public class BoundsExample {
-                              public static void extendsExample(java.util.List<? extends Number> numbers) {}
-                              public static void superExample(java.util.List<? super Number> numbers) {}
-                              public static void unboundExample(java.util.List<?> things) {}
-                           }
-                           """)
+                         public class BoundsExample {
+                            public static void extendsExample(java.util.List<? extends Number> numbers) {}
+                            public static void superExample(java.util.List<? super Number> numbers) {}
+                            public static void unboundExample(java.util.List<?> things) {}
+                         }
+                         """)
                    .compile();
    }
 }

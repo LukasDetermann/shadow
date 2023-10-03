@@ -5,7 +5,6 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 public interface AnnotationValue
@@ -37,7 +36,7 @@ public interface AnnotationValue
 
    Double asDouble();
 
-   Shadow<TypeMirror> asType();
+   Shadow asType();
 
    EnumConstant asEnumConstant();
 

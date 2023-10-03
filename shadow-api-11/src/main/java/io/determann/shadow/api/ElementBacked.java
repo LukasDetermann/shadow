@@ -9,6 +9,7 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 import java.util.Set;
 
+import static io.determann.shadow.api.modifier.Modifier.*;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
@@ -24,7 +25,40 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
    @Override
    default Set<Modifier> getModifiers()
    {
-      return getElement().getModifiers().stream().map(Modifier::mapModifier).collect(toUnmodifiableSet());
+      return getElement().getModifiers().stream().map(ElementBacked::mapModifier).collect(toUnmodifiableSet());
+   }
+
+   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
+   {
+      switch (modifier)
+      {
+         case PUBLIC:
+            return PUBLIC;
+         case PROTECTED:
+            return PROTECTED;
+         case PRIVATE:
+            return PRIVATE;
+         case ABSTRACT:
+            return ABSTRACT;
+         case STATIC:
+            return STATIC;
+         case FINAL:
+            return FINAL;
+         case STRICTFP:
+            return STRICTFP;
+         case DEFAULT:
+            return DEFAULT;
+         case TRANSIENT:
+            return TRANSIENT;
+         case VOLATILE:
+            return VOLATILE;
+         case SYNCHRONIZED:
+            return SYNCHRONIZED;
+         case NATIVE:
+            return NATIVE;
+         default:
+            throw new IllegalArgumentException();
+      }
    }
 
    /**
@@ -32,7 +66,8 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
     */
    default Module getModule()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getModuleOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getModuleOf(getElement()));
    }
 
    default String getSimpleName()

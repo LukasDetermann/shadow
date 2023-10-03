@@ -18,11 +18,17 @@ class PrimitiveTest extends ShadowTest<Primitive>
    void testIsSubtypeOf()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
-                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
-                              })
+                            {
+                               assertTrue(shadowApi.getConstants()
+                                                   .getPrimitiveInt()
+                                                   .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(shadowApi.getConstants()
+                                                   .getPrimitiveInt()
+                                                   .isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
+                               assertFalse(shadowApi.getConstants()
+                                                    .getPrimitiveInt()
+                                                    .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
+                            })
                    .compile();
    }
 
@@ -30,13 +36,21 @@ class PrimitiveTest extends ShadowTest<Primitive>
    void testIsAssignableFrom()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
-                                 assertFalse(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
+                            {
+                               assertTrue(shadowApi.getConstants()
+                                                   .getPrimitiveInt()
+                                                   .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(shadowApi.getConstants()
+                                                   .getPrimitiveInt()
+                                                   .isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
+                               assertFalse(shadowApi.getConstants()
+                                                    .getPrimitiveInt()
+                                                    .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.String")));
 
-                                 assertTrue(shadowApi.getConstants().getPrimitiveInt().isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
-                              })
+                               assertTrue(shadowApi.getConstants()
+                                                   .getPrimitiveInt()
+                                                   .isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
+                            })
                    .compile();
    }
 }

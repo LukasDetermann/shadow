@@ -21,11 +21,11 @@ class EnumTest extends DeclaredTest<Enum>
    void testisSubtypeOf()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
-                                 assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                                 assertFalse(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
-                              }).compile();
+                            {
+                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
+                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                            }).compile();
    }
 
    @Test
@@ -33,27 +33,27 @@ class EnumTest extends DeclaredTest<Enum>
    void testGetDirectSuperTypes()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.Enum")),
-                                              shadowApi.getEnumOrThrow("EnumNoParent")
-                                                       .getDirectSuperTypes());
+                            {
+                               assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.Enum")),
+                                            shadowApi.getEnumOrThrow("EnumNoParent")
+                                                     .getDirectSuperTypes());
 
-                                 assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Enum"),
-                                                            shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
-                                                            shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                              shadowApi.getEnumOrThrow("EnumMultiParent")
-                                                       .getDirectSuperTypes());
-                              })
+                               assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Enum"),
+                                                          shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
+                                                          shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
+                                            shadowApi.getEnumOrThrow("EnumMultiParent")
+                                                     .getDirectSuperTypes());
+                            })
                    .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
                    .withCodeToCompile("EnumMultiParent.java",
-                                        "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
-                                        "                                 ;\n" +
-                                        "                                 @Override\n" +
-                                        "                                 public void accept(EnumMultiParent enumMultiParent) {}\n" +
-                                        "\n" +
-                                        "                                 @Override\n" +
-                                        "                                 public EnumMultiParent get() {return null;}\n" +
-                                        "                              }")
+                                      "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
+                                      "                                 ;\n" +
+                                      "                                 @Override\n" +
+                                      "                                 public void accept(EnumMultiParent enumMultiParent) {}\n" +
+                                      "\n" +
+                                      "                                 @Override\n" +
+                                      "                                 public EnumMultiParent get() {return null;}\n" +
+                                      "                              }")
                    .compile();
    }
 
@@ -62,32 +62,32 @@ class EnumTest extends DeclaredTest<Enum>
    void testGetSuperTypes()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                          shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
-                                                                          shadowApi.getInterfaceOrThrow("java.io.Serializable"),
-                                                                          shadowApi.getClassOrThrow("java.lang.Enum"))),
-                                              shadowApi.getEnumOrThrow("EnumNoParent").getSuperTypes());
+                            {
+                               assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                        shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
+                                                                        shadowApi.getInterfaceOrThrow("java.io.Serializable"),
+                                                                        shadowApi.getClassOrThrow("java.lang.Enum"))),
+                                            shadowApi.getEnumOrThrow("EnumNoParent").getSuperTypes());
 
-                                 assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                                          shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
-                                                                          shadowApi.getInterfaceOrThrow("java.io.Serializable"),
-                                                                          shadowApi.getClassOrThrow("java.lang.Enum"),
-                                                                          shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
-                                                                          shadowApi.getInterfaceOrThrow("java.util.function.Supplier"))),
-                                              shadowApi.getEnumOrThrow("EnumMultiParent")
-                                                       .getSuperTypes());
-                              })
+                               assertEquals(new HashSet<>(Arrays.asList(shadowApi.getClassOrThrow("java.lang.Object"),
+                                                                        shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
+                                                                        shadowApi.getInterfaceOrThrow("java.io.Serializable"),
+                                                                        shadowApi.getClassOrThrow("java.lang.Enum"),
+                                                                        shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
+                                                                        shadowApi.getInterfaceOrThrow("java.util.function.Supplier"))),
+                                            shadowApi.getEnumOrThrow("EnumMultiParent")
+                                                     .getSuperTypes());
+                            })
                    .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
                    .withCodeToCompile("",
-                                        "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
-                                        "                                 ;\n" +
-                                        "                                 @Override\n" +
-                                        "                                 public void accept(EnumMultiParent enumMultiParent) {}\n" +
-                                        "\n" +
-                                        "                                 @Override\n" +
-                                        "                                 public EnumMultiParent get() {return null;}\n" +
-                                        "                              }")
+                                      "                           enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\n" +
+                                      "                                 ;\n" +
+                                      "                                 @Override\n" +
+                                      "                                 public void accept(EnumMultiParent enumMultiParent) {}\n" +
+                                      "\n" +
+                                      "                                 @Override\n" +
+                                      "                                 public EnumMultiParent get() {return null;}\n" +
+                                      "                              }")
                    .compile();
    }
 }

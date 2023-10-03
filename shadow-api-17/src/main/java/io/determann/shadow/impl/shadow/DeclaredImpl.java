@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
@@ -12,7 +13,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.HashSet;
 import java.util.List;
@@ -37,23 +37,23 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
+   public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
    public TypeKind getTypeKind()
    {
       return switch (getElement().getKind())
-            {
-               case ENUM -> TypeKind.ENUM;
-               case CLASS -> TypeKind.CLASS;
-               case INTERFACE -> TypeKind.INTERFACE;
-               case ANNOTATION_TYPE -> TypeKind.ANNOTATION;
-               case RECORD -> TypeKind.RECORD;
-               default -> throw new IllegalStateException();
-            };
+      {
+         case ENUM -> TypeKind.ENUM;
+         case CLASS -> TypeKind.CLASS;
+         case INTERFACE -> TypeKind.INTERFACE;
+         case ANNOTATION_TYPE -> TypeKind.ANNOTATION;
+         case RECORD -> TypeKind.RECORD;
+         default -> throw new IllegalStateException();
+      };
    }
 
    @Override
@@ -66,11 +66,11 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    public NestingKind getNesting()
    {
       return switch (getElement().getNestingKind())
-            {
-               case MEMBER -> NestingKind.INNER;
-               case TOP_LEVEL -> NestingKind.OUTER;
-               default -> throw new IllegalStateException();
-            };
+      {
+         case MEMBER -> NestingKind.INNER;
+         case TOP_LEVEL -> NestingKind.OUTER;
+         default -> throw new IllegalStateException();
+      };
    }
 
    @Override
@@ -149,13 +149,15 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Wildcard asExtendsWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
    }
 
    @Override
    public Wildcard asSuperWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override
@@ -221,7 +223,8 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

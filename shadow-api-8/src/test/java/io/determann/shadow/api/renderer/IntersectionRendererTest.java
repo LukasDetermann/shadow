@@ -15,11 +15,11 @@ class IntersectionRendererTest
    {
       ProcessorTest.process(shadowApi -> assertEquals("java.util.Collection & java.io.Serializable",
                                                       render(convert(shadowApi.getClassOrThrow("IntersectionExample")
-                                                                                        .getFormalGenerics()
-                                                                                        .get(0)
-                                                                                        .getExtends())
-                                                                             .toIntersectionOrThrow())
-                                                               .declaration()))
+                                                                              .getFormalGenerics()
+                                                                              .get(0)
+                                                                              .getExtends())
+                                                                   .toIntersectionOrThrow())
+                                                            .declaration()))
                    .withCodeToCompile("IntersectionExample.java",
                                       "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                    .compile();

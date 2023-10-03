@@ -18,7 +18,8 @@ class GenericRendererTest
                                                                        .getGenerics()
                                                                        .get(0)).toGenericOrThrow())
                                                      .declaration()))
-                   .withCodeToCompile("MyAnnotation.java", "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation {} ")
+                   .withCodeToCompile("MyAnnotation.java",
+                                      "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation {} ")
                    .withCodeToCompile("Annotated.java", "class Annotated<@MyAnnotation T> {} ")
                    .compile();
    }

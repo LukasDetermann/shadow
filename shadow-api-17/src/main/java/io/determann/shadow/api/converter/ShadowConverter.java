@@ -8,7 +8,6 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.Optional;
 
 public interface ShadowConverter
@@ -97,9 +96,9 @@ public interface ShadowConverter
 
    Optional<Generic> toGeneric();
 
-   Variable<Shadow<TypeMirror>> toVariableOrThrow();
+   Variable<Shadow> toVariableOrThrow();
 
-   Optional<Variable<Shadow<TypeMirror>>> toVariable();
+   Optional<Variable<Shadow>> toVariable();
 
    Wildcard toWildcardOrThrow();
 

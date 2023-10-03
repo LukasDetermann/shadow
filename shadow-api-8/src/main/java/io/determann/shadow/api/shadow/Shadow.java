@@ -1,12 +1,8 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ApiHolder;
-import io.determann.shadow.api.MirrorBacked;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.metadata.JdkApi;
-
-import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents sourceCode that is being complied. A {@link Shadow} can be converted only in one of its children using
@@ -46,8 +42,7 @@ import javax.lang.model.type.TypeMirror;
  *     </li>
  * </ul>
  */
-public interface Shadow<MIRROR extends TypeMirror> extends MirrorBacked<MIRROR>,
-                                                           ApiHolder
+public interface Shadow extends ApiHolder
 {
    TypeKind getTypeKind();
 
@@ -58,11 +53,7 @@ public interface Shadow<MIRROR extends TypeMirror> extends MirrorBacked<MIRROR>,
     * {@link Shadow}s when ever possible. {@link #equals(Object)} should only be used to compare the technical aspect of two objects.
     * for example in a list implementation.
     */
-   boolean representsSameType(Shadow<? extends TypeMirror> shadow);
-
-   @JdkApi
-   @Override
-   MIRROR getMirror();
+   boolean representsSameType(Shadow shadow);
 
    @Override
    ShadowApi getApi();

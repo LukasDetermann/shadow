@@ -17,14 +17,14 @@ public interface ShadowFactory
     *
     * @see #shadowFromType(TypeMirror)
     */
-   public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromElement(@JdkApi Element element);
+   public <SHADOW extends Shadow> SHADOW shadowFromElement(@JdkApi Element element);
 
    /**
     * {@link TypeMirror}s represent the abstract code. {@code List<T>} for example.
     *
     * @see #shadowFromElement(Element)
     */
-   public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromType(@JdkApi TypeMirror typeMirror);
+   public <SHADOW extends Shadow> SHADOW shadowFromType(@JdkApi TypeMirror typeMirror);
 
    public List<AnnotationUsage> annotationUsages(@JdkApi List<? extends AnnotationMirror> annotationMirrors);
 }

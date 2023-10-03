@@ -8,7 +8,8 @@ public class NameRenderedEvent
    private final String name;
    private final boolean qualified;
 
-   public NameRenderedEvent(Declared rendered, String name, boolean qualified) {
+   public NameRenderedEvent(Declared rendered, String name, boolean qualified)
+   {
       this.rendered = rendered;
       this.name = name;
       this.qualified = qualified;

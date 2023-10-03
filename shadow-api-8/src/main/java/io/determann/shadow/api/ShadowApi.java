@@ -14,7 +14,6 @@ import io.determann.shadow.impl.renderer.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
@@ -392,7 +391,7 @@ public interface ShadowApi extends DeclaredHolder
       return new ConverterImpl(primitive);
    }
 
-   static ShadowConverter convert(Shadow<? extends TypeMirror> shadow)
+   static ShadowConverter convert(Shadow shadow)
    {
       return new ConverterImpl(shadow);
    }

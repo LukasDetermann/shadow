@@ -4,8 +4,6 @@ import io.determann.shadow.api.ElementBacked;
 import io.determann.shadow.api.ShadowApi;
 
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.ExecutableType;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +15,7 @@ import java.util.Optional;
  *    <li>{@link Method}</li>
  * </ul>
  */
-public interface Executable extends Shadow<ExecutableType>,
+public interface Executable extends Shadow,
                                     ElementBacked<ExecutableElement>
 {
    /**
@@ -27,9 +25,9 @@ public interface Executable extends Shadow<ExecutableType>,
 
    Parameter getParameterOrThrow(String name);
 
-   Shadow<TypeMirror> getReturnType();
+   Shadow getReturnType();
 
-   List<Shadow<TypeMirror>> getParameterTypes();
+   List<Shadow> getParameterTypes();
 
    List<Class> getThrows();
 

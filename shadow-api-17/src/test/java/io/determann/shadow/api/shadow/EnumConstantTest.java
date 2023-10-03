@@ -16,10 +16,10 @@ class EnumConstantTest extends VariableTest<Enum, EnumConstant>
    void testGetSurrounding()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 Enum anEnum = shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
-                                 assertEquals(anEnum, anEnum.getEnumConstantOrThrow("SOURCE").getSurrounding());
-                              })
+                            {
+                               Enum anEnum = shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
+                               assertEquals(anEnum, anEnum.getEnumConstantOrThrow("SOURCE").getSurrounding());
+                            })
                    .compile();
    }
 }

@@ -13,7 +13,7 @@ class PackageRendererTest
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("package java.lang;\n",
-                                               render(shadowApi.getPackageOrThrow( "java.lang")).declaration()))
+                                               render(shadowApi.getPackageOrThrow("java.lang")).declaration()))
                    .compile();
    }
 }

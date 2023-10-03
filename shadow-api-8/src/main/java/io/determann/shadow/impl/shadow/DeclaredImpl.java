@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
@@ -12,7 +13,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.*;
 
@@ -37,9 +37,9 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
+   public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
@@ -99,7 +99,9 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public List<Method> getMethods(String simpleName)
    {
-      return getMethods().stream().filter(field -> field.getSimpleName().equals(simpleName)).collect(collectingAndThen(toList(), Collections::unmodifiableList));
+      return getMethods().stream()
+                         .filter(field -> field.getSimpleName().equals(simpleName))
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
    @Override
@@ -156,13 +158,15 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Wildcard asExtendsWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
    }
 
    @Override
    public Wildcard asSuperWildcard()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override
@@ -222,13 +226,17 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public EnumConstant getEnumConstantOrThrow(String simpleName)
    {
-      return getEumConstants().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
+      return getEumConstants().stream()
+                              .filter(field -> field.getSimpleName().equals(simpleName))
+                              .findAny()
+                              .orElseThrow(NoSuchElementException::new);
    }
 
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

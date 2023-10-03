@@ -10,7 +10,6 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +40,9 @@ public class ConverterImpl implements ShadowConverter,
                                       WildcardConverter
 {
    private final ShadowApi shadowApi;
-   private final Shadow<? extends TypeMirror> shadow;
+   private final Shadow shadow;
 
-   public ConverterImpl(Shadow<? extends TypeMirror> shadow)
+   public ConverterImpl(Shadow shadow)
    {
       this.shadowApi = shadow.getApi();
       this.shadow = shadow;
@@ -278,13 +277,13 @@ public class ConverterImpl implements ShadowConverter,
    }
 
    @Override
-   public Variable<Shadow<TypeMirror>> toVariableOrThrow()
+   public Variable<Shadow> toVariableOrThrow()
    {
       return to(TypeKind::isVariable);
    }
 
    @Override
-   public Optional<Variable<Shadow<TypeMirror>>> toVariable()
+   public Optional<Variable<Shadow>> toVariable()
    {
       return toOptional(TypeKind::isVariable);
    }
@@ -295,13 +294,13 @@ public class ConverterImpl implements ShadowConverter,
       return to(TypeKind.WILDCARD);
    }
 
-   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> SHADOW to(TypeKind typeKind)
+   private <SHADOW extends Shadow> SHADOW to(TypeKind typeKind)
    {
       //noinspection unchecked
       return (SHADOW) toOptional(typeKind).orElseThrow(() -> new IllegalStateException(shadow.getTypeKind() + " is not a " + typeKind));
    }
 
-   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> SHADOW to(Predicate<TypeKind> typeKindPredicate)
+   private <SHADOW extends Shadow> SHADOW to(Predicate<TypeKind> typeKindPredicate)
    {
       List<TypeKind> typeKinds = Arrays.stream(TypeKind.values()).filter(typeKindPredicate).collect(Collectors.toUnmodifiableList());
       //noinspection unchecked
@@ -309,12 +308,12 @@ public class ConverterImpl implements ShadowConverter,
             .orElseThrow(() -> new IllegalStateException(shadow.getTypeKind() + " is none of " + typeKinds));
    }
 
-   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> Optional<SHADOW> toOptional(TypeKind typeKind)
+   private <SHADOW extends Shadow> Optional<SHADOW> toOptional(TypeKind typeKind)
    {
       return toOptional(typeKind1 -> typeKind1.equals(typeKind));
    }
 
-   private <MIRROR extends TypeMirror, SHADOW extends Shadow<MIRROR>> Optional<SHADOW> toOptional(Predicate<TypeKind> typeKindPredicate)
+   private <SHADOW extends Shadow> Optional<SHADOW> toOptional(Predicate<TypeKind> typeKindPredicate)
    {
       if (typeKindPredicate.test(shadow.getTypeKind()))
       {
@@ -369,9 +368,9 @@ public class ConverterImpl implements ShadowConverter,
    public <T> T map(ExecutableMapper<T> mapper)
    {
       return toMethod().map(mapper::method)
-                               .orElse(toConstructor()
-                                             .map(mapper::constructor)
-                                             .orElse(null));
+                       .orElse(toConstructor()
+                                     .map(mapper::constructor)
+                                     .orElse(null));
    }
 
    @Override
@@ -386,10 +385,10 @@ public class ConverterImpl implements ShadowConverter,
    public <T> T map(VariableMapper<T> mapper)
    {
       return toEnumConstant().map(mapper::enumConstant)
-                                     .orElse(toField()
-                                                   .map(mapper::field)
-                                                   .orElse(toParameter()
-                                                                 .map(mapper::parameter)
-                                                                 .orElse(null)));
+                             .orElse(toField()
+                                           .map(mapper::field)
+                                           .orElse(toParameter()
+                                                         .map(mapper::parameter)
+                                                         .orElse(null)));
    }
 }

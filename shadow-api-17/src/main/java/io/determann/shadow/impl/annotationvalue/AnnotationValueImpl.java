@@ -83,7 +83,7 @@ public class AnnotationValueImpl implements AnnotationValue
    }
 
    @Override
-   public Shadow<TypeMirror> asType()
+   public Shadow asType()
    {
       return shadowApi.getShadowFactory().shadowFromType((TypeMirror) annotationValue.getValue());
    }
@@ -184,11 +184,11 @@ public class AnnotationValueImpl implements AnnotationValue
 
       if (value instanceof String)
       {
-        return mapper.string(asString());
+         return mapper.string(asString());
       }
       if (value instanceof Boolean)
       {
-        return mapper.aBoolean(asBoolean());
+         return mapper.aBoolean(asBoolean());
       }
       if (value instanceof Byte)
       {

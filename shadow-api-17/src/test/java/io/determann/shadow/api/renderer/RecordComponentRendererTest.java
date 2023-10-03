@@ -14,7 +14,7 @@ class RecordComponentRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("Long id",
                                                render(shadowApi.getRecordOrThrow("RecordComponentExample")
-                                                                         .getRecordComponentOrThrow("id")).declaration()))
+                                                               .getRecordComponentOrThrow("id")).declaration()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
    }
@@ -25,7 +25,7 @@ class RecordComponentRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("id()",
                                                render(shadowApi.getRecordOrThrow("RecordComponentExample")
-                                                                         .getRecordComponentOrThrow("id")).invocation()))
+                                                               .getRecordComponentOrThrow("id")).invocation()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
    }

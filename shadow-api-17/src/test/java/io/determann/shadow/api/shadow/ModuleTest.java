@@ -46,9 +46,9 @@ class ModuleTest extends ShadowTest<Module>
    void testGetDirectives()
    {
       ProcessorTest.process(shadowApi ->
-                                    assertEquals(
-                                          "[Requires[[ACC_MANDATED (0x8000],java.base], Exports[java.util.logging], Provides[jdk.internal.logger.DefaultLoggerFinder,sun.util.logging.internal.LoggingProviderImpl]]",
-                                          shadowApi.getModuleOrThrow("java.logging").getDirectives().toString()))
+                                  assertEquals(
+                                        "[Requires[[ACC_MANDATED (0x8000],java.base], Exports[java.util.logging], Provides[jdk.internal.logger.DefaultLoggerFinder,sun.util.logging.internal.LoggingProviderImpl]]",
+                                        shadowApi.getModuleOrThrow("java.logging").getDirectives().toString()))
                    .compile();
    }
 }

@@ -24,9 +24,9 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       if (!recordComponent.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(recordComponent.getDirectAnnotationUsages()
-                         .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
-                         .collect(Collectors.joining()));
+                                  .stream()
+                                  .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
+                                  .collect(Collectors.joining()));
       }
       sb.append(ShadowRendererImpl.type(context, recordComponent.getType()))
         .append(' ')

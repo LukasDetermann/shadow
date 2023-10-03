@@ -120,7 +120,7 @@ public class ShadowApiImpl implements ShadowApi
             super.println(x);
             if (x != null && systemErrorHandler != null)
             {
-               systemErrorHandler.accept(ShadowApiImpl.this,x);
+               systemErrorHandler.accept(ShadowApiImpl.this, x);
             }
          }
       };

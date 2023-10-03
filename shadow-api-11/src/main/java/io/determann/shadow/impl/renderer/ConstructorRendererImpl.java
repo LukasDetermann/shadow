@@ -23,9 +23,9 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       if (!constructor.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(constructor.getDirectAnnotationUsages()
-                             .stream()
-                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                             .collect(Collectors.joining()));
+                              .stream()
+                              .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                              .collect(Collectors.joining()));
       }
       if (!constructor.getModifiers().isEmpty())
       {
@@ -45,18 +45,19 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       sb.append(ShadowRendererImpl.type(Context.builder(context).withSimpleNames().build(), constructor.getSurrounding()));
       sb.append('(');
 
-      constructor.getReceiverType().ifPresent(declared -> {
+      constructor.getReceiverType().ifPresent(declared ->
+                                              {
 
-         sb.append(ShadowRendererImpl.type(context, declared));
-         sb.append(' ');
-         sb.append(declared.getSimpleName());
-         sb.append('.');
-         sb.append("this");
-         if (!constructor.getParameters().isEmpty())
-         {
-            sb.append(' ');
-         }
-      });
+                                                 sb.append(ShadowRendererImpl.type(context, declared));
+                                                 sb.append(' ');
+                                                 sb.append(declared.getSimpleName());
+                                                 sb.append('.');
+                                                 sb.append("this");
+                                                 if (!constructor.getParameters().isEmpty())
+                                                 {
+                                                    sb.append(' ');
+                                                 }
+                                              });
 
       sb.append(constructor.getParameters()
                            .stream()

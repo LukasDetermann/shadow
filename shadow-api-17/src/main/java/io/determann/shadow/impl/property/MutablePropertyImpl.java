@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ public class MutablePropertyImpl implements MutableProperty
 {
    private final ShadowApi api;
    private final String name;
-   private final Shadow<TypeMirror> type;
+   private final Shadow type;
    private final Field field;
    private final Method getter;
    private final Method setter;
@@ -24,18 +23,18 @@ public class MutablePropertyImpl implements MutableProperty
    {
       return PropertyTemplateFactory.templatesFor(declared).stream().filter(template -> template.getSetter() != null)
                                     .map(template -> new MutablePropertyImpl(declared.getApi(),
-                                                                  template.getName(),
-                                                                  template.getType(),
-                                                                  template.getField(),
-                                                                  template.getGetter(),
-                                                                  template.getSetter()))
+                                                                             template.getName(),
+                                                                             template.getType(),
+                                                                             template.getField(),
+                                                                             template.getGetter(),
+                                                                             template.getSetter()))
                                     .map(MutableProperty.class::cast)
                                     .toList();
    }
 
    private MutablePropertyImpl(ShadowApi api,
                                String name,
-                               Shadow<TypeMirror> type,
+                               Shadow type,
                                Field field,
                                Method getter,
                                Method setter)
@@ -61,7 +60,7 @@ public class MutablePropertyImpl implements MutableProperty
    }
 
    @Override
-   public Shadow<TypeMirror> getType()
+   public Shadow getType()
    {
       return type;
    }

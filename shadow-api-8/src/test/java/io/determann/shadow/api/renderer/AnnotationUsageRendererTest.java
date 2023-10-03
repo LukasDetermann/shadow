@@ -17,8 +17,8 @@ class AnnotationUsageRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                AnnotationUsage annotationUsage = shadowApi.getClassOrThrow("AnnotationUsageExample")
-                                                                       .getAnnotationUsages()
-                                                                       .get(0);
+                                                                          .getAnnotationUsages()
+                                                                          .get(0);
 
                                assertEquals(
                                      "@AnnotationUsageAnnotation(stingValue = \"string Value\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
@@ -31,13 +31,14 @@ class AnnotationUsageRendererTest
                                assertEquals(
                                      "@AnnotationUsageAnnotation(stingValue = \"test\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
                                      render(annotationUsage).usage(method ->
-                                                                             {
-                                                                                if (method.getReturnType().representsSameType(shadowApi.getClassOrThrow("java.lang.String")))
-                                                                                {
-                                                                                   return Optional.of("\"test\"");
-                                                                                }
-                                                                                return Optional.empty();
-                                                                             }));
+                                                                   {
+                                                                      if (method.getReturnType()
+                                                                                .representsSameType(shadowApi.getClassOrThrow("java.lang.String")))
+                                                                      {
+                                                                         return Optional.of("\"test\"");
+                                                                      }
+                                                                      return Optional.empty();
+                                                                   }));
                             })
                    .withCodeToCompile("AnnotationUsageAnnotation.java", "import java.lang.annotation.ElementType;\n" +
                                                                         "import java.lang.annotation.Retention;\n" +

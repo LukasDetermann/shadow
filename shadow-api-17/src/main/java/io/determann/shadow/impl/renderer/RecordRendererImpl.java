@@ -33,9 +33,9 @@ public class RecordRendererImpl implements RecordRenderer
       if (!aRecord.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(aRecord.getDirectAnnotationUsages()
-                         .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                         .collect(Collectors.joining()));
+                          .stream()
+                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                          .collect(Collectors.joining()));
       }
       if (!modifiers.isEmpty())
       {
@@ -67,7 +67,10 @@ public class RecordRendererImpl implements RecordRenderer
          sb.append(' ');
          sb.append("implements");
          sb.append(' ');
-         sb.append(aRecord.getDirectInterfaces().stream().map(anInterface -> InterfaceRendererImpl.type(context, anInterface)).collect(joining(", ")));
+         sb.append(aRecord.getDirectInterfaces()
+                          .stream()
+                          .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
+                          .collect(joining(", ")));
       }
       sb.append(' ');
       sb.append('{');

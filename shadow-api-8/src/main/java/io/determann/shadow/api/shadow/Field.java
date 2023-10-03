@@ -4,8 +4,6 @@ import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.FinalModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
-import javax.lang.model.type.TypeMirror;
-
 public interface Field extends Variable<Declared>,
                                AccessModifiable,
                                FinalModifiable,
@@ -23,7 +21,7 @@ public interface Field extends Variable<Declared>,
     *
     * @see Class#erasure() for example for more information on erasure
     */
-   Shadow<TypeMirror> erasure();
+   Shadow erasure();
 
    /**
     * be careful using this equals

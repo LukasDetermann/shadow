@@ -58,19 +58,19 @@ public class MethodRendererImpl implements MethodRenderer
       sb.append(method.getSimpleName());
       sb.append('(');
 
-      method.getReceiverType().ifPresent(declared -> {
+      method.getReceiverType().ifPresent(declared ->
+                                         {
 
-         sb.append(ShadowRendererImpl.type(context, declared));
-         sb.append(' ');
-         sb.append(declared.getSimpleName());
-         sb.append('.');
-         sb.append("this");
-         if (!method.getParameters().isEmpty())
-         {
-            sb.append(' ');
-         }
-      });
-
+                                            sb.append(ShadowRendererImpl.type(context, declared));
+                                            sb.append(' ');
+                                            sb.append(declared.getSimpleName());
+                                            sb.append('.');
+                                            sb.append("this");
+                                            if (!method.getParameters().isEmpty())
+                                            {
+                                               sb.append(' ');
+                                            }
+                                         });
 
       if (!method.getParameters().isEmpty())
       {
@@ -86,8 +86,8 @@ public class MethodRendererImpl implements MethodRenderer
          sb.append(' ');
          sb.append("throws ");
          sb.append(method.getThrows()
-                              .stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
-                              .collect(Collectors.joining(", ")));
+                         .stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
+                         .collect(Collectors.joining(", ")));
       }
 
       if (method.isAbstract() && content.isBlank())
@@ -134,8 +134,8 @@ public class MethodRendererImpl implements MethodRenderer
    public String invocation(String parameters)
    {
       return method.getSimpleName() +
-                  '(' +
-                  parameters +
-                  ')';
+             '(' +
+             parameters +
+             ')';
    }
 }

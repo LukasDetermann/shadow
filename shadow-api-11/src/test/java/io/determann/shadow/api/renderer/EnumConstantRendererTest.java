@@ -16,7 +16,7 @@ class EnumConstantRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                EnumConstant constant = shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")
-                                                              .getEnumConstantOrThrow("SOURCE");
+                                                                .getEnumConstantOrThrow("SOURCE");
 
                                assertEquals("SOURCE\n", render(constant).declaration());
                                assertEquals("SOURCE(test)\n", render(constant).declaration("test"));

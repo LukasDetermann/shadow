@@ -25,9 +25,9 @@ public class ClassRendererImpl implements ClassRenderer
       if (!aClass.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(aClass.getDirectAnnotationUsages()
-                             .stream()
-                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                             .collect(Collectors.joining()));
+                         .stream()
+                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                         .collect(Collectors.joining()));
       }
       if (!aClass.getModifiers().isEmpty())
       {
@@ -44,7 +44,7 @@ public class ClassRendererImpl implements ClassRenderer
          sb.append('>');
       }
       sb.append(' ');
-      if (aClass.getSuperClass() != null && !aClass.getSuperClass().getQualifiedName().equals("java.lang.Object"))
+      if (aClass.getSuperClass() != null && !"java.lang.Object".equals(aClass.getSuperClass().getQualifiedName()))
       {
          sb.append("extends");
          sb.append(' ');
@@ -55,7 +55,10 @@ public class ClassRendererImpl implements ClassRenderer
       {
          sb.append("implements");
          sb.append(' ');
-         sb.append(aClass.getDirectInterfaces().stream().map(anInterface -> InterfaceRendererImpl.type(context, anInterface)).collect(joining(", ")));
+         sb.append(aClass.getDirectInterfaces()
+                         .stream()
+                         .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
+                         .collect(joining(", ")));
          sb.append(' ');
       }
       sb.append('{');

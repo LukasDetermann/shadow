@@ -1,8 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import javax.lang.model.type.NoType;
-
-public interface Void extends Shadow<NoType>
+public interface Void extends Shadow
 {
    /**
     * be careful using this equals

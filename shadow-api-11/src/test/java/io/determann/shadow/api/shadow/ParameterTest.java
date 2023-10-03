@@ -21,27 +21,27 @@ class ParameterTest extends VariableTest<Executable, Parameter>
    void testGetSurrounding()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 Method method = shadowApi.getClassOrThrow("ParameterExample")
-                                                          .getMethods("foo")
-                                                          .get(0);
+                            {
+                               Method method = shadowApi.getClassOrThrow("ParameterExample")
+                                                        .getMethods("foo")
+                                                        .get(0);
 
-                                 Parameter methodParameter = method.getParameterOrThrow("foo");
+                               Parameter methodParameter = method.getParameterOrThrow("foo");
 
-                                 assertEquals(method, methodParameter.getSurrounding());
+                               assertEquals(method, methodParameter.getSurrounding());
 
-                                 Constructor constructor = shadowApi.getClassOrThrow("ParameterExample")
-                                                                    .getConstructors()
-                                                                    .get(0);
-                                 Parameter constructorParameter = constructor.getParameters().get(0);
-                                 assertEquals(constructor, constructorParameter.getSurrounding());
-                              })
+                               Constructor constructor = shadowApi.getClassOrThrow("ParameterExample")
+                                                                  .getConstructors()
+                                                                  .get(0);
+                               Parameter constructorParameter = constructor.getParameters().get(0);
+                               assertEquals(constructor, constructorParameter.getSurrounding());
+                            })
                    .withCodeToCompile("ParameterExample.java", "     public class ParameterExample\n" +
-                                                                 "                           {\n" +
-                                                                 "                              public ParameterExample(String name) {}\n" +
-                                                                 "\n" +
-                                                                 "                              public void foo(Long foo) { }\n" +
-                                                                 "                           }")
+                                                               "                           {\n" +
+                                                               "                              public ParameterExample(String name) {}\n" +
+                                                               "\n" +
+                                                               "                              public void foo(Long foo) { }\n" +
+                                                               "                           }")
                    .compile();
    }
 

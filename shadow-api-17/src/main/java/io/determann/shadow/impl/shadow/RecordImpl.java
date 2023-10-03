@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Record;
@@ -41,7 +42,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    }
 
    @Override
-   public Record withGenerics(Shadow<? extends TypeMirror>... generics)
+   public Record withGenerics(Shadow... generics)
    {
       if (generics.length == 0 || getFormalGenerics().size() != generics.length)
       {
@@ -53,27 +54,27 @@ public class RecordImpl extends DeclaredImpl implements Record
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-                                       .map(Shadow::getMirror)
-                                       .toArray(TypeMirror[]::new);
+            .map(MirrorAdapter::getType)
+            .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
    public Record withGenerics(String... qualifiedGenerics)
    {
-      //noinspection unchecked
       return withGenerics(stream(qualifiedGenerics)
                                 .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
                                 .toArray(Shadow[]::new));
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getGenerics()
+   public List<Shadow> getGenerics()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .toList();
    }
 

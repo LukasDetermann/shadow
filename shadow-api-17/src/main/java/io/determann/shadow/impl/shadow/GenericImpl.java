@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import java.util.Objects;
 
@@ -28,19 +27,19 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    }
 
    @Override
-   public Shadow<TypeMirror> getExtends()
+   public Shadow getExtends()
    {
       return getApi().getShadowFactory().shadowFromType(getMirror().getUpperBound());
    }
 
    @Override
-   public Shadow<TypeMirror> getSuper()
+   public Shadow getSuper()
    {
       return getApi().getShadowFactory().shadowFromType(getMirror().getLowerBound());
    }
 
    @Override
-   public Shadow<TypeMirror> getEnclosing()
+   public Shadow getEnclosing()
    {
       return getApi().getShadowFactory().shadowFromElement(getElement().getGenericElement());
    }
@@ -54,11 +53,12 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
-   public Shadow<TypeMirror> erasure()
+   public Shadow erasure()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }

@@ -15,16 +15,16 @@ class AnnotationableTest
    void getAnnotationsTest()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
+                            {
+                               assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
 
-                                 List<AnnotationUsage> annotations = shadowApi.getClassOrThrow("Child")
-                                                                              .getAnnotationUsages();
+                               List<AnnotationUsage> annotations = shadowApi.getClassOrThrow("Child")
+                                                                            .getAnnotationUsages();
 
-                                 assertEquals(2, annotations.size());
-                                 assertEquals("ParentAnnotation", annotations.get(0).getQualifiedName());
-                                 assertEquals("ChildAnnotation", annotations.get(1).getQualifiedName());
-                              })
+                               assertEquals(2, annotations.size());
+                               assertEquals("ParentAnnotation", annotations.get(0).getQualifiedName());
+                               assertEquals("ChildAnnotation", annotations.get(1).getQualifiedName());
+                            })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
                    .withCodeToCompile("ChildAnnotation.java", "@interface ChildAnnotation{}")
@@ -37,15 +37,15 @@ class AnnotationableTest
    void getDirectAnnotationsTest()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
+                            {
+                               assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
 
-                                 List<AnnotationUsage> directAnnotations = shadowApi.getClassOrThrow("Child")
-                                                                                    .getDirectAnnotationUsages();
+                               List<AnnotationUsage> directAnnotations = shadowApi.getClassOrThrow("Child")
+                                                                                  .getDirectAnnotationUsages();
 
-                                 assertEquals(1, directAnnotations.size());
-                                 assertEquals("ChildAnnotation", directAnnotations.get(0).getQualifiedName());
-                              })
+                               assertEquals(1, directAnnotations.size());
+                               assertEquals("ChildAnnotation", directAnnotations.get(0).getQualifiedName());
+                            })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
                    .withCodeToCompile("ChildAnnotation.java", "@interface ChildAnnotation{}")

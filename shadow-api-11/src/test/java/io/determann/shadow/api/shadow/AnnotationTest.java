@@ -21,13 +21,14 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    void testisSubtypeOf()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
-                                                     .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
-                                 assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
-                                                     .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
-                                 assertFalse(shadowApi.getAnnotationOrThrow("java.lang.Override").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
-                              })
+                            {
+                               assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
+                                                   .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
+                               assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
+                                                   .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
+                               assertFalse(shadowApi.getAnnotationOrThrow("java.lang.Override")
+                                                    .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                            })
                    .compile();
    }
 
@@ -38,10 +39,10 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
       ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                               shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
                                                       shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
-                                                                 .getDirectSuperTypes()))
+                                                               .getDirectSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
-                                                                       "                              @interface AnnotationNoParent {}\n" +
-                                                                       "                           }")
+                                                                     "                              @interface AnnotationNoParent {}\n" +
+                                                                     "                           }")
                    .compile();
    }
 
@@ -52,10 +53,10 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
       ProcessorTest.process(shadowApi -> assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                              shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
                                                       shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
-                                                                 .getSuperTypes()))
+                                                               .getSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", "                           public class DirektSuperTypeExample {\n" +
-                                                                       "                              @interface AnnotationNoParent {}\n" +
-                                                                       "                           }")
+                                                                     "                              @interface AnnotationNoParent {}\n" +
+                                                                     "                           }")
                    .compile();
    }
 }

@@ -33,9 +33,9 @@ public class EnumRendererImpl implements EnumRenderer
       if (!anEnum.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(anEnum.getDirectAnnotationUsages()
-                             .stream()
-                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                             .collect(Collectors.joining()));
+                         .stream()
+                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                         .collect(Collectors.joining()));
       }
       if (!modifiers.isEmpty())
       {
@@ -50,7 +50,10 @@ public class EnumRendererImpl implements EnumRenderer
       {
          sb.append("implements");
          sb.append(' ');
-         sb.append(anEnum.getDirectInterfaces().stream().map(anInterface -> InterfaceRendererImpl.type(context, anInterface)).collect(joining(", ")));
+         sb.append(anEnum.getDirectInterfaces()
+                         .stream()
+                         .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
+                         .collect(joining(", ")));
          sb.append(' ');
       }
       sb.append('{');

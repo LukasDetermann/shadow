@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +14,7 @@ import java.util.Optional;
 public class PropertyImpl implements Property
 {
    private final String name;
-   private final Shadow<TypeMirror> type;
+   private final Shadow type;
    private final ShadowApi shadowApi;
    private final Field field;
    private final Method getter;
@@ -36,7 +35,7 @@ public class PropertyImpl implements Property
 
    private PropertyImpl(ShadowApi shadowApi,
                         String name,
-                        Shadow<TypeMirror> type,
+                        Shadow type,
                         Field field,
                         Method getter,
                         Method setter)
@@ -62,7 +61,7 @@ public class PropertyImpl implements Property
    }
 
    @Override
-   public Shadow<TypeMirror> getType()
+   public Shadow getType()
    {
       return type;
    }

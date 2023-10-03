@@ -9,10 +9,9 @@ import io.determann.shadow.api.shadow.module.DirectiveMapper;
 import io.determann.shadow.api.shadow.module.Provides;
 
 import javax.lang.model.element.ModuleElement;
-import javax.lang.model.type.NoType;
 import java.util.List;
 
-public interface Module extends Shadow<NoType>,
+public interface Module extends Shadow,
                                 QualifiedNameable<ModuleElement>,
                                 Annotationable<ModuleElement>,
                                 DeclaredHolder

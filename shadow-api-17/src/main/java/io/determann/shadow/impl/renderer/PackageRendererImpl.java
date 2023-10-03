@@ -28,9 +28,9 @@ public class PackageRendererImpl implements PackageRenderer
       if (!aPackage.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(aPackage.getDirectAnnotationUsages()
-                         .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                         .collect(Collectors.joining()));
+                           .stream()
+                           .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                           .collect(Collectors.joining()));
       }
       sb.append("package ");
       sb.append(aPackage.getQualifiedName());

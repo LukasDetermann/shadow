@@ -5,7 +5,6 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.Optional;
 
 /**
@@ -29,7 +28,7 @@ public interface MutableProperty extends ApiHolder
     *
     * @see #getGetter()
     */
-   Shadow<TypeMirror> getType();
+   Shadow getType();
 
    /**
     * a {@link Field} with the name and tye of this property

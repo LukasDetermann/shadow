@@ -68,7 +68,7 @@ public class Context
       {
          nameRenderer = declared ->
          {
-            if (!declared.getPackage().isUnnamed() && declared.getPackage().getQualifiedName().equals("java.lang"))
+            if (!declared.getPackage().isUnnamed() && "java.lang".equals(declared.getPackage().getQualifiedName()))
             {
                return new NameRenderedEvent(declared, declared.getSimpleName(), false);
             }

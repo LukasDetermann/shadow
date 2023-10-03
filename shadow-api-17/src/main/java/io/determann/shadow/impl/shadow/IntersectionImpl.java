@@ -7,7 +7,6 @@ import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.IntersectionType;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,10 +25,10 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getBounds()
+   public List<Shadow> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .toList();
    }
 
@@ -40,7 +39,7 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    }
 
    @Override
-   public Shadow<TypeMirror> erasure()
+   public Shadow erasure()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }

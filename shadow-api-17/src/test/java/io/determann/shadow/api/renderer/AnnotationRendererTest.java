@@ -33,21 +33,21 @@ class AnnotationRendererTest
                                                   """,
                                             render(annotation).declaration("test"));
                             })
-            .withCodeToCompile("MyClass.java",
-                               """
-                                        public abstract class MyClass
-                                        {
-                                           @MyAnnotation
-                                           public abstract <T> T get(int index);
-                                        }
-                                     """)
-            .withCodeToCompile("MyAnnotation.java",
-                               """
-                                        public @interface MyAnnotation
-                                        {
-                                          \s
-                                        }
-                                     """)
+                   .withCodeToCompile("MyClass.java",
+                                      """
+                                               public abstract class MyClass
+                                               {
+                                                  @MyAnnotation
+                                                  public abstract <T> T get(int index);
+                                               }
+                                            """)
+                   .withCodeToCompile("MyAnnotation.java",
+                                      """
+                                               public @interface MyAnnotation
+                                               {
+                                                 \s
+                                               }
+                                            """)
                    .compile();
    }
 

@@ -6,7 +6,6 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 
 public class FieldImpl extends VariableImpl<Declared> implements Field
 {
@@ -28,7 +27,7 @@ public class FieldImpl extends VariableImpl<Declared> implements Field
    }
 
    @Override
-   public Shadow<TypeMirror> erasure()
+   public Shadow erasure()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }

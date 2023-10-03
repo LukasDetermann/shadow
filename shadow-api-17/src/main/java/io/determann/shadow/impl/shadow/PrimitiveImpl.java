@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Array;
@@ -8,7 +9,6 @@ import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
 
 public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive
@@ -19,21 +19,22 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
+   public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(shadow.getMirror(), getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
+   public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
    public Class asBoxed()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().boxedClass(getMirror()).asType());
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().boxedClass(getMirror()).asType());
    }
 
    @Override
@@ -46,17 +47,17 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    public TypeKind getTypeKind()
    {
       return switch (getMirror().getKind())
-            {
-               case BOOLEAN -> TypeKind.BOOLEAN;
-               case BYTE -> TypeKind.BYTE;
-               case SHORT -> TypeKind.SHORT;
-               case INT -> TypeKind.INT;
-               case LONG -> TypeKind.LONG;
-               case CHAR -> TypeKind.CHAR;
-               case FLOAT -> TypeKind.FLOAT;
-               case DOUBLE -> TypeKind.DOUBLE;
-               default -> throw new IllegalStateException();
-            };
+      {
+         case BOOLEAN -> TypeKind.BOOLEAN;
+         case BYTE -> TypeKind.BYTE;
+         case SHORT -> TypeKind.SHORT;
+         case INT -> TypeKind.INT;
+         case LONG -> TypeKind.LONG;
+         case CHAR -> TypeKind.CHAR;
+         case FLOAT -> TypeKind.FLOAT;
+         case DOUBLE -> TypeKind.DOUBLE;
+         default -> throw new IllegalStateException();
+      };
    }
 
    @Override

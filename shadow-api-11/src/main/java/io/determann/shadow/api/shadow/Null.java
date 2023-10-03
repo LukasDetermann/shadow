@@ -1,8 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import javax.lang.model.type.NullType;
-
-public interface Null extends Shadow<NullType>
+public interface Null extends Shadow
 {
    /**
     * be careful using this equals

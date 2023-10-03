@@ -15,7 +15,7 @@ class FieldRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("private final char value;\n",
                                                render(shadowApi.getClassOrThrow("java.lang.String").getFieldOrThrow("value"))
-                                                        .declaration()))
+                                                     .declaration()))
                    .compile();
    }
 }

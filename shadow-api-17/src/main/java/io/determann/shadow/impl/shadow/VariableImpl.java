@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Package;
@@ -10,7 +11,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
 
-public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirror>> extends ShadowImpl<TypeMirror>
+public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImpl<TypeMirror>
       implements Variable<SURROUNDING>
 {
    private final VariableElement variableElement;
@@ -22,19 +23,19 @@ public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirr
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
+   public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(shadow.getMirror(), getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
+   public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(shadow.getMirror(), getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
-   public Shadow<TypeMirror> getType()
+   public Shadow getType()
    {
       return getApi().getShadowFactory().shadowFromType(getElement().asType());
    }
@@ -42,7 +43,8 @@ public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirr
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
@@ -55,12 +57,12 @@ public abstract class VariableImpl<SURROUNDING extends Shadow<? extends TypeMirr
    public TypeKind getTypeKind()
    {
       return switch (getElement().getKind())
-            {
-               case ENUM_CONSTANT -> TypeKind.ENUM_CONSTANT;
-               case FIELD -> TypeKind.FIELD;
-               case PARAMETER -> TypeKind.PARAMETER;
-               default -> throw new IllegalStateException();
-            };
+      {
+         case ENUM_CONSTANT -> TypeKind.ENUM_CONSTANT;
+         case FIELD -> TypeKind.FIELD;
+         case PARAMETER -> TypeKind.PARAMETER;
+         default -> throw new IllegalStateException();
+      };
    }
 
    @Override

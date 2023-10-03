@@ -24,9 +24,9 @@ public class GenericRendererImpl implements GenericRenderer
       if (!generic.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(generic.getDirectAnnotationUsages()
-                             .stream()
-                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
-                             .collect(Collectors.joining()));
+                          .stream()
+                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
+                          .collect(Collectors.joining()));
       }
 
       if (context.isRenderNestedGenerics())

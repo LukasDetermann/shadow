@@ -1,13 +1,11 @@
 package io.determann.shadow.api.shadow;
 
-import javax.lang.model.type.IntersectionType;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 /**
  * {@code T extends} <b> Collection &amp; Serializable</b>{@code >}
  */
-public interface Intersection extends Shadow<IntersectionType>
+public interface Intersection extends Shadow
 {
    /**
     * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
@@ -24,7 +22,7 @@ public interface Intersection extends Shadow<IntersectionType>
     * public class IntersectionExample<T extends Serializable & Collection>{} -> Serializable
     * }</pre>
     */
-   Shadow<TypeMirror> erasure();
+   Shadow erasure();
 
    /**
     * be careful using this equals
@@ -37,5 +35,5 @@ public interface Intersection extends Shadow<IntersectionType>
    /**
     * {@code T extends} <b> Collection &amp; Serializable</b>{@code >}
     */
-   List<Shadow<TypeMirror>> getBounds();
+   List<Shadow> getBounds();
 }

@@ -4,18 +4,17 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
 
 class PropertyTemplate
 {
    private final String name;
-   private final Shadow<TypeMirror> type;
+   private final Shadow type;
    private Method setter;
    private final Method getter;
    private Field field;
 
-   PropertyTemplate(String name, Shadow<TypeMirror> type, Method getter)
+   PropertyTemplate(String name, Shadow type, Method getter)
    {
       this.name = name;
       this.type = type;
@@ -27,7 +26,7 @@ class PropertyTemplate
       return name;
    }
 
-   Shadow<TypeMirror> getType()
+   Shadow getType()
    {
       return type;
    }

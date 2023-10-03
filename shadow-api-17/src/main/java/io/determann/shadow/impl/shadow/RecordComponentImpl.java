@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Package;
@@ -23,15 +24,15 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow)
+   public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
+   public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
@@ -41,7 +42,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
-   public Shadow<TypeMirror> getType()
+   public Shadow getType()
    {
       return getApi().getShadowFactory().shadowFromType(getElement().asType());
    }
@@ -55,7 +56,8 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return getApi().getShadowFactory()
+                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

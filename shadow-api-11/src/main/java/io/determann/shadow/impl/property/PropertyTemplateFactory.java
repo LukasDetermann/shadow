@@ -5,7 +5,6 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.*;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -85,7 +84,7 @@ class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      Shadow<TypeMirror> type = getter.getMethod().getReturnType();
+                                      Shadow type = getter.getMethod().getReturnType();
 
                                       PropertyTemplate template = new PropertyTemplate(name, type, getter.getMethod());
 
@@ -118,7 +117,7 @@ class PropertyTemplateFactory
                     .collect(toList());
    }
 
-   private static Optional<Field> findField(Map<String, Field> nameField, Shadow<TypeMirror> type, String name)
+   private static Optional<Field> findField(Map<String, Field> nameField, Shadow type, String name)
    {
       Field field = nameField.get(name);
       if (field == null || !field.getType().representsSameType(type))
@@ -128,7 +127,7 @@ class PropertyTemplateFactory
       return Optional.of(field);
    }
 
-   private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow<TypeMirror> type)
+   private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow type)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null || setters.size() != 1 || !setters.get(0).getMethod().getParameters().get(0).getType().representsSameType(type))

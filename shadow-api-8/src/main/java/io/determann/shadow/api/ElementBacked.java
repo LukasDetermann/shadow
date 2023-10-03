@@ -9,6 +9,7 @@ import javax.tools.Diagnostic;
 import java.util.Collections;
 import java.util.Set;
 
+import static io.determann.shadow.api.modifier.Modifier.*;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toSet;
 
@@ -27,8 +28,41 @@ public interface ElementBacked<ELEMENT extends Element> extends Modifiable,
    {
       return getElement().getModifiers()
                          .stream()
-                         .map(Modifier::mapModifier)
+                         .map(ElementBacked::mapModifier)
                          .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
+   }
+
+   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
+   {
+      switch (modifier)
+      {
+         case PUBLIC:
+            return PUBLIC;
+         case PROTECTED:
+            return PROTECTED;
+         case PRIVATE:
+            return PRIVATE;
+         case ABSTRACT:
+            return ABSTRACT;
+         case STATIC:
+            return STATIC;
+         case FINAL:
+            return FINAL;
+         case STRICTFP:
+            return STRICTFP;
+         case DEFAULT:
+            return DEFAULT;
+         case TRANSIENT:
+            return TRANSIENT;
+         case VOLATILE:
+            return VOLATILE;
+         case SYNCHRONIZED:
+            return SYNCHRONIZED;
+         case NATIVE:
+            return NATIVE;
+         default:
+            throw new IllegalArgumentException();
+      }
    }
 
    default String getSimpleName()

@@ -4,7 +4,6 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AbstractModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 public interface Interface extends Declared,
@@ -17,8 +16,7 @@ public interface Interface extends Declared,
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
     * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   @SuppressWarnings("unchecked")
-   Interface withGenerics(Shadow<? extends TypeMirror>... generics);
+   Interface withGenerics(Shadow... generics);
 
    /**
     * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
@@ -28,7 +26,7 @@ public interface Interface extends Declared,
    /**
     * {@code List<}<b>String</b>{@code >}
     */
-   List<Shadow<TypeMirror>> getGenerics();
+   List<Shadow> getGenerics();
 
    /**
     * {@code List<}<b>T</b>{@code >}

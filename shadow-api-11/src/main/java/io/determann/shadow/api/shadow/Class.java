@@ -8,7 +8,6 @@ import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public interface Class extends Declared,
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.
     * if one is a primitive and the other is not it tries to convert them
     */
-   boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow);
+   boolean isAssignableFrom(Shadow shadow);
 
    /**
     * returns the outer type for not static classes
@@ -44,8 +43,7 @@ public interface Class extends Declared,
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
     * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   @SuppressWarnings("unchecked")
-   Class withGenerics(Shadow<? extends TypeMirror>... generics);
+   Class withGenerics(Shadow... generics);
 
    /**
     * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
@@ -55,7 +53,7 @@ public interface Class extends Declared,
    /**
     * {@code List<}<b>String</b>{@code >}
     */
-   List<Shadow<TypeMirror>> getGenerics();
+   List<Shadow> getGenerics();
 
    /**
     * {@code List<}<b>T</b>{@code >}

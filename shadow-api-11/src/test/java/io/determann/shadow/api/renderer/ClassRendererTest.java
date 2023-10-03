@@ -50,7 +50,8 @@ class ClassRendererTest
                                assertEquals("Object", render(aClass).type());
 
                                Class generics = shadowApi.getClassOrThrow("InterpolateGenericsExample");
-                               assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>", render(generics).type());
+                               assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>",
+                                            render(generics).type());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java",
                                       "public class InterpolateGenericsExample <A extends Comparable<B>, B extends Comparable<A>> {\n" +

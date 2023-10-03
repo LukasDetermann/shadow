@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Shadow;
@@ -24,7 +25,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
-   public Optional<Shadow<TypeMirror>> getExtends()
+   public Optional<Shadow> getExtends()
    {
       TypeMirror extendsBound = getMirror().getExtendsBound();
       if (extendsBound == null)
@@ -35,7 +36,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
-   public Optional<Shadow<TypeMirror>> getSuper()
+   public Optional<Shadow> getSuper()
    {
       TypeMirror superBound = getMirror().getSuperBound();
       if (superBound == null)
@@ -46,13 +47,13 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
-   public boolean contains(Shadow<? extends TypeMirror> shadow)
+   public boolean contains(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().contains(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().contains(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
-   public Shadow<TypeMirror> erasure()
+   public Shadow erasure()
    {
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }

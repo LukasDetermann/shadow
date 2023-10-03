@@ -9,7 +9,6 @@ import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.impl.ShadowApiImpl;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -27,6 +26,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       this.context = ((ShadowApiImpl) usage.getApi()).getRenderingContext();
       this.usage = usage;
    }
+
    public static String usage(Context context, AnnotationUsage usage)
    {
       return usage(method -> Optional.empty(), context, usage);
@@ -122,7 +122,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
          }
 
          @Override
-         public String type(Shadow<TypeMirror> value)
+         public String type(Shadow value)
          {
             return ShadowRendererImpl.classDeclaration(context, convert(value).toDeclaredOrThrow());
          }

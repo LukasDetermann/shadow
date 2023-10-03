@@ -16,7 +16,10 @@ class ParameterRendererTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Parameter> parameters = shadowApi.getInterfaceOrThrow("ParameterExample").getMethods().get(0).getParameters();
+                               List<Parameter> parameters = shadowApi.getInterfaceOrThrow("ParameterExample")
+                                                                     .getMethods()
+                                                                     .get(0)
+                                                                     .getParameters();
                                assertEquals("@MyAnnotation Long foo", render(parameters.get(0)).declaration());
                                assertEquals("Long... foo2", render(parameters.get(1)).declaration());
                             })

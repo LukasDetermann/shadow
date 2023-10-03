@@ -1,12 +1,13 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.TypeMirror;
 
-public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow<MIRROR>
+public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow
 {
    private final ShadowApi shadowApi;
 
@@ -25,12 +26,11 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow<MI
    }
 
    @Override
-   public boolean representsSameType(Shadow<? extends TypeMirror> shadow)
+   public boolean representsSameType(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSameType(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSameType(getMirror(), MirrorAdapter.getType(shadow));
    }
 
-   @Override
    public MIRROR getMirror()
    {
       return typeMirror;

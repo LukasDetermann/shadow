@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
@@ -34,8 +35,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    }
 
    @Override
-   @SafeVarargs
-   public final Interface withGenerics(Shadow<? extends TypeMirror>... generics)
+   public final Interface withGenerics(Shadow... generics)
    {
       if (generics.length == 0 || getFormalGenerics().size() != generics.length)
       {
@@ -47,27 +47,27 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
                                             " are provided");
       }
       TypeMirror[] typeMirrors = Arrays.stream(generics)
-                                       .map(Shadow::getMirror)
+                                       .map(MirrorAdapter::getType)
                                        .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
    public Interface withGenerics(String... qualifiedGenerics)
    {
-      //noinspection unchecked
-      return withGenerics((Shadow[])Arrays.stream(qualifiedGenerics)
+      return withGenerics(Arrays.stream(qualifiedGenerics)
                                 .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
                                 .toArray(Shadow[]::new));
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getGenerics()
+   public List<Shadow> getGenerics()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 

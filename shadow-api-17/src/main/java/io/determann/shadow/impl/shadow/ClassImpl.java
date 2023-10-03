@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
@@ -32,9 +33,9 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow<? extends TypeMirror> shadow)
+   public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), shadow.getMirror());
+      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
@@ -87,8 +88,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   @SafeVarargs
-   public final Class withGenerics(Shadow<? extends TypeMirror>... generics)
+   public final Class withGenerics(Shadow... generics)
    {
       if (generics.length == 0 || getFormalGenerics().size() != generics.length)
       {
@@ -110,27 +110,27 @@ public class ClassImpl extends DeclaredImpl implements Class
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = Arrays.stream(generics)
-                                       .map(Shadow::getMirror)
+                                       .map(MirrorAdapter::getType)
                                        .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+      return getApi().getShadowFactory()
+                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
    public Class withGenerics(String... qualifiedGenerics)
    {
-      //noinspection unchecked
       return withGenerics(Arrays.stream(qualifiedGenerics)
                                 .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
                                 .toArray(Shadow[]::new));
    }
 
    @Override
-   public List<Shadow<TypeMirror>> getGenerics()
+   public List<Shadow> getGenerics()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow<TypeMirror>>shadowFromType(typeMirror))
+                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
                         .toList();
    }
 

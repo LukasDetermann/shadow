@@ -18,16 +18,16 @@ class GenericTest extends ShadowTest<Generic>
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
                                                       convert(shadowApi.getClassOrThrow("GenericsExample")
-                                                                                   .getGenerics()
-                                                                                   .get(0))
-                                                                 .toGenericOrThrow()
-                                                                 .getExtends()))
+                                                                       .getGenerics()
+                                                                       .get(0))
+                                                            .toGenericOrThrow()
+                                                            .getExtends()))
                    .withCodeToCompile("GenericsExample.java", "                           import java.util.List;\n" +
-                                                                "\n" +
-                                                                "                           public class GenericsExample<T extends Number>\n" +
-                                                                "                           {\n" +
-                                                                "                              public static void foo(List<? super Number> a){ }\n" +
-                                                                "                           }")
+                                                              "\n" +
+                                                              "                           public class GenericsExample<T extends Number>\n" +
+                                                              "                           {\n" +
+                                                              "                              public static void foo(List<? super Number> a){ }\n" +
+                                                              "                           }")
                    .compile();
    }
 
@@ -36,16 +36,16 @@ class GenericTest extends ShadowTest<Generic>
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
                                                       convert(shadowApi.getClassOrThrow("GenericsExample")
-                                                                                   .getGenerics()
-                                                                                   .get(0))
-                                                                 .toGenericOrThrow()
-                                                                 .getEnclosing()))
+                                                                       .getGenerics()
+                                                                       .get(0))
+                                                            .toGenericOrThrow()
+                                                            .getEnclosing()))
                    .withCodeToCompile("GenericsExample.java", "                           import java.util.List;\n" +
-                                                                "\n" +
-                                                                "                           public class GenericsExample<T extends Number>\n" +
-                                                                "                           {\n" +
-                                                                "                              public static void foo(List<? super Number> a){ }\n" +
-                                                                "                           }")
+                                                              "\n" +
+                                                              "                           public class GenericsExample<T extends Number>\n" +
+                                                              "                           {\n" +
+                                                              "                              public static void foo(List<? super Number> a){ }\n" +
+                                                              "                           }")
                    .compile();
    }
 }

@@ -22,7 +22,7 @@ class ShadowFactoryImpl implements ShadowFactory
    }
 
    @Override
-   public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromElement(Element element)
+   public <SHADOW extends Shadow> SHADOW shadowFromElement(Element element)
    {
       switch (element.getKind())
       {
@@ -59,7 +59,7 @@ class ShadowFactoryImpl implements ShadowFactory
    }
 
    @Override
-   public <SHADOW extends Shadow<? extends TypeMirror>> SHADOW shadowFromType(TypeMirror typeMirror)
+   public <SHADOW extends Shadow> SHADOW shadowFromType(TypeMirror typeMirror)
    {
       switch (typeMirror.getKind())
       {
@@ -71,34 +71,34 @@ class ShadowFactoryImpl implements ShadowFactory
          case CHAR:
          case FLOAT:
          case DOUBLE:
-            return(SHADOW) new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
+            return (SHADOW) new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
          case ARRAY:
-            return(SHADOW) new ArrayImpl(shadowApi, (ArrayType) typeMirror);
+            return (SHADOW) new ArrayImpl(shadowApi, (ArrayType) typeMirror);
          case DECLARED:
             switch (shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().asElement(typeMirror).getKind())
             {
                case CLASS:
-                  return(SHADOW) new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
+                  return (SHADOW) new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
                case INTERFACE:
-                  return(SHADOW) new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
+                  return (SHADOW) new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
                case ANNOTATION_TYPE:
                case ENUM:
-                  return(SHADOW) new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
+                  return (SHADOW) new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
                default:
                   throw new IllegalArgumentException("not implemented");
             }
          case WILDCARD:
-            return(SHADOW) new WildcardImpl(shadowApi, (WildcardType) typeMirror);
+            return (SHADOW) new WildcardImpl(shadowApi, (WildcardType) typeMirror);
          case VOID:
-            return (SHADOW)new VoidImpl(shadowApi, ((NoType) typeMirror));
+            return (SHADOW) new VoidImpl(shadowApi, ((NoType) typeMirror));
          case PACKAGE:
-            return(SHADOW) new PackageImpl(shadowApi, (NoType) typeMirror);
+            return (SHADOW) new PackageImpl(shadowApi, (NoType) typeMirror);
          case NULL:
-            return(SHADOW) new NullImpl(shadowApi, (NullType) typeMirror);
+            return (SHADOW) new NullImpl(shadowApi, (NullType) typeMirror);
          case TYPEVAR:
-            return(SHADOW)new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
+            return (SHADOW) new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
          case INTERSECTION:
-            return (SHADOW)new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
+            return (SHADOW) new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
          case EXECUTABLE:
          case NONE:
             throw new IllegalArgumentException("bug in this api: executables should be created using elements");

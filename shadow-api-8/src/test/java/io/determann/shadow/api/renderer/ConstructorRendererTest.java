@@ -14,48 +14,48 @@ class ConstructorRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals("public ConstructorExample(Long id) {}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(0)).declaration());
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(0)).declaration());
                                assertEquals("public ConstructorExample(Long id) {\ntest\n}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(0)).declaration("test"));
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(0)).declaration("test"));
 
                                assertEquals("@TestAnnotation\npublic ConstructorExample(String name) throws java.io.IOException {}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(1)).declaration());
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(1)).declaration());
                                assertEquals("@TestAnnotation\n" +
                                             "public ConstructorExample(String name) throws java.io.IOException {\n" +
                                             "test\n" +
                                             "}\n",
                                             render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(1)).declaration("test"));
+                                                            .getConstructors()
+                                                            .get(1)).declaration("test"));
 
                                assertEquals("public ConstructorExample(String... names) {}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(2)).declaration());
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(2)).declaration());
                                assertEquals("public ConstructorExample(String... names) {\ntest\n}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(2)).declaration("test"));
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(2)).declaration("test"));
 
                                assertEquals("public <T> ConstructorExample(T t) {}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(3)).declaration());
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(3)).declaration());
                                assertEquals("public <T> ConstructorExample(T t) {\ntest\n}\n",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample")
-                                                                       .getConstructors()
-                                                                       .get(3)).declaration("test"));
+                                            render(shadowApi.getClassOrThrow("ConstructorExample")
+                                                            .getConstructors()
+                                                            .get(3)).declaration("test"));
 
                                assertEquals("public Inner(ReceiverExample ReceiverExample.this) {}\n",
                                             render(shadowApi.getClassOrThrow("ReceiverExample.Inner")
-                                                         .getConstructors()
-                                                         .get(0))
+                                                            .getConstructors()
+                                                            .get(0))
                                                   .declaration());
                             })
                    .withCodeToCompile("ConstructorExample.java", "public class ConstructorExample {\n" +
@@ -81,9 +81,9 @@ class ConstructorRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals("ConstructorExample()",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample").getConstructors().get(0)).invocation());
+                                            render(shadowApi.getClassOrThrow("ConstructorExample").getConstructors().get(0)).invocation());
                                assertEquals("ConstructorExample(test)",
-                                                       render(shadowApi.getClassOrThrow("ConstructorExample").getConstructors().get(0)).invocation("test"));
+                                            render(shadowApi.getClassOrThrow("ConstructorExample").getConstructors().get(0)).invocation("test"));
                             })
                    .withCodeToCompile("ConstructorExample.java", "public class ConstructorExample {\n" +
                                                                  "   public ConstructorExample(Long id) {}\n" +

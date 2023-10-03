@@ -4,7 +4,6 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 public abstract class AnnotationValueConsumerDefault implements AnnotationValueConsumer
@@ -55,7 +54,7 @@ public abstract class AnnotationValueConsumerDefault implements AnnotationValueC
    }
 
    @Override
-   public void type(Shadow<TypeMirror> value)
+   public void type(Shadow value)
    {
    }
 

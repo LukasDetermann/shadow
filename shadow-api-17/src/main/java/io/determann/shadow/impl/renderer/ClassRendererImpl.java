@@ -27,9 +27,9 @@ public class ClassRendererImpl implements ClassRenderer
       if (!aClass.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(aClass.getDirectAnnotationUsages()
-                             .stream()
-                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                             .collect(Collectors.joining()));
+                         .stream()
+                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                         .collect(Collectors.joining()));
       }
       Set<Modifier> modifiers = aClass.getModifiers();
       if (!modifiers.isEmpty())
@@ -58,7 +58,10 @@ public class ClassRendererImpl implements ClassRenderer
       {
          sb.append("implements");
          sb.append(' ');
-         sb.append(aClass.getDirectInterfaces().stream().map(anInterface -> InterfaceRendererImpl.type(context, anInterface)).collect(joining(", ")));
+         sb.append(aClass.getDirectInterfaces()
+                         .stream()
+                         .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
+                         .collect(joining(", ")));
          sb.append(' ');
       }
       sb.append('{');

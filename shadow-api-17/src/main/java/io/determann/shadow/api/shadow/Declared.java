@@ -8,8 +8,6 @@ import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.StrictfpModifiable;
 
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +21,7 @@ import java.util.Set;
  *    <li>{@link Record}</li>
  * </ul>
  */
-public interface Declared extends Shadow<DeclaredType>,
+public interface Declared extends Shadow,
                                   Annotationable<TypeElement>,
                                   AccessModifiable,
                                   StrictfpModifiable,
@@ -34,7 +32,7 @@ public interface Declared extends Shadow<DeclaredType>,
     * This can be useful if you want to check if a shadow implements for example a {@link java.util.Collection}
     * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
     */
-   boolean isSubtypeOf(Shadow<? extends TypeMirror> shadow);
+   boolean isSubtypeOf(Shadow shadow);
 
    /**
     * is it an outer or inner class? etc.

@@ -4,7 +4,6 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
 
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 public abstract class AnnotationValueMapperDefault<T> implements AnnotationValueMapper<T>
@@ -64,7 +63,7 @@ public abstract class AnnotationValueMapperDefault<T> implements AnnotationValue
    }
 
    @Override
-   public T type(Shadow<TypeMirror> value)
+   public T type(Shadow value)
    {
       return null;
    }

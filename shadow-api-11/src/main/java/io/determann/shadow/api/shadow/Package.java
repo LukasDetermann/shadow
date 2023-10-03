@@ -5,10 +5,9 @@ import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.QualifiedNameable;
 
 import javax.lang.model.element.PackageElement;
-import javax.lang.model.type.NoType;
 import java.util.List;
 
-public interface Package extends Shadow<NoType>,
+public interface Package extends Shadow,
                                  QualifiedNameable<PackageElement>,
                                  Annotationable<PackageElement>,
                                  DeclaredHolder

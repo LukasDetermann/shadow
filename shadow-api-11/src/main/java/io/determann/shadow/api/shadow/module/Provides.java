@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Provides a {@link #getService()} to other modules internally using {@link #getImplementations()}
+ *
  * @see Uses
  */
 public interface Provides extends Directive

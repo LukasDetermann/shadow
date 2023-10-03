@@ -20,19 +20,19 @@ class PackageTest extends ShadowTest<Package>
    void testGetContent()
    {
       ProcessorTest.process(shadowApi ->
-                              {
-                                 assertTrue(shadowApi.getPackages("asdkfh").isEmpty());
+                            {
+                               assertTrue(shadowApi.getPackages("asdkfh").isEmpty());
 
-                                 assertEquals(List.of(shadowApi.getClassOrThrow(
-                                                    "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
-                                              shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
-                                                       .get(0)
-                                                       .getContent());
-                              })
+                               assertEquals(List.of(shadowApi.getClassOrThrow(
+                                                  "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
+                                            shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
+                                                     .get(0)
+                                                     .getContent());
+                            })
                    .withCodeToCompile("AnyClass.java", """
-                           package io.determann.shadow.example.processed.test.packagee.not_empty;
+                         package io.determann.shadow.example.processed.test.packagee.not_empty;
 
-                           public class AnyClass {}""")
+                         public class AnyClass {}""")
                    .compile();
    }
 }

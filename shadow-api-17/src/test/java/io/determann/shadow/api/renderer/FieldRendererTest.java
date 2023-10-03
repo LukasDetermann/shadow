@@ -15,7 +15,7 @@ class FieldRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("@jdk.internal.vm.annotation.Stable\nprivate final byte value;\n",
                                                render(shadowApi.getClassOrThrow("java.lang.String").getFieldOrThrow("value"))
-                                                        .declaration()))
+                                                     .declaration()))
                    .compile();
    }
 }
