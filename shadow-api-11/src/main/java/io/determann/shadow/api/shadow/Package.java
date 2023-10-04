@@ -8,7 +8,7 @@ import javax.lang.model.element.PackageElement;
 import java.util.List;
 
 public interface Package extends Shadow,
-                                 QualifiedNameable<PackageElement>,
+                                 QualifiedNameable,
                                  Annotationable<PackageElement>,
                                  DeclaredHolder
 {

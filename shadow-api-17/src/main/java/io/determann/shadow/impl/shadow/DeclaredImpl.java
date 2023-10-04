@@ -141,6 +141,12 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+   @Override
    public String getBinaryName()
    {
       return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getBinaryName(getElement()).toString();

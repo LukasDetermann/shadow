@@ -38,6 +38,12 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+   @Override
    public List<Declared> getContent()
    {
       return getElement().getEnclosedElements()

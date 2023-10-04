@@ -25,7 +25,7 @@ public interface Declared extends Shadow,
                                   Annotationable<TypeElement>,
                                   AccessModifiable,
                                   StrictfpModifiable,
-                                  QualifiedNameable<TypeElement>
+                                  QualifiedNameable
 {
    /**
     * returns true if this can be cast to that.

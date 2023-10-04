@@ -81,6 +81,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+
+   @Override
    public Field getFieldOrThrow(String simpleName)
    {
       return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);

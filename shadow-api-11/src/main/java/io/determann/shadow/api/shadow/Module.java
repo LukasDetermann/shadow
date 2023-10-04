@@ -12,7 +12,7 @@ import javax.lang.model.element.ModuleElement;
 import java.util.List;
 
 public interface Module extends Shadow,
-                                QualifiedNameable<ModuleElement>,
+                                QualifiedNameable,
                                 Annotationable<ModuleElement>,
                                 DeclaredHolder
 {

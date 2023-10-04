@@ -45,6 +45,12 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+   @Override
    public boolean isUnnamed()
    {
       return getElement().isUnnamed();

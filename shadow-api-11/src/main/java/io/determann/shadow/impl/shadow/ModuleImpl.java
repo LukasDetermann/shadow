@@ -54,6 +54,12 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+   @Override
    public List<Package> getPackages()
    {
       return getElement().getEnclosedElements()

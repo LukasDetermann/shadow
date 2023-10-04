@@ -62,6 +62,12 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
+   public String getQualifiedName()
+   {
+      return getElement().getQualifiedName().toString();
+   }
+
+   @Override
    public List<Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).toList();
