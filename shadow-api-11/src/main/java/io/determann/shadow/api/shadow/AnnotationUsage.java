@@ -1,9 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
-import io.determann.shadow.api.metadata.JdkApi;
 
-import javax.lang.model.element.AnnotationMirror;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,7 +19,4 @@ public interface AnnotationUsage extends Annotation
    Optional<AnnotationValue> getValue(String methodName);
 
    Annotation getAnnotation();
-
-   @JdkApi
-   AnnotationMirror getAnnotationMirror();
 }

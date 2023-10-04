@@ -85,7 +85,6 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       return annotationMirror.toString();
    }
 
-   @Override
    public AnnotationMirror getAnnotationMirror()
    {
       return annotationMirror;

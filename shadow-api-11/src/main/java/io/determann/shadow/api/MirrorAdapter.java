@@ -5,13 +5,20 @@ import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.shadow.*;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.type.*;
 
 @JdkApi
 public interface MirrorAdapter
 {
+   static AnnotationMirror getMirror(AnnotationUsage annotationUsage)
+   {
+      return ((AnnotationUsageImpl) annotationUsage).getAnnotationMirror();
+   }
+
    static DeclaredType getType(Declared declared)
    {
       return ((DeclaredImpl) declared).getMirror();
