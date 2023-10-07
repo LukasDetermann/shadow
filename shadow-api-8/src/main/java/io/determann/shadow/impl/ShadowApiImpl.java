@@ -193,19 +193,19 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public void logErrorAt(ElementBacked<?> elementBacked, String msg)
+   public void logErrorAt(Annotationable<?> elementBacked, String msg)
    {
       elementBacked.logError(msg);
    }
 
    @Override
-   public void logInfoAt(ElementBacked<?> elementBacked, String msg)
+   public void logInfoAt(Annotationable<?> elementBacked, String msg)
    {
       elementBacked.logInfo(msg);
    }
 
    @Override
-   public void logWarningAt(ElementBacked<?> elementBacked, String msg)
+   public void logWarningAt(Annotationable<?> elementBacked, String msg)
    {
       elementBacked.logWarning(msg);
    }

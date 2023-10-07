@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ElementBacked;
+import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.test.ProcessorTest;
@@ -77,7 +77,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                shadowApi.getClassOrThrow("MyClass")
                                                         .getFields()
                                                         .stream()
-                                                        .map(ElementBacked::getSimpleName)
+                                                        .map(Annotationable::getSimpleName)
                                                         .collect(Collectors.toList())))
                    .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                    .compile();

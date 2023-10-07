@@ -38,7 +38,7 @@ import java.util.function.Consumer;
  *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
  *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
- *    <li>log using {@link #logError(String)} or log at {@link #logErrorAt(ElementBacked, String)}</li>
+ *    <li>log using {@link #logError(String)} or log at {@link #logErrorAt(Annotationable, String)}</li>
  *    <li>convert between sourceCode representations. So called {@link Shadow}s {@link #convert(Shadow)}</li>
  * </ul>
  *
@@ -116,12 +116,12 @@ public interface ShadowApi extends DeclaredHolder
 
    void logWarning(String msg);
 
-   void logErrorAt(ElementBacked<?> elementBacked, String msg);
+   void logErrorAt(Annotationable<?> elementBacked, String msg);
 
-   void logInfoAt(ElementBacked<?> elementBacked, String msg);
+   void logInfoAt(Annotationable<?> elementBacked, String msg);
 
    //writing files
-   void logWarningAt(ElementBacked<?> elementBacked, String msg);
+   void logWarningAt(Annotationable<?> elementBacked, String msg);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
