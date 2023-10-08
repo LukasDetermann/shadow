@@ -203,7 +203,7 @@ public class ShadowApiImpl implements ShadowApi
    public Optional<Package> getPackage(Module module, String qualifiedPackageName)
    {
       return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils()
-                                          .getPackageElement(module.getElement(),
+                                          .getPackageElement(MirrorAdapter.getElement(module),
                                                              qualifiedPackageName))
             .map(packageElement -> getShadowFactory().shadowFromElement(packageElement));
    }
@@ -261,19 +261,19 @@ public class ShadowApiImpl implements ShadowApi
    }
 
    @Override
-   public void logErrorAt(Annotationable<?> elementBacked, String msg)
+   public void logErrorAt(Annotationable elementBacked, String msg)
    {
       elementBacked.logError(msg);
    }
 
    @Override
-   public void logInfoAt(Annotationable<?> elementBacked, String msg)
+   public void logInfoAt(Annotationable elementBacked, String msg)
    {
       elementBacked.logInfo(msg);
    }
 
    @Override
-   public void logWarningAt(Annotationable<?> elementBacked, String msg)
+   public void logWarningAt(Annotationable elementBacked, String msg)
    {
       elementBacked.logWarning(msg);
    }

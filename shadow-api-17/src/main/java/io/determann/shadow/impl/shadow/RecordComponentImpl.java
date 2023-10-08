@@ -4,12 +4,14 @@ import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
+import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.type.TypeMirror;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -74,7 +76,6 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
-   @Override
    public RecordComponentElement getElement()
    {
       return recordComponentElement;
@@ -84,6 +85,54 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    public TypeKind getTypeKind()
    {
       return RECORD_COMPONENT;
+   }
+
+   @Override
+   public Module getModule()
+   {
+      return MirrorAdapter.getModule(getApi(), getElement());
+   }
+
+   @Override
+   public String getSimpleName()
+   {
+      return MirrorAdapter.getSimpleName(getElement());
+   }
+
+   @Override
+   public String getJavaDoc()
+   {
+      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+   }
+
+   @Override
+   public void logError(String msg)
+   {
+      MirrorAdapter.logError(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logInfo(String msg)
+   {
+      MirrorAdapter.logInfo(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logWarning(String msg)
+   {
+      MirrorAdapter.logWarning(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public List<AnnotationUsage> getAnnotationUsages()
+   {
+      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+   }
+
+   @Override
+   public List<AnnotationUsage> getDirectAnnotationUsages()
+   {
+      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

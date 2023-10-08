@@ -9,12 +9,11 @@ import io.determann.shadow.api.shadow.module.DirectiveConsumer;
 import io.determann.shadow.api.shadow.module.DirectiveMapper;
 import io.determann.shadow.api.shadow.module.Provides;
 
-import javax.lang.model.element.ModuleElement;
 import java.util.List;
 
 public interface Module extends Shadow,
                                 QualifiedNameable,
-                                Annotationable<ModuleElement>,
+                                Annotationable,
                                 DeclaredHolder,
                                 Modifiable
 {

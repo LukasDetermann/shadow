@@ -4,12 +4,14 @@ import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeVariable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -72,10 +74,51 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
-   @Override
    public TypeParameterElement getElement()
    {
       return typeParameterElement;
+   }
+
+   @Override
+   public String getSimpleName()
+   {
+      return MirrorAdapter.getSimpleName(getElement());
+   }
+
+   @Override
+   public String getJavaDoc()
+   {
+      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+   }
+
+   @Override
+   public void logError(String msg)
+   {
+      MirrorAdapter.logError(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logInfo(String msg)
+   {
+      MirrorAdapter.logInfo(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logWarning(String msg)
+   {
+      MirrorAdapter.logWarning(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public List<AnnotationUsage> getAnnotationUsages()
+   {
+      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+   }
+
+   @Override
+   public List<AnnotationUsage> getDirectAnnotationUsages()
+   {
+      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

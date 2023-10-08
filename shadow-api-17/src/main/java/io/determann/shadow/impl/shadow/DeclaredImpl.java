@@ -7,6 +7,7 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Enum;
+import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
 
@@ -63,7 +64,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       };
    }
 
-   @Override
    public TypeElement getElement()
    {
       return typeElement;
@@ -238,6 +238,54 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return getApi().getShadowFactory()
                      .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+   }
+
+   @Override
+   public Module getModule()
+   {
+      return MirrorAdapter.getModule(getApi(), getElement());
+   }
+
+   @Override
+   public String getSimpleName()
+   {
+      return MirrorAdapter.getSimpleName(getElement());
+   }
+
+   @Override
+   public String getJavaDoc()
+   {
+      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+   }
+
+   @Override
+   public void logError(String msg)
+   {
+      MirrorAdapter.logError(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logInfo(String msg)
+   {
+      MirrorAdapter.logInfo(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logWarning(String msg)
+   {
+      MirrorAdapter.logWarning(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public List<AnnotationUsage> getAnnotationUsages()
+   {
+      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+   }
+
+   @Override
+   public List<AnnotationUsage> getDirectAnnotationUsages()
+   {
+      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

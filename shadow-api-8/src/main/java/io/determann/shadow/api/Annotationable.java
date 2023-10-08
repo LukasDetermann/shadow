@@ -1,11 +1,8 @@
 package io.determann.shadow.api;
 
-import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 
-import javax.lang.model.element.Element;
-import javax.tools.Diagnostic;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -16,48 +13,25 @@ import static java.util.stream.Collectors.toList;
 /**
  * anything that can be annotated
  */
-public interface Annotationable<ELEMENT extends Element> extends ApiHolder
+public interface Annotationable
 {
-   @JdkApi
-   ELEMENT getElement();
-
-   default String getSimpleName()
-   {
-      return getElement().getSimpleName().toString();
-   }
+   String getSimpleName();
 
    /**
     * returns the javaDoc or null if none is present
     */
-   default String getJavaDoc()
-   {
-      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getDocComment(getElement());
-   }
+   String getJavaDoc();
 
-   default void logError(String msg)
-   {
-      getApi().getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg, getElement());
-   }
+   void logError(String msg);
 
-   default void logInfo(String msg)
-   {
-      getApi().getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg, getElement());
-   }
+   void logInfo(String msg);
 
-   default void logWarning(String msg)
-   {
-      getApi().getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement());
-   }
+   void logWarning(String msg);
 
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
-   default List<AnnotationUsage> getAnnotationUsages()
-   {
-      return getApi()
-            .getShadowFactory()
-            .annotationUsages(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(getElement()));
-   }
+   List<AnnotationUsage> getAnnotationUsages();
 
    default List<AnnotationUsage> getUsagesOf(Annotation annotation)
    {
@@ -98,10 +72,7 @@ public interface Annotationable<ELEMENT extends Element> extends ApiHolder
     *
     * @see #getAnnotationUsages()
     */
-   default List<AnnotationUsage> getDirectAnnotationUsages()
-   {
-      return getApi().getShadowFactory().annotationUsages(getElement().getAnnotationMirrors());
-   }
+   List<AnnotationUsage> getDirectAnnotationUsages();
 
    default List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
    {

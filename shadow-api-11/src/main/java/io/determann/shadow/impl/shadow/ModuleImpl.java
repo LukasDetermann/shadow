@@ -5,10 +5,9 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.module.*;
 import io.determann.shadow.impl.shadow.module.*;
 
@@ -55,7 +54,6 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
       return TypeKind.MODULE;
    }
 
-   @Override
    public ModuleElement getElement()
    {
       return moduleElement;
@@ -221,6 +219,54 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    public boolean representsSameType(Shadow shadow)
    {
       return equals(shadow);
+   }
+
+   @Override
+   public Module getModule()
+   {
+      return MirrorAdapter.getModule(getApi(), getElement());
+   }
+
+   @Override
+   public String getSimpleName()
+   {
+      return MirrorAdapter.getSimpleName(getElement());
+   }
+
+   @Override
+   public String getJavaDoc()
+   {
+      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+   }
+
+   @Override
+   public void logError(String msg)
+   {
+      MirrorAdapter.logError(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logInfo(String msg)
+   {
+      MirrorAdapter.logInfo(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logWarning(String msg)
+   {
+      MirrorAdapter.logWarning(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public List<AnnotationUsage> getAnnotationUsages()
+   {
+      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+   }
+
+   @Override
+   public List<AnnotationUsage> getDirectAnnotationUsages()
+   {
+      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

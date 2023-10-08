@@ -7,7 +7,6 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.StrictfpModifiable;
 
-import javax.lang.model.element.TypeElement;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ import java.util.Set;
  * </ul>
  */
 public interface Declared extends Shadow,
-                                  Annotationable<TypeElement>,
+                                  Annotationable,
                                   AccessModifiable,
                                   StrictfpModifiable,
                                   QualifiedNameable

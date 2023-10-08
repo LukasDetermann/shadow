@@ -4,8 +4,6 @@ import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.Modifiable;
 
-import javax.lang.model.element.VariableElement;
-
 /**
  * Can be converted using {@link ShadowApi#convert(Variable)}
  * <ul>
@@ -15,7 +13,7 @@ import javax.lang.model.element.VariableElement;
  * </ul>
  */
 public interface Variable<SURROUNDING extends Shadow> extends Shadow,
-                                                              Annotationable<VariableElement>,
+                                                              Annotationable,
                                                               Modifiable
 {
    /**

@@ -5,12 +5,11 @@ import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.modifier.Modifiable;
 
-import javax.lang.model.element.PackageElement;
 import java.util.List;
 
 public interface Package extends Shadow,
                                  QualifiedNameable,
-                                 Annotationable<PackageElement>,
+                                 Annotationable,
                                  DeclaredHolder,
                                  Modifiable
 {

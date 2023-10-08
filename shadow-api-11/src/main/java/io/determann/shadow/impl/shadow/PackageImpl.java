@@ -4,7 +4,9 @@ import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 
 import javax.lang.model.element.PackageElement;
@@ -66,7 +68,6 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       return getElement().isUnnamed();
    }
 
-   @Override
    public PackageElement getElement()
    {
       return packageElement;
@@ -89,6 +90,54 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    {
       return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
             .map(typeElement -> getApi().getShadowFactory().shadowFromElement(typeElement));
+   }
+
+   @Override
+   public Module getModule()
+   {
+      return MirrorAdapter.getModule(getApi(), getElement());
+   }
+
+   @Override
+   public String getSimpleName()
+   {
+      return MirrorAdapter.getSimpleName(getElement());
+   }
+
+   @Override
+   public String getJavaDoc()
+   {
+      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+   }
+
+   @Override
+   public void logError(String msg)
+   {
+      MirrorAdapter.logError(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logInfo(String msg)
+   {
+      MirrorAdapter.logInfo(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public void logWarning(String msg)
+   {
+      MirrorAdapter.logWarning(getApi(), getElement(), msg);
+   }
+
+   @Override
+   public List<AnnotationUsage> getAnnotationUsages()
+   {
+      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+   }
+
+   @Override
+   public List<AnnotationUsage> getDirectAnnotationUsages()
+   {
+      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

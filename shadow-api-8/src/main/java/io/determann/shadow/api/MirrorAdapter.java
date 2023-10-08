@@ -8,10 +8,11 @@ import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.shadow.*;
 
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
+import javax.lang.model.element.*;
 import javax.lang.model.type.*;
+import javax.tools.Diagnostic;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.api.modifier.Modifier.*;
@@ -79,6 +80,68 @@ public interface MirrorAdapter
    static WildcardType getType(Wildcard wildcard)
    {
       return ((WildcardImpl) wildcard).getMirror();
+   }
+
+   static TypeElement getElement(Declared declared)
+   {
+      return ((DeclaredImpl) declared).getElement();
+   }
+
+   static ExecutableElement getElement(Executable executable)
+   {
+      return ((ExecutableImpl) executable).getElement();
+   }
+
+   static TypeParameterElement getElement(Generic generic)
+   {
+      return ((GenericImpl) generic).getElement();
+   }
+
+   static PackageElement getElement(Package aPackage)
+   {
+      return ((PackageImpl) aPackage).getElement();
+   }
+
+   static VariableElement getElement(Variable<?> variable)
+   {
+      return ((VariableImpl) variable).getElement();
+   }
+
+   static String getSimpleName(Element element)
+   {
+      return element.getSimpleName().toString();
+   }
+
+   static String getJavaDoc(ShadowApi api, Element element)
+   {
+      return api.getJdkApiContext().getProcessingEnv().getElementUtils().getDocComment(element);
+   }
+
+   static void logError(ShadowApi api, Element element, String msg)
+   {
+      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element);
+   }
+
+   static void logInfo(ShadowApi api, Element element, String msg)
+   {
+      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg, element);
+   }
+
+   static void logWarning(ShadowApi api, Element element, String msg)
+   {
+      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, element);
+   }
+
+   static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)
+   {
+      return api
+            .getShadowFactory()
+            .annotationUsages(api.getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(element));
+   }
+
+   static List<AnnotationUsage> getDirectAnnotationUsages(ShadowApi api, Element element)
+   {
+      return api.getShadowFactory().annotationUsages(element.getAnnotationMirrors());
    }
 
    public static Set<Modifier> getModifiers(Element element)

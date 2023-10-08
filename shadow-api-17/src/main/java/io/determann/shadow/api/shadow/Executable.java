@@ -3,7 +3,6 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.ShadowApi;
 
-import javax.lang.model.element.ExecutableElement;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +15,7 @@ import java.util.Optional;
  * </ul>
  */
 public interface Executable extends Shadow,
-                                    Annotationable<ExecutableElement>
+                                    Annotationable
 {
    /**
     * {@code public MyObject(}<b>String param</b>{@code )}
