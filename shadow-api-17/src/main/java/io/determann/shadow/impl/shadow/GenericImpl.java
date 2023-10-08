@@ -1,7 +1,9 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
@@ -9,6 +11,7 @@ import io.determann.shadow.api.shadow.Shadow;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeVariable;
 import java.util.Objects;
+import java.util.Set;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
 {
@@ -24,6 +27,12 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    {
       super(shadowApi, typeMirror);
       this.typeParameterElement = (TypeParameterElement) getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().asElement(typeMirror);
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

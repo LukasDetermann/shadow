@@ -1,6 +1,7 @@
 package io.determann.shadow.api;
 
 import io.determann.shadow.api.metadata.JdkApi;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
@@ -9,7 +10,11 @@ import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.shadow.*;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
 import javax.lang.model.type.*;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 @JdkApi
 public interface MirrorAdapter
@@ -77,5 +82,31 @@ public interface MirrorAdapter
    static WildcardType getType(Wildcard wildcard)
    {
       return ((WildcardImpl) wildcard).getMirror();
+   }
+
+   public static Set<Modifier> getModifiers(Element element)
+   {
+      return element.getModifiers().stream().map(MirrorAdapter::mapModifier).collect(toUnmodifiableSet());
+   }
+
+   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
+   {
+      return switch (modifier)
+      {
+         case PUBLIC -> Modifier.PUBLIC;
+         case PROTECTED -> Modifier.PROTECTED;
+         case PRIVATE -> Modifier.PRIVATE;
+         case ABSTRACT -> Modifier.ABSTRACT;
+         case STATIC -> Modifier.STATIC;
+         case SEALED -> Modifier.SEALED;
+         case NON_SEALED -> Modifier.NON_SEALED;
+         case FINAL -> Modifier.FINAL;
+         case STRICTFP -> Modifier.STRICTFP;
+         case DEFAULT -> Modifier.DEFAULT;
+         case TRANSIENT -> Modifier.TRANSIENT;
+         case VOLATILE -> Modifier.VOLATILE;
+         case SYNCHRONIZED -> Modifier.SYNCHRONIZED;
+         case NATIVE -> Modifier.NATIVE;
+      };
    }
 }

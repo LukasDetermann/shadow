@@ -1,8 +1,6 @@
 package io.determann.shadow.api;
 
 import io.determann.shadow.api.metadata.JdkApi;
-import io.determann.shadow.api.modifier.Modifiable;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Module;
@@ -11,45 +9,14 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * anything that can be annotated
  */
-public interface Annotationable<ELEMENT extends Element> extends Modifiable,
-                                                                 ApiHolder
+public interface Annotationable<ELEMENT extends Element> extends ApiHolder
 {
    @JdkApi
    ELEMENT getElement();
-
-   @Override
-   default Set<Modifier> getModifiers()
-   {
-      return getElement().getModifiers().stream().map(Annotationable::mapModifier).collect(toUnmodifiableSet());
-   }
-
-   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
-   {
-      return switch (modifier)
-      {
-         case PUBLIC -> Modifier.PUBLIC;
-         case PROTECTED -> Modifier.PROTECTED;
-         case PRIVATE -> Modifier.PRIVATE;
-         case ABSTRACT -> Modifier.ABSTRACT;
-         case STATIC -> Modifier.STATIC;
-         case SEALED -> Modifier.SEALED;
-         case NON_SEALED -> Modifier.NON_SEALED;
-         case FINAL -> Modifier.FINAL;
-         case STRICTFP -> Modifier.STRICTFP;
-         case DEFAULT -> Modifier.DEFAULT;
-         case TRANSIENT -> Modifier.TRANSIENT;
-         case VOLATILE -> Modifier.VOLATILE;
-         case SYNCHRONIZED -> Modifier.SYNCHRONIZED;
-         case NATIVE -> Modifier.NATIVE;
-      };
-   }
 
    /**
     * returns itself for a module

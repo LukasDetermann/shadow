@@ -2,6 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.modifier.Modifiable;
 
 import javax.lang.model.element.VariableElement;
 
@@ -14,7 +15,8 @@ import javax.lang.model.element.VariableElement;
  * </ul>
  */
 public interface Variable<SURROUNDING extends Shadow> extends Shadow,
-                                                              Annotationable<VariableElement>
+                                                              Annotationable<VariableElement>,
+                                                              Modifiable
 {
    /**
     * returns true if this can be cast to that.

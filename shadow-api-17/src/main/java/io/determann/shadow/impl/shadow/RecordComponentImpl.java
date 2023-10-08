@@ -3,6 +3,7 @@ package io.determann.shadow.impl.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
@@ -10,6 +11,7 @@ import io.determann.shadow.api.shadow.*;
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
+import java.util.Set;
 
 import static io.determann.shadow.api.TypeKind.RECORD_COMPONENT;
 
@@ -21,6 +23,12 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    {
       super(shadowApi, recordComponentElement.asType());
       this.recordComponentElement = recordComponentElement;
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

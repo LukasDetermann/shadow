@@ -4,6 +4,7 @@ import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -14,6 +15,7 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
 
@@ -28,6 +30,12 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       super(shadowApi, (ExecutableType) executableElement.asType());
       this.executableElement = executableElement;
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

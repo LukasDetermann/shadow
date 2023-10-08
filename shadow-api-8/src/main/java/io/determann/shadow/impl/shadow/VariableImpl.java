@@ -3,6 +3,7 @@ package io.determann.shadow.impl.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Variable;
@@ -10,6 +11,7 @@ import io.determann.shadow.api.shadow.Variable;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImpl<TypeMirror>
       implements Variable<SURROUNDING>
@@ -20,6 +22,12 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    {
       super(shadowApi, variableElement.asType());
       this.variableElement = variableElement;
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

@@ -1,8 +1,10 @@
 package io.determann.shadow.impl.shadow;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -38,6 +40,12 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
       {
          throw new IllegalStateException(noType + " is not unique");
       }
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

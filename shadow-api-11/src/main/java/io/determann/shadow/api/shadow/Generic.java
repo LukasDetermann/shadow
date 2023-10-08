@@ -1,6 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.modifier.Modifiable;
 
 import javax.lang.model.element.TypeParameterElement;
 
@@ -8,7 +9,8 @@ import javax.lang.model.element.TypeParameterElement;
  * represents the generic parameter at a class, method, constructor etc.
  */
 public interface Generic extends Shadow,
-                                 Annotationable<TypeParameterElement>
+                                 Annotationable<TypeParameterElement>,
+                                 Modifiable
 {
    /**
     * @see Intersection

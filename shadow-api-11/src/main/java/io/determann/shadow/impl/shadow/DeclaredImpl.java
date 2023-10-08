@@ -5,6 +5,7 @@ import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.DeclaredConverter;
+import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -36,6 +37,12 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       super(shadowApi, (DeclaredType) typeElement.asType());
       this.typeElement = typeElement;
+   }
+
+   @Override
+   public Set<Modifier> getModifiers()
+   {
+      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

@@ -1,8 +1,6 @@
 package io.determann.shadow.api;
 
 import io.determann.shadow.api.metadata.JdkApi;
-import io.determann.shadow.api.modifier.Modifiable;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Module;
@@ -11,59 +9,15 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import static io.determann.shadow.api.modifier.Modifier.*;
-import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * anything that can be annotated
  */
-public interface Annotationable<ELEMENT extends Element> extends Modifiable,
-                                                                 ApiHolder
+public interface Annotationable<ELEMENT extends Element> extends ApiHolder
 {
    @JdkApi
    ELEMENT getElement();
-
-   @Override
-   default Set<Modifier> getModifiers()
-   {
-      return getElement().getModifiers().stream().map(Annotationable::mapModifier).collect(toUnmodifiableSet());
-   }
-
-   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
-   {
-      switch (modifier)
-      {
-         case PUBLIC:
-            return PUBLIC;
-         case PROTECTED:
-            return PROTECTED;
-         case PRIVATE:
-            return PRIVATE;
-         case ABSTRACT:
-            return ABSTRACT;
-         case STATIC:
-            return STATIC;
-         case FINAL:
-            return FINAL;
-         case STRICTFP:
-            return STRICTFP;
-         case DEFAULT:
-            return DEFAULT;
-         case TRANSIENT:
-            return TRANSIENT;
-         case VOLATILE:
-            return VOLATILE;
-         case SYNCHRONIZED:
-            return SYNCHRONIZED;
-         case NATIVE:
-            return NATIVE;
-         default:
-            throw new IllegalArgumentException();
-      }
-   }
 
    /**
     * returns itself for a module
