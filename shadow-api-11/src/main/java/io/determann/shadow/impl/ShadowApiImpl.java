@@ -31,7 +31,6 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 public class ShadowApiImpl implements ShadowApi
 {
    private JdkApiContext jdkApiContext;
-   private final ShadowFactory shadowFactory = new ShadowFactoryImpl(this);
    private int processingRound;
    private Context renderingContext = Context.builder().withMostlyQualifiedNames().build();
    private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
@@ -149,7 +148,7 @@ public class ShadowApiImpl implements ShadowApi
       return getJdkApiContext().getProcessingEnv().getElementUtils()
                                .getAllModuleElements()
                                .stream()
-                               .map(moduleElement -> getShadowFactory().<Module>shadowFromElement(moduleElement))
+                               .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
                                .collect(toUnmodifiableList());
    }
 
@@ -157,7 +156,7 @@ public class ShadowApiImpl implements ShadowApi
    public Optional<Module> getModule(String name)
    {
       return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(name))
-            .map(moduleElement -> getShadowFactory().shadowFromElement(moduleElement));
+            .map(moduleElement -> MirrorAdapter.getShadow(getApi(), moduleElement));
    }
 
    @Override
@@ -172,7 +171,7 @@ public class ShadowApiImpl implements ShadowApi
       return getJdkApiContext().getProcessingEnv().getElementUtils()
                                .getAllPackageElements(qualifiedName)
                                .stream()
-                               .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
+                               .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
                                .collect(toUnmodifiableList());
    }
 
@@ -183,7 +182,7 @@ public class ShadowApiImpl implements ShadowApi
                                .getAllModuleElements()
                                .stream()
                                .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
-                               .map(packageElement -> getShadowFactory().<Package>shadowFromElement(packageElement))
+                               .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
                                .collect(toUnmodifiableList());
    }
 
@@ -205,7 +204,7 @@ public class ShadowApiImpl implements ShadowApi
       return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils()
                                           .getPackageElement(MirrorAdapter.getElement(module),
                                                              qualifiedPackageName))
-            .map(packageElement -> getShadowFactory().shadowFromElement(packageElement));
+            .map(packageElement -> MirrorAdapter.getShadow(getApi(), packageElement));
    }
 
    @Override
@@ -218,7 +217,7 @@ public class ShadowApiImpl implements ShadowApi
    public Optional<Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
-            .map(typeElement -> getShadowFactory().shadowFromElement(typeElement));
+            .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 
    @Override
@@ -228,12 +227,6 @@ public class ShadowApiImpl implements ShadowApi
             .stream()
             .flatMap(packageShadow -> packageShadow.getContent().stream())
             .collect(toUnmodifiableList());
-   }
-
-   @Override
-   public ShadowFactory getShadowFactory()
-   {
-      return shadowFactory;
    }
 
    @Override

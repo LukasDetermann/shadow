@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.annotationvalue;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
@@ -89,13 +90,13 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Shadow asType()
    {
-      return shadowApi.getShadowFactory().shadowFromType((TypeMirror) annotationValue.getValue());
+      return MirrorAdapter.getShadow(shadowApi, (TypeMirror) annotationValue.getValue());
    }
 
    @Override
    public EnumConstant asEnumConstant()
    {
-      return shadowApi.getShadowFactory().shadowFromElement((Element) annotationValue.getValue());
+         return MirrorAdapter.getShadow(shadowApi, (Element) annotationValue.getValue());
    }
 
    @Override

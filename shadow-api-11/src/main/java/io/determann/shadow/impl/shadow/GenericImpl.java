@@ -39,19 +39,19 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public Shadow getExtends()
    {
-      return getApi().getShadowFactory().shadowFromType(getMirror().getUpperBound());
+      return MirrorAdapter.getShadow(getApi(), getMirror().getUpperBound());
    }
 
    @Override
    public Shadow getSuper()
    {
-      return getApi().getShadowFactory().shadowFromType(getMirror().getLowerBound());
+      return MirrorAdapter.getShadow(getApi(), getMirror().getLowerBound());
    }
 
    @Override
    public Shadow getEnclosing()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement().getGenericElement());
+      return MirrorAdapter.getShadow(getApi(), getElement().getGenericElement());
    }
 
    @Override
@@ -63,14 +63,14 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
    public Shadow erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    public TypeParameterElement getElement()

@@ -30,7 +30,6 @@ import static java.util.Optional.ofNullable;
 public class ShadowApiImpl implements ShadowApi
 {
    private JdkApiContext jdkApiContext;
-   private final ShadowFactory shadowFactory = new ShadowFactoryImpl(this);
    private int processingRound;
    private Context renderingContext = Context.builder().withMostlyQualifiedNames().build();
    private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
@@ -146,7 +145,7 @@ public class ShadowApiImpl implements ShadowApi
    public Optional<Package> getPackage(String qualifiedName)
    {
       return Optional.ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getPackageElement(qualifiedName))
-                     .map(packageElement -> getShadowFactory().shadowFromElement(packageElement));
+                     .map(packageElement -> MirrorAdapter.getShadow(getApi(), packageElement));
    }
 
    @Override
@@ -159,13 +158,7 @@ public class ShadowApiImpl implements ShadowApi
    public Optional<Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
-            .map(typeElement -> getShadowFactory().shadowFromElement(typeElement));
-   }
-
-   @Override
-   public ShadowFactory getShadowFactory()
-   {
-      return shadowFactory;
+            .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 
    @Override

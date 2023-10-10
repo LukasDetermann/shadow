@@ -47,7 +47,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return null;
       }
-      return getApi().getShadowFactory().shadowFromType(superclass);
+      return MirrorAdapter.getShadow(getApi(), superclass);
    }
 
    @Override
@@ -76,7 +76,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return Optional.empty();
       }
-      return Optional.of(getApi().getShadowFactory().shadowFromType(enclosingType));
+      return Optional.of(MirrorAdapter.getShadow(getApi(), enclosingType));
    }
 
    @Override
@@ -105,8 +105,9 @@ public class ClassImpl extends DeclaredImpl implements Class
                                        .map(MirrorAdapter::getType)
                                        .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory()
-                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+      return MirrorAdapter
+                     .getShadow(getApi(),
+                                getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -122,7 +123,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
+                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .collect(toUnmodifiableList());
    }
 
@@ -131,25 +132,25 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> getApi().getShadowFactory().<Generic>shadowFromElement(element))
+                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
                          .collect(toUnmodifiableList());
    }
 
    @Override
    public Class interpolateGenerics()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Class erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    @Override
    public Primitive asUnboxed()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().unboxedType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().unboxedType(getMirror()));
    }
 }

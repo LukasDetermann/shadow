@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow.module;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
@@ -21,7 +22,7 @@ public class UsesImpl extends DirectiveImpl implements Uses
    @Override
    public Declared getService()
    {
-      return getApi().getShadowFactory().shadowFromElement(usesDirective.getService());
+      return MirrorAdapter.getShadow(getApi(), usesDirective.getService());
    }
 
    @Override

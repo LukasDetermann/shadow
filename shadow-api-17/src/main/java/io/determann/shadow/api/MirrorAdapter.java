@@ -122,8 +122,7 @@ public interface MirrorAdapter
 
    static Module getModule(ShadowApi api, Element element)
    {
-      return api.getShadowFactory()
-                .shadowFromElement(api.getJdkApiContext().getProcessingEnv().getElementUtils().getModuleOf(element));
+      return getShadow(api, api.getJdkApiContext().getProcessingEnv().getElementUtils().getModuleOf(element));
    }
 
    static String getSimpleName(Element element)
@@ -153,14 +152,12 @@ public interface MirrorAdapter
 
    static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)
    {
-      return api
-            .getShadowFactory()
-            .annotationUsages(api.getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(element));
+      return getAnnotationUsages(api, api.getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(element));
    }
 
    static List<AnnotationUsage> getDirectAnnotationUsages(ShadowApi api, Element element)
    {
-      return api.getShadowFactory().annotationUsages(element.getAnnotationMirrors());
+      return getAnnotationUsages(api, element.getAnnotationMirrors());
    }
 
    public static Set<Modifier> getModifiers(Element element)
@@ -187,5 +184,69 @@ public interface MirrorAdapter
          case SYNCHRONIZED -> Modifier.SYNCHRONIZED;
          case NATIVE -> Modifier.NATIVE;
       };
+   }
+
+   /**
+    * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link Shadow}
+    * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.
+    *
+    * @see #getShadow(ShadowApi, TypeMirror)
+    */
+   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, @JdkApi Element element)
+   {
+      return (SHADOW) switch (element.getKind())
+      {
+         case PACKAGE -> new PackageImpl(shadowApi, (PackageElement) element);
+         case ENUM, ANNOTATION_TYPE -> new DeclaredImpl(shadowApi, (TypeElement) element);
+         case RECORD -> new RecordImpl(shadowApi, (TypeElement) element);
+         case CLASS -> new ClassImpl(shadowApi, (TypeElement) element);
+         case INTERFACE -> new InterfaceImpl(shadowApi, (TypeElement) element);
+         case METHOD, CONSTRUCTOR -> new ExecutableImpl(shadowApi, ((ExecutableElement) element));
+         case ENUM_CONSTANT -> new EnumConstantImpl(shadowApi, (VariableElement) element);
+         case FIELD -> new FieldImpl(shadowApi, (VariableElement) element);
+         case PARAMETER -> new ParameterImpl(shadowApi, (VariableElement) element);
+         case TYPE_PARAMETER -> new GenericImpl(shadowApi, (TypeParameterElement) element);
+         case MODULE -> new ModuleImpl(shadowApi, (ModuleElement) element);
+         case RECORD_COMPONENT -> new RecordComponentImpl(shadowApi, (RecordComponentElement) element);
+         case OTHER, STATIC_INIT, INSTANCE_INIT, EXCEPTION_PARAMETER, RESOURCE_VARIABLE, BINDING_VARIABLE, LOCAL_VARIABLE ->
+               throw new IllegalArgumentException("not implemented");
+      };
+   }
+
+   /**
+    * {@link TypeMirror}s represent the abstract code. {@code List<T>} for example.
+    *
+    * @see #getShadow(ShadowApi, Element)
+    */
+   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, @JdkApi TypeMirror typeMirror)
+   {
+      //noinspection unchecked
+      return (SHADOW) switch (typeMirror.getKind())
+      {
+         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
+         case ARRAY -> new ArrayImpl(shadowApi, (ArrayType) typeMirror);
+         case DECLARED -> switch (shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().asElement(typeMirror).getKind())
+         {
+            case CLASS -> new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
+            case INTERFACE -> new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
+            case RECORD -> new RecordImpl(shadowApi, (DeclaredType) typeMirror);
+            case ANNOTATION_TYPE, ENUM -> new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
+            default -> throw new IllegalArgumentException("not implemented");
+         };
+         case WILDCARD -> new WildcardImpl(shadowApi, (WildcardType) typeMirror);
+         case VOID -> new VoidImpl(shadowApi, ((NoType) typeMirror));
+         case PACKAGE -> new PackageImpl(shadowApi, (NoType) typeMirror);
+         case MODULE -> new ModuleImpl(shadowApi, (NoType) typeMirror);
+         case NULL -> new NullImpl(shadowApi, (NullType) typeMirror);
+         case TYPEVAR -> new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
+         case INTERSECTION -> new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
+         case EXECUTABLE, NONE -> throw new IllegalArgumentException("bug in this api: executables should be created using elements");
+         case ERROR, OTHER, UNION -> throw new IllegalArgumentException("not implemented");
+      };
+   }
+
+   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi, @JdkApi List<? extends AnnotationMirror> annotationMirrors)
+   {
+      return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
    }
 }

@@ -92,7 +92,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
-                         .map(variableElement -> getApi().getShadowFactory().<Field>shadowFromElement(variableElement))
+                         .map(variableElement -> MirrorAdapter.<Field>getShadow(getApi(), variableElement))
                          .toList();
    }
 
@@ -107,7 +107,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> getApi().getShadowFactory().<Method>shadowFromElement(element))
+                          .map(element -> MirrorAdapter.<Method>getShadow(getApi(), element))
                           .toList();
    }
 
@@ -116,7 +116,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> getApi().getShadowFactory().<Constructor>shadowFromElement(element))
+                          .map(element -> MirrorAdapter.<Constructor>getShadow(getApi(), element))
                           .toList();
    }
 
@@ -126,7 +126,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils()
                      .directSupertypes(getMirror())
                      .stream()
-                     .map(typeMirror1 -> getApi().getShadowFactory().<Declared>shadowFromType(typeMirror1))
+                     .map(typeMirror1 -> MirrorAdapter.<Declared>getShadow(getApi(), typeMirror1))
                      .toList();
    }
 
@@ -162,21 +162,21 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Wildcard asExtendsWildcard()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
    }
 
    @Override
    public Wildcard asSuperWildcard()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override
    public Array asArray()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override
@@ -184,7 +184,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return getElement().getInterfaces()
                          .stream()
-                         .map(typeMirror -> getApi().getShadowFactory().<Interface>shadowFromType(typeMirror))
+                         .map(typeMirror -> MirrorAdapter.<Interface>getShadow(getApi(), typeMirror))
                          .toList();
    }
 
@@ -223,7 +223,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.ENUM_CONSTANT))
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> getApi().getShadowFactory().<EnumConstant>shadowFromElement(variableElement))
+                         .map(variableElement -> MirrorAdapter.<EnumConstant>getShadow(getApi(), variableElement))
                          .toList();
    }
 
@@ -236,8 +236,8 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

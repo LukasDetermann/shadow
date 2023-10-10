@@ -37,7 +37,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> getApi().getShadowFactory().<RecordComponent>shadowFromElement(recordComponentElement))
+                         .map(recordComponentElement -> MirrorAdapter.<RecordComponent>getShadow(getApi(), recordComponentElement))
                          .toList();
    }
 
@@ -57,8 +57,9 @@ public class RecordImpl extends DeclaredImpl implements Record
             .map(MirrorAdapter::getType)
             .toArray(TypeMirror[]::new);
 
-      return getApi().getShadowFactory()
-                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+      return MirrorAdapter
+                     .getShadow(getApi(),
+                                getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -74,7 +75,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
+                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 
@@ -83,19 +84,19 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> getApi().getShadowFactory().<Generic>shadowFromElement(element))
+                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
 
    @Override
    public Record interpolateGenerics()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Record erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 }

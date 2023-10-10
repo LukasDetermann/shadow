@@ -48,32 +48,32 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public Record getRecord()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement().getEnclosingElement());
+      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
    public Shadow getType()
    {
-      return getApi().getShadowFactory().shadowFromType(getElement().asType());
+      return MirrorAdapter.getShadow(getApi(), getElement().asType());
    }
 
    @Override
    public Method getGetter()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement().getAccessor());
+      return MirrorAdapter.getShadow(getApi(), getElement().getAccessor());
    }
 
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
    public RecordComponent erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    public RecordComponentElement getElement()

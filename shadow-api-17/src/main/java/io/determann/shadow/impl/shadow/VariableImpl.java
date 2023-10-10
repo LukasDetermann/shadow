@@ -46,14 +46,14 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public Shadow getType()
    {
-      return getApi().getShadowFactory().shadowFromType(getElement().asType());
+      return MirrorAdapter.getShadow(getApi(), getElement().asType());
    }
 
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    public VariableElement getElement()
@@ -76,7 +76,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public SURROUNDING getSurrounding()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement().getEnclosingElement());
+      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    @Override

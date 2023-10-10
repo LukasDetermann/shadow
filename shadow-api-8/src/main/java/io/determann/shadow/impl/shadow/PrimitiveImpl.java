@@ -33,14 +33,14 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    @Override
    public Class asBoxed()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().boxedClass(getMirror()).asType());
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().boxedClass(getMirror()).asType());
    }
 
    @Override
    public Array asArray()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override

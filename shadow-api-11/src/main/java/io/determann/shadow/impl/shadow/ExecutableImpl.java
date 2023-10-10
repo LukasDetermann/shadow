@@ -42,7 +42,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Shadow getReturnType()
    {
-      return getApi().getShadowFactory().shadowFromType(getMirror().getReturnType());
+      return MirrorAdapter.getShadow(getApi(), getMirror().getReturnType());
    }
 
    @Override
@@ -50,7 +50,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
+                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .collect(toUnmodifiableList());
    }
 
@@ -62,7 +62,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       {
          return Optional.empty();
       }
-      return Optional.of(getApi().getShadowFactory().shadowFromType(receiverType));
+      return Optional.of(MirrorAdapter.getShadow(getApi(), receiverType));
    }
 
    @Override
@@ -70,7 +70,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> getApi().getShadowFactory().<Shadow>shadowFromType(typeMirror))
+                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .map(ShadowApi::convert)
                         .map(ShadowConverter::toClassOrThrow)
                         .collect(toUnmodifiableList());
@@ -91,7 +91,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Declared getSurrounding()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement().getEnclosingElement());
+      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    public ExecutableElement getElement()
@@ -142,7 +142,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getParameters()
                          .stream()
-                         .map(variableElement -> getApi().getShadowFactory().<Parameter>shadowFromElement(variableElement))
+                         .map(variableElement -> MirrorAdapter.<Parameter>getShadow(getApi(), variableElement))
                          .collect(toUnmodifiableList());
    }
 
@@ -157,15 +157,15 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> getApi().getShadowFactory().<Generic>shadowFromElement(element))
+                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
                          .collect(toUnmodifiableList());
    }
 
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory()
-                     .shadowFromElement(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+      return MirrorAdapter
+                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
    }
 
    @Override

@@ -85,8 +85,6 @@ public interface ShadowApi extends DeclaredHolder
 
    ShadowConstants getConstants();
 
-   ShadowFactory getShadowFactory();
-
    //logging
    void logError(String msg);
 

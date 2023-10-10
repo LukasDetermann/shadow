@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow.module;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -27,7 +28,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return getApi().getShadowFactory().shadowFromElement(exportsDirective.getPackage());
+      return MirrorAdapter.getShadow(getApi(), exportsDirective.getPackage());
    }
 
    @Override
@@ -37,7 +38,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> getApi().getShadowFactory().<Module>shadowFromElement(moduleElement))
+                             .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
                              .collect(toUnmodifiableList());
    }
 

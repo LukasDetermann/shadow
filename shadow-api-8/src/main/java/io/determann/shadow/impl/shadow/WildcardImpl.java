@@ -32,7 +32,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(getApi().getShadowFactory().shadowFromType(extendsBound));
+      return Optional.of(MirrorAdapter.getShadow(getApi(), extendsBound));
    }
 
    @Override
@@ -43,7 +43,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(getApi().getShadowFactory().shadowFromType(superBound));
+      return Optional.of(MirrorAdapter.getShadow(getApi(), superBound));
    }
 
    @Override
@@ -55,7 +55,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    @Override
    public Shadow erasure()
    {
-      return getApi().getShadowFactory().shadowFromType(getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
    }
 
    @Override

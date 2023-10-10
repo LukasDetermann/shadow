@@ -1,6 +1,7 @@
 package io.determann.shadow.impl;
 
 import io.determann.shadow.api.AnnotationTypeChooser;
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
@@ -27,7 +28,7 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
    {
       this.shadows = elements
             .stream()
-            .map(element -> shadowApi.getShadowFactory().<Shadow>shadowFromElement(element))
+            .map(element -> MirrorAdapter.<Shadow>getShadow(shadowApi, element))
             .collect(toUnmodifiableSet());
    }
 

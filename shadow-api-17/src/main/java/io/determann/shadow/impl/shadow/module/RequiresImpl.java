@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.shadow.module;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
@@ -33,7 +34,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    @Override
    public Module getDependency()
    {
-      return getApi().getShadowFactory().shadowFromElement(requiresDirective.getDependency());
+      return MirrorAdapter.getShadow(getApi(), requiresDirective.getDependency());
    }
 
    @Override

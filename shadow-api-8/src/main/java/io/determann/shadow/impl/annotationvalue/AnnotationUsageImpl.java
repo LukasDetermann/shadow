@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.annotationvalue;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.shadow.Annotation;
@@ -51,7 +52,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put(shadowApi.getShadowFactory().shadowFromElement(entry.getKey()),
+         result.put(MirrorAdapter.getShadow(getApi(), entry.getKey()),
                     new AnnotationValueImpl(shadowApi, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
@@ -76,7 +77,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public Annotation getAnnotation()
    {
-      return getApi().getShadowFactory().shadowFromElement(getElement());
+      return MirrorAdapter.getShadow(getApi(), getElement());
    }
 
    @Override

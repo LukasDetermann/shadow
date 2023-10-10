@@ -51,7 +51,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> getApi().getShadowFactory().<Declared>shadowFromElement(typeElement))
+                         .map(typeElement -> MirrorAdapter.<Declared>getShadow(getApi(), typeElement))
                          .toList();
    }
 
@@ -88,7 +88,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    public Optional<Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
-            .map(typeElement -> getApi().getShadowFactory().shadowFromElement(typeElement));
+            .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 
    @Override
