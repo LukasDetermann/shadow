@@ -242,7 +242,6 @@ public class AnnotationValueImpl implements AnnotationValue
       throw new IllegalStateException();
    }
 
-   @Override
    public javax.lang.model.element.AnnotationValue getAnnotationValue()
    {
       return annotationValue;

@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
+import io.determann.shadow.impl.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.impl.shadow.*;
 
 import javax.lang.model.element.*;
@@ -142,7 +143,7 @@ public interface MirrorAdapter
       return getAnnotationUsages(api, element.getAnnotationMirrors());
    }
 
-   public static Set<Modifier> getModifiers(Element element)
+   static Set<Modifier> getModifiers(Element element)
    {
       return element.getModifiers()
                     .stream()
@@ -150,7 +151,7 @@ public interface MirrorAdapter
                     .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 
-   public static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
+   static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
    {
       switch (modifier)
       {
@@ -190,7 +191,7 @@ public interface MirrorAdapter
     * @see #getShadow(ShadowApi, TypeMirror)
     */
    @SuppressWarnings("unchecked")
-   static  <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, @JdkApi Element element)
+   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, Element element)
    {
       switch (element.getKind())
       {
@@ -232,7 +233,7 @@ public interface MirrorAdapter
     * @see #getShadow(ShadowApi, Element)
     */
    @SuppressWarnings("unchecked")
-   static  <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, @JdkApi TypeMirror typeMirror)
+   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, TypeMirror typeMirror)
    {
       switch (typeMirror.getKind())
       {
@@ -284,8 +285,13 @@ public interface MirrorAdapter
       }
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi, @JdkApi List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi,  List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
+   }
+
+   static javax.lang.model.element.AnnotationValue getAnnotationValue(AnnotationValue annotationValue)
+   {
+      return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
    }
 }

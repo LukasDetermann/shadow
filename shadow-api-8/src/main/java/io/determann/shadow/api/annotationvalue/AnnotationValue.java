@@ -1,6 +1,5 @@
 package io.determann.shadow.api.annotationvalue;
 
-import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
@@ -43,9 +42,6 @@ public interface AnnotationValue
    AnnotationUsage asAnnotationUsage();
 
    List<AnnotationValue> asListOfValues();
-
-   @JdkApi
-   javax.lang.model.element.AnnotationValue getAnnotationValue();
 
    /**
     * calls {@code toString} on the underlying value
