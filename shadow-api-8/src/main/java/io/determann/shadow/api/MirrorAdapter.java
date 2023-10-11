@@ -5,10 +5,13 @@ import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.impl.ShadowApiImpl;
 import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.impl.shadow.*;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
 import javax.tools.Diagnostic;
@@ -115,27 +118,27 @@ public interface MirrorAdapter
 
    static String getJavaDoc(ShadowApi api, Element element)
    {
-      return api.getJdkApiContext().getProcessingEnv().getElementUtils().getDocComment(element);
+      return getProcessingEnv(api).getElementUtils().getDocComment(element);
    }
 
    static void logError(ShadowApi api, Element element, String msg)
    {
-      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element);
+      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element);
    }
 
    static void logInfo(ShadowApi api, Element element, String msg)
    {
-      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg, element);
+      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.NOTE, msg, element);
    }
 
    static void logWarning(ShadowApi api, Element element, String msg)
    {
-      api.getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, element);
+      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, element);
    }
 
    static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)
    {
-      return getAnnotationUsages(api, api.getJdkApiContext().getProcessingEnv().getElementUtils().getAllAnnotationMirrors(element));
+      return getAnnotationUsages(api, getProcessingEnv(api).getElementUtils().getAllAnnotationMirrors(element));
    }
 
    static List<AnnotationUsage> getDirectAnnotationUsages(ShadowApi api, Element element)
@@ -249,7 +252,7 @@ public interface MirrorAdapter
          case ARRAY:
             return (SHADOW) new ArrayImpl(shadowApi, (ArrayType) typeMirror);
          case DECLARED:
-            switch (shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().asElement(typeMirror).getKind())
+            switch (getProcessingEnv(shadowApi).getTypeUtils().asElement(typeMirror).getKind())
             {
                case CLASS:
                   return (SHADOW) new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
@@ -285,7 +288,7 @@ public interface MirrorAdapter
       }
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi,  List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi, List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
    }
@@ -293,5 +296,15 @@ public interface MirrorAdapter
    static javax.lang.model.element.AnnotationValue getAnnotationValue(AnnotationValue annotationValue)
    {
       return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
+   }
+
+   static ProcessingEnvironment getProcessingEnv(ShadowApi shadowApi)
+   {
+      return ((ShadowApiImpl) shadowApi).getProcessingEnv();
+   }
+
+   static RoundEnvironment getRoundEnv(ShadowApi shadowApi)
+   {
+      return ((ShadowApiImpl) shadowApi).getRoundEnv();
    }
 }

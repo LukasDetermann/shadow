@@ -59,7 +59,7 @@ public class RecordImpl extends DeclaredImpl implements Record
 
       return MirrorAdapter
                      .getShadow(getApi(),
-                                getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -91,12 +91,12 @@ public class RecordImpl extends DeclaredImpl implements Record
    @Override
    public Record interpolateGenerics()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Record erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 }

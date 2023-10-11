@@ -33,7 +33,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    public PackageImpl(ShadowApi shadowApi, NoType noTypeMirror)
    {
       super(shadowApi, noTypeMirror);
-      this.packageElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageElement(noTypeMirror.toString());
+      this.packageElement = MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getPackageElement(noTypeMirror.toString());
       if (packageElement == null)
       {
          throw new IllegalStateException(noTypeMirror + " is not unique");
@@ -88,7 +88,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedName))
             .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 

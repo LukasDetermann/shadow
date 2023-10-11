@@ -63,8 +63,6 @@ public interface ShadowApi extends DeclaredHolder
       return ((ShadowApiImpl) apiFromPreviousRound).update(processingEnv, roundEnv, processingRound);
    }
 
-   JdkApiContext getJdkApiContext();
-
    /**
     * Looks up annotated elements in currently compiled code. <br>
     * Annotation processing happens in rounds.

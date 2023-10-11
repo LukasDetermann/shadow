@@ -34,13 +34,13 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(MirrorAdapter.getType(shadow), getMirror());
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isAssignable(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
@@ -53,7 +53,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    public Package getPackage()
    {
       return MirrorAdapter
-                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getPackageOf(getElement()));
    }
 
    public VariableElement getElement()

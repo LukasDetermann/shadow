@@ -35,7 +35,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    public ModuleImpl(ShadowApi shadowApi, NoType noType)
    {
       super(shadowApi, noType);
-      this.moduleElement = getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(noType.toString());
+      this.moduleElement = MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getModuleElement(noType.toString());
       if (moduleElement == null)
       {
          throw new IllegalStateException(noType + " is not unique");
@@ -83,7 +83,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedName))
             .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 

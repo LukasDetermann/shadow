@@ -31,7 +31,8 @@ import static java.util.Optional.ofNullable;
 
 public class ShadowApiImpl implements ShadowApi
 {
-   private JdkApiContext jdkApiContext;
+   private ProcessingEnvironment processingEnv;
+   private RoundEnvironment roundEnv;
    private int processingRound;
    private Context renderingContext = Context.builder().withMostlyQualifiedNames().build();
    private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
@@ -61,7 +62,7 @@ public class ShadowApiImpl implements ShadowApi
    };
    private BiConsumer<ShadowApi, String> systemOutHandler = (shadowApi, s) ->
    {
-      if (!shadowApi.getJdkApiContext().getProcessingEnv().toString().startsWith("javac"))
+      if (!MirrorAdapter.getProcessingEnv(getApi()).toString().startsWith("javac"))
       {
          shadowApi.logWarning(s);
       }
@@ -80,14 +81,9 @@ public class ShadowApiImpl implements ShadowApi
    public ShadowApi update(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
       this.processingRound = processingRound;
-      this.jdkApiContext = new JdkApiContext(processingEnv, roundEnv);
+      this.processingEnv = processingEnv;
+      this.roundEnv = roundEnv;
       return this;
-   }
-
-   @Override
-   public JdkApiContext getJdkApiContext()
-   {
-      return jdkApiContext;
    }
 
    private void proxySystemOut()
@@ -129,12 +125,12 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation)
    {
-      TypeElement annotation = getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedAnnotation);
+      TypeElement annotation = MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedAnnotation);
       if (annotation == null || !annotation.getKind().equals(ElementKind.ANNOTATION_TYPE))
       {
          throw new IllegalArgumentException("No annotation found with qualified name \"" + qualifiedAnnotation + "\"");
       }
-      return new AnnotationTypeChooserImpl(this, jdkApiContext.getRoundEnv().getElementsAnnotatedWith(annotation));
+      return new AnnotationTypeChooserImpl(this, MirrorAdapter.getRoundEnv(getApi()).getElementsAnnotatedWith(annotation));
    }
 
    @Override
@@ -146,17 +142,17 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public List<Module> getModules()
    {
-      return getJdkApiContext().getProcessingEnv().getElementUtils()
-                               .getAllModuleElements()
-                               .stream()
-                               .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
-                               .toList();
+      return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils()
+                          .getAllModuleElements()
+                          .stream()
+                          .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
+                          .toList();
    }
 
    @Override
    public Optional<Module> getModule(String name)
    {
-      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getModuleElement(name))
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getModuleElement(name))
             .map(moduleElement -> MirrorAdapter.getShadow(getApi(), moduleElement));
    }
 
@@ -169,22 +165,22 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public List<Package> getPackages(String qualifiedName)
    {
-      return getJdkApiContext().getProcessingEnv().getElementUtils()
-                               .getAllPackageElements(qualifiedName)
-                               .stream()
-                               .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
-                               .toList();
+      return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils()
+                          .getAllPackageElements(qualifiedName)
+                          .stream()
+                          .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
+                          .toList();
    }
 
    @Override
    public List<Package> getPackages()
    {
-      return getJdkApiContext().getProcessingEnv().getElementUtils()
-                               .getAllModuleElements()
-                               .stream()
-                               .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
-                               .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
-                               .toList();
+      return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils()
+                          .getAllModuleElements()
+                          .stream()
+                          .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
+                          .map(packageElement -> MirrorAdapter.<Package>getShadow(getApi(), packageElement))
+                          .toList();
    }
 
    @Override
@@ -202,8 +198,8 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public Optional<Package> getPackage(Module module, String qualifiedPackageName)
    {
-      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils()
-                                          .getPackageElement(MirrorAdapter.getElement(module),
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils()
+                                     .getPackageElement(MirrorAdapter.getElement(module),
                                                              qualifiedPackageName))
             .map(packageElement -> MirrorAdapter.getShadow(getApi(), packageElement));
    }
@@ -217,7 +213,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(getJdkApiContext().getProcessingEnv().getElementUtils().getTypeElement(qualifiedName))
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedName))
             .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 
@@ -239,19 +235,19 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void logError(String msg)
    {
-      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
+      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
    }
 
    @Override
    public void logInfo(String msg)
    {
-      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
+      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
    }
 
    @Override
    public void logWarning(String msg)
    {
-      getJdkApiContext().getProcessingEnv().getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg);
+      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg);
    }
 
    @Override
@@ -275,7 +271,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeSourceFile(String qualifiedName, String content)
    {
-      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createSourceFile(qualifiedName).openWriter())
+      try (Writer writer = MirrorAdapter.getProcessingEnv(getApi()).getFiler().createSourceFile(qualifiedName).openWriter())
       {
          writer.write(content);
       }
@@ -288,7 +284,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeClassFile(String qualifiedName, String content)
    {
-      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createClassFile(qualifiedName).openWriter())
+      try (Writer writer = MirrorAdapter.getProcessingEnv(getApi()).getFiler().createClassFile(qualifiedName).openWriter())
       {
          writer.write(content);
       }
@@ -301,7 +297,7 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public void writeResource(StandardLocation location, String moduleAndPkg, String relativPath, String content)
    {
-      try (Writer writer = getJdkApiContext().getProcessingEnv().getFiler().createResource(location, moduleAndPkg, relativPath).openWriter())
+      try (Writer writer = MirrorAdapter.getProcessingEnv(getApi()).getFiler().createResource(location, moduleAndPkg, relativPath).openWriter())
       {
          writer.write(content);
       }
@@ -314,13 +310,13 @@ public class ShadowApiImpl implements ShadowApi
    @Override
    public FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException
    {
-      return getJdkApiContext().getProcessingEnv().getFiler().getResource(location, moduleAndPkg, relativPath);
+      return MirrorAdapter.getProcessingEnv(getApi()).getFiler().getResource(location, moduleAndPkg, relativPath);
    }
 
    @Override
    public boolean isProcessingOver()
    {
-      return getJdkApiContext().getRoundEnv().processingOver();
+      return MirrorAdapter.getRoundEnv(getApi()).processingOver();
    }
 
    @Override
@@ -452,5 +448,15 @@ public class ShadowApiImpl implements ShadowApi
    public Context getRenderingContext()
    {
       return renderingContext;
+   }
+
+   public ProcessingEnvironment getProcessingEnv()
+   {
+      return processingEnv;
+   }
+
+   public RoundEnvironment getRoundEnv()
+   {
+      return roundEnv;
    }
 }

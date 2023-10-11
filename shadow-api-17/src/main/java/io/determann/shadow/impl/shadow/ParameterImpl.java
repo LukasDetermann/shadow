@@ -26,6 +26,6 @@ public class ParameterImpl extends VariableImpl<Executable> implements Parameter
    @Override
    public Shadow erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 }

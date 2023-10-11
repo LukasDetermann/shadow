@@ -1,5 +1,6 @@
 package io.determann.shadow.impl;
 
+import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowConstants;
 import io.determann.shadow.api.shadow.Null;
@@ -23,67 +24,66 @@ public class ShadowConstantsImpl implements ShadowConstants
    @Override
    public Wildcard getUnboundWildcard()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, null));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getWildcardType(null, null));
    }
-
 
    @Override
    public Null getNull()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getNullType());
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getNullType());
    }
 
    @Override
    public Void getVoid()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getNoType(TypeKind.VOID));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getNoType(TypeKind.VOID));
    }
 
    @Override
    public Primitive getPrimitiveBoolean()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
    }
 
    @Override
    public Primitive getPrimitiveByte()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.BYTE));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.BYTE));
    }
 
    @Override
    public Primitive getPrimitiveShort()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.SHORT));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.SHORT));
    }
 
    @Override
    public Primitive getPrimitiveInt()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.INT));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.INT));
    }
 
    @Override
    public Primitive getPrimitiveLong()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.LONG));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.LONG));
    }
 
    @Override
    public Primitive getPrimitiveChar()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.CHAR));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.CHAR));
    }
 
    @Override
    public Primitive getPrimitiveFloat()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
    }
 
    @Override
    public Primitive getPrimitiveDouble()
    {
-      return getShadow(shadowApi, shadowApi.getJdkApiContext().getProcessingEnv().getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
+      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
    }
 }

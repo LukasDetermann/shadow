@@ -38,13 +38,13 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    @Override
    public Array asArray()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override
    public Shadow erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 
    @Override

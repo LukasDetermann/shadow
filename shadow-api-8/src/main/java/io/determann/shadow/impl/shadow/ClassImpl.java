@@ -38,7 +38,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
@@ -109,7 +109,7 @@ public class ClassImpl extends DeclaredImpl implements Class
 
       return MirrorAdapter
                      .getShadow(getApi(),
-                                getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -141,18 +141,18 @@ public class ClassImpl extends DeclaredImpl implements Class
    @Override
    public Class interpolateGenerics()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Class erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 
    @Override
    public Primitive asUnboxed()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().unboxedType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().unboxedType(getMirror()));
    }
 }

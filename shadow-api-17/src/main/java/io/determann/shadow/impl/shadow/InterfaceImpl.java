@@ -27,7 +27,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public boolean isFunctional()
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().isFunctionalInterface(getElement());
+      return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().isFunctionalInterface(getElement());
    }
 
    @Override
@@ -48,7 +48,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
 
       return MirrorAdapter
                      .getShadow(getApi(),
-                                getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getDeclaredType(getElement(), typeMirrors));
+                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -80,12 +80,12 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public Interface interpolateGenerics()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().capture(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
    }
 
    @Override
    public Interface erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 }

@@ -24,7 +24,7 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
@@ -36,37 +36,37 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    @Override
    public List<Shadow> getDirectSuperTypes()
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils()
-                     .directSupertypes(getMirror())
-                     .stream()
-                     .map(typeMirror1 -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror1))
-                     .collect(toUnmodifiableList());
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils()
+                          .directSupertypes(getMirror())
+                          .stream()
+                          .map(typeMirror1 -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror1))
+                          .collect(toUnmodifiableList());
    }
 
    @Override
    public Array erasure()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().erasure(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
    }
 
    @Override
    public Wildcard asExtendsWildcard()
    {
       return MirrorAdapter
-                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(getMirror(), null));
+                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(getMirror(), null));
    }
 
    @Override
    public Wildcard asSuperWildcard()
    {
       return MirrorAdapter
-                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getWildcardType(null, getMirror()));
+                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override
    public Array asArray()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override

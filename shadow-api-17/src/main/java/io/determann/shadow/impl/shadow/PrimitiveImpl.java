@@ -21,26 +21,26 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isSubtype(MirrorAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isAssignable(getMirror(), MirrorAdapter.getType(shadow));
    }
 
    @Override
    public Class asBoxed()
    {
       return MirrorAdapter
-                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().boxedClass(getMirror()).asType());
+                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().boxedClass(getMirror()).asType());
    }
 
    @Override
    public Array asArray()
    {
-      return MirrorAdapter.getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().getArrayType(getMirror()));
+      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override

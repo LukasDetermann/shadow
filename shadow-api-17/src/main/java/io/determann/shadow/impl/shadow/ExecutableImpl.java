@@ -77,7 +77,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean isBridge()
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getElementUtils().isBridge(getElement());
+      return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().isBridge(getElement());
    }
 
    @Override
@@ -111,8 +111,8 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean overrides(Method method)
    {
-      return getApi().getJdkApiContext()
-                     .getProcessingEnv()
+      return MirrorAdapter
+                     .getProcessingEnv(getApi())
                      .getElementUtils()
                      .overrides(getElement(), MirrorAdapter.getElement(method), MirrorAdapter.getElement(getSurrounding()));
    }
@@ -120,8 +120,8 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return getApi().getJdkApiContext()
-                     .getProcessingEnv()
+      return MirrorAdapter
+                     .getProcessingEnv(getApi())
                      .getElementUtils()
                      .overrides(MirrorAdapter.getElement(method), getElement(), MirrorAdapter.getElement(method.getSurrounding()));
    }
@@ -129,7 +129,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return getApi().getJdkApiContext().getProcessingEnv().getTypeUtils().isSubsignature(getMirror(), MirrorAdapter.getType(method));
+      return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().isSubsignature(getMirror(), MirrorAdapter.getType(method));
    }
 
    @Override
@@ -160,7 +160,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    public Package getPackage()
    {
       return MirrorAdapter
-                     .getShadow(getApi(), getApi().getJdkApiContext().getProcessingEnv().getElementUtils().getPackageOf(getElement()));
+                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getPackageOf(getElement()));
    }
 
    @Override
