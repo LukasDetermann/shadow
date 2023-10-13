@@ -32,7 +32,7 @@ Shadow API offers:
 <th>JDK</th>
 </tr>
 <tr>
-<td width="280">
+<td width="300">
 
 - Shadow
   - Declared
@@ -59,7 +59,7 @@ Shadow API offers:
     - Field
     - Parameter
 </td>
-<td width="280">
+<td width="300">
 
 - TypeMirror
   - ReferenceType
@@ -208,7 +208,7 @@ class ConversionTest
 ````java
 public interface Shadow
 {
-   //..
+   //...
   /**
    * Information regarding generics is lost after the compilation. For Example 
    * {@code List<String>} becomes {@code List}. This method Does the same.
@@ -245,8 +245,8 @@ public interface Types {
 
 <table>
 <tr>
-<th>Shadow API</th>
-<th>JDK</th>
+<th>Shadow API -> JDK</th>
+<th>JDK -> Shadow API</th>
 </tr>
 <tr>
 <td width="50%">
@@ -260,7 +260,6 @@ class ConversionTest
     ProcessorTest
       .process(shadowApi ->
          {
-           //shadow -> jdk
            ProcessingEnvironment processingEnv = shadowApi.getJdkApiContext().getProcessingEnv();
            RoundEnvironment roundEnv = shadowApi.getJdkApiContext().getRoundEnv();
 
@@ -280,7 +279,6 @@ class ConversionTest extends AbstractProcessor
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
   {
-    //jdk -> shadow
     ShadowApi shadowApi = ShadowApi.create(processingEnv, roundEnv, 0);
 
     Shadow<? extends TypeMirror> shadow = shadowApi.getShadowFactory().shadowFromElement(null);
@@ -295,7 +293,8 @@ class ConversionTest extends AbstractProcessor
 </details>
 <details><summary>Better rendering of existing sources</summary>
 
-A simple method like this
+
+**A simple method like this**
 
 ````java
 public abstract class MyClass {
@@ -425,12 +424,22 @@ and a Callback can be registered for NameRenderedEvents to create for example im
 
 ## API Goals
 
+#### Short-term
+
 Make annotation processing more accessible and easier to comprehend.
 
+#### Long-term
+
+Provide an API for annotation processing, reflection, reading/writing class files and reading/writing java files.
+With the option to support other java code metamodels.
 
 ## Project status
 
-The API is close to final. Just waiting for more feedback before the 1.0 release.
+The annotation processing API is close to final.
+The annotation processing specific parts will be separated.
+And then the implementation of this API using reflection will start.
+Java 21 does not bring anything new for annotation processing. 
+While only annotation processing is supported there is no need for shadow-api-21.
 
 ## Getting started
 
