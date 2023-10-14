@@ -15,7 +15,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
-import javax.tools.Diagnostic;
 import java.util.List;
 import java.util.Set;
 
@@ -90,6 +89,41 @@ public interface MirrorAdapter
       return ((WildcardImpl) wildcard).getMirror();
    }
 
+   static Element getElement(Annotationable annotationable)
+   {
+      if (annotationable instanceof Declared)
+      {
+         Declared declared = ((Declared) annotationable);
+         return getElement(declared);
+      }
+      if (annotationable instanceof Executable)
+      {
+         Executable executable = ((Executable) annotationable);
+         return getElement(executable);
+      }
+      if (annotationable instanceof Generic)
+      {
+         Generic generic = ((Generic) annotationable);
+         return getElement(generic);
+      }
+      if (annotationable instanceof Module)
+      {
+         Module module = ((Module) annotationable);
+         return getElement(module);
+      }
+      if (annotationable instanceof Package)
+      {
+         Package aPackage = ((Package) annotationable);
+         return getElement(aPackage);
+      }
+      if (annotationable instanceof Variable<?>)
+      {
+         Variable<?> variable = ((Variable<?>) annotationable);
+         return getElement(variable);
+      }
+      throw new IllegalArgumentException();
+   }
+
    static TypeElement getElement(Declared declared)
    {
       return ((DeclaredImpl) declared).getElement();
@@ -133,21 +167,6 @@ public interface MirrorAdapter
    static String getJavaDoc(ShadowApi api, Element element)
    {
       return getProcessingEnv(api).getElementUtils().getDocComment(element);
-   }
-
-   static void logError(ShadowApi api, Element element, String msg)
-   {
-      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element);
-   }
-
-   static void logInfo(ShadowApi api, Element element, String msg)
-   {
-      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.NOTE, msg, element);
-   }
-
-   static void logWarning(ShadowApi api, Element element, String msg)
-   {
-      getProcessingEnv(api).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, element);
    }
 
    static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)

@@ -1,6 +1,7 @@
 package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.*;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessing;
 import io.determann.shadow.api.converter.DeclaredMapper;
 import io.determann.shadow.api.renderer.NameRenderedEvent;
 import io.determann.shadow.api.shadow.Class;
@@ -13,7 +14,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.*;
@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static io.determann.shadow.api.annotation_processing.AnnotationProcessing.*;
 import static java.lang.System.err;
 import static java.lang.System.out;
 import static java.util.Optional.ofNullable;
@@ -39,7 +40,7 @@ public class ShadowApiImpl implements ShadowApi
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
       throwable.printStackTrace(printWriter);
-      shadowApi.logError(stringWriter.toString());
+      logError(this, stringWriter.toString());
       throw new RuntimeException(throwable);
    };
    private BiConsumer<ShadowApi, DiagnosticContext> diagnosticHandler = (shadowApi, diagnosticContext) ->
@@ -51,22 +52,22 @@ public class ShadowApiImpl implements ShadowApi
                                    .replaceAll("(\\d[HMS])(?!$)", "$1 ")
                                    .toLowerCase();
 
-         shadowApi.logInfo(diagnosticContext.getProcessorName() +
-                           " took " +
-                           duration +
-                           " in round " +
-                           diagnosticContext.getProcessingRound() +
-                           "\n");
+         logInfo(this, diagnosticContext.getProcessorName() +
+                       " took " +
+                       duration +
+                       " in round " +
+                       diagnosticContext.getProcessingRound() +
+                       "\n");
       }
    };
    private BiConsumer<ShadowApi, String> systemOutHandler = (shadowApi, s) ->
    {
       if (!MirrorAdapter.getProcessingEnv(getApi()).toString().startsWith("javac"))
       {
-         shadowApi.logWarning(s);
+         logWarning(this, s);
       }
    };
-   private BiConsumer<ShadowApi, String> systemErrorHandler = ShadowApi::logError;
+   private BiConsumer<ShadowApi, String> systemErrorHandler = AnnotationProcessing::logError;
 
 
    public ShadowApiImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
@@ -229,42 +230,6 @@ public class ShadowApiImpl implements ShadowApi
    public ShadowConstants getConstants()
    {
       return new ShadowConstantsImpl(this);
-   }
-
-   @Override
-   public void logError(String msg)
-   {
-      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
-   }
-
-   @Override
-   public void logInfo(String msg)
-   {
-      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
-   }
-
-   @Override
-   public void logWarning(String msg)
-   {
-      MirrorAdapter.getProcessingEnv(getApi()).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg);
-   }
-
-   @Override
-   public void logErrorAt(Annotationable elementBacked, String msg)
-   {
-      elementBacked.logError(msg);
-   }
-
-   @Override
-   public void logInfoAt(Annotationable elementBacked, String msg)
-   {
-      elementBacked.logInfo(msg);
-   }
-
-   @Override
-   public void logWarningAt(Annotationable elementBacked, String msg)
-   {
-      elementBacked.logWarning(msg);
    }
 
    @Override

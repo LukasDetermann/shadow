@@ -83,20 +83,7 @@ public interface ShadowApi extends DeclaredHolder
 
    ShadowConstants getConstants();
 
-   //logging
-   void logError(String msg);
-
-   void logInfo(String msg);
-
-   void logWarning(String msg);
-
-   void logErrorAt(Annotationable elementBacked, String msg);
-
-   void logInfoAt(Annotationable elementBacked, String msg);
-
    //writing files
-   void logWarningAt(Annotationable elementBacked, String msg);
-
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
     */

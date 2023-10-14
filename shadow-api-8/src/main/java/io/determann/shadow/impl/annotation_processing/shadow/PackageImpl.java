@@ -96,24 +96,6 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public void logError(String msg)
-   {
-      MirrorAdapter.logError(getApi(), getElement(), msg);
-   }
-
-   @Override
-   public void logInfo(String msg)
-   {
-      MirrorAdapter.logInfo(getApi(), getElement(), msg);
-   }
-
-   @Override
-   public void logWarning(String msg)
-   {
-      MirrorAdapter.logWarning(getApi(), getElement(), msg);
-   }
-
-   @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return MirrorAdapter.getAnnotationUsages(getApi(), getElement());

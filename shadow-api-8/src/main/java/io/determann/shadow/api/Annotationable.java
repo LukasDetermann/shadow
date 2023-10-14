@@ -22,12 +22,6 @@ public interface Annotationable
     */
    String getJavaDoc();
 
-   void logError(String msg);
-
-   void logInfo(String msg);
-
-   void logWarning(String msg);
-
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
