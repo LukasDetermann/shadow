@@ -2,7 +2,7 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.GenericRenderer;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 

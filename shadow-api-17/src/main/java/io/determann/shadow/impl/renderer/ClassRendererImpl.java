@@ -3,7 +3,7 @@ package io.determann.shadow.impl.renderer;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.ClassRenderer;
 import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.Set;
 import java.util.stream.Collectors;

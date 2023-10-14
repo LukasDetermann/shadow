@@ -2,7 +2,7 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.PrimitiveRenderer;
 import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {

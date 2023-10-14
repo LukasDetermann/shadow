@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.List;
 import java.util.Optional;

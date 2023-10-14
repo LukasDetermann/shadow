@@ -6,7 +6,7 @@ import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.module.*;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.List;
 import java.util.Map;

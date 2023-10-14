@@ -8,7 +8,7 @@ import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 import io.determann.shadow.impl.converter.ConverterImpl;
 import io.determann.shadow.impl.renderer.*;
 

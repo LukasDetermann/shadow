@@ -4,7 +4,7 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.renderer.ArrayRenderer;
 import io.determann.shadow.api.shadow.Array;
-import io.determann.shadow.impl.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;

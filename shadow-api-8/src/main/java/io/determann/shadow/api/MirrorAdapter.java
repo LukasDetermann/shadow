@@ -5,10 +5,10 @@ import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.ShadowApiImpl;
-import io.determann.shadow.impl.annotationvalue.AnnotationUsageImpl;
-import io.determann.shadow.impl.annotationvalue.AnnotationValueImpl;
-import io.determann.shadow.impl.shadow.*;
+import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationUsageImpl;
+import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationValueImpl;
+import io.determann.shadow.impl.annotation_processing.shadow.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
