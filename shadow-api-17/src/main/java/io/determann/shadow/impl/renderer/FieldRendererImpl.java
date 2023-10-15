@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.FieldRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Field;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class FieldRendererImpl implements FieldRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Field field;
 
-   public FieldRendererImpl(Field field)
+   public FieldRendererImpl(RenderingContext renderingContext, Field field)
    {
-      this.context = ((ShadowApiImpl) field.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.field = field;
    }
 
-   public static String declaration(Context context, Field field)
+   public static String declaration(RenderingContextWrapper context, Field field)
    {
       StringBuilder sb = new StringBuilder();
 

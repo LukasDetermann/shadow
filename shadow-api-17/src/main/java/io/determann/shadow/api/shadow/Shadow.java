@@ -3,10 +3,11 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.ApiHolder;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.converter.Converter;
 
 /**
  * Represents sourceCode that is being complied. A {@link Shadow} can be converted only in one of its children using
- * {@link ShadowApi#convert(Shadow)}. Every {@link Shadow} has a {@link TypeKind} indicating its Type.
+ * {@link Converter#convert(Shadow)}. Every {@link Shadow} has a {@link TypeKind} indicating its Type.
  * {@link TypeKind#ARRAY} -&gt; {@link Array}. To check for equality use {@link #representsSameType(Shadow)}.
  * <br><br>
  * <b>subtypes</b>

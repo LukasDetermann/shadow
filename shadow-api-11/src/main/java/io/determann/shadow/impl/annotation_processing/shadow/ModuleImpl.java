@@ -3,6 +3,7 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
@@ -17,7 +18,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.of;
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -136,7 +137,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                         Optional<Provides> existing =
                                               directives.stream()
                                                         .filter(collected -> collected.getKind().equals(DirectiveKind.PROVIDES))
-                                                        .map(ShadowApi::convert)
+                                                        .map(Converter::convert)
                                                         .map(DirectiveConverter::toProvidesOrThrow)
                                                         .filter(collected -> collected.getService().representsSameType(provides.getService()))
                                                         .findAny();

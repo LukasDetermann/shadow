@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnnotationUsageRendererTest
@@ -22,15 +23,15 @@ class AnnotationUsageRendererTest
 
                                assertEquals(
                                      "@AnnotationUsageAnnotation(stingValue = \"string Value\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
-                                     render(annotationUsage).usage());
+                                     render(DEFAULT, annotationUsage).usage());
 
                                assertEquals(
                                      "@AnnotationUsageAnnotation(stingValue = test, booleanValue = test, byteValue = test, shortValue = test, intValue = test, longValue = test, charValue = test, floatValue = test, doubleValue = test, typeValue = test, enumConstantValue = test, annotationUsageValue = test, asListOfValues = test)",
-                                     render(annotationUsage).usage(method -> Optional.of("test")));
+                                     render(DEFAULT, annotationUsage).usage(method -> Optional.of("test")));
 
                                assertEquals(
                                      "@AnnotationUsageAnnotation(stingValue = \"test\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
-                                     render(annotationUsage).usage(method ->
+                                     render(DEFAULT, annotationUsage).usage(method ->
                                                                    {
                                                                       if (method.getReturnType()
                                                                                 .representsSameType(shadowApi.getClassOrThrow("java.lang.String")))

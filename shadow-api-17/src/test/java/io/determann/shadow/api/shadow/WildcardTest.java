@@ -1,11 +1,11 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WildcardTest extends ShadowTest<Wildcard>
@@ -26,7 +26,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                                        .getType())
                                                             .toInterface()
                                                             .map(anInterface -> anInterface.getGenerics().get(0))
-                                                            .map(ShadowApi::convert)
+                                                            .map(Converter::convert)
                                                             .flatMap(ShadowConverter::toWildcard)
                                                             .flatMap(Wildcard::getExtends)
                                                             .orElseThrow()))
@@ -50,7 +50,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                                        .getType())
                                                             .toInterface()
                                                             .map(anInterface -> anInterface.getGenerics().get(0))
-                                                            .map(ShadowApi::convert)
+                                                            .map(Converter::convert)
                                                             .flatMap(ShadowConverter::toWildcard)
                                                             .flatMap(Wildcard::getSuper)
                                                             .orElseThrow()))

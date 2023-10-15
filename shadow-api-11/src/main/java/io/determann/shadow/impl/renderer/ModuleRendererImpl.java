@@ -1,12 +1,12 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.QualifiedNameable;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.module.*;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +18,12 @@ import static java.util.stream.Collectors.joining;
 
 public class ModuleRendererImpl implements ModuleRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Module module;
 
-   public ModuleRendererImpl(Module module)
+   public ModuleRendererImpl(RenderingContext renderingContext, Module module)
    {
-      this.context = ((ShadowApiImpl) module.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.module = module;
    }
 
@@ -63,7 +63,7 @@ public class ModuleRendererImpl implements ModuleRenderer
          Function<DirectiveConverter, Requires> requiresConverter = DirectiveConverter::toRequiresOrThrow;
          List<Directive> requires = kind.get(DirectiveKind.REQUIRES)
                                         .stream()
-                                        .map(ShadowApi::convert)
+                                        .map(Converter::convert)
                                         .map(requiresConverter)
                                         .filter(requires1 -> !requires1.getDependency().getQualifiedName().equals("java.base"))
                                         .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class ModuleRendererImpl implements ModuleRenderer
                                      Function<DIRECTIVE, String> renderer)
    {
       return directives.stream()
-                       .map(ShadowApi::convert)
+                       .map(Converter::convert)
                        .map(converter)
                        .map(renderer)
                        .map(s -> s + ';')

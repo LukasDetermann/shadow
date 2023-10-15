@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.EnumConstantRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.EnumConstant;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final EnumConstant enumConstant;
 
-   public EnumConstantRendererImpl(EnumConstant enumConstant)
+   public EnumConstantRendererImpl(RenderingContext renderingContext, EnumConstant enumConstant)
    {
-      this.context = ((ShadowApiImpl) enumConstant.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.enumConstant = enumConstant;
    }
 
-   public static String declaration(Context context, EnumConstant enumConstant, String parameters, String content)
+   public static String declaration(RenderingContextWrapper context, EnumConstant enumConstant, String parameters, String content)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -49,7 +49,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, EnumConstant enumConstant)
+   public static String type(RenderingContextWrapper context, EnumConstant enumConstant)
    {
       return context.renderName(enumConstant.getSurrounding()) + '.' + enumConstant.getSimpleName();
    }

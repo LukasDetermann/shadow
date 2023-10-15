@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.EnumRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,17 +13,16 @@ import static java.util.stream.Collectors.joining;
 
 public class EnumRendererImpl implements EnumRenderer
 {
-
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Enum anEnum;
 
-   public EnumRendererImpl(Enum anEnum)
+   public EnumRendererImpl(RenderingContext renderingContext, Enum anEnum)
    {
-      this.context = ((ShadowApiImpl) anEnum.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.anEnum = anEnum;
    }
 
-   public static String declaration(Context context, Enum anEnum, String content)
+   public static String declaration(RenderingContextWrapper context, Enum anEnum, String content)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -72,7 +71,7 @@ public class EnumRendererImpl implements EnumRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, Enum anEnum)
+   public static String type(RenderingContextWrapper context, Enum anEnum)
    {
       return context.renderName(anEnum);
    }

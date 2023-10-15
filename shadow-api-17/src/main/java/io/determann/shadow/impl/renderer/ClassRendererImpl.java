@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.ClassRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,16 +12,16 @@ import static java.util.stream.Collectors.joining;
 
 public class ClassRendererImpl implements ClassRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Class aClass;
 
-   public ClassRendererImpl(Class aClass)
+   public ClassRendererImpl(RenderingContext renderingContext, Class aClass)
    {
-      this.context = ((ShadowApiImpl) aClass.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.aClass = aClass;
    }
 
-   public static String declaration(Context context, Class aClass, String content)
+   public static String declaration(RenderingContextWrapper context, Class aClass, String content)
    {
       StringBuilder sb = new StringBuilder();
       if (!aClass.getDirectAnnotationUsages().isEmpty())
@@ -80,7 +80,7 @@ public class ClassRendererImpl implements ClassRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, Class aClass)
+   public static String type(RenderingContextWrapper context, Class aClass)
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aClass));

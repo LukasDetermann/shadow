@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodRendererTest
@@ -20,14 +21,14 @@ class MethodRendererTest
 
                                assertEquals(
                                      "@MyAnnotation\nabstract <T> void varArgsMethod(String... args) throws java.io.FileNotFoundException;\n",
-                                     render(methods.get(0)).declaration());
+                                     render(DEFAULT, methods.get(0)).declaration());
                                assertEquals("public void six(java.util.List list) {}\n",
-                                            render(methods.get(1)).declaration());
+                                            render(DEFAULT, methods.get(1)).declaration());
                                assertEquals("public void seven(java.util.List<String> strings) {\ntest\n}\n",
-                                            render(methods.get(2)).declaration("test"));
+                                            render(DEFAULT, methods.get(2)).declaration("test"));
 
                                assertEquals("private void receiver(ReceiverExample ReceiverExample.this) {}\n",
-                                            render(shadowApi.getClassOrThrow("ReceiverExample")
+                                            render(DEFAULT, shadowApi.getClassOrThrow("ReceiverExample")
                                                             .getMethods()
                                                             .get(0))
                                                   .declaration());
@@ -53,11 +54,11 @@ class MethodRendererTest
                                List<Method> methods = shadowApi.getClassOrThrow("MethodExample").getMethods();
 
                                assertEquals("varArgsMethod()",
-                                            render(methods.get(0)).invocation());
+                                            render(DEFAULT, methods.get(0)).invocation());
                                assertEquals("six()",
-                                            render(methods.get(1)).invocation());
+                                            render(DEFAULT, methods.get(1)).invocation());
                                assertEquals("seven(test)",
-                                            render(methods.get(2)).invocation("test"));
+                                            render(DEFAULT, methods.get(2)).invocation("test"));
                             })
                    .withCodeToCompile("MethodExample.java", "public abstract class MethodExample {\n" +
                                                             "   abstract <T> void varArgsMethod(String... args);\n" +

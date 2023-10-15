@@ -1,22 +1,22 @@
 package io.determann.shadow.impl.renderer;
 
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.renderer.WildcardRenderer;
 import io.determann.shadow.api.shadow.Wildcard;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 public class WildcardRendererImpl implements WildcardRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Wildcard wildcard;
 
-   public WildcardRendererImpl(Wildcard wildcard)
+   public WildcardRendererImpl(RenderingContext renderingContext, Wildcard wildcard)
    {
 
-      this.context = ((ShadowApiImpl) wildcard.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.wildcard = wildcard;
    }
 
-   static String type(Context context, Wildcard wildcard)
+   static String type(RenderingContextWrapper context, Wildcard wildcard)
    {
       if (wildcard.getExtends().isPresent())
       {

@@ -3,8 +3,9 @@ package io.determann.shadow.api.renderer;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.ShadowApi.convert;
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericRendererTest
@@ -14,7 +15,7 @@ class GenericRendererTest
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("@MyAnnotation T",
-                                               render(convert(shadowApi.getClassOrThrow("Annotated")
+                                               render(DEFAULT, convert(shadowApi.getClassOrThrow("Annotated")
                                                                        .getGenerics()
                                                                        .get(0)).toGenericOrThrow())
                                                      .declaration()))
@@ -29,7 +30,7 @@ class GenericRendererTest
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("T",
-                                               render(convert(shadowApi.getClassOrThrow("Annotated")
+                                               render(DEFAULT, convert(shadowApi.getClassOrThrow("Annotated")
                                                                        .getGenerics()
                                                                        .get(0)).toGenericOrThrow())
                                                      .type()))

@@ -1,12 +1,12 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Wildcard;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WildcardRendererTest
@@ -48,9 +48,9 @@ class WildcardRendererTest
                                                                        .get(0))
                                      .toWildcardOrThrow();
 
-                               assertEquals("? extends Number", ShadowApi.render(extendsExample).type());
-                               assertEquals("? super Number", ShadowApi.render(superExample).type());
-                               assertEquals("?", ShadowApi.render(unboundExample).type());
+                               assertEquals("? extends Number", Renderer.render(DEFAULT, extendsExample).type());
+                               assertEquals("? super Number", Renderer.render(DEFAULT, superExample).type());
+                               assertEquals("?", Renderer.render(DEFAULT, unboundExample).type());
                             })
                    .withCodeToCompile("BoundsExample.java", "public class BoundsExample {\n" +
                                                             "   public static void extendsExample(java.util.List<? extends Number> numbers) {}\n" +

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntersectionTest extends ShadowTest<Intersection>

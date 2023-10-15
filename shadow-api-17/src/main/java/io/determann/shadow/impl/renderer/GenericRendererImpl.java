@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.GenericRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class GenericRendererImpl implements GenericRenderer
 {
+   private final RenderingContextWrapper context;
    private final Generic generic;
-   private final Context context;
 
-   public GenericRendererImpl(Generic generic)
+   public GenericRendererImpl(RenderingContext renderingContext, Generic generic)
    {
-      this.context = ((ShadowApiImpl) generic.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.generic = generic;
    }
 
-   public static String type(Context context, Generic generic)
+   public static String type(RenderingContextWrapper context, Generic generic)
    {
       StringBuilder sb = new StringBuilder();
 

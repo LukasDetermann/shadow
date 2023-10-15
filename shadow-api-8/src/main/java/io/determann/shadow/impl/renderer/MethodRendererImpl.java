@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.MethodRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,17 +11,16 @@ import java.util.stream.Collectors;
 
 public class MethodRendererImpl implements MethodRenderer
 {
-
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Method method;
 
-   public MethodRendererImpl(Method method)
+   public MethodRendererImpl(RenderingContext renderingContext, Method method)
    {
-      this.context = ((ShadowApiImpl) method.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.method = method;
    }
 
-   public static String declaration(Context context, Method method, String content)
+   public static String declaration(RenderingContextWrapper context, Method method, String content)
    {
       StringBuilder sb = new StringBuilder();
 

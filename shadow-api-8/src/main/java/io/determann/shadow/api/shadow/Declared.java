@@ -3,7 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.QualifiedNameable;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.StrictfpModifiable;
 
@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Anything that can be a file. Can be converted into the following using {@link ShadowApi#convert(Declared)}
+ * Anything that can be a file. Can be converted into the following using {@link Converter#convert(Declared)}
  * <ul>
  *    <li>{@link Annotation}</li>
  *    <li>{@link Class}</li>

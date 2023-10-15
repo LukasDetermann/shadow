@@ -3,36 +3,36 @@ package io.determann.shadow.impl.renderer;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
 import io.determann.shadow.api.renderer.AnnotationUsageRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final AnnotationUsage usage;
 
-   public AnnotationUsageRendererImpl(AnnotationUsage usage)
+   public AnnotationUsageRendererImpl(RenderingContext renderingContext, AnnotationUsage usage)
    {
-      this.context = ((ShadowApiImpl) usage.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.usage = usage;
    }
 
-   public static String usage(Context context, AnnotationUsage usage)
+   public static String usage(RenderingContextWrapper context, AnnotationUsage usage)
    {
       return usage(method -> Optional.empty(), context, usage);
    }
 
-   private static String usage(Function<Method, Optional<String>> valueRenderer, Context context, AnnotationUsage usage)
+   private static String usage(Function<Method, Optional<String>> valueRenderer, RenderingContextWrapper context, AnnotationUsage usage)
    {
       StringBuilder sb = new StringBuilder();
       sb.append('@');
@@ -63,7 +63,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       return usage(valueRenderer, context, usage);
    }
 
-   private static String renderValue(Context context, AnnotationValue annotationValue)
+   private static String renderValue(RenderingContextWrapper context, AnnotationValue annotationValue)
    {
       return annotationValue.map(new AnnotationValueMapper<>()
       {

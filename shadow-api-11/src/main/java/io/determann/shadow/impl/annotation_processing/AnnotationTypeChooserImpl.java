@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public class AnnotationTypeChooserImpl implements AnnotationTypeChooser

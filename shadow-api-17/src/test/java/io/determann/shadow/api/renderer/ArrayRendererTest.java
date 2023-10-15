@@ -4,7 +4,7 @@ import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.renderer.Renderer.render;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArrayRendererTest
@@ -15,8 +15,8 @@ class ArrayRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                Class string = shadowApi.getClassOrThrow("java.lang.String");
-                               assertEquals("String[]", render(string.asArray()).type());
-                               assertEquals("String[][]", render(string.asArray().asArray()).type());
+                               assertEquals("String[]", render(RenderingContext.DEFAULT, string.asArray()).type());
+                               assertEquals("String[][]", render(RenderingContext.DEFAULT, string.asArray().asArray()).type());
                             })
                    .compile();
    }
@@ -27,8 +27,8 @@ class ArrayRendererTest
       ProcessorTest.process(shadowApi ->
                             {
                                Class string = shadowApi.getClassOrThrow("java.lang.String");
-                               assertEquals("new String[3][1]", render(string.asArray()).initialisation(3, 1));
-                               assertEquals("new String[3][1]", render(string.asArray().asArray()).initialisation(3, 1));
+                               assertEquals("new String[3][1]", render(RenderingContext.DEFAULT, string.asArray()).initialisation(3, 1));
+                               assertEquals("new String[3][1]", render(RenderingContext.DEFAULT, string.asArray().asArray()).initialisation(3, 1));
                             })
                    .compile();
    }

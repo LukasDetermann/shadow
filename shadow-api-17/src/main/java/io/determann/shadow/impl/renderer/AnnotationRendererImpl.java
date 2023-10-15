@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.AnnotationRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Annotation;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 public class AnnotationRendererImpl implements AnnotationRenderer
 {
 
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Annotation annotation;
 
-   public AnnotationRendererImpl(Annotation annotation)
+   public AnnotationRendererImpl(RenderingContext renderingContext, Annotation annotation)
    {
-      this.context = ((ShadowApiImpl) annotation.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.annotation = annotation;
    }
 
-   public static String declaration(Context context, Annotation annotation, String content)
+   public static String declaration(RenderingContextWrapper context, Annotation annotation, String content)
    {
       StringBuilder sb = new StringBuilder();
       Set<Modifier> modifiers = new HashSet<>(annotation.getModifiers());
@@ -58,7 +58,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, Annotation annotation)
+   public static String type(RenderingContextWrapper context, Annotation annotation)
    {
       return context.renderName(annotation);
    }

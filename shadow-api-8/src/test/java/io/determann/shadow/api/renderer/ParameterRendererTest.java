@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParameterRendererTest
@@ -20,8 +21,8 @@ class ParameterRendererTest
                                                                      .getMethods()
                                                                      .get(0)
                                                                      .getParameters();
-                               assertEquals("@MyAnnotation Long foo", render(parameters.get(0)).declaration());
-                               assertEquals("Long... foo2", render(parameters.get(1)).declaration());
+                               assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameters.get(0)).declaration());
+                               assertEquals("Long... foo2", render(DEFAULT, parameters.get(1)).declaration());
                             })
                    .withCodeToCompile("ParameterExample.java", "public interface ParameterExample {\n" +
                                                                "   void foo(@MyAnnotation Long foo, Long... foo2);\n" +

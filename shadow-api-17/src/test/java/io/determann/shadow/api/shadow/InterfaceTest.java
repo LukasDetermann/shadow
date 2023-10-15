@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest extends DeclaredTest<Interface>
@@ -91,7 +91,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                Shadow interpolated = convert(capture.getGenerics().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
-                                     .map(ShadowApi::convert)
+                                     .map(Converter::convert)
                                      .flatMap(ShadowConverter::toInterface)
                                      .map(Interface::getGenerics)
                                      .map(shadows -> shadows.get(0))

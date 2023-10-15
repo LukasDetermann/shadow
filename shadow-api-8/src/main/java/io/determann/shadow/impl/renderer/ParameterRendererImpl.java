@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.ParameterRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Parameter;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class ParameterRendererImpl implements ParameterRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Parameter parameter;
 
-   public ParameterRendererImpl(Parameter parameter)
+   public ParameterRendererImpl(RenderingContext renderingContext, Parameter parameter)
    {
-      this.context = ((ShadowApiImpl) parameter.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.parameter = parameter;
    }
 
-   public static String declaration(Context context, Parameter parameter)
+   public static String declaration(RenderingContextWrapper context, Parameter parameter)
    {
       StringBuilder sb = new StringBuilder();
 

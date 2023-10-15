@@ -2,15 +2,14 @@ package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessing;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredMapper;
-import io.determann.shadow.api.renderer.NameRenderedEvent;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.renderer.Context;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -23,7 +22,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static io.determann.shadow.api.annotation_processing.AnnotationProcessing.*;
 import static java.lang.System.err;
@@ -35,7 +33,6 @@ public class ShadowApiImpl implements ShadowApi
    private ProcessingEnvironment processingEnv;
    private RoundEnvironment roundEnv;
    private int processingRound;
-   private Context renderingContext = Context.builder().withMostlyQualifiedNames().build();
    private BiConsumer<ShadowApi, Throwable> exceptionHandler = (shadowApi, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
@@ -299,7 +296,7 @@ public class ShadowApiImpl implements ShadowApi
 
    public static Declared erasure(Declared declared)
    {
-      return ShadowApi.convert(declared).map(new DeclaredMapper<>()
+      return Converter.convert(declared).map(new DeclaredMapper<>()
       {
          @Override
          public Declared annotationType(Annotation annotation)
@@ -385,35 +382,6 @@ public class ShadowApiImpl implements ShadowApi
    public ShadowApi getApi()
    {
       return this;
-   }
-
-   @Override
-   public void renderQualifiedNames()
-   {
-      renderingContext = Context.builder(renderingContext).withQualifiedNames().build();
-   }
-
-   @Override
-   public void renderSimpleNames()
-   {
-      renderingContext = Context.builder(renderingContext).withSimpleNames().build();
-   }
-
-   @Override
-   public void renderNamesWithoutNeedingImports()
-   {
-      renderingContext = Context.builder(renderingContext).withMostlyQualifiedNames().build();
-   }
-
-   @Override
-   public void onNameRendered(Consumer<NameRenderedEvent> onNameRendered)
-   {
-      renderingContext = Context.builder(renderingContext).withNameRenderedListener(onNameRendered).build();
-   }
-
-   public Context getRenderingContext()
-   {
-      return renderingContext;
    }
 
    public ProcessingEnvironment getProcessingEnv()

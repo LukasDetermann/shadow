@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.*;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 
 /**
  * Holds classes, interfaces, enums etc

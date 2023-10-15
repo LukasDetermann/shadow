@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.PackageRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class PackageRendererImpl implements PackageRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Package aPackage;
 
-   public PackageRendererImpl(Package aPackage)
+   public PackageRendererImpl(RenderingContext renderingContext, Package aPackage)
    {
-      this.context = ((ShadowApiImpl) aPackage.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.aPackage = aPackage;
    }
 
-   public static String declaration(Context context, Package aPackage)
+   public static String declaration(RenderingContextWrapper context, Package aPackage)
    {
       if (aPackage.isUnnamed())
       {

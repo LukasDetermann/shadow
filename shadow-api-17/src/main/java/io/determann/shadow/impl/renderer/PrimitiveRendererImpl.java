@@ -1,21 +1,21 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.PrimitiveRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Primitive primitive;
 
-   public PrimitiveRendererImpl(Primitive primitive)
+   public PrimitiveRendererImpl(RenderingContext renderingContext, Primitive primitive)
    {
-      this.context = ((ShadowApiImpl) primitive.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.primitive = primitive;
    }
 
-   public static String type(Context context, Primitive primitive)
+   public static String type(RenderingContextWrapper context, Primitive primitive)
    {
       return switch (primitive.getTypeKind())
       {

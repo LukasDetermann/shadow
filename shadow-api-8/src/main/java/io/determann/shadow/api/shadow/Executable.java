@@ -1,14 +1,14 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.converter.Converter;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
- * any code block. Can be converted into the following using {@link ShadowApi#convert(Declared)}
+ * any code block. Can be converted into the following using {@link Converter#convert(Declared)}
  *
  * <ul>
  *    <li>{@link Constructor}</li>

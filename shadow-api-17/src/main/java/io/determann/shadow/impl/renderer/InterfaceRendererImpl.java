@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.InterfaceRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Interface;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,16 +13,16 @@ import static java.util.stream.Collectors.joining;
 
 public class InterfaceRendererImpl implements InterfaceRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Interface anInterface;
 
-   public InterfaceRendererImpl(Interface anInterface)
+   public InterfaceRendererImpl(RenderingContext renderingContext, Interface anInterface)
    {
-      this.context = ((ShadowApiImpl) anInterface.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.anInterface = anInterface;
    }
 
-   public static String declaration(Context context, Interface anInterface, String content)
+   public static String declaration(RenderingContextWrapper context, Interface anInterface, String content)
    {
       StringBuilder sb = new StringBuilder();
       Set<Modifier> modifiers = new HashSet<>(anInterface.getModifiers());
@@ -73,7 +73,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, Interface anInterface)
+   public static String type(RenderingContextWrapper context, Interface anInterface)
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));

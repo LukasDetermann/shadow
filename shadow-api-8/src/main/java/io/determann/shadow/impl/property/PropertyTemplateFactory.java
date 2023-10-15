@@ -10,9 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.ShadowApi.convert;
 import static io.determann.shadow.api.TypeKind.CLASS;
 import static io.determann.shadow.api.TypeKind.VOID;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.impl.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.impl.property.PropertyTemplateFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;

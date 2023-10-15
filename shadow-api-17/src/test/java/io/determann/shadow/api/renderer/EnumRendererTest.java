@@ -3,7 +3,8 @@ package io.determann.shadow.api.renderer;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.ShadowApi.render;
+import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumRendererTest
@@ -16,10 +17,10 @@ class EnumRendererTest
                             {
                                assertEquals(
                                      "@TestAnnotation\npublic enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {}\n",
-                                     render(shadowApi.getEnumOrThrow("EnumMultiParent")).declaration());
+                                     render(DEFAULT, shadowApi.getEnumOrThrow("EnumMultiParent")).declaration());
                                assertEquals(
                                      "@TestAnnotation\npublic enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {\ntest\n}\n",
-                                     render(shadowApi.getEnumOrThrow("EnumMultiParent")).declaration("test"));
+                                     render(DEFAULT, shadowApi.getEnumOrThrow("EnumMultiParent")).declaration("test"));
                             })
                    .withCodeToCompile("EnumMultiParent.java", """
                          @TestAnnotation
@@ -41,7 +42,7 @@ class EnumRendererTest
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("java.lang.annotation.RetentionPolicy",
-                                               render(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).type()))
+                                               render(DEFAULT, shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).type()))
                    .compile();
    }
 }

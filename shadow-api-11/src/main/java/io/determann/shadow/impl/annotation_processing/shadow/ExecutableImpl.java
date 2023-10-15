@@ -3,6 +3,7 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
@@ -71,7 +72,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return getMirror().getThrownTypes()
                         .stream()
                         .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
-                        .map(ShadowApi::convert)
+                        .map(Converter::convert)
                         .map(ShadowConverter::toClassOrThrow)
                         .collect(toUnmodifiableList());
    }

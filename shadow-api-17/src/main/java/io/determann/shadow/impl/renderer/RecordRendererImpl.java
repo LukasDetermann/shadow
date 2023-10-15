@@ -2,8 +2,8 @@ package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.RecordRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,16 +13,16 @@ import static java.util.stream.Collectors.joining;
 
 public class RecordRendererImpl implements RecordRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Record aRecord;
 
-   public RecordRendererImpl(Record aRecord)
+   public RecordRendererImpl(RenderingContext renderingContext, Record aRecord)
    {
-      this.context = ((ShadowApiImpl) aRecord.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.aRecord = aRecord;
    }
 
-   public static String declaration(Context context, Record aRecord, String content)
+   public static String declaration(RenderingContextWrapper context, Record aRecord, String content)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -89,7 +89,7 @@ public class RecordRendererImpl implements RecordRenderer
       return sb.toString();
    }
 
-   public static String type(Context context, Record aRecord)
+   public static String type(RenderingContextWrapper context, Record aRecord)
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));

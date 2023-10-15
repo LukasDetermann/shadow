@@ -4,6 +4,7 @@ import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Enum;
@@ -191,7 +192,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return getSuperTypes().stream()
                             .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))
-                            .map(ShadowApi::convert)
+                            .map(Converter::convert)
                             .map(DeclaredConverter::toInterfaceOrThrow)
                             .collect(toUnmodifiableList());
    }

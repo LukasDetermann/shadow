@@ -1,23 +1,23 @@
 package io.determann.shadow.impl.renderer;
 
 import io.determann.shadow.api.renderer.ConstructorRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Constructor;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
 
 import java.util.stream.Collectors;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
 {
-   private final Context context;
+   private final RenderingContextWrapper context;
    private final Constructor constructor;
 
-   public ConstructorRendererImpl(Constructor constructor)
+   public ConstructorRendererImpl(RenderingContext renderingContext, Constructor constructor)
    {
-      this.context = ((ShadowApiImpl) constructor.getApi()).getRenderingContext();
+      this.context = new RenderingContextWrapper(renderingContext);
       this.constructor = constructor;
    }
 
-   public static String declaration(Context context, Constructor constructor, String content)
+   public static String declaration(RenderingContextWrapper context, Constructor constructor, String content)
    {
       StringBuilder sb = new StringBuilder();
       if (!constructor.getDirectAnnotationUsages().isEmpty())
@@ -42,7 +42,8 @@ public class ConstructorRendererImpl implements ConstructorRenderer
          sb.append('>');
          sb.append(' ');
       }
-      sb.append(ShadowRendererImpl.type(Context.builder(context).withSimpleNames().build(), constructor.getSurrounding()));
+      sb.append(ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
+                                        constructor.getSurrounding()));
       sb.append('(');
 
       constructor.getReceiverType().ifPresent(declared ->
@@ -112,7 +113,8 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    @Override
    public String invocation(String parameters)
    {
-      return ShadowRendererImpl.type(Context.builder(context).withSimpleNames().build(), constructor.getSurrounding()) +
+      return ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
+                                     constructor.getSurrounding()) +
              '(' +
              parameters +
              ')';

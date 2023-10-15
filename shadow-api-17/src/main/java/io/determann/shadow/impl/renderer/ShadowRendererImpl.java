@@ -1,13 +1,14 @@
 package io.determann.shadow.impl.renderer;
 
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Shadow;
 
-import static io.determann.shadow.api.ShadowApi.convert;
+import static io.determann.shadow.api.converter.Converter.convert;
 
 public class ShadowRendererImpl
 {
-   public static String type(Context context, Shadow shadow)
+   public static String type(RenderingContextWrapper context, Shadow shadow)
    {
       return switch (shadow.getTypeKind())
       {
@@ -28,7 +29,7 @@ public class ShadowRendererImpl
       };
    }
 
-   public static String classDeclaration(Context context, Declared declared)
+   public static String classDeclaration(RenderingContext context, Declared declared)
    {
       return context.renderName(declared) + ".class";
    }
