@@ -10,6 +10,8 @@ import io.determann.shadow.api.modifier.StrictfpModifiable;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toUnmodifiableList;
+
 /**
  * Anything that can be a file. Can be converted into the following using {@link ShadowApi#convert(Declared)}
  * <ul>
@@ -37,11 +39,17 @@ public interface Declared extends Shadow,
     */
    NestingKind getNesting();
 
-   Field getFieldOrThrow(String simpleName);
+   default Field getFieldOrThrow(String simpleName)
+   {
+      return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
+   }
 
    List<Field> getFields();
 
-   List<Method> getMethods(String simpleName);
+   default List<Method> getMethods(String simpleName)
+   {
+      return getMethods().stream().filter(field -> field.getSimpleName().equals(simpleName)).collect(toUnmodifiableList());
+   }
 
    List<Method> getMethods();
 
@@ -59,12 +67,24 @@ public interface Declared extends Shadow,
 
    List<Interface> getInterfaces();
 
-   Interface getInterfaceOrThrow(String qualifiedName);
+   default Interface getInterfaceOrThrow(String qualifiedName)
+   {
+      return getInterfaces().stream()
+                            .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                            .findAny()
+                            .orElseThrow();
+   }
 
    List<Interface> getDirectInterfaces();
 
 
-   Interface getDirectInterfaceOrThrow(String qualifiedName);
+   default Interface getDirectInterfaceOrThrow(String qualifiedName)
+   {
+      return getDirectInterfaces().stream()
+                                  .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                                  .findAny()
+                                  .orElseThrow();
+   }
 
    Package getPackage();
 

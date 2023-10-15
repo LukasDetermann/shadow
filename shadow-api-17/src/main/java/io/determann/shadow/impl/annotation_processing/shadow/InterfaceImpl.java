@@ -52,14 +52,6 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    }
 
    @Override
-   public Interface withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(Arrays.stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
-   }
-
-   @Override
    public List<Shadow> getGenerics()
    {
       return getMirror().getTypeArguments()
@@ -69,7 +61,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    }
 
    @Override
-   public List<Generic> getFormalGenerics()// formal
+   public List<Generic> getFormalGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()

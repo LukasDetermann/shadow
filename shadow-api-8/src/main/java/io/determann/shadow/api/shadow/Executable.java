@@ -4,6 +4,7 @@ import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.ShadowApi;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -22,7 +23,13 @@ public interface Executable extends Shadow,
     */
    List<Parameter> getParameters();
 
-   Parameter getParameterOrThrow(String name);
+   default Parameter getParameterOrThrow(String name)
+   {
+      return getParameters().stream()
+                            .filter(parameter -> parameter.getSimpleName().equals(name))
+                            .findAny()
+                            .orElseThrow(NoSuchElementException::new);
+   }
 
    Shadow getReturnType();
 

@@ -4,6 +4,7 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AbstractModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface Interface extends Declared,
@@ -21,7 +22,12 @@ public interface Interface extends Declared,
    /**
     * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
     */
-   Interface withGenerics(String... qualifiedGenerics);
+   default Interface withGenerics(String... qualifiedGenerics)
+   {
+      return withGenerics(Arrays.stream(qualifiedGenerics)
+                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
+                                .toArray(Shadow[]::new));
+   }
 
    /**
     * {@code List<}<b>String</b>{@code >}

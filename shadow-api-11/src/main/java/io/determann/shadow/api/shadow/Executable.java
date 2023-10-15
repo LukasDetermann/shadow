@@ -22,7 +22,10 @@ public interface Executable extends Shadow,
     */
    List<Parameter> getParameters();
 
-   Parameter getParameterOrThrow(String name);
+   default Parameter getParameterOrThrow(String name)
+   {
+      return getParameters().stream().filter(parameter -> parameter.getSimpleName().equals(name)).findAny().orElseThrow();
+   }
 
    Shadow getReturnType();
 

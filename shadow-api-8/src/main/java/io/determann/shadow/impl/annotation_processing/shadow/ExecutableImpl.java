@@ -138,15 +138,6 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public Parameter getParameterOrThrow(String name)
-   {
-      return getParameters().stream()
-                            .filter(parameter -> parameter.getSimpleName().equals(name))
-                            .findAny()
-                            .orElseThrow(NoSuchElementException::new);
-   }
-
-   @Override
    public List<Generic> getFormalGenerics()
    {
       return getElement().getTypeParameters()

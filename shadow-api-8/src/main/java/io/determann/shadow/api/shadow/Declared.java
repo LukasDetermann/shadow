@@ -7,8 +7,13 @@ import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.StrictfpModifiable;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Anything that can be a file. Can be converted into the following using {@link ShadowApi#convert(Declared)}
@@ -37,11 +42,19 @@ public interface Declared extends Shadow,
     */
    NestingKind getNesting();
 
-   Field getFieldOrThrow(String simpleName);
+   default Field getFieldOrThrow(String simpleName)
+   {
+      return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
+   }
 
    List<Field> getFields();
 
-   List<Method> getMethods(String simpleName);
+   default List<Method> getMethods(String simpleName)
+   {
+      return getMethods().stream()
+                         .filter(field -> field.getSimpleName().equals(simpleName))
+                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+   }
 
    List<Method> getMethods();
 
@@ -59,12 +72,24 @@ public interface Declared extends Shadow,
 
    List<Interface> getInterfaces();
 
-   Interface getInterfaceOrThrow(String qualifiedName);
+   default Interface getInterfaceOrThrow(String qualifiedName)
+   {
+      return getInterfaces().stream()
+                            .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                            .findAny()
+                            .orElseThrow(NoSuchElementException::new);
+   }
 
    List<Interface> getDirectInterfaces();
 
 
-   Interface getDirectInterfaceOrThrow(String qualifiedName);
+   default Interface getDirectInterfaceOrThrow(String qualifiedName)
+   {
+      return getDirectInterfaces().stream()
+                                  .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                                  .findAny()
+                                  .orElseThrow(NoSuchElementException::new);
+   }
 
    Package getPackage();
 

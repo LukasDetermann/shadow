@@ -9,6 +9,7 @@ import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,12 @@ public interface Class extends Declared,
    /**
     * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
     */
-   Class withGenerics(String... qualifiedGenerics);
+   default Class withGenerics(String... qualifiedGenerics)
+   {
+      return withGenerics(Arrays.stream(qualifiedGenerics)
+                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
+                                .toArray(Shadow[]::new));
+   }
 
    /**
     * {@code List<}<b>String</b>{@code >}

@@ -94,26 +94,12 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
 
 
    @Override
-   public Field getFieldOrThrow(String simpleName)
-   {
-      return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
-   }
-
-   @Override
    public List<Field> getFields()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
                          .map(variableElement -> MirrorAdapter.<Field>getShadow(getApi(), variableElement))
-                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
-   }
-
-   @Override
-   public List<Method> getMethods(String simpleName)
-   {
-      return getMethods().stream()
-                         .filter(field -> field.getSimpleName().equals(simpleName))
                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
@@ -208,15 +194,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Interface getInterfaceOrThrow(String qualifiedName)
-   {
-      return getInterfaces().stream()
-                            .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
-                            .findAny()
-                            .orElseThrow(NoSuchElementException::new);
-   }
-
-   @Override
    public Interface getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
@@ -234,15 +211,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .map(VariableElement.class::cast)
                          .map(variableElement -> MirrorAdapter.<EnumConstant>getShadow(getApi(), variableElement))
                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
-   }
-
-   @Override
-   public EnumConstant getEnumConstantOrThrow(String simpleName)
-   {
-      return getEumConstants().stream()
-                              .filter(field -> field.getSimpleName().equals(simpleName))
-                              .findAny()
-                              .orElseThrow(NoSuchElementException::new);
    }
 
    @Override

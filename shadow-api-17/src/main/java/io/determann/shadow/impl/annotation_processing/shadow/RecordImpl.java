@@ -27,12 +27,6 @@ public class RecordImpl extends DeclaredImpl implements Record
    }
 
    @Override
-   public RecordComponent getRecordComponentOrThrow(String simpleName)
-   {
-      return getRecordComponents().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
-   }
-
-   @Override
    public List<RecordComponent> getRecordComponents()
    {
       return getElement().getRecordComponents()
@@ -60,14 +54,6 @@ public class RecordImpl extends DeclaredImpl implements Record
       return MirrorAdapter
                      .getShadow(getApi(),
                                 MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
-   }
-
-   @Override
-   public Record withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
    }
 
    @Override

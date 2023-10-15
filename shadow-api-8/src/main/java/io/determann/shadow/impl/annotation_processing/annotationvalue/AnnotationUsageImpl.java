@@ -59,22 +59,6 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    }
 
    @Override
-   public Optional<AnnotationValue> getValue(String methodName)
-   {
-      return getValues().entrySet()
-                        .stream()
-                        .filter(entry -> entry.getKey().getSimpleName().equals(methodName))
-                        .map(Map.Entry::getValue)
-                        .findAny();
-   }
-
-   @Override
-   public AnnotationValue getValueOrThrow(String methodName)
-   {
-      return getValue(methodName).orElseThrow(NoSuchElementException::new);
-   }
-
-   @Override
    public Annotation getAnnotation()
    {
       return MirrorAdapter.getShadow(getApi(), getElement());

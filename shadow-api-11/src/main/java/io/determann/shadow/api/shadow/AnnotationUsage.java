@@ -14,9 +14,19 @@ public interface AnnotationUsage extends Annotation
 {
    Map<Method, AnnotationValue> getValues();
 
-   AnnotationValue getValueOrThrow(String methodName);
+   default AnnotationValue getValueOrThrow(String methodName)
+   {
+      return getValue(methodName).orElseThrow();
+   }
 
-   Optional<AnnotationValue> getValue(String methodName);
+   default Optional<AnnotationValue> getValue(String methodName)
+   {
+      return getValues().entrySet()
+                        .stream()
+                        .filter(entry -> entry.getKey().getSimpleName().equals(methodName))
+                        .map(Map.Entry::getValue)
+                        .findAny();
+   }
 
    Annotation getAnnotation();
 }

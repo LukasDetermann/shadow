@@ -9,7 +9,10 @@ public interface Enum extends Declared,
 {
    List<EnumConstant> getEumConstants();
 
-   EnumConstant getEnumConstantOrThrow(String simpleName);
+   default EnumConstant getEnumConstantOrThrow(String simpleName)
+   {
+      return getEumConstants().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
+   }
 
    /**
     * be careful using this equals

@@ -113,14 +113,6 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public Class withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(Arrays.stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
-   }
-
-   @Override
    public List<Shadow> getGenerics()
    {
       return getMirror().getTypeArguments()
