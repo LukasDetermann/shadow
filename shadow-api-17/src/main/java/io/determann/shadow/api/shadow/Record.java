@@ -1,12 +1,9 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.FinalModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
 import java.util.List;
-
-import static java.util.Arrays.stream;
 
 public interface Record extends Declared,
                                 StaticModifiable,
@@ -18,22 +15,6 @@ public interface Record extends Declared,
    }
 
    List<RecordComponent> getRecordComponents();
-
-   /**
-    * {@code shadowApi.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
-    * {@code shadowApi.getRecordOrThrow("org.example.MyRecord").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code MyRecord<String>}
-    */
-   Record withGenerics(Shadow... generics);
-
-   /**
-    * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
-    */
-   default Record withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
-   }
 
    /**
     * {@code MyRecord<}<b>String</b>{@code >}

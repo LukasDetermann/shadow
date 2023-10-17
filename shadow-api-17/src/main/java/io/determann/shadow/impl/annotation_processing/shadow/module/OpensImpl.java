@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow.module;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
@@ -15,9 +15,9 @@ public class OpensImpl extends DirectiveImpl implements Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(ShadowApi shadowApi, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(AnnotationProcessingContext annotationProcessingContext, ModuleElement.OpensDirective opensDirective)
    {
-      super(shadowApi);
+      super(annotationProcessingContext);
       this.opensDirective = opensDirective;
    }
 

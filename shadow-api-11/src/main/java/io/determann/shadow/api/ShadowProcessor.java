@@ -1,5 +1,7 @@
 package io.determann.shadow.api;
 
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
@@ -8,18 +10,17 @@ import java.time.Instant;
 import java.util.Set;
 
 /**
- * Extend this class and implement {@link #process(ShadowApi)} for the easiest way to use the {@link ShadowApi}.
+ * Extend this class and implement {@link #process(AnnotationProcessingContext)} for the easiest way to use the {@link AnnotationProcessingContext}.
  * <p>
  * AnnotationProcessing happens in rounds. A round contains every processor. A new Round is triggered when
  * an Annotation processor generates new sources.
  *
- * @see ShadowApi
+ * @see AnnotationProcessingContext
  * @see javax.annotation.processing.Processor for detailed dokumentation on annotationProcessing without the shadowApi
  */
 public abstract class ShadowProcessor extends AbstractProcessor
 {
    private int processingRound = 0;
-   private ShadowApi api;
 
    @Override
    public Set<String> getSupportedAnnotationTypes()
@@ -37,14 +38,14 @@ public abstract class ShadowProcessor extends AbstractProcessor
    }
 
    /**
-    * Intercepts the process call and initializes the {@link ShadowApi}.
-    * If you want to use the {@link ShadowApi} don't override this method.
+    * Intercepts the process call and initializes the {@link AnnotationProcessingContext}.
+    * If you want to use the {@link AnnotationProcessingContext} don't override this method.
     */
    @Override
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
    {
       Instant start = Instant.now();
-      api = ShadowApi.create(api, processingEnv, roundEnv, processingRound);
+      AnnotationProcessingContext api = MirrorAdapter.create(processingEnv, roundEnv, processingRound);
       //noinspection OverlyBroadCatchBlock
       try
       {
@@ -71,10 +72,10 @@ public abstract class ShadowProcessor extends AbstractProcessor
    }
 
    /**
-    * Override this method if you want to use the {@link ShadowApi}. This Method can be called many times during compilation.
+    * Override this method if you want to use the {@link AnnotationProcessingContext}. This Method can be called many times during compilation.
     *
-    * @see ShadowApi
+    * @see AnnotationProcessingContext
     * @see javax.annotation.processing.Processor for detailed doku on annotationProcessing without the shadowApi
     */
-   public abstract void process(ShadowApi shadowApi) throws Exception;
+   public abstract void process(AnnotationProcessingContext annotationProcessingContext) throws Exception;
 }

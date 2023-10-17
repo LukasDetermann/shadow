@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Null;
 
 import javax.lang.model.type.NullType;
@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class NullImpl extends ShadowImpl<NullType> implements Null
 {
-   public NullImpl(ShadowApi shadowApi, NullType nullType)
+   public NullImpl(AnnotationProcessingContext annotationProcessingContext, NullType nullType)
    {
-      super(shadowApi, nullType);
+      super(annotationProcessingContext, nullType);
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
@@ -14,9 +14,9 @@ import java.util.Objects;
 public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
 {
 
-   public ArrayImpl(ShadowApi shadowApi, ArrayType arrayType)
+   public ArrayImpl(AnnotationProcessingContext annotationProcessingContext, ArrayType arrayType)
    {
-      super(shadowApi, arrayType);
+      super(annotationProcessingContext, arrayType);
    }
 
    @Override

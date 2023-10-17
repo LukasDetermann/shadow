@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -18,15 +18,15 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
 {
    private final TypeParameterElement typeParameterElement;
 
-   public GenericImpl(ShadowApi shadowApi, TypeParameterElement typeParameterElement)
+   public GenericImpl(AnnotationProcessingContext annotationProcessingContext, TypeParameterElement typeParameterElement)
    {
-      super(shadowApi, ((TypeVariable) typeParameterElement.asType()));
+      super(annotationProcessingContext, ((TypeVariable) typeParameterElement.asType()));
       this.typeParameterElement = typeParameterElement;
    }
 
-   public GenericImpl(ShadowApi shadowApi, TypeVariable typeMirror)
+   public GenericImpl(AnnotationProcessingContext annotationProcessingContext, TypeVariable typeMirror)
    {
-      super(shadowApi, typeMirror);
+      super(annotationProcessingContext, typeMirror);
       this.typeParameterElement = (TypeParameterElement) MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().asElement(typeMirror);
    }
 

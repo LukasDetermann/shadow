@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
@@ -14,23 +14,21 @@ import io.determann.shadow.impl.property.PropertyImpl;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class ClassImpl extends DeclaredImpl implements Class
 {
-   public ClassImpl(ShadowApi shadowApi, DeclaredType declaredTypeMirror)
+   public ClassImpl(AnnotationProcessingContext annotationProcessingContext, DeclaredType declaredTypeMirror)
    {
-      super(shadowApi, declaredTypeMirror);
+      super(annotationProcessingContext, declaredTypeMirror);
    }
 
-   public ClassImpl(ShadowApi shadowApi, TypeElement typeElement)
+   public ClassImpl(AnnotationProcessingContext annotationProcessingContext, TypeElement typeElement)
    {
-      super(shadowApi, typeElement);
+      super(annotationProcessingContext, typeElement);
    }
 
    @Override
@@ -77,37 +75,6 @@ public class ClassImpl extends DeclaredImpl implements Class
          return Optional.empty();
       }
       return Optional.of(MirrorAdapter.getShadow(getApi(), enclosingType));
-   }
-
-   @Override
-   public final Class withGenerics(Shadow... generics)
-   {
-      if (generics.length == 0 || getFormalGenerics().size() != generics.length)
-      {
-         throw new IllegalArgumentException(getQualifiedName() +
-                                            " has " +
-                                            getFormalGenerics().size() +
-                                            " generics. " +
-                                            generics.length +
-                                            " are provided");
-      }
-      if (getOuterType().flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
-                              .toInterface()
-                              .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                              .or(() -> convert(typeMirrorShadow).toClass().map(aClass -> !aClass.getGenerics().isEmpty())))
-                        .orElse(false))
-      {
-         throw new IllegalArgumentException("cant add generics to " +
-                                            getQualifiedName() +
-                                            " when the class is not static and the outer class has generics");
-      }
-      TypeMirror[] typeMirrors = Arrays.stream(generics)
-                                       .map(MirrorAdapter::getType)
-                                       .toArray(TypeMirror[]::new);
-
-      return MirrorAdapter
-                     .getShadow(getApi(),
-                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override

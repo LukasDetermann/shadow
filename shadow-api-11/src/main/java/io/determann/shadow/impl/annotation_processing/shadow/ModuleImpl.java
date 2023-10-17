@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.modifier.Modifier;
@@ -27,15 +27,15 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
 {
    private final ModuleElement moduleElement;
 
-   public ModuleImpl(ShadowApi shadowApi, ModuleElement moduleElement)
+   public ModuleImpl(AnnotationProcessingContext annotationProcessingContext, ModuleElement moduleElement)
    {
-      super(shadowApi, (NoType) moduleElement.asType());
+      super(annotationProcessingContext, (NoType) moduleElement.asType());
       this.moduleElement = moduleElement;
    }
 
-   public ModuleImpl(ShadowApi shadowApi, NoType noType)
+   public ModuleImpl(AnnotationProcessingContext annotationProcessingContext, NoType noType)
    {
-      super(shadowApi, noType);
+      super(annotationProcessingContext, noType);
       this.moduleElement = MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getModuleElement(noType.toString());
       if (moduleElement == null)
       {

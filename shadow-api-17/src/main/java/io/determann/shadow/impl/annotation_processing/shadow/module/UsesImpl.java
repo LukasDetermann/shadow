@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow.module;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Uses;
@@ -13,9 +13,9 @@ public class UsesImpl extends DirectiveImpl implements Uses
 {
    private final ModuleElement.UsesDirective usesDirective;
 
-   public UsesImpl(ShadowApi shadowApi, ModuleElement.UsesDirective usesDirective)
+   public UsesImpl(AnnotationProcessingContext annotationProcessingContext, ModuleElement.UsesDirective usesDirective)
    {
-      super(shadowApi);
+      super(annotationProcessingContext);
       this.usesDirective = usesDirective;
    }
 

@@ -1,11 +1,12 @@
 package io.determann.shadow.api;
 
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.AnnotationProcessingContextImpl;
 import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.impl.annotation_processing.shadow.*;
@@ -25,6 +26,11 @@ import static java.util.stream.Collectors.toSet;
 @JdkApi
 public interface MirrorAdapter
 {
+   static AnnotationProcessingContext create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
+   {
+      return new AnnotationProcessingContextImpl(processingEnv, roundEnv, processingRound);
+   }
+
    static AnnotationMirror getMirror(AnnotationUsage annotationUsage)
    {
       return ((AnnotationUsageImpl) annotationUsage).getAnnotationMirror();
@@ -145,17 +151,17 @@ public interface MirrorAdapter
       return element.getSimpleName().toString();
    }
 
-   static String getJavaDoc(ShadowApi api, Element element)
+   static String getJavaDoc(AnnotationProcessingContext api, Element element)
    {
       return getProcessingEnv(api).getElementUtils().getDocComment(element);
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)
+   static List<AnnotationUsage> getAnnotationUsages(AnnotationProcessingContext api, Element element)
    {
       return getAnnotationUsages(api, getProcessingEnv(api).getElementUtils().getAllAnnotationMirrors(element));
    }
 
-   static List<AnnotationUsage> getDirectAnnotationUsages(ShadowApi api, Element element)
+   static List<AnnotationUsage> getDirectAnnotationUsages(AnnotationProcessingContext api, Element element)
    {
       return getAnnotationUsages(api, element.getAnnotationMirrors());
    }
@@ -205,33 +211,33 @@ public interface MirrorAdapter
     * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link Shadow}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.
     *
-    * @see #getShadow(ShadowApi, TypeMirror)
+    * @see #getShadow(AnnotationProcessingContext, TypeMirror)
     */
    @SuppressWarnings("unchecked")
-   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, Element element)
+   static <SHADOW extends Shadow> SHADOW getShadow(AnnotationProcessingContext annotationProcessingContext, Element element)
    {
       switch (element.getKind())
       {
          case PACKAGE:
-            return (SHADOW) new PackageImpl(shadowApi, (PackageElement) element);
+            return (SHADOW) new PackageImpl(annotationProcessingContext, (PackageElement) element);
          case ENUM:
          case ANNOTATION_TYPE:
-            return (SHADOW) new DeclaredImpl(shadowApi, (TypeElement) element);
+            return (SHADOW) new DeclaredImpl(annotationProcessingContext, (TypeElement) element);
          case CLASS:
-            return (SHADOW) new ClassImpl(shadowApi, (TypeElement) element);
+            return (SHADOW) new ClassImpl(annotationProcessingContext, (TypeElement) element);
          case INTERFACE:
-            return (SHADOW) new InterfaceImpl(shadowApi, (TypeElement) element);
+            return (SHADOW) new InterfaceImpl(annotationProcessingContext, (TypeElement) element);
          case METHOD:
          case CONSTRUCTOR:
-            return (SHADOW) new ExecutableImpl(shadowApi, ((ExecutableElement) element));
+            return (SHADOW) new ExecutableImpl(annotationProcessingContext, ((ExecutableElement) element));
          case ENUM_CONSTANT:
-            return (SHADOW) new EnumConstantImpl(shadowApi, (VariableElement) element);
+            return (SHADOW) new EnumConstantImpl(annotationProcessingContext, (VariableElement) element);
          case FIELD:
-            return (SHADOW) new FieldImpl(shadowApi, (VariableElement) element);
+            return (SHADOW) new FieldImpl(annotationProcessingContext, (VariableElement) element);
          case PARAMETER:
-            return (SHADOW) new ParameterImpl(shadowApi, (VariableElement) element);
+            return (SHADOW) new ParameterImpl(annotationProcessingContext, (VariableElement) element);
          case TYPE_PARAMETER:
-            return (SHADOW) new GenericImpl(shadowApi, (TypeParameterElement) element);
+            return (SHADOW) new GenericImpl(annotationProcessingContext, (TypeParameterElement) element);
          case OTHER:
          case STATIC_INIT:
          case INSTANCE_INIT:
@@ -247,10 +253,10 @@ public interface MirrorAdapter
    /**
     * {@link TypeMirror}s represent the abstract code. {@code List<T>} for example.
     *
-    * @see #getShadow(ShadowApi, Element)
+    * @see #getShadow(AnnotationProcessingContext, Element)
     */
    @SuppressWarnings("unchecked")
-   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, TypeMirror typeMirror)
+   static <SHADOW extends Shadow> SHADOW getShadow(AnnotationProcessingContext annotationProcessingContext, TypeMirror typeMirror)
    {
       switch (typeMirror.getKind())
       {
@@ -262,34 +268,34 @@ public interface MirrorAdapter
          case CHAR:
          case FLOAT:
          case DOUBLE:
-            return (SHADOW) new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
+            return (SHADOW) new PrimitiveImpl(annotationProcessingContext, (PrimitiveType) typeMirror);
          case ARRAY:
-            return (SHADOW) new ArrayImpl(shadowApi, (ArrayType) typeMirror);
+            return (SHADOW) new ArrayImpl(annotationProcessingContext, (ArrayType) typeMirror);
          case DECLARED:
-            switch (getProcessingEnv(shadowApi).getTypeUtils().asElement(typeMirror).getKind())
+            switch (getProcessingEnv(annotationProcessingContext).getTypeUtils().asElement(typeMirror).getKind())
             {
                case CLASS:
-                  return (SHADOW) new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
+                  return (SHADOW) new ClassImpl(annotationProcessingContext, ((DeclaredType) typeMirror));
                case INTERFACE:
-                  return (SHADOW) new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
+                  return (SHADOW) new InterfaceImpl(annotationProcessingContext, (DeclaredType) typeMirror);
                case ANNOTATION_TYPE:
                case ENUM:
-                  return (SHADOW) new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
+                  return (SHADOW) new DeclaredImpl(annotationProcessingContext, (DeclaredType) typeMirror);
                default:
                   throw new IllegalArgumentException("not implemented");
             }
          case WILDCARD:
-            return (SHADOW) new WildcardImpl(shadowApi, (WildcardType) typeMirror);
+            return (SHADOW) new WildcardImpl(annotationProcessingContext, (WildcardType) typeMirror);
          case VOID:
-            return (SHADOW) new VoidImpl(shadowApi, ((NoType) typeMirror));
+            return (SHADOW) new VoidImpl(annotationProcessingContext, ((NoType) typeMirror));
          case PACKAGE:
-            return (SHADOW) new PackageImpl(shadowApi, (NoType) typeMirror);
+            return (SHADOW) new PackageImpl(annotationProcessingContext, (NoType) typeMirror);
          case NULL:
-            return (SHADOW) new NullImpl(shadowApi, (NullType) typeMirror);
+            return (SHADOW) new NullImpl(annotationProcessingContext, (NullType) typeMirror);
          case TYPEVAR:
-            return (SHADOW) new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
+            return (SHADOW) new GenericImpl(annotationProcessingContext, ((TypeVariable) typeMirror));
          case INTERSECTION:
-            return (SHADOW) new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
+            return (SHADOW) new IntersectionImpl(annotationProcessingContext, ((IntersectionType) typeMirror));
          case EXECUTABLE:
          case NONE:
             throw new IllegalArgumentException("bug in this api: executables should be created using elements");
@@ -302,9 +308,9 @@ public interface MirrorAdapter
       }
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi, List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsage> getAnnotationUsages(AnnotationProcessingContext annotationProcessingContext, List<? extends AnnotationMirror> annotationMirrors)
    {
-      return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
+      return AnnotationUsageImpl.from(annotationProcessingContext, annotationMirrors);
    }
 
    static javax.lang.model.element.AnnotationValue getAnnotationValue(AnnotationValue annotationValue)
@@ -312,13 +318,13 @@ public interface MirrorAdapter
       return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
    }
 
-   static ProcessingEnvironment getProcessingEnv(ShadowApi shadowApi)
+   static ProcessingEnvironment getProcessingEnv(AnnotationProcessingContext annotationProcessingContext)
    {
-      return ((ShadowApiImpl) shadowApi).getProcessingEnv();
+      return ((AnnotationProcessingContextImpl) annotationProcessingContext).getProcessingEnv();
    }
 
-   static RoundEnvironment getRoundEnv(ShadowApi shadowApi)
+   static RoundEnvironment getRoundEnv(AnnotationProcessingContext annotationProcessingContext)
    {
-      return ((ShadowApiImpl) shadowApi).getRoundEnv();
+      return ((AnnotationProcessingContextImpl) annotationProcessingContext).getRoundEnv();
    }
 }

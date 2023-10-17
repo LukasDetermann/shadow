@@ -1,7 +1,7 @@
 package io.determann.shadow.example.processor.builder;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Class;
 
@@ -17,10 +17,10 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 public class ShadowBuilderProcessor extends ShadowProcessor
 {
    @Override
-   public void process(final ShadowApi shadowApi)
+   public void process(final AnnotationProcessingContext annotationProcessingContext)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (Class aClass : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
+      for (Class aClass : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
@@ -36,8 +36,8 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                                       .toList();
 
          //writes the builder
-         shadowApi.writeSourceFile(builderQualifiedName,
-                                   renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
+         annotationProcessingContext.writeSourceFile(builderQualifiedName,
+                                                     renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
       }
    }
 

@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow.module;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Requires;
@@ -13,9 +13,9 @@ public class RequiresImpl extends DirectiveImpl implements Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(ShadowApi shadowApi, ModuleElement.RequiresDirective requiresDirective)
+   public RequiresImpl(AnnotationProcessingContext annotationProcessingContext, ModuleElement.RequiresDirective requiresDirective)
    {
-      super(shadowApi);
+      super(annotationProcessingContext);
       this.requiresDirective = requiresDirective;
    }
 

@@ -1,12 +1,12 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 
 import java.util.function.Function;
 
 abstract class ExecutableTest<EXECUTABLE extends Executable> extends ShadowTest<EXECUTABLE>
 {
-   ExecutableTest(Function<ShadowApi, EXECUTABLE> executableSupplier)
+   ExecutableTest(Function<AnnotationProcessingContext, EXECUTABLE> executableSupplier)
    {
       super(executableSupplier);
    }

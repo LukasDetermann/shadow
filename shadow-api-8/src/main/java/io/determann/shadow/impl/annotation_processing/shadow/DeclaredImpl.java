@@ -2,8 +2,8 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.NestingKind;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.modifier.Modifier;
@@ -26,15 +26,15 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
 {
    private final TypeElement typeElement;
 
-   public DeclaredImpl(ShadowApi shadowApi, DeclaredType declaredTypeMirror)
+   public DeclaredImpl(AnnotationProcessingContext annotationProcessingContext, DeclaredType declaredTypeMirror)
    {
-      super(shadowApi, declaredTypeMirror);
+      super(annotationProcessingContext, declaredTypeMirror);
       this.typeElement = (TypeElement) declaredTypeMirror.asElement();
    }
 
-   public DeclaredImpl(ShadowApi shadowApi, TypeElement typeElement)
+   public DeclaredImpl(AnnotationProcessingContext annotationProcessingContext, TypeElement typeElement)
    {
-      super(shadowApi, (DeclaredType) typeElement.asType());
+      super(annotationProcessingContext, (DeclaredType) typeElement.asType());
       this.typeElement = typeElement;
    }
 

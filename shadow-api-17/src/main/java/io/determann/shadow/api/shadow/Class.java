@@ -1,6 +1,5 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AbstractModifiable;
 import io.determann.shadow.api.modifier.FinalModifiable;
 import io.determann.shadow.api.modifier.Sealable;
@@ -9,7 +8,6 @@ import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,22 +41,6 @@ public interface Class extends Declared,
     * returns the outer type for not static classes
     */
    Optional<Declared> getOuterType();
-
-   /**
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
-    */
-   Class withGenerics(Shadow... generics);
-
-   /**
-    * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
-    */
-   default Class withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(Arrays.stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
-   }
 
    /**
     * {@code List<}<b>String</b>{@code >}

@@ -3,6 +3,7 @@ package io.determann.shadow.api;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.impl.annotation_processing.ApiHolder;
 
 import java.util.List;
 import java.util.Optional;

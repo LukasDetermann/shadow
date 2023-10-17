@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
 
@@ -13,9 +13,9 @@ import java.util.Optional;
 
 public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
 {
-   public WildcardImpl(ShadowApi shadowApi, WildcardType wildcardTypeMirror)
+   public WildcardImpl(AnnotationProcessingContext annotationProcessingContext, WildcardType wildcardTypeMirror)
    {
-      super(shadowApi, wildcardTypeMirror);
+      super(annotationProcessingContext, wildcardTypeMirror);
    }
 
    @Override

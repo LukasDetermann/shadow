@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow.module;
 
-import io.determann.shadow.api.ApiHolder;
+import io.determann.shadow.impl.annotation_processing.ApiHolder;
 
 /**
  * Relation between modules

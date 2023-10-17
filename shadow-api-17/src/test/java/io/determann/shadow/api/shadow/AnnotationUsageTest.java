@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
 {
    @Override
-   protected Function<ShadowApi, AnnotationUsage> getShadowSupplier()
+   protected Function<AnnotationProcessingContext, AnnotationUsage> getShadowSupplier()
    {
       //junit doesn't like multiple constructors. Therefore, AnnotationTest can only supply its supplier to its parent
       return shadowApi -> shadowApi.getClassOrThrow("AnnotationUsageExample")

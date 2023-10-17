@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow.module;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Provides;
@@ -16,9 +16,9 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
-   public ProvidesImpl(ShadowApi shadowApi, ModuleElement.ProvidesDirective providesDirective)
+   public ProvidesImpl(AnnotationProcessingContext annotationProcessingContext, ModuleElement.ProvidesDirective providesDirective)
    {
-      super(shadowApi);
+      super(annotationProcessingContext);
       this.providesDirective = providesDirective;
    }
 

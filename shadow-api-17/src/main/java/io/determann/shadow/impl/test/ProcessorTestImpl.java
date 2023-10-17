@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.test;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.test.ProcessingCallback;
 import io.determann.shadow.api.test.ProcessorTest;
 
@@ -121,9 +121,9 @@ public class ProcessorTestImpl implements ProcessorTest
       return new ShadowProcessor()
       {
          @Override
-         public void process(ShadowApi shadowApi)
+         public void process(AnnotationProcessingContext annotationProcessingContext)
          {
-            processingCallback.process(shadowApi);
+            processingCallback.process(annotationProcessingContext);
          }
       };
    }

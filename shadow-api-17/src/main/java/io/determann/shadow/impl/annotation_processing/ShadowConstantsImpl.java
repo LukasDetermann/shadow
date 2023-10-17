@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.ShadowConstants;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Null;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;
@@ -14,76 +14,76 @@ import static io.determann.shadow.api.MirrorAdapter.getShadow;
 
 public class ShadowConstantsImpl implements ShadowConstants
 {
-   private final ShadowApi shadowApi;
+   private final AnnotationProcessingContext annotationProcessingContext;
 
-   ShadowConstantsImpl(ShadowApi shadowApi)
+   ShadowConstantsImpl(AnnotationProcessingContext annotationProcessingContext)
    {
-      this.shadowApi = shadowApi;
+      this.annotationProcessingContext = annotationProcessingContext;
    }
 
    @Override
    public Wildcard getUnboundWildcard()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getWildcardType(null, null));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getWildcardType(null, null));
    }
 
    @Override
    public Null getNull()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getNullType());
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getNullType());
    }
 
    @Override
    public Void getVoid()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getNoType(TypeKind.VOID));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getNoType(TypeKind.VOID));
    }
 
    @Override
    public Primitive getPrimitiveBoolean()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.BOOLEAN));
    }
 
    @Override
    public Primitive getPrimitiveByte()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.BYTE));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.BYTE));
    }
 
    @Override
    public Primitive getPrimitiveShort()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.SHORT));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.SHORT));
    }
 
    @Override
    public Primitive getPrimitiveInt()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.INT));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.INT));
    }
 
    @Override
    public Primitive getPrimitiveLong()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.LONG));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.LONG));
    }
 
    @Override
    public Primitive getPrimitiveChar()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.CHAR));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.CHAR));
    }
 
    @Override
    public Primitive getPrimitiveFloat()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.FLOAT));
    }
 
    @Override
    public Primitive getPrimitiveDouble()
    {
-      return getShadow(shadowApi, MirrorAdapter.getProcessingEnv(shadowApi).getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
+      return getShadow(annotationProcessingContext, MirrorAdapter.getProcessingEnv(annotationProcessingContext).getTypeUtils().getPrimitiveType(TypeKind.DOUBLE));
    }
 }

@@ -1,6 +1,5 @@
 package io.determann.shadow.impl.property;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Field;
@@ -14,7 +13,6 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class ImmutablePropertyImpl implements ImmutableProperty
 {
-   private final ShadowApi api;
    private final String name;
    private final Shadow type;
    private final Field field;
@@ -24,8 +22,7 @@ public class ImmutablePropertyImpl implements ImmutableProperty
    {
       return PropertyTemplateFactory.templatesFor(declared).stream()
                                     .filter(template -> template.getSetter() == null)
-                                    .map(template -> new ImmutablePropertyImpl(declared.getApi(),
-                                                                               template.getName(),
+                                    .map(template -> new ImmutablePropertyImpl(template.getName(),
                                                                                template.getType(),
                                                                                template.getField(),
                                                                                template.getGetter()))
@@ -33,19 +30,12 @@ public class ImmutablePropertyImpl implements ImmutableProperty
                                     .collect(toUnmodifiableList());
    }
 
-   private ImmutablePropertyImpl(ShadowApi api, String name, Shadow type, Field field, Method getter)
+   private ImmutablePropertyImpl(String name, Shadow type, Field field, Method getter)
    {
-      this.api = api;
       this.name = name;
       this.type = type;
       this.field = field;
       this.getter = getter;
-   }
-
-   @Override
-   public ShadowApi getApi()
-   {
-      return api;
    }
 
    @Override

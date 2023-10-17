@@ -1,22 +1,25 @@
-package io.determann.shadow.api;
+package io.determann.shadow.api.annotation_processing;
 
+import io.determann.shadow.api.*;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.AnnotationProcessingContextImpl;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import static java.util.Arrays.stream;
+
 /**
- * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link ShadowApi} is transient. Meaning you can
+ * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link AnnotationProcessingContext} is transient. Meaning you can
  * transition between using the shadow and the java annotation processor api from line to line if you so wish. Methods in the ShadowApi that leak
  * the annotation processor api are annotated with {@link JdkApi}.
  * <br><br>
@@ -35,22 +38,8 @@ import java.util.function.BiConsumer;
  * @see JdkApi
  * @see Shadow
  */
-public interface ShadowApi extends DeclaredHolder
+public interface AnnotationProcessingContext extends DeclaredHolder
 {
-   static ShadowApi create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
-   {
-      return new ShadowApiImpl(processingEnv, roundEnv, processingRound);
-   }
-
-   static ShadowApi create(ShadowApi apiFromPreviousRound, ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
-   {
-      if (apiFromPreviousRound == null)
-      {
-         return create(processingEnv, roundEnv, processingRound);
-      }
-      return ((ShadowApiImpl) apiFromPreviousRound).update(processingEnv, roundEnv, processingRound);
-   }
-
    /**
     * Looks up annotated elements in currently compiled code. <br>
     * Annotation processing happens in rounds.
@@ -71,9 +60,26 @@ public interface ShadowApi extends DeclaredHolder
     */
    AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
 
-   Optional<Package> getPackage(String qualifiedName);
+   List<Module> getModules();
 
-   Package getPackageOrThrow(String qualifiedName);
+   Optional<Module> getModule(String name);
+
+   Module getModuleOrThrow(String name);
+
+   /**
+    * a package is unique per module. With multiple modules there can be multiple packages with the same name
+    */
+   List<Package> getPackages(String qualifiedName);
+
+   List<Package> getPackages();
+
+   Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
+
+   Optional<Package> getPackage(String qualifiedModuleName, String qualifiedPackageName);
+
+   Package getPackageOrThrow(Module module, String qualifiedPackageName);
+
+   Optional<Package> getPackage(Module module, String qualifiedPackageName);
 
    ShadowConstants getConstants();
 
@@ -115,43 +121,87 @@ public interface ShadowApi extends DeclaredHolder
     * Consumer to handle exceptions that occur in this annotation processor.
     * If you want the compilation to stop because of it just throw any expedition.
     */
-   void setExceptionHandler(BiConsumer<ShadowApi, Throwable> exceptionHandler);
+   void setExceptionHandler(BiConsumer<AnnotationProcessingContext, Throwable> exceptionHandler);
 
    /**
     * @see #setExceptionHandler(BiConsumer)
     */
-   BiConsumer<ShadowApi, Throwable> getExceptionHandler();
+   BiConsumer<AnnotationProcessingContext, Throwable> getExceptionHandler();
 
    /**
     * Executed at the end of each round.
     * When the processing is over each Processor gets called one more time with {@link #isProcessingOver()} = true.
     */
-   void setDiagnosticHandler(BiConsumer<ShadowApi, DiagnosticContext> diagnosticHandler);
+   void setDiagnosticHandler(BiConsumer<AnnotationProcessingContext, DiagnosticContext> diagnosticHandler);
 
    /**
     * @see #setDiagnosticHandler(BiConsumer)
     */
-   BiConsumer<ShadowApi, DiagnosticContext> getDiagnosticHandler();
+   BiConsumer<AnnotationProcessingContext, DiagnosticContext> getDiagnosticHandler();
 
    /**
     * Some {@link javax.tools.Tool} don't support {@link System#out}. By default, it is proxied and redirected to the logger as warning
     */
-   void setSystemOutHandler(BiConsumer<ShadowApi, String> systemOutHandler);
+   void setSystemOutHandler(BiConsumer<AnnotationProcessingContext, String> systemOutHandler);
 
    /**
     * @see #setSystemOutHandler(BiConsumer)
     */
-   BiConsumer<ShadowApi, String> getSystemOutHandler();
+   BiConsumer<AnnotationProcessingContext, String> getSystemOutHandler();
 
    /**
     * Some {@link javax.tools.Tool} don't support {@link System#err}. By default, it is proxied and redirected to the logger as error during
     */
-   void setSystemErrorHandler(BiConsumer<ShadowApi, String> systemErrorHandler);
+   void setSystemErrorHandler(BiConsumer<AnnotationProcessingContext, String> systemErrorHandler);
 
    /**
     * @see #setSystemErrorHandler(BiConsumer)
     */
-   BiConsumer<ShadowApi, String> getSystemErrorHandler();
+   BiConsumer<AnnotationProcessingContext, String> getSystemErrorHandler();
+
+   void logError(String msg);
+
+   void logInfo(String msg);
+
+   void logWarning(String msg);
+
+   void logErrorAt(Annotationable annotationable, String msg);
+
+   void logInfoAt(Annotationable annotationable, String msg);
+
+   void logWarningAt(Annotationable annotationable, String msg);
+
+   /**
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
+    */
+   Class withGenerics(Class aClass, Shadow... generics);
+
+   /**
+    * like {@link #withGenerics(Class, Shadow...)} but resolves the names using {@link AnnotationProcessingContext#getDeclaredOrThrow(String)}
+    */
+   default Class withGenerics(Class aClass, String... qualifiedGenerics)
+   {
+      return withGenerics(aClass, stream(qualifiedGenerics)
+            .map(this::getDeclaredOrThrow)
+            .toArray(Shadow[]::new));
+   }
+
+   /**
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
+    */
+   Interface withGenerics(Interface anInterface, Shadow... generics);
+
+   /**
+    * like {@link #withGenerics(Interface, Shadow...)} but resolves the names using {@link AnnotationProcessingContext#getDeclaredOrThrow(String)}
+    */
+   default Interface withGenerics(Interface anInterface, String... qualifiedGenerics)
+   {
+      return withGenerics(anInterface, stream(qualifiedGenerics)
+            .map(this::getDeclaredOrThrow)
+            .toArray(Shadow[]::new));
+   }
 
    /**
     * Convince method that performs erasure on all declared types that support it
@@ -161,6 +211,6 @@ public interface ShadowApi extends DeclaredHolder
     */
    static Declared erasure(Declared declared)
    {
-      return ShadowApiImpl.erasure(declared);
+      return AnnotationProcessingContextImpl.erasure(declared);
    }
 }

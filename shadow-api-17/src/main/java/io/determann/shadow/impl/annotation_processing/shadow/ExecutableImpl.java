@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.ShadowConverter;
 import io.determann.shadow.api.modifier.Modifier;
@@ -26,9 +26,9 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    private final ExecutableElement executableElement;
 
 
-   public ExecutableImpl(ShadowApi shadowApi, ExecutableElement executableElement)
+   public ExecutableImpl(AnnotationProcessingContext annotationProcessingContext, ExecutableElement executableElement)
    {
-      super(shadowApi, (ExecutableType) executableElement.asType());
+      super(annotationProcessingContext, (ExecutableType) executableElement.asType());
       this.executableElement = executableElement;
    }
 

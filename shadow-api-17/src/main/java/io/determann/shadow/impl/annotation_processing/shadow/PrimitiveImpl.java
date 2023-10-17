@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Primitive;
@@ -13,9 +13,9 @@ import java.util.Objects;
 
 public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive
 {
-   public PrimitiveImpl(ShadowApi shadowApi, PrimitiveType primitiveTypeMirror)
+   public PrimitiveImpl(AnnotationProcessingContext annotationProcessingContext, PrimitiveType primitiveTypeMirror)
    {
-      super(shadowApi, primitiveTypeMirror);
+      super(annotationProcessingContext, primitiveTypeMirror);
    }
 
    @Override

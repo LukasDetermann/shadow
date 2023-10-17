@@ -6,6 +6,8 @@ import io.determann.shadow.api.shadow.Generic;
 
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.converter.Converter.convert;
+
 public class GenericRendererImpl implements GenericRenderer
 {
    private final RenderingContextWrapper context;
@@ -33,7 +35,10 @@ public class GenericRendererImpl implements GenericRenderer
       {
          context.setRenderNestedGenerics(false);
 
-         if (generic.getExtends().representsSameType(generic.getApi().getClassOrThrow("java.lang.Object")))
+         if (convert(generic.getExtends())
+               .toDeclared()
+               .map(declared -> "java.lang.Object".equals(declared.getQualifiedName()))
+               .orElse(false))
          {
             sb.append(generic.getSimpleName());
          }

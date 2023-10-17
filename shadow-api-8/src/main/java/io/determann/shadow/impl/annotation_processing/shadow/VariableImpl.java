@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Package;
@@ -20,9 +20,9 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
 {
    private final VariableElement variableElement;
 
-   protected VariableImpl(ShadowApi shadowApi, VariableElement variableElement)
+   protected VariableImpl(AnnotationProcessingContext annotationProcessingContext, VariableElement variableElement)
    {
-      super(shadowApi, variableElement.asType());
+      super(annotationProcessingContext, variableElement.asType());
       this.variableElement = variableElement;
    }
 

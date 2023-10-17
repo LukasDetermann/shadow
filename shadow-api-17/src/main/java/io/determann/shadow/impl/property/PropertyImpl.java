@@ -1,6 +1,5 @@
 package io.determann.shadow.impl.property;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.property.Property;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Field;
@@ -15,7 +14,6 @@ public class PropertyImpl implements Property
 {
    private final String name;
    private final Shadow type;
-   private final ShadowApi shadowApi;
    private final Field field;
    private final Method getter;
    private final Method setter;
@@ -23,8 +21,7 @@ public class PropertyImpl implements Property
    public static List<Property> of(Declared declared)
    {
       return PropertyTemplateFactory.templatesFor(declared).stream()
-                                    .map(template -> new PropertyImpl(declared.getApi(),
-                                                                      template.getName(),
+                                    .map(template -> new PropertyImpl(template.getName(),
                                                                       template.getType(),
                                                                       template.getField(),
                                                                       template.getGetter(),
@@ -33,25 +30,17 @@ public class PropertyImpl implements Property
                                     .toList();
    }
 
-   private PropertyImpl(ShadowApi shadowApi,
-                        String name,
+   private PropertyImpl(String name,
                         Shadow type,
                         Field field,
                         Method getter,
                         Method setter)
    {
-      this.shadowApi = shadowApi;
       this.name = name;
       this.type = type;
       this.field = field;
       this.getter = getter;
       this.setter = setter;
-   }
-
-   @Override
-   public ShadowApi getApi()
-   {
-      return shadowApi;
    }
 
    @Override

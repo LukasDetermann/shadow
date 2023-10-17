@@ -1,6 +1,5 @@
 package io.determann.shadow.impl.converter;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.*;
 import io.determann.shadow.api.shadow.Class;
@@ -40,12 +39,10 @@ public class ConverterImpl implements ShadowConverter,
                                       VariableConverter,
                                       WildcardConverter
 {
-   private final ShadowApi shadowApi;
    private final Shadow shadow;
 
    public ConverterImpl(Shadow shadow)
    {
-      this.shadowApi = shadow.getApi();
       this.shadow = shadow;
    }
 

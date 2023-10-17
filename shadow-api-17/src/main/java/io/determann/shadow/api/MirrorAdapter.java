@@ -1,12 +1,13 @@
 package io.determann.shadow.api;
 
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.annotation_processing.ShadowApiImpl;
+import io.determann.shadow.impl.annotation_processing.AnnotationProcessingContextImpl;
 import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.impl.annotation_processing.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.impl.annotation_processing.shadow.*;
@@ -23,6 +24,11 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 @JdkApi
 public interface MirrorAdapter
 {
+   static AnnotationProcessingContext create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
+   {
+      return new AnnotationProcessingContextImpl(processingEnv, roundEnv, processingRound);
+   }
+
    static AnnotationMirror getMirror(AnnotationUsage annotationUsage)
    {
       return ((AnnotationUsageImpl) annotationUsage).getAnnotationMirror();
@@ -156,7 +162,7 @@ public interface MirrorAdapter
       return ((VariableImpl) variable).getElement();
    }
 
-   static Module getModule(ShadowApi api, Element element)
+   static Module getModule(AnnotationProcessingContext api, Element element)
    {
       return getShadow(api, getProcessingEnv(api).getElementUtils().getModuleOf(element));
    }
@@ -166,17 +172,17 @@ public interface MirrorAdapter
       return element.getSimpleName().toString();
    }
 
-   static String getJavaDoc(ShadowApi api, Element element)
+   static String getJavaDoc(AnnotationProcessingContext api, Element element)
    {
       return getProcessingEnv(api).getElementUtils().getDocComment(element);
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi api, Element element)
+   static List<AnnotationUsage> getAnnotationUsages(AnnotationProcessingContext api, Element element)
    {
       return getAnnotationUsages(api, getProcessingEnv(api).getElementUtils().getAllAnnotationMirrors(element));
    }
 
-   static List<AnnotationUsage> getDirectAnnotationUsages(ShadowApi api, Element element)
+   static List<AnnotationUsage> getDirectAnnotationUsages(AnnotationProcessingContext api, Element element)
    {
       return getAnnotationUsages(api, element.getAnnotationMirrors());
    }
@@ -211,24 +217,24 @@ public interface MirrorAdapter
     * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link Shadow}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.
     *
-    * @see #getShadow(ShadowApi, TypeMirror)
+    * @see #getShadow(AnnotationProcessingContext, TypeMirror)
     */
-   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, Element element)
+   static <SHADOW extends Shadow> SHADOW getShadow(AnnotationProcessingContext annotationProcessingContext, Element element)
    {
       return (SHADOW) switch (element.getKind())
       {
-         case PACKAGE -> new PackageImpl(shadowApi, (PackageElement) element);
-         case ENUM, ANNOTATION_TYPE -> new DeclaredImpl(shadowApi, (TypeElement) element);
-         case RECORD -> new RecordImpl(shadowApi, (TypeElement) element);
-         case CLASS -> new ClassImpl(shadowApi, (TypeElement) element);
-         case INTERFACE -> new InterfaceImpl(shadowApi, (TypeElement) element);
-         case METHOD, CONSTRUCTOR -> new ExecutableImpl(shadowApi, ((ExecutableElement) element));
-         case ENUM_CONSTANT -> new EnumConstantImpl(shadowApi, (VariableElement) element);
-         case FIELD -> new FieldImpl(shadowApi, (VariableElement) element);
-         case PARAMETER -> new ParameterImpl(shadowApi, (VariableElement) element);
-         case TYPE_PARAMETER -> new GenericImpl(shadowApi, (TypeParameterElement) element);
-         case MODULE -> new ModuleImpl(shadowApi, (ModuleElement) element);
-         case RECORD_COMPONENT -> new RecordComponentImpl(shadowApi, (RecordComponentElement) element);
+         case PACKAGE -> new PackageImpl(annotationProcessingContext, (PackageElement) element);
+         case ENUM, ANNOTATION_TYPE -> new DeclaredImpl(annotationProcessingContext, (TypeElement) element);
+         case RECORD -> new RecordImpl(annotationProcessingContext, (TypeElement) element);
+         case CLASS -> new ClassImpl(annotationProcessingContext, (TypeElement) element);
+         case INTERFACE -> new InterfaceImpl(annotationProcessingContext, (TypeElement) element);
+         case METHOD, CONSTRUCTOR -> new ExecutableImpl(annotationProcessingContext, ((ExecutableElement) element));
+         case ENUM_CONSTANT -> new EnumConstantImpl(annotationProcessingContext, (VariableElement) element);
+         case FIELD -> new FieldImpl(annotationProcessingContext, (VariableElement) element);
+         case PARAMETER -> new ParameterImpl(annotationProcessingContext, (VariableElement) element);
+         case TYPE_PARAMETER -> new GenericImpl(annotationProcessingContext, (TypeParameterElement) element);
+         case MODULE -> new ModuleImpl(annotationProcessingContext, (ModuleElement) element);
+         case RECORD_COMPONENT -> new RecordComponentImpl(annotationProcessingContext, (RecordComponentElement) element);
          case OTHER, STATIC_INIT, INSTANCE_INIT, EXCEPTION_PARAMETER, RESOURCE_VARIABLE, BINDING_VARIABLE, LOCAL_VARIABLE ->
                throw new IllegalArgumentException("not implemented");
       };
@@ -237,38 +243,38 @@ public interface MirrorAdapter
    /**
     * {@link TypeMirror}s represent the abstract code. {@code List<T>} for example.
     *
-    * @see #getShadow(ShadowApi, Element)
+    * @see #getShadow(AnnotationProcessingContext, Element)
     */
-   static <SHADOW extends Shadow> SHADOW getShadow(ShadowApi shadowApi, TypeMirror typeMirror)
+   static <SHADOW extends Shadow> SHADOW getShadow(AnnotationProcessingContext annotationProcessingContext, TypeMirror typeMirror)
    {
       //noinspection unchecked
       return (SHADOW) switch (typeMirror.getKind())
       {
-         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> new PrimitiveImpl(shadowApi, (PrimitiveType) typeMirror);
-         case ARRAY -> new ArrayImpl(shadowApi, (ArrayType) typeMirror);
-         case DECLARED -> switch (getProcessingEnv(shadowApi).getTypeUtils().asElement(typeMirror).getKind())
+         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> new PrimitiveImpl(annotationProcessingContext, (PrimitiveType) typeMirror);
+         case ARRAY -> new ArrayImpl(annotationProcessingContext, (ArrayType) typeMirror);
+         case DECLARED -> switch (getProcessingEnv(annotationProcessingContext).getTypeUtils().asElement(typeMirror).getKind())
          {
-            case CLASS -> new ClassImpl(shadowApi, ((DeclaredType) typeMirror));
-            case INTERFACE -> new InterfaceImpl(shadowApi, (DeclaredType) typeMirror);
-            case RECORD -> new RecordImpl(shadowApi, (DeclaredType) typeMirror);
-            case ANNOTATION_TYPE, ENUM -> new DeclaredImpl(shadowApi, (DeclaredType) typeMirror);
+            case CLASS -> new ClassImpl(annotationProcessingContext, ((DeclaredType) typeMirror));
+            case INTERFACE -> new InterfaceImpl(annotationProcessingContext, (DeclaredType) typeMirror);
+            case RECORD -> new RecordImpl(annotationProcessingContext, (DeclaredType) typeMirror);
+            case ANNOTATION_TYPE, ENUM -> new DeclaredImpl(annotationProcessingContext, (DeclaredType) typeMirror);
             default -> throw new IllegalArgumentException("not implemented");
          };
-         case WILDCARD -> new WildcardImpl(shadowApi, (WildcardType) typeMirror);
-         case VOID -> new VoidImpl(shadowApi, ((NoType) typeMirror));
-         case PACKAGE -> new PackageImpl(shadowApi, (NoType) typeMirror);
-         case MODULE -> new ModuleImpl(shadowApi, (NoType) typeMirror);
-         case NULL -> new NullImpl(shadowApi, (NullType) typeMirror);
-         case TYPEVAR -> new GenericImpl(shadowApi, ((TypeVariable) typeMirror));
-         case INTERSECTION -> new IntersectionImpl(shadowApi, ((IntersectionType) typeMirror));
+         case WILDCARD -> new WildcardImpl(annotationProcessingContext, (WildcardType) typeMirror);
+         case VOID -> new VoidImpl(annotationProcessingContext, ((NoType) typeMirror));
+         case PACKAGE -> new PackageImpl(annotationProcessingContext, (NoType) typeMirror);
+         case MODULE -> new ModuleImpl(annotationProcessingContext, (NoType) typeMirror);
+         case NULL -> new NullImpl(annotationProcessingContext, (NullType) typeMirror);
+         case TYPEVAR -> new GenericImpl(annotationProcessingContext, ((TypeVariable) typeMirror));
+         case INTERSECTION -> new IntersectionImpl(annotationProcessingContext, ((IntersectionType) typeMirror));
          case EXECUTABLE, NONE -> throw new IllegalArgumentException("bug in this api: executables should be created using elements");
          case ERROR, OTHER, UNION -> throw new IllegalArgumentException("not implemented");
       };
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(ShadowApi shadowApi, List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsage> getAnnotationUsages(AnnotationProcessingContext annotationProcessingContext, List<? extends AnnotationMirror> annotationMirrors)
    {
-      return AnnotationUsageImpl.from(shadowApi, annotationMirrors);
+      return AnnotationUsageImpl.from(annotationProcessingContext, annotationMirrors);
    }
 
    static javax.lang.model.element.AnnotationValue getAnnotationValue(AnnotationValue annotationValue)
@@ -276,13 +282,13 @@ public interface MirrorAdapter
       return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
    }
 
-   static ProcessingEnvironment getProcessingEnv(ShadowApi shadowApi)
+   static ProcessingEnvironment getProcessingEnv(AnnotationProcessingContext annotationProcessingContext)
    {
-      return ((ShadowApiImpl) shadowApi).getProcessingEnv();
+      return ((AnnotationProcessingContextImpl) annotationProcessingContext).getProcessingEnv();
    }
 
-   static RoundEnvironment getRoundEnv(ShadowApi shadowApi)
+   static RoundEnvironment getRoundEnv(AnnotationProcessingContext annotationProcessingContext)
    {
-      return ((ShadowApiImpl) shadowApi).getRoundEnv();
+      return ((AnnotationProcessingContextImpl) annotationProcessingContext).getRoundEnv();
    }
 }

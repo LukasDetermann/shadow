@@ -1,10 +1,8 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.modifier.AbstractModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
-import java.util.Arrays;
 import java.util.List;
 
 public interface Interface extends Declared,
@@ -12,22 +10,6 @@ public interface Interface extends Declared,
                                    StaticModifiable
 {
    boolean isFunctional();
-
-   /**
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
-    */
-   Interface withGenerics(Shadow... generics);
-
-   /**
-    * like {@link #withGenerics(Shadow[])} but resolves the names using {@link ShadowApi#getDeclaredOrThrow(String)}
-    */
-   default Interface withGenerics(String... qualifiedGenerics)
-   {
-      return withGenerics(Arrays.stream(qualifiedGenerics)
-                                .map(qualifiedName -> getApi().getDeclaredOrThrow(qualifiedName))
-                                .toArray(Shadow[]::new));
-   }
 
    /**
     * {@code List<}<b>String</b>{@code >}

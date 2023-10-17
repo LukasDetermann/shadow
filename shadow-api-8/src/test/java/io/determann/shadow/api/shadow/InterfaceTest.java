@@ -55,21 +55,23 @@ class InterfaceTest extends DeclaredTest<Interface>
       ProcessorTest.process(shadowApi ->
                             {
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                           .withGenerics("java.lang.String"));
+                                            () -> shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
+                                                  "InterpolateGenericsExample.DependentGeneric"), "java.lang.String"));
 
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.getInterfaceOrThrow("java.io.Serializable").withGenerics("java.io.Serializable"));
+                                            () -> shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.io.Serializable"),
+                                                                         "java.io.Serializable"));
 
                                assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.String")),
-                                            shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric")
-                                                     .withGenerics("java.lang.String")
+                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
+                                                                   "java.lang.String")
                                                      .getGenerics());
 
                                assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.String"),
                                                           shadowApi.getClassOrThrow("java.lang.Number")),
-                                            shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                     .withGenerics("java.lang.String", "java.lang.Number")
+                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                                                                   "java.lang.String",
+                                                                   "java.lang.Number")
                                                      .getGenerics());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java",
@@ -85,8 +87,8 @@ class InterfaceTest extends DeclaredTest<Interface>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               Interface declared = shadowApi.getInterfaceOrThrow("InterpolateGenericsExample")
-                                                             .withGenerics(shadowApi.getClassOrThrow("java.lang.String"),
+                               Interface declared = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample"),
+                                                                           shadowApi.getClassOrThrow("java.lang.String"),
                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Interface capture = declared.interpolateGenerics();
                                Shadow interpolated = convert(capture.getGenerics().get(1))
@@ -99,8 +101,9 @@ class InterfaceTest extends DeclaredTest<Interface>
                                      .orElseThrow(IllegalStateException::new);
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
 
-                               Interface independentExample = shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric")
-                                                                       .withGenerics(shadowApi.getConstants().getUnboundWildcard());
+                               Interface independentExample = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
+                                                                                           "InterpolateGenericsExample.IndependentGeneric"),
+                                                                                     shadowApi.getConstants().getUnboundWildcard());
                                Interface independentCapture = independentExample.interpolateGenerics();
                                Shadow interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
                                      .toGeneric()
@@ -108,8 +111,8 @@ class InterfaceTest extends DeclaredTest<Interface>
                                      .orElseThrow(IllegalStateException::new);
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               Interface dependentExample = shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                                     .withGenerics(shadowApi.getConstants().getUnboundWildcard(),
+                               Interface dependentExample = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
+                                                                                         "InterpolateGenericsExample.DependentGeneric"), shadowApi.getConstants().getUnboundWildcard(),
                                                                                    shadowApi.getClassOrThrow("java.lang.String"));
                                Interface dependentCapture = dependentExample.interpolateGenerics();
                                Shadow interpolatedDependent = convert(dependentCapture.getGenerics().get(0))

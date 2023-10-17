@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
@@ -16,24 +16,24 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 {
-   private final ShadowApi shadowApi;
+   private final AnnotationProcessingContext annotationProcessingContext;
    private final AnnotationMirror annotationMirror;
 
-   public static List<AnnotationUsage> from(ShadowApi shadowApi,
+   public static List<AnnotationUsage> from(AnnotationProcessingContext annotationProcessingContext,
                                             Collection<? extends AnnotationMirror> annotationMirrors)
    {
-      return annotationMirrors.stream().map(annotationMirror -> from(shadowApi, annotationMirror)).collect(toUnmodifiableList());
+      return annotationMirrors.stream().map(annotationMirror -> from(annotationProcessingContext, annotationMirror)).collect(toUnmodifiableList());
    }
 
-   static AnnotationUsage from(ShadowApi shadowApi, AnnotationMirror annotationMirror)
+   static AnnotationUsage from(AnnotationProcessingContext annotationProcessingContext, AnnotationMirror annotationMirror)
    {
-      return new AnnotationUsageImpl(shadowApi, annotationMirror);
+      return new AnnotationUsageImpl(annotationProcessingContext, annotationMirror);
    }
 
-   private AnnotationUsageImpl(ShadowApi shadowApi, AnnotationMirror annotationMirror)
+   private AnnotationUsageImpl(AnnotationProcessingContext annotationProcessingContext, AnnotationMirror annotationMirror)
    {
-      super(shadowApi, annotationMirror.getAnnotationType());
-      this.shadowApi = shadowApi;
+      super(annotationProcessingContext, annotationMirror.getAnnotationType());
+      this.annotationProcessingContext = annotationProcessingContext;
       this.annotationMirror = annotationMirror;
    }
 
@@ -50,7 +50,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
          result.put(MirrorAdapter.getShadow(getApi(), entry.getKey()),
-                    new AnnotationValueImpl(shadowApi, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
+                    new AnnotationValueImpl(annotationProcessingContext, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
    }

@@ -2,7 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.NestingKind;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLARED>
 {
-   DeclaredTest(Function<ShadowApi, DECLARED> shadowSupplier)
+   DeclaredTest(Function<AnnotationProcessingContext, DECLARED> shadowSupplier)
    {
       super(shadowSupplier);
    }

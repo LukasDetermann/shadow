@@ -1,6 +1,5 @@
 package io.determann.shadow.impl.property;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Field;
@@ -17,7 +16,6 @@ import static java.util.stream.Collectors.toList;
 
 public class MutablePropertyImpl implements MutableProperty
 {
-   private final ShadowApi api;
    private final String name;
    private final Shadow type;
    private final Field field;
@@ -27,8 +25,7 @@ public class MutablePropertyImpl implements MutableProperty
    public static List<MutableProperty> of(Declared declared)
    {
       return PropertyTemplateFactory.templatesFor(declared).stream().filter(template -> template.getSetter() != null)
-                                    .map(template -> new MutablePropertyImpl(declared.getApi(),
-                                                                             template.getName(),
+                                    .map(template -> new MutablePropertyImpl(template.getName(),
                                                                              template.getType(),
                                                                              template.getField(),
                                                                              template.getGetter(),
@@ -37,8 +34,7 @@ public class MutablePropertyImpl implements MutableProperty
                                     .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 
-   private MutablePropertyImpl(ShadowApi api,
-                               String name,
+   private MutablePropertyImpl(String name,
                                Shadow type,
                                Field field,
                                Method getter,
@@ -46,16 +42,9 @@ public class MutablePropertyImpl implements MutableProperty
    {
       this.name = name;
       this.type = type;
-      this.api = api;
       this.field = field;
       this.getter = getter;
       this.setter = setter;
-   }
-
-   @Override
-   public ShadowApi getApi()
-   {
-      return api;
    }
 
    @Override

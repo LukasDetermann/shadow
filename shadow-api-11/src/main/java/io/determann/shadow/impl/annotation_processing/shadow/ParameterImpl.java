@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Executable;
 import io.determann.shadow.api.shadow.Parameter;
 import io.determann.shadow.api.shadow.Shadow;
@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ParameterImpl extends VariableImpl<Executable> implements Parameter
 {
-   public ParameterImpl(ShadowApi shadowApi, VariableElement variableElement)
+   public ParameterImpl(AnnotationProcessingContext annotationProcessingContext, VariableElement variableElement)
    {
-      super(shadowApi, variableElement);
+      super(annotationProcessingContext, variableElement);
    }
 
    @Override

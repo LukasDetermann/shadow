@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -21,9 +21,9 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
 {
    private final RecordComponentElement recordComponentElement;
 
-   public RecordComponentImpl(ShadowApi shadowApi, RecordComponentElement recordComponentElement)
+   public RecordComponentImpl(AnnotationProcessingContext annotationProcessingContext, RecordComponentElement recordComponentElement)
    {
-      super(shadowApi, recordComponentElement.asType());
+      super(annotationProcessingContext, recordComponentElement.asType());
       this.recordComponentElement = recordComponentElement;
    }
 

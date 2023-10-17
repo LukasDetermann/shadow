@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 abstract class VariableTest<SURROUNDING extends Shadow, VARIABLE extends Variable<SURROUNDING>>
       extends ShadowTest<VARIABLE>
 {
-   VariableTest(Function<ShadowApi, VARIABLE> variableSupplier)
+   VariableTest(Function<AnnotationProcessingContext, VARIABLE> variableSupplier)
    {
       super(variableSupplier);
    }

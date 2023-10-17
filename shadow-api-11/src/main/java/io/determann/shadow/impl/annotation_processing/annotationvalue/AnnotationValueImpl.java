@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
@@ -20,13 +20,13 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class AnnotationValueImpl implements AnnotationValue
 {
-   private final ShadowApi shadowApi;
+   private final AnnotationProcessingContext annotationProcessingContext;
    private final javax.lang.model.element.AnnotationValue annotationValue;
    private final boolean defaultValue;
 
-   AnnotationValueImpl(ShadowApi shadowApi, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+   AnnotationValueImpl(AnnotationProcessingContext annotationProcessingContext, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
    {
-      this.shadowApi = shadowApi;
+      this.annotationProcessingContext = annotationProcessingContext;
       this.annotationValue = annotationValue;
       this.defaultValue = defaultValue;
    }
@@ -88,19 +88,19 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Shadow asType()
    {
-      return MirrorAdapter.getShadow(shadowApi, (TypeMirror) annotationValue.getValue());
+      return MirrorAdapter.getShadow(annotationProcessingContext, (TypeMirror) annotationValue.getValue());
    }
 
    @Override
    public EnumConstant asEnumConstant()
    {
-      return MirrorAdapter.getShadow(shadowApi, (Element) annotationValue.getValue());
+      return MirrorAdapter.getShadow(annotationProcessingContext, (Element) annotationValue.getValue());
    }
 
    @Override
    public AnnotationUsage asAnnotationUsage()
    {
-      return AnnotationUsageImpl.from(shadowApi, (AnnotationMirror) annotationValue.getValue());
+      return AnnotationUsageImpl.from(annotationProcessingContext, (AnnotationMirror) annotationValue.getValue());
    }
 
    @Override
@@ -109,7 +109,7 @@ public class AnnotationValueImpl implements AnnotationValue
       //noinspection unchecked
       return ((Collection<javax.lang.model.element.AnnotationValue>) annotationValue.getValue())
             .stream()
-            .map(annotationValue1 -> new AnnotationValueImpl(shadowApi, annotationValue1, isDefaultValue()))
+            .map(annotationValue1 -> new AnnotationValueImpl(annotationProcessingContext, annotationValue1, isDefaultValue()))
             .map(AnnotationValue.class::cast)
             .collect(toUnmodifiableList());
    }

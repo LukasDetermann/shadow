@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class ShadowTest<SHADOW extends Shadow>
 {
-   private final Function<ShadowApi, SHADOW> shadowSupplier;
+   private final Function<AnnotationProcessingContext, SHADOW> shadowSupplier;
 
-   protected ShadowTest(Function<ShadowApi, SHADOW> shadowSupplier) {this.shadowSupplier = shadowSupplier;}
+   protected ShadowTest(Function<AnnotationProcessingContext, SHADOW> shadowSupplier) {this.shadowSupplier = shadowSupplier;}
 
    @Test
    void testRepresentsSameType()
@@ -127,15 +127,16 @@ abstract class ShadowTest<SHADOW extends Shadow>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                            shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object").erasure());
+                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object")
+                                                     .erasure());
 
                                assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                            shadowApi.getInterfaceOrThrow("java.util.Collection").withGenerics("java.lang.Object"));
+                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object"));
                             })
                    .compile();
    }
 
-   protected Function<ShadowApi, SHADOW> getShadowSupplier()
+   protected Function<AnnotationProcessingContext, SHADOW> getShadowSupplier()
    {
       return shadowSupplier;
    }

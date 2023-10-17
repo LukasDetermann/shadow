@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Void;
 
 import javax.lang.model.type.NoType;
@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class VoidImpl extends ShadowImpl<NoType> implements Void
 {
-   public VoidImpl(ShadowApi shadowApi, NoType typeMirror)
+   public VoidImpl(AnnotationProcessingContext annotationProcessingContext, NoType typeMirror)
    {
-      super(shadowApi, typeMirror);
+      super(annotationProcessingContext, typeMirror);
    }
 
    @Override

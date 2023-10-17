@@ -120,9 +120,9 @@ class ConversionTest
   void testConversion()
   {
     ProcessorTest
-      .process(shadowApi ->
+      .process(annotationProcessingContext ->
          {
-           Shadow<TypeMirror> myField = shadowApi.getClassOrThrow("MyClass")
+           Shadow<TypeMirror> myField = annotationProcessingContext.getClassOrThrow("MyClass")
                                                  .getFieldOrThrow("myField")
                                                  .getType();
            //Converters limit the conversion to possible types
@@ -131,7 +131,7 @@ class ConversionTest
                    .getGenerics()
                    .get(0);
                    
-           assertEquals(shadowApi.getClassOrThrow("java.lang.String"), 
+           assertEquals(annotationProcessingContext.getClassOrThrow("java.lang.String"), 
                         genericType);
          })
       .withCodeToCompile("MyClass.java", """
@@ -153,9 +153,9 @@ class ConversionTest
   void testConversion()
   {
     ProcessorTest
-      .process(shadowApi ->
+      .process(annotationProcessingContext ->
          {
-           Elements elements = shadowApi.getJdkApiContext()
+           Elements elements = annotationProcessingContext.getJdkApiContext()
                                         .getProcessingEnv()
                                         .getElementUtils();
            //get a type -> Element data structure 
@@ -214,7 +214,7 @@ public interface Shadow
    * {@code List<String>} becomes {@code List}. This method Does the same.
    * This can be useful if you want to check if a shadow implements for example 
    * {@link java.util.Collection} 
-   * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+   * {@code shadowToTest.erasure().isSubtypeOf(annotationProcessingContext.getDeclaredOrThrow("java.util.Collection").erasure())}
    */
   Shadow<TypeMirror> erasure();
   //...
@@ -258,13 +258,13 @@ class ConversionTest
   void testConversion1()
   {
     ProcessorTest
-      .process(shadowApi ->
+      .process(annotationProcessingContext ->
          {
-           ProcessingEnvironment processingEnv = shadowApi.getJdkApiContext().getProcessingEnv();
-           RoundEnvironment roundEnv = shadowApi.getJdkApiContext().getRoundEnv();
+           ProcessingEnvironment processingEnv = annotationProcessingContext.getJdkApiContext().getProcessingEnv();
+           RoundEnvironment roundEnv = annotationProcessingContext.getJdkApiContext().getRoundEnv();
 
-           Element typeElement = shadowApi.getClassOrThrow("java.lang.String").getElement();
-           TypeMirror mNyClass1 = shadowApi.getClassOrThrow("java.lang.String").getMirror();
+           Element typeElement = annotationProcessingContext.getClassOrThrow("java.lang.String").getElement();
+           TypeMirror mNyClass1 = annotationProcessingContext.getClassOrThrow("java.lang.String").getMirror();
          })
       .compile();
   }
@@ -279,11 +279,11 @@ class ConversionTest extends AbstractProcessor
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
   {
-    ShadowApi shadowApi = ShadowApi.create(processingEnv, roundEnv, 0);
+    ShadowApi annotationProcessingContext = ShadowApi.create(processingEnv, roundEnv, 0);
 
-    Shadow<? extends TypeMirror> shadow = shadowApi.getShadowFactory().shadowFromElement(null);
-    Shadow<? extends TypeMirror> shadow1 = shadowApi.getShadowFactory().shadowFromType(null);
-    List<AnnotationUsage> annotationUsages = shadowApi.getShadowFactory().annotationUsages(null);
+    Shadow<? extends TypeMirror> shadow = annotationProcessingContext.getShadowFactory().shadowFromElement(null);
+    Shadow<? extends TypeMirror> shadow1 = annotationProcessingContext.getShadowFactory().shadowFromType(null);
+    List<AnnotationUsage> annotationUsages = annotationProcessingContext.getShadowFactory().annotationUsages(null);
   }
 }
 ````
@@ -557,13 +557,13 @@ Disable annotation processing in the processor module, otherwise the annotation 
 
 Extend `ShadowProcessor` for your own processor and override `process()`
 ````java
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
    @Override
-   public void process(final ShadowApi shadowApi) {
+   public void process(final ShadowApi annotationProcessingContext) {
    }
 }
 ````
@@ -587,14 +587,14 @@ public @interface MyAnnotation {}
 
 And finally process anything annotated with that annotation 
 ````java
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
    @Override
-   public void process(final ShadowApi shadowApi) {
-      for (Shadow<TypeMirror> shadow : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.MyAnnotation").all())
+   public void process(final ShadowApi annotationProcessingContext) {
+      for (Shadow<TypeMirror> shadow : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.example.processor.MyAnnotation").all())
       {
       }
    }
@@ -614,7 +614,7 @@ public @interface BuilderPattern {}
 ````
 A Processor creating a simple Builder companion object
 ````java
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.ShadowProcessor;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Class;
@@ -631,10 +631,10 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 public class ShadowBuilderProcessor extends ShadowProcessor
 {
   @Override
-  public void process(final ShadowApi shadowApi)
+  public void process(final ShadowApi annotationProcessingContext)
   {
     //iterate over every class annotated with the BuilderPattern annotation
-    for (Class aClass : shadowApi.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
+    for (Class aClass : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
     {
       String toBuildQualifiedName = aClass.getQualifiedName();
       String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
@@ -650,7 +650,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                                    .toList();
 
       //writes the builder
-      shadowApi.writeSourceFile(builderQualifiedName,
+      annotationProcessingContext.writeSourceFile(builderQualifiedName,
                                 renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
     }
   }

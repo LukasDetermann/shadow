@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
@@ -16,9 +16,9 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 public class IntersectionImpl extends ShadowImpl<IntersectionType> implements Intersection
 {
 
-   public IntersectionImpl(ShadowApi shadowApi, IntersectionType intersectionType)
+   public IntersectionImpl(AnnotationProcessingContext annotationProcessingContext, IntersectionType intersectionType)
    {
-      super(shadowApi, intersectionType);
+      super(annotationProcessingContext, intersectionType);
    }
 
    @Override

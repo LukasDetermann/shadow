@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.RecordComponent;
@@ -9,21 +9,18 @@ import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
-
-import static java.util.Arrays.stream;
 
 public class RecordImpl extends DeclaredImpl implements Record
 {
-   public RecordImpl(ShadowApi shadowApi, DeclaredType declaredTypeMirror)
+   public RecordImpl(AnnotationProcessingContext annotationProcessingContext, DeclaredType declaredTypeMirror)
    {
-      super(shadowApi, declaredTypeMirror);
+      super(annotationProcessingContext, declaredTypeMirror);
    }
 
-   public RecordImpl(ShadowApi shadowApi, TypeElement typeElement)
+   public RecordImpl(AnnotationProcessingContext annotationProcessingContext, TypeElement typeElement)
    {
-      super(shadowApi, typeElement);
+      super(annotationProcessingContext, typeElement);
    }
 
    @Override
@@ -33,27 +30,6 @@ public class RecordImpl extends DeclaredImpl implements Record
                          .stream()
                          .map(recordComponentElement -> MirrorAdapter.<RecordComponent>getShadow(getApi(), recordComponentElement))
                          .toList();
-   }
-
-   @Override
-   public Record withGenerics(Shadow... generics)
-   {
-      if (generics.length == 0 || getFormalGenerics().size() != generics.length)
-      {
-         throw new IllegalArgumentException(getQualifiedName() +
-                                            " has " +
-                                            getFormalGenerics().size() +
-                                            " generics. " +
-                                            generics.length +
-                                            " are provided");
-      }
-      TypeMirror[] typeMirrors = stream(generics)
-            .map(MirrorAdapter::getType)
-            .toArray(TypeMirror[]::new);
-
-      return MirrorAdapter
-                     .getShadow(getApi(),
-                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override

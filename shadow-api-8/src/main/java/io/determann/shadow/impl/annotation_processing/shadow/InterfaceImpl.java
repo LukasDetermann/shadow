@@ -1,15 +1,13 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.ShadowApi;
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,41 +16,20 @@ import static java.util.stream.Collectors.toList;
 
 public class InterfaceImpl extends DeclaredImpl implements Interface
 {
-   public InterfaceImpl(ShadowApi shadowApi, DeclaredType declaredTypeMirror)
+   public InterfaceImpl(AnnotationProcessingContext annotationProcessingContext, DeclaredType declaredTypeMirror)
    {
-      super(shadowApi, declaredTypeMirror);
+      super(annotationProcessingContext, declaredTypeMirror);
    }
 
-   public InterfaceImpl(ShadowApi shadowApi, TypeElement typeElement)
+   public InterfaceImpl(AnnotationProcessingContext annotationProcessingContext, TypeElement typeElement)
    {
-      super(shadowApi, typeElement);
+      super(annotationProcessingContext, typeElement);
    }
 
    @Override
    public boolean isFunctional()
    {
       return MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().isFunctionalInterface(getElement());
-   }
-
-   @Override
-   public final Interface withGenerics(Shadow... generics)
-   {
-      if (generics.length == 0 || getFormalGenerics().size() != generics.length)
-      {
-         throw new IllegalArgumentException(getQualifiedName() +
-                                            " has " +
-                                            getFormalGenerics().size() +
-                                            " generics. " +
-                                            generics.length +
-                                            " are provided");
-      }
-      TypeMirror[] typeMirrors = Arrays.stream(generics)
-                                       .map(MirrorAdapter::getType)
-                                       .toArray(TypeMirror[]::new);
-
-      return MirrorAdapter
-                     .getShadow(getApi(),
-                                MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override

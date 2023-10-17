@@ -1,7 +1,5 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.ApiHolder;
-import io.determann.shadow.api.ShadowApi;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 
@@ -46,7 +44,7 @@ import io.determann.shadow.api.converter.Converter;
  *     </li>
  * </ul>
  */
-public interface Shadow extends ApiHolder
+public interface Shadow
 {
    TypeKind getTypeKind();
 
@@ -58,9 +56,6 @@ public interface Shadow extends ApiHolder
     * for example in a list implementation.
     */
    boolean representsSameType(Shadow shadow);
-
-   @Override
-   ShadowApi getApi();
 
    /**
     * be careful using this equals

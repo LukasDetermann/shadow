@@ -1,6 +1,5 @@
 package io.determann.shadow.api.property;
 
-import io.determann.shadow.api.ApiHolder;
 import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
@@ -15,7 +14,7 @@ import java.util.Optional;
  * @see MutableProperty
  * @see ImmutableProperty
  */
-public interface Property extends ApiHolder
+public interface Property
 {
    /**
     * based on the name of the getter without the prefix. if one of the first 2 chars is uppercase the
