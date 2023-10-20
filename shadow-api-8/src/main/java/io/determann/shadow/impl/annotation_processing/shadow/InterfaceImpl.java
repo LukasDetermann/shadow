@@ -55,10 +55,4 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    {
       return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
    }
-
-   @Override
-   public Interface erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
 }

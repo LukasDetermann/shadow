@@ -113,8 +113,8 @@ abstract class ShadowTest<SHADOW extends Shadow>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object")
-                                                     .erasure());
+                                            shadowApi.erasure(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                                                                                     "java.lang.Object")));
 
                                assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
                                             shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object"));

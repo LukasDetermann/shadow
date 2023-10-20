@@ -2,8 +2,6 @@ package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.DeclaredMapper;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -24,8 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.MirrorAdapter.getElement;
-import static io.determann.shadow.api.MirrorAdapter.getShadow;
+import static io.determann.shadow.api.MirrorAdapter.*;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -297,34 +294,21 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
       return processingRound;
    }
 
-   public static Declared erasure(Declared declared)
+   @Override
+   public Declared erasure(Class aClass)
    {
-      return Converter.convert(declared).map(new DeclaredMapper<>()
-      {
-         @Override
-         public Declared annotationType(Annotation annotation)
-         {
-            return annotation;
-         }
+      return erasureImpl(aClass);
+   }
 
-         @Override
-         public Declared enumType(io.determann.shadow.api.shadow.Enum aEnum)
-         {
-            return aEnum;
-         }
+   @Override
+   public Declared erasure(Interface anInterface)
+   {
+      return erasureImpl(anInterface);
+   }
 
-         @Override
-         public Declared classType(Class aClass)
-         {
-            return aClass.erasure();
-         }
-
-         @Override
-         public Declared interfaceType(Interface aInterface)
-         {
-            return aInterface.erasure();
-         }
-      });
+   private <DECLARED extends Declared> DECLARED erasureImpl(DECLARED declared)
+   {
+      return MirrorAdapter.getShadow(this, getProcessingEnv().getTypeUtils().erasure(getType(declared)));
    }
 
    @Override

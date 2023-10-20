@@ -102,12 +102,6 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public Class erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
-
-   @Override
    public Primitive asUnboxed()
    {
       return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().unboxedType(getMirror()));

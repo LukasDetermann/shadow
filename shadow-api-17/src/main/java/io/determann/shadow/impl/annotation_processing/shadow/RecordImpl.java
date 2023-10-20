@@ -55,10 +55,4 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
    }
-
-   @Override
-   public Record erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
 }
