@@ -45,10 +45,4 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
                          .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
-
-   @Override
-   public Interface interpolateGenerics()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
-   }
 }

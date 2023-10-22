@@ -15,9 +15,6 @@ public interface Generic extends Shadow,
     */
    Shadow getExtends();
 
-   /**
-    * There is no way to explicitly declare super in a generic. Mostly relevant in the context of {@link Class#interpolateGenerics()}
-    */
    Shadow getSuper();
 
    /**

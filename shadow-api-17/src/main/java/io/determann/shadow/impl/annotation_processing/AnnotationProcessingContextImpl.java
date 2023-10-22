@@ -319,6 +319,24 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    }
 
    @Override
+   public Class interpolateGenerics(Class aClass)
+   {
+      return MirrorAdapter.getShadow(getApi(), getProcessingEnv().getTypeUtils().capture(getType(aClass)));
+   }
+
+   @Override
+   public Interface interpolateGenerics(Interface anInterface)
+   {
+      return MirrorAdapter.getShadow(getApi(), getProcessingEnv().getTypeUtils().capture(getType(anInterface)));
+   }
+
+   @Override
+   public Record interpolateGenerics(Record aRecord)
+   {
+      return MirrorAdapter.getShadow(getApi(), getProcessingEnv().getTypeUtils().capture(getType(aRecord)));
+   }
+
+   @Override
    public void setExceptionHandler(BiConsumer<AnnotationProcessingContext, Throwable> exceptionHandler)
    {
       this.exceptionHandler = exceptionHandler;

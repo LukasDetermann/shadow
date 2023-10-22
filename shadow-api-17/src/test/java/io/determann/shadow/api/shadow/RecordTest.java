@@ -155,7 +155,7 @@ class RecordTest extends DeclaredTest<Record>
                                Record declared = shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample"),
                                                                         shadowApi.getClassOrThrow("java.lang.String"),
                                                                         shadowApi.getConstants().getUnboundWildcard());
-                               Record capture = declared.interpolateGenerics();
+                               Record capture = shadowApi.interpolateGenerics(declared);
                                Shadow interpolated = convert(capture.getGenerics().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
@@ -168,7 +168,7 @@ class RecordTest extends DeclaredTest<Record>
 
                                Record independentExample = shadowApi.withGenerics(shadowApi.getRecordOrThrow(
                                      "InterpolateGenericsExample.IndependentGeneric"), shadowApi.getConstants().getUnboundWildcard());
-                               Record independentCapture = independentExample.interpolateGenerics();
+                               Record independentCapture = shadowApi.interpolateGenerics(independentExample);
                                Shadow interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
@@ -179,7 +179,7 @@ class RecordTest extends DeclaredTest<Record>
                                                                                       "InterpolateGenericsExample.DependentGeneric"),
                                                                                 shadowApi.getConstants().getUnboundWildcard(),
                                                                                 shadowApi.getClassOrThrow("java.lang.String"));
-                               Record dependentCapture = dependentExample.interpolateGenerics();
+                               Record dependentCapture = shadowApi.interpolateGenerics(dependentExample);
                                Shadow interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)

@@ -98,12 +98,6 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public Class interpolateGenerics()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
-   }
-
-   @Override
    public Primitive asUnboxed()
    {
       return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().unboxedType(getMirror()));

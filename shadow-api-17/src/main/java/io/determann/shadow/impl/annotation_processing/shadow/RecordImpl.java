@@ -49,10 +49,4 @@ public class RecordImpl extends DeclaredImpl implements Record
                          .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
-
-   @Override
-   public Record interpolateGenerics()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().capture(getMirror()));
-   }
 }
