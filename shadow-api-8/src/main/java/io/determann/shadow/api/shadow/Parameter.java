@@ -12,13 +12,6 @@ public interface Parameter extends Variable<Executable>,
                                    FinalModifiable
 {
    /**
-    * convince method returns the erasure of the parameter type
-    *
-    * @see Class#erasure() for example for more information on erasure
-    */
-   Shadow erasure();
-
-   /**
     * {@link java.util.Arrays#asList(Object[])}
     */
    boolean isVarArgs();

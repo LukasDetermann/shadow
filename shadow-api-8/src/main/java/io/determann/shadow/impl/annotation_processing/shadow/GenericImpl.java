@@ -68,12 +68,6 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
                      .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getPackageOf(getElement()));
    }
 
-   @Override
-   public Shadow erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
-
    public TypeParameterElement getElement()
    {
       return typeParameterElement;

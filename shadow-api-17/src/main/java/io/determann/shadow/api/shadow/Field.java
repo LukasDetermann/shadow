@@ -17,13 +17,6 @@ public interface Field extends Variable<Declared>,
    Object getConstantValue();
 
    /**
-    * convince method returns the erasure of the field type
-    *
-    * @see Class#erasure() for example for more information on erasure
-    */
-   Shadow erasure();
-
-   /**
     * be careful using this equals
     *
     * @see #representsSameType(Shadow)

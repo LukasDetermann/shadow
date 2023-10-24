@@ -47,12 +47,6 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
-   public Shadow erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
-
-   @Override
    public boolean contains(Shadow shadow)
    {
       return MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().contains(getMirror(), MirrorAdapter.getType(shadow));

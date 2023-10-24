@@ -22,15 +22,6 @@ public interface Array extends Shadow
     */
    List<Shadow> getDirectSuperTypes();
 
-   /**
-    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
-    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
-    * <p>
-    * for {@link Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
-    */
-   Array erasure();
-
    Wildcard asExtendsWildcard();
 
    Wildcard asSuperWildcard();

@@ -297,18 +297,54 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    @Override
    public Declared erasure(Class aClass)
    {
-      return erasureImpl(aClass);
+      return erasureImpl(getType(aClass));
    }
 
    @Override
    public Declared erasure(Interface anInterface)
    {
-      return erasureImpl(anInterface);
+      return erasureImpl(getType(anInterface));
    }
 
-   private <DECLARED extends Declared> DECLARED erasureImpl(DECLARED declared)
+   @Override
+   public Array erasure(Array array)
    {
-      return MirrorAdapter.getShadow(this, getProcessingEnv().getTypeUtils().erasure(getType(declared)));
+      return erasureImpl(getType(array));
+   }
+
+   @Override
+   public Shadow erasure(Wildcard wildcard)
+   {
+      return erasureImpl(getType(wildcard));
+   }
+
+   @Override
+   public Shadow erasure(Generic generic)
+   {
+      return erasureImpl(getType(generic));
+   }
+
+   @Override
+   public Shadow erasure(Intersection intersection)
+   {
+      return erasureImpl(getType(intersection));
+   }
+
+   @Override
+   public Shadow erasure(Parameter parameter)
+   {
+      return erasureImpl(getType(parameter));
+   }
+
+   @Override
+   public Shadow erasure(Field field)
+   {
+      return erasureImpl(getType(field));
+   }
+
+   private <S extends Shadow> S erasureImpl(TypeMirror typeMirror)
+   {
+      return MirrorAdapter.getShadow(this, getProcessingEnv().getTypeUtils().erasure(typeMirror));
    }
 
    @Override

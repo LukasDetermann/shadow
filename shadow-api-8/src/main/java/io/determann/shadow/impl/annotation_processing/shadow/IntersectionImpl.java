@@ -44,12 +44,6 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    }
 
    @Override
-   public Shadow erasure()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().erasure(getMirror()));
-   }
-
-   @Override
    public int hashCode()
    {
       return Objects.hash(getBounds());

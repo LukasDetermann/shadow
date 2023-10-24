@@ -202,6 +202,59 @@ public interface AnnotationProcessingContext extends DeclaredHolder
    Declared erasure(Interface anInterface);
 
    /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
+    */
+   Array erasure(Array array);
+
+   /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
+    */
+   Shadow erasure(Wildcard wildcard);
+
+   /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
+    */
+   Shadow erasure(Generic generic);
+
+   /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <pre>{@code
+    * The erasure of an IntersectionType is its first bound type
+    * public class IntersectionExample<T extends Collection & Serializable>{} -> Collection
+    * public class IntersectionExample<T extends Serializable & Collection>{} -> Serializable
+    * }</pre>
+    */
+   Shadow erasure(Intersection intersection);
+
+   /**
+    * convince method returns the erasure of the parameter type
+    *
+    * @see AnnotationProcessingContext#erasure(Class)  for example for more information on erasure
+    */
+   Shadow erasure(Parameter parameter);
+
+   /**
+    * convince method returns the erasure of the field type
+    *
+    * @see AnnotationProcessingContext#erasure(Class)  for example for more information on erasure
+    */
+   Shadow erasure(Field field);
+
+   /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
     * it answers the question: given {@code public class MyClass<A extends Comparable<B>, B extends Comparable<A>> {}} and A being {@code String}
