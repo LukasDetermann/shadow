@@ -3,7 +3,6 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Package;
@@ -11,7 +10,10 @@ import io.determann.shadow.api.shadow.Package;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.NoType;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -35,12 +37,6 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       {
          throw new IllegalStateException(noTypeMirror + " is not unique");
       }
-   }
-
-   @Override
-   public Set<Modifier> getModifiers()
-   {
-      return MirrorAdapter.getModifiers(getElement());
    }
 
    @Override

@@ -1,11 +1,9 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.modifier.Modifiable;
 
 public interface RecordComponent extends Shadow,
-                                         Annotationable,
-                                         Modifiable
+                                         Annotationable
 {
    /**
     * returns true if this can be cast to that.

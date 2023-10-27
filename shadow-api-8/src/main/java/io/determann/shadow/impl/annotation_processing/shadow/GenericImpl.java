@@ -3,7 +3,6 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Package;
@@ -13,7 +12,6 @@ import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeVariable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
 {
@@ -31,13 +29,6 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       this.typeParameterElement = (TypeParameterElement) MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().asElement(typeMirror);
    }
 
-   @Override
-   public Set<Modifier> getModifiers()
-   {
-      return MirrorAdapter.getModifiers(getElement());
-   }
-
-   @Override
    public Shadow getExtends()
    {
       return MirrorAdapter.getShadow(getApi(), getMirror().getUpperBound());

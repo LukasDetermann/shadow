@@ -3,15 +3,13 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.QualifiedNameable;
-import io.determann.shadow.api.modifier.Modifiable;
 
 import java.util.List;
 
 public interface Package extends Shadow,
                                  QualifiedNameable,
                                  Annotationable,
-                                 DeclaredHolder,
-                                 Modifiable
+                                 DeclaredHolder
 {
    /**
     * returns everything in this package

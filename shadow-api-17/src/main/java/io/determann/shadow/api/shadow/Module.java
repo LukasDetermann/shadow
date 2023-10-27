@@ -3,7 +3,6 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.QualifiedNameable;
-import io.determann.shadow.api.modifier.Modifiable;
 import io.determann.shadow.api.shadow.module.Directive;
 import io.determann.shadow.api.shadow.module.DirectiveConsumer;
 import io.determann.shadow.api.shadow.module.DirectiveMapper;
@@ -14,8 +13,7 @@ import java.util.List;
 public interface Module extends Shadow,
                                 QualifiedNameable,
                                 Annotationable,
-                                DeclaredHolder,
-                                Modifiable
+                                DeclaredHolder
 {
    List<Package> getPackages();
 
