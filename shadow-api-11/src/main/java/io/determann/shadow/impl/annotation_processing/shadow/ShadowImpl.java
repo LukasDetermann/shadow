@@ -1,7 +1,6 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
 import io.determann.shadow.api.MirrorAdapter;
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.impl.annotation_processing.ApiHolder;
@@ -19,12 +18,6 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow,
    {
       this.annotationProcessingContext = annotationProcessingContext;
       this.typeMirror = typeMirror;
-   }
-
-   @Override
-   public boolean isTypeKind(TypeKind typeKind)
-   {
-      return getTypeKind().equals(typeKind);
    }
 
    @Override

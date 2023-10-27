@@ -46,7 +46,10 @@ public interface Shadow
 {
    TypeKind getTypeKind();
 
-   boolean isTypeKind(TypeKind typeKind);
+   default boolean isTypeKind(TypeKind typeKind)
+   {
+      return getTypeKind().equals(typeKind);
+   }
 
    /**
     * type equals from the compiler perspective. for example ? does not equal ? for the compiler. use this method to compare
