@@ -4,7 +4,6 @@ import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.annotation_processing.ApiHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,7 @@ import static io.determann.shadow.api.converter.Converter.convert;
 /**
  * Holds classes, interfaces, enums etc
  */
-public interface DeclaredHolder extends ApiHolder
+public interface DeclaredHolder
 {
    List<Declared> getDeclared();
 

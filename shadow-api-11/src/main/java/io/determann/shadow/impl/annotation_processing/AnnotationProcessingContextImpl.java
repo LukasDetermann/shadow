@@ -492,7 +492,6 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
       MirrorAdapter.getProcessingEnv(this).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement(annotationable));
    }
 
-   @Override
    public AnnotationProcessingContext getApi()
    {
       return this;

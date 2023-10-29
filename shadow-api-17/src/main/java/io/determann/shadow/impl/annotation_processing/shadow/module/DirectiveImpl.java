@@ -12,7 +12,6 @@ public abstract class DirectiveImpl implements Directive
       this.annotationProcessingContext = annotationProcessingContext;
    }
 
-   @Override
    public AnnotationProcessingContext getApi()
    {
       return annotationProcessingContext;
