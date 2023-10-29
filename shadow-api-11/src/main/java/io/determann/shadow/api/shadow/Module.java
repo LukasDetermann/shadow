@@ -10,6 +10,9 @@ import io.determann.shadow.api.shadow.module.Provides;
 
 import java.util.List;
 
+import static io.determann.shadow.api.converter.Converter.convert;
+import static java.util.stream.Collectors.toUnmodifiableList;
+
 public interface Module extends Shadow,
                                 QualifiedNameable,
                                 Annotationable,
@@ -42,9 +45,54 @@ public interface Module extends Shadow,
     */
    List<Directive> getDirectives();
 
-   <T> List<T> mapDirectives(DirectiveMapper<T> mapper);
+   default <T> List<T> mapDirectives(DirectiveMapper<T> mapper)
+   {
+      return getDirectives().stream()
+                            .map(directive ->
+                                 {
+                                    switch (directive.getKind())
+                                    {
+                                       case REQUIRES:
+                                          return mapper.requires(convert(directive).toRequiresOrThrow());
+                                       case EXPORTS:
+                                          return mapper.exports(convert(directive).toExportsOrThrow());
+                                       case OPENS:
+                                          return mapper.opens(convert(directive).toOpensOrThrow());
+                                       case USES:
+                                          return mapper.uses(convert(directive).toUsesOrThrow());
+                                       case PROVIDES:
+                                          return mapper.provides(convert(directive).toProvidesOrThrow());
+                                       default:
+                                          throw new IllegalArgumentException();
+                                    }
+                                 })
+                            .collect(toUnmodifiableList());
+   }
 
-   void consumeDirectives(DirectiveConsumer consumer);
+   default void consumeDirectives(DirectiveConsumer consumer)
+   {
+      getDirectives().forEach(directive ->
+                              {
+                                 switch (directive.getKind())
+                                 {
+                                    case REQUIRES:
+                                       consumer.requires(convert(directive).toRequiresOrThrow());
+                                       break;
+                                    case EXPORTS:
+                                       consumer.exports(convert(directive).toExportsOrThrow());
+                                       break;
+                                    case OPENS:
+                                       consumer.opens(convert(directive).toOpensOrThrow());
+                                       break;
+                                    case USES:
+                                       consumer.uses(convert(directive).toUsesOrThrow());
+                                       break;
+                                    case PROVIDES:
+                                       consumer.provides(convert(directive).toProvidesOrThrow());
+                                       break;
+                                 }
+                              });
+   }
 
    /**
     * be careful using this equals

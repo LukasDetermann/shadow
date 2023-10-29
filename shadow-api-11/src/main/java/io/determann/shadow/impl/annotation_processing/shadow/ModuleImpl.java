@@ -8,7 +8,9 @@ import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.api.shadow.module.*;
+import io.determann.shadow.api.shadow.module.Directive;
+import io.determann.shadow.api.shadow.module.DirectiveKind;
+import io.determann.shadow.api.shadow.module.Provides;
 import io.determann.shadow.impl.annotation_processing.shadow.module.*;
 
 import javax.lang.model.element.ModuleElement;
@@ -155,57 +157,6 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                      },
                                      Collections::unmodifiableList,
                                      Collector.Characteristics.IDENTITY_FINISH));
-   }
-
-   @Override
-   public <T> List<T> mapDirectives(DirectiveMapper<T> mapper)
-   {
-      return getDirectives().stream()
-                            .map(directive ->
-                                 {
-                                    switch (directive.getKind())
-                                    {
-                                       case REQUIRES:
-                                          return mapper.requires(convert(directive).toRequiresOrThrow());
-                                       case EXPORTS:
-                                          return mapper.exports(convert(directive).toExportsOrThrow());
-                                       case OPENS:
-                                          return mapper.opens(convert(directive).toOpensOrThrow());
-                                       case USES:
-                                          return mapper.uses(convert(directive).toUsesOrThrow());
-                                       case PROVIDES:
-                                          return mapper.provides(convert(directive).toProvidesOrThrow());
-                                       default:
-                                          throw new IllegalArgumentException();
-                                    }
-                                 })
-                            .collect(toUnmodifiableList());
-   }
-
-   @Override
-   public void consumeDirectives(DirectiveConsumer consumer)
-   {
-      getDirectives().forEach(directive ->
-                              {
-                                 switch (directive.getKind())
-                                 {
-                                    case REQUIRES:
-                                       consumer.requires(convert(directive).toRequiresOrThrow());
-                                       break;
-                                    case EXPORTS:
-                                       consumer.exports(convert(directive).toExportsOrThrow());
-                                       break;
-                                    case OPENS:
-                                       consumer.opens(convert(directive).toOpensOrThrow());
-                                       break;
-                                    case USES:
-                                       consumer.uses(convert(directive).toUsesOrThrow());
-                                       break;
-                                    case PROVIDES:
-                                       consumer.provides(convert(directive).toProvidesOrThrow());
-                                       break;
-                                 }
-                              });
    }
 
    //com.sun.tools.javac.code.Types.TypeRelation#visitType throes exceptions for modules
