@@ -78,7 +78,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedName))
+      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(getElement(), qualifiedName))
             .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
    }
 

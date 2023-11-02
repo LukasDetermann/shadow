@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Optional.ofNullable;
-
 public class PackageImpl extends ShadowImpl<NoType> implements Package
 {
    private final PackageElement packageElement;
@@ -79,8 +77,9 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(MirrorAdapter.getProcessingEnv(getApi()).getElementUtils().getTypeElement(qualifiedName))
-            .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
+      return getContent().stream()
+                         .filter(declared -> declared.getQualifiedName().equals(qualifiedName))
+                         .findFirst();
    }
 
    @Override
