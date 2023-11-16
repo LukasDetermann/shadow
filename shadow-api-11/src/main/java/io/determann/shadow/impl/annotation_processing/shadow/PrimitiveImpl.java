@@ -82,11 +82,11 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Primitive))
       {
          return false;
       }
-      PrimitiveImpl otherPrimitive = (PrimitiveImpl) other;
+      Primitive otherPrimitive = ((Primitive) other);
       return Objects.equals(getTypeKind(), otherPrimitive.getTypeKind());
    }
 }

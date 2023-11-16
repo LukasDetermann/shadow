@@ -37,12 +37,4 @@ public interface Variable<SURROUNDING extends Shadow> extends Shadow,
     * The {@link SURROUNDING} surrounding this {@link Variable}
     */
    SURROUNDING getSurrounding();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

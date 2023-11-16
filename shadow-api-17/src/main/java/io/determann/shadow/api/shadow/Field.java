@@ -15,12 +15,4 @@ public interface Field extends Variable<Declared>,
     * String or primitive value of static fields
     */
    Object getConstantValue();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

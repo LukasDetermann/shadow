@@ -25,12 +25,4 @@ public interface Wildcard extends Shadow
     * }</pre>
     */
    boolean contains(Shadow shadow);
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

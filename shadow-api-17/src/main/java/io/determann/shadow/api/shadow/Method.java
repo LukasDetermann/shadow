@@ -27,12 +27,4 @@ public interface Method extends Executable,
     * }</pre>
     */
    boolean sameParameterTypes(Method method);
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

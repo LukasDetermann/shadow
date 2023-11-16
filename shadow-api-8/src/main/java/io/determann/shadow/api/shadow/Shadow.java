@@ -51,17 +51,7 @@ public interface Shadow
    }
 
    /**
-    * type equals from the compiler perspective. for example ? does not equal ? for the compiler. use this method to compare
-    * {@link Shadow}s when ever possible. {@link #equals(Object)} should only be used to compare the technical aspect of two objects.
-    * for example in a list implementation.
+    * type equals from the compiler perspective. for example ? does not equal ? for the compiler
     */
    boolean representsSameType(Shadow shadow);
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

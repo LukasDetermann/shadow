@@ -17,12 +17,4 @@ public interface Enum extends Declared,
                               .findAny()
                               .orElseThrow(NoSuchElementException::new);
    }
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

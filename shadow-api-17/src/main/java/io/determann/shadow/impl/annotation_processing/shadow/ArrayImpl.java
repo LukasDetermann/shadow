@@ -80,11 +80,10 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Array otherArray))
       {
          return false;
       }
-      Array otherArray = (Array) other;
       return Objects.equals(getComponentType(), otherArray.getComponentType());
    }
 }

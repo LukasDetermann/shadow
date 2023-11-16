@@ -200,7 +200,8 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       return Objects.hash(getTypeKind(),
                           getSimpleName(),
                           getParameterTypes(),
-                          getSurrounding());
+                          getParameters(),
+                          getModifiers());
    }
 
    @Override
@@ -210,14 +211,14 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Executable otherExecutable))
       {
          return false;
       }
-      ExecutableImpl otherExecutable = (ExecutableImpl) other;
       return Objects.equals(getSimpleName(), otherExecutable.getSimpleName()) &&
              Objects.equals(getTypeKind(), otherExecutable.getTypeKind()) &&
-             Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes()) &&
-             Objects.equals(getSurrounding(), otherExecutable.getSurrounding());
+             Objects.equals(getParameters(), otherExecutable.getParameters()) &&
+             Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
+             Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());
    }
 }

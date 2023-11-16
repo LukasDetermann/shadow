@@ -20,12 +20,4 @@ public interface Interface extends Declared,
     * {@code List<}<b>T</b>{@code >}
     */
    List<Generic> getFormalGenerics();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

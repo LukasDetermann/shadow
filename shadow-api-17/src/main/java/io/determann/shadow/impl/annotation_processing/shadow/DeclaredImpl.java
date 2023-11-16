@@ -246,7 +246,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return Objects.hash(getTypeKind(),
                           getQualifiedName(),
-                          getModule());
+                          getModifiers());
    }
 
    @Override
@@ -256,13 +256,12 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Declared otherDeclared))
       {
          return false;
       }
-      DeclaredImpl otherDeclared = (DeclaredImpl) other;
       return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
              Objects.equals(getTypeKind(), otherDeclared.getTypeKind()) &&
-             Objects.equals(getModule(), otherDeclared.getModule());
+             Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }
 }

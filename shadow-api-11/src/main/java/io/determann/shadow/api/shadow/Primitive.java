@@ -29,12 +29,4 @@ public interface Primitive extends Shadow
     * int -&gt; int[]
     */
    Array asArray();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

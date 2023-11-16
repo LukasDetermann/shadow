@@ -84,7 +84,7 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Array))
       {
          return false;
       }

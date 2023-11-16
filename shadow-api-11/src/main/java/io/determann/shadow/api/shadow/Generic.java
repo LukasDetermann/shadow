@@ -21,12 +21,4 @@ public interface Generic extends Shadow,
    Shadow getEnclosing();
 
    Package getPackage();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

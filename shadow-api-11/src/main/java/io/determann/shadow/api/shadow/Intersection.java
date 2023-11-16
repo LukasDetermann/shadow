@@ -13,14 +13,6 @@ public interface Intersection extends Shadow
    Array asArray();
 
    /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
-
-   /**
     * {@code T extends} <b> Collection &amp; Serializable</b>{@code >}
     */
    List<Shadow> getBounds();

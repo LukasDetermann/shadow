@@ -118,9 +118,9 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
-                          getSimpleName(),
-                          getSurrounding());
+      return Objects.hash(getSimpleName(),
+                          getType(),
+                          getModifiers());
    }
 
    @Override
@@ -130,13 +130,12 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Variable<?> otherVariable))
       {
          return false;
       }
-      VariableImpl<?> otherVariable = (VariableImpl<?>) other;
       return Objects.equals(getSimpleName(), otherVariable.getSimpleName()) &&
-             Objects.equals(getSurrounding(), otherVariable.getSurrounding()) &&
-             Objects.equals(getTypeKind(), otherVariable.getTypeKind());
+             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getModifiers(), otherVariable.getModifiers());
    }
 }

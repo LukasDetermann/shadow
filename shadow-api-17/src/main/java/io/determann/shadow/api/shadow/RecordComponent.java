@@ -28,12 +28,4 @@ public interface RecordComponent extends Shadow,
    Method getGetter();
 
    Package getPackage();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

@@ -215,11 +215,11 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Module))
       {
          return false;
       }
-      ModuleImpl otherModule = (ModuleImpl) other;
+      Module otherModule = (Module) other;
       return Objects.equals(getQualifiedName(), otherModule.getQualifiedName());
    }
 }

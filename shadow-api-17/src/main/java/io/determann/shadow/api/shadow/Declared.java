@@ -103,12 +103,4 @@ public interface Declared extends Shadow,
     * String -&gt; String[]
     */
    Array asArray();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

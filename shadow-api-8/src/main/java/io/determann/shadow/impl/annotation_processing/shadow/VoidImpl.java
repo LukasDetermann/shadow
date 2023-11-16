@@ -29,6 +29,6 @@ public class VoidImpl extends ShadowImpl<NoType> implements Void
    @Override
    public boolean equals(Object other)
    {
-      return other != null && getClass().equals(other.getClass());
+      return other instanceof Void;
    }
 }

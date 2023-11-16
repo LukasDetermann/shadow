@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.Parameter;
 
 import javax.lang.model.element.VariableElement;
 import java.util.List;
+import java.util.Objects;
 
 public class ParameterImpl extends VariableImpl<Executable> implements Parameter
 {
@@ -19,5 +20,31 @@ public class ParameterImpl extends VariableImpl<Executable> implements Parameter
    {
       List<Parameter> parameters = getSurrounding().getParameters();
       return getSurrounding().isVarArgs() && parameters.get(parameters.size() - 1).representsSameType(this);
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getTypeKind(),
+                          getSimpleName(),
+                          getSurrounding(),
+                          isVarArgs());
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof Parameter otherVariable))
+      {
+         return false;
+      }
+      return Objects.equals(getSimpleName(), otherVariable.getSimpleName()) &&
+             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
+             Objects.equals(isVarArgs(), otherVariable.isVarArgs());
    }
 }

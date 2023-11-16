@@ -99,8 +99,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    {
       return Objects.hash(getSimpleName(),
                           getExtends(),
-                          getSuper(),
-                          getEnclosing());
+                          getSuper());
    }
 
    @Override
@@ -110,14 +109,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Generic))
       {
          return false;
       }
-      GenericImpl otherGeneric = (GenericImpl) other;
+      Generic otherGeneric = (Generic) other;
       return Objects.equals(getSimpleName(), otherGeneric.getSimpleName()) &&
              Objects.equals(getExtends(), otherGeneric.getExtends()) &&
-             Objects.equals(getSuper(), otherGeneric.getSuper()) &&
-             Objects.equals(getEnclosing(), otherGeneric.getEnclosing());
+             Objects.equals(getSuper(), otherGeneric.getSuper());
    }
 }

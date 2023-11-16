@@ -112,8 +112,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public int hashCode()
    {
-      return Objects.hash(getSimpleName(),
-                          getRecord());
+      return Objects.hash(getSimpleName(), getType());
    }
 
    @Override
@@ -123,12 +122,11 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof RecordComponent otherRecordComponent))
       {
          return false;
       }
-      RecordComponentImpl otherRecordComponent = (RecordComponentImpl) other;
       return Objects.equals(getSimpleName(), otherRecordComponent.getSimpleName()) &&
-             Objects.equals(getRecord(), otherRecordComponent.getRecord());
+             Objects.equals(getType(), otherRecordComponent.getType());
    }
 }

@@ -29,6 +29,6 @@ public class NullImpl extends ShadowImpl<NullType> implements Null
    @Override
    public boolean equals(Object other)
    {
-      return other != null && getClass().equals(other.getClass());
+      return other instanceof Null;
    }
 }

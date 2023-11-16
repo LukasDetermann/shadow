@@ -20,12 +20,4 @@ public interface Package extends Shadow,
     * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects
     */
    boolean isUnnamed();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

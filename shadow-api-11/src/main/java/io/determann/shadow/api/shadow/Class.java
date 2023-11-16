@@ -54,12 +54,4 @@ public interface Class extends Declared,
     * etc...
     */
    Primitive asUnboxed();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

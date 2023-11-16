@@ -54,11 +54,11 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Intersection))
       {
          return false;
       }
-      IntersectionImpl otherIntersection = (IntersectionImpl) other;
+      Intersection otherIntersection = (Intersection) other;
       return Objects.equals(getBounds(), otherIntersection.getBounds());
    }
 }

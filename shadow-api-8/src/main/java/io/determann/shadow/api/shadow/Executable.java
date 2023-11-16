@@ -2,6 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.converter.Converter;
+import io.determann.shadow.api.modifier.Modifiable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,7 +17,8 @@ import java.util.Optional;
  * </ul>
  */
 public interface Executable extends Shadow,
-                                    Annotationable
+                                    Annotationable,
+                                    Modifiable
 {
    /**
     * {@code public MyObject(}<b>String param</b>{@code )}
@@ -68,12 +70,4 @@ public interface Executable extends Shadow,
     * }</pre>
     */
    Optional<Declared> getReceiverType();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

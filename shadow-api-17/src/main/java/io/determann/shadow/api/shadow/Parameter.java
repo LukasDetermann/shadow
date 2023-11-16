@@ -17,12 +17,4 @@ public interface Parameter extends Variable<Executable>,
     * {@link List#of(Object[])}
     */
    boolean isVarArgs();
-
-   /**
-    * be careful using this equals
-    *
-    * @see #representsSameType(Shadow)
-    */
-   @Override
-   boolean equals(Object obj);
 }

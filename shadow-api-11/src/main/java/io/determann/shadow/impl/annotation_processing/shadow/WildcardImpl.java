@@ -66,11 +66,11 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Wildcard))
       {
          return false;
       }
-      WildcardImpl otherWildcard = (WildcardImpl) other;
+      Wildcard otherWildcard = ((Wildcard) other);
       return Objects.equals(getExtends(), otherWildcard.getExtends()) &&
              Objects.equals(getSuper(), otherWildcard.getSuper());
    }
