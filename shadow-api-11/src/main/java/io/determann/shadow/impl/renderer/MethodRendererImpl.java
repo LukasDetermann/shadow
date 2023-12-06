@@ -42,10 +42,10 @@ public class MethodRendererImpl implements MethodRenderer
          sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
-      if (!method.getFormalGenerics().isEmpty())
+      if (!method.getGenerics().isEmpty())
       {
          sb.append('<');
-         sb.append(method.getFormalGenerics()
+         sb.append(method.getGenerics()
                          .stream()
                          .map(generic -> ShadowRendererImpl.type(context, generic))
                          .collect(Collectors.joining(", ")));

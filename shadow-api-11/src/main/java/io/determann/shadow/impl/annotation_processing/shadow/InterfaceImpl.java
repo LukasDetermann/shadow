@@ -31,7 +31,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    }
 
    @Override
-   public List<Shadow> getGenerics()
+   public List<Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -40,7 +40,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    }
 
    @Override
-   public List<Generic> getFormalGenerics()// formal
+   public List<Generic> getGenerics()// formal
    {
       return getElement().getTypeParameters()
                          .stream()

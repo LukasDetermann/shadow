@@ -148,7 +148,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public List<Generic> getFormalGenerics()
+   public List<Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()

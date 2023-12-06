@@ -33,7 +33,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    }
 
    @Override
-   public List<Shadow> getGenerics()
+   public List<Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -42,7 +42,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    }
 
    @Override
-   public List<Generic> getFormalGenerics()
+   public List<Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()

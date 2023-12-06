@@ -16,7 +16,7 @@ class GenericRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("@MyAnnotation T",
                                                render(DEFAULT, convert(shadowApi.getClassOrThrow("Annotated")
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0)).toGenericOrThrow())
                                                      .declaration()))
                    .withCodeToCompile("MyAnnotation.java",
@@ -31,7 +31,7 @@ class GenericRendererTest
       ProcessorTest.process(shadowApi ->
                                   assertEquals("T",
                                                render(DEFAULT, convert(shadowApi.getClassOrThrow("Annotated")
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0)).toGenericOrThrow())
                                                      .type()))
                    .withCodeToCompile("Annotated.java", "class Annotated<T> {} ")

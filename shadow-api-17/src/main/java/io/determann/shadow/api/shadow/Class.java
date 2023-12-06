@@ -45,12 +45,12 @@ public interface Class extends Declared,
    /**
     * {@code List<}<b>String</b>{@code >}
     */
-   List<Shadow> getGenerics();
+   List<Shadow> getGenericTypes();
 
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   List<Generic> getFormalGenerics();
+   List<Generic> getGenerics();
 
    /**
     * Integer -&gt; int<br>

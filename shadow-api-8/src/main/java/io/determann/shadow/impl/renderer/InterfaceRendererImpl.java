@@ -43,10 +43,10 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       sb.append("interface");
       sb.append(' ');
       sb.append(anInterface.getSimpleName());
-      if (!anInterface.getFormalGenerics().isEmpty())
+      if (!anInterface.getGenerics().isEmpty())
       {
          sb.append('<');
-         sb.append(anInterface.getFormalGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(anInterface.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       sb.append(' ');
@@ -77,10 +77,10 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));
-      if (!anInterface.getGenerics().isEmpty())
+      if (!anInterface.getGenericTypes().isEmpty())
       {
          sb.append('<');
-         sb.append(anInterface.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(anInterface.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

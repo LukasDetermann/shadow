@@ -10,7 +10,7 @@ class GenericTest extends ShadowTest<Generic>
 {
    GenericTest()
    {
-      super(shadowApi -> shadowApi.getInterfaceOrThrow("java.lang.Comparable").getFormalGenerics().get(0));
+      super(shadowApi -> shadowApi.getInterfaceOrThrow("java.lang.Comparable").getGenerics().get(0));
    }
 
    @Test
@@ -18,7 +18,7 @@ class GenericTest extends ShadowTest<Generic>
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
                                                       convert(shadowApi.getClassOrThrow("GenericsExample")
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0))
                                                             .toGenericOrThrow()
                                                             .getExtends()))
@@ -37,7 +37,7 @@ class GenericTest extends ShadowTest<Generic>
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
                                                       convert(shadowApi.getClassOrThrow("GenericsExample")
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0))
                                                             .toGenericOrThrow()
                                                             .getEnclosing()))
@@ -57,7 +57,7 @@ class GenericTest extends ShadowTest<Generic>
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.generics").get(0),
                                                       convert(shadowApi.getClassOrThrow(
                                                                              "io.determann.shadow.example.processed.test.generics.GenericsExample")
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0))
                                                             .toGenericOrThrow()
                                                             .getPackage()))

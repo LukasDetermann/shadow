@@ -65,14 +65,14 @@ class InterfaceTest extends DeclaredTest<Interface>
                                assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.String")),
                                             shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
                                                                    "java.lang.String")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
 
                                assertEquals(Arrays.asList(shadowApi.getClassOrThrow("java.lang.String"),
                                                           shadowApi.getClassOrThrow("java.lang.Number")),
                                             shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
                                                                    "java.lang.Number")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java",
                                       "                           public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {\n" +
@@ -91,12 +91,12 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                            shadowApi.getClassOrThrow("java.lang.String"),
                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Interface capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenerics().get(1))
+                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(ShadowConverter::toInterface)
-                                     .map(Interface::getGenerics)
+                                     .map(Interface::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow(IllegalStateException::new);
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
@@ -105,7 +105,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                            "InterpolateGenericsExample.IndependentGeneric"),
                                                                                      shadowApi.getConstants().getUnboundWildcard());
                                Interface independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
+                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow(IllegalStateException::new);
@@ -115,7 +115,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                          "InterpolateGenericsExample.DependentGeneric"), shadowApi.getConstants().getUnboundWildcard(),
                                                                                    shadowApi.getClassOrThrow("java.lang.String"));
                                Interface dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
+                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow(IllegalStateException::new);

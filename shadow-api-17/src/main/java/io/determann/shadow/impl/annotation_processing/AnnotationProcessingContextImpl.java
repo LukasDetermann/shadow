@@ -429,19 +429,19 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    @Override
    public Class withGenerics(Class aClass, Shadow... generics)
    {
-      if (generics.length == 0 || aClass.getFormalGenerics().size() != generics.length)
+      if (generics.length == 0 || aClass.getGenerics().size() != generics.length)
       {
          throw new IllegalArgumentException(aClass.getQualifiedName() +
                                             " has " +
-                                            aClass.getFormalGenerics().size() +
+                                            aClass.getGenerics().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");
       }
       if (aClass.getOuterType().flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
                       .toInterface()
-                      .map(anInterface -> !anInterface.getFormalGenerics().isEmpty())
-                      .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !aClass1.getGenerics().isEmpty())))
+                      .map(anInterface -> !anInterface.getGenerics().isEmpty())
+                      .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !aClass1.getGenericTypes().isEmpty())))
                 .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +
@@ -458,11 +458,11 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    @Override
    public Interface withGenerics(Interface anInterface, Shadow... generics)
    {
-      if (generics.length == 0 || anInterface.getFormalGenerics().size() != generics.length)
+      if (generics.length == 0 || anInterface.getGenerics().size() != generics.length)
       {
          throw new IllegalArgumentException(anInterface.getQualifiedName() +
                                             " has " +
-                                            anInterface.getFormalGenerics().size() +
+                                            anInterface.getGenerics().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");
@@ -477,11 +477,11 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    @Override
    public Record withGenerics(Record aRecord, Shadow... generics)
    {
-      if (generics.length == 0 || aRecord.getFormalGenerics().size() != generics.length)
+      if (generics.length == 0 || aRecord.getGenerics().size() != generics.length)
       {
          throw new IllegalArgumentException(aRecord.getQualifiedName() +
                                             " has " +
-                                            aRecord.getFormalGenerics().size() +
+                                            aRecord.getGenerics().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");

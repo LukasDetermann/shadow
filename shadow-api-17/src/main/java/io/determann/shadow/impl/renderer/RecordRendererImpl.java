@@ -45,10 +45,10 @@ public class RecordRendererImpl implements RecordRenderer
       sb.append("record");
       sb.append(' ');
       sb.append(aRecord.getSimpleName());
-      if (!aRecord.getFormalGenerics().isEmpty())
+      if (!aRecord.getGenerics().isEmpty())
       {
          sb.append('<');
-         sb.append(aRecord.getFormalGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(aRecord.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
 
@@ -93,10 +93,10 @@ public class RecordRendererImpl implements RecordRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));
-      if (!aRecord.getGenerics().isEmpty())
+      if (!aRecord.getGenericTypes().isEmpty())
       {
          sb.append('<');
-         sb.append(aRecord.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(aRecord.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

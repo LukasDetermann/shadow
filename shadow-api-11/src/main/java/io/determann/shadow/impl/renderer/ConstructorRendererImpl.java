@@ -32,10 +32,10 @@ public class ConstructorRendererImpl implements ConstructorRenderer
          sb.append(ModifierRendererImpl.render(constructor.getModifiers()));
          sb.append(' ');
       }
-      if (!constructor.getFormalGenerics().isEmpty())
+      if (!constructor.getGenerics().isEmpty())
       {
          sb.append('<');
-         sb.append(constructor.getFormalGenerics()
+         sb.append(constructor.getGenerics()
                               .stream()
                               .map(generic -> GenericRendererImpl.type(context, generic))
                               .collect(Collectors.joining(", ")));

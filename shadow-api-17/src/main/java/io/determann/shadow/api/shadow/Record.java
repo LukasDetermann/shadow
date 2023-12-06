@@ -19,10 +19,10 @@ public interface Record extends Declared,
    /**
     * {@code MyRecord<}<b>String</b>{@code >}
     */
-   List<Shadow> getGenerics();
+   List<Shadow> getGenericTypes();
 
    /**
     * {@code MyRecord<}<b>T</b>{@code >}
     */
-   List<Generic> getFormalGenerics();
+   List<Generic> getGenerics();
 }

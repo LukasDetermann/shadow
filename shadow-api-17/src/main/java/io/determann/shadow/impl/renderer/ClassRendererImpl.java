@@ -40,10 +40,10 @@ public class ClassRendererImpl implements ClassRenderer
       sb.append("class");
       sb.append(' ');
       sb.append(aClass.getSimpleName());
-      if (!aClass.getFormalGenerics().isEmpty())
+      if (!aClass.getGenerics().isEmpty())
       {
          sb.append('<');
-         sb.append(aClass.getFormalGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(aClass.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       sb.append(' ');
@@ -84,10 +84,10 @@ public class ClassRendererImpl implements ClassRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aClass));
-      if (!aClass.getGenerics().isEmpty())
+      if (!aClass.getGenericTypes().isEmpty())
       {
          sb.append('<');
-         sb.append(aClass.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(aClass.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

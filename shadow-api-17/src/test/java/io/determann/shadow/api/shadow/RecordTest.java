@@ -126,14 +126,14 @@ class RecordTest extends DeclaredTest<Record>
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
                                             shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric"),
                                                                    "java.lang.String")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
                                                     shadowApi.getClassOrThrow("java.lang.Number")),
                                             shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
                                                                    "java.lang.Number")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
@@ -156,12 +156,12 @@ class RecordTest extends DeclaredTest<Record>
                                                                         shadowApi.getClassOrThrow("java.lang.String"),
                                                                         shadowApi.getConstants().getUnboundWildcard());
                                Record capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenerics().get(1))
+                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(ShadowConverter::toInterface)
-                                     .map(Interface::getGenerics)
+                                     .map(Interface::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
@@ -169,7 +169,7 @@ class RecordTest extends DeclaredTest<Record>
                                Record independentExample = shadowApi.withGenerics(shadowApi.getRecordOrThrow(
                                      "InterpolateGenericsExample.IndependentGeneric"), shadowApi.getConstants().getUnboundWildcard());
                                Record independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
+                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -180,7 +180,7 @@ class RecordTest extends DeclaredTest<Record>
                                                                                 shadowApi.getConstants().getUnboundWildcard(),
                                                                                 shadowApi.getClassOrThrow("java.lang.String"));
                                Record dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
+                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();

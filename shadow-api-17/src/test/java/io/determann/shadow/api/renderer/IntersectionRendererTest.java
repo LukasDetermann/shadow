@@ -16,7 +16,7 @@ class IntersectionRendererTest
    {
       ProcessorTest.process(shadowApi -> assertEquals("java.util.Collection & java.io.Serializable",
                                                       render(DEFAULT, convert(shadowApi.getClassOrThrow("IntersectionExample")
-                                                                              .getFormalGenerics()
+                                                                              .getGenerics()
                                                                               .get(0)
                                                                               .getExtends())
                                                                    .toIntersectionOrThrow())

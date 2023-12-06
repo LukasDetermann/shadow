@@ -54,7 +54,7 @@ public interface Executable extends Shadow,
    /**
     * {@code List<}<b>T</b>{@code >}
     */
-   List<Generic> getFormalGenerics();
+   List<Generic> getGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".

@@ -80,7 +80,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public List<Shadow> getGenerics()
+   public List<Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -89,7 +89,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    }
 
    @Override
-   public List<Generic> getFormalGenerics()// formal
+   public List<Generic> getGenerics()// formal
    {
       return getElement().getTypeParameters()
                          .stream()

@@ -25,7 +25,7 @@ class WildcardRendererTest
                                                                                       .get(0)
                                                                                       .getType())
                                                                        .toInterfaceOrThrow()
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0))
                                      .toWildcardOrThrow();
 
@@ -35,7 +35,7 @@ class WildcardRendererTest
                                                                                     .get(0)
                                                                                     .getType())
                                                                      .toInterfaceOrThrow()
-                                                                     .getGenerics()
+                                                                     .getGenericTypes()
                                                                      .get(0))
                                      .toWildcardOrThrow();
 
@@ -45,7 +45,7 @@ class WildcardRendererTest
                                                                                       .get(0)
                                                                                       .getType())
                                                                        .toInterfaceOrThrow()
-                                                                       .getGenerics()
+                                                                       .getGenericTypes()
                                                                        .get(0))
                                      .toWildcardOrThrow();
 

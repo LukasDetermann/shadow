@@ -123,20 +123,20 @@ class ClassTest extends DeclaredTest<Class>
 
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"),
                                             shadowApi.withGenerics(shadowApi.getClassOrThrow("WithGenericsExample.Inner"), "java.lang.String")
-                                                     .getGenerics()
+                                                     .getGenericTypes()
                                                      .get(0));
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
                                             shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric"),
                                                                    "java.lang.String")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
                                                     shadowApi.getClassOrThrow("java.lang.Number")),
                                             shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
                                                                    "java.lang.Number")
-                                                     .getGenerics());
+                                                     .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java",
                                       "                           public class InterpolateGenericsExample <A extends java.lang.Comparable<B>, B extends java.lang.Comparable<A>> {\n" +
@@ -158,12 +158,12 @@ class ClassTest extends DeclaredTest<Class>
                                                                        shadowApi.getClassOrThrow("java.lang.String"),
                                                                        shadowApi.getConstants().getUnboundWildcard());
                                Class capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenerics().get(1))
+                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(ShadowConverter::toInterface)
-                                     .map(Interface::getGenerics)
+                                     .map(Interface::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
@@ -172,7 +172,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                        "InterpolateGenericsExample.IndependentGeneric"),
                                                                                  shadowApi.getConstants().getUnboundWildcard());
                                Class independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenerics().get(0))
+                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -183,7 +183,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                shadowApi.getConstants().getUnboundWildcard(),
                                                                                shadowApi.getClassOrThrow("java.lang.String"));
                                Class dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenerics().get(0))
+                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
