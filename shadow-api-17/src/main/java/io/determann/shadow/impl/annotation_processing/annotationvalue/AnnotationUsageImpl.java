@@ -73,9 +73,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
-                          getQualifiedName(),
-                          getModule(),
+      return Objects.hash(getAnnotation(),
                           getValues());
    }
 
@@ -86,14 +84,12 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof AnnotationUsage otherAnnotationUsage))
       {
          return false;
       }
-      AnnotationUsageImpl otherAnnotationUsage = (AnnotationUsageImpl) other;
-      return Objects.equals(getQualifiedName(), otherAnnotationUsage.getQualifiedName()) &&
-             Objects.equals(getTypeKind(), otherAnnotationUsage.getTypeKind()) &&
-             Objects.equals(getModule(), otherAnnotationUsage.getModule()) &&
+
+      return Objects.equals(getAnnotation(), otherAnnotationUsage.getAnnotation()) &&
              Objects.equals(getValues(), otherAnnotationUsage.getValues());
    }
 }
