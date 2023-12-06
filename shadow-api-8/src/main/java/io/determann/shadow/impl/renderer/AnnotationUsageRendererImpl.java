@@ -42,7 +42,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
          sb.append('(');
          sb.append(usage.getMethods()
                         .stream()
-                        .map(method -> method.getSimpleName() +
+                        .map(method -> method.getName() +
                                        " = " +
                                        valueRenderer.apply(method).orElseGet(() -> renderValue(context, usage.getValues().get(method))))
                         .collect(Collectors.joining(", ")));

@@ -41,14 +41,14 @@ public interface Declared extends Shadow,
 
    default Field getFieldOrThrow(String simpleName)
    {
-      return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
+      return getFields().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
    }
 
    List<Field> getFields();
 
    default List<Method> getMethods(String simpleName)
    {
-      return getMethods().stream().filter(field -> field.getSimpleName().equals(simpleName)).collect(toUnmodifiableList());
+      return getMethods().stream().filter(field -> field.getName().equals(simpleName)).collect(toUnmodifiableList());
    }
 
    List<Method> getMethods();

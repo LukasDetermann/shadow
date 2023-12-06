@@ -45,14 +45,14 @@ class ClassTest extends DeclaredTest<Class>
                                assertEquals(2, properties.size());
 
                                Property id = properties.get(1);
-                               assertEquals("id", id.getField().get().getSimpleName());
+                               assertEquals("id", id.getField().get().getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
 
-                               assertEquals("getId", id.getGetter().getSimpleName());
+                               assertEquals("getId", id.getGetter().getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());
                                assertEquals(Collections.emptyList(), id.getGetter().getParameters());
 
-                               assertEquals("setId", id.getSetterOrThrow().getSimpleName());
+                               assertEquals("setId", id.getSetterOrThrow().getName());
                                assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
                                assertEquals(Collections.singletonList(shadowApi.getConstants().getPrimitiveInt()),
                                             id.getSetterOrThrow().getParameterTypes());

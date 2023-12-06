@@ -43,7 +43,7 @@ public class MutablePropertyImpl implements MutableProperty
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
       return name;
    }

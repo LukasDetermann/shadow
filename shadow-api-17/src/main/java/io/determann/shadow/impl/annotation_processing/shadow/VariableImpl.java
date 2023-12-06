@@ -86,9 +86,9 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override
@@ -118,7 +118,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public int hashCode()
    {
-      return Objects.hash(getSimpleName(),
+      return Objects.hash(getName(),
                           getType(),
                           getModifiers());
    }
@@ -134,7 +134,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
       {
          return false;
       }
-      return Objects.equals(getSimpleName(), otherVariable.getSimpleName()) &&
+      return Objects.equals(getName(), otherVariable.getName()) &&
              Objects.equals(getType(), otherVariable.getType()) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers());
    }

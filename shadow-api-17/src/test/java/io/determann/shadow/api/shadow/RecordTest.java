@@ -25,7 +25,7 @@ class RecordTest extends DeclaredTest<Record>
       ProcessorTest.process(shadowApi ->
                             {
                                RecordComponent idComponent = getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("id");
-                               assertEquals("id", idComponent.getSimpleName());
+                               assertEquals("id", idComponent.getName());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                assertThrows(NoSuchElementException.class,

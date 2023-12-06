@@ -170,9 +170,9 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override
@@ -203,7 +203,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    public int hashCode()
    {
       return Objects.hash(getTypeKind(),
-                          getSimpleName(),
+                          getName(),
                           getParameterTypes(),
                           getParameters(),
                           getModifiers());
@@ -221,7 +221,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
          return false;
       }
       Executable otherExecutable = (Executable) other;
-      return Objects.equals(getSimpleName(), otherExecutable.getSimpleName()) &&
+      return Objects.equals(getName(), otherExecutable.getName()) &&
              Objects.equals(getTypeKind(), otherExecutable.getTypeKind()) &&
              Objects.equals(getParameters(), otherExecutable.getParameters()) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&

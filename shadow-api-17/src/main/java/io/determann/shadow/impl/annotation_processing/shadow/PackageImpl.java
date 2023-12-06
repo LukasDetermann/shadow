@@ -89,9 +89,9 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override

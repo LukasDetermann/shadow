@@ -40,7 +40,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
       }
       sb.append("@interface");
       sb.append(' ');
-      sb.append(annotation.getSimpleName());
+      sb.append(annotation.getName());
       sb.append(" {");
       if (!content.isEmpty())
       {

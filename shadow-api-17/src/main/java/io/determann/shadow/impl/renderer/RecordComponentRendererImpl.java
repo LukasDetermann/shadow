@@ -30,14 +30,14 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       }
       sb.append(ShadowRendererImpl.type(context, recordComponent.getType()))
         .append(' ')
-        .append(recordComponent.getSimpleName());
+        .append(recordComponent.getName());
 
       return sb.toString();
    }
 
    public static String invocation(RenderingContextWrapper context, RecordComponent recordComponent)
    {
-      return recordComponent.getGetter().getSimpleName() + "()";
+      return recordComponent.getGetter().getName() + "()";
    }
 
    @Override

@@ -36,7 +36,7 @@ public class ClassRendererImpl implements ClassRenderer
       }
       sb.append("class");
       sb.append(' ');
-      sb.append(aClass.getSimpleName());
+      sb.append(aClass.getName());
       if (!aClass.getGenerics().isEmpty())
       {
          sb.append('<');

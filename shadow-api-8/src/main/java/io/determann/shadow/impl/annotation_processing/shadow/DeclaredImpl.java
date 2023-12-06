@@ -222,9 +222,9 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override

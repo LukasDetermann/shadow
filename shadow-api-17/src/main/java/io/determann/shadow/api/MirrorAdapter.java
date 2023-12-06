@@ -167,7 +167,7 @@ public interface MirrorAdapter
       return getShadow(api, getProcessingEnv(api).getElementUtils().getModuleOf(element));
    }
 
-   static String getSimpleName(Element element)
+   static String getName(Element element)
    {
       return element.getSimpleName().toString();
    }

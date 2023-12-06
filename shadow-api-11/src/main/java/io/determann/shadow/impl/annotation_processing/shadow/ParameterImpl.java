@@ -26,7 +26,7 @@ public class ParameterImpl extends VariableImpl<Executable> implements Parameter
    public int hashCode()
    {
       return Objects.hash(getTypeKind(),
-                          getSimpleName(),
+                          getName(),
                           getSurrounding(),
                           isVarArgs());
    }
@@ -43,7 +43,7 @@ public class ParameterImpl extends VariableImpl<Executable> implements Parameter
          return false;
       }
       Parameter otherVariable = ((Parameter) other);
-      return Objects.equals(getSimpleName(), otherVariable.getSimpleName()) &&
+      return Objects.equals(getName(), otherVariable.getName()) &&
              Objects.equals(getType(), otherVariable.getType()) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
              Objects.equals(isVarArgs(), otherVariable.isVarArgs());

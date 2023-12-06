@@ -146,7 +146,7 @@ public interface MirrorAdapter
       return ((VariableImpl) variable).getElement();
    }
 
-   static String getSimpleName(Element element)
+   static String getName(Element element)
    {
       return element.getSimpleName().toString();
    }

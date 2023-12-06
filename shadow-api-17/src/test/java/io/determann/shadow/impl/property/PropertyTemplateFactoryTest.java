@@ -49,7 +49,7 @@ class PropertyTemplateFactoryTest
                                   }
                                   else
                                   {
-                                     assertEquals(descriptor.getWriteMethod().getName(), template.getSetter().getSimpleName());
+                                     assertEquals(descriptor.getWriteMethod().getName(), template.getSetter().getName());
                                   }
                                }
                             })
@@ -77,9 +77,9 @@ class PropertyTemplateFactoryTest
                                List<ImmutableProperty> properties = shadowApi.getClassOrThrow("Child").getImmutableProperties();
 
                                assertEquals(2, properties.size());
-                               assertEquals("class", properties.get(0).getSimpleName());
-                               assertEquals("id", properties.get(1).getSimpleName());
-                               assertEquals("Child", properties.get(1).getGetter().getSurrounding().getSimpleName());
+                               assertEquals("class", properties.get(0).getName());
+                               assertEquals("id", properties.get(1).getName());
+                               assertEquals("Child", properties.get(1).getGetter().getSurrounding().getName());
                             })
                    .withCodeToCompile("Parent", "abstract class Parent{public abstract Long getId();}")
                    .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")

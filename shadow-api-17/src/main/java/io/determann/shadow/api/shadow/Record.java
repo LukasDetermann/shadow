@@ -11,7 +11,7 @@ public interface Record extends Declared,
 {
    default RecordComponent getRecordComponentOrThrow(String simpleName)
    {
-      return getRecordComponents().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
+      return getRecordComponents().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
    }
 
    List<RecordComponent> getRecordComponents();

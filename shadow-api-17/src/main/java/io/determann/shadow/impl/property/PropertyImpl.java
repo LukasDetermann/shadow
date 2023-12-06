@@ -44,7 +44,7 @@ public class PropertyImpl implements Property
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
       return name;
    }

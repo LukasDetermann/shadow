@@ -71,9 +71,9 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override
@@ -103,7 +103,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public int hashCode()
    {
-      return Objects.hash(getSimpleName(),
+      return Objects.hash(getName(),
                           getExtends(),
                           getSuper());
    }
@@ -119,7 +119,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       {
          return false;
       }
-      return Objects.equals(getSimpleName(), otherGeneric.getSimpleName()) &&
+      return Objects.equals(getName(), otherGeneric.getName()) &&
              Objects.equals(getExtends(), otherGeneric.getExtends()) &&
              Objects.equals(getSuper(), otherGeneric.getSuper());
    }

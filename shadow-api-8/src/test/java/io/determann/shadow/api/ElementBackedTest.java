@@ -26,7 +26,7 @@ class ElementBackedTest
                                assertEquals(new HashSet<>(Collections.singletonList(Modifier.PUBLIC)), arrayList.getModifiers());
 
                                Field serialVersionUID = arrayList.getFields().stream()
-                                                                 .filter(field -> "serialVersionUID".equals(field.getSimpleName()))
+                                                                 .filter(field -> "serialVersionUID".equals(field.getName()))
                                                                  .findAny()
                                                                  .orElseThrow(IllegalStateException::new);
                                assertEquals(new HashSet<>(Arrays.asList(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)),

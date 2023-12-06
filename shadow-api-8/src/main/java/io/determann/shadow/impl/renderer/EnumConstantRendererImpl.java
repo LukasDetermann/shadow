@@ -28,7 +28,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
                                .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                                .collect(Collectors.joining()));
       }
-      sb.append(enumConstant.getSimpleName());
+      sb.append(enumConstant.getName());
       if (!parameters.isEmpty())
       {
          sb.append('(');
@@ -51,7 +51,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
 
    public static String type(RenderingContextWrapper context, EnumConstant enumConstant)
    {
-      return context.renderName(enumConstant.getSurrounding()) + '.' + enumConstant.getSimpleName();
+      return context.renderName(enumConstant.getSurrounding()) + '.' + enumConstant.getName();
    }
 
    @Override

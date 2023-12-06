@@ -18,7 +18,7 @@ public interface Annotationable
     */
    Module getModule();
 
-   String getSimpleName();
+   String getName();
 
    /**
     * returns the javaDoc or null if none is present

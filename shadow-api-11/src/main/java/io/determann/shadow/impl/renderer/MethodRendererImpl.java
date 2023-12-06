@@ -54,7 +54,7 @@ public class MethodRendererImpl implements MethodRenderer
       }
       sb.append(ShadowRendererImpl.type(context, method.getReturnType()));
       sb.append(' ');
-      sb.append(method.getSimpleName());
+      sb.append(method.getName());
       sb.append('(');
 
       method.getReceiverType().ifPresent(declared ->
@@ -62,7 +62,7 @@ public class MethodRendererImpl implements MethodRenderer
 
                                             sb.append(ShadowRendererImpl.type(context, declared));
                                             sb.append(' ');
-                                            sb.append(declared.getSimpleName());
+                                            sb.append(declared.getName());
                                             sb.append('.');
                                             sb.append("this");
                                             if (!method.getParameters().isEmpty())
@@ -132,7 +132,7 @@ public class MethodRendererImpl implements MethodRenderer
    @Override
    public String invocation(String parameters)
    {
-      return method.getSimpleName() +
+      return method.getName() +
              '(' +
              parameters +
              ')';

@@ -80,9 +80,9 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override
@@ -112,7 +112,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public int hashCode()
    {
-      return Objects.hash(getSimpleName(), getType());
+      return Objects.hash(getName(), getType());
    }
 
    @Override
@@ -126,7 +126,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
       {
          return false;
       }
-      return Objects.equals(getSimpleName(), otherRecordComponent.getSimpleName()) &&
+      return Objects.equals(getName(), otherRecordComponent.getName()) &&
              Objects.equals(getType(), otherRecordComponent.getType());
    }
 }

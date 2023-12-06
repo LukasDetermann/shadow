@@ -26,7 +26,7 @@ public interface Executable extends Shadow,
 
    default Parameter getParameterOrThrow(String name)
    {
-      return getParameters().stream().filter(parameter -> parameter.getSimpleName().equals(name)).findAny().orElseThrow();
+      return getParameters().stream().filter(parameter -> parameter.getName().equals(name)).findAny().orElseThrow();
    }
 
    Shadow getReturnType();

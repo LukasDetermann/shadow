@@ -44,7 +44,7 @@ public class EnumRendererImpl implements EnumRenderer
       }
       sb.append("enum");
       sb.append(' ');
-      sb.append(anEnum.getSimpleName());
+      sb.append(anEnum.getName());
       sb.append(' ');
       if (!anEnum.getDirectInterfaces().isEmpty())
       {

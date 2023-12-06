@@ -35,7 +35,7 @@ public class FieldRendererImpl implements FieldRenderer
       }
       sb.append(ShadowRendererImpl.type(context, field.getType()));
       sb.append(' ');
-      sb.append(field.getSimpleName());
+      sb.append(field.getName());
       sb.append(';');
       sb.append('\n');
 

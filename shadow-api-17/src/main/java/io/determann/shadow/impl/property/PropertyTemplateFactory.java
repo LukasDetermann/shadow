@@ -43,7 +43,7 @@ class PropertyTemplateFactory
 
    static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(Annotationable::getSimpleName, Function.identity()));
+      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(Annotationable::getName, Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -143,7 +143,7 @@ class PropertyTemplateFactory
 
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
-      String name = method.getSimpleName();
+      String name = method.getName();
       List<Parameter> parameters = method.getParameters();
 
       //getter
@@ -176,7 +176,7 @@ class PropertyTemplateFactory
 
    private static String toPropertyName(Method method, String prefix)
    {
-      String name = method.getSimpleName().substring(prefix.length());
+      String name = method.getName().substring(prefix.length());
 
       //java beans 8.8
       if (name.length() > 1 && isUpperCase(name.charAt(0)) && isUpperCase(name.charAt(1)))

@@ -42,7 +42,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       }
       sb.append("interface");
       sb.append(' ');
-      sb.append(anInterface.getSimpleName());
+      sb.append(anInterface.getName());
       if (!anInterface.getGenerics().isEmpty())
       {
          sb.append('<');

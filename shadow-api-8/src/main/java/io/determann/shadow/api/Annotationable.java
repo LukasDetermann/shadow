@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
  */
 public interface Annotationable
 {
-   String getSimpleName();
+   String getName();
 
    /**
     * returns the javaDoc or null if none is present

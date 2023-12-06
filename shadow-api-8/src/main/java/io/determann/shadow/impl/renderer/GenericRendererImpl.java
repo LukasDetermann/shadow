@@ -40,17 +40,17 @@ public class GenericRendererImpl implements GenericRenderer
                .map(declared -> "java.lang.Object".equals(declared.getQualifiedName()))
                .orElse(false))
          {
-            sb.append(generic.getSimpleName());
+            sb.append(generic.getName());
          }
          else
          {
-            sb.append(generic.getSimpleName()).append(" extends ").append(ShadowRendererImpl.type(context, generic.getExtends()));
+            sb.append(generic.getName()).append(" extends ").append(ShadowRendererImpl.type(context, generic.getExtends()));
          }
          context.setRenderNestedGenerics(true);
       }
       else
       {
-         sb.append(generic.getSimpleName());
+         sb.append(generic.getName());
       }
       return sb.toString();
    }
@@ -64,6 +64,6 @@ public class GenericRendererImpl implements GenericRenderer
    @Override
    public String type()
    {
-      return generic.getSimpleName();
+      return generic.getName();
    }
 }

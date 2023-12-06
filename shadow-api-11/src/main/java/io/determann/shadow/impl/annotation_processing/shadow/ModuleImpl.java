@@ -173,9 +173,9 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
-      return MirrorAdapter.getSimpleName(getElement());
+      return MirrorAdapter.getName(getElement());
    }
 
    @Override

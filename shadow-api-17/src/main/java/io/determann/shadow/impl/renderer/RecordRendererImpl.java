@@ -44,7 +44,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
       sb.append("record");
       sb.append(' ');
-      sb.append(aRecord.getSimpleName());
+      sb.append(aRecord.getName());
       if (!aRecord.getGenerics().isEmpty())
       {
          sb.append('<');

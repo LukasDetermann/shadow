@@ -39,7 +39,7 @@ public class ImmutablePropertyImpl implements ImmutableProperty
    }
 
    @Override
-   public String getSimpleName()
+   public String getName()
    {
       return name;
    }

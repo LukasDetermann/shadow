@@ -51,7 +51,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
 
                                                  sb.append(ShadowRendererImpl.type(context, declared));
                                                  sb.append(' ');
-                                                 sb.append(declared.getSimpleName());
+                                                 sb.append(declared.getName());
                                                  sb.append('.');
                                                  sb.append("this");
                                                  if (!constructor.getParameters().isEmpty())

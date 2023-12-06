@@ -44,7 +44,7 @@ public interface Declared extends Shadow,
 
    default Field getFieldOrThrow(String simpleName)
    {
-      return getFields().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
+      return getFields().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow(NoSuchElementException::new);
    }
 
    List<Field> getFields();
@@ -52,7 +52,7 @@ public interface Declared extends Shadow,
    default List<Method> getMethods(String simpleName)
    {
       return getMethods().stream()
-                         .filter(field -> field.getSimpleName().equals(simpleName))
+                         .filter(field -> field.getName().equals(simpleName))
                          .collect(collectingAndThen(toList(), Collections::unmodifiableList));
    }
 

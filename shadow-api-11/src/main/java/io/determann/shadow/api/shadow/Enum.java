@@ -11,6 +11,6 @@ public interface Enum extends Declared,
 
    default EnumConstant getEnumConstantOrThrow(String simpleName)
    {
-      return getEumConstants().stream().filter(field -> field.getSimpleName().equals(simpleName)).findAny().orElseThrow();
+      return getEumConstants().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
    }
 }

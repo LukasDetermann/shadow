@@ -22,7 +22,7 @@ public interface Property
     *
     * @see #getGetter()
     */
-   String getSimpleName();
+   String getName();
 
    /**
     * return type of getter
@@ -34,7 +34,7 @@ public interface Property
    /**
     * a {@link Field} with the name and tye of this property
     *
-    * @see #getSimpleName()
+    * @see #getName()
     * @see #getType()
     */
    Optional<Field> getField();

@@ -75,7 +75,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                shadowApi.getClassOrThrow("MyClass")
                                                         .getFields()
                                                         .stream()
-                                                        .map(Annotationable::getSimpleName)
+                                                        .map(Annotationable::getName)
                                                         .collect(Collectors.toList())))
                    .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                    .compile();

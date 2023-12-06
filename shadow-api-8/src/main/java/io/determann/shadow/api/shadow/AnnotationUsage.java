@@ -24,7 +24,7 @@ public interface AnnotationUsage extends Annotation
    {
       return getValues().entrySet()
                         .stream()
-                        .filter(entry -> entry.getKey().getSimpleName().equals(methodName))
+                        .filter(entry -> entry.getKey().getName().equals(methodName))
                         .map(Map.Entry::getValue)
                         .findAny();
    }

@@ -24,7 +24,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
-         String builderSimpleName = aClass.getSimpleName() + "ShadowBuilder";//simpleName of the companion builder class
+         String builderSimpleName = aClass.getName() + "ShadowBuilder";//simpleName of the companion builder class
          String builderVariableName = uncapitalize(builderSimpleName);
 
          //create a record holding the code needed to render a property in the builder
@@ -91,7 +91,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                          final String builderVariableName,
                                          final MutableProperty property)
    {
-      String propertyName = property.getSimpleName();
+      String propertyName = property.getName();
       String type = property.getType().toString();
       String field = "private " + type + " " + propertyName + ";";
 
@@ -105,7 +105,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = builderVariableName + "." + property.getSetter().getSimpleName() + "(" + propertyName + ");";
+      String toBuildSetter = builderVariableName + "." + property.getSetter().getName() + "(" + propertyName + ");";
 
       return new BuilderElement(field, mutator, toBuildSetter);
    }
