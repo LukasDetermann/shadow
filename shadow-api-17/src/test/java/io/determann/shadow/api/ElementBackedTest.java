@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -51,14 +50,12 @@ class ElementBackedTest
                                assertEquals(" Class level doc\n", aClass.getJavaDoc());
                                assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
                                assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
-                               assertNull(convert(aClass.getGenericTypes().get(0)).toGeneric().get().getJavaDoc());
-                               assertNull(aClass.getConstructors().get(0).getParameters().get(0).getJavaDoc());
                             })
                    .withCodeToCompile("JavaDocExample.java", """
                          /**
                           * Class level doc
                           */
-                         public class JavaDocExample</** a */T>
+                         public class JavaDocExample<T>
                          {
                             /**
                              * Field level doc
@@ -68,9 +65,7 @@ class ElementBackedTest
                             /**
                              * Constructor level doc
                              */
-                            public JavaDocExample(/** */ Long id)
-                            {
-                            }
+                            public JavaDocExample() {}
 
                             /**
                              * Method level doc

@@ -1,8 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.NestingKind;
-import io.determann.shadow.api.QualifiedNameable;
+import io.determann.shadow.api.*;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.StrictfpModifiable;
@@ -28,7 +26,9 @@ public interface Declared extends Shadow,
                                   Annotationable,
                                   AccessModifiable,
                                   StrictfpModifiable,
-                                  QualifiedNameable
+                                  Nameable,
+                                  QualifiedNameable,
+                                  Documented
 {
    /**
     * returns true if this can be cast to that.

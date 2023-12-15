@@ -1,9 +1,13 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.ModuleEnclosed;
+import io.determann.shadow.api.Nameable;
 
 public interface RecordComponent extends Shadow,
-                                         Annotationable
+                                         Nameable,
+                                         Annotationable,
+                                         ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.

@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -46,14 +45,12 @@ class ElementBackedTest
                                assertEquals(" Class level doc\n", aClass.getJavaDoc());
                                assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
                                assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
-                               assertNull(convert(aClass.getGenericTypes().get(0)).toGeneric().get().getJavaDoc());
-                               assertNull(aClass.getConstructors().get(0).getParameters().get(0).getJavaDoc());
                             })
                    .withCodeToCompile("JavaDocExample.java",
                                       "/**\n" +
                                       "                            * Class level doc\n" +
                                       "                            */\n" +
-                                      "                           public class JavaDocExample</** a */T>\n" +
+                                      "                           public class JavaDocExample<T>\n" +
                                       "                           {\n" +
                                       "                              /**\n" +
                                       "                               * Field level doc\n" +
@@ -63,9 +60,7 @@ class ElementBackedTest
                                       "                              /**\n" +
                                       "                               * Constructor level doc\n" +
                                       "                               */\n" +
-                                      "                              public JavaDocExample(/** */ Long id)\n" +
-                                      "                              {\n" +
-                                      "                              }\n" +
+                                      "                              public JavaDocExample() {}\n" +
                                       "\n" +
                                       "                              /**\n" +
                                       "                               * Method level doc\n" +

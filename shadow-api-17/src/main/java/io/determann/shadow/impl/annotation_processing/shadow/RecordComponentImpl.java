@@ -86,12 +86,6 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
-   public String getJavaDoc()
-   {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
-   }
-
-   @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return MirrorAdapter.getAnnotationUsages(getApi(), getElement());

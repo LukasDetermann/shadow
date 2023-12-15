@@ -1,5 +1,6 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
+import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
@@ -16,7 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImpl<TypeMirror>
-      implements Variable<SURROUNDING>
+      implements Variable<SURROUNDING>,
+                 Documented
 {
    private final VariableElement variableElement;
 

@@ -1,9 +1,13 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.Documented;
+import io.determann.shadow.api.ModuleEnclosed;
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.Modifiable;
 
+import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +21,10 @@ import java.util.Optional;
  */
 public interface Executable extends Shadow,
                                     Annotationable,
-                                    Modifiable
+                                    Nameable,
+                                    Modifiable,
+                                    ModuleEnclosed,
+                                    Documented
 {
    /**
     * {@code public MyObject(}<b>String param</b>{@code )}
@@ -28,6 +35,11 @@ public interface Executable extends Shadow,
    {
       return getParameters().stream().filter(parameter -> parameter.getName().equals(name)).findAny().orElseThrow();
    }
+
+   /**
+    * Can be annotated using annotations with {@link ElementType#TYPE_USE}
+    */
+   Return getReturn();
 
    Shadow getReturnType();
 
@@ -71,4 +83,19 @@ public interface Executable extends Shadow,
     * }</pre>
     */
    Optional<Declared> getReceiverType();
+
+   /**
+    * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".
+    * Those annotations can only be accessed by refection.
+    * <pre>{@code
+    *    public class ReceiverExample {
+    *       {
+    *          new ReceiverExample().foo();
+    *       }
+    *       public void foo(ReceiverExample ReceiverExample.this) {
+    *       }
+    *    }
+    * }</pre>
+    */
+   Optional<Receiver> getReceiver();
 }

@@ -17,10 +17,10 @@ import javax.lang.model.element.ModuleElement;
 import javax.lang.model.type.NoType;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collector;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
@@ -156,7 +156,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
                                         return directives;
                                      },
                                      Collections::unmodifiableList,
-                                     Collector.Characteristics.IDENTITY_FINISH));
+                                     IDENTITY_FINISH));
    }
 
    //com.sun.tools.javac.code.Types.TypeRelation#visitType throes exceptions for modules
@@ -164,12 +164,6 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    public boolean representsSameType(Shadow shadow)
    {
       return equals(shadow);
-   }
-
-   @Override
-   public Module getModule()
-   {
-      return MirrorAdapter.getModule(getApi(), getElement());
    }
 
    @Override

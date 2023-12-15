@@ -61,9 +61,9 @@ public interface MirrorAdapter
       return ((GenericImpl) generic).getMirror();
    }
 
-   static IntersectionType getType(IntersectionType intersectionType)
+   static IntersectionType getType(Intersection intersection)
    {
-      return ((IntersectionImpl) intersectionType).getMirror();
+      return ((IntersectionImpl) intersection).getMirror();
    }
 
    static NullType getType(Null aNull)

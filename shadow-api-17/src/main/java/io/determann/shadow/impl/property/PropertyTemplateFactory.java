@@ -1,6 +1,6 @@
 package io.determann.shadow.impl.property;
 
-import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.*;
@@ -43,7 +43,7 @@ class PropertyTemplateFactory
 
    static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(Annotationable::getName, Function.identity()));
+      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(Nameable::getName, Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();

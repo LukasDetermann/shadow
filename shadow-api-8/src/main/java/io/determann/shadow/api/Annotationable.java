@@ -15,13 +15,6 @@ import static java.util.stream.Collectors.toList;
  */
 public interface Annotationable
 {
-   String getName();
-
-   /**
-    * returns the javaDoc or null if none is present
-    */
-   String getJavaDoc();
-
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */

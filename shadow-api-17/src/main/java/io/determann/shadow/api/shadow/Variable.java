@@ -1,6 +1,8 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.ModuleEnclosed;
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.Modifiable;
 
@@ -13,8 +15,10 @@ import io.determann.shadow.api.modifier.Modifiable;
  * </ul>
  */
 public interface Variable<SURROUNDING extends Shadow> extends Shadow,
+                                                              Nameable,
                                                               Annotationable,
-                                                              Modifiable
+                                                              Modifiable,
+                                                              ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.

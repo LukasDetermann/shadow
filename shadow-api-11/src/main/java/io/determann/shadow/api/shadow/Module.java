@@ -1,8 +1,6 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.DeclaredHolder;
-import io.determann.shadow.api.QualifiedNameable;
+import io.determann.shadow.api.*;
 import io.determann.shadow.api.shadow.module.Directive;
 import io.determann.shadow.api.shadow.module.DirectiveConsumer;
 import io.determann.shadow.api.shadow.module.DirectiveMapper;
@@ -14,9 +12,11 @@ import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 public interface Module extends Shadow,
+                                Nameable,
                                 QualifiedNameable,
                                 Annotationable,
-                                DeclaredHolder
+                                DeclaredHolder,
+                                Documented
 {
    List<Package> getPackages();
 

@@ -3,9 +3,10 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.shadow.Module;
+import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeVariable;
@@ -65,21 +66,9 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    }
 
    @Override
-   public Module getModule()
-   {
-      return MirrorAdapter.getModule(getApi(), getElement());
-   }
-
-   @Override
    public String getName()
    {
       return MirrorAdapter.getName(getElement());
-   }
-
-   @Override
-   public String getJavaDoc()
-   {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
    }
 
    @Override

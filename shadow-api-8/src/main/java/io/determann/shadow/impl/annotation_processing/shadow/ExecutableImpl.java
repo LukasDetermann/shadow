@@ -38,6 +38,12 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
+   public Return getReturn()
+   {
+      return new ReturnImpl(getApi(), getMirror().getReturnType());
+   }
+
+   @Override
    public Shadow getReturnType()
    {
       return MirrorAdapter.getShadow(getApi(), getMirror().getReturnType());
@@ -50,6 +56,17 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
                         .stream()
                         .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+   }
+
+   @Override
+   public Optional<Receiver> getReceiver()
+   {
+      TypeMirror receiverType = getMirror().getReceiverType();
+      if (receiverType == null || receiverType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
+      {
+         return Optional.empty();
+      }
+      return Optional.of(new ReceiverImpl(getApi(), getMirror().getReceiverType()));
    }
 
    @Override

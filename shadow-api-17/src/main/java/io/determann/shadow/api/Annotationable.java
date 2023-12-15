@@ -2,7 +2,6 @@ package io.determann.shadow.api;
 
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Module;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,18 +11,6 @@ import java.util.Optional;
  */
 public interface Annotationable
 {
-   /**
-    * returns itself for a module
-    */
-   Module getModule();
-
-   String getName();
-
-   /**
-    * returns the javaDoc or null if none is present
-    */
-   String getJavaDoc();
-
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
