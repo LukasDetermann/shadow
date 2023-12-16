@@ -349,4 +349,12 @@ public interface AnnotationProcessingContext extends DeclaredHolder
     * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
     */
    Array asArray(Intersection intersection);
+
+   Wildcard asExtendsWildcard(Array array);
+
+   Wildcard asSuperWildcard(Array array);
+
+   Wildcard asExtendsWildcard(Declared array);
+
+   Wildcard asSuperWildcard(Declared array);
 }

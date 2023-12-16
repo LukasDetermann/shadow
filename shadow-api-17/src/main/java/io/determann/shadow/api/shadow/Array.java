@@ -21,8 +21,4 @@ public interface Array extends Shadow
     * for primitives
     */
    List<Shadow> getDirectSuperTypes();
-
-   Wildcard asExtendsWildcard();
-
-   Wildcard asSuperWildcard();
 }

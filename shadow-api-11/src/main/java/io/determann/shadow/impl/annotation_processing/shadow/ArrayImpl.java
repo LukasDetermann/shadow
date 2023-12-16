@@ -5,7 +5,6 @@ import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.Wildcard;
 
 import javax.lang.model.type.ArrayType;
 import java.util.List;
@@ -41,20 +40,6 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
                           .stream()
                           .map(typeMirror1 -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror1))
                           .collect(toUnmodifiableList());
-   }
-
-   @Override
-   public Wildcard asExtendsWildcard()
-   {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(getMirror(), null));
-   }
-
-   @Override
-   public Wildcard asSuperWildcard()
-   {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(null, getMirror()));
    }
 
    @Override

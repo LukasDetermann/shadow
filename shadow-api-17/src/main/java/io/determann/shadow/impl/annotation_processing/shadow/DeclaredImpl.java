@@ -149,20 +149,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Wildcard asExtendsWildcard()
-   {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(getMirror(), null));
-   }
-
-   @Override
-   public Wildcard asSuperWildcard()
-   {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getWildcardType(null, getMirror()));
-   }
-
-   @Override
    public List<Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()

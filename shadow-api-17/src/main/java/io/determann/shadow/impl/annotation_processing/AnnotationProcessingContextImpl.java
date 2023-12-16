@@ -557,6 +557,30 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
       return getShadow(getApi(), getProcessingEnv().getTypeUtils().getArrayType(getType(intersection)));
    }
 
+   @Override
+   public Wildcard asExtendsWildcard(Array array)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getWildcardType(getType(array), null));
+   }
+
+   @Override
+   public Wildcard asSuperWildcard(Array array)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getWildcardType(null, getType(array)));
+   }
+
+   @Override
+   public Wildcard asExtendsWildcard(Declared declared)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getWildcardType(getType(declared), null));
+   }
+
+   @Override
+   public Wildcard asSuperWildcard(Declared declared)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getWildcardType(null, getType(declared)));
+   }
+
    public AnnotationProcessingContext getApi()
    {
       return this;
