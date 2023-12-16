@@ -104,7 +104,7 @@ class MethodTest extends ExecutableTest<Method>
    void testGetParameterTypes()
    {
       ProcessorTest.process(shadowApi ->
-                                  assertEquals(Collections.singletonList(shadowApi.getClassOrThrow("java.lang.String").asArray()),
+                                  assertEquals(Collections.singletonList(shadowApi.asArray(shadowApi.getClassOrThrow("java.lang.String"))),
                                                shadowApi.getClassOrThrow("MethodExample")
                                                         .getMethods("varArgsMethod").get(0).getParameterTypes()))
                    .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +

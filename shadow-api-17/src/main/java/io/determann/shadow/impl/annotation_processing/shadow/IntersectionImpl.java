@@ -3,7 +3,6 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
-import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -31,12 +30,6 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
       return getMirror().getBounds().stream()
                         .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
-   }
-
-   @Override
-   public Array asArray()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getArrayType(getMirror()));
    }
 
    @Override

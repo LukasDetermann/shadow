@@ -427,6 +427,30 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
       MirrorAdapter.getProcessingEnv(this).getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement(annotationable));
    }
 
+   @Override
+   public Array asArray(Array array)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getArrayType(getType(array)));
+   }
+
+   @Override
+   public Array asArray(Primitive primitive)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getArrayType(getType(primitive)));
+   }
+
+   @Override
+   public Array asArray(Declared declared)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getArrayType(getType(declared)));
+   }
+
+   @Override
+   public Array asArray(Intersection intersection)
+   {
+      return getShadow(getApi(), getProcessingEnv().getTypeUtils().getArrayType(getType(intersection)));
+   }
+
    public AnnotationProcessingContext getApi()
    {
       return this;

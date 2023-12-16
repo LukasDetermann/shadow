@@ -24,9 +24,4 @@ public interface Primitive extends Shadow
     * etc...
     */
    Class asBoxed();
-
-   /**
-    * int -&gt; int[]
-    */
-   Array asArray();
 }

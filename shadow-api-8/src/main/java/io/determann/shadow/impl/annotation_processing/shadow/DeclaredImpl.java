@@ -170,12 +170,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    }
 
    @Override
-   public Array asArray()
-   {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getProcessingEnv(getApi()).getTypeUtils().getArrayType(getMirror()));
-   }
-
-   @Override
    public List<Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()

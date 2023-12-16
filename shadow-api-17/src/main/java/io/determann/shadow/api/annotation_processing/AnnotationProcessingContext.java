@@ -391,4 +391,25 @@ public interface AnnotationProcessingContext extends DeclaredHolder
     * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
     */
    Record interpolateGenerics(Record aRecord);
+
+   /**
+    * String[] -&gt; String[][]
+    */
+   Array asArray(Array array);
+
+   /**
+    * int -&gt; int[]
+    */
+   Array asArray(Primitive primitive);
+
+
+   /**
+    * String -&gt; String[]
+    */
+   Array asArray(Declared declared);
+
+   /**
+    * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
+    */
+   Array asArray(Intersection intersection);
 }

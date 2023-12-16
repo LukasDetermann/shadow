@@ -104,9 +104,4 @@ public interface Declared extends Shadow,
    Wildcard asExtendsWildcard();
 
    Wildcard asSuperWildcard();
-
-   /**
-    * String -&gt; String[]
-    */
-   Array asArray();
 }
