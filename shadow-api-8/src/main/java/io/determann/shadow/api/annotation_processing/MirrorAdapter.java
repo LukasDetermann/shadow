@@ -1,9 +1,8 @@
-package io.determann.shadow.api;
+package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
@@ -16,11 +15,13 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.api.modifier.Modifier.*;
-import static java.util.stream.Collectors.toUnmodifiableSet;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toSet;
 
 @JdkApi
 public interface MirrorAdapter
@@ -65,11 +66,6 @@ public interface MirrorAdapter
       return ((IntersectionImpl) intersection).getMirror();
    }
 
-   static NoType getType(Module module)
-   {
-      return ((ModuleImpl) module).getMirror();
-   }
-
    static NullType getType(Null aNull)
    {
       return ((NullImpl) aNull).getMirror();
@@ -112,11 +108,6 @@ public interface MirrorAdapter
          Generic generic = ((Generic) annotationable);
          return getElement(generic);
       }
-      if (annotationable instanceof Module)
-      {
-         Module module = ((Module) annotationable);
-         return getElement(module);
-      }
       if (annotationable instanceof Package)
       {
          Package aPackage = ((Package) annotationable);
@@ -145,11 +136,6 @@ public interface MirrorAdapter
       return ((GenericImpl) generic).getElement();
    }
 
-   static ModuleElement getElement(Module module)
-   {
-      return ((ModuleImpl) module).getElement();
-   }
-
    static PackageElement getElement(Package aPackage)
    {
       return ((PackageImpl) aPackage).getElement();
@@ -158,11 +144,6 @@ public interface MirrorAdapter
    static VariableElement getElement(Variable<?> variable)
    {
       return ((VariableImpl) variable).getElement();
-   }
-
-   static Module getModule(AnnotationProcessingContext api, Element element)
-   {
-      return getShadow(api, getProcessingEnv(api).getElementUtils().getModuleOf(element));
    }
 
    static String getName(Element element)
@@ -187,7 +168,10 @@ public interface MirrorAdapter
 
    static Set<Modifier> getModifiers(Element element)
    {
-      return element.getModifiers().stream().map(MirrorAdapter::mapModifier).collect(toUnmodifiableSet());
+      return element.getModifiers()
+                    .stream()
+                    .map(MirrorAdapter::mapModifier)
+                    .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
    }
 
    static Modifier mapModifier(javax.lang.model.element.Modifier modifier)
@@ -254,8 +238,6 @@ public interface MirrorAdapter
             return (SHADOW) new ParameterImpl(annotationProcessingContext, (VariableElement) element);
          case TYPE_PARAMETER:
             return (SHADOW) new GenericImpl(annotationProcessingContext, (TypeParameterElement) element);
-         case MODULE:
-            return (SHADOW) new ModuleImpl(annotationProcessingContext, (ModuleElement) element);
          case OTHER:
          case STATIC_INIT:
          case INSTANCE_INIT:
@@ -308,8 +290,6 @@ public interface MirrorAdapter
             return (SHADOW) new VoidImpl(annotationProcessingContext, ((NoType) typeMirror));
          case PACKAGE:
             return (SHADOW) new PackageImpl(annotationProcessingContext, (NoType) typeMirror);
-         case MODULE:
-            return (SHADOW) new ModuleImpl(annotationProcessingContext, (NoType) typeMirror);
          case NULL:
             return (SHADOW) new NullImpl(annotationProcessingContext, (NullType) typeMirror);
          case TYPEVAR:

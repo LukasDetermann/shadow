@@ -1,6 +1,6 @@
-package io.determann.shadow.api;
+package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;

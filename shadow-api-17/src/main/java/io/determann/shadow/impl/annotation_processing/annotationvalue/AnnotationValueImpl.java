@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.annotationvalue;
 
-import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;

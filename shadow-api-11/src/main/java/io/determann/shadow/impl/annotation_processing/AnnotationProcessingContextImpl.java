@@ -1,7 +1,11 @@
 package io.determann.shadow.impl.annotation_processing;
 
-import io.determann.shadow.api.*;
+import io.determann.shadow.api.AnnotationTypeChooser;
+import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.DiagnosticContext;
+import io.determann.shadow.api.ShadowConstants;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -22,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.MirrorAdapter.*;
+import static io.determann.shadow.api.annotation_processing.MirrorAdapter.*;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static java.lang.System.err;
 import static java.lang.System.out;

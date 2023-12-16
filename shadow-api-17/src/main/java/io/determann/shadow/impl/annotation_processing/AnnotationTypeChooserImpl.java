@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.AnnotationTypeChooser;
-import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;

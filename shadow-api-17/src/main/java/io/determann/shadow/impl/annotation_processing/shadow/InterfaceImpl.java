@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
-import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
 import io.determann.shadow.api.shadow.Shadow;

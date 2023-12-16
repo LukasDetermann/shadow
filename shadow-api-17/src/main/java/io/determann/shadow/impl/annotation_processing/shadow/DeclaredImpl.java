@@ -1,9 +1,9 @@
 package io.determann.shadow.impl.annotation_processing.shadow;
 
-import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.modifier.Modifier;

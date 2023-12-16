@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing;
 
-import io.determann.shadow.api.MirrorAdapter;
 import io.determann.shadow.api.ShadowConstants;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.Null;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;
@@ -10,7 +10,7 @@ import io.determann.shadow.api.shadow.Wildcard;
 
 import javax.lang.model.type.TypeKind;
 
-import static io.determann.shadow.api.MirrorAdapter.getShadow;
+import static io.determann.shadow.api.annotation_processing.MirrorAdapter.getShadow;
 
 public class ShadowConstantsImpl implements ShadowConstants
 {
