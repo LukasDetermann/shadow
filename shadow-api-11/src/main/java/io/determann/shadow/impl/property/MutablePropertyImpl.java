@@ -7,6 +7,7 @@ import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -78,5 +79,27 @@ public class MutablePropertyImpl implements MutableProperty
    public Method getSetter()
    {
       return setter;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getType(), getName());
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof MutableProperty))
+      {
+         return false;
+      }
+      MutableProperty otherMutableProperty = ((MutableProperty) other);
+      return Objects.equals(getType(), otherMutableProperty.getType()) &&
+             Objects.equals(getName(), otherMutableProperty.getName());
    }
 }

@@ -57,11 +57,11 @@ public class OpensImpl extends DirectiveImpl implements Opens
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Opens))
       {
          return false;
       }
-      OpensImpl otherOpens = (OpensImpl) other;
+      Opens otherOpens = (Opens) other;
       return Objects.equals(getKind(), otherOpens.getKind()) &&
              Objects.equals(getTargetModules(), otherOpens.getTargetModules()) &&
              Objects.equals(getPackage(), otherOpens.getPackage());

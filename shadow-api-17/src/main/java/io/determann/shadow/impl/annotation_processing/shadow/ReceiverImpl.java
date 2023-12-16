@@ -8,6 +8,7 @@ import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
+import java.util.Objects;
 
 public class ReceiverImpl implements Receiver
 {
@@ -41,5 +42,25 @@ public class ReceiverImpl implements Receiver
    public TypeMirror getTypeMirror()
    {
       return typeMirror;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hashCode(getType());
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof Receiver otherReceiver))
+      {
+         return false;
+      }
+      return Objects.equals(getType(), otherReceiver.getType());
    }
 }

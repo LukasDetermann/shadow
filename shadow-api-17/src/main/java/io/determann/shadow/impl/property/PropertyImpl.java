@@ -92,19 +92,24 @@ public class PropertyImpl implements Property
    }
 
    @Override
-   public boolean equals(Object o)
+   public int hashCode()
    {
-      return this == o ||
-             o instanceof PropertyImpl property &&
-             Objects.equals(field, property.field) &&
-             Objects.equals(getter, property.getter) &&
-             Objects.equals(setter, property.setter);
+      return Objects.hash(getType(), getName());
    }
 
    @Override
-   public int hashCode()
+   public boolean equals(Object other)
    {
-      return Objects.hash(field, getter, setter);
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof Property otherProperty))
+      {
+         return false;
+      }
+      return Objects.equals(getType(), otherProperty.getType()) &&
+             Objects.equals(getName(), otherProperty.getName());
    }
 
    @Override

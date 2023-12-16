@@ -59,11 +59,10 @@ public class ExportsImpl extends DirectiveImpl implements Exports
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Exports otherExports))
       {
          return false;
       }
-      ExportsImpl otherExports = (ExportsImpl) other;
       return Objects.equals(getKind(), otherExports.getKind()) &&
              Objects.equals(getTargetModules(), otherExports.getTargetModules()) &&
              Objects.equals(getPackage(), otherExports.getPackage());

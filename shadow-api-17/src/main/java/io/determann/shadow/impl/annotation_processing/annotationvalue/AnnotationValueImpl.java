@@ -250,11 +250,18 @@ public class AnnotationValueImpl implements AnnotationValue
    }
 
    @Override
-   public boolean equals(Object o)
+   public boolean equals(Object other)
    {
-      return this == o || o instanceof AnnotationValueImpl that &&
-                          isDefaultValue() == that.isDefaultValue() &&
-                          Objects.equals(getAnnotationValue(), that.getAnnotationValue());
+      if (this == other)
+      {
+         return true;
+      }
+      if (!(other instanceof AnnotationValue otherAnnotationValue))
+      {
+         return false;
+      }
+      return isDefaultValue() == otherAnnotationValue.isDefaultValue() &&
+             Objects.equals(getValue(), otherAnnotationValue.getValue());
    }
 
    @Override

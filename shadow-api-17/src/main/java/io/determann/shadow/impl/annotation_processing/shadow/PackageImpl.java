@@ -132,11 +132,10 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Package otherPackage))
       {
          return false;
       }
-      PackageImpl otherPackage = (PackageImpl) other;
       return Objects.equals(getQualifiedName(), otherPackage.getQualifiedName()) &&
              Objects.equals(getModule(), otherPackage.getModule());
    }

@@ -3,11 +3,13 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.Receiver;
 import io.determann.shadow.api.shadow.Return;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
+import java.util.Objects;
 
 public class ReturnImpl implements Return
 {
@@ -41,5 +43,26 @@ public class ReturnImpl implements Return
    public TypeMirror getTypeMirror()
    {
       return typeMirror;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hashCode(getType());
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof Receiver))
+      {
+         return false;
+      }
+      Receiver otherReceiver = ((Receiver) other);
+      return Objects.equals(getType(), otherReceiver.getType());
    }
 }

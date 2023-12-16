@@ -6,10 +6,7 @@ import io.determann.shadow.api.shadow.Field;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -69,5 +66,28 @@ public class ImmutablePropertyImpl implements ImmutableProperty
    public Method getGetter()
    {
       return getter;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getType(), getName());
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      if (other == this)
+      {
+         return true;
+      }
+      if (!(other instanceof ImmutableProperty))
+      {
+         return false;
+      }
+
+      ImmutableProperty otherImmutableProperty = ((ImmutableProperty) other);
+      return Objects.equals(getType(), otherImmutableProperty.getType()) &&
+             Objects.equals(getName(), otherImmutableProperty.getName());
    }
 }

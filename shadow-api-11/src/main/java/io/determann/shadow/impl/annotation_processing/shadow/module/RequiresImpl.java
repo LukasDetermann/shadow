@@ -50,11 +50,11 @@ public class RequiresImpl extends DirectiveImpl implements Requires
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Requires))
       {
          return false;
       }
-      RequiresImpl otherRequires = (RequiresImpl) other;
+      Requires otherRequires = (Requires) other;
       return Objects.equals(getKind(), otherRequires.getKind()) &&
              Objects.equals(isStatic(), otherRequires.isStatic()) &&
              Objects.equals(isTransitive(), otherRequires.isTransitive()) &&

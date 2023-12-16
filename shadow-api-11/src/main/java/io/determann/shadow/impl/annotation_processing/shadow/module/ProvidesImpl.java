@@ -50,11 +50,11 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Provides))
       {
          return false;
       }
-      ProvidesImpl otherProvides = (ProvidesImpl) other;
+      Provides otherProvides = (Provides) other;
       return Objects.equals(getKind(), otherProvides.getKind()) &&
              Objects.equals(getImplementations(), otherProvides.getImplementations()) &&
              Objects.equals(getService(), otherProvides.getService());

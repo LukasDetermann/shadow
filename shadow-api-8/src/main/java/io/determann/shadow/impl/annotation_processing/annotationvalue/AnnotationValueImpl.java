@@ -254,19 +254,19 @@ public class AnnotationValueImpl implements AnnotationValue
    }
 
    @Override
-   public boolean equals(Object o)
+   public boolean equals(Object other)
    {
-      if (this == o)
+      if (this == other)
       {
          return true;
       }
-      if (o instanceof AnnotationValueImpl)
+      if (!(other instanceof AnnotationValue))
       {
-         AnnotationValueImpl that = ((AnnotationValueImpl) o);
-         return isDefaultValue() == that.isDefaultValue() &&
-                Objects.equals(getAnnotationValue(), that.getAnnotationValue());
+         return false;
       }
-      return false;
+      AnnotationValue otherAnnotationValue = ((AnnotationValue) other);
+      return isDefaultValue() == otherAnnotationValue.isDefaultValue() &&
+             Objects.equals(getValue(), otherAnnotationValue.getValue());
    }
 
    @Override

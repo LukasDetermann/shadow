@@ -99,14 +99,14 @@ public class PropertyImpl implements Property
       {
          return true;
       }
-      if (!(o instanceof PropertyImpl))
+      if (!(o instanceof Property))
       {
          return false;
       }
-      PropertyImpl property = (PropertyImpl) o;
-      return Objects.equals(field, property.field) &&
-             Objects.equals(getter, property.getter) &&
-             Objects.equals(setter, property.setter);
+      Property property = (Property) o;
+      return Objects.equals(getField(), property.getField()) &&
+             Objects.equals(getGetter(), property.getGetter()) &&
+             Objects.equals(getSetter(), property.getSetter());
    }
 
    @Override

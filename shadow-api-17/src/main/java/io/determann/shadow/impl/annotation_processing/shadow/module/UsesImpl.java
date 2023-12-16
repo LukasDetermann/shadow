@@ -38,11 +38,10 @@ public class UsesImpl extends DirectiveImpl implements Uses
       {
          return true;
       }
-      if (other == null || !getClass().equals(other.getClass()))
+      if (!(other instanceof Uses otherUses))
       {
          return false;
       }
-      UsesImpl otherUses = (UsesImpl) other;
       return Objects.equals(getKind(), otherUses.getKind()) &&
              Objects.equals(getService(), otherUses.getService());
    }
