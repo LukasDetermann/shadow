@@ -17,6 +17,8 @@ public interface AnnotationValue
     */
    boolean isDefaultValue();
 
+   Object getValue();
+
    String asString();
 
    Boolean asBoolean();

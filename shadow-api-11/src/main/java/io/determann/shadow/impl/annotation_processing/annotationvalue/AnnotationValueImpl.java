@@ -32,6 +32,12 @@ public class AnnotationValueImpl implements AnnotationValue
    }
 
    @Override
+   public Object getValue()
+   {
+      return annotationValue.getValue();
+   }
+
+   @Override
    public String asString()
    {
       return ((String) annotationValue.getValue());
