@@ -3,7 +3,6 @@ package io.determann.shadow.impl.annotation_processing.shadow;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Receiver;
 import io.determann.shadow.api.shadow.Return;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -58,11 +57,10 @@ public class ReturnImpl implements Return
       {
          return true;
       }
-      if (!(other instanceof Receiver))
+      if (!(other instanceof Return otherReturn))
       {
          return false;
       }
-      Receiver otherReceiver = ((Receiver) other);
-      return Objects.equals(getType(), otherReceiver.getType());
+      return Objects.equals(getType(), otherReturn.getType());
    }
 }
