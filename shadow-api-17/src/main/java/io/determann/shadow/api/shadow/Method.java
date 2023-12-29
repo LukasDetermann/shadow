@@ -27,4 +27,9 @@ public interface Method extends Executable,
     * }</pre>
     */
    boolean sameParameterTypes(Method method);
+
+   /**
+    * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap
+    */
+   boolean isBridge();
 }

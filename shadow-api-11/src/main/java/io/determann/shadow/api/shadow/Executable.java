@@ -48,11 +48,6 @@ public interface Executable extends Shadow,
    List<Class> getThrows();
 
    /**
-    * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap
-    */
-   boolean isBridge();
-
-   /**
     * {@link List#of(Object[])}
     */
    boolean isVarArgs();
