@@ -9,9 +9,11 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
 {
@@ -35,9 +37,14 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    }
 
    @Override
-   public Shadow getSuper()
+   public Optional<Shadow> getSuper()
    {
-      return MirrorAdapter.getShadow(getApi(), getMirror().getLowerBound());
+      TypeMirror lowerBound = getMirror().getLowerBound();
+      if (lowerBound == null || lowerBound.getKind().equals(javax.lang.model.type.TypeKind.NONE))
+      {
+         return Optional.empty();
+      }
+      return Optional.of(MirrorAdapter.getShadow(getApi(), lowerBound));
    }
 
    @Override
