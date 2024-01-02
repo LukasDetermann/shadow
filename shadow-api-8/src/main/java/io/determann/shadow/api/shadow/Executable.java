@@ -26,7 +26,10 @@ public interface Executable extends Shadow,
                                     Documented
 {
    /**
-    * {@code public MyObject(}<b>String param</b>{@code )}
+    * {@code public MyObject(}<b>String param</b>{@code )}. Returns the formal parameters, meaning everything but the Receiver.
+    * <p/>
+    * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
+    * {@link Constructor}s with more than one {@link Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
     */
    List<Parameter> getParameters();
 

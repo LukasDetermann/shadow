@@ -1,8 +1,8 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Wildcard;
-import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,51 +15,50 @@ class WildcardRendererTest
    @Test
    void type()
    {
-      ProcessorTest.process(shadowApi ->
-                            {
-                               Class boundsExample = shadowApi.getClassOrThrow("BoundsExample");
+      ConsistencyTest.compileTime(context -> context.getClassOrThrow("BoundsExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("BoundsExample")))
+                     .withCode("BoundsExample.java", """
+                           public class BoundsExample {
+                              public static void extendsExample(java.util.List<? extends Number> numbers) {}
+                              public static void superExample(java.util.List<? super Number> numbers) {}
+                              public static void unboundExample(java.util.List<?> things) {}
+                           }
+                           """)
+                     .test(aClass ->
+                           {
+                              Wildcard extendsExample = convert(convert(aClass.getMethods("extendsExample")
+                                                                              .get(0)
+                                                                              .getParameters()
+                                                                              .get(0)
+                                                                              .getType())
+                                                                      .toInterfaceOrThrow()
+                                                                      .getGenericTypes()
+                                                                      .get(0))
+                                    .toWildcardOrThrow();
 
-                               Wildcard extendsExample = convert(convert(boundsExample.getMethods("extendsExample")
-                                                                                      .get(0)
-                                                                                      .getParameters()
-                                                                                      .get(0)
-                                                                                      .getType())
-                                                                       .toInterfaceOrThrow()
-                                                                       .getGenericTypes()
-                                                                       .get(0))
-                                     .toWildcardOrThrow();
+                              Wildcard superExample = convert(convert(aClass.getMethods("superExample")
+                                                                            .get(0)
+                                                                            .getParameters()
+                                                                            .get(0)
+                                                                            .getType())
+                                                                    .toInterfaceOrThrow()
+                                                                    .getGenericTypes()
+                                                                    .get(0))
+                                    .toWildcardOrThrow();
 
-                               Wildcard superExample = convert(convert(boundsExample.getMethods("superExample")
-                                                                                    .get(0)
-                                                                                    .getParameters()
-                                                                                    .get(0)
-                                                                                    .getType())
-                                                                     .toInterfaceOrThrow()
-                                                                     .getGenericTypes()
-                                                                     .get(0))
-                                     .toWildcardOrThrow();
+                              Wildcard unboundExample = convert(convert(aClass.getMethods("unboundExample")
+                                                                              .get(0)
+                                                                              .getParameters()
+                                                                              .get(0)
+                                                                              .getType())
+                                                                      .toInterfaceOrThrow()
+                                                                      .getGenericTypes()
+                                                                      .get(0))
+                                    .toWildcardOrThrow();
 
-                               Wildcard unboundExample = convert(convert(boundsExample.getMethods("unboundExample")
-                                                                                      .get(0)
-                                                                                      .getParameters()
-                                                                                      .get(0)
-                                                                                      .getType())
-                                                                       .toInterfaceOrThrow()
-                                                                       .getGenericTypes()
-                                                                       .get(0))
-                                     .toWildcardOrThrow();
-
-                               Assertions.assertEquals("? extends Number", Renderer.render(DEFAULT, extendsExample).type());
-                               assertEquals("? super Number", Renderer.render(DEFAULT, superExample).type());
-                               assertEquals("?", Renderer.render(DEFAULT, unboundExample).type());
-                            })
-                   .withCodeToCompile("BoundsExample.java", """
-                         public class BoundsExample {
-                            public static void extendsExample(java.util.List<? extends Number> numbers) {}
-                            public static void superExample(java.util.List<? super Number> numbers) {}
-                            public static void unboundExample(java.util.List<?> things) {}
-                         }
-                         """)
-                   .compile();
+                              Assertions.assertEquals("? extends Number", Renderer.render(DEFAULT, extendsExample).type());
+                              assertEquals("? super Number", Renderer.render(DEFAULT, superExample).type());
+                              assertEquals("?", Renderer.render(DEFAULT, unboundExample).type());
+                           });
    }
 }

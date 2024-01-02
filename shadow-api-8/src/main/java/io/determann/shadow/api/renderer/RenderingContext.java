@@ -58,7 +58,8 @@ public interface RenderingContext
       {
          nameRenderer = declared ->
          {
-            if (!declared.getPackage().isUnnamed() && "java.lang".equals(declared.getPackage().getQualifiedName()))
+            //
+            if (declared.getPackage() != null && !declared.getPackage().isUnnamed() && "java.lang".equals(declared.getPackage().getQualifiedName()))
             {
                return new NameRenderedEvent(declared, declared.getName(), false);
             }

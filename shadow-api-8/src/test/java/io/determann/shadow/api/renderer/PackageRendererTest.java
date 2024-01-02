@@ -1,6 +1,7 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
@@ -12,9 +13,8 @@ class PackageRendererTest
    @Test
    void declaration()
    {
-      ProcessorTest.process(shadowApi ->
-                                  assertEquals("package java.lang;\n",
-                                               render(DEFAULT, shadowApi.getPackageOrThrow("java.lang")).declaration()))
-                   .compile();
+      ConsistencyTest.compileTime(context -> context.getPackageOrThrow("java.lang"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getPackageShadow("java.lang"))
+                     .test(aPackage -> assertEquals("package java.lang;\n", render(DEFAULT, aPackage).declaration()));
    }
 }

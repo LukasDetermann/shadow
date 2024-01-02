@@ -1,7 +1,11 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
@@ -9,8 +13,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ModuleRendererTest
 {
+   @Test
+   void declaration()
+   {
+      ConsistencyTest.compileTime(context -> context.getModuleOrThrow("java.desktop"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getModuleShadow("java.desktop"))
+                     .test(aClass -> assertEquals(EXPECTED_RENDERING, render(DEFAULT, aClass).declaration()),
+                           aClass -> assertEquals(sort(EXPECTED_RENDERING), sort(render(DEFAULT, aClass).declaration())));
+   }
 
-   private static final String EXPECTED = """
+   /**
+    * reflection does not keep the right order of anything -> sort the rows and the row contents
+    */
+   private static List<String> sort(String content)
+   {
+      content = content.replaceAll("[;,]", "");
+      String[] rows = content.split("\n");
+      return Arrays.stream(rows).map(s ->
+                                     {
+                                        String[] words = s.split(" ");
+                                        Arrays.sort(words);
+                                        return String.join(" ", words);
+                                     })
+                   .sorted()
+                   .toList();
+   }
+
+   private static final String EXPECTED_RENDERING = """
          module java.desktop {
          requires java.prefs;
          requires transitive java.datatransfer;
@@ -107,12 +136,4 @@ class ModuleRendererTest
          provides sun.datatransfer.DesktopDatatransferService with sun.awt.datatransfer.DesktopDatatransferServiceImpl;
           }
           """;
-
-   @Test
-   void declaration()
-   {
-      ProcessorTest.process(shadowApi ->
-                                  assertEquals(EXPECTED, render(DEFAULT, shadowApi.getModuleOrThrow("java.desktop")).declaration()))
-                   .compile();
-   }
 }

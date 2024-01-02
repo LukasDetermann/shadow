@@ -1,6 +1,8 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -53,6 +55,21 @@ class MethodTest extends ExecutableTest<Method>
    @Test
    void testOverrides()
    {
+      ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("MethodExample")))
+                     .withCode("MethodExample.java", "public class MethodExample {\n" +
+                                                     "   @Override\n" +
+                                                     "   public String toString()\n" +
+                                                     "   {\n" +
+                                                     "      return \"MethodExample{}\";\n" +
+                                                     "   }\n" +
+                                                     "}\n")
+                     .test(aClass -> {
+
+                        assertTrue(aClass.getMethods("toString").get(0)
+                                         .overrides(aClass.getSuperClass().getMethods("toString").get(0)));
+                     });
+
       ProcessorTest.process(shadowApi ->
                             {
                                assertTrue(shadowApi.getClassOrThrow("MethodExample")
@@ -64,9 +81,6 @@ class MethodTest extends ExecutableTest<Method>
                                                     .overrides(shadowApi.getClassOrThrow("java.lang.Object").getMethods("clone").get(0)));
                             })
                    .withCodeToCompile("MethodExample.java", "                           public class MethodExample {\n" +
-                                                            "                              private void varArgsMethod(String... args) {}\n" +
-                                                            "\n" +
-                                                            "                              private void receiver(MethodExample MethodExample.this) {}\n" +
                                                             "\n" +
                                                             "                              @Override\n" +
                                                             "                              public String toString()\n" +

@@ -1,7 +1,8 @@
 package io.determann.shadow.api.renderer;
 
+import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Parameter;
-import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,19 +16,42 @@ class ParameterRendererTest
    @Test
    void declaration()
    {
-      ProcessorTest.process(shadowApi ->
-                            {
-                               List<Parameter> parameters = shadowApi.getInterfaceOrThrow("ParameterExample")
-                                                                     .getMethods()
-                                                                     .get(0)
-                                                                     .getParameters();
-                               assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameters.get(0)).declaration());
-                               assertEquals("Long... foo2", render(DEFAULT, parameters.get(1)).declaration());
-                            })
-                   .withCodeToCompile("ParameterExample.java", "public interface ParameterExample {\n" +
-                                                               "   void foo(@MyAnnotation Long foo, Long... foo2);\n" +
-                                                               "}\n")
-                   .withCodeToCompile("MyAnnotation.java", "@interface MyAnnotation {} ")
-                   .compile();
+      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ReceiverExample")))
+                     .withCode("ReceiverExample.java", "public class ReceiverExample {\n" +
+                                                       "   private void receiver(@MyAnnotation ReceiverExample ReceiverExample.this) {}\n" +
+                                                       "}\n")
+                     .withCode("MyAnnotation.java",
+                               "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE)\n" +
+                               "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)\n" +
+                               "@interface MyAnnotation {}")
+                     .test(aClass -> assertEquals("private void receiver(ReceiverExample ReceiverExample.this) {}\n",
+                                                  render(DEFAULT, aClass.getMethods().get(0)).declaration()));
+
+
+      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("ParameterExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ParameterExample")))
+                     .withCode("ParameterExample.java", "public interface ParameterExample {\n" +
+                                                        "   void foo(@MyAnnotation Long foo, Long... foo2);\n" +
+                                                        "}\n")
+                     .withCode("MyAnnotation.java", "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
+                     .test(aClass ->
+                           {
+                              List<Parameter> parameters = aClass.getMethods()
+                                                                 .get(0)
+                                                                 .getParameters();
+
+                              assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameters.get(0)).declaration());
+                              assertEquals("Long... foo2", render(DEFAULT, parameters.get(1)).declaration());
+                           },
+                           aClass ->
+                           {
+                              List<Parameter> parameters = aClass.getMethods()
+                                                                 .get(0)
+                                                                 .getParameters();
+
+                              assertEquals("@MyAnnotation Long arg0", render(DEFAULT, parameters.get(0)).declaration());
+                              assertEquals("Long... arg1", render(DEFAULT, parameters.get(1)).declaration());
+                           });
    }
 }

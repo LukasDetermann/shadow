@@ -1,6 +1,7 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.test.ProcessorTest;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
@@ -12,42 +13,39 @@ class RecordRendererTest
    @Test
    void declaration()
    {
-      ProcessorTest.process(shadowApi ->
-                            {
-                               assertEquals("public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>() {}\n",
-                                            render(DEFAULT, shadowApi.getRecordOrThrow("InterpolateGenericsExample")).declaration());
+      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .withCode("InterpolateGenericsExample.java",
+                               "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
+                     .test(aClass ->
+                           {
+                              assertEquals("public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>() {}\n",
+                                           render(DEFAULT, aClass).declaration());
 
-                               assertEquals(
-                                     "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>() {\ntest\n}\n",
-                                     render(DEFAULT, shadowApi.getRecordOrThrow("InterpolateGenericsExample")).declaration("test"));
+                              assertEquals(
+                                    "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>() {\ntest\n}\n",
+                                    render(DEFAULT, aClass).declaration("test"));
+                           });
 
-                               assertEquals("@MyAnnotation\nrecord Parameters(Long id, String name) implements java.io.Serializable {}\n",
-                                            render(DEFAULT, shadowApi.getRecordOrThrow("InterpolateGenericsExample.Parameters")).declaration());
-                            })
-                   .withCodeToCompile("InterpolateGenericsExample.java", """
-                         public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
-                            record IndependentGeneric<C>() {}
-                            record DependentGeneric<D extends E, E>() {}
-                            @MyAnnotation
-                            record Parameters(Long id, String name) implements java.io.Serializable {}
-                         }
-                         """)
-                   .withCodeToCompile("MyAnnotation.java", "@interface MyAnnotation {} ")
-                   .compile();
+      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("Parameters"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("Parameters")))
+                     .withCode("Parameters.java", "@MyAnnotation\n record Parameters(Long id, String name) implements java.io.Serializable {}")
+                     .withCode("MyAnnotation.java",
+                               "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
+                     .test(aClass -> assertEquals("@MyAnnotation\nrecord Parameters(Long id, String name) implements java.io.Serializable {}\n",
+                                                  render(DEFAULT, aClass).declaration()));
    }
 
    @Test
    void type()
    {
-      ProcessorTest.process(shadowApi ->
-                                  assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>",
-                                               render(DEFAULT, shadowApi.getRecordOrThrow("InterpolateGenericsExample")).type()))
-                   .withCodeToCompile("InterpolateGenericsExample.java", """
-                         public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
-                            record IndependentGeneric<C> () {}
-                            record DependentGeneric<D extends E, E> () {}
-                         }
-                         """)
-                   .compile();
+      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .withCode("InterpolateGenericsExample.java",
+                               "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
+                     .test(aClass -> assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>",
+                                                  render(DEFAULT, aClass).type()),
+                           aClass -> assertEquals("InterpolateGenericsExample",
+                                                  render(DEFAULT, aClass).type()));
    }
 }
