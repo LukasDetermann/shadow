@@ -32,7 +32,7 @@ import static java.util.Arrays.stream;
  *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
  *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
- *    <li>log using {@link #logError(String)} or log at {@link #logErrorAt(Annotationable, String)}</li>
+ *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(Annotationable, String)}</li>
  *    <li>convert between sourceCode representations. So called {@link Shadow}s {@link Converter#convert(Shadow)}</li>
  * </ul>
  *
@@ -209,13 +209,13 @@ public interface AnnotationProcessingContext extends DeclaredHolder
             .toArray(Shadow[]::new));
    }
 
-   void logError(String msg);
+   void logAndRaiseError(String msg);
 
    void logInfo(String msg);
 
    void logWarning(String msg);
 
-   void logErrorAt(Annotationable annotationable, String msg);
+   void logAndRaiseErrorAt(Annotationable annotationable, String msg);
 
    void logInfoAt(Annotationable annotationable, String msg);
 

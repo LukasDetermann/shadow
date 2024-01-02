@@ -41,7 +41,7 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
       throwable.printStackTrace(printWriter);
-      logError(stringWriter.toString());
+      logAndRaiseError(stringWriter.toString());
       throw new RuntimeException(throwable);
    };
    private BiConsumer<AnnotationProcessingContext, DiagnosticContext> diagnosticHandler = (shadowApi, diagnosticContext) ->
@@ -68,7 +68,7 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
          logWarning(s);
       }
    };
-   private BiConsumer<AnnotationProcessingContext, String> systemErrorHandler = AnnotationProcessingContext::logError;
+   private BiConsumer<AnnotationProcessingContext, String> systemErrorHandler = AnnotationProcessingContext::logAndRaiseError;
 
 
    public AnnotationProcessingContextImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
@@ -392,7 +392,7 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    }
 
    @Override
-   public void logError(String msg)
+   public void logAndRaiseError(String msg)
    {
       MirrorAdapter.getProcessingEnv(this).getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
    }
@@ -410,7 +410,7 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    }
 
    @Override
-   public void logErrorAt(Annotationable annotationable, String msg)
+   public void logAndRaiseErrorAt(Annotationable annotationable, String msg)
    {
       MirrorAdapter.getProcessingEnv(this).getMessager().printMessage(Diagnostic.Kind.ERROR, msg, getElement(annotationable));
    }
