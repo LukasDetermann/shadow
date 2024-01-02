@@ -167,7 +167,7 @@ public class AnnotationProcessingContextImpl implements AnnotationProcessingCont
    }
 
    @Override
-   public void writeSourceFile(String qualifiedName, String content)
+   public void writeAndCompileSourceFile(String qualifiedName, String content)
    {
       try (Writer writer = getProcessingEnv().getFiler().createSourceFile(qualifiedName).openWriter())
       {

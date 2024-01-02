@@ -1,6 +1,8 @@
 package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.*;
+import io.determann.shadow.api.AnnotationTypeChooser;
+import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.Class;
@@ -45,7 +47,7 @@ public interface AnnotationProcessingContext extends DeclaredHolder
     * Annotation processing happens in rounds.
     * If a processor generates sources the next round will contain only these.
     *
-    * @see #writeSourceFile(String, String)
+    * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
    AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation);
@@ -55,7 +57,7 @@ public interface AnnotationProcessingContext extends DeclaredHolder
     * Annotation processing happens in rounds.
     * If a processor generates sources the next round will contain only these.
     *
-    * @see #writeSourceFile(String, String)
+    * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
    AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
@@ -87,7 +89,7 @@ public interface AnnotationProcessingContext extends DeclaredHolder
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
     */
-   void writeSourceFile(String qualifiedName, String content);
+   void writeAndCompileSourceFile(String qualifiedName, String content);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .class files

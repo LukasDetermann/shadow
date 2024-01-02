@@ -36,8 +36,12 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                                       .toList();
 
          //writes the builder
-         annotationProcessingContext.writeSourceFile(builderQualifiedName,
-                                                     renderBuilder(aClass, toBuildQualifiedName, builderSimpleName, builderVariableName, builderElements));
+         annotationProcessingContext.writeAndCompileSourceFile(builderQualifiedName,
+                                                               renderBuilder(aClass,
+                                                                             toBuildQualifiedName,
+                                                                             builderSimpleName,
+                                                                             builderVariableName,
+                                                                             builderElements));
       }
    }
 
