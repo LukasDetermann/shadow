@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.test;
 
-import io.determann.shadow.api.ShadowProcessor;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.test.ProcessingCallback;
 import io.determann.shadow.api.test.ProcessorTest;
 

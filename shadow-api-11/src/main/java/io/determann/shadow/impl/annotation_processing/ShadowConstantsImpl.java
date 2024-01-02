@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.annotation_processing;
 
-import io.determann.shadow.api.ShadowConstants;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
+import io.determann.shadow.api.annotation_processing.ShadowConstants;
 import io.determann.shadow.api.shadow.Null;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;

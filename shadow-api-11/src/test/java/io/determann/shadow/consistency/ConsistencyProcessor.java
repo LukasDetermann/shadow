@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency;
 
-import io.determann.shadow.api.ShadowProcessor;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.test.ProcessingCallback;
 
 import javax.annotation.processing.Processor;

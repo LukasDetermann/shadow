@@ -444,7 +444,7 @@ While only annotation processing is supported there is no need for shadow-api-21
 ## Getting started
 
 It's normal annotation processing with a better API. The setup is the same. The differences only start when extending
-`io.determann.shadow.api.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.<br>
+`io.determann.shadow.api.annotation_processing.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.<br>
 A good starting point for your own processor is `ShadowApi.getAnnotatedWith(String qualifiedAnnotation)`.
 
 
@@ -558,7 +558,7 @@ Disable annotation processing in the processor module, otherwise the annotation 
 Extend `ShadowProcessor` for your own processor and override `process()`
 ````java
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
@@ -588,7 +588,7 @@ public @interface MyAnnotation {}
 And finally process anything annotated with that annotation 
 ````java
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 
 public class MyProcessor extends ShadowProcessor
 {
@@ -615,7 +615,7 @@ public @interface BuilderPattern {}
 A Processor creating a simple Builder companion object
 ````java
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Class;
 

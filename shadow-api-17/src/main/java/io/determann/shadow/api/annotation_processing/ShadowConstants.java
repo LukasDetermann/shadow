@@ -1,4 +1,4 @@
-package io.determann.shadow.api;
+package io.determann.shadow.api.annotation_processing;
 
 import io.determann.shadow.api.shadow.Null;
 import io.determann.shadow.api.shadow.Primitive;

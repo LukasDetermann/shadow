@@ -1,7 +1,7 @@
 package io.determann.shadow.example.processor.builder;
 
-import io.determann.shadow.api.ShadowProcessor;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Class;
 

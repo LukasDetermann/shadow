@@ -2,10 +2,10 @@ package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.AnnotationTypeChooser;
 import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.DiagnosticContext;
-import io.determann.shadow.api.ShadowConstants;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.DiagnosticContext;
 import io.determann.shadow.api.annotation_processing.MirrorAdapter;
+import io.determann.shadow.api.annotation_processing.ShadowConstants;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;

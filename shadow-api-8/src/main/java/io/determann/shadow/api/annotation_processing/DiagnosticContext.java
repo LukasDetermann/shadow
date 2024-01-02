@@ -1,6 +1,4 @@
-package io.determann.shadow.api;
-
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+package io.determann.shadow.api.annotation_processing;
 
 import java.time.Instant;
 import java.util.Objects;
