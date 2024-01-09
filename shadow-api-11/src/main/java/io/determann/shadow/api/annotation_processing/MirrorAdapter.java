@@ -1,7 +1,6 @@
 package io.determann.shadow.api.annotation_processing;
 
 import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -22,7 +21,6 @@ import java.util.Set;
 import static io.determann.shadow.api.modifier.Modifier.*;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
-@JdkApi
 public interface MirrorAdapter
 {
    static AnnotationProcessingContext create(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)

@@ -4,7 +4,6 @@ import io.determann.shadow.api.AnnotationTypeChooser;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.metadata.JdkApi;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -22,8 +21,7 @@ import static java.util.Arrays.stream;
 
 /**
  * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link AnnotationProcessingContext} is transient. Meaning you can
- * transition between using the shadow and the java annotation processor api from line to line if you so wish. Methods in the ShadowApi that leak
- * the annotation processor api are annotated with {@link JdkApi}.
+ * transition between using the shadow and the java annotation processor api from line to line if you so wish.
  * <br><br>
  *
  * <h2>Usage:</h2>
@@ -37,7 +35,6 @@ import static java.util.Arrays.stream;
  * </ul>
  *
  * @see ShadowProcessor
- * @see JdkApi
  * @see Shadow
  */
 public interface AnnotationProcessingContext extends DeclaredHolder
@@ -99,10 +96,9 @@ public interface AnnotationProcessingContext extends DeclaredHolder
    /**
     * the created file will NOT be registered for the next annotation processor round. writes anything
     */
-   void writeResource(@JdkApi StandardLocation location, String moduleAndPkg, String relativPath, String content);
+   void writeResource(StandardLocation location, String moduleAndPkg, String relativPath, String content);
 
-   @JdkApi
-   FileObject readResource(@JdkApi StandardLocation location, String moduleAndPkg, String relativPath) throws IOException;
+   FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException;
 
    /**
     * Last round of annotation processing
