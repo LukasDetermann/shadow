@@ -9,10 +9,12 @@
     <packaging>pom</packaging>
     <version>0.2.0</version>
     <modules>
-        <module>processor-example</module>
-        <module>processed-example</module>
-        <module>shadow-api-17</module>
-        <module>shadow-api-11</module>
-        <module>shadow-api-8</module>
+        <module>shadow-annotation-processing</module>
+        <module>shadow-consistency-test</module>
+        <module>shadow-core</module>
+        <module>shadow-lang-model</module>
+        <module>shadow-parent</module>
+        <module>shadow-reflection</module>
+        <module>documentation</module>
     </modules>
 </project>

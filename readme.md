@@ -634,7 +634,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
   public void process(final ShadowApi annotationProcessingContext)
   {
     //iterate over every class annotated with the BuilderPattern annotation
-    for (Class aClass : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.example.processor.builder.BuilderPattern").classes())
+    for (Class aClass : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.builder.BuilderPattern").classes())
     {
       String toBuildQualifiedName = aClass.getQualifiedName();
       String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
@@ -761,8 +761,8 @@ public class CustomerShadowBuilder{
       return this;
    }
 
-   public io.determann.shadow.example.processed.Customer build() {
-     io.determann.shadow.example.processed.Customer customer = new io.determann.shadow.example.processed.Customer();
+   public io.determann.shadow.builder.Customer build() {
+     io.determann.shadow.builder.Customer customer = new io.determann.shadow.builder.Customer();
       customer.setName(name);
       return customer;
    }
