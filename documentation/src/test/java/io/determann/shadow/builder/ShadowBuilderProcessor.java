@@ -3,6 +3,7 @@ package io.determann.shadow.builder;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.property.MutableProperty;
+import io.determann.shadow.api.shadow.Class;
 
 import java.util.List;
 import java.util.stream.Collectors;
