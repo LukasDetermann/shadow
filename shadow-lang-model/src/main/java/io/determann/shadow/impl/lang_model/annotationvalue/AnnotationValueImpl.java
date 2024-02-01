@@ -32,7 +32,7 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Object getValue()
    {
-      return annotationValue;
+      return annotationValue.getValue();
    }
 
    @Override
