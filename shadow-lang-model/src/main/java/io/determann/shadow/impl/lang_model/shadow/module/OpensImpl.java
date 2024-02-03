@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow.module;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
@@ -24,7 +24,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter.getShadow(getApi(), opensDirective.getPackage());
+      return LangModelAdapter.getShadow(getApi(), opensDirective.getPackage());
    }
 
    @Override
@@ -32,7 +32,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
+                           .map(moduleElement -> LangModelAdapter.<Module>getShadow(getApi(), moduleElement))
                            .toList();
    }
 

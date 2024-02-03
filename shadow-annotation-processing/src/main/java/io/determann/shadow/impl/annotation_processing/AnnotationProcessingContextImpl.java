@@ -18,7 +18,7 @@ import java.io.*;
 import java.time.Duration;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.lang_model.MirrorAdapter.getElement;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.getElement;
 import static java.lang.System.err;
 import static java.lang.System.out;
 

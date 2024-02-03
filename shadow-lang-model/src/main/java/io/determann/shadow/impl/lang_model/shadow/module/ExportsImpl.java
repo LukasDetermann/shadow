@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow.module;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
@@ -26,7 +26,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter.getShadow(getApi(), exportsDirective.getPackage());
+      return LangModelAdapter.getShadow(getApi(), exportsDirective.getPackage());
    }
 
    @Override
@@ -36,7 +36,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> MirrorAdapter.<Module>getShadow(getApi(), moduleElement))
+                             .map(moduleElement -> LangModelAdapter.<Module>getShadow(getApi(), moduleElement))
                              .toList();
    }
 

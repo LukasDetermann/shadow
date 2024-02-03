@@ -20,7 +20,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
-public interface MirrorAdapter
+public interface LangModelAdapter
 {
    static AnnotationMirror getMirror(AnnotationUsage annotationUsage)
    {
@@ -182,7 +182,7 @@ public interface MirrorAdapter
 
    static Set<Modifier> getModifiers(Element element)
    {
-      return element.getModifiers().stream().map(MirrorAdapter::mapModifier).collect(toUnmodifiableSet());
+      return element.getModifiers().stream().map(LangModelAdapter::mapModifier).collect(toUnmodifiableSet());
    }
 
    static Modifier mapModifier(javax.lang.model.element.Modifier modifier)

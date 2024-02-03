@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
 import io.determann.shadow.api.shadow.Shadow;
@@ -25,7 +25,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public boolean isFunctional()
    {
-      return MirrorAdapter.getElements(getApi()).isFunctionalInterface(getElement());
+      return LangModelAdapter.getElements(getApi()).isFunctionalInterface(getElement());
    }
 
    @Override
@@ -33,7 +33,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 
@@ -42,7 +42,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
 }

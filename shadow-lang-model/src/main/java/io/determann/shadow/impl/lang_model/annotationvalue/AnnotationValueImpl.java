@@ -3,8 +3,8 @@ package io.determann.shadow.impl.lang_model.annotationvalue;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.EnumConstant;
 import io.determann.shadow.api.shadow.Shadow;
@@ -92,13 +92,13 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Shadow asType()
    {
-      return MirrorAdapter.getShadow(context, (TypeMirror) annotationValue.getValue());
+      return LangModelAdapter.getShadow(context, (TypeMirror) annotationValue.getValue());
    }
 
    @Override
    public EnumConstant asEnumConstant()
    {
-      return MirrorAdapter.getShadow(context, (Element) annotationValue.getValue());
+      return LangModelAdapter.getShadow(context, (Element) annotationValue.getValue());
    }
 
    @Override

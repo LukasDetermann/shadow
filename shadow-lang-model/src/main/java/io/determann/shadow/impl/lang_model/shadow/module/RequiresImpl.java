@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow.module;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Requires;
@@ -34,7 +34,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    @Override
    public Module getDependency()
    {
-      return MirrorAdapter.getShadow(getApi(), requiresDirective.getDependency());
+      return LangModelAdapter.getShadow(getApi(), requiresDirective.getDependency());
    }
 
    @Override

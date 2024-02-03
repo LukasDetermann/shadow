@@ -3,8 +3,8 @@ package io.determann.shadow.impl.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -36,7 +36,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    public ModuleImpl(LangModelContext context, NoType noType)
    {
       super(context, noType);
-      this.moduleElement = MirrorAdapter.getElements(getApi()).getModuleElement(noType.toString());
+      this.moduleElement = LangModelAdapter.getElements(getApi()).getModuleElement(noType.toString());
       if (moduleElement == null)
       {
          throw new IllegalStateException(noType + " is not unique");
@@ -59,7 +59,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    {
       return getElement().getEnclosedElements()
                          .stream()
-                         .map(element -> MirrorAdapter.<Package>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Package>getShadow(getApi(), element))
                          .toList();
    }
 
@@ -78,8 +78,8 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(MirrorAdapter.getElements(getApi()).getTypeElement(getElement(), qualifiedName))
-            .map(typeElement -> MirrorAdapter.getShadow(getApi(), typeElement));
+      return ofNullable(LangModelAdapter.getElements(getApi()).getTypeElement(getElement(), qualifiedName))
+            .map(typeElement -> LangModelAdapter.getShadow(getApi(), typeElement));
    }
 
    @Override
@@ -97,7 +97,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public boolean isAutomatic()
    {
-      return MirrorAdapter.getElements(getApi()).isAutomaticModule(getElement());
+      return LangModelAdapter.getElements(getApi()).isAutomaticModule(getElement());
    }
 
    @Override
@@ -165,25 +165,25 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public String getJavaDoc()
    {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getJavaDoc(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.impl.lang_model.ApiHolder;
 
@@ -23,7 +23,7 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isSameType(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSameType(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    public MIRROR getMirror()

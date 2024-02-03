@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Return;
 import io.determann.shadow.api.shadow.Shadow;
@@ -30,13 +30,13 @@ public class ReturnImpl implements Return
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(context, getTypeMirror().getAnnotationMirrors());
+      return LangModelAdapter.getAnnotationUsages(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
    public Shadow getType()
    {
-      return MirrorAdapter.getShadow(context, getTypeMirror());
+      return LangModelAdapter.getShadow(context, getTypeMirror());
    }
 
    public TypeMirror getTypeMirror()

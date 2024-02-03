@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.lang_model.ShadowConstants;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.api.lang_model.MirrorAdapter.*;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
@@ -37,7 +37,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       return elements.getAllModuleElements()
                      .stream()
-                     .map(moduleElement -> MirrorAdapter.<Module>getShadow(this, moduleElement))
+                     .map(moduleElement -> LangModelAdapter.<Module>getShadow(this, moduleElement))
                      .toList();
    }
 
@@ -59,7 +59,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()
-                     .map(packageElement -> MirrorAdapter.<Package>getShadow(this, packageElement))
+                     .map(packageElement -> LangModelAdapter.<Package>getShadow(this, packageElement))
                      .toList();
    }
 
@@ -69,7 +69,7 @@ public class LangModelContextImpl implements LangModelContext
       return elements.getAllModuleElements()
                      .stream()
                      .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
-                     .map(packageElement -> MirrorAdapter.<Package>getShadow(this, packageElement))
+                     .map(packageElement -> LangModelAdapter.<Package>getShadow(this, packageElement))
                      .toList();
    }
 
@@ -229,7 +229,7 @@ public class LangModelContextImpl implements LangModelContext
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(MirrorAdapter::getType)
+            .map(LangModelAdapter::getType)
             .toArray(TypeMirror[]::new);
 
       return getShadow(this, types.getDeclaredType(getElement(aClass), typeMirrors));
@@ -248,7 +248,7 @@ public class LangModelContextImpl implements LangModelContext
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(MirrorAdapter::getType)
+            .map(LangModelAdapter::getType)
             .toArray(TypeMirror[]::new);
 
       return getShadow(this, types.getDeclaredType(getElement(anInterface), typeMirrors));
@@ -267,7 +267,7 @@ public class LangModelContextImpl implements LangModelContext
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(MirrorAdapter::getType)
+            .map(LangModelAdapter::getType)
             .toArray(TypeMirror[]::new);
 
       return getShadow(this, types.getDeclaredType(getElement(aRecord), typeMirrors));

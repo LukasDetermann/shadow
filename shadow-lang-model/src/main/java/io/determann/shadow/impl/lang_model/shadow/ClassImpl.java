@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
@@ -32,7 +32,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isAssignable(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    @Override
@@ -43,7 +43,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return null;
       }
-      return MirrorAdapter.getShadow(getApi(), superclass);
+      return LangModelAdapter.getShadow(getApi(), superclass);
    }
 
    @Override
@@ -51,7 +51,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getElement().getPermittedSubclasses()
                          .stream()
-                         .map(typeMirror -> MirrorAdapter.<Class>getShadow(getApi(), typeMirror))
+                         .map(typeMirror -> LangModelAdapter.<Class>getShadow(getApi(), typeMirror))
                          .toList();
    }
 
@@ -81,7 +81,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return Optional.empty();
       }
-      return Optional.of(MirrorAdapter.getShadow(getApi(), enclosingType));
+      return Optional.of(LangModelAdapter.getShadow(getApi(), enclosingType));
    }
 
    @Override
@@ -89,7 +89,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 
@@ -98,13 +98,13 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
 
    @Override
    public Primitive asUnboxed()
    {
-      return MirrorAdapter.getShadow(getApi(), MirrorAdapter.getTypes(getApi()).unboxedType(getMirror()));
+      return LangModelAdapter.getShadow(getApi(), LangModelAdapter.getTypes(getApi()).unboxedType(getMirror()));
    }
 }

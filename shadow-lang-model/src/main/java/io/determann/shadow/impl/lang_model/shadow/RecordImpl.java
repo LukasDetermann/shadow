@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.RecordComponent;
@@ -28,7 +28,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> MirrorAdapter.<RecordComponent>getShadow(getApi(), recordComponentElement))
+                         .map(recordComponentElement -> LangModelAdapter.<RecordComponent>getShadow(getApi(), recordComponentElement))
                          .toList();
    }
 
@@ -37,7 +37,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 
@@ -46,7 +46,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
 }

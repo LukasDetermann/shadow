@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
@@ -28,7 +28,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    public PackageImpl(LangModelContext context, NoType noTypeMirror)
    {
       super(context, noTypeMirror);
-      this.packageElement = MirrorAdapter.getElements(getApi()).getPackageElement(noTypeMirror.toString());
+      this.packageElement = LangModelAdapter.getElements(getApi()).getPackageElement(noTypeMirror.toString());
       if (packageElement == null)
       {
          throw new IllegalStateException(noTypeMirror + " is not unique");
@@ -41,7 +41,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> MirrorAdapter.<Declared>getShadow(getApi(), typeElement))
+                         .map(typeElement -> LangModelAdapter.<Declared>getShadow(getApi(), typeElement))
                          .toList();
    }
 
@@ -85,31 +85,31 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    @Override
    public Module getModule()
    {
-      return MirrorAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.getModule(getApi(), getElement());
    }
 
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public String getJavaDoc()
    {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getJavaDoc(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

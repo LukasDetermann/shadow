@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.annotationvalue;
 
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Method;
@@ -43,11 +43,11 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withoutDefaults = annotationMirror.getElementValues();
 
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withDefaults =
-            MirrorAdapter.getElements(getApi()).getElementValuesWithDefaults(annotationMirror);
+            LangModelAdapter.getElements(getApi()).getElementValuesWithDefaults(annotationMirror);
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put(MirrorAdapter.getShadow(getApi(), entry.getKey()),
+         result.put(LangModelAdapter.getShadow(getApi(), entry.getKey()),
                     new AnnotationValueImpl(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
@@ -56,7 +56,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public Annotation getAnnotation()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement());
+      return LangModelAdapter.getShadow(getApi(), getElement());
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Package;
@@ -28,13 +28,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    public GenericImpl(LangModelContext context, TypeVariable typeMirror)
    {
       super(context, typeMirror);
-      this.typeParameterElement = (TypeParameterElement) MirrorAdapter.getTypes(getApi()).asElement(typeMirror);
+      this.typeParameterElement = (TypeParameterElement) LangModelAdapter.getTypes(getApi()).asElement(typeMirror);
    }
 
    @Override
    public Shadow getExtends()
    {
-      return MirrorAdapter.getShadow(getApi(), getMirror().getUpperBound());
+      return LangModelAdapter.getShadow(getApi(), getMirror().getUpperBound());
    }
 
    @Override
@@ -45,13 +45,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       {
          return Optional.empty();
       }
-      return Optional.of(MirrorAdapter.getShadow(getApi(), lowerBound));
+      return Optional.of(LangModelAdapter.getShadow(getApi(), lowerBound));
    }
 
    @Override
    public Shadow getEnclosing()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().getGenericElement());
+      return LangModelAdapter.getShadow(getApi(), getElement().getGenericElement());
    }
 
    @Override
@@ -63,8 +63,8 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return LangModelAdapter
+                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public TypeParameterElement getElement()
@@ -75,19 +75,19 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

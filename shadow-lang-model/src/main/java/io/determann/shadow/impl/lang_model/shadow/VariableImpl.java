@@ -2,8 +2,8 @@ package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -30,32 +30,32 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public Set<Modifier> getModifiers()
    {
-      return MirrorAdapter.getModifiers(getElement());
+      return LangModelAdapter.getModifiers(getElement());
    }
 
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isAssignable(MirrorAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isAssignable(LangModelAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public Shadow getType()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().asType());
+      return LangModelAdapter.getShadow(getApi(), getElement().asType());
    }
 
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return LangModelAdapter
+                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public VariableElement getElement()
@@ -78,37 +78,37 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public SURROUNDING getSurrounding()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
+      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
    public Module getModule()
    {
-      return MirrorAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.getModule(getApi(), getElement());
    }
 
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public String getJavaDoc()
    {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getJavaDoc(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

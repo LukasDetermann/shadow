@@ -3,8 +3,8 @@ package io.determann.shadow.impl.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
@@ -35,7 +35,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Set<Modifier> getModifiers()
    {
-      return MirrorAdapter.getModifiers(getElement());
+      return LangModelAdapter.getModifiers(getElement());
    }
 
    @Override
@@ -47,7 +47,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Shadow getReturnType()
    {
-      return MirrorAdapter.getShadow(getApi(), getMirror().getReturnType());
+      return LangModelAdapter.getShadow(getApi(), getMirror().getReturnType());
    }
 
    @Override
@@ -55,7 +55,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 
@@ -67,7 +67,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       {
          return Optional.empty();
       }
-      return Optional.of(MirrorAdapter.getShadow(getApi(), receiverType));
+      return Optional.of(LangModelAdapter.getShadow(getApi(), receiverType));
    }
 
    @Override
@@ -86,7 +86,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .map(Converter::convert)
                         .map(ShadowConverter::toClassOrThrow)
                         .toList();
@@ -95,7 +95,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean isBridge()
    {
-      return MirrorAdapter.getElements(getApi()).isBridge(getElement());
+      return LangModelAdapter.getElements(getApi()).isBridge(getElement());
    }
 
    @Override
@@ -107,7 +107,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Declared getSurrounding()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
+      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    public ExecutableElement getElement()
@@ -129,21 +129,21 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public boolean overrides(Method method)
    {
-      return MirrorAdapter.getElements(getApi())
-                          .overrides(getElement(), MirrorAdapter.getElement(method), MirrorAdapter.getElement(getSurrounding()));
+      return LangModelAdapter.getElements(getApi())
+                             .overrides(getElement(), LangModelAdapter.getElement(method), LangModelAdapter.getElement(getSurrounding()));
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return MirrorAdapter.getElements(getApi())
-                          .overrides(MirrorAdapter.getElement(method), getElement(), MirrorAdapter.getElement(method.getSurrounding()));
+      return LangModelAdapter.getElements(getApi())
+                             .overrides(LangModelAdapter.getElement(method), getElement(), LangModelAdapter.getElement(method.getSurrounding()));
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return MirrorAdapter.getTypes(getApi()).isSubsignature(getMirror(), MirrorAdapter.getType(method));
+      return LangModelAdapter.getTypes(getApi()).isSubsignature(getMirror(), LangModelAdapter.getType(method));
    }
 
    @Override
@@ -151,7 +151,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getParameters()
                          .stream()
-                         .map(variableElement -> MirrorAdapter.<Parameter>getShadow(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<Parameter>getShadow(getApi(), variableElement))
                          .toList();
    }
 
@@ -160,45 +160,45 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> MirrorAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
                          .toList();
    }
 
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return LangModelAdapter
+                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
    public Module getModule()
    {
-      return MirrorAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.getModule(getApi(), getElement());
    }
 
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public String getJavaDoc()
    {
-      return MirrorAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getJavaDoc(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override

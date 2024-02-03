@@ -2,7 +2,7 @@ package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.AnnotationTypeChooser;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
@@ -28,7 +28,7 @@ public class AnnotationTypeChooserImpl implements AnnotationTypeChooser
    {
       this.shadows = elements
             .stream()
-            .map(element -> MirrorAdapter.<Shadow>getShadow(annotationProcessingContext, element))
+            .map(element -> LangModelAdapter.<Shadow>getShadow(annotationProcessingContext, element))
             .collect(toUnmodifiableSet());
    }
 

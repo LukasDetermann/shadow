@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model.shadow.module;
 
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Uses;
@@ -22,7 +22,7 @@ public class UsesImpl extends DirectiveImpl implements Uses
    @Override
    public Declared getService()
    {
-      return MirrorAdapter.getShadow(getApi(), usesDirective.getService());
+      return LangModelAdapter.getShadow(getApi(), usesDirective.getService());
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -21,23 +21,23 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public Shadow getComponentType()
    {
-      return MirrorAdapter.getShadow(getApi(), getMirror().getComponentType());
+      return LangModelAdapter.getShadow(getApi(), getMirror().getComponentType());
    }
 
    @Override
    public List<Shadow> getDirectSuperTypes()
    {
-      return MirrorAdapter.getTypes(getApi())
-                          .directSupertypes(getMirror())
-                          .stream()
-                          .map(typeMirror1 -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror1))
-                          .toList();
+      return LangModelAdapter.getTypes(getApi())
+                             .directSupertypes(getMirror())
+                             .stream()
+                             .map(typeMirror1 -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror1))
+                             .toList();
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -28,7 +28,7 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    public List<Shadow> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> MirrorAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
                         .toList();
    }
 

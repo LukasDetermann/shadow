@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
 
@@ -32,7 +32,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(MirrorAdapter.getShadow(getApi(), extendsBound));
+      return Optional.of(LangModelAdapter.getShadow(getApi(), extendsBound));
    }
 
    @Override
@@ -43,13 +43,13 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(MirrorAdapter.getShadow(getApi(), superBound));
+      return Optional.of(LangModelAdapter.getShadow(getApi(), superBound));
    }
 
    @Override
    public boolean contains(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).contains(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).contains(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    @Override

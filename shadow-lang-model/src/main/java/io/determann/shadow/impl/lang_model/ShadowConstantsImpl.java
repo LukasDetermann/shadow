@@ -7,8 +7,8 @@ import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.Wildcard;
 
-import static io.determann.shadow.api.lang_model.MirrorAdapter.getShadow;
-import static io.determann.shadow.api.lang_model.MirrorAdapter.getTypes;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.getShadow;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.getTypes;
 import static javax.lang.model.type.TypeKind.*;
 
 public class ShadowConstantsImpl implements ShadowConstants

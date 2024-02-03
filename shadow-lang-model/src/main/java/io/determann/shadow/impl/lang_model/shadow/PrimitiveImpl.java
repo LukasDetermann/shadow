@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
@@ -20,20 +20,20 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isSubtype(MirrorAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isAssignable(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    @Override
    public Class asBoxed()
    {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+      return LangModelAdapter
+                     .getShadow(getApi(), LangModelAdapter.getTypes(getApi()).boxedClass(getMirror()).asType());
    }
 
    @Override

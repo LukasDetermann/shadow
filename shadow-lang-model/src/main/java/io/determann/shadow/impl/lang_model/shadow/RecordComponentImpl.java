@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model.shadow;
 
 import io.determann.shadow.api.TypeKind;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.MirrorAdapter;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
@@ -28,38 +28,38 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isSubtype(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return MirrorAdapter.getTypes(getApi()).isAssignable(getMirror(), MirrorAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
    }
 
    @Override
    public Record getRecord()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().getEnclosingElement());
+      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
    public Shadow getType()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().asType());
+      return LangModelAdapter.getShadow(getApi(), getElement().asType());
    }
 
    @Override
    public Method getGetter()
    {
-      return MirrorAdapter.getShadow(getApi(), getElement().getAccessor());
+      return LangModelAdapter.getShadow(getApi(), getElement().getAccessor());
    }
 
    @Override
    public Package getPackage()
    {
-      return MirrorAdapter
-                     .getShadow(getApi(), MirrorAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return LangModelAdapter
+                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public RecordComponentElement getElement()
@@ -76,25 +76,25 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public Module getModule()
    {
-      return MirrorAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.getModule(getApi(), getElement());
    }
 
    @Override
    public String getName()
    {
-      return MirrorAdapter.getName(getElement());
+      return LangModelAdapter.getName(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return MirrorAdapter.getAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return MirrorAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
    }
 
    @Override
