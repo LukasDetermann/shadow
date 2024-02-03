@@ -35,7 +35,7 @@ public interface LangModelContext extends DeclaredHolder
 
    Package getPackageOrThrow(Module module, String qualifiedPackageName);
 
-   ShadowConstants getConstants();
+   LangModelConstants getConstants();
 
    /**
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}

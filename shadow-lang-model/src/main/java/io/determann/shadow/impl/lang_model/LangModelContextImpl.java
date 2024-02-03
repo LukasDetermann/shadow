@@ -1,8 +1,8 @@
 package io.determann.shadow.impl.lang_model;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
+import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.ShadowConstants;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -117,9 +117,9 @@ public class LangModelContextImpl implements LangModelContext
    }
 
    @Override
-   public ShadowConstants getConstants()
+   public LangModelConstants getConstants()
    {
-      return new ShadowConstantsImpl(this);
+      return new LangModelConstantsImpl(this);
    }
 
 

@@ -1,7 +1,7 @@
 package io.determann.shadow.impl.lang_model;
 
+import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.ShadowConstants;
 import io.determann.shadow.api.shadow.Null;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;
@@ -11,11 +11,11 @@ import static io.determann.shadow.api.lang_model.LangModelAdapter.getShadow;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.getTypes;
 import static javax.lang.model.type.TypeKind.*;
 
-public class ShadowConstantsImpl implements ShadowConstants
+public class LangModelConstantsImpl implements LangModelConstants
 {
    private final LangModelContext context;
 
-   ShadowConstantsImpl(LangModelContext context)
+   LangModelConstantsImpl(LangModelContext context)
    {
       this.context = context;
    }

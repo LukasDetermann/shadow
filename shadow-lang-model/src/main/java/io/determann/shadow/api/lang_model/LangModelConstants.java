@@ -5,7 +5,7 @@ import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.Wildcard;
 
-public interface ShadowConstants
+public interface LangModelConstants
 {
    Wildcard getUnboundWildcard();
 
