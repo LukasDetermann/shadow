@@ -1,7 +1,7 @@
 package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.shadow.Declared;
-import io.determann.shadow.impl.renderer.RenderingContextImpl;
+import io.determann.shadow.internal.renderer.RenderingContextImpl;
 
 import java.util.ArrayList;
 import java.util.List;

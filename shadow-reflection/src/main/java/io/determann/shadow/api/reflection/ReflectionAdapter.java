@@ -11,9 +11,9 @@ import io.determann.shadow.api.shadow.Parameter;
 import io.determann.shadow.api.shadow.RecordComponent;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.module.*;
-import io.determann.shadow.impl.reflection.NamedSupplier;
-import io.determann.shadow.impl.reflection.shadow.*;
-import io.determann.shadow.impl.reflection.shadow.module.*;
+import io.determann.shadow.internal.reflection.NamedSupplier;
+import io.determann.shadow.internal.reflection.shadow.*;
+import io.determann.shadow.internal.reflection.shadow.module.*;
 
 import java.lang.Class;
 import java.lang.Enum;

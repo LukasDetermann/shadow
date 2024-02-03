@@ -6,10 +6,10 @@ import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.lang_model.LangModelContextImpl;
-import io.determann.shadow.impl.lang_model.annotationvalue.AnnotationUsageImpl;
-import io.determann.shadow.impl.lang_model.annotationvalue.AnnotationValueImpl;
-import io.determann.shadow.impl.lang_model.shadow.*;
+import io.determann.shadow.internal.lang_model.LangModelContextImpl;
+import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
+import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl;
+import io.determann.shadow.internal.lang_model.shadow.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;

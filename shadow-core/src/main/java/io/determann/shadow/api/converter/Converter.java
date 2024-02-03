@@ -9,8 +9,8 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.module.*;
-import io.determann.shadow.impl.converter.ConverterImpl;
-import io.determann.shadow.impl.converter.DirectiveConverterImpl;
+import io.determann.shadow.internal.converter.ConverterImpl;
+import io.determann.shadow.internal.converter.DirectiveConverterImpl;
 
 public interface Converter
 {

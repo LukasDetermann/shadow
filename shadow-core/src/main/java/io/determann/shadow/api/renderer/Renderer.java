@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.impl.renderer.*;
+import io.determann.shadow.internal.renderer.*;
 
 public interface Renderer
 {

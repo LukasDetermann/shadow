@@ -5,7 +5,7 @@ import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext
 import io.determann.shadow.api.annotation_processing.AnnotationTypeChooser;
 import io.determann.shadow.api.annotation_processing.DiagnosticContext;
 import io.determann.shadow.api.shadow.Annotation;
-import io.determann.shadow.impl.lang_model.LangModelContextImpl;
+import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
