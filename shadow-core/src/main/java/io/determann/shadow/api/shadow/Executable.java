@@ -68,8 +68,7 @@ public interface Executable extends Shadow,
    List<Generic> getGenerics();
 
    /**
-    * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".
-    * Those annotations can only be accessed by refection.
+    * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
     * <pre>{@code
     *    public class ReceiverExample {
     *       {
@@ -83,8 +82,7 @@ public interface Executable extends Shadow,
    Optional<Declared> getReceiverType();
 
    /**
-    * The receiver represents the instance the method is called on. This language feature is barely used, but makes it possible to annotate "this".
-    * Those annotations can only be accessed by refection.
+    * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
     * <pre>{@code
     *    public class ReceiverExample {
     *       {
