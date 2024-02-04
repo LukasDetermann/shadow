@@ -14,12 +14,10 @@ import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.lang.Class;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.converter.Converter.convert;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
@@ -100,7 +98,7 @@ public class DeclaredImpl implements Annotation,
          return true;
       }
 
-      return Converter.convert(shadow).toDeclared().map(declared -> getSuperTypes().contains(declared)).orElse(false);
+      return convert(shadow).toDeclared().map(declared -> getSuperTypes().contains(declared)).orElse(false);
    }
 
    @Override
@@ -233,7 +231,53 @@ public class DeclaredImpl implements Annotation,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && shadow.getTypeKind().equals(getTypeKind());
+      return shadow != null && (equals(shadow) || sameGenerics(shadow));
+   }
+
+   private boolean sameGenerics(Shadow shadow)
+   {
+      if (!getTypeKind().equals(shadow.getTypeKind()))
+      {
+         return false;
+      }
+      if (isTypeKind(TypeKind.ENUM) ||
+          isTypeKind(TypeKind.ANNOTATION))
+      {
+         return false;
+      }
+
+      if (isTypeKind(TypeKind.CLASS))
+      {
+         return sameGenerics(convert(((Declared) this)).toClassOrThrow().getGenerics(), convert(shadow).toClassOrThrow().getGenerics());
+      }
+      if (isTypeKind(TypeKind.INTERFACE))
+      {
+         return sameGenerics(convert(((Declared) this)).toInterfaceOrThrow().getGenerics(), convert(shadow).toInterfaceOrThrow().getGenerics());
+      }
+      if (isTypeKind(TypeKind.RECORD))
+      {
+         return sameGenerics(convert(((Declared) this)).toRecordOrThrow().getGenerics(), convert(shadow).toRecordOrThrow().getGenerics());
+      }
+      throw new IllegalStateException();
+   }
+
+   private boolean sameGenerics(List<Generic> generics, List<Generic> generics1)
+   {
+      if (generics.size() != generics1.size())
+      {
+         return false;
+      }
+
+      Iterator<Generic> iterator = generics.iterator();
+      Iterator<Generic> iterator1 = generics1.iterator();
+      while (iterator.hasNext() && iterator1.hasNext())
+      {
+         if (!iterator.next().representsSameType(iterator1.next()))
+         {
+            return false;
+         }
+      }
+      return true;
    }
 
    public Class<?> getaClass()

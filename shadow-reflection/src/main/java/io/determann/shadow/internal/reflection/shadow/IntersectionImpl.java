@@ -8,6 +8,7 @@ import io.determann.shadow.api.shadow.Shadow;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,11 +40,27 @@ public class IntersectionImpl implements Intersection
       return shadow != null &&
              Converter.convert(shadow)
                       .toIntersection()
-                      .map(intersection -> intersection.getBounds()
-                                                       .stream()
-                                                       .allMatch(shadow1 -> getBounds().stream()
-                                                                                       .anyMatch(shadow1::representsSameType)))
+                      .map(intersection -> sameBounds(getBounds(), intersection.getBounds()))
                       .orElse(false);
+   }
+
+   private boolean sameBounds(List<Shadow> shadows, List<Shadow> shadows1)
+   {
+      if (shadows.size() != shadows1.size())
+      {
+         return false;
+      }
+
+      Iterator<Shadow> iterator = shadows.iterator();
+      Iterator<Shadow> iterator1 = shadows1.iterator();
+      while (iterator.hasNext() && iterator1.hasNext())
+      {
+         if (!iterator.next().representsSameType(iterator1.next()))
+         {
+            return false;
+         }
+      }
+      return true;
    }
 
    @Override

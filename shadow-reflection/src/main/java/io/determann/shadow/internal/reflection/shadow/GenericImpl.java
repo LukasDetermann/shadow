@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
@@ -90,13 +89,13 @@ public class GenericImpl implements Generic
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             Converter.convert(shadow)
-                      .toGeneric()
-                      .map(generic -> generic.getExtends().representsSameType(getExtends()) &&
-                                      ((generic.getSuper().isEmpty() && getSuper().isEmpty()) ||
-                                       (generic.getSuper().isPresent() && getSuper().isPresent()) &&
-                                       generic.getSuper().get().representsSameType(getSuper().get())))
-                      .orElse(false);
+             convert(shadow)
+                   .toGeneric()
+                   .map(generic -> generic.getExtends().representsSameType(getExtends()) &&
+                                   ((generic.getSuper().isEmpty() && getSuper().isEmpty()) ||
+                                    (generic.getSuper().isPresent() && getSuper().isPresent()) &&
+                                    generic.getSuper().get().representsSameType(getSuper().get())))
+                   .orElse(false);
    }
 
    public TypeVariable<?> getTypeVariable()

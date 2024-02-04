@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Class;
@@ -13,6 +12,8 @@ import io.determann.shadow.internal.reflection.ReflectionUtil;
 import java.lang.reflect.AnnotatedType;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static io.determann.shadow.api.converter.Converter.convert;
 
 public class ExecutableImpl implements Constructor,
                                        Method
@@ -206,8 +207,8 @@ public class ExecutableImpl implements Constructor,
          {
             return false;
          }
-         Class otherSurroundingClass = Converter.convert(otherSurrounding).toClassOrThrow();
-         Class surroundingClass = Converter.convert(getSurrounding()).toClassOrThrow();
+         Class otherSurroundingClass = convert(otherSurrounding).toClassOrThrow();
+         Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
          if (!surroundingClass.isSubtypeOf(otherSurroundingClass))
          {
             return false;
@@ -224,8 +225,8 @@ public class ExecutableImpl implements Constructor,
          {
             return false;
          }
-         Interface otherSurroundingInterface = Converter.convert(otherSurrounding).toInterfaceOrThrow();
-         Class surroundingClass = Converter.convert(getSurrounding()).toClassOrThrow();
+         Interface otherSurroundingInterface = convert(otherSurrounding).toInterfaceOrThrow();
+         Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
          if (!surroundingClass.getInterfaces().contains(otherSurroundingInterface))
          {
             return false;
@@ -265,9 +266,17 @@ public class ExecutableImpl implements Constructor,
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             Converter.convert(shadow)
+             convert(shadow)
                       .toExecutable()
-                      .map(executable1 -> executable1.getReturnType().representsSameType(getReturnType()))
+                      .map(executable1 ->
+                           {
+                              boolean returnEquals = executable1.getReturnType().representsSameType(getReturnType());
+                              if (!isTypeKind(TypeKind.METHOD) || !executable1.isTypeKind(TypeKind.METHOD))
+                              {
+                                 return returnEquals;
+                              }
+                              return returnEquals && sameParameterTypes(convert(executable1).toMethodOrThrow());
+                           })
                       .orElse(false);
    }
 

@@ -31,8 +31,19 @@ public class WildcardImpl implements Wildcard
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      //wildcards are never the same
-      return false;
+      Optional<Wildcard> possibleWildcard = convert(shadow).toWildcard();
+      if (possibleWildcard.isEmpty())
+      {
+         return false;
+      }
+      Wildcard wildcard = possibleWildcard.get();
+
+      if ((getExtends().isEmpty() && getSuper().isEmpty()) || (wildcard.getExtends().isEmpty() && wildcard.getSuper().isEmpty()))
+      {
+         return false;
+      }
+      return (getExtends().isPresent() && wildcard.getExtends().isPresent() && getExtends().get().representsSameType(wildcard.getExtends().get())) ||
+             (getSuper().isPresent() && wildcard.getSuper().isPresent() && getSuper().get().representsSameType(wildcard.getSuper().get()));
    }
 
    @Override

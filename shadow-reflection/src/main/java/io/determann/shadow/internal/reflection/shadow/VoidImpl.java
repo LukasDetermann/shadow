@@ -17,7 +17,7 @@ public class VoidImpl implements Void
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && getTypeKind().equals(shadow.getTypeKind());
+      return shadow != null && shadow.isTypeKind(TypeKind.VOID);
    }
 
    @Override

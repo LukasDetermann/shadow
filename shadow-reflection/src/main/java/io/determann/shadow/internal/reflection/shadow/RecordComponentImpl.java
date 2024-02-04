@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
@@ -12,6 +11,8 @@ import io.determann.shadow.api.shadow.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static io.determann.shadow.api.converter.Converter.convert;
 
 public class RecordComponentImpl implements RecordComponent
 {
@@ -112,8 +113,7 @@ public class RecordComponentImpl implements RecordComponent
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             Converter.convert(shadow).toRecordComponent().map(recordComponent1 -> recordComponent1.getType().representsSameType(getType()))
-                      .orElse(false);
+             convert(shadow).toRecordComponent().map(recordComponent1 -> recordComponent1.getType().representsSameType(getType())).orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()

@@ -100,7 +100,7 @@ public class PackageImpl implements Package
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && getTypeKind().equals(shadow.getTypeKind());
+      return equals(shadow);
    }
 
    @Override

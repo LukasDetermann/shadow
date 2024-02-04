@@ -136,7 +136,8 @@ public class ArrayImpl implements Array
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             convert(shadow).toArray().map(array1 -> array1.getComponentType().representsSameType(getComponentType())).orElse(false);
+             (equals(shadow) ||
+             convert(shadow).toArray().map(array1 -> array1.getComponentType().representsSameType(getComponentType())).orElse(false));
    }
 
    public Class<?> getArray()

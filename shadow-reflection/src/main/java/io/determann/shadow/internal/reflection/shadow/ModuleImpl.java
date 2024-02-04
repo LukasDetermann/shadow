@@ -139,7 +139,7 @@ public class ModuleImpl implements Module
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && getTypeKind().equals(shadow.getTypeKind());
+      return equals(shadow);
    }
 
    public ModuleDescriptor getModuleDescriptor()

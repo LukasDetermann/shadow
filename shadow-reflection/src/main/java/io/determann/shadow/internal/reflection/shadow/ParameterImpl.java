@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Class;
@@ -14,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import static io.determann.shadow.api.converter.Converter.convert;
 
 public class ParameterImpl implements Parameter
 {
@@ -75,7 +76,7 @@ public class ParameterImpl implements Parameter
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             Converter.convert(shadow).toParameter().map(parameter1 -> parameter1.getType().representsSameType(getType())).orElse(false);
+             convert(shadow).toParameter().map(parameter1 -> parameter1.getType().representsSameType(getType())).orElse(false);
    }
    @Override
    public boolean isSubtypeOf(Shadow shadow)

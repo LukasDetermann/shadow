@@ -92,7 +92,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && Converter.convert(shadow).toField().map(field -> field.representsSameType(getType())).orElse(false);
+      return shadow != null && Converter.convert(shadow).toField().map(field -> field.getType().representsSameType(getType())).orElse(false);
    }
 
    @Override

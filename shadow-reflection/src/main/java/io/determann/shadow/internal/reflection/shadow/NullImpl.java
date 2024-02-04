@@ -11,7 +11,7 @@ public class NullImpl implements Null
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && getTypeKind().equals(shadow.getTypeKind());
+      return shadow != null && shadow.isTypeKind(TypeKind.NULL);
    }
 
    @Override
