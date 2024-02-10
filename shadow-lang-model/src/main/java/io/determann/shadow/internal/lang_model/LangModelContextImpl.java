@@ -124,19 +124,19 @@ public class LangModelContextImpl implements LangModelContext
 
 
    @Override
-   public Declared erasure(Class aClass)
+   public Class erasure(Class aClass)
    {
       return erasureImpl(getType(aClass));
    }
 
    @Override
-   public Declared erasure(Interface anInterface)
+   public Interface erasure(Interface anInterface)
    {
       return erasureImpl(getType(anInterface));
    }
 
    @Override
-   public Declared erasure(Record aRecord)
+   public Record erasure(Record aRecord)
    {
       return erasureImpl(getType(aRecord));
    }

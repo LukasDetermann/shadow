@@ -92,7 +92,7 @@ public interface LangModelContext extends DeclaredHolder
     * <p>
     * for {@link Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
     */
-   Declared erasure(Class aClass);
+   Class erasure(Class aClass);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -101,7 +101,7 @@ public interface LangModelContext extends DeclaredHolder
     * <p>
     * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
-   Declared erasure(Interface anInterface);
+   Interface erasure(Interface anInterface);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -110,7 +110,7 @@ public interface LangModelContext extends DeclaredHolder
     * <p>
     * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
-   Declared erasure(Record aRecord);
+   Record erasure(Record aRecord);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
