@@ -21,7 +21,8 @@ public class GenericUsageTest
                                Interface erasedCollection = context.erasure(context.getInterfaceOrThrow("java.util.Collection"));
                                Assertions.assertTrue(erasure.isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
                                //@end
-                            });
+                            })
+            .compile();
    }
 
    <T> void getGenerics()

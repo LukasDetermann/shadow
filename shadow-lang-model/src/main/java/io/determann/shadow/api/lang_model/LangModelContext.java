@@ -44,7 +44,7 @@ public interface LangModelContext extends DeclaredHolder
    Class withGenerics(Class aClass, Shadow... generics);
 
    /**
-    * like {@link #withGenerics(Class, Shadow...)} but resolves the names using {@link AnnotationProcessingContext#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(Class, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
    default Class withGenerics(Class aClass, String... qualifiedGenerics)
    {
@@ -60,7 +60,7 @@ public interface LangModelContext extends DeclaredHolder
    Interface withGenerics(Interface anInterface, Shadow... generics);
 
    /**
-    * like {@link #withGenerics(Interface, Shadow...)} but resolves the names using {@link AnnotationProcessingContext#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(Interface, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
    default Interface withGenerics(Interface anInterface, String... qualifiedGenerics)
    {
@@ -76,7 +76,7 @@ public interface LangModelContext extends DeclaredHolder
    Record withGenerics(Record aRecord, Shadow... generics);
 
    /**
-    * like {@link #withGenerics(Record, Shadow...)} but resolves the names using {@link AnnotationProcessingContext#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(Record, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
    default Record withGenerics(Record aRecord, String... qualifiedGenerics)
    {
@@ -163,98 +163,47 @@ public interface LangModelContext extends DeclaredHolder
    /**
     * convince method returns the erasure of the parameter type
     *
-    * @see AnnotationProcessingContext#erasure(Class)  for example for more information on erasure
+    * @see LangModelContext#erasure(Class)  for example for more information on erasure
     */
    Shadow erasure(Parameter parameter);
 
    /**
     * convince method returns the erasure of the field type
     *
-    * @see AnnotationProcessingContext#erasure(Class)  for example for more information on erasure
+    * @see LangModelContext#erasure(Class)  for example for more information on erasure
     */
    Shadow erasure(Field field);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
-    * it answers the question: given {@code public class MyClass<A extends Comparable<B>, B extends Comparable<A>> {}} and A being {@code String}
-    * what can B be by returning the "simplest" possible answer. in this case String
+    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
     * <p>
     * The code for the example
-    * <pre>{@code
-    *       Class declared = shadowApi.getClassOrThrow("io.determann.shadow.example.processed.MyClass")
-    *                                 .withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"),
-    *                                                  shadowApi.getConstants().getUnboundWildcard());
-    *       Class capture = declared.interpolateGenerics();
-    *
-    *       Shadow<TypeMirror> stringRep = convert(capture.getGenerics().get(1))
-    *                                                      .toGeneric()
-    *                                                      .map(Generic::getExtends)
-    *                                                      .map(shadowApi::convert)
-    *                                                      .flatMap(ShadowConverter::toClassOrThrow)
-    *                                                      .map(Class::getGenerics)
-    *                                                      .map(shadows -> shadows.get(0))
-    *                                                      .orElseThrow();
-    *
-    *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
-    * }</pre>
-    * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
+    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
    Class interpolateGenerics(Class aClass);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
-    * it answers the question: given {@code public class MyClass<A extends Comparable<B>, B extends Comparable<A>> {}} and A being {@code String}
-    * what can B be by returning the "simplest" possible answer. in this case String
+    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
     * <p>
     * The code for the example
-    * <pre>{@code
-    *       Class declared = shadowApi.getClassOrThrow("io.determann.shadow.example.processed.MyClass")
-    *                                 .withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"),
-    *                                                  shadowApi.getConstants().getUnboundWildcard());
-    *       Class capture = declared.interpolateGenerics();
-    *
-    *       Shadow<TypeMirror> stringRep = convert(capture.getGenerics().get(1))
-    *                                                      .toGeneric()
-    *                                                      .map(Generic::getExtends)
-    *                                                      .map(shadowApi::convert)
-    *                                                      .flatMap(ShadowConverter::toClassOrThrow)
-    *                                                      .map(Class::getGenerics)
-    *                                                      .map(shadows -> shadows.get(0))
-    *                                                      .orElseThrow();
-    *
-    *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
-    * }</pre>
-    * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
+    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
    Interface interpolateGenerics(Interface anInterface);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
-    * it answers the question: given {@code public class MyClass<A extends Comparable<B>, B extends Comparable<A>> {}} and A being {@code String}
-    * what can B be by returning the "simplest" possible answer. in this case String
+    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
     * <p>
     * The code for the example
-    * <pre>{@code
-    *       Class declared = shadowApi.getClassOrThrow("io.determann.shadow.example.processed.MyClass")
-    *                                 .withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"),
-    *                                                  shadowApi.getConstants().getUnboundWildcard());
-    *       Class capture = declared.interpolateGenerics();
-    *
-    *       Shadow<TypeMirror> stringRep = convert(capture.getGenerics().get(1))
-    *                                                      .toGeneric()
-    *                                                      .map(Generic::getExtends)
-    *                                                      .map(shadowApi::convert)
-    *                                                      .flatMap(ShadowConverter::toClassOrThrow)
-    *                                                      .map(Class::getGenerics)
-    *                                                      .map(shadows -> shadows.get(0))
-    *                                                      .orElseThrow();
-    *
-    *       System.out.println(stringRep.representsSameType(shadowApi.getDeclaredOrThrow("java.lang.String")));
-    * }</pre>
-    * Note the use of the unboundWildcardConstant witch gets replaced by calling {@code capture()} with the result
+    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
    Record interpolateGenerics(Record aRecord);
 

@@ -17,15 +17,15 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    private final LangModelContext context;
    private final AnnotationMirror annotationMirror;
 
-   public static List<AnnotationUsage> from(LangModelContext annotationProcessingContext,
+   public static List<AnnotationUsage> from(LangModelContext langModelContext,
                                             Collection<? extends AnnotationMirror> annotationMirrors)
    {
-      return annotationMirrors.stream().map(annotationMirror -> from(annotationProcessingContext, annotationMirror)).toList();
+      return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
-   static AnnotationUsage from(LangModelContext annotationProcessingContext, AnnotationMirror annotationMirror)
+   static AnnotationUsage from(LangModelContext langModelContext, AnnotationMirror annotationMirror)
    {
-      return new AnnotationUsageImpl(annotationProcessingContext, annotationMirror);
+      return new AnnotationUsageImpl(langModelContext, annotationMirror);
    }
 
    private AnnotationUsageImpl(LangModelContext context, AnnotationMirror annotationMirror)

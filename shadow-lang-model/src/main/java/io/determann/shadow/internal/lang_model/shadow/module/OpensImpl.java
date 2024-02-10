@@ -15,9 +15,9 @@ public class OpensImpl extends DirectiveImpl implements Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(LangModelContext annotationProcessingContext, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(LangModelContext langModelContext, ModuleElement.OpensDirective opensDirective)
    {
-      super(annotationProcessingContext);
+      super(langModelContext);
       this.opensDirective = opensDirective;
    }
 

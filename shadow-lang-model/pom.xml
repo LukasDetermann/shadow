@@ -12,6 +12,10 @@
 
     <artifactId>shadow-lang-model</artifactId>
 
+    <properties>
+        <javadoc.snippet.path.suffix>lang_model</javadoc.snippet.path.suffix>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
