@@ -14,12 +14,12 @@ public interface Interface extends Declared,
    boolean isFunctional();
 
    /**
-    * {@code List<}<b>String</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenericTypes"}
     */
    List<Shadow> getGenericTypes();
 
    /**
-    * {@code List<}<b>T</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 }

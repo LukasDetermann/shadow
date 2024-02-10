@@ -8,7 +8,7 @@ public interface Primitive extends Shadow
    /**
     * returns true if this can be cast to that.
     * This can be useful if you want to check if a shadow implements for example a
-    * {@link java.util.Collection} {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@link java.util.Collection} {@snippet file= "GenericUsageTest.java" region="GenericUsage.isSubtypeOf"}
     */
    boolean isSubtypeOf(Shadow shadow);
 
@@ -20,7 +20,7 @@ public interface Primitive extends Shadow
 
    /**
     * int -&gt; Integer<br>
-    * long -&gt; Long
+    * long -&gt; Long<br>
     * etc...
     */
    Class asBoxed();

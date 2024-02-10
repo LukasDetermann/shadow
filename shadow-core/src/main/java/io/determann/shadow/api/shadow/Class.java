@@ -43,18 +43,18 @@ public interface Class extends Declared,
    Optional<Declared> getOuterType();
 
    /**
-    * {@code List<}<b>String</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenericTypes"}
     */
    List<Shadow> getGenericTypes();
 
    /**
-    * {@code List<}<b>T</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 
    /**
     * Integer -&gt; int<br>
-    * Long -&gt; long
+    * Long -&gt; long<br>
     * etc...
     */
    Primitive asUnboxed();

@@ -17,12 +17,12 @@ public interface Record extends Declared,
    List<RecordComponent> getRecordComponents();
 
    /**
-    * {@code MyRecord<}<b>String</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenericTypes"}
     */
    List<Shadow> getGenericTypes();
 
    /**
-    * {@code MyRecord<}<b>T</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 }

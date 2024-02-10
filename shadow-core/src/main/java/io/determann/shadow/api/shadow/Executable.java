@@ -27,7 +27,10 @@ public interface Executable extends Shadow,
                                     Documented
 {
    /**
-    * {@code public MyObject(}<b>String param</b>{@code )}. Returns the formal parameters, meaning everything but the Receiver.
+    * {@snippet :
+    *  public MyObject(String param){}//@highlight substring="String param"
+    * }
+    * Returns the formal parameters, meaning everything but the Receiver.
     *
     * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
     * {@link Constructor}s with more than one {@link Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
@@ -63,35 +66,19 @@ public interface Executable extends Shadow,
    Package getPackage();
 
    /**
-    * {@code List<}<b>T</b>{@code >}
+    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-    * <pre>{@code
-    *    public class ReceiverExample {
-    *       {
-    *          new ReceiverExample().foo();
-    *       }
-    *       public void foo(ReceiverExample ReceiverExample.this) {
-    *       }
-    *    }
-    * }</pre>
+    * {@snippet file="ReceiverUsageTest.java" region="ReceiverUsageTest.method"}
     */
    Optional<Declared> getReceiverType();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-    * <pre>{@code
-    *    public class ReceiverExample {
-    *       {
-    *          new ReceiverExample().foo();
-    *       }
-    *       public void foo(ReceiverExample ReceiverExample.this) {
-    *       }
-    *    }
-    * }</pre>
+    * {@snippet file="ReceiverUsageTest.java" region="ReceiverUsageTest.method"}
     */
    Optional<Receiver> getReceiver();
 }

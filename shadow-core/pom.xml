@@ -11,4 +11,8 @@
     </parent>
 
     <artifactId>shadow-core</artifactId>
+
+    <properties>
+        <javadoc.snippet.path.suffix>core</javadoc.snippet.path.suffix>
+    </properties>
 </project>
