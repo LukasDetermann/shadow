@@ -10,8 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class BuilderTest
 {
-   private static final Path DIR = Paths.get("documentation",
-                                             "src",
+   private static final Path DIR = Paths.get("src",
                                              "test",
                                              "java",
                                              "io",
