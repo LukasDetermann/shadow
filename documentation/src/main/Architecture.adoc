@@ -1,0 +1,28 @@
+=== Modules
+
+==== shadow-core
+- Contains the core readonly Data-Structure
+- Converters to convert only in possible types. e.g. Executable -> Method
+- Renderers to assist in creating Source-Files
+
+==== shadow-lang-model
+- implementation of the shadow-core Data-Structure
+- Adapter for shadow-Data-Structure ⇄ java.lang.model
+
+==== shadow-annotation-processing
+- extends shadow-lang-model
+- Adapter for shadow-Data-Structure ⇄ javax.annotation.processing
+
+==== shadow-reflection
+- implementation of the shadow-core Data-Structure
+- Adapter for shadow-Data-Structure ⇄ java.lang.reflect
+
+==== shadow-consistency-test
+- tests different implementations against each other
+
+==== documentation
+- doc
+- @snippet
+
+==== shadow-parent
+- maven stuff

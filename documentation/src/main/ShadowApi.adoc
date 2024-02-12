@@ -1,0 +1,20 @@
+:toc: left
+:nofooter:
+:stylesheet: style.css
+:source-highlighter: rouge
+
+= Shadow API
+
+One for all Meta-Programming Api.
+
+include::Architecture.adoc[]
+
+
+
+*Currently Supported are:*
+
+include::Annotation Processing.adoc[]
+
+include::Reflection.adoc[]
+
+include::java.lang.model.adoc[]

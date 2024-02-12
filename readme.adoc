@@ -1,0 +1,340 @@
+= Shadow API
+
+=== One for all Meta-Programming Api
+
+== Why Shadow API?
+
+There are a lot of different Meta-Programming Apis.
+Each having unique concepts and quirks.
+This makes Meta-Programming harder to understand and creates a maintenance overhead.
+Once something is written with java.lang.reflect it's hard to change it to an Annotation Processor.
+Some Apis like
+https://docs.oracle.com/en/java/javase/21/docs/api/java.compiler/javax/lang/model/package-summary.html[javax.lang.model],
+are not up to the normal JDK standard.
+
+Shadow API offers:
+
+.Straightforward data structure
+[%collapsible]
+====
+|===
+|Shadow API|JDK
+a|
+
+* Shadow
+** Declared
+*** Class
+*** Enum
+*** Record
+*** Annotation
+**** AnnotationUsage
+** Array
+** Executable
+*** Constructor
+*** Method
+** Intersection
+** Void
+** Module
+** Package
+** RecordComponent
+** Null
+** Primitive
+** Generic
+** Wildcard
+** Variable
+*** EnumConstant
+*** Field
+*** Parameter
+
+a| Cell with a list
+
+* TypeMirror
+** ReferenceType
+*** ArrayType
+*** DeclaredType
+*** ErrorType
+*** NullType
+*** TypeVariable
+** ExecutableType
+** IntersectionType
+** NoType
+** PrimitiveType
+** UnionType
+** WildcardType
+
+* AnnotationMirror
+
+* Element
+** ExecutableElement
+** ModuleElement
+** PackageElement
+** RecordComponentElement
+** TypeElement
+** TypeParameterElement
+** VariableElement
+|===
+====
+
+.Safe conversion between objects
+[%collapsible]
+====
+
+Let's say you process the following class and want to get the type of the List
+
+[source,java]
+----
+class MyClass
+{
+   private final List<String> myField;
+}
+----
+
+.Shadow API
+[source,java]
+----
+include::documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=shadow]
+----
+
+.JDK
+[source,java]
+----
+include::documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=jdk]
+----
+====
+
+.Better documentation, especially for hard to understand topics
+[%collapsible]
+====
+.Shadow Api. The javadoc uses @snippet
+[source,java]
+----
+public interface LangModelContext {
+   //..
+
+   /**
+   * Used when constructing types to compare to at compile time that contain multiple,
+   * on each other depended, generics.
+   * it answers the question: given
+   *
+   * public class MyClass<A extends Comparable<B>, B extends Comparable<A>> {}
+   *
+   * and A being String what can B be by returning the "simplest" possible answer.
+   * In this case String. The code for the example
+   *
+   * Class myClass = context.getClassOrThrow("MyClass");
+   * Declared string = context.getDeclaredOrThrow("java.lang.String");
+   * Class withGenerics = context.withGenerics(myClass,
+   *                                         string,
+   *                                         //the unboundWildcard will be replaced with the result
+   *                                         context.getConstants().getUnboundWildcard());
+   *
+   * Class capture = context.interpolateGenerics(withGenerics);
+   *
+   * Shadow stringRep = Optional.of(capture.getGenericTypes().get(1))
+   *                            .map(Converter::convert)
+   *                            .map(ShadowConverter::toGenericOrThrow)
+   *                            .map(Generic::getExtends)
+   *                            .map(Converter::convert)
+   *                            .map(ShadowConverter::toInterfaceOrThrow)
+   *                            .map(Interface::getGenericTypes)
+   *                            .map(shadows -> shadows.get(0))
+   *                            .orElseThrow();
+   *
+   * Assertions.assertEquals(string, stringRep);
+   */
+   Class interpolateGenerics(Class aClass);
+
+   //..
+}
+----
+
+.jdk
+[source,java]
+----
+public interface Types {
+   //...
+
+  /**
+   * {@return the erasure of a type}
+   *
+   * @param t  the type to be erased
+   * @throws IllegalArgumentException if given a type for a package or module
+   * @jls 4.6 Type Erasure
+   */
+  TypeMirror erasure(TypeMirror t);
+
+  //...
+}
+----
+====
+
+.Adapter for good JDK interoperability
+[%collapsible]
+====
+.javax.lang.model
+[%collapsible]
+=====
+[source,java]
+----
+include::shadow-lang-model/src/main/java/io/determann/shadow/api/lang_model/LangModelAdapter.java[]
+----
+=====
+
+.javax.annotation.processing
+[%collapsible]
+=====
+[source,java]
+----
+include::shadow-annotation-processing/src/main/java/io/determann/shadow/api/annotation_processing/AnnotationProcessingAdapter.java[]
+----
+=====
+
+.java.lang.reflect
+[%collapsible]
+=====
+[source,java]
+----
+include::shadow-reflection/src/main/java/io/determann/shadow/api/reflection/ReflectionAdapter.java[]
+----
+=====
+====
+
+
+.Better rendering of existing sources
+[%collapsible]
+====
+
+A simple method like this
+
+[source,java]
+----
+public abstract class MyClass {
+   
+  @MyAnnotation
+  public abstract <T> T get(int index);
+}
+----
+
+can be rendered in the following ways
+
+|===
+|Rendering|Shadow AOI|JDK
+a|
+
+[source, java]
+----
+@MyAnnotation
+public abstract <T> T get(int index);
+----
+a|
+
+[source, java]
+----
+render(method).declaration()
+----
+a|
+a|
+
+[source, java]
+----
+@MyAnnotation
+public <T> T get(int index) {
+//do stuff
+}
+----
+a|
+
+[source, java]
+----
+render(method).declaration("//do stuff")
+----
+a|
+a|
+
+[source, java]
+----
+get()
+----
+a|
+
+[source, java]
+----
+render(method).invocation()
+----
+a|
+a|
+
+[source, java]
+----
+get(5413)
+----
+a|
+
+[source, java]
+----
+render(method).invocation("5413")
+----
+a|
+a|
+
+[source, java]
+----
+<T>get(int)
+----
+a|
+
+[source, java]
+----
+method.toString()
+----
+a|
+
+[source, java]
+----
+methodElement.toString()
+----
+a|
+
+[source, java]
+----
+<T>(int)T
+----
+a|
+a|
+[source, java]
+----
+methodMirror.toString()
+----
+|===
+
+
+.Names can be rendered as
+- QualifiedNames
+- SimpleNames
+- WithoutNeedingImports (default)
+
+and a Callback can be registered for NameRenderedEvents to create for example imports.
+====
+
+=== Currently Supported are:
+
+Annotation Processing
+
+java.lang.model
+
+reflection
+
+=== API Goals
+
+==== Short-term
+
+Make annotation processing more accessible and easier to comprehend.
+
+==== Long-term
+
+Provide an API for any kind of Meta-Programming. annotation processing, reflection, doclet etc.
+
+=== Project status
+
+The Annotation Processing API is relativity stable.
+The Reflection API is missing some important parts, like invocations and needs more time.

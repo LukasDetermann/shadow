@@ -1,0 +1,215 @@
+== Annotation Processing
+
+=== What is this?
+[[Annotation Processing.What is this]]
+
+Annotation-processors run at compile time. They process representations of the %linenums code that is being compiled.
+They also can create new Files, including %linenums files, and raise errors or warnings.
+
+- Featureset 6/10
+- Performance 10/10
+- Correctness 9/10
+- Usability 3/10
+- Maintainability 9/10
+
+=== Getting started
+
+It's normal annotation processing with a better API.
+The setup is the same.
+The differences only start when extending`io.determann.shadow.api.annotation_processing.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.
+A good starting point for your own processor is `AnnotationProcessingContext.getAnnotatedWith(java.lang.String)`.
+
+=== Setup
+We will create everything you need to get started with your first annotation processor using maven in this setup.
+
+==== 1) Two Modules
+
+The annotation processor must be compiled first.
+Create two maven modules.
+One having the code to process and one containing the annotation processor.
+
+.processor module
+[%linenums,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.determann</groupId>
+    <artifactId>processor-example</artifactId>
+    <version>0.2.0</version>
+</project>
+----
+.processed module
+[%linenums,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.determann</groupId>
+    <artifactId>processed-example</artifactId>
+    <version>0.2.0</version>
+</project>
+----
+
+==== 2) Dependencies
+
+.The processor needs to depend on the `shadow-api`
+[%linenums,xml]
+----
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+----
+
+.And the processed module needs to depend on the processor module
+[%linenums,xml]
+----
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>processor-example</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+----
+
+==== 3) Processor paths
+
+.The module being processed needs to know the module it's processed by
+[%linenums,xml]
+----
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.determann</groupId>
+                            <artifactId>processor-example</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+----
+
+==== 4) Disable annotation processing
+
+.Disable annotation processing in the processor module, otherwise the annotation processor would be used to process itself
+[%linenums,xml]
+----
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <%linenums>17</%linenums>
+                    <target>17</target>
+                    <!--don't compile the annotation processor using the annotation processor-->
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+----
+
+==== 5) The processor itself
+
+.Extend `ShadowProcessor` for your own processor and override `process()`
+[%linenums,java]
+----
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
+
+public class MyProcessor extends ShadowProcessor
+{
+   @Override
+   public void process(final AnnotationProcessingContext context) {
+   }
+}
+----
+
+==== 6) Register this processor
+
+.Create a file in `src/main/re%linenumss/META-INF/services/` called `javax.annotation.processing.Processor` and add your qualified path
+[%linenums,text]
+----
+io.determann.shadow.example.processor.MyProcessor
+----
+
+==== 7) Annotation
+
+.Now create an Annotation to process in the processor module
+[%linenums,java]
+----
+public @interface MyAnnotation {}
+----
+
+==== 8) Process
+
+.And finally process anything annotated with that annotation
+[%linenums,java]
+----
+import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.ShadowProcessor;
+
+public class MyProcessor extends ShadowProcessor
+{
+   @Override
+   public void process(final AnnotationProcessingContext context) {
+      for (Shadow shadow : context.getAnnotatedWith("org.example.MyAnnotation").all()) {
+      }
+   }
+}
+----
+
+== Simple Builder Example
+
+.An annotation to mark classes
+[%linenums,java]
+----
+@Target(ElementType.TYPE)
+public @interface BuilderPattern {}
+----
+
+.A Processor creating a simple Builder companion object
+[%linenums,java]
+----
+include::../test/java/io/determann/shadow/builder/ShadowBuilderProcessor.java[]
+----
+
+.For a simple pojo like
+[%linenums,java]
+----
+include::../test/java/io/determann/shadow/builder/Customer.java[]
+----
+
+.This builder would be generated
+[%linenums,java]
+----
+public class CustomerShadowBuilder{
+   private java.lang.String name;
+
+   public CustomerShadowBuilder withName(java.lang.String name) {
+      this.name = name;
+      return this;
+   }
+
+   public io.determann.shadow.builder.Customer build() {
+     io.determann.shadow.builder.Customer customer = new io.determann.shadow.builder.Customer();
+      customer.setName(name);
+      return customer;
+   }
+}
+----

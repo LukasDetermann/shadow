@@ -1,0 +1,21 @@
+== reflection
+
+=== What is this?
+
+The most common type of meta-Programming.
+
+WARNING: This reflection implementation is still experimental.
+
+- Featureset 5/10
+- Performance 3/10
+- Correctness 4/10
+- Usability 10/10
+- Maintainability 4/10
+
+=== Getting started
+
+It's as simple as calling the ReflectionAdapter
+[%linenums,java]
+----
+include::../test/java/io/determann/shadow/Reflection.java[tag=gettingStarted]
+----

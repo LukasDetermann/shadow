@@ -1,0 +1,53 @@
+@import url(//fonts.googleapis.com/css?family=Noto+Sans);
+@import url(//fonts.googleapis.com/css?family=JetBrains+Mono);
+@import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
+
+
+body {
+    font-family: "Noto Sans", sans-serif;
+}
+
+h1 {
+    font-family: "Noto Sans", sans-serif;
+}
+
+h2, h3, h4, h5, h6 {
+    color: black !important;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.title {
+    font-family: "Noto Sans", sans-serif;
+}
+
+p {
+    font-family: "Noto Sans", sans-serif ! important
+}
+
+code {
+    font-family: "Noto Sans", "JetBrains Mono";
+    padding: 6px;
+    padding-left: 8px;
+    background-color: var(--codebackground) !important
+}
+
+
+#toctitle {
+    color: #4f5359;
+}
+
+@media all and (max-width: 600px) {
+    table {
+        width: 55vw !important;
+        font-size: 3vw;
+    }
+}
+
+a {
+    color: black;
+}
+
+.literalblock pre, .listingblock > .content > pre {
+    padding: 0px;
+    background-color: #ebebeb !important
+}
