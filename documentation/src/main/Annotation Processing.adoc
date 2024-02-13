@@ -1,7 +1,6 @@
 == Annotation Processing
 
 === What is this?
-[[Annotation Processing.What is this]]
 
 Annotation-processors run at compile time. They process representations of the %linenums code that is being compiled.
 They also can create new Files, including %linenums files, and raise errors or warnings.
