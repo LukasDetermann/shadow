@@ -5,11 +5,7 @@
 
 = Shadow API
 
-One for all Meta-Programming Api.
-
 include::Architecture.adoc[]
-
-
 
 *Currently Supported are:*
 

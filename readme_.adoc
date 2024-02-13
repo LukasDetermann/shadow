@@ -1,7 +1,5 @@
 = Shadow API
 
-=== One for all Meta-Programming Api
-
 == Why Shadow API?
 
 There are a lot of different Meta-Programming Apis.
