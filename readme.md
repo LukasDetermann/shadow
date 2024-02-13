@@ -1259,9 +1259,9 @@ example imports.
 
 ### Currently Supported are:
 
-- Annotation Processing
-- java.lang.model
-- reflection
+- [Annotation Processing](https://lukasdetermann.github.io/shadow/#_annotation_processing)
+- [java.lang.model](https://lukasdetermann.github.io/shadow/#_java_lang_model)
+- [reflection](https://lukasdetermann.github.io/shadow/#_reflection)
 
 ### API Goals
 
