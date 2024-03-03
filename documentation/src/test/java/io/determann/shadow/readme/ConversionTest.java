@@ -30,7 +30,7 @@ Shadow myField = context.getClassOrThrow("MyClass")
                         .getType();
 //Converters limit the conversion to possible types
 Shadow genericType = convert(myField).toInterfaceOrThrow()
-                                     .getGenerics()
+                                     .getGenericTypes()
                                      .get(0);
 
 assertEquals(context.getClassOrThrow("java.lang.String"), genericType);

@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>documentation</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

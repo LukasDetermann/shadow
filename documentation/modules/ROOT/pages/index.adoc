@@ -1,6 +1,8 @@
-= Shadow API
+:stylesheet: ../../style.css
 
-== Why Shadow API?
+= Shadow Api
+
+== Why Shadow Api?
 
 There are a lot of different Meta-Programming Apis.
 Each having unique concepts and quirks.
@@ -10,13 +12,13 @@ Some Apis like
 https://docs.oracle.com/en/java/javase/21/docs/api/java.compiler/javax/lang/model/package-summary.html[javax.lang.model],
 are not up to the normal JDK standard.
 
-Shadow API offers:
+Shadow Api offers:
 
 .Straightforward data structure
 [%collapsible]
 ====
 |===
-|Shadow API|JDK
+|Shadow Api|JDK
 a|
 
 * Shadow
@@ -87,16 +89,26 @@ class MyClass
 }
 ----
 
-.Shadow API
+.Shadow Api
 [source,java]
 ----
-include::documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=shadow]
+ifndef::site-gen-antora[]
+include::../../../../documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=shadow]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$readme/ConversionTest.java[tag=shadow]
+endif::[]
 ----
 
 .JDK
 [source,java]
 ----
-include::documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=jdk]
+ifndef::site-gen-antora[]
+include::../../../../documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=jdk]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$readme/ConversionTest.java[tag=jdk]
+endif::[]
 ----
 ====
 
@@ -174,7 +186,12 @@ public interface Types {
 =====
 [source,java]
 ----
-include::shadow-lang-model/src/main/java/io/determann/shadow/api/lang_model/LangModelAdapter.java[]
+ifndef::site-gen-antora[]
+include::../../../../shadow-lang-model/src/main/java/io/determann/shadow/api/lang_model/LangModelAdapter.java[]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$LangModelAdapter.java[]
+endif::[]
 ----
 =====
 
@@ -183,7 +200,12 @@ include::shadow-lang-model/src/main/java/io/determann/shadow/api/lang_model/Lang
 =====
 [source,java]
 ----
-include::shadow-annotation-processing/src/main/java/io/determann/shadow/api/annotation_processing/AnnotationProcessingAdapter.java[]
+ifndef::site-gen-antora[]
+include::../../../../shadow-annotation-processing/src/main/java/io/determann/shadow/api/annotation_processing/AnnotationProcessingAdapter.java[]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$AnnotationProcessingAdapter.java[]
+endif::[]
 ----
 =====
 
@@ -192,7 +214,12 @@ include::shadow-annotation-processing/src/main/java/io/determann/shadow/api/anno
 =====
 [source,java]
 ----
-include::shadow-reflection/src/main/java/io/determann/shadow/api/reflection/ReflectionAdapter.java[]
+ifndef::site-gen-antora[]
+include::../../../../shadow-reflection/src/main/java/io/determann/shadow/api/reflection/ReflectionAdapter.java[]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$ReflectionAdapter.java[]
+endif::[]
 ----
 =====
 ====
@@ -316,11 +343,11 @@ and a Callback can be registered for NameRenderedEvents to create for example im
 
 === Currently Supported are:
 
-Annotation Processing
+xref:Annotation Processing.adoc[]
 
-java.lang.model
+xref:java.lang.model.adoc[]
 
-reflection
+xref:Reflection.adoc[]
 
 === API Goals
 

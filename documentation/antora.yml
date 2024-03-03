@@ -1,0 +1,23 @@
+name: Shadow-Api
+version: ~
+prerelease: true
+asciidoc:
+  attributes:
+    nofooter:
+    source-highlighter: rouge
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/article/nav.adoc
+ext:
+  collector:
+    run:
+      command:
+        mvn -B -f documentation/ clean test &&
+        XCOPY documentation\src\test\java\io\determann\shadow documentation\target\antora\io\determann\shadow\ /Y /S &&
+        XCOPY shadow-reflection\src\main\java\io\determann\shadow\api\reflection\ReflectionAdapter.java documentation\target\antora\io\determann\shadow\ /Y &&
+        XCOPY shadow-annotation-processing\src\main\java\io\determann\shadow\api\annotation_processing\AnnotationProcessingAdapter.java documentation\target\antora\io\determann\shadow\ /Y &&
+        XCOPY shadow-lang-model\src\main\java\io\determann\shadow\api\lang_model\LangModelAdapter.java documentation\target\antora\io\determann\shadow\ /Y
+    scan:
+      dir: ./target/antora/io/determann/shadow
+      files: '**/*'
+      base: modules/ROOT/examples

@@ -1,6 +1,6 @@
-== reflection
+= reflection
 
-=== What is this?
+== What is this?
 
 The most common type of meta-Programming.
 
@@ -12,10 +12,15 @@ WARNING: This reflection implementation is still experimental.
 - Usability 10/10
 - Maintainability 4/10
 
-=== Getting started
+== Getting started
 
 It's as simple as calling the ReflectionAdapter
 [%linenums,java]
 ----
-include::../test/java/io/determann/shadow/Reflection.java[tag=gettingStarted]
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/Reflection.java[tag=gettingStarted]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$Reflection.java[tag=gettingStarted]
+endif::[]
 ----

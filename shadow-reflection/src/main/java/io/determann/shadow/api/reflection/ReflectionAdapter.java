@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class ReflectionAdapter
+public interface ReflectionAdapter
 {
    public static <SHADOW extends Shadow> SHADOW getShadow(Class<?> aClass)
    {

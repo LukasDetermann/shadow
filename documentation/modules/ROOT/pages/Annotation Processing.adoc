@@ -1,6 +1,6 @@
-== Annotation Processing
+= Annotation Processing
 
-=== What is this?
+== What is this?
 
 Annotation-processors run at compile time. They process representations of the %linenums code that is being compiled.
 They also can create new Files, including %linenums files, and raise errors or warnings.
@@ -11,17 +11,17 @@ They also can create new Files, including %linenums files, and raise errors or w
 - Usability 3/10
 - Maintainability 9/10
 
-=== Getting started
+== Getting started
 
 It's normal annotation processing with a better API.
 The setup is the same.
 The differences only start when extending`io.determann.shadow.api.annotation_processing.ShadowProcessor` instead of `javax.annotation.processing.AbstractProcessor`.
 A good starting point for your own processor is `AnnotationProcessingContext.getAnnotatedWith(java.lang.String)`.
 
-=== Setup
+== Setup
 We will create everything you need to get started with your first annotation processor using maven in this setup.
 
-==== 1) Two Modules
+=== 1) Two Modules
 
 The annotation processor must be compiled first.
 Create two maven modules.
@@ -54,7 +54,7 @@ One having the code to process and one containing the annotation processor.
 </project>
 ----
 
-==== 2) Dependencies
+=== 2) Dependencies
 
 .The processor needs to depend on the `shadow-api`
 [%linenums,xml]
@@ -76,7 +76,7 @@ One having the code to process and one containing the annotation processor.
         </dependency>
 ----
 
-==== 3) Processor paths
+=== 3) Processor paths
 
 .The module being processed needs to know the module it's processed by
 [%linenums,xml]
@@ -101,7 +101,7 @@ One having the code to process and one containing the annotation processor.
     </build>
 ----
 
-==== 4) Disable annotation processing
+=== 4) Disable annotation processing
 
 .Disable annotation processing in the processor module, otherwise the annotation processor would be used to process itself
 [%linenums,xml]
@@ -123,7 +123,7 @@ One having the code to process and one containing the annotation processor.
     </build>
 ----
 
-==== 5) The processor itself
+=== 5) The processor itself
 
 .Extend `ShadowProcessor` for your own processor and override `process()`
 [%linenums,java]
@@ -139,7 +139,7 @@ public class MyProcessor extends ShadowProcessor
 }
 ----
 
-==== 6) Register this processor
+=== 6) Register this processor
 
 .Create a file in `src/main/re%linenumss/META-INF/services/` called `javax.annotation.processing.Processor` and add your qualified path
 [%linenums,text]
@@ -147,7 +147,7 @@ public class MyProcessor extends ShadowProcessor
 io.determann.shadow.example.processor.MyProcessor
 ----
 
-==== 7) Annotation
+=== 7) Annotation
 
 .Now create an Annotation to process in the processor module
 [%linenums,java]
@@ -155,7 +155,7 @@ io.determann.shadow.example.processor.MyProcessor
 public @interface MyAnnotation {}
 ----
 
-==== 8) Process
+=== 8) Process
 
 .And finally process anything annotated with that annotation
 [%linenums,java]
@@ -185,13 +185,23 @@ public @interface BuilderPattern {}
 .A Processor creating a simple Builder companion object
 [%linenums,java]
 ----
-include::../test/java/io/determann/shadow/builder/ShadowBuilderProcessor.java[]
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/builder/ShadowBuilderProcessor.java[]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$builder/ShadowBuilderProcessor.java[]
+endif::[]
 ----
 
 .For a simple pojo like
 [%linenums,java]
 ----
-include::../test/java/io/determann/shadow/builder/Customer.java[]
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/builder/Customer.java[]
+endif::[]
+ifdef::site-gen-antora[]
+include::example$builder/Customer.java[]
+endif::[]
 ----
 
 .This builder would be generated

@@ -1,0 +1,205 @@
+:stylesheet: ../../style.css
+
+= Meta Model Design
+
+== Goal
+
+There are types forms of Meta-Programming in java.
+Reflection and Annotation-Processing have the same level of detail for now.
+Both start at java-modules and end at method signatures.
+With https://openjdk.org/projects/babylon/[Project Babylons] code-reflection that will change that.
+The goal of the Shadow-Api is to write one fits all Api with each implementation being a separate artifact.
+As an example, I will use the Method `public Optional<FuncOp> getCodeModel()` that is proposed to be added to `java.lang.reflect.Method`.
+
+=== Components
+
+- *Core* is the module containing the Model Api and functionality that can be used with any implementation like Renderer and Converter
+- *Annotation-Processing* depends on *core*
+- *Reflection* depends on *core*
+
+== Solution 1: One Api
+
+Provide all the functionality in the core api. With implementations supporting the subset they can.
+
+.core
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/OneApi.java[tag=core]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/OneApi.java[tag=core]
+endif::[]
+----
+.reflection
+[%linenums,java]
+----
+class ReflectionMethodImpl implements Method
+{
+   private final java.lang.reflect.Method method;
+
+   public ReflectionMethodImpl(java.lang.reflect.Method method)
+   {
+      this.method = method;
+   }
+
+   @Override
+   public String getName()
+   {
+      return method.getName();
+   }
+
+   @Override
+   public Optional<FuncOp> getCodeModel()
+   {
+      return method.getCodeModel();
+   }
+}
+----
+.Annotation Processing
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/OneApi.java[tag=annotation_processing]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/OneApi.java[tag=annotation_processing]
+endif::[]
+----
+
+- This has a low barrier of entry, because its just like most apis.
+- When many different apis are supported, each having its own set of functionality, it can become annoying to find the right methods to call
+- @Supported is a circular dependency. with each implementation the core has to be updated. Making it hard to write 3. Party implementations
+- There is a risk of concepts leaking from one implementation over the core-api into other implementations
+- easy to call the wrong methods
+
+== Solution 2: Inheritance
+
+The core api contains only functionality every implementation can use.
+Implementations extend the model to provide additional functionality.
+
+.core
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/Inheritance.java[tag=core]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=core]
+endif::[]
+----
+
+.reflection
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/Inheritance.java[tag=reflection]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=reflection]
+endif::[]
+----
+
+.Annotation Processing
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/Inheritance.java[tag=annotation_processing]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$/article/meta_model/Inheritance.java[tag=annotation_processing]
+endif::[]
+----
+
+- hard to make mistakes when using this api
+- low barrier of entry
+- good separation of concerns
+- The implementation would need many generics. Class for example needs the type of methods it returns.
+And when new core functionality gets added there maybe a need for an additional generic-parameter breaking every implementation and any code dependent on them
++
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/Inheritance.java[tag=hierarchy]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=hierarchy]
+endif::[]
+----
+
+== Solution 3: Accessors in Implementation
+
+Move Accessors to the Implementations, so they can define the featureset.
+
+.core
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=core]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=core]
+endif::[]
+----
+
+.reflection
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=reflection]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=reflection]
+endif::[]
+----
+
+.Annotation Processing
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=annotation_processing]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=annotation_processing]
+endif::[]
+----
+
+.Usage
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=usage]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=usage]
+endif::[]
+----
+
+- risk of inconsistent implementations
+- Query based apis are not that common and people are therefore less comfortable with them
+- changes in one implementation don't affect other implementations in any way
+- good separation of concerns
+
+== Conclusion
+
+The circular dependencies of Solution 1 make it a no-go in my opinion.
+There are about 10 planned implementations.
+With each new implementations the circular dependencies would become more annoying.
+
+The rist of needing to add new generics to the core model, like solution 2 demands, is too high.
+Especially when there is already talk about new types.
+
+Solution 3 seems to be the most promising from a maintainability standpoint.
+It would even enable implementations support new jdk features if the core becomes unmaintained.
+`method.getOrThrow(ReflectionQueries.newJdkFeature())`
+It could be a good idea to use two Api styles for this one Api.
+Solution 1 for thinks that are very unlikely to change like `method.getName()`
+and a Query Api for anything else.
+An inconsistent Api may not be worth it.
+
+*Solution 3 seems to be the right one*
+
+.Open Questions when writing a Query based Api:
+- What is a good way to keep implementations in sync?
+- How to keep the barrier of entry low?
+- Would a combining it with Solution 1 help?
