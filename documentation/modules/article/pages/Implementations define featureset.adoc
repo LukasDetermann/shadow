@@ -1,0 +1,188 @@
+= How can Implementations define the featureset?
+
+This is the result of
+xref:Shadow-Api:article:Meta Model.adoc[]
+The goal was to change the metamodel Api in such a way that implementations can define the featureset.
+So that ech Implementation can decide what e.g. a `Method` can do.
+
+Goals in on order
+
+- discoverability
+- flexibility
+- barrier of entry
+
+== previous
+
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT> {
+
+}
+
+public interface Queryable {
+   <TO_QUERY, RESULT> RESULT getOrThrow(Query<TO_QUERY, RESULT> query);
+
+   <TO_QUERY, RESULT> Optional<RESULT> get(Query<TO_QUERY, RESULT> query);
+}
+
+public interface Shadow extends Queryable {
+   @Override
+   <TO_QUERY, RESULT> RESULT getOrThrow(Query<TO_QUERY, RESULT> query);
+
+   @Override
+   <TO_QUERY, RESULT> Optional<RESULT> get(Query<TO_QUERY, RESULT> query);
+}
+----
+The only positive about this solution is, its communicates the intention very clearly on an Entity–relationship model.
+In practice this api would allow querying of anything on any Type.
+
+
+== Static Getter
+
+[%linenums,java]
+----
+public static String getName(Nameable nameable) {
+
+}
+
+static {
+   Method method = null;
+
+   String name = getName(method);
+}
+----
+This is the simples possible solution.
+It's just a static getter.
+The discoverability is poor.
+The caller has to know the type hierarchy to know that `getName()` can be called with methods.
+
+`For this Object -> get the name` should be preferred over `get the name -> for this Object`
+Its more "natural this way", works better with type inference and gives the opportunity for good discoverability via IDE autocomplete.
+
+== Static Method for Query
+
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT> {}
+
+public static  <TO_QUERY, RESULT> RESULT getOrThrow(TO_QUERY toQuery, Query<TO_QUERY, RESULT> query) {
+
+}
+
+public static Query<Nameable, String> name() {
+
+}
+
+static {
+
+   Method method = null;
+
+    String s = getOrThrow(method, name());
+}
+----
+Here the direction is turned to `For this Object -> get the name`, but the discoverability can still be improved.
+
+== A Query can be a Function
+
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT> extends Function<TO_QUERY, RESULT> {
+
+   @Override
+   public RESULT apply(TO_QUERY toQuery);
+}
+
+public static Query<Nameable, String> name() {
+
+}
+
+static
+{
+   Method method = null;
+
+   String name = name().apply(method);
+}
+----
+A Query is functionality equivalent to a `Function`.
+If the `Query` is the "active" part its back to `get the name -> for this Object`
+
+== Duplicate Model
+
+[%linenums,java]
+----
+public static ReflectionNameableQueryable query(Nameable nameable) {
+
+}
+
+public static ReflectionMethodQueryable query(Method method) {
+
+}
+
+public interface NameableQueryable
+{
+   public String getName();
+}
+
+public interface MethodQueryable extends NameableQueryable
+{
+   Return getReturn();
+}
+
+static
+{
+   Method method = null;
+
+   String name = query(method).getName();
+}
+----
+We can just duplicate the model or subsets of it and use static factory methods to map from one to the other.
+This offers the best possible discoverability.
+The only downside is that implementing support e.g. reflection is comparative more work.
+Which is not that big of a problem.
+
+
+== Generic
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT>
+{
+   public static <TO_QUERY extends T, T> Queryable<T> query(TO_QUERY toQuery)
+   {
+   }
+}
+
+public interface Queryable<TO_QUERY>
+{
+   <RESULT> RESULT getOrThrow(Query<TO_QUERY, RESULT> query);
+
+   <RESULT> Optional<RESULT> get(Query<TO_QUERY, RESULT> query);
+}
+
+public static Query<Nameable, String> name() {}
+
+static {
+
+   Method method = null;
+
+   //compiles
+   Queryable<Nameable> query = Query.query(method);
+   query.get(name());
+
+   //compiles
+   Optional<String> s = Query.<Method, Nameable>query(method).get(name());
+
+   //doesn't compile
+   Optional<String> s1 = Query.query(method).get(name());
+}
+----
+Here `Query` has a static factory with generics that give flexibility for supertypes.
+So could a `Query` for `Nameable` be applied to a `Method`, because `Method` extends `Nameable`.
+The Query call has two parts.
+First the Object to query gets wrapped in a `Queryable` which can be queried when the types match.
+This works but, but type inference is not strong enough.
+Making it annoying and unintuitive to use.
+
+== Conclusion
+- All are flexible
+- Duplicate Model and Generic provide the best discoverability
+- Duplicate Model has the lowest barrier of entry
