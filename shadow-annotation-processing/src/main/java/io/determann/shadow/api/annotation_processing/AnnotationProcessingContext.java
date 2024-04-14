@@ -3,12 +3,17 @@ package io.determann.shadow.api.annotation_processing;
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Annotation;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Enum;
+import io.determann.shadow.api.shadow.Module;
+import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.Record;
+import io.determann.shadow.api.shadow.*;
 
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -39,7 +44,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation);
+   Set<Annotationable> getAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -49,7 +54,286 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   AnnotationTypeChooser getAnnotatedWith(Annotation annotation);
+   Set<Annotationable> getAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Declared> getDeclaredAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Class> getClassesAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Class> getClassesAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Enum> getEnumsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Enum> getEnumsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Interface> getInterfacesAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Record> getRecordsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Record> getRecordsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Field> getFieldsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Field> getFieldsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Parameter> getParametersAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Parameter> getParametersAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Method> getMethodsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Method> getMethodsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Constructor> getConstructorsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Annotation> getAnnotationsAnnotatedWith(Annotation annotation);
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Package> getPackagesAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Package> gePackagesAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Generic> getGenericsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Generic> geGenericsAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Module> getModulesAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<Module> geModulesAnnotatedWith(Annotation annotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation);
+
+   /**
+    * Looks up annotated elements in currently compiled code. <br>
+    * Annotation processing happens in rounds.
+    * If a processor generates sources the next round will contain only these.
+    *
+    * @see #writeAndCompileSourceFile(String, String)
+    * @see #writeClassFile(String, String)
+    */
+   Set<RecordComponent> geRecordComponentsAnnotatedWith(Annotation annotation);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .java files

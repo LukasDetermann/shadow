@@ -21,13 +21,13 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType(shadow), getMirror());
    }
 
    @Override
    public Shadow getComponentType()
    {
-      return LangModelAdapter.getShadow(getApi(), getMirror().getComponentType());
+      return LangModelAdapter.generalize(getApi(), getMirror().getComponentType());
    }
 
    @Override
@@ -36,12 +36,12 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements Array
       return LangModelAdapter.getTypes(getApi())
                              .directSupertypes(getMirror())
                              .stream()
-                             .map(typeMirror1 -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror1))
+                             .map(typeMirror1 -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror1))
                              .toList();
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.ARRAY;
    }

@@ -4,10 +4,8 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 
-import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
 
 public class GenericImpl implements Generic
 {
@@ -34,22 +33,22 @@ public class GenericImpl implements Generic
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getAnnotations()).map(ReflectionAdapter::getAnnotationUsage).toList();
+      return Arrays.stream(getTypeVariable().getAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(ReflectionAdapter::getAnnotationUsage).toList();
+      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public Shadow getExtends()
    {
-      Type[] bounds = getTypeVariable().getBounds();
+      java.lang.reflect.Type[] bounds = getTypeVariable().getBounds();
       if (bounds.length == 1)
       {
-         return ReflectionAdapter.getShadow(bounds[0]);
+         return generalize(bounds[0]);
       }
       return new IntersectionImpl(bounds);
    }
@@ -61,26 +60,21 @@ public class GenericImpl implements Generic
    }
 
    @Override
-   public Shadow getEnclosing()
+   public Object getEnclosing()
    {
-      return ReflectionAdapter.getShadow(getTypeVariable().getGenericDeclaration());
-   }
-
-   @Override
-   public Package getPackage()
-   {
-      return switch (getEnclosing().getTypeKind())
+      if (getTypeVariable().getGenericDeclaration() instanceof Class<?> aClass)
       {
-         case CLASS, INTERFACE, ENUM, ANNOTATION, RECORD -> convert(getEnclosing()).toDeclaredOrThrow().getPackage();
-         case METHOD, CONSTRUCTOR -> convert(getEnclosing()).toExecutableOrThrow().getPackage();
-         case ENUM_CONSTANT, FIELD, PARAMETER -> convert(getEnclosing()).toVariableOrThrow().getPackage();
-         case GENERIC -> convert(getEnclosing()).toGenericOrThrow().getPackage();
-         default -> throw new IllegalStateException();
-      };
+         return generalize(aClass);
+      }
+      if (getTypeVariable().getGenericDeclaration() instanceof java.lang.reflect.Executable executable)
+      {
+         return generalize(executable);
+      }
+      throw new IllegalStateException();
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.GENERIC;
    }

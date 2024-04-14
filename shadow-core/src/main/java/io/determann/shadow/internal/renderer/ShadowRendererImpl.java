@@ -10,7 +10,7 @@ public class ShadowRendererImpl
 {
    public static String type(RenderingContextWrapper context, Shadow shadow)
    {
-      return switch (shadow.getTypeKind())
+      return switch (shadow.getKind())
       {
          case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, convert(shadow).toPrimitiveOrThrow());
          case CLASS -> ClassRendererImpl.type(context, convert(shadow).toClassOrThrow());
@@ -25,7 +25,7 @@ public class ShadowRendererImpl
          case VOID -> VoidRendererImpl.type();
          case NULL -> NullRendererImpl.type();
 
-         case PACKAGE, MODULE, ENUM_CONSTANT, METHOD, RECORD_COMPONENT, CONSTRUCTOR, FIELD, PARAMETER -> throw new IllegalArgumentException();
+         case PACKAGE, MODULE, ENUM_CONSTANT, RECORD_COMPONENT, FIELD, PARAMETER -> throw new IllegalArgumentException();
       };
    }
 

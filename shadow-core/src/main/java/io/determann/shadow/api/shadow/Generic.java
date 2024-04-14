@@ -22,7 +22,5 @@ public interface Generic extends Shadow,
    /**
     * returns the class, method constructor etc. this is the generic for
     */
-   Shadow getEnclosing();
-
-   Package getPackage();
+   Object getEnclosing();
 }

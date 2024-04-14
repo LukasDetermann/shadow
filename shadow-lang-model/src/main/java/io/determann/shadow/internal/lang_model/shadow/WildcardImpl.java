@@ -19,7 +19,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.WILDCARD;
    }
@@ -32,7 +32,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.getShadow(getApi(), extendsBound));
+      return Optional.of(LangModelAdapter.generalize(getApi(), extendsBound));
    }
 
    @Override
@@ -43,13 +43,13 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.getShadow(getApi(), superBound));
+      return Optional.of(LangModelAdapter.generalize(getApi(), superBound));
    }
 
    @Override
    public boolean contains(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).contains(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).contains(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override

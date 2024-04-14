@@ -15,7 +15,7 @@ public class NullImpl extends ShadowImpl<NullType> implements Null
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.NULL;
    }
@@ -23,7 +23,7 @@ public class NullImpl extends ShadowImpl<NullType> implements Null
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override

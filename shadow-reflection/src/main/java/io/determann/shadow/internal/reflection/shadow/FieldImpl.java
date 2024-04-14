@@ -86,7 +86,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
    @Override
    public Declared getSurrounding()
    {
-      return ReflectionAdapter.getShadow(getField().getDeclaringClass());
+      return ReflectionAdapter.generalize(getField().getDeclaringClass());
    }
 
    @Override

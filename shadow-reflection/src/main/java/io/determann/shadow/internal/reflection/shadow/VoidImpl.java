@@ -9,7 +9,7 @@ import java.util.Objects;
 public class VoidImpl implements Void
 {
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.VOID;
    }
@@ -17,13 +17,13 @@ public class VoidImpl implements Void
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && shadow.isTypeKind(TypeKind.VOID);
+      return shadow != null && shadow.isKind(TypeKind.VOID);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override

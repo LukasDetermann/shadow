@@ -14,7 +14,7 @@ class MethodRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("MethodExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {
                               @MyAnnotation
@@ -47,7 +47,7 @@ class MethodRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ReceiverExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
                               private void receiver(@MyAnnotation ReceiverExample ReceiverExample.this) {}
@@ -66,7 +66,7 @@ class MethodRendererTest
    void invocation()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("MethodExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {
                               abstract <T> void varArgsMethod(String... args);

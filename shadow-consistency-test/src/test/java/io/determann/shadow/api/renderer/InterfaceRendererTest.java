@@ -14,7 +14,7 @@ class InterfaceRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                            public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {
                               interface IndependentGeneric<C> {}
@@ -26,7 +26,7 @@ class InterfaceRendererTest
                            render(DEFAULT, aClass).declaration()));
 
       ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("java.util.function.Function"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.util.function.Function")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.util.function.Function")))
                      .test(aClass -> assertEquals("""
                                                   @FunctionalInterface
                                                   public interface Function<T, R> {
@@ -40,7 +40,7 @@ class InterfaceRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                          public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
                             interface IndependentGeneric<C> {}

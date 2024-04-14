@@ -1,5 +1,6 @@
 package io.determann.shadow.api.converter;
 
+import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.converter.module.*;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
@@ -14,6 +15,10 @@ import io.determann.shadow.internal.converter.DirectiveConverterImpl;
 
 public interface Converter
 {
+   static AnnotationableConverter convert(Annotationable annotationable)
+   {
+      return new ConverterImpl(annotationable);
+   }
 
    static AnnotationConverter convert(Annotation annotationShadow)
    {
@@ -28,11 +33,6 @@ public interface Converter
    static ClassConverter convert(Class aClass)
    {
       return new ConverterImpl(aClass);
-   }
-
-   static ConstructorConverter convert(Constructor constructor)
-   {
-      return new ConverterImpl(constructor);
    }
 
    static DeclaredConverter convert(Declared declared)
@@ -50,11 +50,6 @@ public interface Converter
       return new ConverterImpl(enumShadow);
    }
 
-   static ExecutableConverter convert(Executable executable)
-   {
-      return new ConverterImpl(executable);
-   }
-
    static FieldConverter convert(Field field)
    {
       return new ConverterImpl(field);
@@ -68,11 +63,6 @@ public interface Converter
    static IntersectionConverter convert(Intersection intersection)
    {
       return new ConverterImpl(intersection);
-   }
-
-   static MethodConverter convert(Method methodShadow)
-   {
-      return new ConverterImpl(methodShadow);
    }
 
    static ModuleConverter convert(Module module)
@@ -115,7 +105,7 @@ public interface Converter
       return new ConverterImpl(recordShadow);
    }
 
-   static ShadowConverter convert(Shadow shadow)
+   static TypeConverter convert(Shadow shadow)
    {
       return new ConverterImpl(shadow);
    }
@@ -125,7 +115,7 @@ public interface Converter
       return new ConverterImpl(generic);
    }
 
-   static VariableConverter convert(Variable<?> variable)
+   static VariableConverter convert(Variable variable)
    {
       return new ConverterImpl(variable);
    }

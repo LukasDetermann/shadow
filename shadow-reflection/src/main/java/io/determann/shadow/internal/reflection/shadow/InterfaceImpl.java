@@ -14,17 +14,17 @@ import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements Interface
 {
-   private final List<Shadow> genericTypes;
+   private final List<Shadow> genericShadows;
 
    public InterfaceImpl(Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public InterfaceImpl(Class<?> aClass, List<Shadow> genericTypes)
+   public InterfaceImpl(Class<?> aClass, List<Shadow> genericShadows)
    {
       super(aClass);
-      this.genericTypes = genericTypes;
+      this.genericShadows = genericShadows;
    }
 
    @Override
@@ -56,13 +56,13 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
    @Override
    public List<Shadow> getGenericTypes()
    {
-      return genericTypes;
+      return genericShadows;
    }
 
    @Override
    public List<Generic> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::getShadow).map(Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
    }
 
    @Override

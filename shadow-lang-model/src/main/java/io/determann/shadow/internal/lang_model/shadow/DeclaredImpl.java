@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
                                                                       Enum
 {
@@ -48,11 +50,11 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return switch (getElement().getKind())
       {
@@ -87,7 +89,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
-                         .map(variableElement -> LangModelAdapter.<Field>getShadow(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<Field>generalize(getApi(), variableElement))
                          .toList();
    }
 
@@ -96,7 +98,8 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LangModelAdapter.<Method>getShadow(getApi(), element))
+                          .map(element -> LangModelAdapter.generalize(getApi(), element))
+                          .map(Method.class::cast)
                           .toList();
    }
 
@@ -105,7 +108,8 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LangModelAdapter.<Constructor>getShadow(getApi(), element))
+                          .map(element -> LangModelAdapter.<Constructor>generalize(getApi(), element))
+                          .map(Constructor.class::cast)
                           .toList();
    }
 
@@ -115,7 +119,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       return LangModelAdapter.getTypes(getApi())
                              .directSupertypes(getMirror())
                              .stream()
-                             .map(typeMirror1 -> LangModelAdapter.<Declared>getShadow(getApi(), typeMirror1))
+                             .map(typeMirror1 -> LangModelAdapter.<Declared>generalize(getApi(), typeMirror1))
                              .toList();
    }
 
@@ -153,7 +157,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return getElement().getInterfaces()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<Interface>getShadow(getApi(), typeMirror))
+                         .map(typeMirror -> LangModelAdapter.<Interface>generalize(getApi(), typeMirror))
                          .toList();
    }
 
@@ -161,7 +165,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    public List<Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))
+                            .filter(declared -> declared.getKind().equals(TypeKind.INTERFACE))
                             .map(Converter::convert)
                             .map(DeclaredConverter::toInterfaceOrThrow)
                             .toList();
@@ -174,7 +178,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.ENUM_CONSTANT))
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> LangModelAdapter.<EnumConstant>getShadow(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<EnumConstant>generalize(getApi(), variableElement))
                          .toList();
    }
 
@@ -182,37 +186,37 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    public Package getPackage()
    {
       return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+                     .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override
@@ -224,7 +228,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
+      return Objects.hash(getKind(),
                           getQualifiedName(),
                           getModifiers());
    }
@@ -241,7 +245,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
          return false;
       }
       return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
-             Objects.equals(getTypeKind(), otherDeclared.getTypeKind()) &&
+             Objects.equals(getKind(), otherDeclared.getKind()) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }
 }

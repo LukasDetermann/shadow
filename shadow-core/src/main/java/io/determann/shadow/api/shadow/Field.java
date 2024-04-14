@@ -5,7 +5,7 @@ import io.determann.shadow.api.modifier.AccessModifiable;
 import io.determann.shadow.api.modifier.FinalModifiable;
 import io.determann.shadow.api.modifier.StaticModifiable;
 
-public interface Field extends Variable<Declared>,
+public interface Field extends Variable,
                                AccessModifiable,
                                FinalModifiable,
                                StaticModifiable,
@@ -17,4 +17,7 @@ public interface Field extends Variable<Declared>,
     * String or primitive value of static fields
     */
    Object getConstantValue();
+
+   @Override
+   Declared getSurrounding();
 }

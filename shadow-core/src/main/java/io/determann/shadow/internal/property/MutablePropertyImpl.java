@@ -13,7 +13,7 @@ import java.util.Optional;
 public class MutablePropertyImpl implements MutableProperty
 {
    private final String name;
-   private final Shadow type;
+   private final Shadow shadow;
    private final Field field;
    private final Method getter;
    private final Method setter;
@@ -31,13 +31,13 @@ public class MutablePropertyImpl implements MutableProperty
    }
 
    private MutablePropertyImpl(String name,
-                               Shadow type,
+                               Shadow shadow,
                                Field field,
                                Method getter,
                                Method setter)
    {
       this.name = name;
-      this.type = type;
+      this.shadow = shadow;
       this.field = field;
       this.getter = getter;
       this.setter = setter;
@@ -52,7 +52,7 @@ public class MutablePropertyImpl implements MutableProperty
    @Override
    public Shadow getType()
    {
-      return type;
+      return shadow;
    }
 
    @Override

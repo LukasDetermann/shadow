@@ -19,7 +19,7 @@ public class UsesImpl implements Uses
    @Override
    public Declared getService()
    {
-      return ReflectionAdapter.getDeclaredShadow(usesDirective).orElseThrow();
+      return ReflectionAdapter.getDeclared(usesDirective).orElseThrow();
    }
 
    @Override

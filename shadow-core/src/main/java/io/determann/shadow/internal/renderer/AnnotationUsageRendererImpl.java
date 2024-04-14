@@ -36,11 +36,11 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append('@');
-      sb.append(context.renderName(usage));
-      if (!usage.getMethods().isEmpty())
+      sb.append(context.renderName(usage.getAnnotation()));
+      if (!usage.getAnnotation().getMethods().isEmpty())
       {
          sb.append('(');
-         sb.append(usage.getMethods()
+         sb.append(usage.getAnnotation().getMethods()
                         .stream()
                         .map(method -> method.getName() +
                                        " = " +

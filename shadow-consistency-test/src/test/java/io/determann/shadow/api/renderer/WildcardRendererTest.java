@@ -15,7 +15,7 @@ class WildcardRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("BoundsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("BoundsExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("BoundsExample")))
                      .withCode("BoundsExample.java", """
                            public class BoundsExample {
                               public static void extendsExample(java.util.List<? extends Number> numbers) {}

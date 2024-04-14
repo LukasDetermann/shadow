@@ -38,13 +38,13 @@ public class RecordComponentImpl implements RecordComponent
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return Arrays.stream(getRecordComponent().getAnnotations()).map(ReflectionAdapter::getAnnotationUsage).toList();
+      return Arrays.stream(getRecordComponent().getAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Arrays.stream(getRecordComponent().getDeclaredAnnotations()).map(ReflectionAdapter::getAnnotationUsage).toList();
+      return Arrays.stream(getRecordComponent().getDeclaredAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
@@ -82,29 +82,29 @@ public class RecordComponentImpl implements RecordComponent
    @Override
    public Record getRecord()
    {
-      return ReflectionAdapter.getShadow(getRecordComponent().getDeclaringRecord());
+      return ReflectionAdapter.generalize(getRecordComponent().getDeclaringRecord());
    }
 
    @Override
    public Shadow getType()
    {
-      return ReflectionAdapter.getShadow(getRecordComponent().getType());
+      return ReflectionAdapter.generalize(getRecordComponent().getType());
    }
 
    @Override
    public Method getGetter()
    {
-      return ReflectionAdapter.getShadow(getRecordComponent().getAccessor());
+      return ReflectionAdapter.generalize(getRecordComponent().getAccessor());
    }
 
    @Override
    public Package getPackage()
    {
-      return ReflectionAdapter.getShadow(getRecordComponent().getDeclaringRecord().getPackage());
+      return ReflectionAdapter.generalize(getRecordComponent().getDeclaringRecord().getPackage());
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.RECORD_COMPONENT;
    }

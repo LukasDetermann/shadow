@@ -84,12 +84,12 @@ class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      Shadow type = getter.getMethod().getReturnType();
+                                      Shadow shadow = getter.getMethod().getReturnType();
 
-                                      PropertyTemplate template = new PropertyTemplate(name, type, getter.getMethod());
+                                      PropertyTemplate template = new PropertyTemplate(name, shadow, getter.getMethod());
 
-                                      findSetter(entry.getValue(), type).ifPresent(template::setSetter);
-                                      findField(nameField, type, name).ifPresent(template::setField);
+                                      findSetter(entry.getValue(), shadow).ifPresent(template::setSetter);
+                                      findField(nameField, shadow, name).ifPresent(template::setField);
 
                                       return new AbstractMap.SimpleEntry<>(getter.getPosition(), template);
                                    })
@@ -100,7 +100,7 @@ class PropertyTemplateFactory
 
    private static List<Method> getMethods(Declared declared)
    {
-      if (!declared.isTypeKind(CLASS))
+      if (!declared.isKind(CLASS))
       {
          return declared.getMethods();
       }
@@ -117,20 +117,20 @@ class PropertyTemplateFactory
                     .toList();
    }
 
-   private static Optional<Field> findField(Map<String, Field> nameField, Shadow type, String name)
+   private static Optional<Field> findField(Map<String, Field> nameField, Shadow shadow, String name)
    {
       Field field = nameField.get(name);
-      if (field == null || !field.getType().representsSameType(type))
+      if (field == null || !field.getType().representsSameType(shadow))
       {
          return Optional.empty();
       }
       return Optional.of(field);
    }
 
-   private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow type)
+   private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow shadow)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
-      if (setters == null || setters.size() != 1 || !setters.get(0).getMethod().getParameters().get(0).getType().representsSameType(type))
+      if (setters == null || setters.size() != 1 || !setters.get(0).getMethod().getParameters().get(0).getType().representsSameType(shadow))
       {
          return Optional.empty();
       }
@@ -169,10 +169,10 @@ class PropertyTemplateFactory
       List<Parameter> parameters = method.getParameters();
 
       //getter
-      if (!method.getReturnType().isTypeKind(VOID))
+      if (!method.getReturnType().isKind(VOID))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = method.getReturnType().isTypeKind(TypeKind.BOOLEAN) && name.startsWith(IS_PREFIX) && name.length() > 2;
+         boolean hasIsPrefix = method.getReturnType().isKind(TypeKind.BOOLEAN) && name.startsWith(IS_PREFIX) && name.length() > 2;
 
          if (parameters.isEmpty())
          {
@@ -188,7 +188,7 @@ class PropertyTemplateFactory
          return Optional.empty();
       }
       //setter
-      boolean couldBeSetter = method.getReturnType().isTypeKind(VOID) && name.startsWith(SET_PREFIX) && name.length() > 3;
+      boolean couldBeSetter = method.getReturnType().isKind(VOID) && name.startsWith(SET_PREFIX) && name.length() > 3;
       if (couldBeSetter && parameters.size() == 1)
       {
          return Optional.of(new Accessor(method, SETTER, SET_PREFIX, toPropertyName(method, SET_PREFIX), position));

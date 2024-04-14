@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParameterTest extends VariableTest<Executable, Parameter>
+class ParameterTest extends VariableTest<Parameter>
 {
    ParameterTest()
    {

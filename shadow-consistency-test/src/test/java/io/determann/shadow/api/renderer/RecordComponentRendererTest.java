@@ -14,7 +14,7 @@ class RecordComponentRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("RecordComponentExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("Long id", render(DEFAULT, aClass.getRecordComponentOrThrow("id")).declaration()));
    }
@@ -23,7 +23,7 @@ class RecordComponentRendererTest
    void invocation()
    {
       ConsistencyTest.compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("RecordComponentExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("id()", render(DEFAULT, aClass.getRecordComponentOrThrow("id")).invocation()));
    }

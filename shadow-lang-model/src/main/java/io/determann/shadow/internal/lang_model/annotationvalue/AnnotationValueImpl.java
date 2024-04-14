@@ -92,13 +92,13 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Shadow asType()
    {
-      return LangModelAdapter.getShadow(context, (TypeMirror) annotationValue.getValue());
+      return LangModelAdapter.generalize(context, (TypeMirror) annotationValue.getValue());
    }
 
    @Override
    public EnumConstant asEnumConstant()
    {
-      return LangModelAdapter.getShadow(context, (Element) annotationValue.getValue());
+      return LangModelAdapter.generalize(context, (Element) annotationValue.getValue());
    }
 
    @Override

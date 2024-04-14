@@ -2,7 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.converter.TypeConverter;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.converter.Converter.convert;
@@ -27,7 +27,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                             .toInterface()
                                                             .map(anInterface -> anInterface.getGenericTypes().get(0))
                                                             .map(Converter::convert)
-                                                            .flatMap(ShadowConverter::toWildcard)
+                                                            .flatMap(TypeConverter::toWildcard)
                                                             .flatMap(Wildcard::getExtends)
                                                             .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
@@ -51,7 +51,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                             .toInterface()
                                                             .map(anInterface -> anInterface.getGenericTypes().get(0))
                                                             .map(Converter::convert)
-                                                            .flatMap(ShadowConverter::toWildcard)
+                                                            .flatMap(TypeConverter::toWildcard)
                                                             .flatMap(Wildcard::getSuper)
                                                             .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """

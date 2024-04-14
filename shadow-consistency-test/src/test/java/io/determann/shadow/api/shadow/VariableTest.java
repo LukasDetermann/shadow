@@ -9,7 +9,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class VariableTest<SURROUNDING extends Shadow, VARIABLE extends Variable<SURROUNDING>> extends ShadowTest<VARIABLE>
+abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIABLE>
 {
    VariableTest(Function<AnnotationProcessingContext, VARIABLE> variableSupplier)
    {

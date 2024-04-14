@@ -96,13 +96,13 @@ public class AnnotationValueImpl implements AnnotationValue
    @Override
    public Shadow asType()
    {
-      return ReflectionAdapter.getShadow(((Class<?>) value));
+      return ReflectionAdapter.generalize(((Class<?>) value));
    }
 
    @Override
    public EnumConstant asEnumConstant()
    {
-      return ReflectionAdapter.getShadow((Enum<?>) value);
+      return ReflectionAdapter.generalize((Enum<?>) value);
    }
 
    @Override

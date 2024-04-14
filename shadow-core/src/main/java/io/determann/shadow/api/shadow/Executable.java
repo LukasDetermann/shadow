@@ -19,8 +19,7 @@ import java.util.Optional;
  *    <li>{@link Method}</li>
  * </ul>
  */
-public interface Executable extends Shadow,
-                                    Annotationable,
+public interface Executable extends Annotationable,
                                     Nameable,
                                     Modifiable,
                                     ModuleEnclosed,
@@ -29,9 +28,9 @@ public interface Executable extends Shadow,
    /**
     * {@snippet :
     *  public MyObject(String param){}//@highlight substring="String param"
-    * }
+    *}
     * Returns the formal parameters, meaning everything but the Receiver.
-    *
+    * <p>
     * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
     * {@link Constructor}s with more than one {@link Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
     */
@@ -66,19 +65,19 @@ public interface Executable extends Shadow,
    Package getPackage();
 
    /**
-    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
+    * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-    * {@snippet file="ReceiverUsageTest.java" region="ReceiverUsageTest.method"}
+    * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
     */
    Optional<Declared> getReceiverType();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-    * {@snippet file="ReceiverUsageTest.java" region="ReceiverUsageTest.method"}
+    * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
     */
    Optional<Receiver> getReceiver();
 }

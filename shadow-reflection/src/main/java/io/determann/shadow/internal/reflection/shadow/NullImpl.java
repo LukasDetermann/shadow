@@ -11,11 +11,11 @@ public class NullImpl implements Null
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && shadow.isTypeKind(TypeKind.NULL);
+      return shadow != null && shadow.isKind(TypeKind.NULL);
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.NULL;
    }
@@ -23,7 +23,7 @@ public class NullImpl implements Null
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override

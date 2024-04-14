@@ -15,7 +15,7 @@ class EnumConstantRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass ->
                            {
                               EnumConstant constant = aClass.getEnumConstantOrThrow("SOURCE");
@@ -25,7 +25,7 @@ class EnumConstantRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("AnnotatedEnumConstant"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("AnnotatedEnumConstant")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("AnnotatedEnumConstant")))
                      .withCode("AnnotatedEnumConstant.java",
                                """
                                      enum AnnotatedEnumConstant{
@@ -41,7 +41,7 @@ class EnumConstantRendererTest
    void invocation()
    {
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, aClass.getEnumConstantOrThrow("SOURCE")).invocation()));
    }
 }

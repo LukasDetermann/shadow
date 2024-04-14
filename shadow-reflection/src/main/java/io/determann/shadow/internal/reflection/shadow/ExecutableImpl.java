@@ -47,7 +47,7 @@ public class ExecutableImpl implements Constructor,
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -55,7 +55,7 @@ public class ExecutableImpl implements Constructor,
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -76,11 +76,11 @@ public class ExecutableImpl implements Constructor,
    public List<Parameter> getParameters()
    {
       List<Parameter> result = Arrays.stream(getExecutable().getParameters())
-                                     .map(ReflectionAdapter::getShadow)
+                                     .map(ReflectionAdapter::generalize)
                                      .map(Parameter.class::cast)
                                      .collect(Collectors.toList());
 
-      if (isTypeKind(TypeKind.CONSTRUCTOR))
+      if (executable instanceof java.lang.reflect.Constructor<?>)
       {
          Optional<Receiver> receiver = getReceiver();
 
@@ -101,19 +101,19 @@ public class ExecutableImpl implements Constructor,
    @Override
    public Shadow getReturnType()
    {
-      return ReflectionAdapter.getShadow(getExecutable().getAnnotatedReturnType().getType());
+      return ReflectionAdapter.generalize(getExecutable().getAnnotatedReturnType().getType());
    }
 
    @Override
    public List<Shadow> getParameterTypes()
    {
-      return Arrays.stream(getExecutable().getParameterTypes()).map(ReflectionAdapter::getShadow).map(Shadow.class::cast).toList();
+      return Arrays.stream(getExecutable().getParameterTypes()).map(ReflectionAdapter::generalize).map(Shadow.class::cast).toList();
    }
 
    @Override
    public List<Class> getThrows()
    {
-      return Arrays.stream(getExecutable().getExceptionTypes()).map(ReflectionAdapter::getShadow).map(Class.class::cast).toList();
+      return Arrays.stream(getExecutable().getExceptionTypes()).map(ReflectionAdapter::generalize).map(Class.class::cast).toList();
    }
 
    @Override
@@ -132,7 +132,7 @@ public class ExecutableImpl implements Constructor,
    @Override
    public Declared getSurrounding()
    {
-      return ReflectionAdapter.getShadow(getExecutable().getDeclaringClass());
+      return ReflectionAdapter.generalize(getExecutable().getDeclaringClass());
    }
 
    @Override
@@ -144,7 +144,7 @@ public class ExecutableImpl implements Constructor,
    @Override
    public List<Generic> getGenerics()
    {
-      return Arrays.stream(getExecutable().getTypeParameters()).map(ReflectionAdapter::getShadow).map(Generic.class::cast).toList();
+      return Arrays.stream(getExecutable().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
    }
 
    @Override
@@ -161,7 +161,7 @@ public class ExecutableImpl implements Constructor,
       {
          return Optional.empty();
       }
-      return Optional.of(((Declared) ReflectionAdapter.getShadow(receiverType.getType())));
+      return Optional.of(((Declared) ReflectionAdapter.generalize(receiverType.getType())));
    }
 
    @Override
@@ -196,14 +196,14 @@ public class ExecutableImpl implements Constructor,
 
       Declared otherSurrounding = method.getSurrounding();
 
-      if (otherSurrounding.isTypeKind(TypeKind.CLASS))
+      if (otherSurrounding.isKind(TypeKind.CLASS))
       {
          if (!method.isPublic() && !method.isProtected() && (!method.isPackagePrivate() || !method.getPackage().equals(getPackage())))
          {
             return false;
          }
 
-         if (!getSurrounding().isTypeKind(TypeKind.CLASS))
+         if (!getSurrounding().isKind(TypeKind.CLASS))
          {
             return false;
          }
@@ -214,14 +214,14 @@ public class ExecutableImpl implements Constructor,
             return false;
          }
       }
-      if (otherSurrounding.isTypeKind(TypeKind.INTERFACE))
+      if (otherSurrounding.isKind(TypeKind.INTERFACE))
       {
          if (!method.isPublic())
          {
             return false;
          }
 
-         if (!getSurrounding().isTypeKind(TypeKind.CLASS))
+         if (!getSurrounding().isKind(TypeKind.CLASS))
          {
             return false;
          }
@@ -252,34 +252,6 @@ public class ExecutableImpl implements Constructor,
       return getParameterTypes().equals(method.getParameterTypes());
    }
 
-   @Override
-   public TypeKind getTypeKind()
-   {
-      if (getExecutable() instanceof java.lang.reflect.Method)
-      {
-         return TypeKind.METHOD;
-      }
-      return TypeKind.CONSTRUCTOR;
-   }
-
-   @Override
-   public boolean representsSameType(Shadow shadow)
-   {
-      return shadow != null &&
-             convert(shadow)
-                      .toExecutable()
-                      .map(executable1 ->
-                           {
-                              boolean returnEquals = executable1.getReturnType().representsSameType(getReturnType());
-                              if (!isTypeKind(TypeKind.METHOD) || !executable1.isTypeKind(TypeKind.METHOD))
-                              {
-                                 return returnEquals;
-                              }
-                              return returnEquals && sameParameterTypes(convert(executable1).toMethodOrThrow());
-                           })
-                      .orElse(false);
-   }
-
    public java.lang.reflect.Executable getExecutable()
    {
       return executable;
@@ -288,8 +260,7 @@ public class ExecutableImpl implements Constructor,
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
-                          getName(),
+      return Objects.hash(getName(),
                           getParameterTypes(),
                           getParameters(),
                           getModifiers());
@@ -307,7 +278,6 @@ public class ExecutableImpl implements Constructor,
          return false;
       }
       return Objects.equals(getName(), otherExecutable.getName()) &&
-             Objects.equals(getTypeKind(), otherExecutable.getTypeKind()) &&
              Objects.equals(getParameters(), otherExecutable.getParameters()) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());

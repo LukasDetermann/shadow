@@ -11,11 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MethodTest extends ExecutableTest<Method>
 {
-   MethodTest()
-   {
-      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getMethods("toString").get(0));
-   }
-
    @Test
    void testisSubSignatureOf()
    {
@@ -58,7 +53,7 @@ class MethodTest extends ExecutableTest<Method>
    void testOverrides()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("MethodExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public class MethodExample {
                               @Override

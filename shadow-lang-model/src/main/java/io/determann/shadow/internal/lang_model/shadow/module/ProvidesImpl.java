@@ -23,7 +23,7 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
    @Override
    public Declared getService()
    {
-      return LangModelAdapter.getShadow(getApi(), providesDirective.getService());
+      return LangModelAdapter.generalize(getApi(), providesDirective.getService());
    }
 
    @Override
@@ -31,7 +31,7 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
    {
       return providesDirective.getImplementations()
                               .stream()
-                              .map(typeElement -> LangModelAdapter.<Declared>getShadow(getApi(), typeElement))
+                              .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
                               .toList();
    }
 

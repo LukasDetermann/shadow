@@ -41,7 +41,7 @@ public class ParameterImpl implements Parameter
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getParameter().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -49,7 +49,7 @@ public class ParameterImpl implements Parameter
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getParameter().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -67,7 +67,7 @@ public class ParameterImpl implements Parameter
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.PARAMETER;
    }
@@ -113,7 +113,7 @@ public class ParameterImpl implements Parameter
    @Override
    public Shadow getType()
    {
-      return ReflectionAdapter.getShadow(getParameter().getParameterizedType());
+      return ReflectionAdapter.generalize(getParameter().getParameterizedType());
    }
 
    @Override
@@ -125,7 +125,7 @@ public class ParameterImpl implements Parameter
    @Override
    public Executable getSurrounding()
    {
-      return ReflectionAdapter.getShadow(getParameter().getDeclaringExecutable());
+      return ReflectionAdapter.generalize(getParameter().getDeclaringExecutable());
    }
 
    public java.lang.reflect.Parameter getParameter()
@@ -136,7 +136,7 @@ public class ParameterImpl implements Parameter
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
+      return Objects.hash(getKind(),
                           getName(),
                           getSurrounding(),
                           isVarArgs());

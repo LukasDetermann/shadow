@@ -13,35 +13,35 @@ class PrimitiveRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveBoolean())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(boolean.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(boolean.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveByte())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(byte.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(byte.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveShort())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(short.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(short.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveInt())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(int.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(int.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveLong())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(long.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(long.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveChar())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(char.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(char.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveFloat())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(float.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(float.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
 
       ConsistencyTest.compileTime(context -> context.getConstants().getPrimitiveDouble())
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(double.class))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(double.class))
                      .test(aClass -> render(DEFAULT, aClass).type());
    }
 }

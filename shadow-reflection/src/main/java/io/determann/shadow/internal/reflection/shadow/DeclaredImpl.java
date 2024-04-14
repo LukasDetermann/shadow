@@ -4,7 +4,7 @@ import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredConverter;
-import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Enum;
@@ -34,7 +34,7 @@ public class DeclaredImpl implements Annotation,
    @Override
    public Module getModule()
    {
-      return ReflectionAdapter.getShadow(getaClass().getModule());
+      return ReflectionAdapter.generalize(getaClass().getModule());
    }
 
    @Override
@@ -53,7 +53,7 @@ public class DeclaredImpl implements Annotation,
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())
-            .map(ReflectionAdapter::getAnnotationUsage)
+            .map(ReflectionAdapter::generalize)
             .toList();
    }
 
@@ -61,7 +61,7 @@ public class DeclaredImpl implements Annotation,
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return stream(getaClass().getDeclaredAnnotations())
-            .map(ReflectionAdapter::getAnnotationUsage)
+            .map(ReflectionAdapter::generalize)
             .toList();
    }
 
@@ -81,7 +81,7 @@ public class DeclaredImpl implements Annotation,
 
    private int getModifiersAsInt()
    {
-      TypeKind typeKind = getTypeKind();
+      TypeKind typeKind = getKind();
 
       if (typeKind.equals(TypeKind.INTERFACE) || typeKind.equals(TypeKind.ANNOTATION))
       {
@@ -114,37 +114,37 @@ public class DeclaredImpl implements Annotation,
    @Override
    public List<Field> getFields()
    {
-      return stream(getaClass().getDeclaredFields()).map(ReflectionAdapter::getShadow).toList();
+      return stream(getaClass().getDeclaredFields()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public List<Method> getMethods()
    {
-      return stream(getaClass().getDeclaredMethods()).map(ReflectionAdapter::getShadow).toList();
+      return stream(getaClass().getDeclaredMethods()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public List<Constructor> getConstructors()
    {
-      return stream(getaClass().getDeclaredConstructors()).map(ReflectionAdapter::getShadow).toList();
+      return stream(getaClass().getDeclaredConstructors()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
    public List<Declared> getDirectSuperTypes()
    {
       List<Declared> result = stream(getaClass().getGenericInterfaces())
-            .map(ReflectionAdapter::getShadow)
+            .map(ReflectionAdapter::generalize)
             .map(Converter::convert)
-            .map(ShadowConverter::toDeclaredOrThrow)
+            .map(TypeConverter::toDeclaredOrThrow)
             .collect(Collectors.toList());
 
       ofNullable(getaClass().getGenericSuperclass())
-            .map(ReflectionAdapter::getShadow)
+            .map(ReflectionAdapter::generalize)
             .map(Converter::convert)
-            .map(ShadowConverter::toDeclaredOrThrow)
+            .map(TypeConverter::toDeclaredOrThrow)
             .ifPresent(result::add);
 
-      if (result.isEmpty() && isTypeKind(TypeKind.INTERFACE))
+      if (result.isEmpty() && isKind(TypeKind.INTERFACE))
       {
          result.add(new ClassImpl(Object.class));
       }
@@ -172,7 +172,7 @@ public class DeclaredImpl implements Annotation,
    public List<Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared.getTypeKind().equals(TypeKind.INTERFACE))
+                            .filter(declared -> declared.getKind().equals(TypeKind.INTERFACE))
                             .map(Converter::convert)
                             .map(DeclaredConverter::toInterfaceOrThrow)
                             .toList();
@@ -181,13 +181,13 @@ public class DeclaredImpl implements Annotation,
    @Override
    public List<Interface> getDirectInterfaces()
    {
-      return stream(getaClass().getInterfaces()).map(ReflectionAdapter::getShadow).map(Interface.class::cast).toList();
+      return stream(getaClass().getInterfaces()).map(ReflectionAdapter::generalize).map(Interface.class::cast).toList();
    }
 
    @Override
    public Package getPackage()
    {
-      return ReflectionAdapter.getShadow(getaClass().getPackage());
+      return ReflectionAdapter.generalize(getaClass().getPackage());
    }
 
    @Override
@@ -201,12 +201,12 @@ public class DeclaredImpl implements Annotation,
    {
       return stream(getaClass().getEnumConstants())
             .map(java.lang.Enum.class::cast)
-            .map(ReflectionAdapter::getShadow)
+            .map(ReflectionAdapter::generalize)
             .toList();
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       if (getaClass().isEnum())
       {
@@ -236,25 +236,25 @@ public class DeclaredImpl implements Annotation,
 
    private boolean sameGenerics(Shadow shadow)
    {
-      if (!getTypeKind().equals(shadow.getTypeKind()))
+      if (!getKind().equals(shadow.getKind()))
       {
          return false;
       }
-      if (isTypeKind(TypeKind.ENUM) ||
-          isTypeKind(TypeKind.ANNOTATION))
+      if (isKind(TypeKind.ENUM) ||
+          isKind(TypeKind.ANNOTATION))
       {
          return false;
       }
 
-      if (isTypeKind(TypeKind.CLASS))
+      if (isKind(TypeKind.CLASS))
       {
          return sameGenerics(convert(((Declared) this)).toClassOrThrow().getGenerics(), convert(shadow).toClassOrThrow().getGenerics());
       }
-      if (isTypeKind(TypeKind.INTERFACE))
+      if (isKind(TypeKind.INTERFACE))
       {
          return sameGenerics(convert(((Declared) this)).toInterfaceOrThrow().getGenerics(), convert(shadow).toInterfaceOrThrow().getGenerics());
       }
-      if (isTypeKind(TypeKind.RECORD))
+      if (isKind(TypeKind.RECORD))
       {
          return sameGenerics(convert(((Declared) this)).toRecordOrThrow().getGenerics(), convert(shadow).toRecordOrThrow().getGenerics());
       }
@@ -288,7 +288,7 @@ public class DeclaredImpl implements Annotation,
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
+      return Objects.hash(getKind(),
                           getQualifiedName(),
                           getModifiers());
    }
@@ -305,7 +305,7 @@ public class DeclaredImpl implements Annotation,
          return false;
       }
       return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
-             Objects.equals(getTypeKind(), otherDeclared.getTypeKind()) &&
+             Objects.equals(getKind(), otherDeclared.getKind()) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }
 

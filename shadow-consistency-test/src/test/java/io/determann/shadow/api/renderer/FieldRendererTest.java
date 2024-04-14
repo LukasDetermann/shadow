@@ -14,7 +14,7 @@ class FieldRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("java.lang.String"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.String")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String")))
                      .test(aClass -> assertEquals("@jdk.internal.vm.annotation.Stable\nprivate final byte value;\n",
                                                   render(DEFAULT, aClass.getFieldOrThrow("value"))
                                                         .declaration()));

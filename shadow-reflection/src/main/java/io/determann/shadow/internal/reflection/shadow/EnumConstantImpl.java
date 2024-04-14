@@ -59,7 +59,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    @Override
    public Enum getSurrounding()
    {
-      return ReflectionAdapter.getShadow(getField().getDeclaringClass());
+      return ReflectionAdapter.generalize(getField().getDeclaringClass());
    }
 
    @Override

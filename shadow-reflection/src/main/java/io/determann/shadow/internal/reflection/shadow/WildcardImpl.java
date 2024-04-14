@@ -5,7 +5,6 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
 
-import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,7 +22,7 @@ public class WildcardImpl implements Wildcard
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.WILDCARD;
    }
@@ -49,7 +48,7 @@ public class WildcardImpl implements Wildcard
    @Override
    public Optional<Shadow> getExtends()
    {
-      Type[] upperBounds = wildcardType.getUpperBounds();
+      java.lang.reflect.Type[] upperBounds = wildcardType.getUpperBounds();
       //? extends Object -> ? : drop the extends Object
       //the upperBounds are never empty. the lower bounds can be. if the upper bound is only Object. ignore it
       if (upperBounds.length == 1 && upperBounds[0].equals(Object.class))
@@ -59,7 +58,7 @@ public class WildcardImpl implements Wildcard
       return switch (upperBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(ReflectionAdapter.getShadow(upperBounds[0]));
+         case 1 -> Optional.of(ReflectionAdapter.generalize(upperBounds[0]));
          default -> Optional.of(new IntersectionImpl(upperBounds));
       };
    }
@@ -67,11 +66,11 @@ public class WildcardImpl implements Wildcard
    @Override
    public Optional<Shadow> getSuper()
    {
-      Type[] lowerBounds = wildcardType.getLowerBounds();
+      java.lang.reflect.Type[] lowerBounds = wildcardType.getLowerBounds();
       return switch (lowerBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(ReflectionAdapter.getShadow(lowerBounds[0]));
+         case 1 -> Optional.of(ReflectionAdapter.generalize(lowerBounds[0]));
          default -> Optional.of(new IntersectionImpl(lowerBounds));
       };
    }

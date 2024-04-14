@@ -19,17 +19,17 @@ import static io.determann.shadow.api.converter.Converter.convert;
 
 public class ClassImpl extends DeclaredImpl implements Class
 {
-   private final List<Shadow> genericTypes;
+   private final List<Shadow> genericShadows;
 
    public ClassImpl(java.lang.Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public ClassImpl(java.lang.Class<?> aClass, List<Shadow> genericTypes)
+   public ClassImpl(java.lang.Class<?> aClass, List<Shadow> genericShadows)
    {
       super(aClass);
-      this.genericTypes = genericTypes;
+      this.genericShadows = genericShadows;
    }
 
    @Override
@@ -40,14 +40,14 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return null;
       }
-      return ReflectionAdapter.getShadow(superclass);
+      return ReflectionAdapter.generalize(superclass);
    }
 
    @Override
    public List<Class> getPermittedSubClasses()
    {
       return Arrays.stream(getaClass().getPermittedSubclasses())
-                   .map(ReflectionAdapter::getShadow)
+                   .map(ReflectionAdapter::generalize)
                    .map(Class.class::cast)
                    .toList();
    }
@@ -75,7 +75,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return convert(shadow)
             .toDeclared()
-            .map(declared -> getaClass().isAssignableFrom(ReflectionAdapter.getReflection(declared)))
+            .map(declared -> getaClass().isAssignableFrom(ReflectionAdapter.particularize(declared)))
             .orElse(false);
    }
 
@@ -87,29 +87,29 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return Optional.empty();
       }
-      return Optional.of(ReflectionAdapter.getShadow(enclosingClass));
+      return Optional.of(ReflectionAdapter.generalize(enclosingClass));
    }
 
    @Override
    public List<Shadow> getGenericTypes()
    {
-      return genericTypes;
+      return genericShadows;
    }
 
    @Override
    public List<Generic> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::getShadow).map(Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
    }
 
    @Override
    public Primitive asUnboxed()
    {
-      if (!getTypeKind().isPrimitive())
+      if (!getKind().isPrimitive())
       {
          throw new IllegalArgumentException();
       }
-      return new PrimitiveImpl(switch (getTypeKind())
+      return new PrimitiveImpl(switch (getKind())
                                {
                                   case BOOLEAN -> boolean.class;
                                   case BYTE -> byte.class;

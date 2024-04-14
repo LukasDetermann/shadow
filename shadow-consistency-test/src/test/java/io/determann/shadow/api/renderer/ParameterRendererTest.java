@@ -17,7 +17,7 @@ class ParameterRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ReceiverExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
                               private void receiver(@MyAnnotation ReceiverExample ReceiverExample.this) {}
@@ -33,7 +33,7 @@ class ParameterRendererTest
 
 
       ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("ParameterExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ParameterExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ParameterExample")))
                      .withCode("ParameterExample.java", """
                          public interface ParameterExample {
                             void foo(@MyAnnotation Long foo, Long... foo2);

@@ -15,7 +15,7 @@ public class VoidImpl extends ShadowImpl<NoType> implements Void
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.VOID;
    }
@@ -23,7 +23,7 @@ public class VoidImpl extends ShadowImpl<NoType> implements Void
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override

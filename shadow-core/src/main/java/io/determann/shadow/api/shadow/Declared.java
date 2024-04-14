@@ -30,7 +30,7 @@ public interface Declared extends Shadow,
    /**
     * returns true if this can be cast to that.
     * This can be useful if you want to check if a shadow implements for example a {@link java.util.Collection}
-    * {@snippet file= "GenericUsageTest.java" region="GenericUsage.isSubtypeOf"}
+    * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
     */
    boolean isSubtypeOf(Shadow shadow);
 

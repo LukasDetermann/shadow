@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImpl<TypeMirror>
-      implements Variable<SURROUNDING>,
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+
+public abstract class VariableImpl extends ShadowImpl<TypeMirror>
+      implements Variable,
                  Documented
 {
    private final VariableElement variableElement;
@@ -36,26 +38,26 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(LangModelAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isAssignable(LangModelAdapter.particularType(shadow), getMirror());
    }
 
    @Override
    public Shadow getType()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().asType());
+      return LangModelAdapter.generalize(getApi(), getElement().asType());
    }
 
    @Override
    public Package getPackage()
    {
       return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+                     .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public VariableElement getElement()
@@ -64,7 +66,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return switch (getElement().getKind())
       {
@@ -76,39 +78,33 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
    }
 
    @Override
-   public SURROUNDING getSurrounding()
-   {
-      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
-   }
-
-   @Override
    public Module getModule()
    {
-      return LangModelAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override
@@ -132,7 +128,7 @@ public abstract class VariableImpl<SURROUNDING extends Shadow> extends ShadowImp
       {
          return true;
       }
-      if (!(other instanceof Variable<?> otherVariable))
+      if (!(other instanceof Variable otherVariable))
       {
          return false;
       }

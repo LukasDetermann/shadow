@@ -1,6 +1,5 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
@@ -9,27 +8,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
+class AnnotationUsageTest
 {
-   @Override
-   protected Function<AnnotationProcessingContext, AnnotationUsage> getShadowSupplier()
-   {
-      //junit doesn't like multiple constructors. Therefore, AnnotationTest can only supply its supplier to its parent
-      return shadowApi -> shadowApi.getClassOrThrow("AnnotationUsageExample")
-                                   .getAnnotationUsages()
-                                   .get(0);
-   }
-
    @Test
    void testGetValues()
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
+                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
+                                                                        .getAnnotationUsages()
+                                                                        .get(0);
 
                                assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").asString());
                                assertEquals(false, defaultValues.getValueOrThrow("booleanValue").asBoolean());
@@ -103,7 +94,9 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
+                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
+                                                                        .getAnnotationUsages()
+                                                                        .get(0);
 
                                AnnotationValueMapper<Integer> mapper = new AnnotationValueMapper<>()
                                {
@@ -236,7 +229,9 @@ class AnnotationUsageTest extends AnnotationTest<AnnotationUsage>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = getShadowSupplier().apply(shadowApi);
+                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
+                                                                        .getAnnotationUsages()
+                                                                        .get(0);
 
                                AtomicInteger counter = new AtomicInteger(0);
 

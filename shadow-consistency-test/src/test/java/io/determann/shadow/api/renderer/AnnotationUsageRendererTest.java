@@ -29,7 +29,7 @@ class AnnotationUsageRendererTest
                                                     .get(0))
                      .runtime(stringClassFunction ->
                               {
-                                 Class example = ReflectionAdapter.getShadow(stringClassFunction.apply("AnnotationUsageExample"));
+                                 Class example = ReflectionAdapter.generalize(stringClassFunction.apply("AnnotationUsageExample"));
                                  return example.getAnnotationUsages().get(0);
                               })
                      .withCode("AnnotationUsageAnnotation.java", """

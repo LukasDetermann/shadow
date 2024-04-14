@@ -2,154 +2,122 @@ package io.determann.shadow.api.annotation_processing;
 
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Void;
 import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.internal.lang_model.shadow.ExecutableImpl;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
-import java.util.Set;
 
 public interface AnnotationProcessingAdapter
 {
-   static AnnotationMirror getMirror(AnnotationUsage annotationUsage)
+   static AnnotationMirror particularize(AnnotationUsage annotationUsage)
    {
-      return LangModelAdapter.getMirror(annotationUsage);
+      return LangModelAdapter.particularize(annotationUsage);
    }
 
-   static DeclaredType getType(Declared declared)
+   static DeclaredType particularize(Declared declared)
    {
-      return LangModelAdapter.getType(declared);
+      return LangModelAdapter.particularType(declared);
    }
 
-   static ArrayType getType(Array array)
+   static ArrayType particularType(Array array)
    {
-      return LangModelAdapter.getType(array);
+      return LangModelAdapter.particularType(array);
    }
 
-   static ExecutableType getType(Executable executable)
+   static ExecutableType particularType(Executable executable)
    {
-      return LangModelAdapter.getType(executable);
+      return LangModelAdapter.particularType(executable);
    }
 
-   static TypeMirror getType(Shadow shadow)
+   static TypeMirror particularType(Shadow shadow)
    {
-      return LangModelAdapter.getType(shadow);
+      return LangModelAdapter.particularType(shadow);
    }
 
-   static TypeVariable getType(Generic generic)
+   static TypeVariable particularType(Generic generic)
    {
-      return LangModelAdapter.getType(generic);
+      return LangModelAdapter.particularType(generic);
    }
 
-   static IntersectionType getType(Intersection intersection)
+   static IntersectionType particularType(Intersection intersection)
    {
-      return LangModelAdapter.getType(intersection);
+      return LangModelAdapter.particularType(intersection);
    }
 
-   static NoType getType(io.determann.shadow.api.shadow.Module module)
+   static NoType particularType(io.determann.shadow.api.shadow.Module module)
    {
-      return LangModelAdapter.getType(module);
+      return LangModelAdapter.particularType(module);
    }
 
-   static NullType getType(Null aNull)
+   static NullType particularType(Null aNull)
    {
-      return LangModelAdapter.getType(aNull);
+      return LangModelAdapter.particularType(aNull);
    }
 
-   static NoType getType(io.determann.shadow.api.shadow.Package aPackage)
+   static NoType particularType(io.determann.shadow.api.shadow.Package aPackage)
    {
-      return LangModelAdapter.getType(aPackage);
+      return LangModelAdapter.particularType(aPackage);
    }
 
-   static PrimitiveType getType(Primitive primitive)
+   static PrimitiveType particularType(Primitive primitive)
    {
-      return LangModelAdapter.getType(primitive);
+      return LangModelAdapter.particularType(primitive);
    }
 
-   static NoType getType(Void aVoid)
+   static NoType particularType(Void aVoid)
    {
-      return LangModelAdapter.getType(aVoid);
+      return LangModelAdapter.particularType(aVoid);
    }
 
-   static WildcardType getType(Wildcard wildcard)
+   static WildcardType particularType(Wildcard wildcard)
    {
-      return LangModelAdapter.getType(wildcard);
+      return LangModelAdapter.particularType(wildcard);
    }
 
-   static Element getElement(Annotationable annotationable)
+   static Element particularElement(Annotationable annotationable)
    {
-      return LangModelAdapter.getElement(annotationable);
+      return LangModelAdapter.particularElement(annotationable);
    }
 
-   static TypeElement getElement(Declared declared)
+   static TypeElement particularElement(Declared declared)
    {
-      return LangModelAdapter.getElement(declared);
+      return LangModelAdapter.particularElement(declared);
    }
 
-   static ExecutableElement getElement(Executable executable)
+   static ExecutableElement particularElement(Executable executable)
    {
-      return LangModelAdapter.getElement(executable);
+      return LangModelAdapter.particularElement(executable);
    }
 
-   static TypeParameterElement getElement(Generic generic)
+   static TypeParameterElement particularElement(Generic generic)
    {
-      return LangModelAdapter.getElement(generic);
+      return LangModelAdapter.particularElement(generic);
    }
 
-   static ModuleElement getElement(io.determann.shadow.api.shadow.Module module)
+   static ModuleElement particularElement(io.determann.shadow.api.shadow.Module module)
    {
-      return LangModelAdapter.getElement(module);
+      return LangModelAdapter.particularElement(module);
    }
 
-   static PackageElement getElement(Package aPackage)
+   static PackageElement particularElement(Package aPackage)
    {
-      return LangModelAdapter.getElement(aPackage);
+      return LangModelAdapter.particularElement(aPackage);
    }
 
-   static RecordComponentElement getElement(RecordComponent recordComponent)
+   static RecordComponentElement particularElement(RecordComponent recordComponent)
    {
-      return LangModelAdapter.getElement(recordComponent);
+      return LangModelAdapter.particularElement(recordComponent);
    }
 
-   static VariableElement getElement(Variable<?> variable)
+   static VariableElement particularElement(Variable variable)
    {
-      return LangModelAdapter.getElement(variable);
-   }
-
-   static Module getModule(LangModelContext context, Element element)
-   {
-      return LangModelAdapter.getModule(context, element);
-   }
-
-   static String getName(Element element)
-   {
-      return LangModelAdapter.getName(element);
-   }
-
-   static String getJavaDoc(LangModelContext context, Element element)
-   {
-      return LangModelAdapter.getJavaDoc(context, element);
-   }
-
-   static List<AnnotationUsage> getAnnotationUsages(LangModelContext context, Element element)
-   {
-      return LangModelAdapter.getAnnotationUsages(context, element);
-   }
-
-   static List<AnnotationUsage> getDirectAnnotationUsages(LangModelContext context, Element element)
-   {
-      return LangModelAdapter.getDirectAnnotationUsages(context, element);
-   }
-
-   static Set<io.determann.shadow.api.modifier.Modifier> getModifiers(Element element)
-   {
-      return LangModelAdapter.getModifiers(element);
+      return LangModelAdapter.particularElement(variable);
    }
 
    static io.determann.shadow.api.modifier.Modifier mapModifier(javax.lang.model.element.Modifier modifier)
@@ -157,43 +125,48 @@ public interface AnnotationProcessingAdapter
       return LangModelAdapter.mapModifier(modifier);
    }
 
+   static Executable generalize(AnnotationProcessingContext context, ExecutableElement element)
+   {
+      return new ExecutableImpl(context, element);
+   }
+
    /**
     * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link Shadow}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.
     *
-    * @see #getShadow(LangModelContext, TypeMirror)
+    * @see #generalize(AnnotationProcessingContext, TypeMirror)
     */
-   static <SHADOW extends Shadow> SHADOW getShadow(LangModelContext context, Element element)
+   static <SHADOW extends Shadow> SHADOW generalize(AnnotationProcessingContext context, Element element)
    {
-      return LangModelAdapter.getShadow(context, element);
+      return LangModelAdapter.generalize(context, element);
    }
 
    /**
     * {@link TypeMirror}s represent the abstract code. {@code List<T>} for example.
     *
-    * @see #getShadow(LangModelContext, Element)
+    * @see #generalize(AnnotationProcessingContext, Element)
     */
-   static <SHADOW extends Shadow> SHADOW getShadow(LangModelContext context, TypeMirror typeMirror)
+   static <SHADOW extends Shadow> SHADOW generalize(AnnotationProcessingContext context, TypeMirror typeMirror)
    {
-      return LangModelAdapter.getShadow(context, typeMirror);
+      return LangModelAdapter.generalize(context, typeMirror);
    }
 
-   static List<AnnotationUsage> getAnnotationUsages(LangModelContext context, List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsage> generalize(AnnotationProcessingContext context, List<? extends AnnotationMirror> annotationMirrors)
    {
-      return LangModelAdapter.getAnnotationUsages(context, annotationMirrors);
+      return LangModelAdapter.generalize(context, annotationMirrors);
    }
 
-   static javax.lang.model.element.AnnotationValue getAnnotationValue(AnnotationValue annotationValue)
+   static javax.lang.model.element.AnnotationValue generalize(AnnotationValue annotationValue)
    {
-      return LangModelAdapter.getAnnotationValue(annotationValue);
+      return LangModelAdapter.generalize(annotationValue);
    }
 
-   static Types getTypes(LangModelContext context)
+   static Types getTypes(AnnotationProcessingContext context)
    {
       return LangModelAdapter.getTypes(context);
    }
 
-   static Elements getElements(LangModelContext context)
+   static Elements getElements(AnnotationProcessingContext context)
    {
       return LangModelAdapter.getElements(context);
    }

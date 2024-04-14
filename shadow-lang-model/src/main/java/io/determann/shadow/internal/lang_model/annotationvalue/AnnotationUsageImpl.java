@@ -6,13 +6,12 @@ import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.internal.lang_model.shadow.DeclaredImpl;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
-public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
+public class AnnotationUsageImpl implements AnnotationUsage
 {
    private final LangModelContext context;
    private final AnnotationMirror annotationMirror;
@@ -30,7 +29,6 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 
    private AnnotationUsageImpl(LangModelContext context, AnnotationMirror annotationMirror)
    {
-      super(context, annotationMirror.getAnnotationType());
       this.context = context;
       this.annotationMirror = annotationMirror;
    }
@@ -47,7 +45,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put(LangModelAdapter.getShadow(getApi(), entry.getKey()),
+         result.put((Method) LangModelAdapter.generalize(getApi(), entry.getKey()),
                     new AnnotationValueImpl(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
@@ -56,7 +54,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public Annotation getAnnotation()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), annotationMirror.getAnnotationType());
    }
 
    @Override
@@ -68,6 +66,11 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    public AnnotationMirror getAnnotationMirror()
    {
       return annotationMirror;
+   }
+
+   public LangModelContext getApi()
+   {
+      return context;
    }
 
    @Override

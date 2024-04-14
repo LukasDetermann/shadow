@@ -20,7 +20,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    public void process(final AnnotationProcessingContext annotationProcessingContext)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (Class aClass : annotationProcessingContext.getAnnotatedWith("io.determann.shadow.builder.BuilderPattern").classes())
+      for (Class aClass : annotationProcessingContext.getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class

@@ -17,7 +17,7 @@ public class PrimitiveRendererImpl implements PrimitiveRenderer
 
    public static String type(RenderingContextWrapper context, Primitive primitive)
    {
-      return switch (primitive.getTypeKind())
+      return switch (primitive.getKind())
       {
          case BOOLEAN -> "boolean";
          case BYTE -> "byte";

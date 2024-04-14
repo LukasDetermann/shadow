@@ -15,7 +15,7 @@ class IntersectionRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("IntersectionExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("IntersectionExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("IntersectionExample")))
                      .withCode("IntersectionExample.java",
                                "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                      .test(aClass -> assertEquals("java.util.Collection & java.io.Serializable",

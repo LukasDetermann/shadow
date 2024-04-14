@@ -2,31 +2,43 @@ package io.determann.shadow.impl.annotation_processing;
 
 import io.determann.shadow.api.Annotationable;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.annotation_processing.AnnotationTypeChooser;
 import io.determann.shadow.api.annotation_processing.DiagnosticContext;
-import io.determann.shadow.api.shadow.Annotation;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
+import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Enum;
+import io.determann.shadow.api.shadow.Module;
+import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.Record;
+import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.*;
 import java.time.Duration;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.getElement;
+import static io.determann.shadow.api.annotation_processing.AnnotationProcessingAdapter.generalize;
+import static io.determann.shadow.api.annotation_processing.AnnotationProcessingAdapter.particularElement;
+import static io.determann.shadow.api.converter.Converter.convert;
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toSet;
 
 public class AnnotationProcessingContextImpl extends LangModelContextImpl implements AnnotationProcessingContext
 {
-   private ProcessingEnvironment processingEnv;
-   private RoundEnvironment roundEnv;
-   private int processingRound;
+   private final ProcessingEnvironment processingEnv;
+   private final RoundEnvironment roundEnv;
+   private final int processingRound;
    private BiConsumer<AnnotationProcessingContext, Throwable> exceptionHandler = (shadowApi, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
@@ -109,21 +121,211 @@ public class AnnotationProcessingContextImpl extends LangModelContextImpl implem
       System.setErr(printStream);
    }
 
-   @Override
-   public AnnotationTypeChooser getAnnotatedWith(String qualifiedAnnotation)
+   private <TYPE> Set<TYPE> getAnnotated(String qualifiedAnnotation, Function<Annotationable, Optional<TYPE>> converter)
    {
       TypeElement annotation = getProcessingEnv().getElementUtils().getTypeElement(qualifiedAnnotation);
       if (annotation == null || !annotation.getKind().equals(ElementKind.ANNOTATION_TYPE))
       {
          throw new IllegalArgumentException("No annotation found with qualified name \"" + qualifiedAnnotation + "\"");
       }
-      return new AnnotationTypeChooserImpl(this, getRoundEnv().getElementsAnnotatedWith(annotation));
+      return getAnnotated(annotation, converter);
+   }
+
+   private <TYPE> Set<TYPE> getAnnotated(TypeElement annotation, Function<Annotationable, Optional<TYPE>> converter)
+   {
+      return getRoundEnv().getElementsAnnotatedWith(annotation).stream()
+                          .map(element ->
+                               {
+                                  if (element.getKind().isExecutable())
+                                  {
+                                     return (Annotationable) generalize(getApi(), ((ExecutableElement) element));
+                                  }
+                                  return ((Annotationable) generalize(getApi(), element));
+                               })
+                          .map(converter)
+                          .filter(Optional::isPresent)
+                          .map(Optional::get)
+                          .collect(toSet());
    }
 
    @Override
-   public AnnotationTypeChooser getAnnotatedWith(Annotation annotation)
+   public Set<Annotationable> getAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotatedWith(annotation.getQualifiedName());
+      return getAnnotated(qualifiedAnnotation, Optional::of);
+   }
+
+   @Override
+   public Set<Annotationable> getAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), Optional::of);
+   }
+
+   @Override
+   public Set<Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toDeclared());
+   }
+
+   @Override
+   public Set<Declared> getDeclaredAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toDeclared());
+   }
+
+   @Override
+   public Set<Class> getClassesAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toClass());
+   }
+
+   @Override
+   public Set<Class> getClassesAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toClass());
+   }
+
+   @Override
+   public Set<Enum> getEnumsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toEnum());
+   }
+
+   @Override
+   public Set<Enum> getEnumsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toEnum());
+   }
+
+   @Override
+   public Set<Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toInterface());
+   }
+
+   @Override
+   public Set<Interface> getInterfacesAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toInterface());
+   }
+
+   @Override
+   public Set<Record> getRecordsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toRecord());
+   }
+
+   @Override
+   public Set<Record> getRecordsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toRecord());
+   }
+
+   @Override
+   public Set<Field> getFieldsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toField());
+   }
+
+   @Override
+   public Set<Field> getFieldsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toField());
+   }
+
+   @Override
+   public Set<Parameter> getParametersAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toParameter());
+   }
+
+   @Override
+   public Set<Parameter> getParametersAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toParameter());
+   }
+
+   @Override
+   public Set<Method> getMethodsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toMethod());
+   }
+
+   @Override
+   public Set<Method> getMethodsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toMethod());
+   }
+
+   @Override
+   public Set<Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toConstructor());
+   }
+
+   @Override
+   public Set<Constructor> getConstructorsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toConstructor());
+   }
+
+   @Override
+   public Set<Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toAnnotation());
+   }
+
+   @Override
+   public Set<Annotation> getAnnotationsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toAnnotation());
+   }
+
+   @Override
+   public Set<Package> getPackagesAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toPackage());
+   }
+
+   @Override
+   public Set<Package> gePackagesAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toPackage());
+   }
+
+   @Override
+   public Set<Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toGeneric());
+   }
+
+   @Override
+   public Set<Generic> geGenericsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toGeneric());
+   }
+
+   @Override
+   public Set<Module> getModulesAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toModule());
+   }
+
+   @Override
+   public Set<Module> geModulesAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toModule());
+   }
+
+   @Override
+   public Set<RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation)
+   {
+      return getAnnotated(qualifiedAnnotation, annotationable -> convert(annotationable).toRecordComponent());
+   }
+
+   @Override
+   public Set<RecordComponent> geRecordComponentsAnnotatedWith(Annotation annotation)
+   {
+      return getAnnotated(particularElement(annotation), annotationable -> convert(annotationable).toRecordComponent());
    }
 
    @Override
@@ -258,19 +460,19 @@ public class AnnotationProcessingContextImpl extends LangModelContextImpl implem
    @Override
    public void logAndRaiseErrorAt(Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, getElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, LangModelAdapter.particularElement(annotationable));
    }
 
    @Override
    public void logInfoAt(Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, getElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, LangModelAdapter.particularElement(annotationable));
    }
 
    @Override
    public void logWarningAt(Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, getElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, LangModelAdapter.particularElement(annotationable));
    }
 
    public AnnotationProcessingContext getApi()

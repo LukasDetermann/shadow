@@ -1,8 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.modifier.Modifier;
@@ -19,16 +18,19 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 
-public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constructor,
-                                                                          Method
+
+public class ExecutableImpl implements Constructor,
+                                       Method
 {
+   private final LangModelContext context;
    private final ExecutableElement executableElement;
 
 
    public ExecutableImpl(LangModelContext context, ExecutableElement executableElement)
    {
-      super(context, (ExecutableType) executableElement.asType());
+      this.context = context;
       this.executableElement = executableElement;
    }
 
@@ -47,7 +49,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Shadow getReturnType()
    {
-      return LangModelAdapter.getShadow(getApi(), getMirror().getReturnType());
+      return LangModelAdapter.generalize(getApi(), getMirror().getReturnType());
    }
 
    @Override
@@ -55,7 +57,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
@@ -67,7 +69,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.getShadow(getApi(), receiverType));
+      return Optional.of(LangModelAdapter.generalize(getApi(), receiverType));
    }
 
    @Override
@@ -86,9 +88,9 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
                         .map(Converter::convert)
-                        .map(ShadowConverter::toClassOrThrow)
+                        .map(TypeConverter::toClassOrThrow)
                         .toList();
    }
 
@@ -107,7 +109,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public Declared getSurrounding()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
+      return LangModelAdapter.generalize(getApi(), getElement().getEnclosingElement());
    }
 
    public ExecutableElement getElement()
@@ -116,34 +118,27 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    }
 
    @Override
-   public TypeKind getTypeKind()
-   {
-      return switch (getElement().getKind())
-      {
-         case CONSTRUCTOR -> TypeKind.CONSTRUCTOR;
-         case METHOD -> TypeKind.METHOD;
-         default -> throw new IllegalStateException();
-      };
-   }
-
-   @Override
    public boolean overrides(Method method)
    {
       return LangModelAdapter.getElements(getApi())
-                             .overrides(getElement(), LangModelAdapter.getElement(method), LangModelAdapter.getElement(getSurrounding()));
+                             .overrides(getElement(),
+                                        LangModelAdapter.particularElement(method),
+                                        LangModelAdapter.particularElement(getSurrounding()));
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
       return LangModelAdapter.getElements(getApi())
-                             .overrides(LangModelAdapter.getElement(method), getElement(), LangModelAdapter.getElement(method.getSurrounding()));
+                             .overrides(LangModelAdapter.particularElement(method),
+                                        getElement(),
+                                        LangModelAdapter.particularElement(method.getSurrounding()));
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubsignature(getMirror(), LangModelAdapter.getType(method));
+      return LangModelAdapter.getTypes(getApi()).isSubsignature(getMirror(), LangModelAdapter.particularType(method));
    }
 
    @Override
@@ -151,7 +146,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getParameters()
                          .stream()
-                         .map(variableElement -> LangModelAdapter.<Parameter>getShadow(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<Parameter>generalize(getApi(), variableElement))
                          .toList();
    }
 
@@ -160,7 +155,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
                          .toList();
    }
 
@@ -168,37 +163,47 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    public Package getPackage()
    {
       return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+            .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
+   }
+
+   public LangModelContext getApi()
+   {
+      return context;
+   }
+
+   public ExecutableType getMirror()
+   {
+      return (ExecutableType) executableElement.asType();
    }
 
    @Override
@@ -210,8 +215,7 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
    @Override
    public int hashCode()
    {
-      return Objects.hash(getTypeKind(),
-                          getName(),
+      return Objects.hash(getName(),
                           getParameterTypes(),
                           getParameters(),
                           getModifiers());
@@ -229,7 +233,6 @@ public class ExecutableImpl extends ShadowImpl<ExecutableType> implements Constr
          return false;
       }
       return Objects.equals(getName(), otherExecutable.getName()) &&
-             Objects.equals(getTypeKind(), otherExecutable.getTypeKind()) &&
              Objects.equals(getParameters(), otherExecutable.getParameters()) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());

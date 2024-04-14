@@ -14,7 +14,7 @@ class RecordRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
                      .test(aClass ->
@@ -28,7 +28,7 @@ class RecordRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getRecordOrThrow("Parameters"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("Parameters")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Parameters")))
                      .withCode("Parameters.java", "@MyAnnotation\n record Parameters(Long id, String name) implements java.io.Serializable {}")
                      .withCode("MyAnnotation.java",
                                "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
@@ -40,7 +40,7 @@ class RecordRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("InterpolateGenericsExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
                      .test(aClass -> assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>",

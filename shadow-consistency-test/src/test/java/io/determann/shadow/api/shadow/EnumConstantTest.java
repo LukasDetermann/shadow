@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EnumConstantTest extends VariableTest<Enum, EnumConstant>
+class EnumConstantTest extends VariableTest<EnumConstant>
 {
    EnumConstantTest()
    {

@@ -34,7 +34,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    @Override
    public Module getDependency()
    {
-      return LangModelAdapter.getShadow(getApi(), requiresDirective.getDependency());
+      return LangModelAdapter.generalize(getApi(), requiresDirective.getDependency());
    }
 
    @Override

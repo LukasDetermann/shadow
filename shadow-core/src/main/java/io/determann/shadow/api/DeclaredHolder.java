@@ -27,7 +27,7 @@ public interface DeclaredHolder
    default List<Annotation> getAnnotations()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.ANNOTATION.equals(declared.getTypeKind()))
+                          .filter(declared -> TypeKind.ANNOTATION.equals(declared.getKind()))
                           .map(declared -> convert(declared).toAnnotationOrThrow())
                           .toList();
    }
@@ -45,7 +45,7 @@ public interface DeclaredHolder
    default List<io.determann.shadow.api.shadow.Class> getClasses()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.CLASS.equals(declared.getTypeKind()))
+                          .filter(declared -> TypeKind.CLASS.equals(declared.getKind()))
                           .map(declared -> convert(declared).toClassOrThrow())
                           .toList();
    }
@@ -63,7 +63,7 @@ public interface DeclaredHolder
    default List<Enum> getEnums()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.ENUM.equals(declared.getTypeKind()))
+                          .filter(declared -> TypeKind.ENUM.equals(declared.getKind()))
                           .map(declared -> convert(declared).toEnumOrThrow())
                           .toList();
    }
@@ -81,7 +81,7 @@ public interface DeclaredHolder
    default List<Interface> getInterfaces()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.INTERFACE.equals(declared.getTypeKind()))
+                          .filter(declared -> TypeKind.INTERFACE.equals(declared.getKind()))
                           .map(declared -> convert(declared).toInterfaceOrThrow())
                           .toList();
    }
@@ -99,7 +99,7 @@ public interface DeclaredHolder
    default List<io.determann.shadow.api.shadow.Record> getRecords()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.RECORD.equals(declared.getTypeKind()))
+                          .filter(declared -> TypeKind.RECORD.equals(declared.getKind()))
                           .map(declared -> convert(declared).toRecordOrThrow())
                           .toList();
    }

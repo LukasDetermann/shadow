@@ -30,13 +30,13 @@ public class ReceiverImpl implements Receiver
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(context, getTypeMirror().getAnnotationMirrors());
+      return LangModelAdapter.generalize(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
    public Shadow getType()
    {
-      return LangModelAdapter.getShadow(context, getTypeMirror());
+      return LangModelAdapter.generalize(context, getTypeMirror());
    }
 
    public TypeMirror getTypeMirror()

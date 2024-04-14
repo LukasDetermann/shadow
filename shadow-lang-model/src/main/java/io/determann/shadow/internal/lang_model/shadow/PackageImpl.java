@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+
 public class PackageImpl extends ShadowImpl<NoType> implements Package
 {
    private final PackageElement packageElement;
@@ -41,7 +43,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> LangModelAdapter.<Declared>getShadow(getApi(), typeElement))
+                         .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
                          .toList();
    }
 
@@ -63,7 +65,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.PACKAGE;
    }
@@ -85,31 +87,31 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getJavaDoc(getApi(), getElement());
+      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override

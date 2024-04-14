@@ -25,7 +25,7 @@ public class ExportsImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return ReflectionAdapter.getPackageShadow(exportsDirective.source());
+      return ReflectionAdapter.getPackage(exportsDirective.source());
    }
 
    @Override

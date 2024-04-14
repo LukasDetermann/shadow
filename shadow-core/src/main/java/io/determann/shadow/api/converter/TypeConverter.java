@@ -10,7 +10,7 @@ import io.determann.shadow.api.shadow.*;
 
 import java.util.Optional;
 
-public interface ShadowConverter
+public interface TypeConverter
 {
    Annotation toAnnotationOrThrow();
 
@@ -24,10 +24,6 @@ public interface ShadowConverter
 
    Optional<Class> toClass();
 
-   Constructor toConstructorOrThrow();
-
-   Optional<Constructor> toConstructor();
-
    Declared toDeclaredOrThrow();
 
    Optional<Declared> toDeclared();
@@ -39,10 +35,6 @@ public interface ShadowConverter
    Enum toEnumOrThrow();
 
    Optional<Enum> toEnum();
-
-   Executable toExecutableOrThrow();
-
-   Optional<Executable> toExecutable();
 
    Field toFieldOrThrow();
 
@@ -56,15 +48,11 @@ public interface ShadowConverter
 
    Optional<Intersection> toIntersection();
 
-   Method toMethodOrThrow();
-
-   Optional<Method> toMethod();
-
-   io.determann.shadow.api.shadow.Module toModuleOrThrow();
+   Module toModuleOrThrow();
 
    Optional<Module> toModule();
 
-   io.determann.shadow.api.shadow.Void toVoidOrThrow();
+   Void toVoidOrThrow();
 
    Optional<Void> toVoid();
 
@@ -72,7 +60,7 @@ public interface ShadowConverter
 
    Optional<Null> toNull();
 
-   io.determann.shadow.api.shadow.Package toPackageOrThrow();
+   Package toPackageOrThrow();
 
    Optional<Package> toPackage();
 
@@ -88,7 +76,7 @@ public interface ShadowConverter
 
    Optional<RecordComponent> toRecordComponent();
 
-   io.determann.shadow.api.shadow.Record toRecordOrThrow();
+   Record toRecordOrThrow();
 
    Optional<Record> toRecord();
 
@@ -96,9 +84,9 @@ public interface ShadowConverter
 
    Optional<Generic> toGeneric();
 
-   Variable<Shadow> toVariableOrThrow();
+   Variable toVariableOrThrow();
 
-   Optional<Variable<Shadow>> toVariable();
+   Optional<Variable> toVariable();
 
    Wildcard toWildcardOrThrow();
 
@@ -123,14 +111,4 @@ public interface ShadowConverter
     * maps all leafs of {@link Variable}
     */
    <T> T map(VariableMapper<T> mapper);
-
-   /**
-    * consumes all leafs of {@link Executable}
-    */
-   void consume(ExecutableConsumer adapter);
-
-   /**
-    * consumes all leafs of {@link Executable}
-    */
-   <T> T map(ExecutableMapper<T> mapper);
 }

@@ -19,7 +19,7 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.INTERSECTION;
    }
@@ -28,7 +28,7 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    public List<Shadow> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 

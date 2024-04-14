@@ -24,7 +24,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.getShadow(getApi(), opensDirective.getPackage());
+      return LangModelAdapter.generalize(getApi(), opensDirective.getPackage());
    }
 
    @Override
@@ -32,7 +32,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LangModelAdapter.<Module>getShadow(getApi(), moduleElement))
+                           .map(moduleElement -> LangModelAdapter.<Module>generalize(getApi(), moduleElement))
                            .toList();
    }
 

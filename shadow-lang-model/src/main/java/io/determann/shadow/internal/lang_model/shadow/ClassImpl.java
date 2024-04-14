@@ -32,7 +32,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override
@@ -43,7 +43,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return null;
       }
-      return LangModelAdapter.getShadow(getApi(), superclass);
+      return LangModelAdapter.generalize(getApi(), superclass);
    }
 
    @Override
@@ -51,7 +51,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getElement().getPermittedSubclasses()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<Class>getShadow(getApi(), typeMirror))
+                         .map(typeMirror -> LangModelAdapter.<Class>generalize(getApi(), typeMirror))
                          .toList();
    }
 
@@ -81,7 +81,7 @@ public class ClassImpl extends DeclaredImpl implements Class
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.getShadow(getApi(), enclosingType));
+      return Optional.of(LangModelAdapter.generalize(getApi(), enclosingType));
    }
 
    @Override
@@ -89,7 +89,7 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
@@ -98,13 +98,13 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
                          .toList();
    }
 
    @Override
    public Primitive asUnboxed()
    {
-      return LangModelAdapter.getShadow(getApi(), LangModelAdapter.getTypes(getApi()).unboxedType(getMirror()));
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getTypes(getApi()).unboxedType(getMirror()));
    }
 }

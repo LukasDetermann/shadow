@@ -23,7 +23,7 @@ public class ReturnImpl implements Return
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -31,14 +31,14 @@ public class ReturnImpl implements Return
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
    @Override
    public Shadow getType()
    {
-      return ReflectionAdapter.getShadow(getAnnotatedType().getType());
+      return ReflectionAdapter.generalize(getAnnotatedType().getType());
    }
 
    public AnnotatedType getAnnotatedType()

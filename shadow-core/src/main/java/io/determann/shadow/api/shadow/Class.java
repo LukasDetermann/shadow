@@ -43,12 +43,12 @@ public interface Class extends Declared,
    Optional<Declared> getOuterType();
 
    /**
-    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenericTypes"}
+    * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
    List<Shadow> getGenericTypes();
 
    /**
-    * {@snippet file="GenericUsageTest.java" region="GenericUsage.getGenerics"}
+    * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
    List<Generic> getGenerics();
 

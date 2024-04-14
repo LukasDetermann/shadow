@@ -14,7 +14,7 @@ class EnumRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("EnumMultiParent"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("EnumMultiParent")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("EnumMultiParent")))
                      .withCode("EnumMultiParent.java", """
                            @TestAnnotation
                            public enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {
@@ -52,7 +52,7 @@ class EnumRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy", render(DEFAULT, aClass).type()));
    }
 }

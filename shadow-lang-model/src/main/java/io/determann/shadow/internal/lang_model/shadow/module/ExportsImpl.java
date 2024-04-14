@@ -26,7 +26,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.getShadow(getApi(), exportsDirective.getPackage());
+      return LangModelAdapter.generalize(getApi(), exportsDirective.getPackage());
    }
 
    @Override
@@ -36,7 +36,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> LangModelAdapter.<Module>getShadow(getApi(), moduleElement))
+                             .map(moduleElement -> LangModelAdapter.<Module>generalize(getApi(), moduleElement))
                              .toList();
    }
 

@@ -14,11 +14,11 @@ import io.determann.shadow.api.modifier.Modifiable;
  *    <li>{@link Parameter}</li>
  * </ul>
  */
-public interface Variable<SURROUNDING extends Shadow> extends Shadow,
-                                                              Nameable,
-                                                              Annotationable,
-                                                              Modifiable,
-                                                              ModuleEnclosed
+public interface Variable extends Shadow,
+                                  Nameable,
+                                  Annotationable,
+                                  Modifiable,
+                                  ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.
@@ -38,7 +38,7 @@ public interface Variable<SURROUNDING extends Shadow> extends Shadow,
    Package getPackage();
 
    /**
-    * The {@link SURROUNDING} surrounding this {@link Variable}
+    * The {@link Object} surrounding this {@link Variable}
     */
-   SURROUNDING getSurrounding();
+   Object getSurrounding();
 }

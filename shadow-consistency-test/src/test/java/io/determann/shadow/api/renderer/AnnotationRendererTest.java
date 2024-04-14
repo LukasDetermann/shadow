@@ -13,7 +13,7 @@ class AnnotationRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getAnnotationOrThrow("java.lang.annotation.Retention"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.Retention")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.Retention")))
                      .test(annotation -> assertEquals("""
                                                   @java.lang.annotation.Documented
                                                   @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -23,7 +23,7 @@ class AnnotationRendererTest
                                                   render(RenderingContext.DEFAULT, annotation).declaration()));
 
       ConsistencyTest.compileTime(context -> context.getAnnotationOrThrow("java.lang.annotation.Retention"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.Retention")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.Retention")))
                      .test(annotation -> assertEquals("""
                                                   @java.lang.annotation.Documented
                                                   @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
@@ -39,7 +39,7 @@ class AnnotationRendererTest
    void type()
    {
       ConsistencyTest.compileTime(context -> context.getAnnotationOrThrow("java.lang.annotation.Retention"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("java.lang.annotation.Retention")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.Retention")))
                      .test(annotation -> assertEquals("java.lang.annotation.Retention", render(RenderingContext.DEFAULT, annotation).type()));
    }
 
@@ -52,7 +52,7 @@ class AnnotationRendererTest
                                        "      String since() default \"\";\n" +
                                        "   }")
             .withCode("Test23",  "@Test class Test23{}")
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("Test23")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Test23")))
                      .test(annotation -> render(RenderingContext.DEFAULT, annotation).declaration());
    }
 }

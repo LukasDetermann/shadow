@@ -56,7 +56,7 @@ public class PrimitiveImpl implements Primitive
    {
       return convert(shadow)
             .toPrimitive()
-            .map(primitive -> getaClass().isAssignableFrom(ReflectionAdapter.getReflection(primitive)))
+            .map(primitive -> getaClass().isAssignableFrom(ReflectionAdapter.particularize(primitive)))
             .orElse(false);
    }
 
@@ -69,11 +69,11 @@ public class PrimitiveImpl implements Primitive
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return getTypeKind().equals(shadow.getTypeKind());
+      return getKind().equals(shadow.getKind());
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return Objects.requireNonNull(CLASS_KIND_MAP.get(getaClass()));
    }
@@ -86,7 +86,7 @@ public class PrimitiveImpl implements Primitive
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override
@@ -100,7 +100,7 @@ public class PrimitiveImpl implements Primitive
       {
          return false;
       }
-      return Objects.equals(getTypeKind(), otherPrimitive.getTypeKind());
+      return Objects.equals(getKind(), otherPrimitive.getKind());
    }
 
    public java.lang.Class<?> getReflection()

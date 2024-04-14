@@ -20,24 +20,24 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.getType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override
    public Class asBoxed()
    {
       return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+                     .generalize(getApi(), LangModelAdapter.getTypes(getApi()).boxedClass(getMirror()).asType());
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return switch (getMirror().getKind())
       {
@@ -56,7 +56,7 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
    @Override
    public int hashCode()
    {
-      return Objects.hashCode(getTypeKind());
+      return Objects.hashCode(getKind());
    }
 
    @Override
@@ -70,6 +70,6 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
       {
          return false;
       }
-      return Objects.equals(getTypeKind(), otherPrimitive.getTypeKind());
+      return Objects.equals(getKind(), otherPrimitive.getKind());
    }
 }

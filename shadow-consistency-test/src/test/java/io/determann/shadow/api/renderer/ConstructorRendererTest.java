@@ -14,7 +14,7 @@ class ConstructorRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ConstructorExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(Long id) {}
@@ -36,7 +36,7 @@ class ConstructorRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ConstructorExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               @TestAnnotation
@@ -74,7 +74,7 @@ class ConstructorRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ConstructorExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(String... names) {}
@@ -96,7 +96,7 @@ class ConstructorRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ConstructorExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public <T> ConstructorExample(T t) {}
@@ -118,7 +118,7 @@ class ConstructorRendererTest
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ReceiverExample$Inner")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample$Inner")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
                               public class Inner {
@@ -139,7 +139,7 @@ class ConstructorRendererTest
    void invocation()
    {
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getShadow(stringClassFunction.apply("ConstructorExample")))
+                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(Long id) {}

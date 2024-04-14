@@ -28,7 +28,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> LangModelAdapter.<RecordComponent>getShadow(getApi(), recordComponentElement))
+                         .map(recordComponentElement -> LangModelAdapter.<RecordComponent>generalize(getApi(), recordComponentElement))
                          .toList();
    }
 
@@ -37,7 +37,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>getShadow(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
@@ -46,7 +46,7 @@ public class RecordImpl extends DeclaredImpl implements Record
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>getShadow(getApi(), element))
+                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
                          .toList();
    }
 }

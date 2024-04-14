@@ -9,15 +9,15 @@ import java.util.Objects;
 class PropertyTemplate
 {
    private final String name;
-   private final Shadow type;
+   private final Shadow shadow;
    private Method setter;
    private final Method getter;
    private Field field;
 
-   PropertyTemplate(String name, Shadow type, Method getter)
+   PropertyTemplate(String name, Shadow shadow, Method getter)
    {
       this.name = name;
-      this.type = type;
+      this.shadow = shadow;
       this.getter = getter;
    }
 
@@ -28,7 +28,7 @@ class PropertyTemplate
 
    Shadow getType()
    {
-      return type;
+      return shadow;
    }
 
    Method getSetter()
@@ -83,7 +83,7 @@ class PropertyTemplate
    {
       return "PropertyTemplate{" +
              "name='" + name + '\'' +
-             ", type=" + type +
+             ", type=" + shadow +
              ", setter=" + setter +
              ", getter=" + getter +
              ", field=" + field +

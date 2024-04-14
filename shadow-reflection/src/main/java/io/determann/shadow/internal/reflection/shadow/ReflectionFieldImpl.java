@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements Variable<SURROUNDING>
+public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements Variable
 {
    private final Field field;
 
@@ -32,11 +32,11 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    @Override
    public Shadow getType()
    {
-      return ReflectionAdapter.getShadow(field.getType());
+      return ReflectionAdapter.generalize(field.getType());
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       if (field.isEnumConstant())
       {
@@ -55,7 +55,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getField().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -63,7 +63,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getField().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 

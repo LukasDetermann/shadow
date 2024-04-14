@@ -10,7 +10,7 @@ import java.util.Optional;
  * a usage of such an annotation. like <br>
  * {@code @Documented("testValue) public class Test{ }}
  */
-public interface AnnotationUsage extends Annotation
+public interface AnnotationUsage
 {
    Map<Method, AnnotationValue> getValues();
 

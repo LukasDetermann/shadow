@@ -20,12 +20,6 @@ import io.determann.shadow.api.converter.Converter;
  *       </ul>
  *     </li>
  *     <li>{@link Array}</li>
- *     <li>{@link Executable} any code block
- *       <ul>
- *          <li>{@link Constructor}</li>
- *          <li>{@link Method}</li>
- *       </ul>
- *     </li>
  *     <li>{@link Intersection} {@code T extends} <b> Collection &amp; Serializable</b>{@code >}</li>
  *     <li>{@link Void}</li>
  *     <li>{@link Module}</li>
@@ -40,17 +34,17 @@ import io.determann.shadow.api.converter.Converter;
  *          <li>{@link EnumConstant}</li>
  *          <li>{@link Field}</li>
  *          <li>{@link Parameter} of a Method or Constructor</li>
- *       </ul>
+ *       </ul>>
  *     </li>
  * </ul>
  */
 public interface Shadow
 {
-   TypeKind getTypeKind();
+   TypeKind getKind();
 
-   default boolean isTypeKind(TypeKind typeKind)
+   default boolean isKind(TypeKind typeKind)
    {
-      return getTypeKind().equals(typeKind);
+      return getKind().equals(typeKind);
    }
 
    /**

@@ -2,7 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.ShadowConverter;
+import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.property.Property;
 import org.junit.jupiter.api.Test;
 
@@ -188,7 +188,7 @@ class ClassTest extends DeclaredTest<Class>
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
-                                     .flatMap(ShadowConverter::toInterface)
+                                     .flatMap(TypeConverter::toInterface)
                                      .map(Interface::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow();

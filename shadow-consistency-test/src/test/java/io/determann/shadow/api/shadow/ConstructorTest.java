@@ -11,13 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConstructorTest extends ExecutableTest<Constructor>
 {
-   ConstructorTest()
-   {
-      super(shadowApi -> shadowApi.getClassOrThrow("DefaultConstructorExample")
-                                  .getConstructors()
-                                  .get(0));
-   }
-
    @Test
    void testGetParameters()
    {

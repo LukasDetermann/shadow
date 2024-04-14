@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ImmutablePropertyImpl implements ImmutableProperty
 {
    private final String name;
-   private final Shadow type;
+   private final Shadow shadow;
    private final Field field;
    private final Method getter;
 
@@ -29,10 +29,10 @@ public class ImmutablePropertyImpl implements ImmutableProperty
                                     .toList();
    }
 
-   private ImmutablePropertyImpl(String name, Shadow type, Field field, Method getter)
+   private ImmutablePropertyImpl(String name, Shadow shadow, Field field, Method getter)
    {
       this.name = name;
-      this.type = type;
+      this.shadow = shadow;
       this.field = field;
       this.getter = getter;
    }
@@ -46,7 +46,7 @@ public class ImmutablePropertyImpl implements ImmutableProperty
    @Override
    public Shadow getType()
    {
-      return type;
+      return shadow;
    }
 
    @Override

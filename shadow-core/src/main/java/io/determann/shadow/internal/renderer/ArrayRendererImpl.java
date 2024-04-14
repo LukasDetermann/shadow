@@ -29,7 +29,7 @@ public class ArrayRendererImpl implements ArrayRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append("[]");
-      while (array.getComponentType().isTypeKind(TypeKind.ARRAY))
+      while (array.getComponentType().isKind(TypeKind.ARRAY))
       {
          sb.append("[]");
          array = Converter.convert(array.getComponentType()).toArrayOrThrow();

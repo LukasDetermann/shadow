@@ -82,7 +82,7 @@ public class ModuleImpl implements Module
    @Override
    public List<Package> getPackages()
    {
-      return getModuleDescriptor().packages().stream().map(ReflectionAdapter::getPackageShadow).map(Package.class::cast).toList();
+      return getModuleDescriptor().packages().stream().map(ReflectionAdapter::getPackage).map(Package.class::cast).toList();
    }
 
    @Override
@@ -109,15 +109,15 @@ public class ModuleImpl implements Module
       ModuleDescriptor descriptor = getModuleDescriptor();
       List<Directive> result = descriptor.requires()
                                             .stream()
-                                            .map(ReflectionAdapter::getShadow)
+                                            .map(ReflectionAdapter::generalize)
                                             .collect(Collectors.toCollection(ArrayList::new));
       result.addAll(descriptor.exports()
                               .stream()
-                              .map(ReflectionAdapter::getShadow)
+                              .map(ReflectionAdapter::generalize)
                               .toList());
       result.addAll(descriptor.opens()
                               .stream()
-                              .map(ReflectionAdapter::getShadow)
+                              .map(ReflectionAdapter::generalize)
                               .toList());
       result.addAll(descriptor.uses()
                               .stream()
@@ -125,13 +125,13 @@ public class ModuleImpl implements Module
                               .toList());
       result.addAll(descriptor.provides()
                               .stream()
-                              .map(ReflectionAdapter::getShadow)
+                              .map(ReflectionAdapter::generalize)
                               .toList());
       return unmodifiableList(result);
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.MODULE;
    }

@@ -22,7 +22,7 @@ public class UsesImpl extends DirectiveImpl implements Uses
    @Override
    public Declared getService()
    {
-      return LangModelAdapter.getShadow(getApi(), usesDirective.getService());
+      return LangModelAdapter.generalize(getApi(), usesDirective.getService());
    }
 
    @Override

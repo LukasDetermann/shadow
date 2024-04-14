@@ -22,7 +22,7 @@ public class OpensImpl implements Opens
    @Override
    public Package getPackage()
    {
-      return ReflectionAdapter.getPackageShadow(opensDirective.source());
+      return ReflectionAdapter.getPackage(opensDirective.source());
    }
 
    @Override

@@ -14,7 +14,7 @@ class PackageRendererTest
    void declaration()
    {
       ConsistencyTest.compileTime(context -> context.getPackageOrThrow("java.base", "java.lang"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getPackageShadow("java.lang"))
+                     .runtime(stringClassFunction -> ReflectionAdapter.getPackage("java.lang"))
                      .test(aPackage -> assertEquals("package java.lang;\n", render(DEFAULT, aPackage).declaration()));
    }
 }

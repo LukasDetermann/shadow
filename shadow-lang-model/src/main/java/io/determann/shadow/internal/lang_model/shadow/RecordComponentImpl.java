@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.TypeKind.RECORD_COMPONENT;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 
 public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements RecordComponent
 {
@@ -28,38 +29,38 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.getType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType(shadow));
    }
 
    @Override
    public Record getRecord()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().getEnclosingElement());
+      return LangModelAdapter.generalize(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
    public Shadow getType()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().asType());
+      return LangModelAdapter.generalize(getApi(), getElement().asType());
    }
 
    @Override
    public Method getGetter()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().getAccessor());
+      return (Method) LangModelAdapter.generalize(getApi(), getElement().getAccessor());
    }
 
    @Override
    public Package getPackage()
    {
       return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+                     .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public RecordComponentElement getElement()
@@ -68,7 +69,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return RECORD_COMPONENT;
    }
@@ -76,25 +77,25 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.getModule(getApi(), getElement());
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override

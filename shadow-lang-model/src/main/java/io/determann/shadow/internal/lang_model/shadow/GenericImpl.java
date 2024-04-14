@@ -5,7 +5,6 @@ import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -14,6 +13,8 @@ import javax.lang.model.type.TypeVariable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
 {
@@ -34,7 +35,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public Shadow getExtends()
    {
-      return LangModelAdapter.getShadow(getApi(), getMirror().getUpperBound());
+      return LangModelAdapter.generalize(getApi(), getMirror().getUpperBound());
    }
 
    @Override
@@ -45,26 +46,19 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.getShadow(getApi(), lowerBound));
+      return Optional.of(LangModelAdapter.generalize(getApi(), lowerBound));
    }
 
    @Override
-   public Shadow getEnclosing()
+   public Object getEnclosing()
    {
-      return LangModelAdapter.getShadow(getApi(), getElement().getGenericElement());
+      return LangModelAdapter.generalize(getApi(), getElement().getGenericElement());
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.GENERIC;
-   }
-
-   @Override
-   public Package getPackage()
-   {
-      return LangModelAdapter
-                     .getShadow(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public TypeParameterElement getElement()
@@ -75,19 +69,19 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
    @Override
    public String getName()
    {
-      return LangModelAdapter.getName(getElement());
+      return getElement().getSimpleName().toString();
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return LangModelAdapter.getAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.getDirectAnnotationUsages(getApi(), getElement());
+      return generalize(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override

@@ -13,13 +13,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
+public class AnnotationUsageImpl implements AnnotationUsage
 {
    private final java.lang.annotation.Annotation annotation;
 
    public AnnotationUsageImpl(java.lang.annotation.Annotation annotation)
    {
-      super(annotation.annotationType());
       this.annotation = annotation;
    }
 
@@ -29,7 +28,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
       return Arrays.stream(annotation.annotationType().getDeclaredMethods())
                    .filter(method -> method.getParameterCount() == 0)
                    .filter(method -> !Modifier.isStatic(method.getModifiers() & Modifier.methodModifiers()))
-                   .collect(Collectors.toMap(ReflectionAdapter::getShadow,
+                   .collect(Collectors.toMap(ReflectionAdapter::generalize,
                                              method ->
                                              {
                                                 Object defaultValue = method.getDefaultValue();
@@ -51,7 +50,7 @@ public class AnnotationUsageImpl extends DeclaredImpl implements AnnotationUsage
    @Override
    public Annotation getAnnotation()
    {
-      return this;
+      return ReflectionAdapter.generalize(annotation.annotationType());
    }
 
 

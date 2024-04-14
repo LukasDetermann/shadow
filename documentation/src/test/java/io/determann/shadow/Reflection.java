@@ -12,7 +12,7 @@ class Reflection
    {
       //@formatter:off
  //tag::gettingStarted[]
- Class shadow = ReflectionAdapter.getShadow(this.getClass());
+ Class shadow = ReflectionAdapter.generalize(this.getClass());
  //end::gettingStarted[]
  // @formatter:on
       Assertions.assertNotNull(shadow);

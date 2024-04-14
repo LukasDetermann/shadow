@@ -23,7 +23,7 @@ public class ReceiverImpl implements Receiver
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -31,14 +31,14 @@ public class ReceiverImpl implements Receiver
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
    @Override
    public Shadow getType()
    {
-      return ReflectionAdapter.getShadow(annotatedType.getType());
+      return ReflectionAdapter.generalize(annotatedType.getType());
    }
 
    public AnnotatedType getAnnotatedType()

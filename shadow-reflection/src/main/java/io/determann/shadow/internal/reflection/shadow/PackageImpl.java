@@ -49,7 +49,7 @@ public class PackageImpl implements Package
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -57,7 +57,7 @@ public class PackageImpl implements Package
    public List<AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::getAnnotationUsage)
+                   .map(ReflectionAdapter::generalize)
                    .toList();
    }
 
@@ -92,7 +92,7 @@ public class PackageImpl implements Package
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.PACKAGE;
    }

@@ -10,11 +10,14 @@ import java.util.List;
  * @see Method#getParameters()
  * @see Constructor#getParameters()
  */
-public interface Parameter extends Variable<Executable>,
+public interface Parameter extends Variable,
                                    FinalModifiable
 {
    /**
     * {@link List#of(Object[])}
     */
    boolean isVarArgs();
+
+   @Override
+   Executable getSurrounding();
 }

@@ -6,7 +6,6 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -15,9 +14,9 @@ import java.util.Objects;
 
 public class IntersectionImpl implements Intersection
 {
-   private final Type[] bounds;
+   private final java.lang.reflect.Type[] bounds;
 
-   public IntersectionImpl(Type[] bounds)
+   public IntersectionImpl(java.lang.reflect.Type[] bounds)
    {
       this.bounds = bounds;
    }
@@ -25,11 +24,11 @@ public class IntersectionImpl implements Intersection
    @Override
    public List<Shadow> getBounds()
    {
-      return Arrays.stream(bounds).map(ReflectionAdapter::getShadow).toList();
+      return Arrays.stream(bounds).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public TypeKind getTypeKind()
+   public TypeKind getKind()
    {
       return TypeKind.INTERSECTION;
    }
@@ -83,7 +82,7 @@ public class IntersectionImpl implements Intersection
       return Objects.equals(getBounds(), otherIntersection.getBounds());
    }
 
-   public Type[] getReflection()
+   public java.lang.reflect.Type[] getReflection()
    {
       return bounds;
    }

@@ -22,7 +22,7 @@ public class ProvidesImpl implements Provides
    @Override
    public Declared getService()
    {
-      return ReflectionAdapter.getDeclaredShadow(providesDirective.service()).orElseThrow();
+      return ReflectionAdapter.getDeclared(providesDirective.service()).orElseThrow();
    }
 
    @Override
@@ -30,7 +30,7 @@ public class ProvidesImpl implements Provides
    {
       return providesDirective.providers()
                               .stream()
-                              .map(ReflectionAdapter::getDeclaredShadow)
+                              .map(ReflectionAdapter::getDeclared)
                               .map(Optional::orElseThrow)
                               .toList();
    }
