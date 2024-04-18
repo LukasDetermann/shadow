@@ -1,5 +1,6 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 
@@ -38,7 +39,7 @@ import io.determann.shadow.api.converter.Converter;
  *     </li>
  * </ul>
  */
-public interface Shadow
+public interface Shadow extends ImplementationDefined
 {
    TypeKind getKind();
 

@@ -5,6 +5,9 @@ import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 /**
  * {@link Annotation} represents the java file for the java concept of an annotation. This on the other hand represents
  * a usage of such an annotation. like <br>
@@ -23,7 +26,7 @@ public interface AnnotationUsage
    {
       return getValues().entrySet()
                         .stream()
-                        .filter(entry -> entry.getKey().getName().equals(methodName))
+                        .filter(entry -> requestOrThrow(entry.getKey(), NAME).equals(methodName))
                         .map(Map.Entry::getValue)
                         .findAny();
    }

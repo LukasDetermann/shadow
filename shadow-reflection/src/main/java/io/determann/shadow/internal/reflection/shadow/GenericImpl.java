@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Shadow;
@@ -14,8 +15,12 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public class GenericImpl implements Generic
+public class GenericImpl implements Generic,
+                                    NameableReflection
 {
    private final TypeVariable<?> typeVariable;
 
@@ -116,7 +121,7 @@ public class GenericImpl implements Generic
       {
          return false;
       }
-      return Objects.equals(getName(), otherGeneric.getName()) &&
+      return request(otherGeneric, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getExtends(), otherGeneric.getExtends()) &&
              Objects.equals(getSuper(), otherGeneric.getSuper());
    }
@@ -124,5 +129,12 @@ public class GenericImpl implements Generic
    public TypeVariable<?> getReflection()
    {
       return getTypeVariable();
+   }
+
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -14,9 +15,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ExecutableImpl implements Constructor,
-                                       Method
+                                       Method,
+                                       NameableReflection
 {
    private final java.lang.reflect.Executable executable;
 
@@ -237,7 +242,7 @@ public class ExecutableImpl implements Constructor,
 
    private boolean isSubSignature(Executable executable)
    {
-      return getName().equals(executable.getName()) && (getParameterTypes().equals(executable.getParameterTypes()));
+      return request(executable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) && (getParameterTypes().equals(executable.getParameterTypes()));
    }
 
    @Override
@@ -277,7 +282,7 @@ public class ExecutableImpl implements Constructor,
       {
          return false;
       }
-      return Objects.equals(getName(), otherExecutable.getName()) &&
+      return request(otherExecutable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), otherExecutable.getParameters()) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());
@@ -286,5 +291,11 @@ public class ExecutableImpl implements Constructor,
    public java.lang.reflect.Executable getReflection()
    {
       return getExecutable();
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

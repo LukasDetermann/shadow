@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -13,8 +14,12 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public class RecordComponentImpl implements RecordComponent
+public class RecordComponentImpl implements RecordComponent,
+                                            NameableReflection
 {
    private final java.lang.reflect.RecordComponent recordComponent;
 
@@ -138,12 +143,19 @@ public class RecordComponentImpl implements RecordComponent
       {
          return false;
       }
-      return Objects.equals(getName(), otherRecordComponent.getName()) &&
+      return request(otherRecordComponent, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), otherRecordComponent.getType());
    }
 
    public java.lang.reflect.RecordComponent getReflection()
    {
       return recordComponent;
+   }
+
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

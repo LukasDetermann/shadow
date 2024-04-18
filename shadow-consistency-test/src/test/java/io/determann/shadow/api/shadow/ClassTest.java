@@ -3,6 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
+import io.determann.shadow.api.lang_model.query.LangModelQueries;
 import io.determann.shadow.api.property.Property;
 import org.junit.jupiter.api.Test;
 
@@ -66,14 +67,14 @@ class ClassTest extends DeclaredTest<Class>
                                assertEquals(2, properties.size());
 
                                Property id = properties.get(1);
-                               assertEquals("id", id.getField().get().getName());
+                               assertEquals("id", LangModelQueries.query(id.getField().get()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
 
-                               assertEquals("getId", id.getGetter().getName());
+                               assertEquals("getId", LangModelQueries.query(id.getGetter()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());
                                assertEquals(Collections.emptyList(), id.getGetter().getParameters());
 
-                               assertEquals("setId", id.getSetterOrThrow().getName());
+                               assertEquals("setId", LangModelQueries.query(id.getSetterOrThrow()).getName());
                                assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
                                assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetterOrThrow().getParameterTypes());
                             })

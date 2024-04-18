@@ -6,6 +6,8 @@ import io.determann.shadow.api.shadow.Void;
 
 import java.util.Objects;
 
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
 public class VoidImpl implements Void
 {
    @Override
@@ -30,5 +32,11 @@ public class VoidImpl implements Void
    public boolean equals(Object other)
    {
       return other instanceof Void;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

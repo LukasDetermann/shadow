@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
 
 public class IntersectionImpl implements Intersection
 {
@@ -85,5 +87,12 @@ public class IntersectionImpl implements Intersection
    public java.lang.reflect.Type[] getReflection()
    {
       return bounds;
+   }
+
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

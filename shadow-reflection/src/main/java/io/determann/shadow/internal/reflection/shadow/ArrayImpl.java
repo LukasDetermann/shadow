@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class ArrayImpl implements Array
 {
@@ -168,5 +169,11 @@ public class ArrayImpl implements Array
    public Class<?> getReflection()
    {
       return array;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

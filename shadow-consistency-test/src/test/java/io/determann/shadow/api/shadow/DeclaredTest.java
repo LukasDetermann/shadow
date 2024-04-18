@@ -1,9 +1,9 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.query.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -77,7 +77,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                shadowApi.getClassOrThrow("MyClass")
                                                         .getFields()
                                                         .stream()
-                                                        .map(Nameable::getName)
+                                                        .map(field ->  LangModelQueries.query(field).getName())
                                                         .collect(Collectors.toList())))
                    .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                    .compile();

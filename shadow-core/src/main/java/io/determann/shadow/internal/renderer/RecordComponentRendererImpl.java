@@ -6,6 +6,9 @@ import io.determann.shadow.api.shadow.RecordComponent;
 
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class RecordComponentRendererImpl implements RecordComponentRenderer
 {
    private final RenderingContextWrapper context;
@@ -30,14 +33,14 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       }
       sb.append(ShadowRendererImpl.type(context, recordComponent.getType()))
         .append(' ')
-        .append(recordComponent.getName());
+        .append(requestOrThrow(recordComponent, NAME));
 
       return sb.toString();
    }
 
    public static String invocation(RenderingContextWrapper context, RecordComponent recordComponent)
    {
-      return recordComponent.getGetter().getName() + "()";
+      return requestOrThrow(recordComponent.getGetter(), NAME) + "()";
    }
 
    @Override

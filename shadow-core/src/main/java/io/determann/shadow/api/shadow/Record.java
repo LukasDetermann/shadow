@@ -5,13 +5,16 @@ import io.determann.shadow.api.modifier.StaticModifiable;
 
 import java.util.List;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public interface Record extends Declared,
                                 StaticModifiable,
                                 FinalModifiable
 {
    default RecordComponent getRecordComponentOrThrow(String simpleName)
    {
-      return getRecordComponents().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
+      return getRecordComponents().stream().filter(field -> requestOrThrow(field, NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
    List<RecordComponent> getRecordComponents();

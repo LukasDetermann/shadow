@@ -7,6 +7,7 @@ import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -18,11 +19,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
 public class DeclaredImpl implements Annotation,
-                                     Enum
+                                     Enum,
+                                     NameableReflection
 {
    private final Class<?> aClass;
 
@@ -312,5 +315,11 @@ public class DeclaredImpl implements Annotation,
    public Class<?> getReflection()
    {
       return aClass;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

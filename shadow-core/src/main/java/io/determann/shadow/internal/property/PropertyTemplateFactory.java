@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.property;
 
-import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.*;
@@ -16,6 +15,8 @@ import static io.determann.shadow.api.TypeKind.VOID;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.util.stream.Collectors.groupingBy;
@@ -65,7 +66,7 @@ class PropertyTemplateFactory
 
    static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(Nameable::getName, Function.identity()));
+      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAME), Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -165,7 +166,7 @@ class PropertyTemplateFactory
 
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
-      String name = method.getName();
+      String name = requestOrThrow(method, NAME);
       List<Parameter> parameters = method.getParameters();
 
       //getter
@@ -198,7 +199,7 @@ class PropertyTemplateFactory
 
    private static String toPropertyName(Method method, String prefix)
    {
-      String name = method.getName().substring(prefix.length());
+      String name = requestOrThrow(method, NAME).substring(prefix.length());
 
       //java beans 8.8
       if (name.length() > 1 && isUpperCase(name.charAt(0)) && isUpperCase(name.charAt(1)))

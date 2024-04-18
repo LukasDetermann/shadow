@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.TypeKind.*;
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class PrimitiveImpl implements Primitive
 {
@@ -106,5 +107,12 @@ public class PrimitiveImpl implements Primitive
    public java.lang.Class<?> getReflection()
    {
       return getaClass();
+   }
+
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

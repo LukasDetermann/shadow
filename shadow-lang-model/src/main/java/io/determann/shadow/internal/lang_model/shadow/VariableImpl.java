@@ -4,6 +4,7 @@ import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.NameableLangModel;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -16,10 +17,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public abstract class VariableImpl extends ShadowImpl<TypeMirror>
-      implements Variable,
-                 Documented
+public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Variable,
+                                                                             Documented,
+                                                                             NameableLangModel
 {
    private final VariableElement variableElement;
 
@@ -56,8 +59,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror>
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter
-                     .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public VariableElement getElement()
@@ -132,7 +134,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror>
       {
          return false;
       }
-      return Objects.equals(getName(), otherVariable.getName()) &&
+      return request(otherVariable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), otherVariable.getType()) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers());
    }

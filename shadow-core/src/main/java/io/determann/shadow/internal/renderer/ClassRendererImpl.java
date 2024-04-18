@@ -8,6 +8,8 @@ import io.determann.shadow.api.shadow.Class;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
 public class ClassRendererImpl implements ClassRenderer
@@ -39,7 +41,7 @@ public class ClassRendererImpl implements ClassRenderer
       }
       sb.append("class");
       sb.append(' ');
-      sb.append(aClass.getName());
+      sb.append(requestOrThrow(aClass, NAME));
       if (!aClass.getGenerics().isEmpty())
       {
          sb.append('<');

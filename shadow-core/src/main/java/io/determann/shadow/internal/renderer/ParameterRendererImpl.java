@@ -6,6 +6,9 @@ import io.determann.shadow.api.shadow.Parameter;
 
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class ParameterRendererImpl implements ParameterRenderer
 {
    private final RenderingContextWrapper context;
@@ -33,13 +36,13 @@ public class ParameterRendererImpl implements ParameterRenderer
       {
          sb.append(ShadowRendererImpl.type(context, parameter.getType()))
            .append("... ")
-           .append(parameter.getName());
+           .append(requestOrThrow(parameter, NAME));
       }
       else
       {
          sb.append(ShadowRendererImpl.type(context, parameter.getType()))
            .append(' ')
-           .append(parameter.getName());
+           .append(requestOrThrow(parameter, NAME));
       }
       return sb.toString();
    }

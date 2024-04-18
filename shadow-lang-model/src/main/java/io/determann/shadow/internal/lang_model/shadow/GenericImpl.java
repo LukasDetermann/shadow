@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.NameableLangModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Shadow;
@@ -15,8 +16,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
+public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic,
+                                                                     NameableLangModel
 {
    private final TypeParameterElement typeParameterElement;
 
@@ -109,7 +113,7 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements Generic
       {
          return false;
       }
-      return Objects.equals(getName(), otherGeneric.getName()) &&
+      return request(otherGeneric, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getExtends(), otherGeneric.getExtends()) &&
              Objects.equals(getSuper(), otherGeneric.getSuper());
    }

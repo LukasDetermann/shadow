@@ -9,6 +9,8 @@ import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
 public class ReceiverImpl implements Receiver
 {
    private final AnnotatedType annotatedType;
@@ -44,5 +46,12 @@ public class ReceiverImpl implements Receiver
    public AnnotatedType getAnnotatedType()
    {
       return annotatedType;
+   }
+
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

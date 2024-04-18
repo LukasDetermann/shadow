@@ -2,11 +2,14 @@ package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.internal.renderer.RenderingContextImpl;
+import io.determann.shadow.meta_meta.Operations;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public interface RenderingContext
 {
@@ -60,7 +63,7 @@ public interface RenderingContext
          {
             if (!declared.getPackage().isUnnamed() && declared.getPackage().getQualifiedName().equals("java.lang"))
             {
-               return new NameRenderedEvent(declared, declared.getName(), false);
+               return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAME), false);
             }
             return new NameRenderedEvent(declared, declared.getQualifiedName(), true);
          };
@@ -91,7 +94,7 @@ public interface RenderingContext
        */
       public Builder withSimpleNames()
       {
-         nameRenderer = declared -> new NameRenderedEvent(declared, declared.getName(), false);
+         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAME), false);
          return this;
       }
 

@@ -10,6 +10,8 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
 public class ReturnImpl implements Return
 {
    private final LangModelContext context;
@@ -62,5 +64,11 @@ public class ReturnImpl implements Return
          return false;
       }
       return Objects.equals(getType(), otherReturn.getType());
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

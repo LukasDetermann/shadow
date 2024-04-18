@@ -1,15 +1,15 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.Documented;
-import io.determann.shadow.api.ModuleEnclosed;
-import io.determann.shadow.api.Nameable;
+import io.determann.shadow.api.*;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.modifier.Modifiable;
 
 import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
+
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 /**
  * any code block. Can be converted into the following using {@link Converter#convert(Declared)}
@@ -23,7 +23,8 @@ public interface Executable extends Annotationable,
                                     Nameable,
                                     Modifiable,
                                     ModuleEnclosed,
-                                    Documented
+                                    Documented,
+                                    ImplementationDefined
 {
    /**
     * {@snippet :
@@ -38,7 +39,7 @@ public interface Executable extends Annotationable,
 
    default Parameter getParameterOrThrow(String name)
    {
-      return getParameters().stream().filter(parameter -> parameter.getName().equals(name)).findAny().orElseThrow();
+      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAME).equals(name)).findAny().orElseThrow();
    }
 
    /**

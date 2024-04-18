@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -12,7 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class PackageImpl implements Package
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
+public class PackageImpl implements Package,
+                                    NameableReflection
 {
    private final NamedSupplier<java.lang.Package> packageSupplier;
 
@@ -127,5 +131,11 @@ public class PackageImpl implements Package
    public java.lang.Package getReflection()
    {
       return packageSupplier.getInstance();
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

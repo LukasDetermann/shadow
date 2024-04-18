@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
 public class EnumRendererImpl implements EnumRenderer
@@ -43,7 +45,7 @@ public class EnumRendererImpl implements EnumRenderer
       }
       sb.append("enum");
       sb.append(' ');
-      sb.append(anEnum.getName());
+      sb.append(requestOrThrow(anEnum, NAME));
       sb.append(' ');
       if (!anEnum.getDirectInterfaces().isEmpty())
       {

@@ -7,6 +7,8 @@ import io.determann.shadow.internal.lang_model.ApiHolder;
 
 import javax.lang.model.type.TypeMirror;
 
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
 public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow,
                                                                        ApiHolder
 {
@@ -41,5 +43,11 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow,
    public String toString()
    {
       return getMirror().toString();
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

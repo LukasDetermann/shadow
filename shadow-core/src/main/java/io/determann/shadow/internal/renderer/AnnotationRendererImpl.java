@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class AnnotationRendererImpl implements AnnotationRenderer
 {
 
@@ -41,7 +44,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
       }
       sb.append("@interface");
       sb.append(' ');
-      sb.append(annotation.getName());
+      sb.append(requestOrThrow(annotation, NAME));
       sb.append(" {");
       if (!content.isEmpty())
       {

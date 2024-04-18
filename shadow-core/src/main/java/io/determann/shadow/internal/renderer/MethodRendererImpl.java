@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class MethodRendererImpl implements MethodRenderer
 {
 
@@ -55,7 +58,7 @@ public class MethodRendererImpl implements MethodRenderer
       }
       sb.append(ShadowRendererImpl.type(context, method.getReturnType()));
       sb.append(' ');
-      sb.append(method.getName());
+      sb.append(requestOrThrow(method, NAME));
       sb.append('(');
 
       method.getReceiverType().ifPresent(declared ->
@@ -63,7 +66,7 @@ public class MethodRendererImpl implements MethodRenderer
 
                                             sb.append(ShadowRendererImpl.type(context, declared));
                                             sb.append(' ');
-                                            sb.append(declared.getName());
+                                            sb.append(requestOrThrow(declared, NAME));
                                             sb.append('.');
                                             sb.append("this");
                                             if (!method.getParameters().isEmpty())
@@ -133,7 +136,7 @@ public class MethodRendererImpl implements MethodRenderer
    @Override
    public String invocation(String parameters)
    {
-      return method.getName() +
+      return requestOrThrow(method, NAME) +
              '(' +
              parameters +
              ')';

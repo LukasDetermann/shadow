@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 
 public class WildcardImpl implements Wildcard
@@ -118,5 +119,11 @@ public class WildcardImpl implements Wildcard
    public WildcardType getReflection()
    {
       return wildcardType;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

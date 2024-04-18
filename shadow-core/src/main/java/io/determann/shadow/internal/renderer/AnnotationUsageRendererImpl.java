@@ -15,6 +15,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {
@@ -42,7 +44,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
          sb.append('(');
          sb.append(usage.getAnnotation().getMethods()
                         .stream()
-                        .map(method -> method.getName() +
+                        .map(method -> requestOrThrow(method, NAME) +
                                        " = " +
                                        valueRenderer.apply(method).orElseGet(() -> renderValue(context, usage.getValues().get(method))))
                         .collect(Collectors.joining(", ")));

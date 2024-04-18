@@ -8,6 +8,7 @@ import io.determann.shadow.api.shadow.Class;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
@@ -24,7 +25,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
-         String builderSimpleName = aClass.getName() + "ShadowBuilder";//simpleName of the companion builder class
+         String builderSimpleName = query(aClass).getName() + "ShadowBuilder";//simpleName of the companion builder class
          String builderVariableName = uncapitalize(builderSimpleName);
 
          //create a record holding the code needed to render a property in the builder
@@ -109,7 +110,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = builderVariableName + "." + property.getSetter().getName() + "(" + propertyName + ");";
+      String toBuildSetter = builderVariableName + "." + query(property.getSetter()).getName() + "(" + propertyName + ");";
 
       return new BuilderElement(field, mutator, toBuildSetter);
    }

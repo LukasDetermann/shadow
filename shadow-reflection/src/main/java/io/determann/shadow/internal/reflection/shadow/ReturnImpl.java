@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
 public class ReturnImpl implements Return
 {
    private final AnnotatedType annotatedType;
@@ -58,5 +60,11 @@ public class ReturnImpl implements Return
          return false;
       }
       return Objects.equals(getType(), otherReturn.getType());
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

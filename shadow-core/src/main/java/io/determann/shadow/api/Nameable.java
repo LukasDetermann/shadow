@@ -1,6 +1,5 @@
 package io.determann.shadow.api;
 
-public interface Nameable
+public interface Nameable extends ImplementationDefined
 {
-   String getName();
 }

@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
 public class RecordRendererImpl implements RecordRenderer
@@ -44,7 +46,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
       sb.append("record");
       sb.append(' ');
-      sb.append(aRecord.getName());
+      sb.append(requestOrThrow(aRecord, NAME));
       if (!aRecord.getGenerics().isEmpty())
       {
          sb.append('<');
