@@ -1,3 +1,2 @@
 * Articles
 ** xref:Meta Model.adoc[]
-** xref:Implementations define featureset.adoc[]

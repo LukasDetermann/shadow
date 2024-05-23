@@ -1,23 +1,43 @@
-:stylesheet: ../../style.css
+= Meta Model
 
-= Meta Model Design
+== Implementations define the featureset
 
-== Goal
+Meta programming is hard.
+One of the reasons is that there are a lot of different apis each with their own philosophy, design, quirks limitations and pitfalls.
+This leads to a high barrier of entry and a lot of cognitive complexity.
+There are some projects implemented with technology *A* that should use *B*, but are unable to switch.
+This project aims to provide one api for meta programming.
+At the center of it is the *meta model api* that represents the source code.
 
-There are types forms of Meta-Programming in java.
-Reflection and Annotation-Processing have the same level of detail for now.
-Both start at java-modules and end at method signatures.
-With https://openjdk.org/projects/babylon/[Project Babylons] code-reflection that will change that.
-The goal of the Shadow-Api is to write one fits all Api with each implementation being a separate artifact.
-As an example, I will use the Method `public Optional<FuncOp> getCodeModel()` that is proposed to be added to `java.lang.reflect.Method`.
+The project is separated into multiple maven modules.
+There is a core module that contains the *meta model api* and functionality build on top like rendering.
+And there are multiple modules that implement the api defined in the core module for different technologies.
+There is one implementation module for reflection and one for annotation processing for example.
 
-=== Components
+The *meta model api* is consumed by two clients.
+There is the user of a specific meta programing api like reflection.
+And features for every meta programming type like rendering.
 
-- *Core* is the module containing the Model Api and functionality that can be used with any implementation like Renderer and Converter
-- *Annotation-Processing* depends on *core*
-- *Reflection* depends on *core*
+.When using a specific type of meta programming the api needs to:
+- be feature complete
+- be discoverable
+- have a low barrier of entry
 
-== Solution 1: One Api
+.Features build on top of this api like rendering need
+- only a subset of features
+- consistency in the api
+
+
+All features of the reflection api and the annotation processing api for example should be supported.
+They currently have similar featuresets, but not the same.
+The difference will become grater with https://openjdk.org/projects/babylon/[Project Babylon].
+
+*This post explores how different implementations of the same api can have different featuresets.*
+
+
+
+
+== One Api
 
 Provide all the functionality in the core api. With implementations supporting the subset they can.
 
@@ -31,32 +51,32 @@ ifdef::site-gen-antora[]
 include::Shadow-Api::example$article/meta_model/OneApi.java[tag=core]
 endif::[]
 ----
-.reflection
+.implementation(reflection)
 [%linenums,java]
 ----
-class ReflectionMethodImpl implements Method
-{
+class ReflectionMethodImpl implements Method {
+
    private final java.lang.reflect.Method method;
 
-   public ReflectionMethodImpl(java.lang.reflect.Method method)
-   {
+   public ReflectionMethodImpl(java.lang.reflect.Method method) {
+
       this.method = method;
    }
 
    @Override
-   public String getName()
-   {
+   public String getName() {
+
       return method.getName();
    }
 
    @Override
-   public Optional<FuncOp> getCodeModel()
-   {
+   public Optional<FuncOp> getCodeModel() {
+
       return method.getCodeModel();
    }
 }
 ----
-.Annotation Processing
+.implementation(Annotation Processing)
 [%linenums,java]
 ----
 ifndef::site-gen-antora[]
@@ -73,7 +93,10 @@ endif::[]
 - There is a risk of concepts leaking from one implementation over the core-api into other implementations
 - easy to call the wrong methods
 
-== Solution 2: Inheritance
+
+
+
+== Inheritance
 
 The core api contains only functionality every implementation can use.
 Implementations extend the model to provide additional functionality.
@@ -89,7 +112,7 @@ include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=core]
 endif::[]
 ----
 
-.reflection
+.implementation(reflection)
 [%linenums,java]
 ----
 ifndef::site-gen-antora[]
@@ -100,7 +123,7 @@ include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=reflection]
 endif::[]
 ----
 
-.Annotation Processing
+.implementation(Annotation Processing)
 [%linenums,java]
 ----
 ifndef::site-gen-antora[]
@@ -114,92 +137,298 @@ endif::[]
 - hard to make mistakes when using this api
 - low barrier of entry
 - good separation of concerns
-- The implementation would need many generics. Class for example needs the type of methods it returns.
-And when new core functionality gets added there maybe a need for an additional generic-parameter breaking every implementation and any code dependent on them
+- Breaks all clients with every new language feature. Class for example needs the type of methods it returns.
+And when new core functionality gets added there maybe a need for an additional generic-parameter breaking every implementation and any code dependent on them.
 +
 [%linenums,java]
 ----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/meta_model/Inheritance.java[tag=hierarchy]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/meta_model/Inheritance.java[tag=hierarchy]
-endif::[]
+interface NewFeature{}
+
+interface Class<METHOD extends Method, NEW_FEATURE extends NewFeature> {
+
+   List<METHOD> getMethods();
+
+   NEW_FEATURE getNewFeature();
+}
+static {
+   //adding a new generic would break all clients
+   //they would go from
+   Class<Method> original = null;
+   //to
+   Class<Method, NewFeature> newMethod = null;
+}
 ----
 
-== Solution 3: Accessors in Implementation
 
-Move Accessors to the Implementations, so they can define the featureset.
 
-.core
-[%linenums,java]
-----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=core]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=core]
-endif::[]
-----
+== Static Getter
 
 .reflection
 [%linenums,java]
 ----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=reflection]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=reflection]
-endif::[]
+public static String getName(Nameable nameable) {
+
+}
 ----
 
-.Annotation Processing
+.implementation
 [%linenums,java]
 ----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=annotation_processing]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=annotation_processing]
-endif::[]
-----
+static {
 
-.Usage
+   Method method = null;
+   String name = getName(method);
+}
+----
+This is the simples possible solution where implementations define the featureset.
+Each implementation has their own static getter.
+The discoverability is poor.
+The caller has to know that method extends Nameable to know that `getName()` can be called.
+
+`For this Object -> get the name` should be preferred over `get the name -> for this Object`
+Its more "natural this way" and generally provides better discoverability for example via IDE autocomplete.
+
+== Static Method for Query
+
+.core
 [%linenums,java]
 ----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/meta_model/AccessorsInImplementation.java[tag=usage]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/meta_model/AccessorsInImplementation.java[tag=usage]
-endif::[]
+public interface Query<TO_QUERY, RESULT> {}
+
+public static  <TO_QUERY, RESULT> RESULT getOrThrow(TO_QUERY toQuery, Query<TO_QUERY, RESULT> query) {
+
+}
 ----
 
-- risk of inconsistent implementations
-- Query based apis are not that common and people are therefore less comfortable with them
-- changes in one implementation don't affect other implementations in any way
-- good separation of concerns
+.implementation
+[%linenums,java]
+----
+public static Query<Nameable, String> name() {
+
+}
+----
+
+.usage
+[%linenums,java]
+----
+static {
+
+    Method method = null;
+    String s = getOrThrow(method, name());
+}
+----
+Here the direction is turned to `For this Object -> get the name`, but the discoverability can still be improved.
+
+== A Query can be a Function
+
+.core
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT> extends Function<TO_QUERY, RESULT> {
+
+   @Override
+   public RESULT apply(TO_QUERY toQuery);
+}
+----
+
+.implementation
+[%linenums,java]
+----
+public static Query<Nameable, String> name() {
+
+}
+----
+
+.usage
+[%linenums,java]
+----
+static {
+
+   Method method = null;
+   String name = name().apply(method);
+}
+----
+A Query is functionality equivalent to a `Function`.
+If the `Query` is the "active" part its back to `get the name -> for this Object`
+
+== Duplicate Model
+
+.implementation(reflection)
+[%linenums,java]
+----
+public static ReflectionNameable query(Nameable nameable) {
+
+}
+
+public static ReflectionMethod query(Method method) {
+
+}
+
+public interface ReflectionNameable {
+   public String getName();
+}
+
+public interface ReflectionMethod extends ReflectionNameable {
+
+   Return getReturn();
+}
+----
+
+.usage
+[%linenums,java]
+----
+static {
+
+   Method method = null;
+   String name = query(method).getName();
+}
+----
+We can just duplicate the model or subsets of it and use static factory methods to map from one to the other.
+This offers the best possible discoverability.
+The only downside is that implementation is a lot of work.
+
+== Companions
+
+.core
+[%linenums,java]
+----
+public interface Executable<T extends ExecutableQuery> {
+}
+
+public interface Method<T extends MethodQuery> extends Executable<T> {
+}
+
+public interface ExecutableQuery {
+}
+
+public interface MethodQuery extends ExecutableQuery {
+
+   public void getName();
+}
+----
+
+.implementation(reflection)
+[%linenums,java]
+----
+public interface ReflectionExecutableQuery extends ExecutableQuery {
+}
+
+public interface ReflectionMethodQuery extends ReflectionExecutableQuery,
+                                               MethodQuery {
+}
+----
+When moving the methods to a companion object the model works perfectly.
+Problems occur when working with a nonspecific model.
+[%linenums,java]
+----
+public interface Converter {
+
+   static <T> ExecutableConverter convert(Executable<T extends ExecutableQuery> executable) {
+      //implementation
+   }
+}
+public interface ExecutableConverter<T> {
+
+   <M extends ExecutableQuery> Method<M> toMethod();
+}
+----
+For a `Executable<ReflectionExecutableQuery>` `Method<ReflectionMethodQuery>` can not be returned.
+
+== Generic
+
+.core
+[%linenums,java]
+----
+public interface Query<TO_QUERY, RESULT> {
+
+   public static <TO_QUERY extends T, T> Queryable<T> query(TO_QUERY toQuery) {
+   }
+}
+
+public interface Queryable<TO_QUERY> {
+
+   <RESULT> RESULT getOrThrow(Query<TO_QUERY, RESULT> query);
+
+   <RESULT> Optional<RESULT> get(Query<TO_QUERY, RESULT> query);
+}
+----
+
+.implementation
+[%linenums,java]
+----
+public static Query<Nameable, String> name() {}
+----
+
+.usage
+[%linenums,java]
+----
+static {
+
+   Method method = null;
+
+   //compiles
+   Queryable<Nameable> query = Query.query(method);
+   query.get(name());
+
+   //compiles
+   Optional<String> s = Query.<Method, Nameable>query(method).get(name());
+
+   //doesn't compile
+   Optional<String> s1 = Query.query(method).get(name());
+}
+----
+Here `Query` has a static factory with generics that give flexibility for supertypes.
+So could a `Query` for `Nameable` be applied to a `Method`, because `Method` extends `Nameable`.
+The Query call has two parts.
+First the Object to query gets wrapped in a `Queryable` which can be queried when the types match.
+This works but, but target type inference is limited for chain methods calls.
+I am not aware of any planed jdk enhancements this for this behavior.
+In this state the api is annoying and unintuitive to use.
 
 == Conclusion
 
-The circular dependencies of Solution 1 make it a no-go in my opinion.
-There are about 10 planned implementations.
-With each new implementations the circular dependencies would become more annoying.
+The requirements of the two clients are so different that two apis are beneficial.
 
-The rist of needing to add new generics to the core model, like solution 2 demands, is too high.
-Especially when there is already talk about new types.
+The preferred api for specific meta programming implementations like reflection is "Duplicate Model".
+It provides the best discoverability together with "Generic" and has the lowest barrier of entry.
+This can not be used for common features as there are simply no methods to call in the core module.
 
-Solution 3 seems to be the most promising from a maintainability standpoint.
-It would even enable implementations support new jdk features if the core becomes unmaintained.
-`method.getOrThrow(ReflectionQueries.newJdkFeature())`
-It could be a good idea to use two Api styles for this one Api.
-Solution 1 for thinks that are very unlikely to change like `method.getName()`
-and a Query Api for anything else.
-An inconsistent Api may not be worth it.
+For them, I landed on a variant of "Static Method for Query" just with an SPI.
 
-*Solution 3 seems to be the right one*
+.core
+[%linenums,java]
+----
+public record Operation<TYPE, RESULT>(String name) {}
 
-.Open Questions when writing a Query based Api:
-- What is a good way to keep implementations in sync?
-- How to keep the barrier of entry low?
-- Would a combining it with Solution 1 help?
+public interface Operations {
+
+   public static Operation<Nameable, String> NAMEABLE_NAME = new Operation<>("nameable.name");
+}
+
+public interface ProviderSpi {
+
+   <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation);
+}
+
+public sealed interface Response<T> {
+
+   /**
+    * Equivalent to Optional.empty to prevent to much nesting
+    */
+   public final class Empty<T> implements Response<T> {}
+
+   public final class Unsupported<T> implements Response<T> {}
+
+   public record Result<T>(T value) implements Response<T> {}
+}
+----
+
+.usage
+[%linenums,java]
+----
+static {
+
+   Method method = null;
+   String name = requestOrThrow(method, NAMEABLE_NAME);
+}
+----
