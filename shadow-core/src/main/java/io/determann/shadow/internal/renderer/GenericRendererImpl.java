@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.Generic;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class GenericRendererImpl implements GenericRenderer
@@ -42,17 +42,17 @@ public class GenericRendererImpl implements GenericRenderer
                .map(declared -> "java.lang.Object".equals(declared.getQualifiedName()))
                .orElse(false))
          {
-            sb.append(requestOrThrow(generic, NAME));
+            sb.append(requestOrThrow(generic, NAMEABLE_NAME));
          }
          else
          {
-            sb.append(requestOrThrow(generic, NAME)).append(" extends ").append(ShadowRendererImpl.type(context, generic.getExtends()));
+            sb.append(requestOrThrow(generic, NAMEABLE_NAME)).append(" extends ").append(ShadowRendererImpl.type(context, generic.getExtends()));
          }
          context.setRenderNestedGenerics(true);
       }
       else
       {
-         sb.append(requestOrThrow(generic, NAME));
+         sb.append(requestOrThrow(generic, NAMEABLE_NAME));
       }
       return sb.toString();
    }
@@ -66,6 +66,6 @@ public class GenericRendererImpl implements GenericRenderer
    @Override
    public String type()
    {
-      return requestOrThrow(generic, NAME);
+      return requestOrThrow(generic, NAMEABLE_NAME);
    }
 }

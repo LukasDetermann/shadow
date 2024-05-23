@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Constructor;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
@@ -54,7 +54,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
 
                                                  sb.append(ShadowRendererImpl.type(context, declared));
                                                  sb.append(' ');
-                                                 sb.append(requestOrThrow(declared, NAME));
+                                                 sb.append(requestOrThrow(declared, NAMEABLE_NAME));
                                                  sb.append('.');
                                                  sb.append("this");
                                                  if (!constructor.getParameters().isEmpty())

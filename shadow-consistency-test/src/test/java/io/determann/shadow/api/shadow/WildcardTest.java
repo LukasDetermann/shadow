@@ -3,9 +3,11 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
+import io.determann.shadow.api.lang_model.query.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WildcardTest extends ShadowTest<Wildcard>
@@ -28,7 +30,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                             .map(anInterface -> anInterface.getGenericTypes().get(0))
                                                             .map(Converter::convert)
                                                             .flatMap(TypeConverter::toWildcard)
-                                                            .flatMap(Wildcard::getExtends)
+                                                            .flatMap(wildcard -> query(wildcard).getExtends())
                                                             .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {
@@ -52,7 +54,7 @@ class WildcardTest extends ShadowTest<Wildcard>
                                                             .map(anInterface -> anInterface.getGenericTypes().get(0))
                                                             .map(Converter::convert)
                                                             .flatMap(TypeConverter::toWildcard)
-                                                            .flatMap(Wildcard::getSuper)
+                                                            .flatMap(wildcard -> LangModelQueries.query(wildcard).getSuper())
                                                             .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {
@@ -68,16 +70,16 @@ class WildcardTest extends ShadowTest<Wildcard>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Number"))
+                               assertTrue(query(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Number")))
                                                    .contains(shadowApi.getClassOrThrow("java.lang.Long")));
 
-                               assertFalse(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Long"))
+                               assertFalse(query(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Long")))
                                                     .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                               assertTrue(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Long"))
+                               assertTrue(query(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Long")))
                                                    .contains(shadowApi.getClassOrThrow("java.lang.Number")));
 
-                               assertFalse(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Number"))
+                               assertFalse(query(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Number")))
                                                     .contains(shadowApi.getClassOrThrow("java.lang.Long")));
                             })
                    .compile();

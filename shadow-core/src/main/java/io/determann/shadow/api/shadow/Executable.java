@@ -8,7 +8,7 @@ import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 /**
@@ -39,7 +39,7 @@ public interface Executable extends Annotationable,
 
    default Parameter getParameterOrThrow(String name)
    {
-      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAME).equals(name)).findAny().orElseThrow();
+      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_NAME).equals(name)).findAny().orElseThrow();
    }
 
    /**

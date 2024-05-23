@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ParameterImpl implements Parameter,
@@ -158,7 +158,7 @@ public class ParameterImpl implements Parameter,
       {
          return false;
       }
-      return request(otherVariable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), otherVariable.getType()) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
              Objects.equals(isVarArgs(), otherVariable.isVarArgs());

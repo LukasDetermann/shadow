@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -44,7 +44,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       }
       sb.append("interface");
       sb.append(' ');
-      sb.append(requestOrThrow(anInterface, NAME));
+      sb.append(requestOrThrow(anInterface, NAMEABLE_NAME));
       if (!anInterface.getGenerics().isEmpty())
       {
          sb.append('<');

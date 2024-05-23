@@ -15,7 +15,7 @@ import static io.determann.shadow.api.TypeKind.VOID;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
@@ -66,7 +66,7 @@ class PropertyTemplateFactory
 
    static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAME), Function.identity()));
+      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAMEABLE_NAME), Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -166,7 +166,7 @@ class PropertyTemplateFactory
 
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
-      String name = requestOrThrow(method, NAME);
+      String name = requestOrThrow(method, NAMEABLE_NAME);
       List<Parameter> parameters = method.getParameters();
 
       //getter
@@ -199,7 +199,7 @@ class PropertyTemplateFactory
 
    private static String toPropertyName(Method method, String prefix)
    {
-      String name = requestOrThrow(method, NAME).substring(prefix.length());
+      String name = requestOrThrow(method, NAMEABLE_NAME).substring(prefix.length());
 
       //java beans 8.8
       if (name.length() > 1 && isUpperCase(name.charAt(0)) && isUpperCase(name.charAt(1)))

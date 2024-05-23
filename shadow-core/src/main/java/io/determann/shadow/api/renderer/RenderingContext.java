@@ -63,7 +63,7 @@ public interface RenderingContext
          {
             if (!declared.getPackage().isUnnamed() && declared.getPackage().getQualifiedName().equals("java.lang"))
             {
-               return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAME), false);
+               return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_NAME), false);
             }
             return new NameRenderedEvent(declared, declared.getQualifiedName(), true);
          };
@@ -94,7 +94,7 @@ public interface RenderingContext
        */
       public Builder withSimpleNames()
       {
-         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAME), false);
+         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_NAME), false);
          return this;
       }
 

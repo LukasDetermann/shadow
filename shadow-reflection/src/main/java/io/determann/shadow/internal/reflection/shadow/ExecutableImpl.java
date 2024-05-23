@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ExecutableImpl implements Constructor,
@@ -242,7 +242,7 @@ public class ExecutableImpl implements Constructor,
 
    private boolean isSubSignature(Executable executable)
    {
-      return request(executable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) && (getParameterTypes().equals(executable.getParameterTypes()));
+      return request(executable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) && (getParameterTypes().equals(executable.getParameterTypes()));
    }
 
    @Override
@@ -282,7 +282,7 @@ public class ExecutableImpl implements Constructor,
       {
          return false;
       }
-      return request(otherExecutable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return request(otherExecutable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), otherExecutable.getParameters()) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());

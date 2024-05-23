@@ -2,8 +2,10 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.WildcardReflection;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.meta_meta.Provider;
 
 import java.lang.reflect.WildcardType;
 import java.util.Objects;
@@ -11,9 +13,12 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.WILDCARD_EXTENDS;
+import static io.determann.shadow.meta_meta.Operations.WILDCARD_SUPER;
 
 
-public class WildcardImpl implements Wildcard
+public class WildcardImpl implements Wildcard,
+                                     WildcardReflection
 {
    private final WildcardType wildcardType;
 
@@ -37,13 +42,16 @@ public class WildcardImpl implements Wildcard
          return false;
       }
       Wildcard wildcard = possibleWildcard.get();
+      Optional<Shadow> otherExtends = Provider.request(wildcard, WILDCARD_EXTENDS);
+      Optional<Shadow> otherSuper = Provider.request(wildcard, WILDCARD_SUPER);
 
-      if ((getExtends().isEmpty() && getSuper().isEmpty()) || (wildcard.getExtends().isEmpty() && wildcard.getSuper().isEmpty()))
+
+      if ((getExtends().isEmpty() && getSuper().isEmpty()) || (otherExtends.isEmpty() && otherSuper.isEmpty()))
       {
          return false;
       }
-      return (getExtends().isPresent() && wildcard.getExtends().isPresent() && getExtends().get().representsSameType(wildcard.getExtends().get())) ||
-             (getSuper().isPresent() && wildcard.getSuper().isPresent() && getSuper().get().representsSameType(wildcard.getSuper().get()));
+      return (getExtends().isPresent() && otherExtends.isPresent() && getExtends().get().representsSameType(otherExtends.get())) ||
+             (getSuper().isPresent() && otherSuper.isPresent() && getSuper().get().representsSameType(otherSuper.get()));
    }
 
    @Override
@@ -112,8 +120,8 @@ public class WildcardImpl implements Wildcard
       {
          return false;
       }
-      return Objects.equals(getExtends(), otherWildcard.getExtends()) &&
-             Objects.equals(getSuper(), otherWildcard.getSuper());
+      return Objects.equals(getExtends(), Provider.request(otherWildcard, WILDCARD_EXTENDS)) &&
+             Objects.equals(getSuper(), Provider.request(otherWildcard, WILDCARD_SUPER));
    }
 
    public WildcardType getReflection()

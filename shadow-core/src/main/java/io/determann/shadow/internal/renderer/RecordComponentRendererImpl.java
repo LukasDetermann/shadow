@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.RecordComponent;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class RecordComponentRendererImpl implements RecordComponentRenderer
@@ -33,14 +33,14 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       }
       sb.append(ShadowRendererImpl.type(context, recordComponent.getType()))
         .append(' ')
-        .append(requestOrThrow(recordComponent, NAME));
+        .append(requestOrThrow(recordComponent, NAMEABLE_NAME));
 
       return sb.toString();
    }
 
    public static String invocation(RenderingContextWrapper context, RecordComponent recordComponent)
    {
-      return requestOrThrow(recordComponent.getGetter(), NAME) + "()";
+      return requestOrThrow(recordComponent.getGetter(), NAMEABLE_NAME) + "()";
    }
 
    @Override

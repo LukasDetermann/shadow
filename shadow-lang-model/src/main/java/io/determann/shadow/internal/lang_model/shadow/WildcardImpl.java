@@ -3,15 +3,21 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.WildcardLangModel;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.meta_meta.Provider;
 
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import java.util.Objects;
 import java.util.Optional;
 
-public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
+import static io.determann.shadow.meta_meta.Operations.WILDCARD_EXTENDS;
+import static io.determann.shadow.meta_meta.Operations.WILDCARD_SUPER;
+
+public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
+                                                                      WildcardLangModel
 {
    public WildcardImpl(LangModelContext context, WildcardType wildcardTypeMirror)
    {
@@ -70,7 +76,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard
       {
          return false;
       }
-      return Objects.equals(getExtends(), otherWildcard.getExtends()) &&
-             Objects.equals(getSuper(), otherWildcard.getSuper());
+      return Objects.equals(getExtends(), Provider.request(otherWildcard, WILDCARD_EXTENDS)) &&
+             Objects.equals(getSuper(), Provider.request(otherWildcard, WILDCARD_SUPER));
    }
 }

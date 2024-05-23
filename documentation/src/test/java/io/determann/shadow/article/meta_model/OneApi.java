@@ -9,19 +9,19 @@ public class OneApi
 {
    //@formatter:off
    //tag::core[]
-@interface Supported
-{
+@interface Supported {
+
    Implementation[] value();
 }
 
-enum Implementation
-{
+enum Implementation {
+
    REFLECTION,
    ANNOTATION_PROCESSING
 }
 
-public interface Method
-{
+public interface Method {
+
    @Supported({Implementation.ANNOTATION_PROCESSING, Implementation.REFLECTION})
    String getName();
 
@@ -31,24 +31,23 @@ public interface Method
    //end::core[]
 
    //tag::annotation_processing[]
-class AnnotationProcessingMethodImpl implements Method
-{
+class AnnotationProcessingMethodImpl implements Method {
+
    private final ExecutableElement executableElement;
 
-   public AnnotationProcessingMethodImpl(ExecutableElement executableElement)
-   {
+   public AnnotationProcessingMethodImpl(ExecutableElement executableElement) {
       this.executableElement = executableElement;
    }
 
    @Override
-   public String getName()
-   {
+   public String getName() {
+
       return executableElement.getSimpleName().toString();
    }
 
    @Override
-   public Optional<FuncOp> getCodeModel()
-   {
+   public Optional<FuncOp> getCodeModel() {
+
       throw new NotImplementedException();
    }
 }

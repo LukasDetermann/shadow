@@ -3,6 +3,7 @@ package io.determann.shadow.meta_meta;
 import io.determann.shadow.api.ImplementationDefined;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Function;
@@ -35,12 +36,17 @@ public class Provider
    {
       return switch (_request(instance, operation))
       {
-         case Response.Result<RESULT> result -> result.getValue();
+         case Response.Result<RESULT> result -> result.value();
          case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.name() +
                                                                                         " not supported for " +
                                                                                         instance +
                                                                                         " with implementation " +
                                                                                         instance.getImplementationName());
+         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.name() +
+                                                                           " does not return a value for " +
+                                                                           instance +
+                                                                           " with implementation " +
+                                                                           instance.getImplementationName());
       };
    }
 
@@ -48,8 +54,9 @@ public class Provider
    {
       return switch (_request(instance, operation))
       {
-         case Response.Result<RESULT> result -> Optional.of(result.getValue());
+         case Response.Result<RESULT> result -> Optional.of(result.value());
          case Response.Unsupported<RESULT> v ->  Optional.empty();
+         case Response.Empty<RESULT> v -> Optional.empty();
       };
    }
 

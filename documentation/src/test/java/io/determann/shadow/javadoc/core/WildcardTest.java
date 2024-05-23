@@ -6,6 +6,8 @@ import io.determann.shadow.api.shadow.Wildcard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
+
 public class WildcardTest
 {
    @Test
@@ -16,7 +18,7 @@ public class WildcardTest
                                //@start region="Wildcard.contains"
                                Class number = context.getClassOrThrow("java.lang.Number");
                                Wildcard wildcard = context.asExtendsWildcard(number);
-                               Assertions.assertTrue(wildcard.contains(context.getClassOrThrow("java.lang.Long")));//@highlight substring="contains"
+                               Assertions.assertTrue(query(wildcard).contains(context.getClassOrThrow("java.lang.Long")));//@highlight substring="contains"
                                //@end
                             })
                    .compile();

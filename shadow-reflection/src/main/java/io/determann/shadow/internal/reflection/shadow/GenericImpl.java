@@ -16,7 +16,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
 public class GenericImpl implements Generic,
@@ -121,7 +121,7 @@ public class GenericImpl implements Generic,
       {
          return false;
       }
-      return request(otherGeneric, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return request(otherGeneric, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getExtends(), otherGeneric.getExtends()) &&
              Objects.equals(getSuper(), otherGeneric.getSuper());
    }

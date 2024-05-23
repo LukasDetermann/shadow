@@ -8,7 +8,7 @@ import io.determann.shadow.api.modifier.StrictfpModifiable;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 /**
@@ -44,14 +44,14 @@ public interface Declared extends Shadow,
 
    default Field getFieldOrThrow(String simpleName)
    {
-      return getFields().stream().filter(field -> requestOrThrow(field, NAME).equals(simpleName)).findAny().orElseThrow();
+      return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
    List<Field> getFields();
 
    default List<Method> getMethods(String simpleName)
    {
-      return getMethods().stream().filter(field -> requestOrThrow(field, NAME).equals(simpleName)).toList();
+      return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_NAME).equals(simpleName)).toList();
    }
 
    List<Method> getMethods();

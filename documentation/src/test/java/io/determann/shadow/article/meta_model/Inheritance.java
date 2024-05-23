@@ -7,15 +7,20 @@ public class Inheritance
 {
    //@formatter:off
 //tag::core[]
-interface Method
-{
+interface Method {
+
    String getName();
+}
+
+interface Class<METHOD extends Method> {
+
+   List<METHOD> getMethods();
 }
 //end::core[]
 
 //tag::reflection[]
-interface ReflectionMethod extends Method
-{
+interface ReflectionMethod extends Method {
+
    Optional<FuncOp> getCodeModel();
 }
 //end::reflection[]
@@ -23,12 +28,5 @@ interface ReflectionMethod extends Method
 //tag::annotation_processing[]
 interface AnnotationProcessingMethod extends Method {}
 //end::annotation_processing[]
-
-//tag::hierarchy[]
-interface Class<METHOD extends Method>
-{
-   List<METHOD> getMethods();
-}
-//end::hierarchy[]
 //@formatter:on
 }

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
-import static io.determann.shadow.meta_meta.Operations.NAME;
+import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
 public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Variable,
@@ -134,7 +134,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
       {
          return false;
       }
-      return request(otherVariable, NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), otherVariable.getType()) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers());
    }
