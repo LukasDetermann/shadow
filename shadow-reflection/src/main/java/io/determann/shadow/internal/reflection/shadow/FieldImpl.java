@@ -7,6 +7,10 @@ import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
 
+import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_ASSIGNABLE_FROM;
+import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_SUBTYPE_OF;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
 {
    public FieldImpl(java.lang.reflect.Field field)
@@ -50,7 +54,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isSubtypeOf(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Class aClass)
       {
@@ -68,7 +72,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isAssignableFrom(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
       if (getType() instanceof Class aClass)
       {

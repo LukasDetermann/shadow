@@ -17,8 +17,9 @@ import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ParameterImpl implements Parameter,
                                       NameableReflection
@@ -88,7 +89,7 @@ public class ParameterImpl implements Parameter,
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isSubtypeOf(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Class aClass)
       {
@@ -106,7 +107,7 @@ public class ParameterImpl implements Parameter,
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isAssignableFrom(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
       if (getType() instanceof Class aClass)
       {

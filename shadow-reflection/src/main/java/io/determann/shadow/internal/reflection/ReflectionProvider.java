@@ -20,6 +20,8 @@ public class ReflectionProvider extends AbstractProvider
    {
       builder.with(Operations.NAMEABLE_NAME, nameable -> ReflectionQueries.query(nameable).getName())
              .withOptional(Operations.WILDCARD_EXTENDS, wildcard -> ReflectionQueries.query(wildcard).getExtends())
-             .withOptional(Operations.WILDCARD_SUPER, wildcard -> ReflectionQueries.query(wildcard).getSuper());
+             .withOptional(Operations.WILDCARD_SUPER, wildcard -> ReflectionQueries.query(wildcard).getSuper())
+             .with(Operations.PRIMITIVE_IS_ASSIGNABLE_FROM, (primitive, shadow) -> ReflectionQueries.query(primitive).isAssignableFrom(shadow))
+             .with(Operations.PRIMITIVE_IS_SUBTYPE_OF, (primitive, shadow) -> ReflectionQueries.query(primitive).isSubtypeOf(shadow));
    }
 }

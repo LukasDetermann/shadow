@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.PrimitiveLangModel;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
@@ -10,7 +11,8 @@ import io.determann.shadow.api.shadow.Shadow;
 import javax.lang.model.type.PrimitiveType;
 import java.util.Objects;
 
-public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive
+public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive,
+                                                                        PrimitiveLangModel
 {
    public PrimitiveImpl(LangModelContext context, PrimitiveType primitiveTypeMirror)
    {

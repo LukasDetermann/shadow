@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.PrimitiveReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
@@ -14,7 +15,8 @@ import static io.determann.shadow.api.TypeKind.*;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class PrimitiveImpl implements Primitive
+public class PrimitiveImpl implements Primitive,
+                                      PrimitiveReflection
 {
    private final java.lang.Class<?> aClass;
    private static final Map<java.lang.Class<?>, TypeKind> CLASS_KIND_MAP = new HashMap<>();

@@ -10,6 +10,9 @@ import io.determann.shadow.api.shadow.*;
 import java.lang.reflect.Field;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_ASSIGNABLE_FROM;
+import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_SUBTYPE_OF;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstant
 {
@@ -23,7 +26,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isSubtypeOf(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Class aClass)
       {
@@ -41,7 +44,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    {
       if (getType() instanceof Primitive primitive)
       {
-         return primitive.isAssignableFrom(shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
       if (getType() instanceof Class aClass)
       {
