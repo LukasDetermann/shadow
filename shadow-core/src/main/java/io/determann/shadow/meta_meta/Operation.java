@@ -1,5 +1,6 @@
 package io.determann.shadow.meta_meta;
 
-public record Operation<TYPE, RESULT>(String name)
+public sealed interface Operation<TYPE, RESULT> permits Operation0,
+                                                Operation1
 {
 }

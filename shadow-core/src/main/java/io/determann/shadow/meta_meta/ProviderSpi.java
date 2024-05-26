@@ -6,5 +6,5 @@ public interface ProviderSpi
 {
    public String getImplementationName();
 
-   <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation);
+   <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation, Object... params);
 }

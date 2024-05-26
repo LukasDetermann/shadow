@@ -4,11 +4,11 @@ import io.determann.shadow.api.ImplementationDefined;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public abstract class AbstractProvider implements ProviderSpi
 {
-   private final Map<Operation<?, ?>, Function<?, ?>> map;
+   private final Map<Operation<?, ?>, BiFunction<?, Object[], ?>> map;
 
    protected AbstractProvider()
    {
@@ -18,15 +18,15 @@ public abstract class AbstractProvider implements ProviderSpi
    }
 
    @Override
-   public <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation)
+   public <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation, Object... params)
    {
-      Function<?, ?> mapping = map.get(operation);
+      BiFunction<?, Object[], ?> mapping = map.get(operation);
       if (mapping == null)
       {
          return new Response.Unsupported<>();
       }
       //noinspection unchecked
-      RESULT result   = ((Function<TYPE, RESULT>) mapping).apply(instance);
+      RESULT result = ((BiFunction<TYPE, Object[], RESULT>) mapping).apply(instance, params);
 
       if (result instanceof Optional<?> optional)
       {
