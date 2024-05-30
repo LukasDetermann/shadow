@@ -7,6 +7,7 @@ import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
 import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.reflection.query.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.query.ShadowReflection;
@@ -31,7 +32,8 @@ public class DeclaredImpl implements Annotation,
                                      Enum,
                                      NameableReflection,
                                      ShadowReflection,
-                                     QualifiedNameableReflection
+                                     QualifiedNameableReflection,
+                                     ModuleEnclosedReflection
 {
    private final Class<?> aClass;
 

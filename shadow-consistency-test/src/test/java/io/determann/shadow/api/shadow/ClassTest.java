@@ -71,11 +71,11 @@ class ClassTest extends DeclaredTest<Class>
                                assertEquals("id", LangModelQueries.query((Nameable) id.getField().get()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
 
-                               assertEquals("getId", LangModelQueries.query(id.getGetter()).getName());
+                               assertEquals("getId", LangModelQueries.query((Nameable) id.getGetter()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());
                                assertEquals(Collections.emptyList(), id.getGetter().getParameters());
 
-                               assertEquals("setId", LangModelQueries.query(id.getSetterOrThrow()).getName());
+                               assertEquals("setId", LangModelQueries.query((Nameable) id.getSetterOrThrow()).getName());
                                assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
                                assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetterOrThrow().getParameterTypes());
                             })

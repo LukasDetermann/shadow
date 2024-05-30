@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
 import io.determann.shadow.api.reflection.query.NameableReflection;
 import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Class;
@@ -24,7 +25,8 @@ import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ParameterImpl implements Parameter,
                                       NameableReflection,
-                                      ShadowReflection
+                                      ShadowReflection,
+                                      ModuleEnclosedReflection
 {
    private final java.lang.reflect.Parameter parameter;
 
@@ -36,7 +38,7 @@ public class ParameterImpl implements Parameter,
    @Override
    public Module getModule()
    {
-      return getSurrounding().getModule();
+      return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 
    @Override

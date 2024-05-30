@@ -1,8 +1,5 @@
 package io.determann.shadow.api;
 
-import io.determann.shadow.api.shadow.Module;
-
-public interface ModuleEnclosed
+public interface ModuleEnclosed extends ImplementationDefined
 {
-   Module getModule();
 }

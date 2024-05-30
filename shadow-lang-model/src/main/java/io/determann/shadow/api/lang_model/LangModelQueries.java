@@ -1,6 +1,7 @@
 package io.determann.shadow.api.lang_model;
 
 import io.determann.shadow.api.ImplementationDefined;
+import io.determann.shadow.api.ModuleEnclosed;
 import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.lang_model.query.*;
@@ -44,6 +45,11 @@ public interface LangModelQueries
    public static PackageLangModel query(Package aPackage)
    {
       return (PackageLangModel) validate(aPackage);
+   }
+
+   public static ModuleEnclosedLangModel query(ModuleEnclosed moduleEnclosed)
+   {
+      return ((ModuleEnclosedLangModel) validate(moduleEnclosed));
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

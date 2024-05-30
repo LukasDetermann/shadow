@@ -51,7 +51,7 @@ class PropertyTemplateFactoryTest
                                   }
                                   else
                                   {
-                                     assertEquals(descriptor.getWriteMethod().getName(), LangModelQueries.query(template.getSetter()).getName());
+                                     assertEquals(descriptor.getWriteMethod().getName(), LangModelQueries.query((Nameable) template.getSetter()).getName());
                                   }
                                }
                             })

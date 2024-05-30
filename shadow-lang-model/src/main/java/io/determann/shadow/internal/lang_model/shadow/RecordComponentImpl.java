@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -20,7 +21,8 @@ import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
 public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements RecordComponent,
-                                                                           NameableLangModel
+                                                                           NameableLangModel,
+                                                                           ModuleEnclosedLangModel
 {
    private final RecordComponentElement recordComponentElement;
 

@@ -112,7 +112,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = builderVariableName + "." + query(property.getSetter()).getName() + "(" + propertyName + ");";
+      String toBuildSetter = builderVariableName + "." + query((Nameable) property.getSetter()).getName() + "(" + propertyName + ");";
 
       return new BuilderElement(field, mutator, toBuildSetter);
    }

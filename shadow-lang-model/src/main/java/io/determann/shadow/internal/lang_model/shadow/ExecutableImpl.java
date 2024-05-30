@@ -4,6 +4,7 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
@@ -27,7 +28,8 @@ import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ExecutableImpl implements Constructor,
                                        Method,
-                                       NameableLangModel
+                                       NameableLangModel,
+                                       ModuleEnclosedLangModel
 {
    private final LangModelContext context;
    private final ExecutableElement executableElement;

@@ -36,7 +36,7 @@ class ElementBackedTest
    void getModuleTest()
    {
       ProcessorTest.process(shadowApi -> assertEquals("java.base",
-                                                      query((QualifiedNameable) shadowApi.getInterfaceOrThrow("java.util.Collection").getModule()).getQualifiedName()))
+                                                      query((QualifiedNameable) query((ModuleEnclosed) shadowApi.getInterfaceOrThrow("java.util.Collection")).getModule()).getQualifiedName()))
                    .compile();
    }
 

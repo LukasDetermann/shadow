@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection;
 
 import io.determann.shadow.api.ImplementationDefined;
+import io.determann.shadow.api.ModuleEnclosed;
 import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.reflection.query.*;
@@ -44,6 +45,11 @@ public interface ReflectionQueries
    public static PackageReflection query(Package aPackage)
    {
       return (PackageReflection) validate(aPackage);
+   }
+
+   public static ModuleEnclosedReflection query(ModuleEnclosed moduleEnclosed)
+   {
+      return (ModuleEnclosedReflection) validate(moduleEnclosed);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

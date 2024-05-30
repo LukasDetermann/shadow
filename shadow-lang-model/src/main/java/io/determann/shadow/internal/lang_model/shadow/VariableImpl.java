@@ -4,6 +4,7 @@ import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
@@ -22,7 +23,8 @@ import static io.determann.shadow.meta_meta.Provider.request;
 
 public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Variable,
                                                                              Documented,
-                                                                             NameableLangModel
+                                                                             NameableLangModel,
+                                                                             ModuleEnclosedLangModel
 {
    private final VariableElement variableElement;
 

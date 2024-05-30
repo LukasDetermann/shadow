@@ -29,6 +29,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(PRIMITIVE_IS_ASSIGNABLE_FROM, (primitive, shadow) -> query(primitive).isAssignableFrom(shadow))
              .with(PRIMITIVE_IS_SUBTYPE_OF, (primitive, shadow) -> query(primitive).isSubtypeOf(shadow))
              .with(PACKAGE_GET_CONTENT, aPackage -> query(aPackage).getContent())
-             .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed());
+             .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed())
+             .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule());
    }
 }

@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.MODULE_ENCLOSED_GET_MODULE;
 import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
@@ -143,6 +144,6 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package,
          return false;
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
-             Objects.equals(getModule(), otherPackage.getModule());
+             Objects.equals(getModule(), requestOrThrow(otherPackage, MODULE_ENCLOSED_GET_MODULE));
    }
 }

@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
@@ -15,7 +15,7 @@ import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstant,
-                                                                           ShadowReflection
+                                                                           ModuleEnclosedReflection
 {
    public EnumConstantImpl(Field field)
    {
@@ -78,7 +78,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    @Override
    public Module getModule()
    {
-      return getSurrounding().getModule();
+      return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 
    @Override
