@@ -20,6 +20,7 @@ public class ReflectionProvider extends AbstractProvider
    protected void addMappings(MappingBuilder builder)
    {
       builder.with(Operations.NAMEABLE_NAME, nameable -> query(nameable).getName())
+             .with(Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
              .with(Operations.SHADOW_GET_KIND, shadow -> query(shadow).getKind())
              .with(Operations.SHADOW_REPRESENTS_SAME_TYPE, (shadow, shadow2) -> query(shadow).representsSameType(shadow2))
              .withOptional(Operations.WILDCARD_EXTENDS, wildcard -> query(wildcard).getExtends())

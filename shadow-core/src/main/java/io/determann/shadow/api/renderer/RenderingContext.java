@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public interface RenderingContext
@@ -61,11 +62,11 @@ public interface RenderingContext
       {
          nameRenderer = declared ->
          {
-            if (!declared.getPackage().isUnnamed() && declared.getPackage().getQualifiedName().equals("java.lang"))
+            if (!declared.getPackage().isUnnamed() && requestOrThrow(declared.getPackage(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang"))
             {
                return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_NAME), false);
             }
-            return new NameRenderedEvent(declared, declared.getQualifiedName(), true);
+            return new NameRenderedEvent(declared, requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME), true);
          };
          return this;
       }
@@ -80,7 +81,7 @@ public interface RenderingContext
        */
       public Builder withQualifiedNames()
       {
-         nameRenderer = declared -> new NameRenderedEvent(declared, declared.getQualifiedName(), true);
+         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME), true);
          return this;
       }
 

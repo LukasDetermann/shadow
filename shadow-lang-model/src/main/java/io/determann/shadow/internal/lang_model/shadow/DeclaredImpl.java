@@ -7,6 +7,7 @@ import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
+import io.determann.shadow.api.lang_model.query.QualifiedNameableLamgModel;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
@@ -24,12 +25,14 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
                                                                       Enum,
-                                                                      NameableLangModel
+                                                                      NameableLangModel,
+                                                                      QualifiedNameableLamgModel
 {
    private final TypeElement typeElement;
 
@@ -248,7 +251,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
+      return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
              Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }

@@ -8,6 +8,7 @@ import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
@@ -21,8 +22,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
@@ -30,7 +30,8 @@ import static java.util.Optional.ofNullable;
 public class DeclaredImpl implements Annotation,
                                      Enum,
                                      NameableReflection,
-                                     ShadowReflection
+                                     ShadowReflection,
+                                     QualifiedNameableReflection
 {
    private final Class<?> aClass;
 
@@ -312,7 +313,7 @@ public class DeclaredImpl implements Annotation,
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
+      return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
              Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }

@@ -6,6 +6,7 @@ import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
+import io.determann.shadow.api.lang_model.query.QualifiedNameableLamgModel;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -22,12 +23,15 @@ import java.util.function.Supplier;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
 public class ModuleImpl extends ShadowImpl<NoType> implements Module,
-                                                              NameableLangModel
+                                                              NameableLangModel,
+                                                              QualifiedNameableLamgModel
 {
    private final ModuleElement moduleElement;
 
@@ -213,6 +217,6 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module,
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), otherModule.getQualifiedName());
+      return Objects.equals(getQualifiedName(), requestOrThrow(otherModule, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
    }
 }

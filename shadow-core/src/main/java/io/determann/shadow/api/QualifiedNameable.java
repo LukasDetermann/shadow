@@ -1,9 +1,5 @@
 package io.determann.shadow.api;
 
-public interface QualifiedNameable
+public interface QualifiedNameable extends ImplementationDefined
 {
-   /**
-    * a Qualified name is {@code javax.lang.model.element.QualifiedNameable}
-    */
-   String getQualifiedName();
 }

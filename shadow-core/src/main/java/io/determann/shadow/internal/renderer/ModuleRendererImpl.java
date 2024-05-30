@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
@@ -13,6 +12,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
@@ -51,7 +52,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       }
 
       sb.append("module ");
-      sb.append(module.getQualifiedName());
+      sb.append(requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       sb.append(" {\n");
 
       Map<DirectiveKind, List<Directive>> kind = module.getDirectives()
@@ -65,7 +66,7 @@ public class ModuleRendererImpl implements ModuleRenderer
                                         .stream()
                                         .map(Converter::convert)
                                         .map(requiresConverter)
-                                        .filter(requires1 -> !requires1.getDependency().getQualifiedName().equals("java.base"))
+                                        .filter(requires1 -> !requestOrThrow(requires1.getDependency(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.base"))
                                         .collect(Collectors.toList());
          sb.append(render(requires,
                           requiresConverter,
@@ -132,7 +133,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       {
          sb.append("static ");
       }
-      sb.append(requires.getDependency().getQualifiedName());
+      sb.append(requestOrThrow(requires.getDependency(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       return sb.toString();
    }
 
@@ -146,13 +147,13 @@ public class ModuleRendererImpl implements ModuleRenderer
       }
 
       sb.append("exports ");
-      sb.append(exports.getPackage().getQualifiedName());
+      sb.append(requestOrThrow(exports.getPackage(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
       if (!exports.toAll())
       {
          sb.append(" to ");
          sb.append(exports.getTargetModules().stream()
-                          .map(QualifiedNameable::getQualifiedName)
+                          .map(module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
                           .collect(joining(", ")));
       }
 
@@ -169,13 +170,13 @@ public class ModuleRendererImpl implements ModuleRenderer
       }
 
       sb.append("opens ");
-      sb.append(opens.getPackage().getQualifiedName());
+      sb.append(requestOrThrow(opens.getPackage(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
       if (!opens.toAll())
       {
          sb.append(" to ");
          sb.append(opens.getTargetModules().stream()
-                        .map(QualifiedNameable::getQualifiedName)
+                        .map(module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
                         .collect(joining(", ")));
       }
 
@@ -184,19 +185,22 @@ public class ModuleRendererImpl implements ModuleRenderer
 
    private String render(Uses uses)
    {
-      return "uses " + uses.getService().getQualifiedName();
+      return "uses " + requestOrThrow(uses.getService(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
    }
 
    private String render(Provides provides)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("provides ");
-      sb.append(provides.getService().getQualifiedName());
+      sb.append(requestOrThrow(provides.getService(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
       if (!provides.getImplementations().isEmpty())
       {
          sb.append(" with ");
-         sb.append(provides.getImplementations().stream().map(QualifiedNameable::getQualifiedName).collect(joining(", ")));
+         sb.append(provides.getImplementations()
+                           .stream()
+                           .map(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
+                           .collect(joining(", ")));
       }
       return sb.toString();
    }

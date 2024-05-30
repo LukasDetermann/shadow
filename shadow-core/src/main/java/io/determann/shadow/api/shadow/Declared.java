@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 /**
@@ -73,7 +74,7 @@ public interface Declared extends Shadow,
    default Interface getInterfaceOrThrow(String qualifiedName)
    {
       return getInterfaces().stream()
-                            .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                            .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
                             .findAny()
                             .orElseThrow();
    }
@@ -84,7 +85,7 @@ public interface Declared extends Shadow,
    default Interface getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
-                                  .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
+                                  .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
                                   .findAny()
                                   .orElseThrow();
    }

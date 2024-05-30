@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class GenericRendererImpl implements GenericRenderer
@@ -39,7 +40,7 @@ public class GenericRendererImpl implements GenericRenderer
 
          if (convert(generic.getExtends())
                .toDeclared()
-               .map(declared -> "java.lang.Object".equals(declared.getQualifiedName()))
+               .map(declared -> "java.lang.Object".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
                .orElse(false))
          {
             sb.append(requestOrThrow(generic, NAMEABLE_NAME));

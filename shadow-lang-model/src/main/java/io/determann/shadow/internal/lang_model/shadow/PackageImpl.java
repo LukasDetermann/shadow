@@ -4,6 +4,7 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.query.NameableLangModel;
+import io.determann.shadow.api.lang_model.query.QualifiedNameableLamgModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
@@ -17,9 +18,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class PackageImpl extends ShadowImpl<NoType> implements Package,
-                                                               NameableLangModel
+                                                               NameableLangModel,
+                                                               QualifiedNameableLamgModel
 {
    private final PackageElement packageElement;
 
@@ -82,7 +86,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package,
    public Optional<Declared> getDeclared(String qualifiedName)
    {
       return getContent().stream()
-                         .filter(declared -> declared.getQualifiedName().equals(qualifiedName))
+                         .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
                          .findFirst();
    }
 
@@ -140,7 +144,7 @@ public class PackageImpl extends ShadowImpl<NoType> implements Package,
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), otherPackage.getQualifiedName()) &&
+      return Objects.equals(getQualifiedName(), requestOrThrow(otherPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
              Objects.equals(getModule(), otherPackage.getModule());
    }
 }

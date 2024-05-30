@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,8 +23,8 @@ class AnnotationableTest
                                                                             .getAnnotationUsages();
 
                                assertEquals(2, annotations.size());
-                               assertEquals("ParentAnnotation", annotations.get(0).getAnnotation().getQualifiedName());
-                               assertEquals("ChildAnnotation", annotations.get(1).getAnnotation().getQualifiedName());
+                               assertEquals("ParentAnnotation", query((QualifiedNameable) annotations.get(0).getAnnotation()).getQualifiedName());
+                               assertEquals("ChildAnnotation", query((QualifiedNameable) annotations.get(1).getAnnotation()).getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
@@ -44,7 +45,7 @@ class AnnotationableTest
                                                                                   .getDirectAnnotationUsages();
 
                                assertEquals(1, directAnnotations.size());
-                               assertEquals("ChildAnnotation", directAnnotations.get(0).getAnnotation().getQualifiedName());
+                               assertEquals("ChildAnnotation", query((QualifiedNameable) directAnnotations.get(0).getAnnotation()).getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")

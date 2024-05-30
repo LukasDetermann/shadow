@@ -1,6 +1,7 @@
 package io.determann.shadow.builder;
 
 import io.determann.shadow.api.Nameable;
+import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.property.MutableProperty;
@@ -24,7 +25,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
       //iterate over every class annotated with the BuilderPattern annotation
       for (Class aClass : annotationProcessingContext.getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
-         String toBuildQualifiedName = aClass.getQualifiedName();
+         String toBuildQualifiedName = query((QualifiedNameable) aClass).getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
          String builderSimpleName = query((Nameable) aClass).getName() + "ShadowBuilder";//simpleName of the companion builder class
          String builderVariableName = uncapitalize(builderSimpleName);
@@ -81,7 +82,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                   return %6$s;
                }
             }
-            """.formatted(aClass.getPackage().getQualifiedName(),
+            """.formatted(query((QualifiedNameable) aClass.getPackage()).getQualifiedName(),
                           builderSimpleName,
                           fields,
                           mutators,

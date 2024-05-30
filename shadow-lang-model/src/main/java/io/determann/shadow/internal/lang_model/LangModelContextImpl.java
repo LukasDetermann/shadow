@@ -18,6 +18,8 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
@@ -212,7 +214,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       if (generics.length == 0 || aClass.getGenerics().size() != generics.length)
       {
-         throw new IllegalArgumentException(aClass.getQualifiedName() +
+         throw new IllegalArgumentException(requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
                                             aClass.getGenerics().size() +
                                             " generics. " +
@@ -226,7 +228,7 @@ public class LangModelContextImpl implements LangModelContext
                 .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +
-                                            aClass.getQualifiedName() +
+                                            requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = stream(generics)
@@ -241,7 +243,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       if (generics.length == 0 || anInterface.getGenerics().size() != generics.length)
       {
-         throw new IllegalArgumentException(anInterface.getQualifiedName() +
+         throw new IllegalArgumentException(requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
                                             anInterface.getGenerics().size() +
                                             " generics. " +
@@ -260,7 +262,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       if (generics.length == 0 || aRecord.getGenerics().size() != generics.length)
       {
-         throw new IllegalArgumentException(aRecord.getQualifiedName() +
+         throw new IllegalArgumentException(requestOrThrow( aRecord, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
                                             aRecord.getGenerics().size() +
                                             " generics. " +

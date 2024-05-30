@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -15,12 +16,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Collections.unmodifiableList;
 
 
 public class ModuleImpl implements Module,
                                    NameableReflection,
-                                   ShadowReflection
+                                   ShadowReflection,
+                                   QualifiedNameableReflection
 {
    private final List<AnnotationUsage> annotationUsages;
    private final NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier;
@@ -169,7 +173,7 @@ public class ModuleImpl implements Module,
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), otherModule.getQualifiedName());
+      return Objects.equals(getQualifiedName(), requestOrThrow(otherModule, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
    }
 
    public ModuleDescriptor getReflection()

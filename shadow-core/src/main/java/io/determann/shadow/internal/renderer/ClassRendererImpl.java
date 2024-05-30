@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -49,7 +50,7 @@ public class ClassRendererImpl implements ClassRenderer
          sb.append('>');
       }
       sb.append(' ');
-      if (aClass.getSuperClass() != null && !aClass.getSuperClass().getQualifiedName().equals("java.lang.Object"))
+      if (aClass.getSuperClass() != null && !requestOrThrow(aClass.getSuperClass(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object"))
       {
          sb.append("extends");
          sb.append(' ');

@@ -6,6 +6,9 @@ import io.determann.shadow.api.shadow.Package;
 
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class PackageRendererImpl implements PackageRenderer
 {
    private final RenderingContextWrapper context;
@@ -33,7 +36,7 @@ public class PackageRendererImpl implements PackageRenderer
                            .collect(Collectors.joining()));
       }
       sb.append("package ");
-      sb.append(aPackage.getQualifiedName());
+      sb.append(requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       sb.append(';');
       sb.append('\n');
       return sb.toString();
