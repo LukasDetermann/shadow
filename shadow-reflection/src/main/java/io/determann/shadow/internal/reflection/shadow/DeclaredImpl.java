@@ -8,6 +8,7 @@ import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -20,12 +21,16 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
 public class DeclaredImpl implements Annotation,
                                      Enum,
-                                     NameableReflection
+                                     NameableReflection,
+                                     ShadowReflection
 {
    private final Class<?> aClass;
 
@@ -175,7 +180,7 @@ public class DeclaredImpl implements Annotation,
    public List<Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared.getKind().equals(TypeKind.INTERFACE))
+                            .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                             .map(Converter::convert)
                             .map(DeclaredConverter::toInterfaceOrThrow)
                             .toList();
@@ -239,7 +244,7 @@ public class DeclaredImpl implements Annotation,
 
    private boolean sameGenerics(Shadow shadow)
    {
-      if (!getKind().equals(shadow.getKind()))
+      if (!getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND)))
       {
          return false;
       }
@@ -275,7 +280,7 @@ public class DeclaredImpl implements Annotation,
       Iterator<Generic> iterator1 = generics1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {
-         if (!iterator.next().representsSameType(iterator1.next()))
+         if (!requestOrThrow(iterator.next(), SHADOW_REPRESENTS_SAME_TYPE, iterator1.next()))
          {
             return false;
          }
@@ -308,7 +313,7 @@ public class DeclaredImpl implements Annotation,
          return false;
       }
       return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
-             Objects.equals(getKind(), otherDeclared.getKind()) &&
+             Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }
 

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 /**
  * Holds classes, interfaces, enums etc
@@ -27,7 +29,7 @@ public interface DeclaredHolder
    default List<Annotation> getAnnotations()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.ANNOTATION.equals(declared.getKind()))
+                          .filter(declared -> TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> convert(declared).toAnnotationOrThrow())
                           .toList();
    }
@@ -45,7 +47,7 @@ public interface DeclaredHolder
    default List<io.determann.shadow.api.shadow.Class> getClasses()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.CLASS.equals(declared.getKind()))
+                          .filter(declared -> TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> convert(declared).toClassOrThrow())
                           .toList();
    }
@@ -63,7 +65,7 @@ public interface DeclaredHolder
    default List<Enum> getEnums()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.ENUM.equals(declared.getKind()))
+                          .filter(declared -> TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> convert(declared).toEnumOrThrow())
                           .toList();
    }
@@ -81,7 +83,7 @@ public interface DeclaredHolder
    default List<Interface> getInterfaces()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.INTERFACE.equals(declared.getKind()))
+                          .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> convert(declared).toInterfaceOrThrow())
                           .toList();
    }
@@ -99,7 +101,7 @@ public interface DeclaredHolder
    default List<io.determann.shadow.api.shadow.Record> getRecords()
    {
       return getDeclared().stream()
-                          .filter(declared -> TypeKind.RECORD.equals(declared.getKind()))
+                          .filter(declared -> TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> convert(declared).toRecordOrThrow())
                           .toList();
    }

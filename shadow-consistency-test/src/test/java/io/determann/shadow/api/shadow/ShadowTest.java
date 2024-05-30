@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class ShadowTest<SHADOW extends Shadow>
@@ -19,11 +20,12 @@ abstract class ShadowTest<SHADOW extends Shadow>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(getShadowSupplier().apply(shadowApi).representsSameType(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(getShadowSupplier().apply(shadowApi)
-                                                              .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
-                               assertFalse(getShadowSupplier().apply(shadowApi)
-                                                              .representsSameType(shadowApi.getConstants().getUnboundWildcard()));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi))
+                                                .representsSameType(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi))
+                                                 .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi))
+                                                 .representsSameType(shadowApi.getConstants().getUnboundWildcard()));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")

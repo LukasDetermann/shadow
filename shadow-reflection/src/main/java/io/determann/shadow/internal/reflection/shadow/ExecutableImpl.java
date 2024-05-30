@@ -17,7 +17,9 @@ import java.util.stream.Collectors;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ExecutableImpl implements Constructor,
                                        Method,
@@ -201,14 +203,14 @@ public class ExecutableImpl implements Constructor,
 
       Declared otherSurrounding = method.getSurrounding();
 
-      if (otherSurrounding.isKind(TypeKind.CLASS))
+      if (TypeKind.CLASS.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
       {
          if (!method.isPublic() && !method.isProtected() && (!method.isPackagePrivate() || !method.getPackage().equals(getPackage())))
          {
             return false;
          }
 
-         if (!getSurrounding().isKind(TypeKind.CLASS))
+         if (!TypeKind.CLASS.equals(requestOrThrow(getSurrounding(), SHADOW_GET_KIND)))
          {
             return false;
          }
@@ -219,14 +221,14 @@ public class ExecutableImpl implements Constructor,
             return false;
          }
       }
-      if (otherSurrounding.isKind(TypeKind.INTERFACE))
+      if (TypeKind.INTERFACE.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
       {
          if (!method.isPublic())
          {
             return false;
          }
 
-         if (!getSurrounding().isKind(TypeKind.CLASS))
+         if (!TypeKind.CLASS.equals(requestOrThrow(getSurrounding(), SHADOW_GET_KIND)))
          {
             return false;
          }

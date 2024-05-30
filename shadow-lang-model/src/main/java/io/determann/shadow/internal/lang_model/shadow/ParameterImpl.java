@@ -4,12 +4,14 @@ import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.shadow.Executable;
 import io.determann.shadow.api.shadow.Parameter;
+import io.determann.shadow.api.shadow.Shadow;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.request;
 
@@ -24,7 +26,7 @@ public class ParameterImpl extends VariableImpl implements Parameter
    public boolean isVarArgs()
    {
       List<Parameter> parameters = getSurrounding().getParameters();
-      return getSurrounding().isVarArgs() && parameters.get(parameters.size() - 1).representsSameType(this);
+      return getSurrounding().isVarArgs() && query((Shadow) parameters.get(parameters.size() - 1)).representsSameType(this);
    }
 
    @Override

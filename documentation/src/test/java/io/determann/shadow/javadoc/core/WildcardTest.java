@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Wildcard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 
 public class WildcardTest
 {

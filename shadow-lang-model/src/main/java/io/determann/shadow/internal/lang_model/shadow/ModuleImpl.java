@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
@@ -133,7 +134,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module,
                                                         .filter(collected -> collected.getKind().equals(DirectiveKind.PROVIDES))
                                                         .map(Converter::convert)
                                                         .map(DirectiveConverter::toProvidesOrThrow)
-                                                        .filter(collected -> collected.getService().representsSameType(provides.getService()))
+                                                        .filter(collected -> query((Shadow) collected.getService()).representsSameType(provides.getService()))
                                                         .findAny();
 
                                         if (existing.isEmpty())

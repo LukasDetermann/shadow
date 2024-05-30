@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Shadow;
@@ -17,10 +18,13 @@ import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class GenericImpl implements Generic,
-                                    NameableReflection
+                                    NameableReflection,
+                                    ShadowReflection
 {
    private final TypeVariable<?> typeVariable;
 
@@ -90,10 +94,10 @@ public class GenericImpl implements Generic,
       return shadow != null &&
              convert(shadow)
                    .toGeneric()
-                   .map(generic -> generic.getExtends().representsSameType(getExtends()) &&
+                   .map(generic -> requestOrThrow(generic.getExtends(), SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
                                    ((generic.getSuper().isEmpty() && getSuper().isEmpty()) ||
                                     (generic.getSuper().isPresent() && getSuper().isPresent()) &&
-                                    generic.getSuper().get().representsSameType(getSuper().get())))
+                                    requestOrThrow(generic.getSuper().get(), SHADOW_REPRESENTS_SAME_TYPE, getSuper().get())))
                    .orElse(false);
    }
 

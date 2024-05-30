@@ -6,6 +6,8 @@ import io.determann.shadow.api.renderer.ArrayRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Array;
 
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
@@ -29,7 +31,7 @@ public class ArrayRendererImpl implements ArrayRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append("[]");
-      while (array.getComponentType().isKind(TypeKind.ARRAY))
+      while (requestOrThrow(array.getComponentType(), SHADOW_GET_KIND).equals(TypeKind.ARRAY))
       {
          sb.append("[]");
          array = Converter.convert(array.getComponentType()).toArrayOrThrow();

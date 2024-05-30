@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.PrimitiveReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
@@ -14,9 +15,12 @@ import java.util.Objects;
 import static io.determann.shadow.api.TypeKind.*;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class PrimitiveImpl implements Primitive,
-                                      PrimitiveReflection
+                                      PrimitiveReflection,
+                                      ShadowReflection
 {
    private final java.lang.Class<?> aClass;
    private static final Map<java.lang.Class<?>, TypeKind> CLASS_KIND_MAP = new HashMap<>();
@@ -72,7 +76,7 @@ public class PrimitiveImpl implements Primitive,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return getKind().equals(shadow.getKind());
+      return getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND));
    }
 
    @Override
@@ -103,7 +107,7 @@ public class PrimitiveImpl implements Primitive,
       {
          return false;
       }
-      return Objects.equals(getKind(), otherPrimitive.getKind());
+      return Objects.equals(getKind(), requestOrThrow(otherPrimitive, SHADOW_GET_KIND));
    }
 
    public java.lang.Class<?> getReflection()

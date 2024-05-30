@@ -1,9 +1,10 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
-import io.determann.shadow.api.lang_model.query.LangModelQueries;
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -26,7 +27,7 @@ class RecordTest extends DeclaredTest<Record>
       ProcessorTest.process(shadowApi ->
                             {
                                RecordComponent idComponent = getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("id");
-                               assertEquals("id", LangModelQueries.query(idComponent).getName());
+                               assertEquals("id", LangModelQueries.query((Nameable) idComponent).getName());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                assertThrows(NoSuchElementException.class,

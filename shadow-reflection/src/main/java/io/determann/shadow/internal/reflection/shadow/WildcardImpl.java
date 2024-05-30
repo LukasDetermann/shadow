@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.reflection.query.WildcardReflection;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Wildcard;
@@ -13,12 +14,13 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.WILDCARD_EXTENDS;
-import static io.determann.shadow.meta_meta.Operations.WILDCARD_SUPER;
+import static io.determann.shadow.meta_meta.Operations.*;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 
 public class WildcardImpl implements Wildcard,
-                                     WildcardReflection
+                                     WildcardReflection,
+                                     ShadowReflection
 {
    private final WildcardType wildcardType;
 
@@ -50,8 +52,8 @@ public class WildcardImpl implements Wildcard,
       {
          return false;
       }
-      return (getExtends().isPresent() && otherExtends.isPresent() && getExtends().get().representsSameType(otherExtends.get())) ||
-             (getSuper().isPresent() && otherSuper.isPresent() && getSuper().get().representsSameType(otherSuper.get()));
+      return (getExtends().isPresent() && otherExtends.isPresent() && requestOrThrow(getExtends().get(), SHADOW_REPRESENTS_SAME_TYPE, otherExtends.get())) ||
+             (getSuper().isPresent() && otherSuper.isPresent() && requestOrThrow(getSuper().get(), SHADOW_REPRESENTS_SAME_TYPE, otherSuper.get()));
    }
 
    @Override

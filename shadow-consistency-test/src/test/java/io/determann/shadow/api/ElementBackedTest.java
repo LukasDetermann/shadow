@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -24,7 +24,7 @@ class ElementBackedTest
                                assertEquals(Set.of(Modifier.PUBLIC), arrayList.getModifiers());
 
                                Field serialVersionUID = arrayList.getFields().stream()
-                                                                 .filter(field -> query(field).getName().equals("serialVersionUID"))
+                                                                 .filter(field -> query((Nameable) field).getName().equals("serialVersionUID"))
                                                                  .findAny()
                                                                  .orElseThrow();
                                assertEquals(Set.of(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL), serialVersionUID.getModifiers());

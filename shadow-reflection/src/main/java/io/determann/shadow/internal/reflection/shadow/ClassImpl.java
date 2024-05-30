@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ClassImpl extends DeclaredImpl implements Class
 {
@@ -128,11 +130,13 @@ public class ClassImpl extends DeclaredImpl implements Class
    {
       return shadow != null &&
              convert(shadow)
-                      .toClass()
-                      .map(aClass -> aClass.getGenericTypes()
-                                           .stream()
-                                           .allMatch(shadow1 -> getGenericTypes().stream()
-                                                                                 .anyMatch(shadow1::representsSameType)))
-                      .orElse(false);
+                   .toClass()
+                   .map(aClass -> aClass.getGenericTypes()
+                                        .stream()
+                                        .allMatch(shadow1 -> getGenericTypes().stream()
+                                                                              .anyMatch(shadow2 -> requestOrThrow(shadow2,
+                                                                                                                  SHADOW_REPRESENTS_SAME_TYPE,
+                                                                                                                  shadow1))))
+                   .orElse(false);
    }
 }

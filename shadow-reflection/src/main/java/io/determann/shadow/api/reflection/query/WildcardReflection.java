@@ -13,7 +13,7 @@ import java.util.Optional;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface WildcardReflection extends Shadow
+public interface WildcardReflection extends ShadowReflection
 {
    /**
     * {@snippet :

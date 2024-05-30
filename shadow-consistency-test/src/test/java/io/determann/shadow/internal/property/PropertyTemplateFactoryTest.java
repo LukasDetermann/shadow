@@ -1,7 +1,8 @@
 package io.determann.shadow.internal.property;
 
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.query.LangModelQueries;
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.property.ImmutableProperty;
 import org.junit.jupiter.api.Test;
 
@@ -80,7 +81,7 @@ class PropertyTemplateFactoryTest
                                assertEquals(2, properties.size());
                                assertEquals("class", properties.get(0).getName());
                                assertEquals("id", properties.get(1).getName());
-                               assertEquals("Child", LangModelQueries.query(properties.get(1).getGetter().getSurrounding()).getName());
+                               assertEquals("Child", LangModelQueries.query((Nameable) properties.get(1).getGetter().getSurrounding()).getName());
                             })
                    .withCodeToCompile("Parent", "abstract class Parent{public abstract Long getId();}")
                    .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")

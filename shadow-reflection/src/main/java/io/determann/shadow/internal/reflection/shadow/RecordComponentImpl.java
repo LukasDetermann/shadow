@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -20,7 +21,8 @@ import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class RecordComponentImpl implements RecordComponent,
-                                            NameableReflection
+                                            NameableReflection,
+                                            ShadowReflection
 {
    private final java.lang.reflect.RecordComponent recordComponent;
 
@@ -119,7 +121,9 @@ public class RecordComponentImpl implements RecordComponent,
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             convert(shadow).toRecordComponent().map(recordComponent1 -> recordComponent1.getType().representsSameType(getType())).orElse(false);
+             convert(shadow).toRecordComponent()
+                            .map(recordComponent1 -> requestOrThrow(recordComponent1.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                            .orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()

@@ -15,7 +15,7 @@ import static io.determann.shadow.api.TypeKind.VOID;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
@@ -101,7 +101,7 @@ class PropertyTemplateFactory
 
    private static List<Method> getMethods(Declared declared)
    {
-      if (!declared.isKind(CLASS))
+      if (!requestOrThrow(declared, SHADOW_GET_KIND).equals(CLASS))
       {
          return declared.getMethods();
       }
@@ -121,7 +121,7 @@ class PropertyTemplateFactory
    private static Optional<Field> findField(Map<String, Field> nameField, Shadow shadow, String name)
    {
       Field field = nameField.get(name);
-      if (field == null || !field.getType().representsSameType(shadow))
+      if (field == null || !requestOrThrow(field.getType(), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
       }
@@ -131,7 +131,9 @@ class PropertyTemplateFactory
    private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow shadow)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
-      if (setters == null || setters.size() != 1 || !setters.get(0).getMethod().getParameters().get(0).getType().representsSameType(shadow))
+      if (setters == null ||
+          setters.size() != 1 ||
+          !requestOrThrow(setters.get(0).getMethod().getParameters().get(0).getType(), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
       }
@@ -170,10 +172,12 @@ class PropertyTemplateFactory
       List<Parameter> parameters = method.getParameters();
 
       //getter
-      if (!method.getReturnType().isKind(VOID))
+      if (!requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(VOID))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = method.getReturnType().isKind(TypeKind.BOOLEAN) && name.startsWith(IS_PREFIX) && name.length() > 2;
+         boolean hasIsPrefix = requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(TypeKind.BOOLEAN) &&
+                               name.startsWith(IS_PREFIX) &&
+                               name.length() > 2;
 
          if (parameters.isEmpty())
          {
@@ -189,7 +193,10 @@ class PropertyTemplateFactory
          return Optional.empty();
       }
       //setter
-      boolean couldBeSetter = method.getReturnType().isKind(VOID) && name.startsWith(SET_PREFIX) && name.length() > 3;
+      boolean couldBeSetter = requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(VOID) &&
+                              name.startsWith(SET_PREFIX) &&
+                              name.length() > 3;
+
       if (couldBeSetter && parameters.size() == 1)
       {
          return Optional.of(new Accessor(method, SETTER, SET_PREFIX, toPropertyName(method, SET_PREFIX), position));

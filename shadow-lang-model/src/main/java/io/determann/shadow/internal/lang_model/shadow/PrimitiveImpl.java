@@ -11,6 +11,9 @@ import io.determann.shadow.api.shadow.Shadow;
 import javax.lang.model.type.PrimitiveType;
 import java.util.Objects;
 
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive,
                                                                         PrimitiveLangModel
 {
@@ -72,6 +75,6 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitiv
       {
          return false;
       }
-      return Objects.equals(getKind(), otherPrimitive.getKind());
+      return Objects.equals(getKind(), requestOrThrow(otherPrimitive, SHADOW_GET_KIND));
    }
 }

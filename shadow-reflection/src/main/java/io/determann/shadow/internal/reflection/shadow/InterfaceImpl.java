@@ -10,6 +10,8 @@ import io.determann.shadow.api.shadow.Shadow;
 import java.util.*;
 import java.util.stream.Collector;
 
+import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements Interface
@@ -75,7 +77,9 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
                             .getGenericTypes()
                             .stream()
                             .allMatch(shadow1 -> getGenericTypes().stream()
-                                                                  .anyMatch(shadow2 -> shadow2.representsSameType(shadow1))))
+                                                                  .anyMatch(shadow2 -> requestOrThrow(shadow2,
+                                                                                                      SHADOW_REPRESENTS_SAME_TYPE,
+                                                                                                      shadow1))))
                       .orElse(false);
    }
 }

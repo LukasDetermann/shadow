@@ -3,11 +3,11 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
-import io.determann.shadow.api.lang_model.query.LangModelQueries;
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.api.lang_model.query.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WildcardTest extends ShadowTest<Wildcard>
@@ -90,9 +90,9 @@ class WildcardTest extends ShadowTest<Wildcard>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertFalse(getShadowSupplier().apply(shadowApi).representsSameType(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(getShadowSupplier().apply(shadowApi)
-                                                              .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi)).representsSameType(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi))
+                                                 .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
                             })
                    .compile();
    }

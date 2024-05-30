@@ -4,6 +4,7 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Shadow;
 import io.determann.shadow.api.shadow.Variable;
@@ -17,7 +18,8 @@ import java.util.Set;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements Variable,
-                                                                                 NameableReflection
+                                                                                 NameableReflection,
+                                                                                 ShadowReflection
 {
    private final Field field;
 

@@ -1,9 +1,10 @@
 package io.determann.shadow.api.shadow;
 
+import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
-import io.determann.shadow.api.lang_model.query.LangModelQueries;
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.property.Property;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +68,7 @@ class ClassTest extends DeclaredTest<Class>
                                assertEquals(2, properties.size());
 
                                Property id = properties.get(1);
-                               assertEquals("id", LangModelQueries.query(id.getField().get()).getName());
+                               assertEquals("id", LangModelQueries.query((Nameable) id.getField().get()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
 
                                assertEquals("getId", LangModelQueries.query(id.getGetter()).getName());

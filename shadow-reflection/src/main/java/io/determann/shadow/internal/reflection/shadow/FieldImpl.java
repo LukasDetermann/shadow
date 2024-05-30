@@ -7,8 +7,7 @@ import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
 
-import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_ASSIGNABLE_FROM;
-import static io.determann.shadow.meta_meta.Operations.PRIMITIVE_IS_SUBTYPE_OF;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
@@ -96,7 +95,11 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && Converter.convert(shadow).toField().map(field -> field.getType().representsSameType(getType())).orElse(false);
+      return shadow != null &&
+             Converter.convert(shadow)
+                      .toField()
+                      .map(field -> requestOrThrow(field.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                      .orElse(false);
    }
 
    @Override

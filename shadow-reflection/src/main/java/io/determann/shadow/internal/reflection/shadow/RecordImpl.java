@@ -9,6 +9,9 @@ import io.determann.shadow.api.shadow.Shadow;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 public class RecordImpl extends DeclaredImpl implements Record
 {
    private final List<Shadow> genericShadows;
@@ -42,6 +45,6 @@ public class RecordImpl extends DeclaredImpl implements Record
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && getKind().equals(shadow.getKind());
+      return shadow != null && getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND));
    }
 }

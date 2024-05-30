@@ -24,6 +24,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
                                                                       Enum,
@@ -167,7 +169,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    public List<Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared.getKind().equals(TypeKind.INTERFACE))
+                            .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                             .map(Converter::convert)
                             .map(DeclaredConverter::toInterfaceOrThrow)
                             .toList();
@@ -178,7 +180,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    {
       return getElement().getEnclosedElements()
                          .stream()
-                         .filter(element -> element.getKind().equals(ElementKind.ENUM_CONSTANT))
+                         .filter(element -> ElementKind.ENUM_CONSTANT.equals(element.getKind()))
                          .map(VariableElement.class::cast)
                          .map(variableElement -> LangModelAdapter.<EnumConstant>generalize(getApi(), variableElement))
                          .toList();
@@ -247,7 +249,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
          return false;
       }
       return Objects.equals(getQualifiedName(), otherDeclared.getQualifiedName()) &&
-             Objects.equals(getKind(), otherDeclared.getKind()) &&
+             Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              Objects.equals(getModifiers(), otherDeclared.getModifiers());
    }
 }

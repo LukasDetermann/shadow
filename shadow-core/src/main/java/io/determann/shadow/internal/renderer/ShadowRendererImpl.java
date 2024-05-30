@@ -5,12 +5,14 @@ import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Shadow;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ShadowRendererImpl
 {
    public static String type(RenderingContextWrapper context, Shadow shadow)
    {
-      return switch (shadow.getKind())
+      return switch (requestOrThrow(shadow, SHADOW_GET_KIND))
       {
          case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, convert(shadow).toPrimitiveOrThrow());
          case CLASS -> ClassRendererImpl.type(context, convert(shadow).toClassOrThrow());

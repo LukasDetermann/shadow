@@ -4,6 +4,7 @@ import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -22,7 +23,8 @@ import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ParameterImpl implements Parameter,
-                                      NameableReflection
+                                      NameableReflection,
+                                      ShadowReflection
 {
    private final java.lang.reflect.Parameter parameter;
 
@@ -82,7 +84,9 @@ public class ParameterImpl implements Parameter,
    public boolean representsSameType(Shadow shadow)
    {
       return shadow != null &&
-             convert(shadow).toParameter().map(parameter1 -> parameter1.getType().representsSameType(getType())).orElse(false);
+             convert(shadow).toParameter()
+                            .map(parameter1 -> requestOrThrow(parameter1.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                            .orElse(false);
    }
    @Override
    public boolean isSubtypeOf(Shadow shadow)

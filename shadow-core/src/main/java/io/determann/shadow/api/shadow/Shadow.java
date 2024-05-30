@@ -7,7 +7,7 @@ import io.determann.shadow.api.converter.Converter;
 /**
  * Represents sourceCode that is being complied. A {@link Shadow} can be converted only in one of its children using
  * {@link Converter#convert(Shadow)}. Every {@link Shadow} has a {@link TypeKind} indicating its Type.
- * {@link TypeKind#ARRAY} -&gt; {@link Array}. To check for equality use {@link #representsSameType(Shadow)}.
+ * {@link TypeKind#ARRAY} -&gt; {@link Array}.
  * <br><br>
  * <b>subtypes</b>
  * <ul>
@@ -41,15 +41,4 @@ import io.determann.shadow.api.converter.Converter;
  */
 public interface Shadow extends ImplementationDefined
 {
-   TypeKind getKind();
-
-   default boolean isKind(TypeKind typeKind)
-   {
-      return getKind().equals(typeKind);
-   }
-
-   /**
-    * type equals from the compiler perspective. for example ? does not equal ? for the compiler
-    */
-   boolean representsSameType(Shadow shadow);
 }
