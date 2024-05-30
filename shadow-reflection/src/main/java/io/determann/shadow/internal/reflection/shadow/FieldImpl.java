@@ -109,10 +109,4 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field,
    {
       return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
-
-   @Override
-   public String getJavaDoc()
-   {
-      return null;
-   }
 }

@@ -80,10 +80,4 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    {
       return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
-
-   @Override
-   public String getJavaDoc()
-   {
-      return null;
-   }
 }

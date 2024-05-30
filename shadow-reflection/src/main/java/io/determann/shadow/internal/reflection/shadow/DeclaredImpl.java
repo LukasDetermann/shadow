@@ -55,12 +55,6 @@ public class DeclaredImpl implements Annotation,
    }
 
    @Override
-   public String getJavaDoc()
-   {
-      return null;
-   }
-
-   @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())

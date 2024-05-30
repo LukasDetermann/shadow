@@ -45,12 +45,12 @@ class ElementBackedTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertNull(shadowApi.getInterfaceOrThrow("java.util.Collection").getJavaDoc());
+                               assertNull(query((Documented) shadowApi.getInterfaceOrThrow("java.util.Collection")).getJavaDoc());
 
                                Class aClass = shadowApi.getClassOrThrow("JavaDocExample");
-                               assertEquals(" Class level doc\n", aClass.getJavaDoc());
-                               assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
-                               assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
+                               assertEquals(" Class level doc\n", query((Documented) aClass).getJavaDoc());
+                               assertEquals(" Method level doc\n", query((Documented) aClass.getMethods("toString").get(0)).getJavaDoc());
+                               assertEquals(" Constructor level doc\n", query((Documented) aClass.getConstructors().get(0)).getJavaDoc());
                             })
                    .withCodeToCompile("JavaDocExample.java", """
                          /**

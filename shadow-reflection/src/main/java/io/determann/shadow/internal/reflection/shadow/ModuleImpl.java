@@ -53,12 +53,6 @@ public class ModuleImpl implements Module,
    }
 
    @Override
-   public String getJavaDoc()
-   {
-      return null;
-   }
-
-   @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return annotationUsages;

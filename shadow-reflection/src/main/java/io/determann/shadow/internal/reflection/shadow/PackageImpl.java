@@ -47,12 +47,6 @@ public class PackageImpl implements Package,
    }
 
    @Override
-   public String getJavaDoc()
-   {
-      return null;
-   }
-
-   @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getAnnotations())
