@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.PACKAGE_IS_UNNAMED;
 import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.groupingBy;
@@ -141,7 +142,7 @@ public class ModuleRendererImpl implements ModuleRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (exports.getPackage().isUnnamed())
+      if (requestOrThrow(exports.getPackage(), PACKAGE_IS_UNNAMED))
       {
          throw new IllegalArgumentException("cant render a unnamed packageName");
       }
@@ -164,7 +165,7 @@ public class ModuleRendererImpl implements ModuleRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (opens.getPackage().isUnnamed())
+      if (requestOrThrow(opens.getPackage(), PACKAGE_IS_UNNAMED))
       {
          throw new IllegalArgumentException("cant render a unnamed packageName");
       }

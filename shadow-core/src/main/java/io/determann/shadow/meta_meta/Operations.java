@@ -3,9 +3,10 @@ package io.determann.shadow.meta_meta;
 import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.*;
+
+import java.util.List;
 
 public interface Operations
 {
@@ -26,4 +27,8 @@ public interface Operations
    public static Operation1<Primitive, Shadow, Boolean> PRIMITIVE_IS_SUBTYPE_OF = new Operation1<>("primitive.isSubtypeOf");
 
    public static Operation1<Primitive, Shadow, Boolean> PRIMITIVE_IS_ASSIGNABLE_FROM = new Operation1<>("primitive.isAssignableFrom");
+
+   public static Operation0<Package, List<Declared>> PACKAGE_GET_CONTENT = new Operation0<>("package.getContent");
+
+   public static Operation0<Package, Boolean> PACKAGE_IS_UNNAMED = new Operation0<>("package.isUnnamed");
 }

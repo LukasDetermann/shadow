@@ -3,8 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.NameableLangModel;
-import io.determann.shadow.api.lang_model.query.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.query.PackageLangModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
@@ -22,8 +21,7 @@ import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QU
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class PackageImpl extends ShadowImpl<NoType> implements Package,
-                                                               NameableLangModel,
-                                                               QualifiedNameableLamgModel
+                                                               PackageLangModel
 {
    private final PackageElement packageElement;
 

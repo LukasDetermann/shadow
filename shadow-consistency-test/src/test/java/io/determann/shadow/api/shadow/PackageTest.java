@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,9 +26,9 @@ class PackageTest extends ShadowTest<Package>
 
                                assertEquals(List.of(shadowApi.getClassOrThrow(
                                                   "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
-                                            shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
-                                                     .get(0)
-                                                     .getContent());
+                                            query(shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
+                                                           .get(0))
+                                                  .getContent());
                             })
                    .withCodeToCompile("AnyClass.java", """
                          package io.determann.shadow.example.processed.test.packagee.not_empty;

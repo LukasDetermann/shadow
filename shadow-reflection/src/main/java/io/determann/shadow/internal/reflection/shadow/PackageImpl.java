@@ -2,9 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.NameableReflection;
-import io.determann.shadow.api.reflection.query.QualifiedNameableReflection;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.PackageReflection;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -20,9 +18,7 @@ import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QU
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class PackageImpl implements Package,
-                                    NameableReflection,
-                                    ShadowReflection,
-                                    QualifiedNameableReflection
+                                    PackageReflection
 {
    private final NamedSupplier<java.lang.Package> packageSupplier;
 

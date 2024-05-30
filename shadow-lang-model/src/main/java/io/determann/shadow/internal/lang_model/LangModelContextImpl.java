@@ -18,6 +18,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
+import static io.determann.shadow.meta_meta.Operations.PACKAGE_GET_CONTENT;
 import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
@@ -115,7 +116,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       return getPackages()
             .stream()
-            .flatMap(packageShadow -> packageShadow.getContent().stream())
+            .flatMap(packageShadow -> requestOrThrow(packageShadow, PACKAGE_GET_CONTENT) .stream())
             .toList();
    }
 
