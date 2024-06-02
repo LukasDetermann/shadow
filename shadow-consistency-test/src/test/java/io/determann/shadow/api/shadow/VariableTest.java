@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,9 +22,9 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               Parameter parameter = shadowApi.getClassOrThrow("ParameterExample")
-                                                              .getConstructors().get(0)
-                                                              .getParameters().get(0);
+                               Parameter parameter = query(shadowApi.getClassOrThrow("ParameterExample"))
+                                     .getConstructors().get(0)
+                                     .getParameters().get(0);
                                assertTrue(parameter.isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
                             })
                    .withCodeToCompile("ParameterExample.java", """
@@ -42,8 +43,8 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               Field field = shadowApi.getClassOrThrow("FieldExample")
-                                                      .getFields().get(0);
+                               Field field = query(shadowApi.getClassOrThrow("FieldExample"))
+                                     .getFields().get(0);
                                assertTrue(field.isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Integer")));
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
@@ -54,9 +55,9 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
    void testGetPackage()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.field").get(0),
-                                                      shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.field.FieldExample")
-                                                               .getFields().get(0)
-                                                               .getPackage()))
+                                                      query(shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.field.FieldExample"))
+                                                            .getFields().get(0)
+                                                            .getPackage()))
                    .withCodeToCompile("FieldExample.java", """
                          package io.determann.shadow.example.processed.test.field;
 

@@ -3,9 +3,7 @@ package io.determann.shadow.api.lang_model;
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.lang_model.query.*;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.api.shadow.*;
 
 import java.util.Objects;
 
@@ -52,6 +50,11 @@ public interface LangModelQueries
    public static DocumentedLangModel query(Documented documented)
    {
       return (DocumentedLangModel) validate(documented);
+   }
+
+   public static DeclaredLangModel query(Declared declared)
+   {
+      return (DeclaredLangModel) validate(declared);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

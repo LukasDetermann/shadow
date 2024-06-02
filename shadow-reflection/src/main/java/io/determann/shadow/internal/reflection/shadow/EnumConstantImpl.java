@@ -31,7 +31,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
       }
       if (getType() instanceof Class aClass)
       {
-         return aClass.isSubtypeOf(shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Array array)
       {
@@ -57,7 +57,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    @Override
    public Package getPackage()
    {
-      return getSurrounding().getPackage();
+      return requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override

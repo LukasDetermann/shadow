@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHODS;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
@@ -39,15 +40,17 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       StringBuilder sb = new StringBuilder();
       sb.append('@');
       sb.append(context.renderName(usage.getAnnotation()));
-      if (!usage.getAnnotation().getMethods().isEmpty())
+
+      List<Method> methods = requestOrThrow(usage.getAnnotation(), DECLARED_GET_METHODS);
+
+      if (!methods.isEmpty())
       {
          sb.append('(');
-         sb.append(usage.getAnnotation().getMethods()
-                        .stream()
-                        .map(method -> requestOrThrow(method, NAMEABLE_NAME) +
-                                       " = " +
-                                       valueRenderer.apply(method).orElseGet(() -> renderValue(context, usage.getValues().get(method))))
-                        .collect(Collectors.joining(", ")));
+         sb.append(methods.stream()
+                          .map(method -> requestOrThrow(method, NAMEABLE_NAME) +
+                                         " = " +
+                                         valueRenderer.apply(method).orElseGet(() -> renderValue(context, usage.getValues().get(method))))
+                          .collect(Collectors.joining(", ")));
          sb.append(')');
       }
       return sb.toString();

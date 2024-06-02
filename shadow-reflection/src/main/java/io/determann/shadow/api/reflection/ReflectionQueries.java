@@ -6,9 +6,7 @@ import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.reflection.query.*;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.api.shadow.*;
 
 import java.util.Objects;
 
@@ -50,6 +48,11 @@ public interface ReflectionQueries
    public static ModuleEnclosedReflection query(ModuleEnclosed moduleEnclosed)
    {
       return (ModuleEnclosedReflection) validate(moduleEnclosed);
+   }
+
+   public static DeclaredReflection query(Declared declared)
+   {
+      return (DeclaredReflection) validate(declared);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

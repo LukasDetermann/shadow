@@ -1,6 +1,7 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +13,11 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = context.getClassOrThrow("ReceiverExample.Inner").getConstructors().get(0).getReceiver().get();
+                               Receiver receiver = LangModelQueries.query(context.getClassOrThrow("ReceiverExample.Inner"))
+                                                                   .getConstructors()
+                                                                   .get(0)
+                                                                   .getReceiver()
+                                                                   .get();
 
                                assertEquals(context.getClassOrThrow("ReceiverExample"), receiver.getType());
                             })
@@ -31,7 +36,11 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = context.getClassOrThrow("ReceiverExample.Inner").getConstructors().get(0).getReceiver().get();
+                               Receiver receiver = LangModelQueries.query(context.getClassOrThrow("ReceiverExample.Inner"))
+                                                                   .getConstructors()
+                                                                   .get(0)
+                                                                   .getReceiver()
+                                                                   .get();
 
                                assertEquals(1, receiver.getAnnotationUsages().size());
                                assertEquals(2, receiver.getAnnotationUsages().get(0).getValueOrThrow("value").asInteger());

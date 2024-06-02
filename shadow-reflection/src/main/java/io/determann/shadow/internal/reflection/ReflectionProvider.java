@@ -30,6 +30,21 @@ public class ReflectionProvider extends AbstractProvider
              .with(PRIMITIVE_IS_SUBTYPE_OF, (primitive, shadow) -> query(primitive).isSubtypeOf(shadow))
              .with(PACKAGE_GET_CONTENT, aPackage -> query(aPackage).getContent())
              .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed())
-             .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule());
+             .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule())
+             .with(DECLARED_IS_SUBTYPE_OF, (declared, shadow) -> query(declared).isSubtypeOf(shadow))
+             .with(DECLARED_IS_SUBTYPE_OF, (declared, shadow) -> query(declared).isSubtypeOf(shadow))
+             .with(DECLARED_GET_NESTING, declared -> query(declared).getNesting())
+             .with(DECLARED_GET_FIELDS, declared -> query(declared).getFields())
+             .with(DECLARED_GET_FIELD, (declared, s) -> query(declared).getFieldOrThrow(s))
+             .with(DECLARED_GET_METHODS, declared -> query(declared).getMethods())
+             .with(DECLARED_GET_METHOD, (declared, s) -> query(declared).getMethods(s))
+             .with(DECLARED_GET_CONSTRUCTORS, declared -> query(declared).getConstructors())
+             .with(DECLARED_GET_DIRECT_SUPER_TYPES, declared -> query(declared).getDirectSuperTypes())
+             .with(DECLARED_GET_SUPER_TYPES, declared -> query(declared).getDirectSuperTypes())
+             .with(DECLARED_GET_INTERFACES, declared -> query(declared).getInterfaces())
+             .with(DECLARED_GET_INTERFACE, (declared, s) -> query(declared).getInterfaceOrThrow(s))
+             .with(DECLARED_GET_DIRECT_INTERFACES, declared -> query(declared).getDirectInterfaces())
+             .with(DECLARED_GET_DIRECT_INTERFACE, (declared, s) -> query(declared).getDirectInterfaceOrThrow(s))
+             .with(DECLARED_GET_PACKAGE, declared -> query(declared).getPackage());
    }
 }

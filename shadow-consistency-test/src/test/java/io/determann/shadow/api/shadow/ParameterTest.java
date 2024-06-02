@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParameterTest extends VariableTest<Parameter>
 {
    ParameterTest()
    {
-      super(shadowApi -> shadowApi.getClassOrThrow("ParameterExample")
-                                  .getMethods("foo")
-                                  .get(0)
-                                  .getParameterOrThrow("foo"));
+      super(shadowApi -> query(shadowApi.getClassOrThrow("ParameterExample"))
+            .getMethods("foo")
+            .get(0)
+            .getParameterOrThrow("foo"));
    }
 
    @Test
@@ -22,17 +23,17 @@ class ParameterTest extends VariableTest<Parameter>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               Method method = shadowApi.getClassOrThrow("ParameterExample")
-                                                        .getMethods("foo")
-                                                        .get(0);
+                               Method method = query(shadowApi.getClassOrThrow("ParameterExample"))
+                                     .getMethods("foo")
+                                     .get(0);
 
                                Parameter methodParameter = method.getParameterOrThrow("foo");
 
                                assertEquals(method, methodParameter.getSurrounding());
 
-                               Constructor constructor = shadowApi.getClassOrThrow("ParameterExample")
-                                                                  .getConstructors()
-                                                                  .get(0);
+                               Constructor constructor = query(shadowApi.getClassOrThrow("ParameterExample"))
+                                     .getConstructors()
+                                     .get(0);
                                Parameter constructorParameter = constructor.getParameters().get(0);
                                assertEquals(constructor, constructorParameter.getSurrounding());
                             })
@@ -52,7 +53,9 @@ class ParameterTest extends VariableTest<Parameter>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Parameter> parameters = shadowApi.getClassOrThrow("VarArgsExample").getConstructors().get(0).getParameters();
+                               List<Parameter> parameters = query(shadowApi.getClassOrThrow("VarArgsExample")).getConstructors()
+                                                                                                              .get(0)
+                                                                                                              .getParameters();
 
                                assertFalse(parameters.get(0).isVarArgs());
                                assertTrue(parameters.get(1).isVarArgs());

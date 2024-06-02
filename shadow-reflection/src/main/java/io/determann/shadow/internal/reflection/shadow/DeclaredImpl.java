@@ -7,10 +7,7 @@ import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
-import io.determann.shadow.api.reflection.query.NameableReflection;
-import io.determann.shadow.api.reflection.query.QualifiedNameableReflection;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.*;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -33,7 +30,8 @@ public class DeclaredImpl implements Annotation,
                                      NameableReflection,
                                      ShadowReflection,
                                      QualifiedNameableReflection,
-                                     ModuleEnclosedReflection
+                                     ModuleEnclosedReflection,
+                                     DeclaredReflection
 {
    private final Class<?> aClass;
 
@@ -164,7 +162,7 @@ public class DeclaredImpl implements Annotation,
 
    private Set<Declared> findAllSupertypes(Set<Declared> found, Declared declared)
    {
-      List<Declared> directSupertypes = declared.getDirectSuperTypes();
+      List<Declared> directSupertypes = requestOrThrow(declared, DECLARED_GET_DIRECT_SUPER_TYPES);
       found.addAll(directSupertypes);
       for (Declared directSupertype : directSupertypes)
       {

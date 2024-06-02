@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+
 public class GenericUsageTest
 {
    @Test
@@ -19,7 +21,7 @@ public class GenericUsageTest
                                Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
                                Interface erasure = context.erasure(interfaceToTest);
                                Interface erasedCollection = context.erasure(context.getInterfaceOrThrow("java.util.Collection"));
-                               Assertions.assertTrue(erasure.isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
+                               Assertions.assertTrue(query(erasure).isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
                                //@end
                             })
             .compile();

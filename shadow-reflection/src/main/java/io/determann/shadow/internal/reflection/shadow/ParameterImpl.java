@@ -99,7 +99,7 @@ public class ParameterImpl implements Parameter,
       }
       if (getType() instanceof Class aClass)
       {
-         return aClass.isSubtypeOf(shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Array array)
       {

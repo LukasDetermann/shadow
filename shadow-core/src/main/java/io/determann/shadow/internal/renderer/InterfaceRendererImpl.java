@@ -6,9 +6,11 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Interface;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_DIRECT_INTERFACES;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
@@ -52,11 +54,14 @@ public class InterfaceRendererImpl implements InterfaceRenderer
          sb.append('>');
       }
       sb.append(' ');
-      if (!anInterface.getDirectInterfaces().isEmpty())
+
+      List<Interface> directInterfaces = requestOrThrow(anInterface, DECLARED_GET_DIRECT_INTERFACES);
+
+      if (!directInterfaces.isEmpty())
       {
          sb.append("extends");
          sb.append(' ');
-         sb.append(anInterface.getDirectInterfaces().stream().map(anInterface1 -> type(context, anInterface1)).collect(joining(", ")));
+         sb.append(directInterfaces.stream().map(anInterface1 -> type(context, anInterface1)).collect(joining(", ")));
          sb.append(' ');
       }
       sb.append('{');

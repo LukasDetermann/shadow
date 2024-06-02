@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClassTest extends DeclaredTest<Class>
@@ -118,7 +119,7 @@ class ClassTest extends DeclaredTest<Class>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Interface> directInterfaces = shadowApi.getClassOrThrow("DirectInterfacesExample.Child")
+                               List<Interface> directInterfaces = query(shadowApi.getClassOrThrow("DirectInterfacesExample.Child"))
                                                                            .getDirectInterfaces();
 
                                assertEquals(1, directInterfaces.size());
@@ -232,11 +233,11 @@ class ClassTest extends DeclaredTest<Class>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.getClassOrThrow("java.lang.Long")
-                                                   .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
-                               assertTrue(shadowApi.getClassOrThrow("java.lang.Long").isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
-                               assertFalse(shadowApi.getClassOrThrow("java.lang.Number")
-                                                    .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
+                               assertTrue(query(shadowApi.getClassOrThrow("java.lang.Long"))
+                                                .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(query(shadowApi.getClassOrThrow("java.lang.Long")).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
+                               assertFalse(query(shadowApi.getClassOrThrow("java.lang.Number"))
+                                                 .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Long")));
                             })
                    .compile();
    }
@@ -267,15 +268,13 @@ class ClassTest extends DeclaredTest<Class>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Number")),
-                                            shadowApi.getClassOrThrow(
-                                                           "ClassParent")
-                                                     .getDirectSuperTypes());
+                                            query(shadowApi.getClassOrThrow("ClassParent"))
+                                                  .getDirectSuperTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Number"),
                                                     shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            shadowApi.getClassOrThrow(
-                                                           "ClassMixedParent")
+                                            query(shadowApi.getClassOrThrow("ClassMixedParent"))
                                                      .getDirectSuperTypes());
                             })
                    .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")
@@ -291,19 +290,19 @@ class ClassTest extends DeclaredTest<Class>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(Set.of(),
-                                            shadowApi.getClassOrThrow("java.lang.Object").getSuperTypes());
+                                            query(shadowApi.getClassOrThrow("java.lang.Object")).getSuperTypes());
 
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                    shadowApi.getClassOrThrow("java.lang.Number"),
                                                    shadowApi.getInterfaceOrThrow("java.io.Serializable")),
-                                            shadowApi.getClassOrThrow("ClassParent").getSuperTypes());
+                                            query(shadowApi.getClassOrThrow("ClassParent")).getSuperTypes());
 
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                    shadowApi.getClassOrThrow("java.lang.Number"),
                                                    shadowApi.getInterfaceOrThrow("java.io.Serializable"),
                                                    shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            shadowApi.getClassOrThrow("ClassMixedParent").getSuperTypes());
+                                            query(shadowApi.getClassOrThrow("ClassMixedParent")).getSuperTypes());
                             })
                    .withCodeToCompile("ClassNoParent.java", "class ClassNoParent {}")
                    .withCodeToCompile("ClassParent.java", "abstract class ClassParent extends Number {}")

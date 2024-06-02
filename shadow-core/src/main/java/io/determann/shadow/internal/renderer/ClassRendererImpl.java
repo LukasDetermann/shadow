@@ -4,12 +4,13 @@ import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.ClassRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Interface;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -57,14 +58,15 @@ public class ClassRendererImpl implements ClassRenderer
          sb.append(type(context, aClass.getSuperClass()));
          sb.append(' ');
       }
-      if (!aClass.getDirectInterfaces().isEmpty())
+
+      List<Interface> directInterfaces = requestOrThrow(aClass, DECLARED_GET_DIRECT_INTERFACES);
+      if (!directInterfaces.isEmpty())
       {
          sb.append("implements");
          sb.append(' ');
-         sb.append(aClass.getDirectInterfaces()
-                         .stream()
-                         .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
-                         .collect(joining(", ")));
+         sb.append(directInterfaces.stream()
+                                   .map(anInterface -> InterfaceRendererImpl.type(context, anInterface))
+                                   .collect(joining(", ")));
          sb.append(' ');
       }
       sb.append('{');

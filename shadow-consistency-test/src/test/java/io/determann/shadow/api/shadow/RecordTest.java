@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecordTest extends DeclaredTest<Record>
@@ -41,7 +42,7 @@ class RecordTest extends DeclaredTest<Record>
    void testGetDirectInterfaces()
    {
       ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getInterfaceOrThrow("java.io.Serializable")),
-                                                      getShadowSupplier().apply(shadowApi).getDirectInterfaces()))
+                                                      query(getShadowSupplier().apply(shadowApi)).getDirectInterfaces()))
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
    }
@@ -52,9 +53,9 @@ class RecordTest extends DeclaredTest<Record>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Record")));
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Record")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -67,12 +68,12 @@ class RecordTest extends DeclaredTest<Record>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Record")),
-                                            shadowApi.getRecordOrThrow("RecordNoParent").getDirectSuperTypes());
+                                            query(shadowApi.getRecordOrThrow("RecordNoParent")).getDirectSuperTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Record"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            shadowApi.getRecordOrThrow("RecordMultiParent").getDirectSuperTypes());
+                                            query(shadowApi.getRecordOrThrow("RecordMultiParent")).getDirectSuperTypes());
                             })
                    .withCodeToCompile("RecordNoParent.java", "record RecordNoParent() {}")
                    .withCodeToCompile("RecordMultiParent.java", """
@@ -93,13 +94,13 @@ class RecordTest extends DeclaredTest<Record>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"), shadowApi.getClassOrThrow("java.lang.Record")),
-                                            shadowApi.getRecordOrThrow("RecordNoParent").getSuperTypes());
+                                            query(shadowApi.getRecordOrThrow("RecordNoParent")).getSuperTypes());
 
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                    shadowApi.getClassOrThrow("java.lang.Record"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            shadowApi.getRecordOrThrow("RecordMultiParent").getSuperTypes());
+                                            query(shadowApi.getRecordOrThrow("RecordMultiParent")).getSuperTypes());
                             })
                    .withCodeToCompile("RecordNoParent.java", "record RecordNoParent() {}")
                    .withCodeToCompile("RecordMultiParent.java", """

@@ -140,7 +140,7 @@ public class ExecutableImpl implements Constructor,
    @Override
    public Package getPackage()
    {
-      return getSurrounding().getPackage();
+      return requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override
@@ -211,7 +211,7 @@ public class ExecutableImpl implements Constructor,
          }
          Class otherSurroundingClass = convert(otherSurrounding).toClassOrThrow();
          Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
-         if (!surroundingClass.isSubtypeOf(otherSurroundingClass))
+         if (!requestOrThrow(surroundingClass, DECLARED_IS_SUBTYPE_OF, otherSurroundingClass))
          {
             return false;
          }
@@ -229,7 +229,7 @@ public class ExecutableImpl implements Constructor,
          }
          Interface otherSurroundingInterface = convert(otherSurrounding).toInterfaceOrThrow();
          Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
-         if (!surroundingClass.getInterfaces().contains(otherSurroundingInterface))
+         if (!requestOrThrow(surroundingClass, DECLARED_GET_INTERFACES).contains(otherSurroundingInterface))
          {
             return false;
          }

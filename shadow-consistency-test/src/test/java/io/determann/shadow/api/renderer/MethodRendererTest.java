@@ -1,11 +1,16 @@
 package io.determann.shadow.api.renderer;
 
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.ReflectionQueries;
 import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHOD;
+import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHODS;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodRendererTest
@@ -29,21 +34,21 @@ class MethodRendererTest
                            {
                               assertEquals(
                                     "@MyAnnotation\nabstract <T> void varArgsMethod(String... args) throws java.io.FileNotFoundException;\n",
-                                    render(DEFAULT, aClass.getMethods("varArgsMethod").get(0)).declaration());
+                                    render(DEFAULT, LangModelQueries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
                               assertEquals("public void six(java.util.List list) {}\n",
-                                           render(DEFAULT, aClass.getMethods("six").get(0)).declaration());
+                                           render(DEFAULT, LangModelQueries.query(aClass).getMethods("six").get(0)).declaration());
                               assertEquals("public void seven(java.util.List<String> strings) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getMethods("seven").get(0)).declaration("test"));
+                                           render(DEFAULT, LangModelQueries.query(aClass).getMethods("seven").get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals(
                                     "@MyAnnotation\nabstract <T> void varArgsMethod(String... arg0) throws java.io.FileNotFoundException;\n",
-                                    render(DEFAULT, aClass.getMethods("varArgsMethod").get(0)).declaration());
+                                    render(DEFAULT, ReflectionQueries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
                               assertEquals("public void six(java.util.List arg0) {}\n",
-                                           render(DEFAULT, aClass.getMethods("six").get(0)).declaration());
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getMethods("six").get(0)).declaration());
                               assertEquals("public void seven(java.util.List<String> arg0) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getMethods("seven").get(0)).declaration("test"));
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getMethods("seven").get(0)).declaration("test"));
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
@@ -59,7 +64,7 @@ class MethodRendererTest
                                      @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
                                      @interface MyAnnotation {}""")
                      .test(aClass -> assertEquals("private void receiver(ReceiverExample ReceiverExample.this) {}\n",
-                                                  render(DEFAULT, aClass.getMethods().get(0)).declaration()));
+                                                  render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_METHODS).get(0)).declaration()));
    }
 
    @Test
@@ -76,9 +81,9 @@ class MethodRendererTest
                            """)
                      .test(aClass ->
                            {
-                              assertEquals("varArgsMethod()", render(DEFAULT, aClass.getMethods("varArgsMethod").get(0)).invocation());
-                              assertEquals("six()", render(DEFAULT, aClass.getMethods("six").get(0)).invocation());
-                              assertEquals("seven(test)", render(DEFAULT, aClass.getMethods("seven").get(0)).invocation("test"));
+                              assertEquals("varArgsMethod()", render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_METHOD,"varArgsMethod").get(0)).invocation());
+                              assertEquals("six()", render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_METHOD, "six").get(0)).invocation());
+                              assertEquals("seven(test)", render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_METHOD, "seven").get(0)).invocation("test"));
                            });
    }
 }

@@ -23,7 +23,7 @@ class ElementBackedTest
                                Declared arrayList = shadowApi.getClassOrThrow("java.util.ArrayList");
                                assertEquals(Set.of(Modifier.PUBLIC), arrayList.getModifiers());
 
-                               Field serialVersionUID = arrayList.getFields().stream()
+                               Field serialVersionUID = query(arrayList).getFields().stream()
                                                                  .filter(field -> query((Nameable) field).getName().equals("serialVersionUID"))
                                                                  .findAny()
                                                                  .orElseThrow();
@@ -49,8 +49,8 @@ class ElementBackedTest
 
                                Class aClass = shadowApi.getClassOrThrow("JavaDocExample");
                                assertEquals(" Class level doc\n", query((Documented) aClass).getJavaDoc());
-                               assertEquals(" Method level doc\n", query((Documented) aClass.getMethods("toString").get(0)).getJavaDoc());
-                               assertEquals(" Constructor level doc\n", query((Documented) aClass.getConstructors().get(0)).getJavaDoc());
+                               assertEquals(" Method level doc\n", query((Documented) query(aClass).getMethods("toString").get(0)).getJavaDoc());
+                               assertEquals(" Constructor level doc\n", query((Documented) query(aClass).getConstructors().get(0)).getJavaDoc());
                             })
                    .withCodeToCompile("JavaDocExample.java", """
                          /**

@@ -14,6 +14,7 @@ import javax.lang.model.util.Elements;
 import java.util.List;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConversionTest
@@ -25,7 +26,7 @@ class ConversionTest
                             {
                                //@formatter:off
 //tag::shadow[]
-Shadow myField = context.getClassOrThrow("MyClass")
+Shadow myField = query(context.getClassOrThrow("MyClass"))
                         .getFieldOrThrow("myField")
                         .getType();
 //Converters limit the conversion to possible types

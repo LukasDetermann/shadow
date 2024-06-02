@@ -3,6 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReturnTest
@@ -12,7 +13,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               Return aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
+                               Return aReturn = query(context.getClassOrThrow("ReturnExample")).getMethods().get(0).getReturn();
 
                                assertEquals(context.getClassOrThrow("java.lang.Integer"), aReturn.getType());
                             })
@@ -29,7 +30,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               Return aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
+                               Return aReturn = query(context.getClassOrThrow("ReturnExample")).getMethods().get(0).getReturn();
 
                                assertEquals(1, aReturn.getAnnotationUsages().size());
                                assertEquals(2, aReturn.getAnnotationUsages().get(0).getValueOrThrow("value").asInteger());

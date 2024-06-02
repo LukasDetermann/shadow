@@ -1,11 +1,15 @@
 package io.determann.shadow.api.renderer;
 
+import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.ReflectionQueries;
 import io.determann.shadow.consistency.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_CONSTRUCTORS;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConstructorRendererTest
@@ -23,16 +27,16 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public ConstructorExample(Long id) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(Long id) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("public ConstructorExample(Long arg0) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(Long arg0) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
@@ -51,26 +55,26 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("@TestAnnotation\npublic ConstructorExample(String name) throws java.io.IOException {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("""
                                                  @TestAnnotation
                                                  public ConstructorExample(String name) throws java.io.IOException {
                                                  test
                                                  }
                                                  """,
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("@TestAnnotation\npublic ConstructorExample(String arg0) throws java.io.IOException {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("""
                                                  @TestAnnotation
                                                  public ConstructorExample(String arg0) throws java.io.IOException {
                                                  test
                                                  }
                                                  """,
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
@@ -83,16 +87,16 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public ConstructorExample(String... names) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(String... names) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("public ConstructorExample(String... arg0) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(String... arg0) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
@@ -105,16 +109,16 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public <T> ConstructorExample(T t) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                               assertEquals("public <T> ConstructorExample(T t) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
                            },
                            aClass ->
                            {
                               assertEquals("public <T> ConstructorExample(T arg0) {}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration());
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public <T> ConstructorExample(T arg0) {\ntest\n}\n",
-                                           render(DEFAULT, aClass.getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
@@ -132,7 +136,7 @@ class ConstructorRendererTest
                                      @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
                                      @interface MyAnnotation {}""")
                      .test(aClass -> assertEquals("public Inner(ReceiverExample ReceiverExample.this) {}\n",
-                                                  render(DEFAULT, aClass.getConstructors().get(0)).declaration()));
+                                                  render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_CONSTRUCTORS).get(0)).declaration()));
    }
 
    @Test
@@ -147,9 +151,9 @@ class ConstructorRendererTest
                            """)
                      .test(aClass ->
                            {
-                              assertEquals("ConstructorExample()", render(DEFAULT, aClass.getConstructors().get(0)).invocation());
+                              assertEquals("ConstructorExample()", render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_CONSTRUCTORS).get(0)).invocation());
 
-                              assertEquals("ConstructorExample(test)", render(DEFAULT, aClass.getConstructors().get(0)).invocation("test"));
+                              assertEquals("ConstructorExample(test)", render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_CONSTRUCTORS).get(0)).invocation("test"));
                            });
    }
 }

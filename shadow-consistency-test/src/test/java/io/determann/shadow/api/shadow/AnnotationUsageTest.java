@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationUsageTest
@@ -49,10 +50,10 @@ class AnnotationUsageTest
 
                                assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValue::isDefaultValue));
 
-                               AnnotationUsage overwrittenStringValue = shadowApi.getClassOrThrow("AnnotationUsageExample")
-                                                                                 .getFieldOrThrow("testField")
-                                                                                 .getAnnotationUsages()
-                                                                                 .get(0);
+                               AnnotationUsage overwrittenStringValue = query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
+                                     .getFieldOrThrow("testField")
+                                     .getAnnotationUsages()
+                                     .get(0);
 
                                AnnotationValue overwrittenValueTypeChooser = overwrittenStringValue.getValueOrThrow("stingValue");
                                assertFalse(overwrittenValueTypeChooser.isDefaultValue());

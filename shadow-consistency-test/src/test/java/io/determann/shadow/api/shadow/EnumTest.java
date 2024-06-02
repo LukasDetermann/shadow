@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnumTest extends DeclaredTest<Enum>
@@ -21,9 +22,9 @@ class EnumTest extends DeclaredTest<Enum>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                             }).compile();
    }
 
@@ -34,14 +35,14 @@ class EnumTest extends DeclaredTest<Enum>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Enum")),
-                                            shadowApi.getEnumOrThrow("EnumNoParent")
-                                                     .getDirectSuperTypes());
+                                            query(shadowApi.getEnumOrThrow("EnumNoParent"))
+                                                  .getDirectSuperTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Enum"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            shadowApi.getEnumOrThrow("EnumMultiParent")
-                                                     .getDirectSuperTypes());
+                                            query(shadowApi.getEnumOrThrow("EnumMultiParent"))
+                                                  .getDirectSuperTypes());
                             })
                    .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")
                    .withCodeToCompile("EnumMultiParent.java", """
@@ -68,7 +69,7 @@ class EnumTest extends DeclaredTest<Enum>
                                                    shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                    shadowApi.getInterfaceOrThrow("java.io.Serializable"),
                                                    shadowApi.getClassOrThrow("java.lang.Enum")),
-                                            shadowApi.getEnumOrThrow("EnumNoParent").getSuperTypes());
+                                            query(shadowApi.getEnumOrThrow("EnumNoParent")).getSuperTypes());
 
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                    shadowApi.getInterfaceOrThrow("java.lang.constant.Constable"),
@@ -77,7 +78,7 @@ class EnumTest extends DeclaredTest<Enum>
                                                    shadowApi.getClassOrThrow("java.lang.Enum"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            shadowApi.getEnumOrThrow("EnumMultiParent")
+                                            query(shadowApi.getEnumOrThrow("EnumMultiParent"))
                                                      .getSuperTypes());
                             })
                    .withCodeToCompile("EnumNoParent.java", "enum EnumNoParent{}")

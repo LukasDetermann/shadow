@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,13 +18,13 @@ class ConstructorTest extends ExecutableTest<Constructor>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(0,
-                                            shadowApi.getClassOrThrow("DefaultConstructorExample")
-                                                     .getConstructors()
-                                                     .get(0)
-                                                     .getParameters()
-                                                     .size());
+                                            query(shadowApi.getClassOrThrow("DefaultConstructorExample"))
+                                                  .getConstructors()
+                                                  .get(0)
+                                                  .getParameters()
+                                                  .size());
 
-                               List<Constructor> constructors = shadowApi.getClassOrThrow("ConstructorExample")
+                               List<Constructor> constructors = query(shadowApi.getClassOrThrow("ConstructorExample"))
                                                                          .getConstructors();
                                assertEquals(3, constructors.size());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"),
@@ -50,10 +51,10 @@ class ConstructorTest extends ExecutableTest<Constructor>
    void testGetReturnType()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getConstants().getVoid(),
-                                                      shadowApi.getClassOrThrow("ConstructorExample")
-                                                               .getConstructors()
-                                                               .get(0)
-                                                               .getReturnType()))
+                                                      query(shadowApi.getClassOrThrow("ConstructorExample"))
+                                                            .getConstructors()
+                                                            .get(0)
+                                                            .getReturnType()))
                    .withCodeToCompile("ConstructorExample.java", """
                          import java.io.IOException;
 
@@ -71,10 +72,10 @@ class ConstructorTest extends ExecutableTest<Constructor>
    void testGetParameterTypes()
    {
       ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Long")),
-                                                      shadowApi.getClassOrThrow("ConstructorExample")
-                                                               .getConstructors()
-                                                               .get(0)
-                                                               .getParameterTypes()))
+                                                      query(shadowApi.getClassOrThrow("ConstructorExample"))
+                                                            .getConstructors()
+                                                            .get(0)
+                                                            .getParameterTypes()))
                    .withCodeToCompile("ConstructorExample.java", """
                          import java.io.IOException;
 
@@ -94,16 +95,16 @@ class ConstructorTest extends ExecutableTest<Constructor>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(),
-                                            shadowApi.getClassOrThrow("ConstructorExample")
-                                                     .getConstructors()
-                                                     .get(0)
-                                                     .getThrows());
+                                            query(shadowApi.getClassOrThrow("ConstructorExample"))
+                                                  .getConstructors()
+                                                  .get(0)
+                                                  .getThrows());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.io.IOException")),
-                                            shadowApi.getClassOrThrow("ConstructorExample")
-                                                     .getConstructors()
-                                                     .get(1)
-                                                     .getThrows());
+                                            query(shadowApi.getClassOrThrow("ConstructorExample"))
+                                                  .getConstructors()
+                                                  .get(1)
+                                                  .getThrows());
                             })
                    .withCodeToCompile("ConstructorExample.java", """
                          import java.io.IOException;
@@ -121,11 +122,10 @@ class ConstructorTest extends ExecutableTest<Constructor>
    @Override
    void testIsVarArgs()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow(
-                                                                   "ConstructorExample")
-                                                             .getConstructors()
-                                                             .get(2)
-                                                             .isVarArgs()))
+      ProcessorTest.process(shadowApi -> assertTrue(query(shadowApi.getClassOrThrow("ConstructorExample"))
+                                                          .getConstructors()
+                                                          .get(2)
+                                                          .isVarArgs()))
                    .withCodeToCompile("ConstructorExample.java", """
                          import java.io.IOException;
 
@@ -145,7 +145,7 @@ class ConstructorTest extends ExecutableTest<Constructor>
       ProcessorTest.process(shadowApi ->
                             {
                                Class aClass = shadowApi.getClassOrThrow("ConstructorExample");
-                               assertEquals(aClass, aClass.getConstructors().get(0).getSurrounding());
+                               assertEquals(aClass, query(aClass).getConstructors().get(0).getSurrounding());
                             })
                    .withCodeToCompile("ConstructorExample.java", """
                          import java.io.IOException;
@@ -164,8 +164,8 @@ class ConstructorTest extends ExecutableTest<Constructor>
    void testGetPackage()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.constructor").get(0),
-                                                      shadowApi.getClassOrThrow(
-                                                                     "io.determann.shadow.example.processed.test.constructor.ConstructorExample")
+                                                      query(shadowApi.getClassOrThrow(
+                                                                     "io.determann.shadow.example.processed.test.constructor.ConstructorExample"))
                                                                .getPackage()))
                    .withCodeToCompile("ConstructorExample.java", """
                          package io.determann.shadow.example.processed.test.constructor;
@@ -187,17 +187,17 @@ class ConstructorTest extends ExecutableTest<Constructor>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(Optional.empty(),
-                                            shadowApi.getClassOrThrow("DefaultConstructorExample")
-                                                     .getConstructors()
-                                                     .get(0)
-                                                     .getReceiverType());
+                                            query(shadowApi.getClassOrThrow("DefaultConstructorExample"))
+                                                  .getConstructors()
+                                                  .get(0)
+                                                  .getReceiverType());
 
                                assertEquals(shadowApi.getClassOrThrow("ReceiverExample"),
-                                            shadowApi.getClassOrThrow("ReceiverExample.Inner")
-                                                     .getConstructors()
-                                                     .get(0)
-                                                     .getReceiverType()
-                                                     .orElseThrow());
+                                            query(shadowApi.getClassOrThrow("ReceiverExample.Inner"))
+                                                  .getConstructors()
+                                                  .get(0)
+                                                  .getReceiverType()
+                                                  .orElseThrow());
                             })
                    .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
                    .withCodeToCompile("ReceiverExample.java", """

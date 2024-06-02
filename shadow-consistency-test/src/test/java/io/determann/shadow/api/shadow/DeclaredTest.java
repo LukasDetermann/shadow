@@ -4,7 +4,6 @@ import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -13,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -43,8 +43,8 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertEquals(NestingKind.OUTER, shadowApi.getClassOrThrow("NestingExample").getNesting());
-                               assertEquals(NestingKind.INNER, shadowApi.getClassOrThrow("NestingExample.Inner").getNesting());
+                               assertEquals(NestingKind.OUTER, query(shadowApi.getClassOrThrow("NestingExample")).getNesting());
+                               assertEquals(NestingKind.INNER, query(shadowApi.getClassOrThrow("NestingExample.Inner")).getNesting());
                             })
                    .withCodeToCompile("NestingExample.java",
                                       """
@@ -61,9 +61,9 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(2.7182818284590452354D,
-                                            shadowApi.getClassOrThrow("java.lang.Math").getFieldOrThrow("E").getConstantValue());
+                                            query(shadowApi.getClassOrThrow("java.lang.Math")).getFieldOrThrow("E").getConstantValue());
                                assertThrows(NoSuchElementException.class,
-                                            () -> shadowApi.getClassOrThrow("java.lang.Math").getFieldOrThrow("EEEE"));
+                                            () -> query(shadowApi.getClassOrThrow("java.lang.Math")).getFieldOrThrow("EEEE"));
                             })
                    .compile();
    }
@@ -75,10 +75,10 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                   assertEquals(Arrays.asList("a",
                                                              "b",
                                                              "C"),
-                                               shadowApi.getClassOrThrow("MyClass")
+                                               query(shadowApi.getClassOrThrow("MyClass"))
                                                         .getFields()
                                                         .stream()
-                                                        .map(field ->  LangModelQueries.query(((Nameable) field)).getName())
+                                                        .map(field ->  query(((Nameable) field)).getName())
                                                         .collect(Collectors.toList())))
                    .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                    .compile();
@@ -92,17 +92,17 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                assertEquals(List.of("wait()",
                                                     "wait(long)",
                                                     "wait(long,int)"),
-                                            shadowApi.getClassOrThrow("java.lang.Object").getMethods("wait")
+                                            query(shadowApi.getClassOrThrow("java.lang.Object")).getMethods("wait")
                                                      .stream()
                                                      .map(Object::toString)
                                                      .sorted()
                                                      .toList());
 
-                               assertEquals(0, shadowApi.getClassOrThrow("java.lang.Object").getMethods("asdf").size());
+                               assertEquals(0, query(shadowApi.getClassOrThrow("java.lang.Object")).getMethods("asdf").size());
 
                                assertEquals(List.of("fooMethod()",
                                                     "toString()"),
-                                            shadowApi.getClassOrThrow("MyClass")
+                                            query(shadowApi.getClassOrThrow("MyClass"))
                                                      .getMethods()
                                                      .stream()
                                                      .map(Object::toString)
@@ -119,11 +119,11 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of("Object()"),
-                                            shadowApi.getClassOrThrow("java.lang.Object").getConstructors().stream()
+                                            query(shadowApi.getClassOrThrow("java.lang.Object")).getConstructors().stream()
                                                      .map(Object::toString)
                                                      .toList());
                                assertEquals(List.of("Math()"),
-                                            shadowApi.getClassOrThrow("java.lang.Math").getConstructors().stream()
+                                            query(shadowApi.getClassOrThrow("java.lang.Math")).getConstructors().stream()
                                                      .map(Object::toString)
                                                      .toList());
                             })
@@ -139,7 +139,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("java.lang",
-                                               shadowApi.getClassOrThrow("java.lang.Object").getPackage().toString()))
+                                               query(shadowApi.getClassOrThrow("java.lang.Object")).getPackage().toString()))
                    .compile();
    }
 
@@ -149,10 +149,10 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
       ProcessorTest.process(shadowApi ->
                             {
                                //Outer
-                               assertEquals("java.lang.Object", shadowApi.getClassOrThrow("java.lang.Object").getBinaryName());
+                               assertEquals("java.lang.Object", query(shadowApi.getClassOrThrow("java.lang.Object")).getBinaryName());
                                //Inner
                                assertEquals("java.lang.Math$RandomNumberGeneratorHolder",
-                                            shadowApi.getClassOrThrow("java.lang.Math.RandomNumberGeneratorHolder").getBinaryName());
+                                            query(shadowApi.getClassOrThrow("java.lang.Math.RandomNumberGeneratorHolder")).getBinaryName());
                             })
                    .compile();
    }

@@ -59,7 +59,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field,
       }
       if (getType() instanceof Class aClass)
       {
-         return aClass.isSubtypeOf(shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
       if (getType() instanceof Array array)
       {
@@ -85,7 +85,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field,
    @Override
    public Package getPackage()
    {
-      return getSurrounding().getPackage();
+      return requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override

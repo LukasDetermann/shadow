@@ -96,7 +96,7 @@ public class WildcardImpl implements Wildcard,
 
    private boolean isSubType(Shadow shadow, Shadow other)
    {
-      return convert(shadow).toDeclared().map(declared -> declared.isSubtypeOf(other)).orElse(false);
+      return convert(shadow).toDeclared().map(declared -> requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other)).orElse(false);
    }
 
    public WildcardType getWildcardType()

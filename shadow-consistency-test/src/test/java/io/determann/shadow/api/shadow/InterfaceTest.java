@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest extends DeclaredTest<Interface>
@@ -23,14 +24,14 @@ class InterfaceTest extends DeclaredTest<Interface>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertEquals(0, shadowApi.getInterfaceOrThrow("java.util.function.Function").getDirectInterfaces().size());
+                               assertEquals(0, query(shadowApi.getInterfaceOrThrow("java.util.function.Function")).getDirectInterfaces().size());
 
                                assertEquals(List.of("java.util.function.Function"),
-                                            shadowApi.getInterfaceOrThrow("java.util.function.UnaryOperator")
-                                                     .getDirectInterfaces()
-                                                     .stream()
-                                                     .map(Object::toString)
-                                                     .toList());
+                                            query(shadowApi.getInterfaceOrThrow("java.util.function.UnaryOperator"))
+                                                  .getDirectInterfaces()
+                                                  .stream()
+                                                  .map(Object::toString)
+                                                  .toList());
                             })
                    .compile();
    }
@@ -135,9 +136,9 @@ class InterfaceTest extends DeclaredTest<Interface>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
-                               assertTrue(getShadowSupplier().apply(shadowApi).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(getShadowSupplier().apply(shadowApi).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
+                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
+                               assertFalse(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                             })
                    .compile();
    }
@@ -149,14 +150,14 @@ class InterfaceTest extends DeclaredTest<Interface>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object")),
-                                            shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent")
-                                                     .getDirectSuperTypes());
+                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent"))
+                                                  .getDirectSuperTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                     shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                     shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent")
-                                                     .getDirectSuperTypes());
+                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent"))
+                                                  .getDirectSuperTypes());
                             })
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          import java.util.function.Consumer;
@@ -179,14 +180,14 @@ class InterfaceTest extends DeclaredTest<Interface>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object")),
-                                            shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent")
-                                                     .getSuperTypes());
+                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent"))
+                                                  .getSuperTypes());
 
                                assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                    shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent")
-                                                     .getSuperTypes());
+                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent"))
+                                                  .getSuperTypes());
                             })
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          import java.util.function.Consumer;

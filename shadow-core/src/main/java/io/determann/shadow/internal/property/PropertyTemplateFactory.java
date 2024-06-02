@@ -66,7 +66,7 @@ class PropertyTemplateFactory
 
    static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = declared.getFields().stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAMEABLE_NAME), Function.identity()));
+      Map<String, Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAMEABLE_NAME), Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -103,14 +103,14 @@ class PropertyTemplateFactory
    {
       if (!requestOrThrow(declared, SHADOW_GET_KIND).equals(CLASS))
       {
-         return declared.getMethods();
+         return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
       List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(), Objects::nonNull, Class::getSuperClass).collect(toList());
 
       Collections.reverse(superClasses);
 
       List<Method> methods = superClasses.stream()
-                                         .flatMap(aClass -> aClass.getMethods().stream())
+                                         .flatMap(aClass -> requestOrThrow(aClass, DECLARED_GET_METHODS).stream())
                                          .toList();
 
       return methods.stream()

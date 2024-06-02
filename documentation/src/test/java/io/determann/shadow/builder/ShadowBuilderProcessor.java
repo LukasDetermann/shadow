@@ -82,7 +82,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                   return %6$s;
                }
             }
-            """.formatted(query((QualifiedNameable) aClass.getPackage()).getQualifiedName(),
+            """.formatted(query((QualifiedNameable) query(aClass).getPackage()).getQualifiedName(),
                           builderSimpleName,
                           fields,
                           mutators,

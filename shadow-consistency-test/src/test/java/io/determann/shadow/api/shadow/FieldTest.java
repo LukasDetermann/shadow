@@ -3,6 +3,7 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +11,7 @@ class FieldTest extends VariableTest<Field>
 {
    FieldTest()
    {
-      super(shadowApi -> shadowApi.getClassOrThrow("java.lang.String").getFieldOrThrow("value"));
+      super(shadowApi -> query(shadowApi.getClassOrThrow("java.lang.String")).getFieldOrThrow("value"));
    }
 
    @Test
@@ -19,7 +20,7 @@ class FieldTest extends VariableTest<Field>
       ProcessorTest.process(shadowApi ->
                             {
                                Class aClass = shadowApi.getClassOrThrow("FieldExample");
-                               assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
+                               assertEquals(aClass, query(aClass).getFieldOrThrow("ID").getSurrounding());
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
@@ -28,9 +29,9 @@ class FieldTest extends VariableTest<Field>
    @Test
    void testIsConstant()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getClassOrThrow("FieldExample")
-                                                             .getFieldOrThrow("ID")
-                                                             .isConstant()))
+      ProcessorTest.process(shadowApi -> assertTrue(query(shadowApi.getClassOrThrow("FieldExample"))
+                                                          .getFieldOrThrow("ID")
+                                                          .isConstant()))
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
    }
@@ -38,7 +39,7 @@ class FieldTest extends VariableTest<Field>
    @Test
    void testGetConstantValue()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(2, shadowApi.getClassOrThrow("FieldExample")
+      ProcessorTest.process(shadowApi -> assertEquals(2, query(shadowApi.getClassOrThrow("FieldExample"))
                                                                   .getFieldOrThrow("ID")
                                                                   .getConstantValue()))
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")

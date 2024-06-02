@@ -14,8 +14,7 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ArrayImpl implements Array,
@@ -53,7 +52,7 @@ public class ArrayImpl implements Array,
       }
       if (requestOrThrow(shadow, SHADOW_GET_KIND).isDeclared())
       {
-         return convert(componentShadow).toDeclaredOrThrow().isSubtypeOf(otherComponentShadow);
+         return requestOrThrow(convert(componentShadow).toDeclaredOrThrow(), DECLARED_IS_SUBTYPE_OF, otherComponentShadow);
       }
       if (TypeKind.RECORD_COMPONENT.equals(requestOrThrow(componentShadow, SHADOW_GET_KIND)))
       {

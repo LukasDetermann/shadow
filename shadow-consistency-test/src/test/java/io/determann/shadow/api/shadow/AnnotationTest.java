@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTATION>
@@ -22,12 +23,12 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
-                                                   .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
-                               assertTrue(shadowApi.getAnnotationOrThrow("java.lang.Override")
-                                                   .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
-                               assertFalse(shadowApi.getAnnotationOrThrow("java.lang.Override")
-                                                    .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
+                                                .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
+                               assertTrue(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
+                                                .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
+                               assertFalse(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
+                                                 .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
                             })
                    .compile();
    }
@@ -38,8 +39,8 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    {
       ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                               shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
-                                                      shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
-                                                               .getDirectSuperTypes()))
+                                                      query(shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent"))
+                                                            .getDirectSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          public class DirektSuperTypeExample {
                             @interface AnnotationNoParent {}
@@ -54,8 +55,8 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    {
       ProcessorTest.process(shadowApi -> assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
                                                              shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
-                                                      shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
-                                                               .getSuperTypes()))
+                                                      query(shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent"))
+                                                            .getSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          public class DirektSuperTypeExample {
                             @interface AnnotationNoParent {}

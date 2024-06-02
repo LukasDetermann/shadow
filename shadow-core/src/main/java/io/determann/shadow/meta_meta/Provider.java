@@ -21,9 +21,9 @@ public class Provider
 
    public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(TYPE instance, Operation0<TYPE, RESULT> operation)
    {
-      return switch ((Response<RESULT>) _request(instance, operation))
+      return switch (_request(instance, operation))
       {
-         case Response.Result<RESULT> result -> result.value();
+         case Response.Result<RESULT>(RESULT result) -> result;
          case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.name() +
                                                                                         " not supported for " +
                                                                                         instance +
@@ -39,9 +39,9 @@ public class Provider
 
    public static <TYPE extends ImplementationDefined, RESULT> Optional<RESULT> request(TYPE instance, Operation0<TYPE, RESULT> operation)
    {
-      return switch ((Response<RESULT>) _request(instance, operation))
+      return switch (_request(instance, operation))
       {
-         case Response.Result<RESULT> result -> Optional.of(result.value());
+         case Response.Result<RESULT>(RESULT result) -> Optional.of(result);
          case Response.Unsupported<RESULT> v -> Optional.empty();
          case Response.Empty<RESULT> v -> Optional.empty();
       };
@@ -51,9 +51,9 @@ public class Provider
                                                                                              Operation1<TYPE, PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
    {
-      return switch (((Response<RESULT>) _request(instance, operation, param1)))
+      return switch ( _request(instance, operation, param1))
       {
-         case Response.Result<RESULT> result -> result.value();
+         case Response.Result<RESULT>(RESULT result) -> result;
          case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.name() +
                                                                                         " not supported for " +
                                                                                         instance +
@@ -71,9 +71,9 @@ public class Provider
                                                                                                 Operation1<TYPE, PARAM_1, RESULT> operation,
                                                                                                 PARAM_1 param1)
    {
-      return switch (((Response<RESULT>) _request(instance, operation, param1)))
+      return switch (_request(instance, operation, param1))
       {
-         case Response.Result<RESULT> result -> Optional.of(result.value());
+         case Response.Result<RESULT>(RESULT result) -> Optional.of(result);
          case Response.Unsupported<RESULT> v -> Optional.empty();
          case Response.Empty<RESULT> v -> Optional.empty();
       };
