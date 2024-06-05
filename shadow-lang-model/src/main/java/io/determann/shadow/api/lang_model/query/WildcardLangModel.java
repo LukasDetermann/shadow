@@ -1,6 +1,7 @@
 package io.determann.shadow.api.lang_model.query;
 
 import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.Wildcard;
 
 import java.util.Optional;
 
@@ -13,7 +14,8 @@ import java.util.Optional;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface WildcardLangModel extends ShadowLangModel
+public interface WildcardLangModel extends Wildcard,
+                                           ShadowLangModel
 {
    /**
     * {@snippet :

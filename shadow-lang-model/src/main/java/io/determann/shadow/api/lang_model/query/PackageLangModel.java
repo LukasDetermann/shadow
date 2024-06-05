@@ -1,16 +1,14 @@
 package io.determann.shadow.api.lang_model.query;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.DeclaredHolder;
 import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.Package;
 
 import java.util.List;
 
-public interface PackageLangModel extends ShadowLangModel,
+public interface PackageLangModel extends Package,
+                                          ShadowLangModel,
                                           NameableLangModel,
                                           QualifiedNameableLamgModel,
-                                          Annotationable,
-                                          DeclaredHolder,
                                           ModuleEnclosedLangModel,
                                           DocumentedLangModel
 {

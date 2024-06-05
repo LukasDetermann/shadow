@@ -1,10 +1,9 @@
 package io.determann.shadow.api.lang_model.query;
 
-import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Shadow;
 
-public interface ShadowLangModel extends ImplementationDefined
+public interface ShadowLangModel extends Shadow
 {
    TypeKind getKind();
 

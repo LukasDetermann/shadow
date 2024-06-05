@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection.query;
 
 import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.Wildcard;
 
 import java.util.Optional;
 
@@ -13,7 +14,8 @@ import java.util.Optional;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface WildcardReflection extends ShadowReflection
+public interface WildcardReflection extends Wildcard,
+                                            ShadowReflection
 {
    /**
     * {@snippet :

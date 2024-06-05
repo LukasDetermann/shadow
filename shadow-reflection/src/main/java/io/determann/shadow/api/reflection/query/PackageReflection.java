@@ -1,19 +1,15 @@
 package io.determann.shadow.api.reflection.query;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.DeclaredHolder;
-import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.Package;
 
 import java.util.List;
 
-public interface PackageReflection extends ShadowReflection,
+public interface PackageReflection extends Package,
+                                           ShadowReflection,
                                            NameableReflection,
                                            QualifiedNameableReflection,
-                                           Annotationable,
-                                           DeclaredHolder,
-                                           ModuleEnclosedReflection,
-                                           Documented
+                                           ModuleEnclosedReflection
 {
    /**
     * returns everything in this package

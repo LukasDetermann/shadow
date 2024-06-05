@@ -1,9 +1,7 @@
 package io.determann.shadow.api.reflection.query;
 
-import io.determann.shadow.api.*;
+import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.modifier.AccessModifiable;
-import io.determann.shadow.api.modifier.StrictfpModifiable;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
@@ -27,14 +25,11 @@ import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
  *    <li>{@link Record}</li>
  * </ul>
  */
-public interface DeclaredReflection extends Shadow,
-                                            Annotationable,
-                                            AccessModifiable,
-                                            StrictfpModifiable,
-                                            Nameable,
-                                            QualifiedNameable,
-                                            ModuleEnclosed,
-                                            Documented
+public interface DeclaredReflection extends Declared,
+                                            ShadowReflection,
+                                            NameableReflection,
+                                            QualifiedNameableReflection,
+                                            ModuleEnclosedReflection
 {
    /**
     * returns true if this can be cast to that.
@@ -90,7 +85,8 @@ public interface DeclaredReflection extends Shadow,
    default Interface getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
-                                  .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
+                                  .filter(anInterface -> requestOrThrow(anInterface,
+                                                                        QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
                                   .findAny()
                                   .orElseThrow();
    }

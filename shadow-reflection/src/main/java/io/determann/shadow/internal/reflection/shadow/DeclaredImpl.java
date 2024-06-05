@@ -8,7 +8,6 @@ import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.*;
-import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -26,12 +25,11 @@ import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
 public class DeclaredImpl implements Annotation,
-                                     Enum,
+                                     EnumReflection,
                                      NameableReflection,
                                      ShadowReflection,
                                      QualifiedNameableReflection,
-                                     ModuleEnclosedReflection,
-                                     DeclaredReflection
+                                     ModuleEnclosedReflection
 {
    private final Class<?> aClass;
 

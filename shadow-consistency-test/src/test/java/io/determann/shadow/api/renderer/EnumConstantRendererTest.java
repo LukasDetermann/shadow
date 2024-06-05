@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.meta_meta.Operations.ENUM_GET_ENUM_CONSTANT;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumConstantRendererTest
@@ -18,7 +20,7 @@ class EnumConstantRendererTest
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass ->
                            {
-                              EnumConstant constant = aClass.getEnumConstantOrThrow("SOURCE");
+                              EnumConstant constant = requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE");
                               assertEquals("SOURCE\n", render(DEFAULT, constant).declaration());
                               assertEquals("SOURCE(test)\n", render(DEFAULT, constant).declaration("test"));
                               assertEquals("SOURCE(test) {\ntest2\n}\n", render(DEFAULT, constant).declaration("test", "test2"));
@@ -34,7 +36,7 @@ class EnumConstantRendererTest
                      .withCode("TestAnnotation.java",
                                "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)\n@interface TestAnnotation{}")
                      .test(aClass -> assertEquals("@TestAnnotation\nTEST\n",
-                                                  render(DEFAULT, aClass.getEnumConstantOrThrow("TEST")).declaration()));
+                                                  render(DEFAULT, requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "TEST")).declaration()));
    }
 
    @Test
@@ -42,6 +44,6 @@ class EnumConstantRendererTest
    {
       ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
-                     .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, aClass.getEnumConstantOrThrow("SOURCE")).invocation()));
+                     .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE")).invocation()));
    }
 }

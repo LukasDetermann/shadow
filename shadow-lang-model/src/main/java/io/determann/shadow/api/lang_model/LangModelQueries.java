@@ -2,6 +2,7 @@ package io.determann.shadow.api.lang_model;
 
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.lang_model.query.*;
+import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
 
@@ -55,6 +56,11 @@ public interface LangModelQueries
    public static DeclaredLangModel query(Declared declared)
    {
       return (DeclaredLangModel) validate(declared);
+   }
+
+   public static EnumLangModel query(Enum anEnum)
+   {
+      return (EnumLangModel) validate(anEnum);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

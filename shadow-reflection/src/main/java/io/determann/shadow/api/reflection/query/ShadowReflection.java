@@ -1,10 +1,9 @@
 package io.determann.shadow.api.reflection.query;
 
-import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.shadow.Shadow;
 
-public interface ShadowReflection extends ImplementationDefined
+public interface ShadowReflection extends Shadow
 {
    TypeKind getKind();
 

@@ -8,7 +8,6 @@ import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.query.*;
 import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -28,12 +27,11 @@ import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
-                                                                      Enum,
+                                                                      EnumLangModel,
                                                                       NameableLangModel,
                                                                       QualifiedNameableLamgModel,
                                                                       ModuleEnclosedLangModel,
-                                                                      DocumentedLangModel,
-                                                                      DeclaredLangModel
+                                                                      DocumentedLangModel
 {
    private final TypeElement typeElement;
 

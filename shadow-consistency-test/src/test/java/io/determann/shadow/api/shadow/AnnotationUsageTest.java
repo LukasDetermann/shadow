@@ -33,10 +33,10 @@ class AnnotationUsageTest
                                assertEquals(5f, defaultValues.getValueOrThrow("floatValue").asFloat());
                                assertEquals(6D, defaultValues.getValueOrThrow("doubleValue").asDouble());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), defaultValues.getValueOrThrow("typeValue").asType());
-                               assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType")
+                               assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType"))
                                                      .getEnumConstantOrThrow("ANNOTATION_TYPE"),
                                             defaultValues.getValueOrThrow("enumConstantValue").asEnumConstant());
-                               assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow("CLASS"),
+                               assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).getEnumConstantOrThrow("CLASS"),
                                             defaultValues.getValueOrThrow("annotationUsageValue")
                                                          .asAnnotationUsage()
                                                          .getValueOrThrow("value")
@@ -311,7 +311,7 @@ class AnnotationUsageTest
                                   @Override
                                   public void enumConstant(EnumConstant value)
                                   {
-                                     assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType")
+                                     assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType"))
                                                            .getEnumConstantOrThrow("ANNOTATION_TYPE"),
                                                   value);
                                      counter.incrementAndGet();
@@ -320,7 +320,7 @@ class AnnotationUsageTest
                                   @Override
                                   public void annotationUsage(AnnotationUsage value)
                                   {
-                                     assertEquals(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")
+                                     assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                                                            .getEnumConstantOrThrow("CLASS"),
                                                   value.getValueOrThrow("value").asEnumConstant());
                                      counter.incrementAndGet();

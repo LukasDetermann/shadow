@@ -1,6 +1,7 @@
 package io.determann.shadow.meta_meta;
 
 import io.determann.shadow.api.*;
+import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.*;
@@ -60,4 +61,8 @@ public interface Operations
    public static Operation1<Declared, String, Interface> DECLARED_GET_DIRECT_INTERFACE = new Operation1<>("declared.getDirectInterfaceOrThrow");
 
    public static Operation0<Declared, Package> DECLARED_GET_PACKAGE = new Operation0<>("declared.getPackage");
+
+   public static Operation0<Enum, List<EnumConstant>> ENUM_GET_EUM_CONSTANTS = new Operation0<>("enum.getEumConstants");
+
+   public static Operation1<Enum, String, EnumConstant> ENUM_GET_ENUM_CONSTANT = new Operation1<>("enum.getEnumConstant");
 }

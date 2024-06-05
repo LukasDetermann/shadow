@@ -1,12 +1,13 @@
 package io.determann.shadow.api.lang_model.query;
 
 import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Primitive;
 import io.determann.shadow.api.shadow.Shadow;
 
 /**
  * represents primitive types, but not there wrapper classes. for example int, long, short
  */
-public interface PrimitiveLangModel
+public interface PrimitiveLangModel extends Primitive
 {
    /**
     * returns true if this can be cast to that.
