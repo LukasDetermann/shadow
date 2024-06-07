@@ -47,6 +47,9 @@ public class ReflectionProvider extends AbstractProvider
              .with(DECLARED_GET_DIRECT_INTERFACE, (declared, s) -> query(declared).getDirectInterfaceOrThrow(s))
              .with(DECLARED_GET_PACKAGE, declared -> query(declared).getPackage())
              .with(ENUM_GET_ENUM_CONSTANT, (anEnum, s) -> query(anEnum).getEnumConstantOrThrow(s))
-             .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants());
+             .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants())
+             .with(INTERFACE_IS_FUNCTIONAL, anInterface -> query(anInterface).isFunctional())
+             .with(INTERFACE_GET_GENERIC_TYPES, anInterface -> query(anInterface).getGenericTypes())
+             .with(INTERFACE_GET_GENERICS, anInterface -> query(anInterface).getGenerics());
    }
 }

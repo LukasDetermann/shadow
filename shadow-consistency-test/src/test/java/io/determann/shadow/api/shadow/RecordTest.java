@@ -5,6 +5,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.query.InterfaceLangModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -164,7 +165,8 @@ class RecordTest extends DeclaredTest<Record>
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(TypeConverter::toInterface)
-                                     .map(Interface::getGenericTypes)
+                                     .map(LangModelQueries::query)
+                                     .map(InterfaceLangModel::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);

@@ -30,7 +30,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals("T",
-                                               shadowApi.getInterfaceOrThrow("java.lang.Comparable")
+                                               query(shadowApi.getInterfaceOrThrow("java.lang.Comparable"))
                                                         .getGenerics()
                                                         .stream()
                                                         .map(Object::toString)

@@ -61,6 +61,11 @@ public interface ReflectionQueries
       return (EnumReflection) validate(anEnum);
    }
 
+   public static InterfaceReflection query(Interface anInterface)
+   {
+      return (InterfaceReflection) validate(anInterface);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

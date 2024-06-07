@@ -3,6 +3,8 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
+import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.query.InterfaceLangModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -41,9 +43,9 @@ class InterfaceTest extends DeclaredTest<Interface>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.getInterfaceOrThrow("java.util.function.Function").isFunctional());
-                               assertTrue(shadowApi.getInterfaceOrThrow("java.lang.Comparable").isFunctional());
-                               assertFalse(shadowApi.getInterfaceOrThrow("java.util.List").isFunctional());
+                               assertTrue(query(shadowApi.getInterfaceOrThrow("java.util.function.Function")).isFunctional());
+                               assertTrue(query(shadowApi.getInterfaceOrThrow("java.lang.Comparable")).isFunctional());
+                               assertFalse(query(shadowApi.getInterfaceOrThrow("java.util.List")).isFunctional());
                             })
                    .compile();
    }
@@ -62,15 +64,15 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                          "java.io.Serializable"));
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
-                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
-                                                                   "java.lang.String")
+                                            query(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
+                                                                   "java.lang.String"))
                                                      .getGenericTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
                                                     shadowApi.getClassOrThrow("java.lang.Number")),
-                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                                            query(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
-                                                                   "java.lang.Number")
+                                                                   "java.lang.Number"))
                                                      .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
@@ -91,12 +93,13 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                            shadowApi.getClassOrThrow("java.lang.String"),
                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Interface capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
+                               Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(TypeConverter::toInterface)
-                                     .map(Interface::getGenericTypes)
+                                     .map(LangModelQueries::query)
+                                     .map(InterfaceLangModel::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
@@ -105,7 +108,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                            "InterpolateGenericsExample.IndependentGeneric"),
                                                                                      shadowApi.getConstants().getUnboundWildcard());
                                Interface independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -115,7 +118,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                          "InterpolateGenericsExample.DependentGeneric"), shadowApi.getConstants().getUnboundWildcard(),
                                                                                    shadowApi.getClassOrThrow("java.lang.String"));
                                Interface dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();

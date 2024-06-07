@@ -3,15 +3,16 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.InterfaceRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
+import io.determann.shadow.api.shadow.Shadow;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_DIRECT_INTERFACES;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -47,10 +48,12 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       sb.append("interface");
       sb.append(' ');
       sb.append(requestOrThrow(anInterface, NAMEABLE_NAME));
-      if (!anInterface.getGenerics().isEmpty())
+
+      List<Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
+      if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(anInterface.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(generics.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       sb.append(' ');
@@ -84,10 +87,12 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));
-      if (!anInterface.getGenericTypes().isEmpty())
+
+      List<Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
+      if (!genericTypes.isEmpty())
       {
          sb.append('<');
-         sb.append(anInterface.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(genericTypes.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

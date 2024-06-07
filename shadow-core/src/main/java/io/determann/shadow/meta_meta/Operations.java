@@ -65,4 +65,10 @@ public interface Operations
    public static Operation0<Enum, List<EnumConstant>> ENUM_GET_EUM_CONSTANTS = new Operation0<>("enum.getEumConstants");
 
    public static Operation1<Enum, String, EnumConstant> ENUM_GET_ENUM_CONSTANT = new Operation1<>("enum.getEnumConstant");
+
+   public static Operation0<Interface, Boolean> INTERFACE_IS_FUNCTIONAL = new Operation0<>("Interface.isFunctional");
+
+   public static Operation0<Interface, List<Shadow>> INTERFACE_GET_GENERIC_TYPES = new Operation0<>("interface.getGenericTypes");
+
+   public static Operation0<Interface, List<Generic>> INTERFACE_GET_GENERICS = new Operation0<>("interface.getGenerics");
 }

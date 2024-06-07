@@ -18,8 +18,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
-import static io.determann.shadow.meta_meta.Operations.PACKAGE_GET_CONTENT;
-import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
@@ -224,7 +223,7 @@ public class LangModelContextImpl implements LangModelContext
       }
       if (aClass.getOuterType().flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
                       .toInterface()
-                      .map(anInterface -> !anInterface.getGenerics().isEmpty())
+                      .map(anInterface -> !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty())
                       .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !aClass1.getGenericTypes().isEmpty())))
                 .orElse(false))
       {
@@ -242,11 +241,12 @@ public class LangModelContextImpl implements LangModelContext
    @Override
    public Interface withGenerics(Interface anInterface, Shadow... generics)
    {
-      if (generics.length == 0 || anInterface.getGenerics().size() != generics.length)
+      List<Generic> generics1 = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
+      if (generics.length == 0 || generics1.size() != generics.length)
       {
          throw new IllegalArgumentException(requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
-                                            anInterface.getGenerics().size() +
+                                            generics1.size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");

@@ -63,6 +63,11 @@ public interface LangModelQueries
       return (EnumLangModel) validate(anEnum);
    }
 
+   public static InterfaceLangModel query(Interface anInterface)
+   {
+      return (InterfaceLangModel) validate(anInterface);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

@@ -2,19 +2,20 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.InterfaceReflection;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Interface;
 import io.determann.shadow.api.shadow.Method;
 import io.determann.shadow.api.shadow.Shadow;
 
 import java.util.*;
 import java.util.stream.Collector;
 
+import static io.determann.shadow.meta_meta.Operations.INTERFACE_GET_GENERIC_TYPES;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
-public class InterfaceImpl extends DeclaredImpl implements Interface
+public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
 {
    private final List<Shadow> genericShadows;
 
@@ -73,8 +74,7 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
       return shadow != null &&
              Converter.convert(shadow)
                       .toInterface()
-                      .map(anInterface -> anInterface
-                            .getGenericTypes()
+                      .map(anInterface -> requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
                             .stream()
                             .allMatch(shadow1 -> getGenericTypes().stream()
                                                                   .anyMatch(shadow2 -> requestOrThrow(shadow2,
@@ -82,4 +82,5 @@ public class InterfaceImpl extends DeclaredImpl implements Interface
                                                                                                       shadow1))))
                       .orElse(false);
    }
+
 }

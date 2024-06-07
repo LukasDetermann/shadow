@@ -4,13 +4,14 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericTest extends ShadowTest<Generic>
 {
    GenericTest()
    {
-      super(shadowApi -> shadowApi.getInterfaceOrThrow("java.lang.Comparable").getGenerics().get(0));
+      super(shadowApi -> query(shadowApi.getInterfaceOrThrow("java.lang.Comparable")).getGenerics().get(0));
    }
 
    @Test

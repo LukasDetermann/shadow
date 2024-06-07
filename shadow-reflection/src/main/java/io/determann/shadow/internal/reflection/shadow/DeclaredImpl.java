@@ -253,7 +253,9 @@ public class DeclaredImpl implements Annotation,
       }
       if (isKind(TypeKind.INTERFACE))
       {
-         return sameGenerics(convert(((Declared) this)).toInterfaceOrThrow().getGenerics(), convert(shadow).toInterfaceOrThrow().getGenerics());
+         List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
+         List<Generic> otherGenerics = requestOrThrow(convert(shadow).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
+         return sameGenerics(thisGenerics, otherGenerics);
       }
       if (isKind(TypeKind.RECORD))
       {
