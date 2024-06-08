@@ -4,6 +4,7 @@ import io.determann.shadow.api.*;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public interface Operations
 
    public static Operation0<Declared, List<Interface>> DECLARED_GET_DIRECT_INTERFACES = new Operation0<>("declared.getDirectInterfaces");
 
-   public static Operation1<Declared, String, Interface> DECLARED_GET_DIRECT_INTERFACE = new Operation1<>("declared.getDirectInterfaceOrThrow");
+   public static Operation1<Declared, String, Interface> DECLARED_GET_DIRECT_INTERFACE = new Operation1<>("declared.getDirectInterface");
 
    public static Operation0<Declared, Package> DECLARED_GET_PACKAGE = new Operation0<>("declared.getPackage");
 
@@ -71,4 +72,12 @@ public interface Operations
    public static Operation0<Interface, List<Shadow>> INTERFACE_GET_GENERIC_TYPES = new Operation0<>("interface.getGenericTypes");
 
    public static Operation0<Interface, List<Generic>> INTERFACE_GET_GENERICS = new Operation0<>("interface.getGenerics");
+
+   public static Operation0<Record, List<RecordComponent>> RECORD_GET_RECORD_COMPONENTS = new Operation0<>("record.getRecordComponents");
+
+   public static Operation1<Record, String, RecordComponent> RECORD_GET_RECORD_COMPONENT = new Operation1<>("record.getRecordComponent");
+
+   public static Operation0<Record, List<Shadow>> RECORD_GET_GENERIC_TYPES = new Operation0<>("record.getGenericTypes");
+
+   public static Operation0<Record, List<Generic>> RECORD_GET_GENERICS = new Operation0<>("record.getGenerics");
 }

@@ -255,11 +255,15 @@ public class DeclaredImpl implements Annotation,
       {
          List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
          List<Generic> otherGenerics = requestOrThrow(convert(shadow).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
+
          return sameGenerics(thisGenerics, otherGenerics);
       }
       if (isKind(TypeKind.RECORD))
       {
-         return sameGenerics(convert(((Declared) this)).toRecordOrThrow().getGenerics(), convert(shadow).toRecordOrThrow().getGenerics());
+         List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toRecordOrThrow(), RECORD_GET_GENERICS);
+         List<Generic> otherGenerics = requestOrThrow(convert(shadow).toRecordOrThrow(), RECORD_GET_GENERICS);
+
+         return sameGenerics(thisGenerics, otherGenerics);
       }
       throw new IllegalStateException();
    }

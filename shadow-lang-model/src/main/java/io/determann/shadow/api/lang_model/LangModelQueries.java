@@ -4,6 +4,7 @@ import io.determann.shadow.api.*;
 import io.determann.shadow.api.lang_model.query.*;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import java.util.Objects;
@@ -66,6 +67,11 @@ public interface LangModelQueries
    public static InterfaceLangModel query(Interface anInterface)
    {
       return (InterfaceLangModel) validate(anInterface);
+   }
+
+   public static RecordLangModel query(Record record)
+   {
+      return (RecordLangModel) validate(record);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

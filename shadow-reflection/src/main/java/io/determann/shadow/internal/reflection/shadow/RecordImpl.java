@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.RecordReflection;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.RecordComponent;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class RecordImpl extends DeclaredImpl implements Record
+public class RecordImpl extends DeclaredImpl implements RecordReflection
 {
    private final List<Shadow> genericShadows;
 

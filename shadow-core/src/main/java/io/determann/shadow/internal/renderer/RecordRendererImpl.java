@@ -3,16 +3,15 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.RecordRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Interface;
 import io.determann.shadow.api.shadow.Record;
+import io.determann.shadow.api.shadow.*;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_DIRECT_INTERFACES;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -50,20 +49,22 @@ public class RecordRendererImpl implements RecordRenderer
       sb.append("record");
       sb.append(' ');
       sb.append(requestOrThrow(aRecord, NAMEABLE_NAME));
-      if (!aRecord.getGenerics().isEmpty())
+
+      List<Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
+      if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(aRecord.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(generics.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
 
       sb.append('(');
-      if (!aRecord.getRecordComponents().isEmpty())
+      List<RecordComponent> recordComponents = requestOrThrow(aRecord, RECORD_GET_RECORD_COMPONENTS);
+      if (!recordComponents.isEmpty())
       {
-         sb.append(aRecord.getRecordComponents()
-                          .stream()
-                          .map(component -> RecordComponentRendererImpl.declaration(context, component))
-                          .collect(joining(", ")));
+         sb.append(recordComponents.stream()
+                                   .map(component -> RecordComponentRendererImpl.declaration(context, component))
+                                   .collect(joining(", ")));
       }
       sb.append(')');
 
@@ -98,10 +99,12 @@ public class RecordRendererImpl implements RecordRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));
-      if (!aRecord.getGenericTypes().isEmpty())
+
+      List<Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
+      if (!genericTypes.isEmpty())
       {
          sb.append('<');
-         sb.append(aRecord.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(genericTypes.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

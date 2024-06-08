@@ -28,12 +28,12 @@ class RecordTest extends DeclaredTest<Record>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               RecordComponent idComponent = getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("id");
+                               RecordComponent idComponent = query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("id");
                                assertEquals("id", LangModelQueries.query((Nameable) idComponent).getName());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                assertThrows(NoSuchElementException.class,
-                                            () -> getShadowSupplier().apply(shadowApi).getRecordComponentOrThrow("asdf"));
+                                            () -> query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("asdf"));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -128,15 +128,16 @@ class RecordTest extends DeclaredTest<Record>
                                             () -> shadowApi.withGenerics(shadowApi.getRecordOrThrow("SimpleRecord"), "java.io.Serializable"));
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
-                                            shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric"),
-                                                                   "java.lang.String")
-                                                     .getGenericTypes());
+                                            query(shadowApi.withGenerics(shadowApi.getRecordOrThrow(
+                                                                               "InterpolateGenericsExample.IndependentGeneric"),
+                                                                         "java.lang.String"))
+                                                  .getGenericTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
                                                     shadowApi.getClassOrThrow("java.lang.Number")),
-                                            shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                                            query(shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
-                                                                   "java.lang.Number")
+                                                                   "java.lang.Number"))
                                                      .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
@@ -160,7 +161,7 @@ class RecordTest extends DeclaredTest<Record>
                                                                                   shadowApi.getClassOrThrow("java.lang.String"),
                                                                                   shadowApi.getConstants().getUnboundWildcard());
                                Record capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
+                               Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
@@ -174,7 +175,7 @@ class RecordTest extends DeclaredTest<Record>
                                Record independentExample = shadowApi.withGenerics(shadowApi.getRecordOrThrow(
                                      "InterpolateGenericsExample.IndependentGeneric"), shadowApi.getConstants().getUnboundWildcard());
                                Record independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -185,7 +186,7 @@ class RecordTest extends DeclaredTest<Record>
                                                                                           shadowApi.getConstants().getUnboundWildcard(),
                                                                                           shadowApi.getClassOrThrow("java.lang.String"));
                                Record dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();

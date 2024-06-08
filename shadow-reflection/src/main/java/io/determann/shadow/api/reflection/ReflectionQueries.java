@@ -7,6 +7,7 @@ import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.reflection.query.*;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import java.util.Objects;
@@ -64,6 +65,11 @@ public interface ReflectionQueries
    public static InterfaceReflection query(Interface anInterface)
    {
       return (InterfaceReflection) validate(anInterface);
+   }
+
+   public static RecordReflection query(Record record)
+   {
+      return (RecordReflection) validate(record);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

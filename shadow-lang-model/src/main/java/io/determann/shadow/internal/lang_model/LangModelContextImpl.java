@@ -18,6 +18,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
@@ -261,11 +262,11 @@ public class LangModelContextImpl implements LangModelContext
    @Override
    public Record withGenerics(Record aRecord, Shadow... generics)
    {
-      if (generics.length == 0 || aRecord.getGenerics().size() != generics.length)
+      if (generics.length == 0 || query(aRecord).getGenerics().size() != generics.length)
       {
          throw new IllegalArgumentException(requestOrThrow( aRecord, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
-                                            aRecord.getGenerics().size() +
+                                            query(aRecord).getGenerics().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");

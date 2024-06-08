@@ -2,8 +2,8 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.RecordLangModel;
 import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.RecordComponent;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -11,7 +11,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
-public class RecordImpl extends DeclaredImpl implements Record
+public class RecordImpl extends DeclaredImpl implements RecordLangModel
 {
    public RecordImpl(LangModelContext context, DeclaredType declaredTypeMirror)
    {

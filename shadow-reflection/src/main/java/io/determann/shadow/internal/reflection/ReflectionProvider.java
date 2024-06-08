@@ -50,6 +50,10 @@ public class ReflectionProvider extends AbstractProvider
              .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants())
              .with(INTERFACE_IS_FUNCTIONAL, anInterface -> query(anInterface).isFunctional())
              .with(INTERFACE_GET_GENERIC_TYPES, anInterface -> query(anInterface).getGenericTypes())
-             .with(INTERFACE_GET_GENERICS, anInterface -> query(anInterface).getGenerics());
+             .with(INTERFACE_GET_GENERICS, anInterface -> query(anInterface).getGenerics())
+             .with(RECORD_GET_RECORD_COMPONENTS, record -> query(record).getRecordComponents())
+             .with(RECORD_GET_RECORD_COMPONENT, (record, s) -> query(record).getRecordComponentOrThrow(s))
+             .with(RECORD_GET_GENERIC_TYPES, record -> query(record).getGenericTypes())
+             .with(RECORD_GET_GENERICS, record -> query(record).getGenerics());
    }
 }
