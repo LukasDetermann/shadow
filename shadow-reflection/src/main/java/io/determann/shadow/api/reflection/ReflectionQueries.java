@@ -5,6 +5,7 @@ import io.determann.shadow.api.ModuleEnclosed;
 import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.reflection.query.*;
+import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
@@ -70,6 +71,11 @@ public interface ReflectionQueries
    public static RecordReflection query(Record record)
    {
       return (RecordReflection) validate(record);
+   }
+
+   public static ClassReflection query(Class aClass)
+   {
+      return (ClassReflection) validate(aClass);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

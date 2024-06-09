@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.meta_meta.Operations.CLASS_GET_GENERICS;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IntersectionRendererTest
@@ -19,7 +21,7 @@ class IntersectionRendererTest
                      .withCode("IntersectionExample.java",
                                "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                      .test(aClass -> assertEquals("java.util.Collection & java.io.Serializable",
-                                                  render(DEFAULT, convert(aClass.getGenerics()
+                                                  render(DEFAULT, convert(requestOrThrow(aClass, CLASS_GET_GENERICS)
                                                                                 .get(0)
                                                                                 .getExtends())
                                                         .toIntersectionOrThrow())

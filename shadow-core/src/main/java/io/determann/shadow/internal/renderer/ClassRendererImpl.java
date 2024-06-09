@@ -4,7 +4,9 @@ import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.ClassRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Interface;
+import io.determann.shadow.api.shadow.Shadow;
 
 import java.util.List;
 import java.util.Set;
@@ -44,18 +46,22 @@ public class ClassRendererImpl implements ClassRenderer
       sb.append("class");
       sb.append(' ');
       sb.append(requestOrThrow(aClass, NAMEABLE_NAME));
-      if (!aClass.getGenerics().isEmpty())
+
+      List<Generic> generics = requestOrThrow(aClass, CLASS_GET_GENERICS);
+      if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(aClass.getGenerics().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(generics.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       sb.append(' ');
-      if (aClass.getSuperClass() != null && !requestOrThrow(aClass.getSuperClass(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object"))
+
+      Class superClass = requestOrThrow(aClass, CLASS_GET_SUPER_CLASS);
+      if (superClass != null && !requestOrThrow(superClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object"))
       {
          sb.append("extends");
          sb.append(' ');
-         sb.append(type(context, aClass.getSuperClass()));
+         sb.append(type(context, superClass));
          sb.append(' ');
       }
 
@@ -89,10 +95,12 @@ public class ClassRendererImpl implements ClassRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aClass));
-      if (!aClass.getGenericTypes().isEmpty())
+
+      List<Shadow> genericTypes = requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES);
+      if (!genericTypes.isEmpty())
       {
          sb.append('<');
-         sb.append(aClass.getGenericTypes().stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(genericTypes.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

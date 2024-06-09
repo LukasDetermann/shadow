@@ -18,7 +18,7 @@ class GenericTest extends ShadowTest<Generic>
    void testGetExtends()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(shadowApi.getClassOrThrow("GenericsExample")
+                                                      convert(query(shadowApi.getClassOrThrow("GenericsExample"))
                                                                        .getGenericTypes()
                                                                        .get(0))
                                                             .toGenericOrThrow()
@@ -37,7 +37,7 @@ class GenericTest extends ShadowTest<Generic>
    void testGetEnclosing()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
-                                                      convert(shadowApi.getClassOrThrow("GenericsExample")
+                                                      convert(query(shadowApi.getClassOrThrow("GenericsExample"))
                                                                        .getGenericTypes()
                                                                        .get(0))
                                                             .toGenericOrThrow()

@@ -84,7 +84,7 @@ public class RecordComponentImpl implements RecordComponent,
       }
       if (getType() instanceof Class aClass)
       {
-         return aClass.isAssignableFrom(shadow);
+         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
       }
       return false;
    }

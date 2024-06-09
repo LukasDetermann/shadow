@@ -1,6 +1,9 @@
 package io.determann.shadow.meta_meta;
 
 import io.determann.shadow.api.*;
+import io.determann.shadow.api.property.ImmutableProperty;
+import io.determann.shadow.api.property.MutableProperty;
+import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -80,4 +83,24 @@ public interface Operations
    public static Operation0<Record, List<Shadow>> RECORD_GET_GENERIC_TYPES = new Operation0<>("record.getGenericTypes");
 
    public static Operation0<Record, List<Generic>> RECORD_GET_GENERICS = new Operation0<>("record.getGenerics");
+
+   public static Operation0<Class, Class> CLASS_GET_SUPER_CLASS = new Operation0<>("class.getSuperClass");
+
+   public static Operation0<Class, List<Class>> CLASS_GET_PERMITTED_SUB_CLASSES = new Operation0<>("class.getPermittedSubClasses");
+
+   public static Operation0<Class, List<MutableProperty>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
+
+   public static Operation0<Class, List<MutableProperty>> CLASS_GET_MUTABLE_PROPERTIES = new Operation0<>("class.getMutableProperties");
+
+   public static Operation0<Class, List<ImmutableProperty>> CLASS_GET_IMMUTABLE_PROPERTIES = new Operation0<>("class.getImmutableProperties");
+
+   public static Operation1<Class, Shadow, Boolean> CLASS_IS_ASSIGNABLE_FROM = new Operation1<>("class.isAssignableFrom");
+
+   public static Operation0<Class, Declared> CLASS_GET_OUTER_TYPE = new Operation0<>("class.getOuterType");
+
+   public static Operation0<Class, List<Shadow>> CLASS_GET_GENERIC_TYPES = new Operation0<>("class.getGenericTypes");
+
+   public static Operation0<Class, List<Generic>> CLASS_GET_GENERICS = new Operation0<>("class.getGenerics");
+
+   public static Operation0<Class, Primitive> CLASS_AS_UNBOXED = new Operation0<>("class.asUnboxed");
 }

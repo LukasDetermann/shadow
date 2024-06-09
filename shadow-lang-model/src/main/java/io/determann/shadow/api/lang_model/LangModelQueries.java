@@ -2,6 +2,7 @@ package io.determann.shadow.api.lang_model;
 
 import io.determann.shadow.api.*;
 import io.determann.shadow.api.lang_model.query.*;
+import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
@@ -72,6 +73,11 @@ public interface LangModelQueries
    public static RecordLangModel query(Record record)
    {
       return (RecordLangModel) validate(record);
+   }
+
+   public static ClassLangModel query(Class aClass)
+   {
+      return (ClassLangModel) validate(aClass);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

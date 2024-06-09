@@ -32,12 +32,12 @@ class ClassTest extends DeclaredTest<Class>
                             {
                                Class integer = shadowApi.getClassOrThrow("java.lang.Integer");
                                Declared number = shadowApi.getClassOrThrow("java.lang.Number");
-                               assertEquals(integer.getSuperClass(), number);
+                               assertEquals(query(integer).getSuperClass(), number);
 
                                Declared object = shadowApi.getClassOrThrow("java.lang.Object");
-                               assertNull(convert(object).toClassOrThrow().getSuperClass());
+                               assertNull(query(convert(object).toClassOrThrow()).getSuperClass());
 
-                               assertEquals(object, convert(number).toClassOrThrow().getSuperClass());
+                               assertEquals(object, query(convert(number).toClassOrThrow()).getSuperClass());
                             })
                    .compile();
    }
@@ -46,7 +46,7 @@ class ClassTest extends DeclaredTest<Class>
    void getPermittedSubClassesTest()
    {
       ProcessorTest.process(shadowApi -> assertEquals(List.of("PermittedSubClassesExample.Child"),
-                                                      shadowApi.getClassOrThrow("PermittedSubClassesExample")
+                                                      query(shadowApi.getClassOrThrow("PermittedSubClassesExample"))
                                                                .getPermittedSubClasses()
                                                                .stream()
                                                                .map(Object::toString)
@@ -65,7 +65,7 @@ class ClassTest extends DeclaredTest<Class>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Property> properties = shadowApi.getClassOrThrow("PropertiesExample").getProperties();
+                               List<Property> properties = query(shadowApi.getClassOrThrow("PropertiesExample")).getProperties();
 
                                assertEquals(2, properties.size());
 
@@ -98,13 +98,13 @@ class ClassTest extends DeclaredTest<Class>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(shadowApi.getClassOrThrow("OuterTypeExample"),
-                                            shadowApi.getClassOrThrow("OuterTypeExample.InnerClass").getOuterType().orElseThrow());
+                                            query(shadowApi.getClassOrThrow("OuterTypeExample.InnerClass")).getOuterType().orElseThrow());
 
                                assertEquals(Optional.empty(),
-                                            shadowApi.getClassOrThrow("OuterTypeExample").getOuterType());
+                                            query(shadowApi.getClassOrThrow("OuterTypeExample")).getOuterType());
 
                                assertEquals(Optional.empty(),
-                                            shadowApi.getClassOrThrow("OuterTypeExample.StaticInnerClass").getOuterType());
+                                            query(shadowApi.getClassOrThrow("OuterTypeExample.StaticInnerClass")).getOuterType());
                             })
                    .withCodeToCompile("OuterTypeExample.java", """
                          public class OuterTypeExample {
@@ -149,20 +149,20 @@ class ClassTest extends DeclaredTest<Class>
                                             () -> shadowApi.withGenerics(shadowApi.getClassOrThrow("java.lang.String"), "java.lang.String"));
 
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"),
-                                            shadowApi.withGenerics(shadowApi.getClassOrThrow("WithGenericsExample.Inner"), "java.lang.String")
+                                            query(shadowApi.withGenerics(shadowApi.getClassOrThrow("WithGenericsExample.Inner"), "java.lang.String"))
                                                      .getGenericTypes()
                                                      .get(0));
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
-                                            shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric"),
-                                                                   "java.lang.String")
+                                            query(shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric"),
+                                                                   "java.lang.String"))
                                                      .getGenericTypes());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
                                                     shadowApi.getClassOrThrow("java.lang.Number")),
-                                            shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                                            query(shadowApi.withGenerics(shadowApi.getClassOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
-                                                                   "java.lang.Number")
+                                                                   "java.lang.Number"))
                                                      .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
@@ -188,7 +188,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                  shadowApi.getClassOrThrow("java.lang.String"),
                                                                                  shadowApi.getConstants().getUnboundWildcard());
                                Class capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(capture.getGenericTypes().get(1))
+                               Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .map(Converter::convert)
@@ -203,7 +203,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                        "InterpolateGenericsExample.IndependentGeneric"),
                                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Class independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(independentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -214,7 +214,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                          shadowApi.getConstants().getUnboundWildcard(),
                                                                                          shadowApi.getClassOrThrow("java.lang.String"));
                                Class dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(dependentCapture.getGenericTypes().get(0))
+                               Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
                                      .toGeneric()
                                      .map(Generic::getExtends)
                                      .orElseThrow();
@@ -250,14 +250,14 @@ class ClassTest extends DeclaredTest<Class>
       ProcessorTest.process(shadowApi ->
                             {
                                //same as isSubtypeOF
-                               assertTrue(shadowApi.getClassOrThrow("java.lang.Long")
+                               assertTrue(query(shadowApi.getClassOrThrow("java.lang.Long"))
                                                    .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Number")));
-                               assertTrue(shadowApi.getClassOrThrow("java.lang.Long")
+                               assertTrue(query(shadowApi.getClassOrThrow("java.lang.Long"))
                                                    .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Long")));
-                               assertFalse(shadowApi.getClassOrThrow("java.lang.Number")
+                               assertFalse(query(shadowApi.getClassOrThrow("java.lang.Number"))
                                                     .isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Long")));
 
-                               assertTrue(shadowApi.getClassOrThrow("java.lang.Integer")
+                               assertTrue(query(shadowApi.getClassOrThrow("java.lang.Integer"))
                                                    .isAssignableFrom(shadowApi.getConstants().getPrimitiveInt()));
                             })
                    .compile();

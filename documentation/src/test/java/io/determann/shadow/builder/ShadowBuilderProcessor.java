@@ -31,12 +31,12 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          String builderVariableName = uncapitalize(builderSimpleName);
 
          //create a record holding the code needed to render a property in the builder
-         List<BuilderElement> builderElements = aClass.getMutableProperties()
-                                                      .stream()
-                                                      .map(property -> renderProperty(builderSimpleName,
-                                                                                      builderVariableName,
-                                                                                      property))
-                                                      .toList();
+         List<BuilderElement> builderElements = query(aClass).getMutableProperties()
+                                                             .stream()
+                                                             .map(property -> renderProperty(builderSimpleName,
+                                                                                             builderVariableName,
+                                                                                             property))
+                                                             .toList();
 
          //writes the builder
          annotationProcessingContext.writeAndCompileSourceFile(builderQualifiedName,

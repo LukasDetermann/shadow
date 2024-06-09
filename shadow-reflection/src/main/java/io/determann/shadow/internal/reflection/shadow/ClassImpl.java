@@ -4,6 +4,7 @@ import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ClassReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.internal.property.ImmutablePropertyImpl;
@@ -16,10 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.meta_meta.Operations.CLASS_GET_GENERIC_TYPES;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class ClassImpl extends DeclaredImpl implements Class
+public class ClassImpl extends DeclaredImpl implements ClassReflection
 {
    private final List<Shadow> genericShadows;
 
@@ -131,9 +133,9 @@ public class ClassImpl extends DeclaredImpl implements Class
       return shadow != null &&
              convert(shadow)
                    .toClass()
-                   .map(aClass -> aClass.getGenericTypes()
-                                        .stream()
-                                        .allMatch(shadow1 -> getGenericTypes().stream()
+                   .map(aClass -> requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES)
+                                                 .stream()
+                                                 .allMatch(shadow1 -> getGenericTypes().stream()
                                                                               .anyMatch(shadow2 -> requestOrThrow(shadow2,
                                                                                                                   SHADOW_REPRESENTS_SAME_TYPE,
                                                                                                                   shadow1))))

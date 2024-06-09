@@ -105,7 +105,9 @@ class PropertyTemplateFactory
       {
          return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
-      List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(), Objects::nonNull, Class::getSuperClass).collect(toList());
+      List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(),
+                                                Objects::nonNull,
+                                                aClass -> requestOrThrow(aClass, CLASS_GET_SUPER_CLASS)).collect(toList());
 
       Collections.reverse(superClasses);
 

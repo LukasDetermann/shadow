@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.meta_meta.Operations.CLASS_GET_SUPER_CLASS;
 import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHOD;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,7 +69,7 @@ class MethodTest extends ExecutableTest<Method>
                            }
                            """)
                      .test(aClass -> assertTrue(requestOrThrow(aClass, DECLARED_GET_METHOD, "toString").get(0)
-                                                      .overrides(requestOrThrow(aClass.getSuperClass(), DECLARED_GET_METHOD, "toString").get(0))));
+                                                      .overrides(requestOrThrow(requestOrThrow(aClass, CLASS_GET_SUPER_CLASS), DECLARED_GET_METHOD, "toString").get(0))));
 
       ProcessorTest.process(shadowApi ->
                             {

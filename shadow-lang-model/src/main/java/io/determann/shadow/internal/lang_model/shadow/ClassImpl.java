@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ClassLangModel;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.property.Property;
@@ -17,7 +18,7 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
-public class ClassImpl extends DeclaredImpl implements Class
+public class ClassImpl extends DeclaredImpl implements ClassLangModel
 {
    public ClassImpl(LangModelContext context, DeclaredType declaredTypeMirror)
    {

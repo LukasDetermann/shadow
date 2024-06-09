@@ -20,6 +20,7 @@ import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElem
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.meta_meta.Operations.*;
+import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
@@ -213,19 +214,20 @@ public class LangModelContextImpl implements LangModelContext
    @Override
    public Class withGenerics(Class aClass, Shadow... generics)
    {
-      if (generics.length == 0 || aClass.getGenerics().size() != generics.length)
+      List<Generic> generics1 = requestOrThrow(aClass, CLASS_GET_GENERICS);
+      if (generics.length == 0 || generics1.size() != generics.length)
       {
          throw new IllegalArgumentException(requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " has " +
-                                            aClass.getGenerics().size() +
+                                            generics1.size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");
       }
-      if (aClass.getOuterType().flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
+      if (request(aClass, CLASS_GET_OUTER_TYPE).flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
                       .toInterface()
                       .map(anInterface -> !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty())
-                      .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !aClass1.getGenericTypes().isEmpty())))
+                      .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !requestOrThrow(aClass1, CLASS_GET_GENERIC_TYPES).isEmpty())))
                 .orElse(false))
       {
          throw new IllegalArgumentException("cant add generics to " +

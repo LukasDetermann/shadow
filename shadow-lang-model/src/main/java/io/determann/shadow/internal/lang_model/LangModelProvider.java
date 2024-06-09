@@ -56,6 +56,16 @@ public class LangModelProvider extends AbstractProvider
              .with(RECORD_GET_RECORD_COMPONENTS, record -> query(record).getRecordComponents())
              .with(RECORD_GET_RECORD_COMPONENT, (record, s) -> query(record).getRecordComponentOrThrow(s))
              .with(RECORD_GET_GENERIC_TYPES, record -> query(record).getGenericTypes())
-             .with(RECORD_GET_GENERICS, record -> query(record).getGenerics());
+             .with(RECORD_GET_GENERICS, record -> query(record).getGenerics())
+             .with(CLASS_GET_SUPER_CLASS, aClass -> query(aClass).getSuperClass())
+             .with(CLASS_GET_PERMITTED_SUB_CLASSES, aClass -> query(aClass).getPermittedSubClasses())
+             .with(CLASS_GET_PROPERTIES, aClass -> query(aClass).getMutableProperties())
+             .with(CLASS_GET_MUTABLE_PROPERTIES, aClass -> query(aClass).getMutableProperties())
+             .with(CLASS_GET_IMMUTABLE_PROPERTIES, aClass -> query(aClass).getImmutableProperties())
+             .with(CLASS_IS_ASSIGNABLE_FROM, (aClass, shadow) -> query(aClass).isAssignableFrom(shadow))
+             .withOptional(CLASS_GET_OUTER_TYPE, aClass -> query(aClass).getOuterType())
+             .with(CLASS_GET_GENERIC_TYPES, aClass -> query(aClass).getGenericTypes())
+             .with(CLASS_GET_GENERICS, aClass -> query(aClass).getGenerics())
+             .with(CLASS_AS_UNBOXED, aClass -> query(aClass).asUnboxed());
    }
 }

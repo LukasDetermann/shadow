@@ -17,7 +17,7 @@ public interface DeclaredConverter
 
    Optional<Enum> toEnum();
 
-   io.determann.shadow.api.shadow.Class toClassOrThrow();
+   Class toClassOrThrow();
 
    Optional<Class> toClass();
 
@@ -25,7 +25,7 @@ public interface DeclaredConverter
 
    Optional<Interface> toInterface();
 
-   io.determann.shadow.api.shadow.Record toRecordOrThrow();
+   Record toRecordOrThrow();
 
    Optional<Record> toRecord();
 

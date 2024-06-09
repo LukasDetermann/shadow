@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+
 public class InterpolateGenericsExample
 {
    @Test
@@ -32,7 +34,7 @@ public class InterpolateGenericsExample
 
                                Class capture = context.interpolateGenerics(withGenerics);
 
-                               Shadow stringRep = Optional.of(capture.getGenericTypes().get(1))
+                               Shadow stringRep = Optional.of(query(capture).getGenericTypes().get(1))
                                                           .map(Converter::convert)
                                                           .map(TypeConverter::toGenericOrThrow)
                                                           .map(Generic::getExtends)

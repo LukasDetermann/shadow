@@ -2,7 +2,6 @@ package io.determann.shadow.internal.property;
 
 import io.determann.shadow.api.Nameable;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.property.ImmutableProperty;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -51,7 +51,7 @@ class PropertyTemplateFactoryTest
                                   }
                                   else
                                   {
-                                     assertEquals(descriptor.getWriteMethod().getName(), LangModelQueries.query((Nameable) template.getSetter()).getName());
+                                     assertEquals(descriptor.getWriteMethod().getName(), query((Nameable) template.getSetter()).getName());
                                   }
                                }
                             })
@@ -76,12 +76,12 @@ class PropertyTemplateFactoryTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<ImmutableProperty> properties = shadowApi.getClassOrThrow("Child").getImmutableProperties();
+                               List<ImmutableProperty> properties = query(shadowApi.getClassOrThrow("Child")).getImmutableProperties();
 
                                assertEquals(2, properties.size());
                                assertEquals("class", properties.get(0).getName());
                                assertEquals("id", properties.get(1).getName());
-                               assertEquals("Child", LangModelQueries.query((Nameable) properties.get(1).getGetter().getSurrounding()).getName());
+                               assertEquals("Child", query((Nameable) properties.get(1).getGetter().getSurrounding()).getName());
                             })
                    .withCodeToCompile("Parent", "abstract class Parent{public abstract Long getId();}")
                    .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")
