@@ -35,7 +35,7 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
       }
       if (getType() instanceof Array array)
       {
-         return array.isSubtypeOf(shadow);
+         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
       }
       return false;
    }

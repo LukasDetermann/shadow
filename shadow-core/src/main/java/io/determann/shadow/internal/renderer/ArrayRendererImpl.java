@@ -6,6 +6,7 @@ import io.determann.shadow.api.renderer.ArrayRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Array;
 
+import static io.determann.shadow.meta_meta.Operations.ARRAY_GET_COMPONENT_TYPE;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
@@ -24,19 +25,24 @@ public class ArrayRendererImpl implements ArrayRenderer
 
    public static String type(RenderingContextWrapper context, Array array)
    {
-      return ShadowRendererImpl.type(context, array.getComponentType());
+      return ShadowRendererImpl.type(context, requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE));
    }
 
    private static String renderDimensions(Array array)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("[]");
-      while (requestOrThrow(array.getComponentType(), SHADOW_GET_KIND).equals(TypeKind.ARRAY))
+      while (hasMoreDimensions(array))
       {
          sb.append("[]");
-         array = Converter.convert(array.getComponentType()).toArrayOrThrow();
+         array = Converter.convert(requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE)).toArrayOrThrow();
       }
       return sb.toString();
+   }
+
+   private static boolean hasMoreDimensions(Array array)
+   {
+      return requestOrThrow(requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE), SHADOW_GET_KIND).equals(TypeKind.ARRAY);
    }
 
    @Override

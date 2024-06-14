@@ -66,6 +66,9 @@ public class LangModelProvider extends AbstractProvider
              .withOptional(CLASS_GET_OUTER_TYPE, aClass -> query(aClass).getOuterType())
              .with(CLASS_GET_GENERIC_TYPES, aClass -> query(aClass).getGenericTypes())
              .with(CLASS_GET_GENERICS, aClass -> query(aClass).getGenerics())
-             .with(CLASS_AS_UNBOXED, aClass -> query(aClass).asUnboxed());
+             .with(CLASS_AS_UNBOXED, aClass -> query(aClass).asUnboxed())
+             .with(ARRAY_IS_SUBTYPE_OF, (array, shadow) -> query(array).isSubtypeOf(shadow))
+             .with(ARRAY_GET_COMPONENT_TYPE, array -> query(array).getComponentType())
+             .with(ARRAY_GET_DIRECT_SUPER_TYPES, array -> query(array).getDirectSuperTypes());
    }
 }

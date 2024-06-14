@@ -80,6 +80,11 @@ public interface LangModelQueries
       return (ClassLangModel) validate(aClass);
    }
 
+   public static ArrayLangModel query(Array array)
+   {
+      return (ArrayLangModel) validate(array);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

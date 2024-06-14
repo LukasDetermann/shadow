@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayTest extends ShadowTest<Array>
@@ -24,11 +25,11 @@ class ArrayTest extends ShadowTest<Array>
                                Array stringArray1 = shadowApi.asArray(string);
                                Array stringArray2 = shadowApi.asArray(string);
 
-                               assertTrue(stringArray1.isSubtypeOf(stringArray2));
+                               assertTrue(query(stringArray1).isSubtypeOf(stringArray2));
 
                                Array collectionArray = shadowApi.asArray(shadowApi.getInterfaceOrThrow("java.util.Collection"));
                                Array iterableArray = shadowApi.asArray(shadowApi.getInterfaceOrThrow("java.lang.Iterable"));
-                               assertFalse(collectionArray.isSubtypeOf(iterableArray));
+                               assertFalse(query(collectionArray).isSubtypeOf(iterableArray));
                             })
                    .compile();
    }
@@ -41,7 +42,7 @@ class ArrayTest extends ShadowTest<Array>
                                Declared string = shadowApi.getClassOrThrow("java.lang.String");
                                Array stringArray = shadowApi.asArray(string);
 
-                               assertEquals(string, stringArray.getComponentType());
+                               assertEquals(string, query(stringArray).getComponentType());
                             })
                    .compile();
    }
@@ -56,7 +57,7 @@ class ArrayTest extends ShadowTest<Array>
                                Array objectArray = shadowApi.asArray(shadowApi.getClassOrThrow("java.lang.Object"));
                                Array stringArray = shadowApi.asArray(string);
 
-                               List<Shadow> stringArraySupertypes = stringArray.getDirectSuperTypes();
+                               List<Shadow> stringArraySupertypes = query(stringArray).getDirectSuperTypes();
                                assertEquals(1, stringArraySupertypes.size());
                                assertEquals(objectArray, stringArraySupertypes.get(0));
 
@@ -66,7 +67,7 @@ class ArrayTest extends ShadowTest<Array>
                                Declared cloneable = shadowApi.getInterfaceOrThrow("java.lang.Cloneable");
                                List<Declared> primitiveArraySuper = List.of(serializable, cloneable);
 
-                               List<Shadow> directSupertypes = intArray.getDirectSuperTypes();
+                               List<Shadow> directSupertypes = query(intArray).getDirectSuperTypes();
                                assertEquals(1, directSupertypes.size());
                                assertEquals(primitiveArraySuper, convert(directSupertypes.get(0)).toIntersectionOrThrow().getBounds());
                             })

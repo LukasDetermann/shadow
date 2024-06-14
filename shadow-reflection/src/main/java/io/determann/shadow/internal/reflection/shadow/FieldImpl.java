@@ -63,7 +63,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements Field,
       }
       if (getType() instanceof Array array)
       {
-         return array.isSubtypeOf(shadow);
+         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
       }
       return false;
    }

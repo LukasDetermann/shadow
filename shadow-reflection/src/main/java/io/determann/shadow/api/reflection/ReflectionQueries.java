@@ -78,6 +78,11 @@ public interface ReflectionQueries
       return (ClassReflection) validate(aClass);
    }
 
+   public static ArrayReflection query(Array array)
+   {
+      return (ArrayReflection) validate(array);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

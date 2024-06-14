@@ -103,4 +103,10 @@ public interface Operations
    public static Operation0<Class, List<Generic>> CLASS_GET_GENERICS = new Operation0<>("class.getGenerics");
 
    public static Operation0<Class, Primitive> CLASS_AS_UNBOXED = new Operation0<>("class.asUnboxed");
+
+   public static Operation1<Array, Shadow, Boolean> ARRAY_IS_SUBTYPE_OF = new Operation1<>("array.isSubtypeOf");
+
+   public static Operation0<Array, Shadow> ARRAY_GET_COMPONENT_TYPE = new Operation0<>("array.getComponentType");
+
+   public static Operation0<Array, List<Shadow>> ARRAY_GET_DIRECT_SUPER_TYPES = new Operation0<>("array.getDirectSuperTypes");
 }

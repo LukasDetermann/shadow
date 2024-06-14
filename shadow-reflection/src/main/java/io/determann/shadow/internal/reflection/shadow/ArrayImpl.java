@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ArrayReflection;
 import io.determann.shadow.api.reflection.query.ShadowReflection;
 import io.determann.shadow.api.shadow.Array;
 import io.determann.shadow.api.shadow.Shadow;
@@ -17,7 +18,7 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class ArrayImpl implements Array,
+public class ArrayImpl implements ArrayReflection,
                                   ShadowReflection
 {
    private static final List<Shadow> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
@@ -43,12 +44,12 @@ public class ArrayImpl implements Array,
          return false;
       }
       Array otherArray = convert(shadow).toArrayOrThrow();
-      Shadow otherComponentShadow = otherArray.getComponentType();
+      Shadow otherComponentShadow = requestOrThrow(otherArray, ARRAY_GET_COMPONENT_TYPE);
 
       if (TypeKind.ARRAY.equals(requestOrThrow(shadow, SHADOW_GET_KIND)) && TypeKind.ARRAY.equals(requestOrThrow(otherComponentShadow, SHADOW_GET_KIND)))
       {
          Array nestedArray = convert(componentShadow).toArrayOrThrow();
-         return nestedArray.isSubtypeOf(otherComponentShadow);
+         return requestOrThrow(nestedArray, ARRAY_IS_SUBTYPE_OF, otherComponentShadow);
       }
       if (requestOrThrow(shadow, SHADOW_GET_KIND).isDeclared())
       {
@@ -81,8 +82,7 @@ public class ArrayImpl implements Array,
       }
       if (TypeKind.ARRAY.equals(requestOrThrow(getComponentType(), SHADOW_GET_KIND)))
       {
-         return convert(componentShadow).toArrayOrThrow()
-                                        .getDirectSuperTypes()
+         return requestOrThrow(convert(componentShadow).toArrayOrThrow(), ARRAY_GET_DIRECT_SUPER_TYPES)
                                         .stream()
                                         .map(shadow -> {
                                          if (TypeKind.ARRAY.equals(requestOrThrow(shadow, SHADOW_GET_KIND)))
@@ -143,7 +143,11 @@ public class ArrayImpl implements Array,
       return shadow != null &&
              (equals(shadow) ||
               convert(shadow).toArray()
-                             .map(array1 -> requestOrThrow(array1.getComponentType(), SHADOW_REPRESENTS_SAME_TYPE, getComponentType()))
+                             .map(array1 ->
+                                  {
+                                     Shadow componentType = requestOrThrow(array1, ARRAY_GET_COMPONENT_TYPE);
+                                     return requestOrThrow(componentType, SHADOW_REPRESENTS_SAME_TYPE, getComponentType());
+                                  })
                              .orElse(false));
    }
 
@@ -169,7 +173,7 @@ public class ArrayImpl implements Array,
       {
          return false;
       }
-      return Objects.equals(getComponentType(), otherArray.getComponentType());
+      return Objects.equals(getComponentType(), requestOrThrow(otherArray, ARRAY_GET_COMPONENT_TYPE));
    }
 
    public Class<?> getReflection()
