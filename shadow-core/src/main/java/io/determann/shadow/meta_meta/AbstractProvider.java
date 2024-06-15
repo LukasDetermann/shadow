@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 
 public abstract class AbstractProvider implements ProviderSpi
 {
+   //Map<Operation<TYPE, RESULT>, BiFunction<INSTANCE, PARAMETER, RESULT>>
    private final Map<Operation<?, ?>, BiFunction<?, Object[], ?>> map;
 
    protected AbstractProvider()

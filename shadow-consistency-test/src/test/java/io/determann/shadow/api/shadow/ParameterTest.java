@@ -29,13 +29,13 @@ class ParameterTest extends VariableTest<Parameter>
 
                                Parameter methodParameter = method.getParameterOrThrow("foo");
 
-                               assertEquals(method, methodParameter.getSurrounding());
+                               assertEquals(method, query(methodParameter).getSurrounding());
 
                                Constructor constructor = query(shadowApi.getClassOrThrow("ParameterExample"))
                                      .getConstructors()
                                      .get(0);
                                Parameter constructorParameter = constructor.getParameters().get(0);
-                               assertEquals(constructor, constructorParameter.getSurrounding());
+                               assertEquals(constructor, query(constructorParameter).getSurrounding());
                             })
                    .withCodeToCompile("ParameterExample.java", """
                          public class ParameterExample
@@ -57,8 +57,8 @@ class ParameterTest extends VariableTest<Parameter>
                                                                                                               .get(0)
                                                                                                               .getParameters();
 
-                               assertFalse(parameters.get(0).isVarArgs());
-                               assertTrue(parameters.get(1).isVarArgs());
+                               assertFalse(query(parameters.get(0)).isVarArgs());
+                               assertTrue(query(parameters.get(1)).isVarArgs());
                             })
                    .withCodeToCompile("VarArgsExample.java",
                                       """

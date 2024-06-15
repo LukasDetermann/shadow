@@ -3,9 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
-import io.determann.shadow.api.reflection.query.NameableReflection;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.ParameterReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -23,10 +21,7 @@ import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class ParameterImpl implements Parameter,
-                                      NameableReflection,
-                                      ShadowReflection,
-                                      ModuleEnclosedReflection
+public class ParameterImpl implements ParameterReflection
 {
    private final java.lang.reflect.Parameter parameter;
 
@@ -87,7 +82,9 @@ public class ParameterImpl implements Parameter,
    {
       return shadow != null &&
              convert(shadow).toParameter()
-                            .map(parameter1 -> requestOrThrow(parameter1.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                            .map(parameter1 -> requestOrThrow(requestOrThrow(parameter1, VARIABLE_GET_TYPE),
+                                                              SHADOW_REPRESENTS_SAME_TYPE,
+                                                              getType()))
                             .orElse(false);
    }
    @Override
@@ -166,9 +163,9 @@ public class ParameterImpl implements Parameter,
          return false;
       }
       return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
-             Objects.equals(isVarArgs(), otherVariable.isVarArgs());
+             Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));
    }
 
    public java.lang.reflect.Parameter getReflection()

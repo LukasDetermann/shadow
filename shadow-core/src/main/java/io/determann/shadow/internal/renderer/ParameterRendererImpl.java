@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.Parameter;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ParameterRendererImpl implements ParameterRenderer
@@ -32,15 +32,15 @@ public class ParameterRendererImpl implements ParameterRenderer
                             .collect(Collectors.joining()));
       }
 
-      if (parameter.isVarArgs())
+      if (requestOrThrow(parameter, PARAMETER_IS_VAR_ARGS))
       {
-         sb.append(ShadowRendererImpl.type(context, parameter.getType()))
+         sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append("... ")
            .append(requestOrThrow(parameter, NAMEABLE_NAME));
       }
       else
       {
-         sb.append(ShadowRendererImpl.type(context, parameter.getType()))
+         sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append(' ')
            .append(requestOrThrow(parameter, NAMEABLE_NAME));
       }

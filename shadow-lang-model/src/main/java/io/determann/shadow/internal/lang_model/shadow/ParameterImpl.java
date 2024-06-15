@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ParameterLangModel;
 import io.determann.shadow.api.shadow.Executable;
 import io.determann.shadow.api.shadow.Parameter;
 import io.determann.shadow.api.shadow.Shadow;
@@ -12,10 +13,11 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class ParameterImpl extends VariableImpl implements Parameter
+public class ParameterImpl extends VariableImpl implements ParameterLangModel
 {
    public ParameterImpl(LangModelContext context, VariableElement variableElement)
    {
@@ -61,8 +63,8 @@ public class ParameterImpl extends VariableImpl implements Parameter
          return false;
       }
       return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
-             Objects.equals(isVarArgs(), otherVariable.isVarArgs());
+             Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));
    }
 }

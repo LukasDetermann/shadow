@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHOD;
-import static io.determann.shadow.meta_meta.Operations.INTERFACE_GET_GENERIC_TYPES;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,26 +28,25 @@ class WildcardRendererTest
                      .test(aClass ->
                            {
                               Wildcard extendsExample = convert(requestOrThrow(convert(
-                                    requestOrThrow(aClass, DECLARED_GET_METHOD, "extendsExample").get(0)
-                                                                                                 .getParameters()
-                                                                                                 .get(0)
-                                                                                                 .getType())
-                                                                                     .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
+                                    requestOrThrow(requestOrThrow(aClass,
+                                                                  DECLARED_GET_METHOD,
+                                                                  "extendsExample").get(0)
+                                                                                   .getParameters()
+                                                                                   .get(0),
+                                                   VARIABLE_GET_TYPE)).toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                       .get(0))
                                     .toWildcardOrThrow();
 
-                              Wildcard superExample = convert(requestOrThrow(convert(requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0)
+                              Wildcard superExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0)
                                                                             .getParameters()
-                                                                            .get(0)
-                                                                            .getType())
+                                                                            .get(0), VARIABLE_GET_TYPE))
                                                                     .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                     .get(0))
                                     .toWildcardOrThrow();
 
-                              Wildcard unboundExample = convert(requestOrThrow(convert(requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0)
+                              Wildcard unboundExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0)
                                                                               .getParameters()
-                                                                              .get(0)
-                                                                              .getType())
+                                                                              .get(0), VARIABLE_GET_TYPE))
                                                                       .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                       .get(0))
                                     .toWildcardOrThrow();

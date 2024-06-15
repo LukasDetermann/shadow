@@ -25,7 +25,7 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
                                Parameter parameter = query(shadowApi.getClassOrThrow("ParameterExample"))
                                      .getConstructors().get(0)
                                      .getParameters().get(0);
-                               assertTrue(parameter.isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
+                               assertTrue(query(parameter).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
                             })
                    .withCodeToCompile("ParameterExample.java", """
                          public class ParameterExample
@@ -45,7 +45,7 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
                             {
                                Field field = query(shadowApi.getClassOrThrow("FieldExample"))
                                      .getFields().get(0);
-                               assertTrue(field.isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Integer")));
+                               assertTrue(query(field).isAssignableFrom(shadowApi.getClassOrThrow("java.lang.Integer")));
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
@@ -55,8 +55,8 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
    void testGetPackage()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.field").get(0),
-                                                      query(shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.field.FieldExample"))
-                                                            .getFields().get(0)
+                                                      query(query(shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.field.FieldExample"))
+                                                            .getFields().get(0))
                                                             .getPackage()))
                    .withCodeToCompile("FieldExample.java", """
                          package io.determann.shadow.example.processed.test.field;

@@ -11,13 +11,4 @@ public interface Field extends Variable,
                                StaticModifiable,
                                Documented
 {
-   boolean isConstant();
-
-   /**
-    * String or primitive value of static fields
-    */
-   Object getConstantValue();
-
-   @Override
-   Declared getSurrounding();
 }

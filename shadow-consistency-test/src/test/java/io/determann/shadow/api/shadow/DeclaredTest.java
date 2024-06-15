@@ -61,7 +61,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(2.7182818284590452354D,
-                                            query(shadowApi.getClassOrThrow("java.lang.Math")).getFieldOrThrow("E").getConstantValue());
+                                            query(query(shadowApi.getClassOrThrow("java.lang.Math")).getFieldOrThrow("E")).getConstantValue());
                                assertThrows(NoSuchElementException.class,
                                             () -> query(shadowApi.getClassOrThrow("java.lang.Math")).getFieldOrThrow("EEEE"));
                             })

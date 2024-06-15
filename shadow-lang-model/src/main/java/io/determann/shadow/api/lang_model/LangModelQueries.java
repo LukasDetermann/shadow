@@ -85,6 +85,26 @@ public interface LangModelQueries
       return (ArrayLangModel) validate(array);
    }
 
+   public static EnumConstantLangModel query(EnumConstant enumConstant)
+   {
+      return (EnumConstantLangModel) validate(enumConstant);
+   }
+
+   public static FieldLangModel query(Field field)
+   {
+      return (FieldLangModel) validate(field);
+   }
+
+   public static ParameterLangModel query(Parameter parameter)
+   {
+      return (ParameterLangModel) validate(parameter);
+   }
+
+   public static VariableLangModel query(Variable variable)
+   {
+      return (VariableLangModel) validate(variable);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

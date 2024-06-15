@@ -21,10 +21,10 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetExtends()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                      convert(query(query(shadowApi.getClassOrThrow("BoundsExample"))
                                                                        .getMethods("extendsExample")
                                                                        .get(0)
-                                                                       .getParameterOrThrow("numbers")
+                                                                       .getParameterOrThrow("numbers"))
                                                                        .getType())
                                                             .toInterface()
                                                             .map(anInterface -> query(anInterface).getGenericTypes().get(0))
@@ -45,10 +45,10 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetSupper()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                      convert(query(query(shadowApi.getClassOrThrow("BoundsExample"))
                                                                        .getMethods("superExample")
                                                                        .get(0)
-                                                                       .getParameterOrThrow("numbers")
+                                                                       .getParameterOrThrow("numbers"))
                                                                        .getType())
                                                             .toInterface()
                                                             .map(anInterface -> query(anInterface).getGenericTypes().get(0))

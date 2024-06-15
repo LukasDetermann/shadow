@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
+import io.determann.shadow.api.reflection.query.EnumConstantReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Enum;
 import io.determann.shadow.api.shadow.Module;
@@ -14,8 +14,7 @@ import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstant,
-                                                                           ModuleEnclosedReflection
+public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstantReflection
 {
    public EnumConstantImpl(Field field)
    {
@@ -71,7 +70,9 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    {
       return shadow != null &&
              convert(shadow).toEnumConstant()
-                            .map(enumConstant -> requestOrThrow(enumConstant.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                            .map(enumConstant -> requestOrThrow(requestOrThrow(enumConstant, VARIABLE_GET_TYPE),
+                                                                SHADOW_REPRESENTS_SAME_TYPE,
+                                                                getType()))
                             .orElse(false);
    }
 

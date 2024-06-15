@@ -71,7 +71,7 @@ class ClassTest extends DeclaredTest<Class>
 
                                Property id = properties.get(1);
                                assertEquals("id", LangModelQueries.query((Nameable) id.getField().get()).getName());
-                               assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getField().get().getType());
+                               assertEquals(shadowApi.getConstants().getPrimitiveInt(), query(id.getField().get()).getType());
 
                                assertEquals("getId", LangModelQueries.query((Nameable) id.getGetter()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());

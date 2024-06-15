@@ -1,12 +1,9 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.Documented;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.DocumentedLangModel;
-import io.determann.shadow.api.lang_model.query.ModuleEnclosedLangModel;
-import io.determann.shadow.api.lang_model.query.NameableLangModel;
+import io.determann.shadow.api.lang_model.query.VariableLangModel;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -20,13 +17,11 @@ import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.VARIABLE_GET_TYPE;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Variable,
-                                                                             Documented,
-                                                                             NameableLangModel,
-                                                                             ModuleEnclosedLangModel,
-                                                                             DocumentedLangModel
+public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements VariableLangModel
 {
    private final VariableElement variableElement;
 
@@ -139,7 +134,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
          return false;
       }
       return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers());
    }
 }

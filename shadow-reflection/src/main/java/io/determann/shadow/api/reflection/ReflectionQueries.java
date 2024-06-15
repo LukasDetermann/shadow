@@ -83,6 +83,25 @@ public interface ReflectionQueries
       return (ArrayReflection) validate(array);
    }
 
+   public static EnumConstantReflection query(EnumConstant enumConstant)
+   {
+      return (EnumConstantReflection) validate(enumConstant);
+   }
+
+   public static FieldReflection query(Field field)
+   {
+      return (FieldReflection) validate(field);
+   }
+
+   public static ParameterReflection query(Parameter parameter)
+   {
+      return (ParameterReflection) validate(parameter);
+   }
+
+   public static VariableReflection query(Variable variable)
+   {
+      return (VariableReflection) validate(variable);
+   }
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

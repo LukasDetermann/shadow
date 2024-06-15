@@ -69,6 +69,17 @@ public class LangModelProvider extends AbstractProvider
              .with(CLASS_AS_UNBOXED, aClass -> query(aClass).asUnboxed())
              .with(ARRAY_IS_SUBTYPE_OF, (array, shadow) -> query(array).isSubtypeOf(shadow))
              .with(ARRAY_GET_COMPONENT_TYPE, array -> query(array).getComponentType())
-             .with(ARRAY_GET_DIRECT_SUPER_TYPES, array -> query(array).getDirectSuperTypes());
+             .with(ARRAY_GET_DIRECT_SUPER_TYPES, array -> query(array).getDirectSuperTypes())
+             .with(ENUM_CONSTANT_GET_SURROUNDING, enumConstant -> query(enumConstant).getSurrounding())
+             .with(FIELD_IS_CONSTANT, field -> query(field).isConstant())
+             .with(FIELD_GET_CONSTANT_VALUE, field -> query(field).getConstantValue())
+             .with(FIELD_GET_SURROUNDING, field -> query(field).getSurrounding())
+             .with(PARAMETER_IS_VAR_ARGS, parameter -> query(parameter).isVarArgs())
+             .with(PARAMETER_GET_SURROUNDING, parameter -> query(parameter).getSurrounding())
+             .with(VARIABLE_IS_SUBTYPE_OF, (variable, shadow) -> query(variable).isSubtypeOf(shadow))
+             .with(VARIABLE_IS_ASSIGNABLE_FROM, (variable, shadow) -> query(variable).isAssignableFrom(shadow))
+             .with(VARIABLE_GET_TYPE, variable -> query(variable).getType())
+             .with(VARIABLE_GET_PACKAGE, variable -> query(variable).getPackage())
+             .with(VARIABLE_GET_SURROUNDING, variable -> query(variable).getSurrounding());
    }
 }

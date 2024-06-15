@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 public class MappingBuilder
 {
+   //Map<Operation<TYPE, RESULT>, BiFunction<INSTANCE, PARAMETER, RESULT>>
    private final Map<Operation<?, ?>, BiFunction<?, Object[], ?>> map = new HashMap<>();
 
    public <TYPE, RESULT> MappingBuilder with(Operation0<TYPE, RESULT> operation, Function<TYPE, RESULT> mapping)

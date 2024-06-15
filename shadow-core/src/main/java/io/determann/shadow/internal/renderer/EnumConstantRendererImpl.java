@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.EnumConstant;
 
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.meta_meta.Operations.ENUM_CONSTANT_GET_SURROUNDING;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
@@ -54,7 +55,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
 
    public static String type(RenderingContextWrapper context, EnumConstant enumConstant)
    {
-      return context.renderName(enumConstant.getSurrounding()) + '.' + requestOrThrow(enumConstant, NAMEABLE_NAME);
+      return context.renderName(requestOrThrow(enumConstant, ENUM_CONSTANT_GET_SURROUNDING)) + '.' + requestOrThrow(enumConstant, NAMEABLE_NAME);
    }
 
    @Override

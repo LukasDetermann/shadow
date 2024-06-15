@@ -20,7 +20,7 @@ class FieldTest extends VariableTest<Field>
       ProcessorTest.process(shadowApi ->
                             {
                                Class aClass = shadowApi.getClassOrThrow("FieldExample");
-                               assertEquals(aClass, query(aClass).getFieldOrThrow("ID").getSurrounding());
+                               assertEquals(aClass, query(query(aClass).getFieldOrThrow("ID")).getSurrounding());
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
@@ -29,8 +29,8 @@ class FieldTest extends VariableTest<Field>
    @Test
    void testIsConstant()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(query(shadowApi.getClassOrThrow("FieldExample"))
-                                                          .getFieldOrThrow("ID")
+      ProcessorTest.process(shadowApi -> assertTrue(query(query(shadowApi.getClassOrThrow("FieldExample"))
+                                                          .getFieldOrThrow("ID"))
                                                           .isConstant()))
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();
@@ -39,8 +39,8 @@ class FieldTest extends VariableTest<Field>
    @Test
    void testGetConstantValue()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(2, query(shadowApi.getClassOrThrow("FieldExample"))
-                                                                  .getFieldOrThrow("ID")
+      ProcessorTest.process(shadowApi -> assertEquals(2, query(query(shadowApi.getClassOrThrow("FieldExample"))
+                                                                  .getFieldOrThrow("ID"))
                                                                   .getConstantValue()))
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                    .compile();

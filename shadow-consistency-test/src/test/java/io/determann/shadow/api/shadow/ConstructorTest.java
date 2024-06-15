@@ -28,9 +28,9 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                                          .getConstructors();
                                assertEquals(3, constructors.size());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"),
-                                            constructors.get(0)
+                                            query(constructors.get(0)
                                                         .getParameters()
-                                                        .get(0)
+                                                        .get(0))
                                                         .getType());
                             })
                    .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")

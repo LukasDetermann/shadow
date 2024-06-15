@@ -26,8 +26,8 @@ class ConversionTest
                             {
                                //@formatter:off
 //tag::shadow[]
-Shadow myField = query(context.getClassOrThrow("MyClass"))
-                        .getFieldOrThrow("myField")
+Shadow myField = query(query(context.getClassOrThrow("MyClass"))
+                        .getFieldOrThrow("myField"))
                         .getType();
 //Converters limit the conversion to possible types
 Shadow genericShadow = query(convert(myField).toInterfaceOrThrow())

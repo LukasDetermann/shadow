@@ -109,4 +109,26 @@ public interface Operations
    public static Operation0<Array, Shadow> ARRAY_GET_COMPONENT_TYPE = new Operation0<>("array.getComponentType");
 
    public static Operation0<Array, List<Shadow>> ARRAY_GET_DIRECT_SUPER_TYPES = new Operation0<>("array.getDirectSuperTypes");
+
+   public static Operation0<EnumConstant, Enum> ENUM_CONSTANT_GET_SURROUNDING = new Operation0<>("enumConstant.getSurrounding");
+
+   public static Operation0<Field, Boolean> FIELD_IS_CONSTANT = new Operation0<>("field.isConstant");
+
+   public static Operation0<Field, Object> FIELD_GET_CONSTANT_VALUE = new Operation0<>("field.getConstantValue");
+
+   public static Operation0<Field, Declared> FIELD_GET_SURROUNDING = new Operation0<>("field.getSurrounding");
+
+   public static Operation0<Parameter, Boolean> PARAMETER_IS_VAR_ARGS = new Operation0<>("parameter.isVarArgs");
+
+   public static Operation0<Parameter, Executable> PARAMETER_GET_SURROUNDING = new Operation0<>("parameter.getSurrounding");
+
+   public static Operation1<Variable, Shadow, Boolean> VARIABLE_IS_SUBTYPE_OF = new Operation1<>("variable.isSubtypeOf");
+
+   public static Operation1<Variable, Shadow, Boolean> VARIABLE_IS_ASSIGNABLE_FROM = new Operation1<>("variable.isAssignableFrom");
+
+   public static Operation0<Variable, Shadow> VARIABLE_GET_TYPE = new Operation0<>("variable.getType");
+
+   public static Operation0<Variable, Package> VARIABLE_GET_PACKAGE = new Operation0<>("variable.getPackage");
+
+   public static Operation0<Variable, Object> VARIABLE_GET_SURROUNDING = new Operation0<>("variable.getSurrounding");
 }

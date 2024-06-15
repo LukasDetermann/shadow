@@ -123,7 +123,7 @@ class PropertyTemplateFactory
    private static Optional<Field> findField(Map<String, Field> nameField, Shadow shadow, String name)
    {
       Field field = nameField.get(name);
-      if (field == null || !requestOrThrow(field.getType(), SHADOW_REPRESENTS_SAME_TYPE, shadow))
+      if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
       }
@@ -135,7 +135,7 @@ class PropertyTemplateFactory
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !requestOrThrow(setters.get(0).getMethod().getParameters().get(0).getType(), SHADOW_REPRESENTS_SAME_TYPE, shadow))
+          !requestOrThrow(requestOrThrow(setters.get(0).getMethod().getParameters().get(0), VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
       }

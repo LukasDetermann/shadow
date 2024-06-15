@@ -86,7 +86,7 @@ public class ExecutableImpl implements Constructor,
       {
          Optional<Receiver> receiver = getReceiver();
 
-         if (receiver.isPresent() && !result.isEmpty() && result.get(0).getType().equals(receiver.get().getType()))
+         if (receiver.isPresent() && !result.isEmpty() && requestOrThrow(result.get(0), VARIABLE_GET_TYPE).equals(receiver.get().getType()))
          {
             result.remove(0);
          }

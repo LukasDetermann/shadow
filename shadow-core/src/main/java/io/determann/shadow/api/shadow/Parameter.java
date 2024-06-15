@@ -2,8 +2,6 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.modifier.FinalModifiable;
 
-import java.util.List;
-
 /**
  * Parameter of a method or constructor
  *
@@ -13,11 +11,4 @@ import java.util.List;
 public interface Parameter extends Variable,
                                    FinalModifiable
 {
-   /**
-    * {@link List#of(Object[])}
-    */
-   boolean isVarArgs();
-
-   @Override
-   Executable getSurrounding();
 }
