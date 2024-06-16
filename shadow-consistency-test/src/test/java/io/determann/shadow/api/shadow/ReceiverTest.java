@@ -1,9 +1,9 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReceiverTest
@@ -13,9 +13,9 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = LangModelQueries.query(context.getClassOrThrow("ReceiverExample.Inner"))
+                               Receiver receiver = query(query(context.getClassOrThrow("ReceiverExample.Inner"))
                                                                    .getConstructors()
-                                                                   .get(0)
+                                                                   .get(0))
                                                                    .getReceiver()
                                                                    .get();
 
@@ -36,9 +36,9 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = LangModelQueries.query(context.getClassOrThrow("ReceiverExample.Inner"))
+                               Receiver receiver = query(query(context.getClassOrThrow("ReceiverExample.Inner"))
                                                                    .getConstructors()
-                                                                   .get(0)
+                                                                   .get(0))
                                                                    .getReceiver()
                                                                    .get();
 

@@ -81,7 +81,7 @@ class PropertyTemplateFactoryTest
                                assertEquals(2, properties.size());
                                assertEquals("class", properties.get(0).getName());
                                assertEquals("id", properties.get(1).getName());
-                               assertEquals("Child", query((Nameable) properties.get(1).getGetter().getSurrounding()).getName());
+                               assertEquals("Child", query(query(properties.get(1).getGetter()).getSurrounding()).getName());
                             })
                    .withCodeToCompile("Parent", "abstract class Parent{public abstract Long getId();}")
                    .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")

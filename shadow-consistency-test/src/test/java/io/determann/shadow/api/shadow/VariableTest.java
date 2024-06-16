@@ -22,8 +22,8 @@ abstract class VariableTest<VARIABLE extends Variable> extends ShadowTest<VARIAB
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               Parameter parameter = query(shadowApi.getClassOrThrow("ParameterExample"))
-                                     .getConstructors().get(0)
+                               Parameter parameter = query(query(shadowApi.getClassOrThrow("ParameterExample"))
+                                     .getConstructors().get(0))
                                      .getParameters().get(0);
                                assertTrue(query(parameter).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.String")));
                             })

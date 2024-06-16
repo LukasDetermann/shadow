@@ -28,24 +28,20 @@ class WildcardRendererTest
                      .test(aClass ->
                            {
                               Wildcard extendsExample = convert(requestOrThrow(convert(
-                                    requestOrThrow(requestOrThrow(aClass,
+                                    requestOrThrow(requestOrThrow(requestOrThrow(aClass,
                                                                   DECLARED_GET_METHOD,
-                                                                  "extendsExample").get(0)
-                                                                                   .getParameters()
-                                                                                   .get(0),
+                                                                  "extendsExample").get(0), EXECUTABLE_GET_PARAMETERS).get(0),
                                                    VARIABLE_GET_TYPE)).toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                       .get(0))
                                     .toWildcardOrThrow();
 
-                              Wildcard superExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0)
-                                                                            .getParameters()
+                              Wildcard superExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0), EXECUTABLE_GET_PARAMETERS)
                                                                             .get(0), VARIABLE_GET_TYPE))
                                                                     .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                     .get(0))
                                     .toWildcardOrThrow();
 
-                              Wildcard unboundExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0)
-                                                                              .getParameters()
+                              Wildcard unboundExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0), EXECUTABLE_GET_PARAMETERS)
                                                                               .get(0), VARIABLE_GET_TYPE))
                                                                       .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
                                                                       .get(0))

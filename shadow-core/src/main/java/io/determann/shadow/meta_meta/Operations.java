@@ -131,4 +131,36 @@ public interface Operations
    public static Operation0<Variable, Package> VARIABLE_GET_PACKAGE = new Operation0<>("variable.getPackage");
 
    public static Operation0<Variable, Object> VARIABLE_GET_SURROUNDING = new Operation0<>("variable.getSurrounding");
+
+   public static Operation0<Executable, List<Parameter>> EXECUTABLE_GET_PARAMETERS = new Operation0<>("executable.getParameters");
+
+   public static Operation1<Executable, String, Parameter> EXECUTABLE_GET_PARAMETER = new Operation1<>("executable.getParameter");
+
+   public static Operation0<Executable, Return> EXECUTABLE_GET_RETURN = new Operation0<>("executable.getReturn");
+
+   public static Operation0<Executable, Shadow> EXECUTABLE_GET_RETURN_TYPE = new Operation0<>("executable.getReturnType");
+
+   public static Operation0<Executable, List<Shadow>> EXECUTABLE_GET_PARAMETER_TYPES = new Operation0<>("executable.getParameterTypes");
+
+   public static Operation0<Executable, List<Class>> EXECUTABLE_GET_THROWS = new Operation0<>("executable.getThrows");
+
+   public static Operation0<Executable, Boolean> EXECUTABLE_IS_VAR_ARGS = new Operation0<>("executable.isVarArgs");
+
+   public static Operation0<Executable, Declared> EXECUTABLE_GET_SURROUNDING = new Operation0<>("executable.getSurrounding");
+
+   public static Operation0<Executable, Package> EXECUTABLE_GET_PACKAGE = new Operation0<>("executable.getPackage");
+
+   public static Operation0<Executable, List<Generic>> EXECUTABLE_GET_GENERICS = new Operation0<>("executable.getGenerics");
+
+   public static Operation0<Executable, Declared> EXECUTABLE_GET_RECEIVER_TYPE = new Operation0<>("executable.getReceiverType");
+
+   public static Operation0<Executable, Receiver> EXECUTABLE_GET_RECEIVER = new Operation0<>("executable.getReceiver");
+
+   public static Operation1<Method, Method, Boolean> METHOD_OVERRIDES = new Operation1<>("method.overrides");
+
+   public static Operation1<Method, Method, Boolean> METHOD_OVERWRITTEN_BY = new Operation1<>("method.overwrittenBy");
+
+   public static Operation1<Method, Method, Boolean> METHOD_SAME_PARAMETER_TYPES = new Operation1<>("method.sameParameterTypes");
+
+   public static Operation0<Method, Boolean> METHOD_IS_BRIDGE = new Operation0<>("method.isBridge");
 }

@@ -74,12 +74,12 @@ class ClassTest extends DeclaredTest<Class>
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), query(id.getField().get()).getType());
 
                                assertEquals("getId", LangModelQueries.query((Nameable) id.getGetter()).getName());
-                               assertEquals(shadowApi.getConstants().getPrimitiveInt(), id.getGetter().getReturnType());
-                               assertEquals(Collections.emptyList(), id.getGetter().getParameters());
+                               assertEquals(shadowApi.getConstants().getPrimitiveInt(), LangModelQueries.query(id.getGetter()).getReturnType());
+                               assertEquals(Collections.emptyList(), LangModelQueries.query(id.getGetter()).getParameters());
 
                                assertEquals("setId", LangModelQueries.query((Nameable) id.getSetterOrThrow()).getName());
-                               assertEquals(shadowApi.getConstants().getVoid(), id.getSetterOrThrow().getReturnType());
-                               assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), id.getSetterOrThrow().getParameterTypes());
+                               assertEquals(shadowApi.getConstants().getVoid(), LangModelQueries.query(id.getSetterOrThrow()).getReturnType());
+                               assertEquals(List.of(shadowApi.getConstants().getPrimitiveInt()), LangModelQueries.query(id.getSetterOrThrow()).getParameterTypes());
                             })
                    .withCodeToCompile("PropertiesExample.java", """
                          public class PropertiesExample {

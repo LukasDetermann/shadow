@@ -27,8 +27,9 @@ public class ParameterImpl extends VariableImpl implements ParameterLangModel
    @Override
    public boolean isVarArgs()
    {
-      List<Parameter> parameters = getSurrounding().getParameters();
-      return getSurrounding().isVarArgs() && query((Shadow) parameters.get(parameters.size() - 1)).representsSameType(this);
+      List<Parameter> parameters = requestOrThrow(getSurrounding(), EXECUTABLE_GET_PARAMETERS);
+      return requestOrThrow(getSurrounding(), EXECUTABLE_IS_VAR_ARGS) &&
+             query((Shadow) parameters.get(parameters.size() - 1)).representsSameType(this);
    }
 
    @Override

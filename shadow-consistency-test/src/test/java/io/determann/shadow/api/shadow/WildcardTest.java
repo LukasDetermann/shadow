@@ -21,9 +21,9 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetExtends()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                      convert(query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
                                                                        .getMethods("extendsExample")
-                                                                       .get(0)
+                                                                       .get(0))
                                                                        .getParameterOrThrow("numbers"))
                                                                        .getType())
                                                             .toInterface()
@@ -45,9 +45,9 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetSupper()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                      convert(query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
                                                                        .getMethods("superExample")
-                                                                       .get(0)
+                                                                       .get(0))
                                                                        .getParameterOrThrow("numbers"))
                                                                        .getType())
                                                             .toInterface()

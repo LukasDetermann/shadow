@@ -2,11 +2,16 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.ConstructorRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Constructor;
+import io.determann.shadow.api.shadow.Generic;
+import io.determann.shadow.api.shadow.Parameter;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
+import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
@@ -35,47 +40,48 @@ public class ConstructorRendererImpl implements ConstructorRenderer
          sb.append(ModifierRendererImpl.render(constructor.getModifiers()));
          sb.append(' ');
       }
-      if (!constructor.getGenerics().isEmpty())
+
+      List<Generic> generics = requestOrThrow(constructor, EXECUTABLE_GET_GENERICS);
+      if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(constructor.getGenerics()
-                              .stream()
-                              .map(generic -> GenericRendererImpl.type(context, generic))
-                              .collect(Collectors.joining(", ")));
+         sb.append(generics.stream()
+                           .map(generic -> GenericRendererImpl.type(context, generic))
+                           .collect(Collectors.joining(", ")));
          sb.append('>');
          sb.append(' ');
       }
       sb.append(ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
-                                        constructor.getSurrounding()));
+                                        requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)));
       sb.append('(');
 
-      constructor.getReceiverType().ifPresent(declared ->
-                                              {
+      List<Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
+      request(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
+            .ifPresent(declared ->
+                       {
+                          sb.append(ShadowRendererImpl.type(context, declared));
+                          sb.append(' ');
+                          sb.append(requestOrThrow(declared, NAMEABLE_NAME));
+                          sb.append('.');
+                          sb.append("this");
+                          if (!parameters.isEmpty())
+                          {
+                             sb.append(' ');
+                          }
+                       });
 
-                                                 sb.append(ShadowRendererImpl.type(context, declared));
-                                                 sb.append(' ');
-                                                 sb.append(requestOrThrow(declared, NAMEABLE_NAME));
-                                                 sb.append('.');
-                                                 sb.append("this");
-                                                 if (!constructor.getParameters().isEmpty())
-                                                 {
-                                                    sb.append(' ');
-                                                 }
-                                              });
-
-      sb.append(constructor.getParameters()
-                           .stream()
-                           .map(parameter -> ParameterRendererImpl.declaration(context, parameter))
-                           .collect(Collectors.joining(", ")));
+      sb.append(parameters.stream()
+                          .map(parameter -> ParameterRendererImpl.declaration(context, parameter))
+                          .collect(Collectors.joining(", ")));
       sb.append(')');
       sb.append(' ');
 
-      if (!constructor.getThrows().isEmpty())
+      List<Class> aThrow = requestOrThrow(constructor, EXECUTABLE_GET_THROWS);
+      if (!aThrow.isEmpty())
       {
          sb.append("throws ");
-         sb.append(constructor.getThrows()
-                              .stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
-                              .collect(Collectors.joining(", ")));
+         sb.append(aThrow.stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
+                         .collect(Collectors.joining(", ")));
          sb.append(" ");
       }
 
@@ -117,7 +123,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    public String invocation(String parameters)
    {
       return ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
-                                     constructor.getSurrounding()) +
+                                     requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)) +
              '(' +
              parameters +
              ')';

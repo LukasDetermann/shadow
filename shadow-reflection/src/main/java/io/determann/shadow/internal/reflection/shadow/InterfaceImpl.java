@@ -10,8 +10,7 @@ import io.determann.shadow.api.shadow.Shadow;
 import java.util.*;
 import java.util.stream.Collector;
 
-import static io.determann.shadow.meta_meta.Operations.INTERFACE_GET_GENERIC_TYPES;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
@@ -34,18 +33,20 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
    public boolean isFunctional()
    {
       return getMethods()
-            .stream().filter(method -> method.isAbstract() || isObjectMethod(method))
-            .collect(Collector.<Method, Set<Method>, Boolean>of(HashSet::new,
-                                                                (methods, method) -> methods.stream()
-                                                                                            .anyMatch(method1 -> method1.overrides(method) ||
-                                                                                                                 method.overrides(method1)),
-                                                                (methods, methods2) ->
-                                                                {
-                                                                   methods.addAll(methods2);
-                                                                   return methods2;
-                                                                },
-                                                                methods -> methods.size() == 1,
-                                                                UNORDERED));
+            .stream()
+            .filter(method -> method.isAbstract() || isObjectMethod(method))
+            .collect(Collector.
+                           <Method, Set<Method>, Boolean>
+                           of(HashSet::new, (methods, method) -> methods.stream()
+                                                                        .anyMatch(method1 -> requestOrThrow(method1, METHOD_OVERRIDES, method) ||
+                                                                                             requestOrThrow(method, METHOD_OVERRIDES, method1)),
+                              (methods, methods2) ->
+                              {
+                                 methods.addAll(methods2);
+                                 return methods2;
+                              },
+                              methods -> methods.size() == 1,
+                              UNORDERED));
    }
 
    private boolean isObjectMethod(Method method)
@@ -53,7 +54,7 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
       return new ClassImpl(Object.class)
             .getMethods()
             .stream()
-            .anyMatch(method::overrides);
+            .anyMatch(method1 -> requestOrThrow(method, METHOD_OVERRIDES, method1));
    }
 
    @Override

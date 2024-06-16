@@ -128,7 +128,7 @@ public class ParameterImpl implements ParameterReflection
    @Override
    public Package getPackage()
    {
-      return getSurrounding().getPackage();
+      return requestOrThrow(getSurrounding(), EXECUTABLE_GET_PACKAGE);
    }
 
    @Override

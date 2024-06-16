@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.Renderer.render;
+import static io.determann.shadow.meta_meta.Operations.EXECUTABLE_GET_RETURN_TYPE;
 import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
@@ -77,7 +78,7 @@ class AnnotationUsageRendererTest
                                     "@AnnotationUsageAnnotation(stingValue = \"test\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
                                     render(RenderingContext.DEFAULT, annotationUsage)
                                           .usage(method ->
-                                                       convert(method.getReturnType())
+                                                       convert(requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE))
                                                              .toClass()
                                                              .filter(aClass -> requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.String"))
                                                              .map(aClass -> "\"test\"")));

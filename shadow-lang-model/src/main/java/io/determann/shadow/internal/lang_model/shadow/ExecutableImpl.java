@@ -4,9 +4,8 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.DocumentedLangModel;
-import io.determann.shadow.api.lang_model.query.ModuleEnclosedLangModel;
-import io.determann.shadow.api.lang_model.query.NameableLangModel;
+import io.determann.shadow.api.lang_model.query.ConstructorLangModel;
+import io.determann.shadow.api.lang_model.query.MethodLangMethod;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
@@ -22,16 +21,15 @@ import java.util.Optional;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 
-public class ExecutableImpl implements Constructor,
-                                       Method,
-                                       NameableLangModel,
-                                       ModuleEnclosedLangModel,
-                                       DocumentedLangModel
+public class ExecutableImpl implements ConstructorLangModel,
+                                       MethodLangMethod
 {
    private final LangModelContext context;
    private final ExecutableElement executableElement;
@@ -141,7 +139,7 @@ public class ExecutableImpl implements Constructor,
       return LangModelAdapter.getElements(getApi())
                              .overrides(LangModelAdapter.particularElement(method),
                                         getElement(),
-                                        LangModelAdapter.particularElement(method.getSurrounding()));
+                                        LangModelAdapter.particularElement(query(method).getSurrounding()));
    }
 
    @Override
@@ -242,9 +240,9 @@ public class ExecutableImpl implements Constructor,
          return false;
       }
       return request(otherExecutable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getParameters(), otherExecutable.getParameters()) &&
+             Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
-             Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());
+             Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
    @Override

@@ -13,7 +13,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               Return aReturn = query(context.getClassOrThrow("ReturnExample")).getMethods().get(0).getReturn();
+                               Return aReturn = query(query(context.getClassOrThrow("ReturnExample")).getMethods().get(0)).getReturn();
 
                                assertEquals(context.getClassOrThrow("java.lang.Integer"), aReturn.getType());
                             })
@@ -30,7 +30,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               Return aReturn = query(context.getClassOrThrow("ReturnExample")).getMethods().get(0).getReturn();
+                               Return aReturn = query(query(context.getClassOrThrow("ReturnExample")).getMethods().get(0)).getReturn();
 
                                assertEquals(1, aReturn.getAnnotationUsages().size());
                                assertEquals(2, aReturn.getAnnotationUsages().get(0).getValueOrThrow("value").asInteger());

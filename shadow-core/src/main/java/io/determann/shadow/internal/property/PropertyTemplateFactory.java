@@ -85,7 +85,7 @@ class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      Shadow shadow = getter.getMethod().getReturnType();
+                                      Shadow shadow = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
 
                                       PropertyTemplate template = new PropertyTemplate(name, shadow, getter.getMethod());
 
@@ -116,7 +116,7 @@ class PropertyTemplateFactory
                                          .toList();
 
       return methods.stream()
-                    .filter(method -> methods.stream().noneMatch(method::overwrittenBy))
+                    .filter(method -> methods.stream().noneMatch(method1 -> requestOrThrow(method, METHOD_OVERWRITTEN_BY, method1)))
                     .toList();
    }
 
@@ -135,7 +135,7 @@ class PropertyTemplateFactory
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !requestOrThrow(requestOrThrow(setters.get(0).getMethod().getParameters().get(0), VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
+          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).getMethod(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
       }
@@ -171,13 +171,14 @@ class PropertyTemplateFactory
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
       String name = requestOrThrow(method, NAMEABLE_NAME);
-      List<Parameter> parameters = method.getParameters();
+      List<Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
       //getter
-      if (!requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(VOID))
+      if (!requestOrThrow(returnType, SHADOW_GET_KIND).equals(VOID))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(TypeKind.BOOLEAN) &&
+         boolean hasIsPrefix = requestOrThrow(returnType, SHADOW_GET_KIND).equals(TypeKind.BOOLEAN) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
 
@@ -195,7 +196,7 @@ class PropertyTemplateFactory
          return Optional.empty();
       }
       //setter
-      boolean couldBeSetter = requestOrThrow(method.getReturnType(), SHADOW_GET_KIND).equals(VOID) &&
+      boolean couldBeSetter = requestOrThrow(returnType, SHADOW_GET_KIND).equals(VOID) &&
                               name.startsWith(SET_PREFIX) &&
                               name.length() > 3;
 

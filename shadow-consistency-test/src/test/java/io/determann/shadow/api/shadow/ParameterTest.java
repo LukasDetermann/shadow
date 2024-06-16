@@ -12,9 +12,9 @@ class ParameterTest extends VariableTest<Parameter>
 {
    ParameterTest()
    {
-      super(shadowApi -> query(shadowApi.getClassOrThrow("ParameterExample"))
+      super(shadowApi -> query(query(shadowApi.getClassOrThrow("ParameterExample"))
             .getMethods("foo")
-            .get(0)
+            .get(0))
             .getParameterOrThrow("foo"));
    }
 
@@ -27,14 +27,14 @@ class ParameterTest extends VariableTest<Parameter>
                                      .getMethods("foo")
                                      .get(0);
 
-                               Parameter methodParameter = method.getParameterOrThrow("foo");
+                               Parameter methodParameter = query(method).getParameterOrThrow("foo");
 
                                assertEquals(method, query(methodParameter).getSurrounding());
 
                                Constructor constructor = query(shadowApi.getClassOrThrow("ParameterExample"))
                                      .getConstructors()
                                      .get(0);
-                               Parameter constructorParameter = constructor.getParameters().get(0);
+                               Parameter constructorParameter = query(constructor).getParameters().get(0);
                                assertEquals(constructor, query(constructorParameter).getSurrounding());
                             })
                    .withCodeToCompile("ParameterExample.java", """
@@ -53,8 +53,8 @@ class ParameterTest extends VariableTest<Parameter>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Parameter> parameters = query(shadowApi.getClassOrThrow("VarArgsExample")).getConstructors()
-                                                                                                              .get(0)
+                               List<Parameter> parameters = query(query(shadowApi.getClassOrThrow("VarArgsExample")).getConstructors()
+                                                                                                              .get(0))
                                                                                                               .getParameters();
 
                                assertFalse(query(parameters.get(0)).isVarArgs());

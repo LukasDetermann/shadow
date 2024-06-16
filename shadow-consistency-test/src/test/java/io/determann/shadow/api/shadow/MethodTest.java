@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.meta_meta.Operations.CLASS_GET_SUPER_CLASS;
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHOD;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,13 +29,13 @@ class MethodTest extends ExecutableTest<Method>
                                Method six = methods.get(5);
                                Method seven = methods.get(6);
 
-                               assertTrue(first.sameParameterTypes(second));
-                               assertTrue(second.sameParameterTypes(first));
-                               assertFalse(third.sameParameterTypes(four));
-                               assertFalse(four.sameParameterTypes(third));
-                               assertTrue(four.sameParameterTypes(five));
-                               assertTrue(six.sameParameterTypes(seven));
-                               assertFalse(seven.sameParameterTypes(six));
+                               assertTrue(query(first).sameParameterTypes(second));
+                               assertTrue(query(second).sameParameterTypes(first));
+                               assertFalse(query(third).sameParameterTypes(four));
+                               assertFalse(query(four).sameParameterTypes(third));
+                               assertTrue(query(four).sameParameterTypes(five));
+                               assertTrue(query(six).sameParameterTypes(seven));
+                               assertFalse(query(seven).sameParameterTypes(six));
                             })
                    .withCodeToCompile("SubSignature.java", """
                          import java.util.List;
@@ -68,19 +67,20 @@ class MethodTest extends ExecutableTest<Method>
                               }
                            }
                            """)
-                     .test(aClass -> assertTrue(requestOrThrow(aClass, DECLARED_GET_METHOD, "toString").get(0)
-                                                      .overrides(requestOrThrow(requestOrThrow(aClass, CLASS_GET_SUPER_CLASS), DECLARED_GET_METHOD, "toString").get(0))));
+                     .test(aClass -> assertTrue(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "toString").get(0),
+                                                               METHOD_OVERRIDES,
+                                                               requestOrThrow(requestOrThrow(aClass, CLASS_GET_SUPER_CLASS), DECLARED_GET_METHOD, "toString").get(0))));
 
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
-                                                          .getMethods("toString").get(0)
+                               assertTrue(LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
+                                                          .getMethods("toString").get(0))
                                                           .overrides(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
                                                                                      .getMethods("toString")
                                                                                      .get(0)));
 
-                               assertFalse(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
-                                                           .getMethods("toString").get(0)
+                               assertFalse(LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
+                                                           .getMethods("toString").get(0))
                                                            .overrides(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
                                                                                       .getMethods("clone")
                                                                                       .get(0)));
@@ -102,8 +102,8 @@ class MethodTest extends ExecutableTest<Method>
    void testGetParameters()
    {
       ProcessorTest.process(shadowApi -> assertEquals("[args]",
-                                                      LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
-                                                                      .getMethods("varArgsMethod").get(0).getParameters().toString()))
+                                                      LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
+                                                                      .getMethods("varArgsMethod").get(0)).getParameters().toString()))
                    .withCodeToCompile("MethodExample.java", """
                          public class MethodExample {
                             private void varArgsMethod(String... args) {}
@@ -126,8 +126,8 @@ class MethodTest extends ExecutableTest<Method>
    {
       ProcessorTest.process(shadowApi ->
                                   assertEquals(List.of(shadowApi.asArray(shadowApi.getClassOrThrow("java.lang.String"))),
-                                               LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
-                                                               .getMethods("varArgsMethod").get(0).getParameterTypes()))
+                                               LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
+                                                               .getMethods("varArgsMethod").get(0)).getParameterTypes()))
                    .withCodeToCompile("MethodExample.java", """
                          public class MethodExample {
                             private void varArgsMethod(String... args) {}
@@ -151,13 +151,13 @@ class MethodTest extends ExecutableTest<Method>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"),
-                                            LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.String"))
-                                                            .getMethods("toString").get(0)
+                                            LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.String"))
+                                                            .getMethods("toString").get(0))
                                                             .getReturnType());
 
                                assertNotEquals(shadowApi.getClassOrThrow("java.lang.Long"),
-                                               LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.String"))
-                                                               .getMethods("toString").get(0)
+                                               LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.String"))
+                                                               .getMethods("toString").get(0))
                                                                .getReturnType());
                             })
                    .compile();
@@ -170,13 +170,13 @@ class MethodTest extends ExecutableTest<Method>
       ProcessorTest.process(shadowApi ->
                             {
                                assertEquals(List.of(),
-                                            LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
-                                                            .getMethods("toString").get(0)
+                                            LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
+                                                            .getMethods("toString").get(0))
                                                             .getThrows());
 
                                assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.InterruptedException")),
-                                            LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
-                                                            .getMethods("wait").get(0)
+                                            LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
+                                                            .getMethods("wait").get(0))
                                                             .getThrows());
                             })
                    .compile();
@@ -188,11 +188,11 @@ class MethodTest extends ExecutableTest<Method>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertFalse(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
-                                                           .getMethods("toString").get(0)
+                               assertFalse(LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("java.lang.Object"))
+                                                           .getMethods("toString").get(0))
                                                            .isVarArgs());
-                               assertTrue(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
-                                                          .getMethods("varArgsMethod").get(0)
+                               assertTrue(LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("MethodExample"))
+                                                          .getMethods("varArgsMethod").get(0))
                                                           .isVarArgs());
                             })
                    .withCodeToCompile("MethodExample.java", """
@@ -218,7 +218,7 @@ class MethodTest extends ExecutableTest<Method>
       ProcessorTest.process(shadowApi ->
                             {
                                Class aClass = shadowApi.getClassOrThrow("MethodExample");
-                               assertEquals(aClass, LangModelQueries.query(aClass).getMethods("toString").get(0)
+                               assertEquals(aClass, LangModelQueries.query(LangModelQueries.query(aClass).getMethods("toString").get(0))
                                                                     .getSurrounding());
                             })
                    .withCodeToCompile("MethodExample.java", """
@@ -242,9 +242,9 @@ class MethodTest extends ExecutableTest<Method>
    void testGetPackage()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.method").get(0),
-                                                      LangModelQueries.query(shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.method.MethodExample"))
+                                                      LangModelQueries.query(LangModelQueries.query(shadowApi.getClassOrThrow("io.determann.shadow.example.processed.test.method.MethodExample"))
                                                                       .getMethods("toString")
-                                                                      .get(0)
+                                                                      .get(0))
                                                                       .getPackage()))
                    .withCodeToCompile("MethodExample.java", """
                          package io.determann.shadow.example.processed.test.method;
@@ -272,8 +272,8 @@ class MethodTest extends ExecutableTest<Method>
                             {
                                Class aClass = shadowApi.getClassOrThrow("MethodExample");
 
-                               assertTrue(LangModelQueries.query(aClass).getMethods("toString").get(0).getReceiverType().isEmpty());
-                               assertEquals(aClass, LangModelQueries.query(aClass).getMethods("receiver").get(0).getReceiverType().orElseThrow());
+                               assertTrue(LangModelQueries.query(LangModelQueries.query(aClass).getMethods("toString").get(0)).getReceiverType().isEmpty());
+                               assertEquals(aClass, LangModelQueries.query(LangModelQueries.query(aClass).getMethods("receiver").get(0)).getReceiverType().orElseThrow());
                             })
                    .withCodeToCompile("MethodExample.java", """
                          public class MethodExample {

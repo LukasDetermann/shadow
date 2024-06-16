@@ -3,8 +3,8 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
-import io.determann.shadow.api.reflection.query.NameableReflection;
+import io.determann.shadow.api.reflection.query.ConstructorReflection;
+import io.determann.shadow.api.reflection.query.MethodReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -21,10 +21,8 @@ import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class ExecutableImpl implements Constructor,
-                                       Method,
-                                       NameableReflection,
-                                       ModuleEnclosedReflection
+public class ExecutableImpl implements ConstructorReflection,
+                                       MethodReflection
 {
    private final java.lang.reflect.Executable executable;
 
@@ -196,11 +194,11 @@ public class ExecutableImpl implements Constructor,
          return false;
       }
 
-      Declared otherSurrounding = method.getSurrounding();
+      Declared otherSurrounding = requestOrThrow(method, EXECUTABLE_GET_SURROUNDING);
 
       if (TypeKind.CLASS.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
       {
-         if (!method.isPublic() && !method.isProtected() && (!method.isPackagePrivate() || !method.getPackage().equals(getPackage())))
+         if (!method.isPublic() && !method.isProtected() && (!method.isPackagePrivate() || !requestOrThrow(method, EXECUTABLE_GET_PACKAGE).equals(getPackage())))
          {
             return false;
          }
@@ -239,19 +237,20 @@ public class ExecutableImpl implements Constructor,
 
    private boolean isSubSignature(Executable executable)
    {
-      return request(executable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) && (getParameterTypes().equals(executable.getParameterTypes()));
+      return request(executable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+             (getParameterTypes().equals(requestOrThrow(executable, EXECUTABLE_GET_PARAMETER_TYPES)));
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return method.overwrittenBy(this);
+      return requestOrThrow(method, METHOD_OVERRIDES, this);
    }
 
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return getParameterTypes().equals(method.getParameterTypes());
+      return getParameterTypes().equals(requestOrThrow(method, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
    public java.lang.reflect.Executable getExecutable()
@@ -280,9 +279,9 @@ public class ExecutableImpl implements Constructor,
          return false;
       }
       return request(otherExecutable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getParameters(), otherExecutable.getParameters()) &&
+             Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
-             Objects.equals(getParameterTypes(), otherExecutable.getParameterTypes());
+             Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
    public java.lang.reflect.Executable getReflection()

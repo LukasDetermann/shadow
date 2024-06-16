@@ -46,8 +46,8 @@ class ParameterRendererTest
                      .withCode("MyAnnotation.java", "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
                      .test(aClass ->
                            {
-                              List<Parameter> parameters = LangModelQueries.query(aClass).getMethods()
-                                                                           .get(0)
+                              List<Parameter> parameters = LangModelQueries.query(LangModelQueries.query(aClass).getMethods()
+                                                                           .get(0))
                                                                            .getParameters();
 
                               assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameters.get(0)).declaration());
@@ -55,8 +55,8 @@ class ParameterRendererTest
                            },
                            aClass ->
                            {
-                              List<Parameter> parameters = ReflectionQueries.query(aClass).getMethods()
-                                                                            .get(0)
+                              List<Parameter> parameters = ReflectionQueries.query(ReflectionQueries.query(aClass).getMethods()
+                                                                            .get(0))
                                                                             .getParameters();
 
                               assertEquals("@MyAnnotation Long arg0", render(DEFAULT, parameters.get(0)).declaration());

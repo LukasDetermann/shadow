@@ -105,6 +105,21 @@ public interface LangModelQueries
       return (VariableLangModel) validate(variable);
    }
 
+   public static ConstructorLangModel query(Constructor constructor)
+   {
+      return (ConstructorLangModel) validate(constructor);
+   }
+
+   public static ExecutableLangModel query(Executable executable)
+   {
+      return (ExecutableLangModel) validate(executable);
+   }
+
+   public static MethodLangMethod query(Method method)
+   {
+      return (MethodLangMethod) validate(method);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

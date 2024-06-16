@@ -3,13 +3,18 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.MethodRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Method;
+import io.determann.shadow.api.shadow.Parameter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
+import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class MethodRendererImpl implements MethodRenderer
@@ -46,50 +51,51 @@ public class MethodRendererImpl implements MethodRenderer
          sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
-      if (!method.getGenerics().isEmpty())
+
+      List<Generic> generics = requestOrThrow(method, EXECUTABLE_GET_GENERICS);
+      if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(method.getGenerics()
-                         .stream()
-                         .map(generic -> ShadowRendererImpl.type(context, generic))
-                         .collect(Collectors.joining(", ")));
+         sb.append(generics.stream()
+                           .map(generic -> ShadowRendererImpl.type(context, generic))
+                           .collect(Collectors.joining(", ")));
          sb.append('>');
          sb.append(' ');
       }
-      sb.append(ShadowRendererImpl.type(context, method.getReturnType()));
+      sb.append(ShadowRendererImpl.type(context, requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE)));
       sb.append(' ');
       sb.append(requestOrThrow(method, NAMEABLE_NAME));
       sb.append('(');
 
-      method.getReceiverType().ifPresent(declared ->
-                                         {
+      List<Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      request(method, EXECUTABLE_GET_RECEIVER_TYPE)
+            .ifPresent(declared ->
+                       {
+                          sb.append(ShadowRendererImpl.type(context, declared));
+                          sb.append(' ');
+                          sb.append(requestOrThrow(declared, NAMEABLE_NAME));
+                          sb.append('.');
+                          sb.append("this");
+                          if (!parameters.isEmpty())
+                          {
+                             sb.append(' ');
+                          }
+                       });
 
-                                            sb.append(ShadowRendererImpl.type(context, declared));
-                                            sb.append(' ');
-                                            sb.append(requestOrThrow(declared, NAMEABLE_NAME));
-                                            sb.append('.');
-                                            sb.append("this");
-                                            if (!method.getParameters().isEmpty())
-                                            {
-                                               sb.append(' ');
-                                            }
-                                         });
-
-      if (!method.getParameters().isEmpty())
+      if (!parameters.isEmpty())
       {
-         sb.append(method.getParameters()
-                         .stream()
-                         .map(parameter -> ParameterRendererImpl.declaration(context, parameter))
-                         .collect(Collectors.joining(", ")));
+         sb.append(parameters.stream()
+                             .map(parameter -> ParameterRendererImpl.declaration(context, parameter))
+                             .collect(Collectors.joining(", ")));
       }
       sb.append(')');
 
-      if (!method.getThrows().isEmpty())
+      List<Class> aThrow = requestOrThrow(method, EXECUTABLE_GET_THROWS);
+      if (!aThrow.isEmpty())
       {
          sb.append(' ');
          sb.append("throws ");
-         sb.append(method.getThrows()
-                         .stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
+         sb.append(aThrow.stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
                          .collect(Collectors.joining(", ")));
       }
 

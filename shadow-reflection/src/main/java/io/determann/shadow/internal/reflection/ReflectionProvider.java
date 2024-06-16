@@ -78,6 +78,22 @@ public class ReflectionProvider extends AbstractProvider
              .with(VARIABLE_IS_ASSIGNABLE_FROM, (variable, shadow) -> query(variable).isAssignableFrom(shadow))
              .with(VARIABLE_GET_TYPE, variable -> query(variable).getType())
              .with(VARIABLE_GET_PACKAGE, variable -> query(variable).getPackage())
-             .with(VARIABLE_GET_SURROUNDING, variable -> query(variable).getSurrounding());
+             .with(VARIABLE_GET_SURROUNDING, variable -> query(variable).getSurrounding())
+             .with(EXECUTABLE_GET_PARAMETERS, executable -> query(executable).getParameters())
+             .with(EXECUTABLE_GET_PARAMETER, (executable, s) -> query(executable).getParameterOrThrow(s))
+             .with(EXECUTABLE_GET_RETURN, executable -> query(executable).getReturn())
+             .with(EXECUTABLE_GET_RETURN_TYPE, executable -> query(executable).getReturnType())
+             .with(EXECUTABLE_GET_PARAMETER_TYPES, executable -> query(executable).getParameterTypes())
+             .with(EXECUTABLE_GET_THROWS, executable -> query(executable).getThrows())
+             .with(EXECUTABLE_IS_VAR_ARGS, executable -> query(executable).isVarArgs())
+             .with(EXECUTABLE_GET_SURROUNDING, executable -> query(executable).getSurrounding())
+             .with(EXECUTABLE_GET_PACKAGE, executable -> query(executable).getPackage())
+             .with(EXECUTABLE_GET_GENERICS, executable -> query(executable).getGenerics())
+             .withOptional(EXECUTABLE_GET_RECEIVER_TYPE, executable -> query(executable).getReceiverType())
+             .withOptional(EXECUTABLE_GET_RECEIVER, executable -> query(executable).getReceiver())
+             .with(METHOD_OVERRIDES, (method, method2) -> query(method).overrides(method2))
+             .with(METHOD_OVERWRITTEN_BY, (method, method2) -> query(method).overwrittenBy(method2))
+             .with(METHOD_SAME_PARAMETER_TYPES, (method, method2) -> query(method).sameParameterTypes(method2))
+             .with(METHOD_IS_BRIDGE, method -> query(method).isBridge());
    }
 }

@@ -102,6 +102,22 @@ public interface ReflectionQueries
    {
       return (VariableReflection) validate(variable);
    }
+
+   public static ConstructorReflection query(Constructor constructor)
+   {
+      return (ConstructorReflection) validate(constructor);
+   }
+
+   public static ExecutableReflection query(Executable executable)
+   {
+      return (ExecutableReflection) validate(executable);
+   }
+
+   public static MethodReflection query(Method method)
+   {
+      return (MethodReflection) validate(method);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))
