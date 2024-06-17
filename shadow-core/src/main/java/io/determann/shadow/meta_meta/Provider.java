@@ -24,12 +24,12 @@ public class Provider
       return switch (_request(instance, operation))
       {
          case Response.Result<RESULT>(RESULT result) -> result;
-         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.name() +
+         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.getName() +
                                                                                         " not supported for " +
                                                                                         instance +
                                                                                         " with implementation " +
                                                                                         instance.getImplementationName());
-         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.name() +
+         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.getName() +
                                                                            " does not return a value for " +
                                                                            instance +
                                                                            " with implementation " +
@@ -51,15 +51,15 @@ public class Provider
                                                                                              Operation1<TYPE, PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
    {
-      return switch ( _request(instance, operation, param1))
+      return switch (_request(instance, operation, param1))
       {
          case Response.Result<RESULT>(RESULT result) -> result;
-         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.name() +
+         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.getName() +
                                                                                         " not supported for " +
                                                                                         instance +
                                                                                         " with implementation " +
                                                                                         instance.getImplementationName());
-         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.name() +
+         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.getName() +
                                                                            " does not return a value for " +
                                                                            instance +
                                                                            " with implementation " +
