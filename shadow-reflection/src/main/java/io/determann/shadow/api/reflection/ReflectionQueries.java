@@ -128,6 +128,11 @@ public interface ReflectionQueries
       return (ReturnReflection) validate(aReturn);
    }
 
+   public static ReceiverReflection query(Receiver receiver)
+   {
+      return (ReceiverReflection) validate(receiver);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

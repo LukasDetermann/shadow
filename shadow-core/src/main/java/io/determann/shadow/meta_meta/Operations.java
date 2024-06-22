@@ -177,4 +177,6 @@ public interface Operations
    public static Operation0<RecordComponent, Package> RECORD_COMPONENT_GET_PACKAGE = new Operation0<>("recordComponent.getPackage");
 
    public static Operation0<Return, Shadow> RETURN_GET_TYPE = new Operation0<>("return.getType");
+
+   public static Operation0<Receiver, Shadow> RECEIVER_GET_TYPE = new Operation0<>("receiver.getType");
 }

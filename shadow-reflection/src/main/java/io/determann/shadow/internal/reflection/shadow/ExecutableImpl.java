@@ -84,7 +84,9 @@ public class ExecutableImpl implements ConstructorReflection,
       {
          Optional<Receiver> receiver = getReceiver();
 
-         if (receiver.isPresent() && !result.isEmpty() && requestOrThrow(result.get(0), VARIABLE_GET_TYPE).equals(receiver.get().getType()))
+         if (receiver.isPresent() &&
+             !result.isEmpty() &&
+             requestOrThrow(result.get(0), VARIABLE_GET_TYPE).equals(requestOrThrow(receiver.get(), RECEIVER_GET_TYPE)))
          {
             result.remove(0);
          }

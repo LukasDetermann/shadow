@@ -6,5 +6,4 @@ import io.determann.shadow.api.ImplementationDefined;
 public interface Receiver extends Annotationable,
                                   ImplementationDefined
 {
-   Shadow getType();
 }

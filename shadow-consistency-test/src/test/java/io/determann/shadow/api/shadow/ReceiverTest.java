@@ -19,7 +19,7 @@ class ReceiverTest
                                                                    .getReceiver()
                                                                    .get();
 
-                               assertEquals(context.getClassOrThrow("ReceiverExample"), receiver.getType());
+                               assertEquals(context.getClassOrThrow("ReceiverExample"), query(receiver).getType());
                             })
                    .withCodeToCompile("ReceiverExample.java", """
                          public class ReceiverExample {

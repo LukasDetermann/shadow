@@ -130,6 +130,11 @@ public interface LangModelQueries
       return (ReturnLangModel) validate(aReturn);
    }
 
+   public static ReceiverLangModel query(Receiver receiver)
+   {
+      return (ReceiverLangModel) validate(receiver);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))
