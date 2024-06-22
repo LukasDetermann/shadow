@@ -3,8 +3,13 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.renderer.IntersectionRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Intersection;
+import io.determann.shadow.api.shadow.Shadow;
 
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static io.determann.shadow.meta_meta.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class IntersectionRendererImpl implements IntersectionRenderer
 {
@@ -19,11 +24,12 @@ public class IntersectionRendererImpl implements IntersectionRenderer
 
    public static String type(RenderingContextWrapper context, Intersection intersection)
    {
-      if (intersection.getBounds().size() <= 1)
+      List<Shadow> bounds = requestOrThrow(intersection, INTERSECTION_GET_BOUNDS);
+      if (bounds.size() <= 1)
       {
          throw new IllegalStateException();
       }
-      return intersection.getBounds().stream().map(bound -> ShadowRendererImpl.type(context, bound)).collect(Collectors.joining(" & "));
+      return bounds.stream().map(bound -> ShadowRendererImpl.type(context, bound)).collect(Collectors.joining(" & "));
    }
 
    @Override

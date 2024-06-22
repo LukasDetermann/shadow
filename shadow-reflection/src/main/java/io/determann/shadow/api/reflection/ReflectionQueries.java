@@ -133,6 +133,11 @@ public interface ReflectionQueries
       return (ReceiverReflection) validate(receiver);
    }
 
+   public static IntersectionReflection query(Intersection intersection)
+   {
+      return (IntersectionReflection) validate(intersection);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

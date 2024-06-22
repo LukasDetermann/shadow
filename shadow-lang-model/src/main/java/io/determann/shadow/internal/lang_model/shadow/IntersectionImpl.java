@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.IntersectionLangModel;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -10,7 +11,10 @@ import javax.lang.model.type.IntersectionType;
 import java.util.List;
 import java.util.Objects;
 
-public class IntersectionImpl extends ShadowImpl<IntersectionType> implements Intersection
+import static io.determann.shadow.meta_meta.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.meta_meta.Provider.request;
+
+public class IntersectionImpl extends ShadowImpl<IntersectionType> implements IntersectionLangModel
 {
 
    public IntersectionImpl(LangModelContext context, IntersectionType intersectionType)
@@ -49,6 +53,6 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
       {
          return false;
       }
-      return Objects.equals(getBounds(), otherIntersection.getBounds());
+      return request(otherIntersection, INTERSECTION_GET_BOUNDS).map(shadow -> Objects.equals(shadow, getBounds())).orElse(false);
    }
 }

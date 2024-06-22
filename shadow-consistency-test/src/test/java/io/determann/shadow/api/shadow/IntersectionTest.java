@@ -24,7 +24,7 @@ class IntersectionTest extends ShadowTest<Intersection>
    {
       ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getInterfaceOrThrow("java.util.Collection"),
                                                               shadowApi.getInterfaceOrThrow("java.io.Serializable")),
-                                                      getShadowSupplier().apply(shadowApi).getBounds()))
+                                                      query(getShadowSupplier().apply(shadowApi)).getBounds()))
                    .withCodeToCompile("IntersectionExample.java",
                                       "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                    .compile();

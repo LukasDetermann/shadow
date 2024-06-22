@@ -3,7 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.IntersectionReflection;
 import io.determann.shadow.api.shadow.Intersection;
 import io.determann.shadow.api.shadow.Shadow;
 
@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.INTERSECTION_GET_BOUNDS;
 import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 
-public class IntersectionImpl implements Intersection,
-                                         ShadowReflection
+public class IntersectionImpl implements IntersectionReflection
 {
    private final java.lang.reflect.Type[] bounds;
 
@@ -45,7 +46,7 @@ public class IntersectionImpl implements Intersection,
       return shadow != null &&
              Converter.convert(shadow)
                       .toIntersection()
-                      .map(intersection -> sameBounds(getBounds(), intersection.getBounds()))
+                      .map(intersection -> sameBounds(getBounds(), requestOrThrow(intersection, INTERSECTION_GET_BOUNDS)))
                       .orElse(false);
    }
 
@@ -85,7 +86,7 @@ public class IntersectionImpl implements Intersection,
       {
          return false;
       }
-      return Objects.equals(getBounds(), otherIntersection.getBounds());
+      return request(otherIntersection, INTERSECTION_GET_BOUNDS).map(shadow -> Objects.equals(shadow, getBounds())).orElse(false);
    }
 
    public java.lang.reflect.Type[] getReflection()

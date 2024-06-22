@@ -179,4 +179,6 @@ public interface Operations
    public static Operation0<Return, Shadow> RETURN_GET_TYPE = new Operation0<>("return.getType");
 
    public static Operation0<Receiver, Shadow> RECEIVER_GET_TYPE = new Operation0<>("receiver.getType");
+
+   public static Operation0<Intersection, List<Shadow>> INTERSECTION_GET_BOUNDS = new Operation0<>("intersection.getBounds");
 }

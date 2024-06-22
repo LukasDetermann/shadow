@@ -135,6 +135,11 @@ public interface LangModelQueries
       return (ReceiverLangModel) validate(receiver);
    }
 
+   public static IntersectionLangModel query(Intersection intersection)
+   {
+      return (IntersectionLangModel) validate(intersection);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

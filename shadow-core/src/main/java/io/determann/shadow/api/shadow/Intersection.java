@@ -1,7 +1,5 @@
 package io.determann.shadow.api.shadow;
 
-import java.util.List;
-
 /**
  * {@snippet :
  * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
@@ -9,10 +7,4 @@ import java.util.List;
  */
 public interface Intersection extends Shadow
 {
-   /**
-    * {@snippet :
-    * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
-    *}
-    */
-   List<Shadow> getBounds();
 }

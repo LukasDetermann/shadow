@@ -69,7 +69,7 @@ class ArrayTest extends ShadowTest<Array>
 
                                List<Shadow> directSupertypes = query(intArray).getDirectSuperTypes();
                                assertEquals(1, directSupertypes.size());
-                               assertEquals(primitiveArraySuper, convert(directSupertypes.get(0)).toIntersectionOrThrow().getBounds());
+                               assertEquals(primitiveArraySuper, query(convert(directSupertypes.get(0)).toIntersectionOrThrow()).getBounds());
                             })
                    .compile();
    }
