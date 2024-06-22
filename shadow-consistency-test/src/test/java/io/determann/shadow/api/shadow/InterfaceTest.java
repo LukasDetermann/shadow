@@ -4,6 +4,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.query.GenericLangModel;
 import io.determann.shadow.api.lang_model.query.InterfaceLangModel;
 import org.junit.jupiter.api.Test;
 
@@ -95,7 +96,8 @@ class InterfaceTest extends DeclaredTest<Interface>
                                Interface capture = shadowApi.interpolateGenerics(declared);
                                Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
                                      .toGeneric()
-                                     .map(Generic::getExtends)
+                                     .map(LangModelQueries::query)
+                                     .map(GenericLangModel::getExtends)
                                      .map(Converter::convert)
                                      .flatMap(TypeConverter::toInterface)
                                      .map(LangModelQueries::query)
@@ -110,7 +112,8 @@ class InterfaceTest extends DeclaredTest<Interface>
                                Interface independentCapture = shadowApi.interpolateGenerics(independentExample);
                                Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
                                      .toGeneric()
-                                     .map(Generic::getExtends)
+                                     .map(LangModelQueries::query)
+                                     .map(GenericLangModel::getExtends)
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
@@ -120,7 +123,8 @@ class InterfaceTest extends DeclaredTest<Interface>
                                Interface dependentCapture = shadowApi.interpolateGenerics(dependentExample);
                                Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
                                      .toGeneric()
-                                     .map(Generic::getExtends)
+                                     .map(LangModelQueries::query)
+                                     .map(GenericLangModel::getExtends)
                                      .orElseThrow();
                                assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })

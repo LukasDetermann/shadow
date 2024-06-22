@@ -181,4 +181,10 @@ public interface Operations
    public static Operation0<Receiver, Shadow> RECEIVER_GET_TYPE = new Operation0<>("receiver.getType");
 
    public static Operation0<Intersection, List<Shadow>> INTERSECTION_GET_BOUNDS = new Operation0<>("intersection.getBounds");
+
+   public static Operation0<Generic, Shadow> GENERIC_GET_EXTENDS = new Operation0<>("generic.getExtends");
+
+   public static Operation0<Generic, Shadow> GENERIC_GET_SUPER = new Operation0<>("generic.getSuper");
+
+   public static Operation0<Generic, Object> GENERIC_GET_ENCLOSING = new Operation0<>("generic.getEnclosing");
 }

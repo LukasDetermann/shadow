@@ -13,9 +13,9 @@ class IntersectionTest extends ShadowTest<Intersection>
 {
    IntersectionTest()
    {
-      super(shadowApi -> convert(query(shadowApi.getClassOrThrow("IntersectionExample"))
+      super(shadowApi -> convert(query(query(shadowApi.getClassOrThrow("IntersectionExample"))
                                                            .getGenerics()
-                                                           .get(0)
+                                                           .get(0))
                                                            .getExtends()).toIntersectionOrThrow());
    }
 

@@ -140,6 +140,11 @@ public interface LangModelQueries
       return (IntersectionLangModel) validate(intersection);
    }
 
+   public static GenericLangModel query(Generic generic)
+   {
+      return (GenericLangModel) validate(generic);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

@@ -138,6 +138,11 @@ public interface ReflectionQueries
       return (IntersectionReflection) validate(intersection);
    }
 
+   public static GenericReflection query(Generic generic)
+   {
+      return (GenericReflection) validate(generic);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

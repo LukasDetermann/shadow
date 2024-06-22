@@ -2,8 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.NameableReflection;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.GenericReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Generic;
 import io.determann.shadow.api.shadow.Shadow;
@@ -17,14 +16,11 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class GenericImpl implements Generic,
-                                    NameableReflection,
-                                    ShadowReflection
+public class GenericImpl implements GenericReflection
 {
    private final TypeVariable<?> typeVariable;
 
@@ -94,10 +90,16 @@ public class GenericImpl implements Generic,
       return shadow != null &&
              convert(shadow)
                    .toGeneric()
-                   .map(generic -> requestOrThrow(generic.getExtends(), SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
-                                   ((generic.getSuper().isEmpty() && getSuper().isEmpty()) ||
-                                    (generic.getSuper().isPresent() && getSuper().isPresent()) &&
-                                    requestOrThrow(generic.getSuper().get(), SHADOW_REPRESENTS_SAME_TYPE, getSuper().get())))
+                   .map(generic ->
+                        {
+                           Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
+                           Optional<Shadow> aSuper = request(generic, GENERIC_GET_SUPER);
+
+                           return requestOrThrow(aExtends, SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
+                                  ((aSuper.isEmpty() && getSuper().isEmpty()) ||
+                                   (aSuper.isPresent() && getSuper().isPresent()) &&
+                                   requestOrThrow(aSuper.get(), SHADOW_REPRESENTS_SAME_TYPE, getSuper().get()));
+                        })
                    .orElse(false);
    }
 
@@ -125,9 +127,10 @@ public class GenericImpl implements Generic,
       {
          return false;
       }
+
       return request(otherGeneric, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getExtends(), otherGeneric.getExtends()) &&
-             Objects.equals(getSuper(), otherGeneric.getSuper());
+             request(otherGeneric, GENERIC_GET_EXTENDS).map(name -> Objects.equals(getExtends(), name)).orElse(false) &&
+             Objects.equals(request(otherGeneric, GENERIC_GET_SUPER), getSuper());
    }
 
    public TypeVariable<?> getReflection()
