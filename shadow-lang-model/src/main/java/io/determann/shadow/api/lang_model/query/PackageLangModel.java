@@ -6,7 +6,6 @@ import io.determann.shadow.api.shadow.Package;
 import java.util.List;
 
 public interface PackageLangModel extends Package,
-                                          ShadowLangModel,
                                           NameableLangModel,
                                           QualifiedNameableLamgModel,
                                           ModuleEnclosedLangModel,

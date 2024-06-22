@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
@@ -155,7 +155,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public String getBinaryName()
    {
-      return LangModelAdapter.getElements(getApi()).getBinaryName(getElement()).toString();
+      return getElements(getApi()).getBinaryName(getElement()).toString();
    }
 
    @Override
@@ -191,14 +191,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter
-                     .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
+      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
@@ -210,13 +209,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
+      return getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override

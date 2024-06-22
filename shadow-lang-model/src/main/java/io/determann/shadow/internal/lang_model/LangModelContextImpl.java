@@ -9,6 +9,7 @@ import io.determann.shadow.api.shadow.Package;
 import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.particularType;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
@@ -64,7 +64,7 @@ public class LangModelContextImpl implements LangModelContext
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()
-                     .map(packageElement -> LangModelAdapter.<Package>generalize(this, packageElement))
+                     .map(packageElement -> generalizePackage(this, packageElement))
                      .toList();
    }
 
@@ -74,7 +74,8 @@ public class LangModelContextImpl implements LangModelContext
       return elements.getAllModuleElements()
                      .stream()
                      .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
-                     .map(packageElement -> LangModelAdapter.<Package>generalize(this, packageElement))
+                     .map(PackageElement.class::cast)
+                     .map(packageElement -> generalizePackage(this, packageElement))
                      .toList();
    }
 
@@ -93,10 +94,8 @@ public class LangModelContextImpl implements LangModelContext
    @Override
    public Optional<Package> getPackage(Module module, String qualifiedPackageName)
    {
-      return ofNullable(elements
-                                          .getPackageElement(particularElement(module),
-                                                             qualifiedPackageName))
-            .map(packageElement -> LangModelAdapter.generalize(this, packageElement));
+      return ofNullable(elements.getPackageElement(particularElement(module), qualifiedPackageName))
+            .map(packageElement -> generalizePackage(this, packageElement));
    }
 
    @Override

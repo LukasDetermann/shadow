@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
 import static io.determann.shadow.meta_meta.Operations.VARIABLE_GET_TYPE;
 import static io.determann.shadow.meta_meta.Provider.request;
@@ -40,25 +40,25 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(particularType(shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(LangModelAdapter.particularType(shadow), getMirror());
+      return getTypes(getApi()).isAssignable(particularType(shadow), getMirror());
    }
 
    @Override
    public Shadow getType()
    {
-      return LangModelAdapter.generalize(getApi(), getElement().asType());
+      return generalize(getApi(), getElement().asType());
    }
 
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return generalizePackage(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
 
    public VariableElement getElement()
@@ -81,7 +81,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
+      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
@@ -93,13 +93,13 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
+      return getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override

@@ -10,13 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class PackageTest extends ShadowTest<Package>
+class PackageTest
 {
-   PackageTest()
-   {
-      super(shadowApi -> shadowApi.getPackageOrThrow("java.base", "java.lang"));
-   }
-
    @Test
    void testGetContent()
    {

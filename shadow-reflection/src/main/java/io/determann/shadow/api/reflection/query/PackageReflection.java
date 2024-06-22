@@ -6,7 +6,6 @@ import io.determann.shadow.api.shadow.Package;
 import java.util.List;
 
 public interface PackageReflection extends Package,
-                                           ShadowReflection,
                                            NameableReflection,
                                            QualifiedNameableReflection,
                                            ModuleEnclosedReflection

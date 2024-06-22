@@ -24,7 +24,7 @@ public class OpensImpl extends DirectiveImpl implements Opens
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.generalize(getApi(), opensDirective.getPackage());
+      return LangModelAdapter.generalizePackage(getApi(), opensDirective.getPackage());
    }
 
    @Override

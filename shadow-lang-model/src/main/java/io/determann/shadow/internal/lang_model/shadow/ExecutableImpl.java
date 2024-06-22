@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.meta_meta.Operations.*;
@@ -56,7 +56,7 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public Shadow getReturnType()
    {
-      return LangModelAdapter.generalize(getApi(), getMirror().getReturnType());
+      return generalize(getApi(), getMirror().getReturnType());
    }
 
    @Override
@@ -104,7 +104,7 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public boolean isBridge()
    {
-      return LangModelAdapter.getElements(getApi()).isBridge(getElement());
+      return getElements(getApi()).isBridge(getElement());
    }
 
    @Override
@@ -116,7 +116,7 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public Declared getSurrounding()
    {
-      return LangModelAdapter.generalize(getApi(), getElement().getEnclosingElement());
+      return generalize(getApi(), getElement().getEnclosingElement());
    }
 
    public ExecutableElement getElement()
@@ -127,19 +127,17 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public boolean overrides(Method method)
    {
-      return LangModelAdapter.getElements(getApi())
-                             .overrides(getElement(),
-                                        LangModelAdapter.particularElement(method),
-                                        LangModelAdapter.particularElement(getSurrounding()));
+      return getElements(getApi()).overrides(getElement(),
+                                             particularElement(method),
+                                             particularElement(getSurrounding()));
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return LangModelAdapter.getElements(getApi())
-                             .overrides(LangModelAdapter.particularElement(method),
-                                        getElement(),
-                                        LangModelAdapter.particularElement(query(method).getSurrounding()));
+      return getElements(getApi()).overrides(particularElement(method),
+                                             getElement(),
+                                             particularElement(query(method).getSurrounding()));
    }
 
    @Override
@@ -169,14 +167,13 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter
-            .generalize(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
+      return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
    public Module getModule()
    {
-      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
+      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
 
    @Override
@@ -188,13 +185,13 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
+      return getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
    public List<AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override

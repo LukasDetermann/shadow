@@ -26,7 +26,7 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.generalize(getApi(), exportsDirective.getPackage());
+      return LangModelAdapter.generalizePackage(getApi(), exportsDirective.getPackage());
    }
 
    @Override

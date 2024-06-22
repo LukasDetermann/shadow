@@ -26,7 +26,6 @@ public enum TypeKind
 
    //strange stuff
    VOID(false, false, false),
-   PACKAGE(false, false, false),
    MODULE(false, false, false),
    NULL(false, false, false),
 

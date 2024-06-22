@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.query.PackageReflection;
+import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.util.Arrays;
@@ -18,8 +18,7 @@ import static io.determann.shadow.meta_meta.Operations.MODULE_ENCLOSED_GET_MODUL
 import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class PackageImpl implements Package,
-                                    PackageReflection
+public class PackageImpl implements PackageReflection
 {
    private final NamedSupplier<java.lang.Package> packageSupplier;
 
@@ -90,18 +89,6 @@ public class PackageImpl implements Package,
    public boolean isUnnamed()
    {
       return getQualifiedName().isEmpty();
-   }
-
-   @Override
-   public TypeKind getKind()
-   {
-      return TypeKind.PACKAGE;
-   }
-
-   @Override
-   public boolean representsSameType(Shadow shadow)
-   {
-      return equals(shadow);
    }
 
    @Override

@@ -17,6 +17,7 @@ import io.determann.shadow.api.shadow.module.Provides;
 import io.determann.shadow.internal.lang_model.shadow.module.*;
 
 import javax.lang.model.element.ModuleElement;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.NoType;
 import java.util.*;
 import java.util.function.Supplier;
@@ -69,7 +70,8 @@ public class ModuleImpl extends ShadowImpl<NoType> implements Module,
    {
       return getElement().getEnclosedElements()
                          .stream()
-                         .map(element -> LangModelAdapter.<Package>generalize(getApi(), element))
+                         .map(PackageElement.class::cast)
+                         .map(element -> LangModelAdapter.generalizePackage(getApi(), element))
                          .toList();
    }
 

@@ -244,6 +244,16 @@ public interface LangModelAdapter
       };
    }
 
+   static Package generalizePackage(LangModelContext context, NoType aPackage)
+   {
+      return new PackageImpl(context, aPackage);
+   }
+
+   static Package generalizePackage(LangModelContext context, PackageElement packageElement)
+   {
+      return new PackageImpl(context, packageElement);
+   }
+
    static List<AnnotationUsage> generalize(LangModelContext context, List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(context, annotationMirrors);
