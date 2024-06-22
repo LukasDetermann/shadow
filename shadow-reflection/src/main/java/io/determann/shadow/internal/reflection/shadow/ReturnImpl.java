@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.ReturnReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Return;
 import io.determann.shadow.api.shadow.Shadow;
@@ -11,8 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.RETURN_GET_TYPE;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public class ReturnImpl implements Return
+public class ReturnImpl implements ReturnReflection
 {
    private final AnnotatedType annotatedType;
 
@@ -59,7 +62,7 @@ public class ReturnImpl implements Return
       {
          return false;
       }
-      return Objects.equals(getType(), otherReturn.getType());
+      return request(otherReturn, RETURN_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 
    @Override

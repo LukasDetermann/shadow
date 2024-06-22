@@ -123,6 +123,11 @@ public interface ReflectionQueries
       return (RecordComponentReflection) validate(recordComponent);
    }
 
+   public static ReturnReflection query(Return aReturn)
+   {
+      return (ReturnReflection) validate(aReturn);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

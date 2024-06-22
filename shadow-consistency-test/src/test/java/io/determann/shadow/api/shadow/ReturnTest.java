@@ -15,7 +15,7 @@ class ReturnTest
                             {
                                Return aReturn = query(query(context.getClassOrThrow("ReturnExample")).getMethods().get(0)).getReturn();
 
-                               assertEquals(context.getClassOrThrow("java.lang.Integer"), aReturn.getType());
+                               assertEquals(context.getClassOrThrow("java.lang.Integer"), query(aReturn).getType());
                             })
                    .withCodeToCompile("ReturnExample.java", """
                          abstract class ReturnExample {

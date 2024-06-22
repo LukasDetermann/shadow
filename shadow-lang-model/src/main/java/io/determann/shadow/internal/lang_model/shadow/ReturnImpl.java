@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.ReturnLangModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Return;
 import io.determann.shadow.api.shadow.Shadow;
@@ -11,8 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.RETURN_GET_TYPE;
+import static io.determann.shadow.meta_meta.Provider.request;
 
-public class ReturnImpl implements Return
+public class ReturnImpl implements ReturnLangModel
 {
    private final LangModelContext context;
    private final TypeMirror typeMirror;
@@ -63,7 +66,7 @@ public class ReturnImpl implements Return
       {
          return false;
       }
-      return Objects.equals(getType(), otherReturn.getType());
+      return request(otherReturn, RETURN_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 
    @Override

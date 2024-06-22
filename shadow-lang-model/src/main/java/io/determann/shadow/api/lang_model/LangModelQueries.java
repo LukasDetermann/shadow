@@ -125,6 +125,11 @@ public interface LangModelQueries
       return (RecordComponentLangModel) validate(recordComponent);
    }
 
+   public static ReturnLangModel query(Return aReturn)
+   {
+      return (ReturnLangModel) validate(aReturn);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

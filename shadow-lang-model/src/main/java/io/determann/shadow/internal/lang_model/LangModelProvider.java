@@ -102,6 +102,7 @@ public class LangModelProvider extends AbstractProvider
              .with(RECORD_COMPONENT_GET_RECORD, recordComponent -> query(recordComponent).getRecord())
              .with(RECORD_COMPONENT_GET_TYPE, recordComponent -> query(recordComponent).getType())
              .with(RECORD_COMPONENT_GET_GETTER, recordComponent -> query(recordComponent).getGetter())
-             .with(RECORD_COMPONENT_GET_PACKAGE, recordComponent -> query(recordComponent).getPackage());
+             .with(RECORD_COMPONENT_GET_PACKAGE, recordComponent -> query(recordComponent).getPackage())
+             .with(RETURN_GET_TYPE, aReturn -> query(aReturn).getType());
    }
 }
