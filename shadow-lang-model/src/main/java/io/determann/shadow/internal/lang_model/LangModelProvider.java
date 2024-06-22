@@ -96,6 +96,12 @@ public class LangModelProvider extends AbstractProvider
              .with(METHOD_OVERRIDES, (method, method2) -> query(method).overrides(method2))
              .with(METHOD_OVERWRITTEN_BY, (method, method2) -> query(method).overwrittenBy(method2))
              .with(METHOD_SAME_PARAMETER_TYPES, (method, method2) -> query(method).sameParameterTypes(method2))
-             .with(METHOD_IS_BRIDGE, method -> query(method).isBridge());
+             .with(METHOD_IS_BRIDGE, method -> query(method).isBridge())
+             .with(RECORD_COMPONENT_IS_SUBTYPE_OF, (recordComponent, shadow) -> query(recordComponent).isSubtypeOf(shadow))
+             .with(RECORD_COMPONENT_IS_ASSIGNABLE_FROM, (recordComponent, shadow) -> query(recordComponent).isAssignableFrom(shadow))
+             .with(RECORD_COMPONENT_GET_RECORD, recordComponent -> query(recordComponent).getRecord())
+             .with(RECORD_COMPONENT_GET_TYPE, recordComponent -> query(recordComponent).getType())
+             .with(RECORD_COMPONENT_GET_GETTER, recordComponent -> query(recordComponent).getGetter())
+             .with(RECORD_COMPONENT_GET_PACKAGE, recordComponent -> query(recordComponent).getPackage());
    }
 }

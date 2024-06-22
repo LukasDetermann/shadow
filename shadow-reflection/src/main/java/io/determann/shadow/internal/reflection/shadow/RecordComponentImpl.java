@@ -2,9 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ModuleEnclosedReflection;
-import io.determann.shadow.api.reflection.query.NameableReflection;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
+import io.determann.shadow.api.reflection.query.RecordComponentReflection;
 import io.determann.shadow.api.shadow.Class;
 import io.determann.shadow.api.shadow.Module;
 import io.determann.shadow.api.shadow.Package;
@@ -21,10 +19,7 @@ import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.request;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
-public class RecordComponentImpl implements RecordComponent,
-                                            NameableReflection,
-                                            ShadowReflection,
-                                            ModuleEnclosedReflection
+public class RecordComponentImpl implements RecordComponentReflection
 {
    private final java.lang.reflect.RecordComponent recordComponent;
 
@@ -124,7 +119,9 @@ public class RecordComponentImpl implements RecordComponent,
    {
       return shadow != null &&
              convert(shadow).toRecordComponent()
-                            .map(recordComponent1 -> requestOrThrow(recordComponent1.getType(), SHADOW_REPRESENTS_SAME_TYPE, getType()))
+                            .map(recordComponent1 -> requestOrThrow(requestOrThrow(recordComponent1, RECORD_COMPONENT_GET_TYPE),
+                                                                    SHADOW_REPRESENTS_SAME_TYPE,
+                                                                    getType()))
                             .orElse(false);
    }
 
@@ -151,7 +148,7 @@ public class RecordComponentImpl implements RecordComponent,
          return false;
       }
       return request(otherRecordComponent, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getType(), otherRecordComponent.getType());
+             request(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getReflection()

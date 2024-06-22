@@ -57,7 +57,7 @@ public class ArrayImpl implements ArrayReflection,
       }
       if (TypeKind.RECORD_COMPONENT.equals(requestOrThrow(componentShadow, SHADOW_GET_KIND)))
       {
-         return convert(componentShadow).toRecordComponentOrThrow().isSubtypeOf(otherComponentShadow);
+         return requestOrThrow(convert(componentShadow).toRecordComponentOrThrow(), RECORD_COMPONENT_IS_SUBTYPE_OF, otherComponentShadow);
       }
       if (requestOrThrow(componentShadow, SHADOW_GET_KIND).isVariable())
       {

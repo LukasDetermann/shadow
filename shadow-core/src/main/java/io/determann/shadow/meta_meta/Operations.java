@@ -163,4 +163,16 @@ public interface Operations
    public static Operation1<Method, Method, Boolean> METHOD_SAME_PARAMETER_TYPES = new Operation1<>("method.sameParameterTypes");
 
    public static Operation0<Method, Boolean> METHOD_IS_BRIDGE = new Operation0<>("method.isBridge");
+
+   public static Operation1<RecordComponent, Shadow, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new Operation1<>("recordComponent.isSubtypeOf");
+
+   public static Operation1<RecordComponent, Shadow, Boolean> RECORD_COMPONENT_IS_ASSIGNABLE_FROM = new Operation1<>("recordComponent.isAssignableFrom");
+
+   public static Operation0<RecordComponent, Record> RECORD_COMPONENT_GET_RECORD = new Operation0<>("RecordComponent.getRecord");
+
+   public static Operation0<RecordComponent, Shadow> RECORD_COMPONENT_GET_TYPE = new Operation0<>("recordComponent.getType");
+
+   public static Operation0<RecordComponent, Method> RECORD_COMPONENT_GET_GETTER = new Operation0<>("recordComponent.getGetter");
+
+   public static Operation0<RecordComponent, Package> RECORD_COMPONENT_GET_PACKAGE = new Operation0<>("recordComponent.getPackage");
 }

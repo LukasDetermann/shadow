@@ -130,7 +130,7 @@ public interface ReflectionAdapter
 
    public static RecordComponent generalize(java.lang.reflect.RecordComponent recordComponent)
    {
-      return new RecordComponentImpl(recordComponent);
+      return (RecordComponent) new RecordComponentImpl(recordComponent);
    }
 
    public static Parameter generalize(java.lang.reflect.Parameter parameter)

@@ -30,7 +30,7 @@ class RecordTest extends DeclaredTest<Record>
                             {
                                RecordComponent idComponent = query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("id");
                                assertEquals("id", LangModelQueries.query((Nameable) idComponent).getName());
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), idComponent.getType());
+                               assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), query(idComponent).getType());
 
                                assertThrows(NoSuchElementException.class,
                                             () -> query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("asdf"));

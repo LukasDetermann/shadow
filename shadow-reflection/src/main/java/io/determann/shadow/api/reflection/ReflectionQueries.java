@@ -118,6 +118,11 @@ public interface ReflectionQueries
       return (MethodReflection) validate(method);
    }
 
+   public static RecordComponentReflection query(RecordComponent recordComponent)
+   {
+      return (RecordComponentReflection) validate(recordComponent);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

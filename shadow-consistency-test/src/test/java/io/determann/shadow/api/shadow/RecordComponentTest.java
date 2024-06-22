@@ -1,17 +1,18 @@
 package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.query.RecordComponentLangModel;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RecordComponentTest extends ShadowTest<RecordComponent>
+class RecordComponentTest extends ShadowTest<RecordComponentLangModel>
 {
    RecordComponentTest()
    {
-      super(shadowApi -> query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id"));
+      super(shadowApi -> query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id")));
    }
 
    @Test
@@ -38,7 +39,7 @@ class RecordComponentTest extends ShadowTest<RecordComponent>
       ProcessorTest.process(shadowApi ->
                             {
                                Record recordExample = shadowApi.getRecordOrThrow("RecordComponentExample");
-                               assertEquals(recordExample, query(recordExample).getRecordComponentOrThrow("id").getRecord());
+                               assertEquals(recordExample, query(query(recordExample).getRecordComponentOrThrow("id")).getRecord());
                             })
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
@@ -48,8 +49,8 @@ class RecordComponentTest extends ShadowTest<RecordComponent>
    void testGetType()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Long"),
-                                                      query(shadowApi.getRecordOrThrow("RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id")
+                                                      query(query(shadowApi.getRecordOrThrow("RecordComponentExample"))
+                                                               .getRecordComponentOrThrow("id"))
                                                                .getType()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
@@ -59,8 +60,8 @@ class RecordComponentTest extends ShadowTest<RecordComponent>
    void testGetGetter()
    {
       ProcessorTest.process(shadowApi -> assertEquals("id()",
-                                                      query(shadowApi.getRecordOrThrow("RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id")
+                                                      query(query(shadowApi.getRecordOrThrow("RecordComponentExample"))
+                                                               .getRecordComponentOrThrow("id"))
                                                                .getGetter()
                                                                .toString()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
@@ -72,9 +73,9 @@ class RecordComponentTest extends ShadowTest<RecordComponent>
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.recordcomponent")
                                                                .get(0),
-                                                      query(shadowApi.getRecordOrThrow(
+                                                      query(query(shadowApi.getRecordOrThrow(
                                                                      "io.determann.shadow.example.processed.test.recordcomponent.RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id")
+                                                               .getRecordComponentOrThrow("id"))
                                                                .getPackage()))
                    .withCodeToCompile("RecordComponentExample.java", """
                          package io.determann.shadow.example.processed.test.recordcomponent;
