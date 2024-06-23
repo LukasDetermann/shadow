@@ -6,6 +6,9 @@ import io.determann.shadow.api.shadow.AnnotationUsage;
 import java.util.List;
 import java.util.Optional;
 
+import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+
 /**
  * anything that can be annotated
  */
@@ -19,7 +22,7 @@ public interface Annotationable
    default List<AnnotationUsage> getUsagesOf(Annotation annotation)
    {
       return getAnnotationUsages().stream()
-                                  .filter(usage -> usage.getAnnotation().equals(annotation))
+                                  .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                   .toList();
    }
 
@@ -46,7 +49,7 @@ public interface Annotationable
    default boolean isAnnotatedWith(Annotation annotation)
    {
       return getAnnotationUsages().stream()
-                                  .map(AnnotationUsage::getAnnotation)
+                                  .map(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION))
                                   .anyMatch(annotation1 -> annotation1.equals(annotation));
    }
 
@@ -60,14 +63,14 @@ public interface Annotationable
    default List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
-                                        .filter(usage -> usage.getAnnotation().equals(annotation))
+                                        .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                         .toList();
    }
 
    default Optional<AnnotationUsage> getDirectUsageOf(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
-                                        .filter(usage -> usage.getAnnotation().equals(annotation))
+                                        .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                         .findAny();
    }
 
@@ -79,7 +82,7 @@ public interface Annotationable
    default boolean isDirectlyAnnotatedWith(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
-                                        .map(AnnotationUsage::getAnnotation)
+                                        .map(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION))
                                         .anyMatch(annotation1 -> annotation1.equals(annotation));
    }
 }

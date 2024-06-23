@@ -1,6 +1,7 @@
 package io.determann.shadow.meta_meta;
 
 import io.determann.shadow.api.*;
+import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.property.ImmutableProperty;
 import io.determann.shadow.api.property.MutableProperty;
 import io.determann.shadow.api.shadow.Class;
@@ -11,6 +12,7 @@ import io.determann.shadow.api.shadow.Record;
 import io.determann.shadow.api.shadow.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Operations
 {
@@ -187,4 +189,10 @@ public interface Operations
    public static Operation0<Generic, Shadow> GENERIC_GET_SUPER = new Operation0<>("generic.getSuper");
 
    public static Operation0<Generic, Object> GENERIC_GET_ENCLOSING = new Operation0<>("generic.getEnclosing");
+
+   public static Operation0<AnnotationUsage, Map<Method, AnnotationValue>> ANNOTATION_USAGE_GET_VALUES = new Operation0<>("annotationUsage.getValues");
+
+   public static Operation1<AnnotationUsage, String, AnnotationValue> ANNOTATION_USAGE_GET_VALUE = new Operation1<>("annotationUsage.getValue");
+
+   public static Operation0<AnnotationUsage, Annotation> ANNOTATION_USAGE_GET_ANNOTATION = new Operation0<>("annotationUsage.getAnnotation");
 }

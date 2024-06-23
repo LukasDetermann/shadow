@@ -143,6 +143,11 @@ public interface ReflectionQueries
       return (GenericReflection) validate(generic);
    }
 
+   public static AnnotationUsageReflection query(AnnotationUsage annotationUsage)
+   {
+      return (AnnotationUsageReflection) validate(annotationUsage);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

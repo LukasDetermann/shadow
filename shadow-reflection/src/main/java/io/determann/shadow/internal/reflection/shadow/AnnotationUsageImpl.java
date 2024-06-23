@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.query.AnnotationUsageReflection;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Method;
@@ -13,7 +14,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AnnotationUsageImpl implements AnnotationUsage
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.meta_meta.Provider.request;
+
+public class AnnotationUsageImpl implements AnnotationUsageReflection
 {
    private final java.lang.annotation.Annotation annotation;
 
@@ -72,13 +78,18 @@ public class AnnotationUsageImpl implements AnnotationUsage
       {
          return false;
       }
-
-      return Objects.equals(getAnnotation(), otherAnnotationUsage.getAnnotation()) &&
-             Objects.equals(getValues(), otherAnnotationUsage.getValues());
+      return request(otherAnnotationUsage, ANNOTATION_USAGE_GET_ANNOTATION).map(name -> Objects.equals(getAnnotation(), name)).orElse(false) &&
+             request(otherAnnotationUsage, ANNOTATION_USAGE_GET_VALUES).map(values -> Objects.equals(getValues(), values)).orElse(false);
    }
 
    public java.lang.annotation.Annotation getAnnotationReflection()
    {
       return annotation;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

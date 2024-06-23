@@ -44,9 +44,4 @@ public interface AnnotationValue
    AnnotationUsage asAnnotationUsage();
 
    List<AnnotationValue> asListOfValues();
-
-   /**
-    * calls {@code toString} on the underlying value
-    */
-   String toString();
 }

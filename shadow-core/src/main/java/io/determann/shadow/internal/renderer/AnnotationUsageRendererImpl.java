@@ -4,19 +4,16 @@ import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
 import io.determann.shadow.api.renderer.AnnotationUsageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.EnumConstant;
-import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_METHODS;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.meta_meta.Operations.*;
 import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
@@ -39,9 +36,11 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
    {
       StringBuilder sb = new StringBuilder();
       sb.append('@');
-      sb.append(context.renderName(usage.getAnnotation()));
 
-      List<Method> methods = requestOrThrow(usage.getAnnotation(), DECLARED_GET_METHODS);
+      Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
+      sb.append(context.renderName(annotation));
+
+      List<Method> methods = requestOrThrow(annotation, DECLARED_GET_METHODS);
 
       if (!methods.isEmpty())
       {
@@ -49,7 +48,11 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
          sb.append(methods.stream()
                           .map(method -> requestOrThrow(method, NAMEABLE_NAME) +
                                          " = " +
-                                         valueRenderer.apply(method).orElseGet(() -> renderValue(context, usage.getValues().get(method))))
+                                         valueRenderer.apply(method).orElseGet(() ->
+                                                                               {
+                                                                                  Map<Method, AnnotationValue> values = requestOrThrow(usage, ANNOTATION_USAGE_GET_VALUES);
+                                                                                  return renderValue(context, values.get(method));
+                                                                               }))
                           .collect(Collectors.joining(", ")));
          sb.append(')');
       }

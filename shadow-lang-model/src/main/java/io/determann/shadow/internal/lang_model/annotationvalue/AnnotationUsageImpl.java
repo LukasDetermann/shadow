@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.annotationvalue;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.query.AnnotationUsageLangModel;
 import io.determann.shadow.api.shadow.Annotation;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Method;
@@ -11,7 +12,12 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
-public class AnnotationUsageImpl implements AnnotationUsage
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.meta_meta.Provider.request;
+
+public class AnnotationUsageImpl implements AnnotationUsageLangModel
 {
    private final LangModelContext context;
    private final AnnotationMirror annotationMirror;
@@ -91,8 +97,13 @@ public class AnnotationUsageImpl implements AnnotationUsage
       {
          return false;
       }
+      return request(otherAnnotationUsage, ANNOTATION_USAGE_GET_ANNOTATION).map(name -> Objects.equals(getAnnotation(), name)).orElse(false) &&
+             request(otherAnnotationUsage, ANNOTATION_USAGE_GET_VALUES).map(values -> Objects.equals(getValues(), values)).orElse(false);
+   }
 
-      return Objects.equals(getAnnotation(), otherAnnotationUsage.getAnnotation()) &&
-             Objects.equals(getValues(), otherAnnotationUsage.getValues());
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

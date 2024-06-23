@@ -106,6 +106,9 @@ public class ReflectionProvider extends AbstractProvider
              .with(INTERSECTION_GET_BOUNDS, intersection -> query(intersection).getBounds())
              .with(GENERIC_GET_EXTENDS, generic -> query(generic).getExtends())
              .withOptional(GENERIC_GET_SUPER, generic -> query(generic).getSuper())
-             .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing());
+             .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing())
+             .with(ANNOTATION_USAGE_GET_VALUES, annotationUsage -> query(annotationUsage).getValues())
+             .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s))
+             .with(ANNOTATION_USAGE_GET_ANNOTATION, annotationUsage -> query(annotationUsage).getAnnotation());
    }
 }

@@ -4,6 +4,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
 import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
+import io.determann.shadow.api.lang_model.query.AnnotationUsageLangModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,9 +20,9 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
-                                                                        .getAnnotationUsages()
-                                                                        .get(0);
+                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
+                                                                                       .getAnnotationUsages()
+                                                                                       .get(0));
 
                                assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").asString());
                                assertEquals(false, defaultValues.getValueOrThrow("booleanValue").asBoolean());
@@ -37,8 +38,8 @@ class AnnotationUsageTest
                                                      .getEnumConstantOrThrow("ANNOTATION_TYPE"),
                                             defaultValues.getValueOrThrow("enumConstantValue").asEnumConstant());
                                assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).getEnumConstantOrThrow("CLASS"),
-                                            defaultValues.getValueOrThrow("annotationUsageValue")
-                                                         .asAnnotationUsage()
+                                            query(defaultValues.getValueOrThrow("annotationUsageValue")
+                                                         .asAnnotationUsage())
                                                          .getValueOrThrow("value")
                                                          .asEnumConstant());
                                assertEquals(List.of('b', 'c'),
@@ -55,7 +56,7 @@ class AnnotationUsageTest
                                      .getAnnotationUsages()
                                      .get(0);
 
-                               AnnotationValue overwrittenValueTypeChooser = overwrittenStringValue.getValueOrThrow("stingValue");
+                               AnnotationValue overwrittenValueTypeChooser = query(overwrittenStringValue).getValueOrThrow("stingValue");
                                assertFalse(overwrittenValueTypeChooser.isDefaultValue());
                                assertEquals("custom Value", overwrittenValueTypeChooser.asString());
                             })
@@ -95,9 +96,9 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
+                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
                                                                         .getAnnotationUsages()
-                                                                        .get(0);
+                                                                        .get(0));
 
                                AnnotationValueMapper<Integer> mapper = new AnnotationValueMapper<>()
                                {
@@ -230,9 +231,9 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsage defaultValues = shadowApi.getClassOrThrow("AnnotationUsageExample")
+                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
                                                                         .getAnnotationUsages()
-                                                                        .get(0);
+                                                                        .get(0));
 
                                AtomicInteger counter = new AtomicInteger(0);
 
@@ -322,7 +323,7 @@ class AnnotationUsageTest
                                   {
                                      assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                                                            .getEnumConstantOrThrow("CLASS"),
-                                                  value.getValueOrThrow("value").asEnumConstant());
+                                                  query(value).getValueOrThrow("value").asEnumConstant());
                                      counter.incrementAndGet();
                                   }
 

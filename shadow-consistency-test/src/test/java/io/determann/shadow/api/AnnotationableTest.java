@@ -23,8 +23,8 @@ class AnnotationableTest
                                                                             .getAnnotationUsages();
 
                                assertEquals(2, annotations.size());
-                               assertEquals("ParentAnnotation", query((QualifiedNameable) annotations.get(0).getAnnotation()).getQualifiedName());
-                               assertEquals("ChildAnnotation", query((QualifiedNameable) annotations.get(1).getAnnotation()).getQualifiedName());
+                               assertEquals("ParentAnnotation", query(query(annotations.get(0)).getAnnotation()).getQualifiedName());
+                               assertEquals("ChildAnnotation", query(query(annotations.get(1)).getAnnotation()).getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
@@ -45,7 +45,7 @@ class AnnotationableTest
                                                                                   .getDirectAnnotationUsages();
 
                                assertEquals(1, directAnnotations.size());
-                               assertEquals("ChildAnnotation", query((QualifiedNameable) directAnnotations.get(0).getAnnotation()).getQualifiedName());
+                               assertEquals("ChildAnnotation", query(query(directAnnotations.get(0)).getAnnotation()).getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
