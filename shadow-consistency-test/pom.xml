@@ -26,5 +26,9 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow-implementation-support</artifactId>
+        </dependency>
     </dependencies>
 </project>

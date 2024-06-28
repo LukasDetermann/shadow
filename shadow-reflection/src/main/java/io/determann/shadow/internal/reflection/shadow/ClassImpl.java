@@ -1,15 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.property.ImmutableProperty;
-import io.determann.shadow.api.property.MutableProperty;
-import io.determann.shadow.api.property.Property;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ClassReflection;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.internal.property.ImmutablePropertyImpl;
-import io.determann.shadow.internal.property.MutablePropertyImpl;
-import io.determann.shadow.internal.property.PropertyImpl;
+import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
+import io.determann.shadow.api.shadow.property.ImmutableProperty;
+import io.determann.shadow.api.shadow.property.MutableProperty;
+import io.determann.shadow.api.shadow.property.Property;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.implementation.support.api.PropertyFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,9 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.meta_meta.Operations.CLASS_GET_GENERIC_TYPES;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.CLASS_GET_GENERIC_TYPES;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ClassImpl extends DeclaredImpl implements ClassReflection
 {
@@ -59,19 +57,19 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    @Override
    public List<Property> getProperties()
    {
-      return PropertyImpl.of(this);
+      return PropertyFactory.propertyOf(this);
    }
 
    @Override
    public List<MutableProperty> getMutableProperties()
    {
-      return MutablePropertyImpl.of(this);
+      return PropertyFactory.mutablePropertyOf(this);
    }
 
    @Override
    public List<ImmutableProperty> getImmutableProperties()
    {
-      return ImmutablePropertyImpl.of(this);
+      return PropertyFactory.immutablePropertyOf(this);
    }
 
    @Override

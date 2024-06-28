@@ -2,13 +2,13 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.EnumConstantRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.EnumConstant;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.ENUM_CONSTANT_GET_SURROUNDING;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.ENUM_CONSTANT_GET_SURROUNDING;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
 {

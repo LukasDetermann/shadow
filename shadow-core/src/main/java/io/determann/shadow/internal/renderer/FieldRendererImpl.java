@@ -2,13 +2,13 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.FieldRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Field;
+import io.determann.shadow.api.shadow.structure.Field;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Operations.VARIABLE_GET_TYPE;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.VARIABLE_GET_TYPE;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class FieldRendererImpl implements FieldRenderer
 {

@@ -1,7 +1,7 @@
 package io.determann.shadow.api.shadow.module;
 
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.List;
 

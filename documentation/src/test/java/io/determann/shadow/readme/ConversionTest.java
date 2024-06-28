@@ -1,8 +1,8 @@
 package io.determann.shadow.readme;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingAdapter;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.LangModelAdapter;
+import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Element;
@@ -53,7 +53,7 @@ assertEquals(context.getClassOrThrow("java.lang.String"), genericShadow);
                             {
                                //@formatter:off
 //tag::jdk[]
-Elements elements = AnnotationProcessingAdapter.getElements(context);
+Elements elements = LangModelAdapter.getElements(context);
 //get a type -> Element data structure
 List<? extends Element> myClass = elements.getTypeElement("MyClass")
                                           .getEnclosedElements();

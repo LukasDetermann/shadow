@@ -2,15 +2,13 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.ClassLangModel;
-import io.determann.shadow.api.property.ImmutableProperty;
-import io.determann.shadow.api.property.MutableProperty;
-import io.determann.shadow.api.property.Property;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.internal.property.ImmutablePropertyImpl;
-import io.determann.shadow.internal.property.MutablePropertyImpl;
-import io.determann.shadow.internal.property.PropertyImpl;
+import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
+import io.determann.shadow.api.shadow.property.ImmutableProperty;
+import io.determann.shadow.api.shadow.property.MutableProperty;
+import io.determann.shadow.api.shadow.property.Property;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.implementation.support.api.PropertyFactory;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -59,19 +57,19 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    @Override
    public List<Property> getProperties()
    {
-      return PropertyImpl.of(this);
+      return PropertyFactory.propertyOf(this);
    }
 
    @Override
    public List<MutableProperty> getMutableProperties()
    {
-      return MutablePropertyImpl.of(this);
+      return PropertyFactory.mutablePropertyOf(this);
    }
 
    @Override
    public List<ImmutableProperty> getImmutableProperties()
    {
-      return ImmutablePropertyImpl.of(this);
+      return PropertyFactory.immutablePropertyOf(this);
    }
 
    @Override

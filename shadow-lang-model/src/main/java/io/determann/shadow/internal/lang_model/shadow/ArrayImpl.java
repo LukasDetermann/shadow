@@ -1,18 +1,18 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.ArrayLangModel;
-import io.determann.shadow.api.shadow.Array;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.ArrayLangModel;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.type.ArrayType;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.meta_meta.Operations.ARRAY_GET_COMPONENT_TYPE;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.ARRAY_GET_COMPONENT_TYPE;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public final class ArrayImpl extends ShadowImpl<ArrayType> implements ArrayLangModel
 {

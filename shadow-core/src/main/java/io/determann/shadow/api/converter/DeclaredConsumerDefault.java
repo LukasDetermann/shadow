@@ -1,9 +1,9 @@
 package io.determann.shadow.api.converter;
 
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
 /**
  * @see DeclaredConverter#consume(DeclaredConsumer)

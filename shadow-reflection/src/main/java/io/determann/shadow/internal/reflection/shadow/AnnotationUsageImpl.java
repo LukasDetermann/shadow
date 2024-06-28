@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.annotationvalue.AnnotationValue;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.AnnotationUsageReflection;
-import io.determann.shadow.api.shadow.Annotation;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Method;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.type.Annotation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
-import static io.determann.shadow.meta_meta.Operations.ANNOTATION_USAGE_GET_VALUES;
-import static io.determann.shadow.meta_meta.Provider.request;
 
 public class AnnotationUsageImpl implements AnnotationUsageReflection
 {

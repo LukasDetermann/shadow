@@ -1,10 +1,11 @@
 package io.determann.shadow.internal.lang_model;
 
-import io.determann.shadow.meta_meta.AbstractProvider;
-import io.determann.shadow.meta_meta.MappingBuilder;
+
+import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
+import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.meta_meta.Operations.*;
+import static io.determann.shadow.api.shadow.Operations.*;
 
 public class LangModelProvider extends AbstractProvider
 {

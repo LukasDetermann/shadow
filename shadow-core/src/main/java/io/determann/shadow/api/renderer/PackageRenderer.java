@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.structure.Package;
 
 public interface PackageRenderer
 {

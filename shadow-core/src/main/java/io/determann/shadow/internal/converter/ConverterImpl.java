@@ -1,13 +1,14 @@
 package io.determann.shadow.internal.converter;
 
 import io.determann.shadow.api.converter.*;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.Void;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.api.shadow.type.*;
 
 import java.util.Optional;
 

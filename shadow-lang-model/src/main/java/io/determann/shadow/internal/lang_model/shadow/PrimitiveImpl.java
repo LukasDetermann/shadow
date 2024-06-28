@@ -1,18 +1,18 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.PrimitiveLangModel;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.PrimitiveLangModel;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.type.PrimitiveType;
 import java.util.Objects;
 
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements Primitive,
                                                                         PrimitiveLangModel

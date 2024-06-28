@@ -2,9 +2,9 @@ package io.determann.shadow.internal.lang_model.shadow.module;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Provides;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;

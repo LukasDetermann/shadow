@@ -4,11 +4,11 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
-import io.determann.shadow.api.lang_model.query.GenericLangModel;
-import io.determann.shadow.api.lang_model.query.InterfaceLangModel;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Declared;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

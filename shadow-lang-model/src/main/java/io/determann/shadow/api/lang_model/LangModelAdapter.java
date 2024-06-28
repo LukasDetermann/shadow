@@ -1,11 +1,13 @@
 package io.determann.shadow.api.lang_model;
 
-import io.determann.shadow.api.Annotationable;
-import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Void;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.Annotationable;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl;
@@ -181,6 +183,11 @@ public interface LangModelAdapter
       };
    }
 
+   public static LangModelContext generalize(Types types, Elements elements)
+   {
+      return new LangModelContextImpl(types, elements);
+   }
+
    static Executable generalize(LangModelContext context, ExecutableElement element)
    {
       return new ExecutableImpl(context, element);
@@ -266,11 +273,11 @@ public interface LangModelAdapter
 
    static Types getTypes(LangModelContext context)
    {
-      return ((LangModelContextImpl) context).getTypes();
+      return ((LangModelContextImplementation) context).getTypes();
    }
 
    static Elements getElements(LangModelContext context)
    {
-      return ((LangModelContextImpl) context).getElements();
+      return ((LangModelContextImplementation) context).getElements();
    }
 }

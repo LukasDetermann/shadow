@@ -1,16 +1,16 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.AnnotationRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Annotation;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.type.Annotation;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class AnnotationRendererImpl implements AnnotationRenderer
 {

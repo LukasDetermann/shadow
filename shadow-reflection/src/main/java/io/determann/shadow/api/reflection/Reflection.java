@@ -1,8 +1,8 @@
 package io.determann.shadow.api.reflection;
 
-import io.determann.shadow.api.shadow.Array;
-import io.determann.shadow.api.shadow.Declared;
-import io.determann.shadow.api.shadow.Primitive;
+import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Primitive;
 
 public class Reflection
 {

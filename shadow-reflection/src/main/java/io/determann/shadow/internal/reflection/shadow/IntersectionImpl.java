@@ -1,22 +1,22 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.IntersectionReflection;
-import io.determann.shadow.api.shadow.Intersection;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.reflection.shadow.type.IntersectionReflection;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Intersection;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.api.shadow.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.INTERSECTION_GET_BOUNDS;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 
 public class IntersectionImpl implements IntersectionReflection

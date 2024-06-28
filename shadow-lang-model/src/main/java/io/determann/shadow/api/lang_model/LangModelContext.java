@@ -1,11 +1,12 @@
 package io.determann.shadow.api.lang_model;
 
-import io.determann.shadow.api.DeclaredHolder;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.DeclaredHolder;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
 import java.util.List;
 import java.util.Optional;

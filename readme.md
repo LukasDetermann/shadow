@@ -256,11 +256,11 @@ javax.lang.model
 ```java
 package io.determann.shadow.api.lang_model;
 
-import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.api.shadow.Annotationable;
 import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Void;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.consistency.shadow.structure.Package;
+import io.determann.shadow.api.shadow.type.Void;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
@@ -554,13 +554,13 @@ javax.annotation.processing
 ```java
 package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.Annotationable;
+import io.determann.shadow.consistency.shadow.Annotationable;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Void;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.consistency.shadow.structure.Module;
+import io.determann.shadow.consistency.shadow.structure.Package;
+import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.consistency.shadow.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
@@ -606,7 +606,7 @@ public interface AnnotationProcessingAdapter
       return LangModelAdapter.getType(intersection);
    }
 
-   static NoType getType(io.determann.shadow.api.shadow.Module module)
+   static NoType getType(io.determann.shadow.api.shadow.structure.Module module)
    {
       return LangModelAdapter.getType(module);
    }
@@ -616,7 +616,7 @@ public interface AnnotationProcessingAdapter
       return LangModelAdapter.getType(aNull);
    }
 
-   static NoType getType(io.determann.shadow.api.shadow.Package aPackage)
+   static NoType getType(io.determann.shadow.api.shadow.structure.Package aPackage)
    {
       return LangModelAdapter.getType(aPackage);
    }
@@ -656,7 +656,7 @@ public interface AnnotationProcessingAdapter
       return LangModelAdapter.getElement(generic);
    }
 
-   static ModuleElement getElement(io.determann.shadow.api.shadow.Module module)
+   static ModuleElement getElement(io.determann.shadow.api.shadow.structure.Module module)
    {
       return LangModelAdapter.getElement(module);
    }
@@ -760,17 +760,17 @@ java.lang.reflect
 ```java
 package io.determann.shadow.api.reflection;
 
-import io.determann.shadow.api.shadow.Array;
-import io.determann.shadow.api.shadow.Constructor;
-import io.determann.shadow.api.shadow.Executable;
-import io.determann.shadow.api.shadow.Field;
-import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Parameter;
-import io.determann.shadow.api.shadow.RecordComponent;
-import io.determann.shadow.api.shadow.*;
-import io.determann.shadow.api.shadow.module.*;
+import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.structure.Constructor;
+import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.consistency.shadow.structure.Field;
+import io.determann.shadow.consistency.shadow.structure.Method;
+import io.determann.shadow.consistency.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.consistency.shadow.*;
+import io.determann.shadow.consistency.shadow.module.*;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 import io.determann.shadow.internal.reflection.shadow.*;
 import io.determann.shadow.internal.reflection.shadow.module.*;

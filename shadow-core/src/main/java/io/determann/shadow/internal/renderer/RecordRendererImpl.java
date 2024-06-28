@@ -1,18 +1,21 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.RecordRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Interface;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
 public class RecordRendererImpl implements RecordRenderer

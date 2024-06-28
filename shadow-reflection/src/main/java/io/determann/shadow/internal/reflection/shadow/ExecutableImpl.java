@@ -1,14 +1,16 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ConstructorReflection;
-import io.determann.shadow.api.reflection.query.MethodReflection;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.reflection.shadow.structure.ConstructorReflection;
+import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.lang.reflect.AnnotatedType;
@@ -16,10 +18,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ExecutableImpl implements ConstructorReflection,
                                        MethodReflection

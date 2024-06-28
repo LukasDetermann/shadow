@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.GenericReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
@@ -15,10 +15,10 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class GenericImpl implements GenericReflection
 {

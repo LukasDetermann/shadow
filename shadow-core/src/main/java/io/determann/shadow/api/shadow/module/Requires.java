@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow.module;
 
-import io.determann.shadow.api.shadow.Module;
+import io.determann.shadow.api.shadow.structure.Module;
 
 /**
  * Dependency on another Module

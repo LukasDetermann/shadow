@@ -2,14 +2,14 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.IntersectionRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Intersection;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.type.Intersection;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.INTERSECTION_GET_BOUNDS;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class IntersectionRendererImpl implements IntersectionRenderer
 {

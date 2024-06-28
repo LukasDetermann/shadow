@@ -2,7 +2,7 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.NameRenderedEvent;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 import java.util.function.Consumer;

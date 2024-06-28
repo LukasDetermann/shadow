@@ -2,16 +2,15 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.ShadowLangModel;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.lang_model.ApiHolder;
 
 import javax.lang.model.type.TypeMirror;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public abstract class ShadowImpl<MIRROR extends TypeMirror> implements Shadow,
-                                                                       ApiHolder,
+public abstract class ShadowImpl<MIRROR extends TypeMirror> implements ApiHolder,
                                                                        ShadowLangModel
 {
    private final LangModelContext context;

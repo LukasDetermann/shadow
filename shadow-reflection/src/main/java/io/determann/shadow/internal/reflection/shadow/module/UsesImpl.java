@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.module;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.Declared;
 import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Uses;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.Objects;
 

@@ -2,18 +2,18 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.ReceiverLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Receiver;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.structure.ReceiverLangModel;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Receiver;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.api.shadow.Operations.RECEIVER_GET_TYPE;
+import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.RECEIVER_GET_TYPE;
-import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ReceiverImpl implements ReceiverLangModel
 {

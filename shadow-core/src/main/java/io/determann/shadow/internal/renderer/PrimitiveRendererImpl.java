@@ -2,10 +2,10 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.PrimitiveRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Primitive;
+import io.determann.shadow.api.shadow.type.Primitive;
 
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {

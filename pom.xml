@@ -16,5 +16,6 @@
         <module>shadow-parent</module>
         <module>shadow-reflection</module>
         <module>documentation</module>
+        <module>shadow-implementation-support</module>
     </modules>
 </project>

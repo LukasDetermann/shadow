@@ -1,19 +1,19 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.renderer.EnumRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.api.shadow.Interface;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Interface;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.DECLARED_GET_DIRECT_INTERFACES;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.DECLARED_GET_DIRECT_INTERFACES;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
 public class EnumRendererImpl implements EnumRenderer

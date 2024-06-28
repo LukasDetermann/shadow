@@ -1,8 +1,8 @@
 package io.determann.shadow.javadoc.core;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Wildcard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

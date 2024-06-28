@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.type.Declared;
 
 public class NameRenderedEvent
 {

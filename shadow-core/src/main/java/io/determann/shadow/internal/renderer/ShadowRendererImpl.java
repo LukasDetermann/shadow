@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Declared;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ShadowRendererImpl
 {

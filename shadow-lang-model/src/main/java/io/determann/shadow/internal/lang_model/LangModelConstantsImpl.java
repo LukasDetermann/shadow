@@ -2,10 +2,10 @@ package io.determann.shadow.internal.lang_model;
 
 import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Null;
-import io.determann.shadow.api.shadow.Primitive;
-import io.determann.shadow.api.shadow.Void;
-import io.determann.shadow.api.shadow.Wildcard;
+import io.determann.shadow.api.shadow.type.Null;
+import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.api.shadow.type.Wildcard;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.getTypes;

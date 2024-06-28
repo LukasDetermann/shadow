@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.GenericLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeMirror;
@@ -16,8 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.request;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.request;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLangModel
 {

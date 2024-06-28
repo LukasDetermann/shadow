@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.reflection;
 
-import io.determann.shadow.api.modifier.Modifier;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 
 import java.util.*;
 import java.util.function.IntFunction;

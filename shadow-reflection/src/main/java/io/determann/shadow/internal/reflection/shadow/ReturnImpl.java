@@ -1,19 +1,19 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ReturnReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Return;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.reflection.shadow.structure.ReturnReflection;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Return;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.api.shadow.Operations.RETURN_GET_TYPE;
+import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.RETURN_GET_TYPE;
-import static io.determann.shadow.meta_meta.Provider.request;
 
 public class ReturnImpl implements ReturnReflection
 {

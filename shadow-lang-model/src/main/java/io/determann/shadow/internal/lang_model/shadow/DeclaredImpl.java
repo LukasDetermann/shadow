@@ -1,16 +1,25 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.NestingKind;
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.*;
-import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
+import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
+import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
+import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
+import io.determann.shadow.api.shadow.NestingKind;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Annotation;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Interface;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -23,8 +32,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
                                                                       EnumLangModel,

@@ -1,13 +1,18 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
-import io.determann.shadow.api.modifier.Modifier;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ParameterReflection;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.util.Arrays;
@@ -16,10 +21,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 public class ParameterImpl implements ParameterReflection
 {

@@ -1,6 +1,6 @@
 package io.determann.shadow.api.shadow.module;
 
-import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 

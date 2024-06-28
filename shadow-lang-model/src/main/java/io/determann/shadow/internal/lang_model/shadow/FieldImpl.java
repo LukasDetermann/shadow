@@ -2,8 +2,8 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.FieldLangModel;
-import io.determann.shadow.api.shadow.Declared;
+import io.determann.shadow.api.lang_model.shadow.structure.FieldLangModel;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import javax.lang.model.element.VariableElement;
 

@@ -1,16 +1,16 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.RecordReflection;
-import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.RecordComponent;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.reflection.shadow.type.RecordReflection;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static io.determann.shadow.meta_meta.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class RecordImpl extends DeclaredImpl implements RecordReflection
 {

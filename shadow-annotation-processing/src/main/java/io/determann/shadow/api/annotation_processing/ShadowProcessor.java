@@ -1,6 +1,6 @@
 package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.impl.annotation_processing.AnnotationProcessingContextImpl;
+import io.determann.shadow.internal.annotation_processing.AnnotationProcessingContextImpl;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;

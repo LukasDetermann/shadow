@@ -1,6 +1,6 @@
 package io.determann.shadow.api.annotation_processing.test;
 
-import io.determann.shadow.impl.test.ProcessorTestImpl;
+import io.determann.shadow.internal.test.ProcessorTestImpl;
 
 import javax.annotation.processing.Processor;
 import java.io.File;

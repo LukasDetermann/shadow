@@ -2,16 +2,16 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.InterfaceReflection;
-import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.Method;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
+import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.*;
 import java.util.stream.Collector;
 
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection

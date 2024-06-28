@@ -1,11 +1,11 @@
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.Nameable;
-import io.determann.shadow.api.QualifiedNameable;
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.ShadowProcessor;
-import io.determann.shadow.api.property.MutableProperty;
-import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.Nameable;
+import io.determann.shadow.api.shadow.QualifiedNameable;
+import io.determann.shadow.api.shadow.property.MutableProperty;
+import io.determann.shadow.api.shadow.type.Class;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -2,10 +2,10 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.RecordLangModel;
-import io.determann.shadow.api.shadow.Generic;
-import io.determann.shadow.api.shadow.RecordComponent;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;

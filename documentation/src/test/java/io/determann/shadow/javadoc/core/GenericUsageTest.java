@@ -1,7 +1,7 @@
 package io.determann.shadow.javadoc.core;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.Interface;
+import io.determann.shadow.api.shadow.type.Interface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

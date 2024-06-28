@@ -1,10 +1,14 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.annotationvalue.AnnotationValue;
-import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
 import io.determann.shadow.api.renderer.AnnotationUsageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValueMapper;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.type.Annotation;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +17,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {

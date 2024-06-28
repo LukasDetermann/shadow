@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.Method;
+import io.determann.shadow.api.shadow.structure.Method;
 
 import java.util.Optional;
 import java.util.function.Function;

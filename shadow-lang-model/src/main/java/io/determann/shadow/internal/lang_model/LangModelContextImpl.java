@@ -3,11 +3,13 @@ package io.determann.shadow.internal.lang_model;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.lang_model.LangModelContextImplementation;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.TypeMirror;
@@ -19,17 +21,17 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public class LangModelContextImpl implements LangModelContext
+public class LangModelContextImpl implements LangModelContext,
+                                             LangModelContextImplementation
 {
    private final Types types;
    private final Elements elements;
-
 
    public LangModelContextImpl(Types types, Elements elements)
    {
@@ -327,11 +329,13 @@ public class LangModelContextImpl implements LangModelContext
       return LangModelAdapter.generalize(this, types.getWildcardType(null, particularType(declared)));
    }
 
+   @Override
    public Types getTypes()
    {
       return types;
    }
 
+   @Override
    public Elements getElements()
    {
       return elements;

@@ -1,9 +1,9 @@
 package io.determann.shadow.api.converter;
 
-import io.determann.shadow.api.shadow.EnumConstant;
-import io.determann.shadow.api.shadow.Field;
-import io.determann.shadow.api.shadow.Parameter;
-import io.determann.shadow.api.shadow.Variable;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.structure.Field;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.structure.Variable;
 
 import java.util.Optional;
 

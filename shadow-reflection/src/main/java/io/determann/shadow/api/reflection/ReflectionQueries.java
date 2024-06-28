@@ -1,15 +1,21 @@
 package io.determann.shadow.api.reflection;
 
 import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.ModuleEnclosed;
-import io.determann.shadow.api.Nameable;
-import io.determann.shadow.api.QualifiedNameable;
-import io.determann.shadow.api.reflection.query.*;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.NameableReflection;
+import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.type.*;
+import io.determann.shadow.api.shadow.ModuleEnclosed;
+import io.determann.shadow.api.shadow.Nameable;
+import io.determann.shadow.api.shadow.QualifiedNameable;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
 import java.util.Objects;
 

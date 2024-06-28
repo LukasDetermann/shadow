@@ -1,13 +1,15 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.query.VariableLangModel;
-import io.determann.shadow.api.modifier.Modifier;
-import io.determann.shadow.api.shadow.Module;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.structure.VariableLangModel;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.Modifier;
+import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.Variable;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -16,10 +18,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.meta_meta.Operations.NAMEABLE_NAME;
-import static io.determann.shadow.meta_meta.Operations.VARIABLE_GET_TYPE;
-import static io.determann.shadow.meta_meta.Provider.request;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.VARIABLE_GET_TYPE;
+import static io.determann.shadow.api.shadow.Provider.request;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements VariableLangModel
 {

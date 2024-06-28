@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.annotationvalue.AnnotationValue;
-import io.determann.shadow.api.annotationvalue.AnnotationValueConsumer;
-import io.determann.shadow.api.annotationvalue.AnnotationValueMapper;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.EnumConstant;
-import io.determann.shadow.api.shadow.Shadow;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValueConsumer;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationValueMapper;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package io.determann.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.Class;
+import io.determann.shadow.api.shadow.type.Class;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
-            <artifactId>shadow-core</artifactId>
+            <artifactId>shadow-implementation-support</artifactId>
         </dependency>
     </dependencies>
 </project>

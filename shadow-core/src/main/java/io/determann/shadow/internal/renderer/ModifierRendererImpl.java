@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.modifier.Modifier;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

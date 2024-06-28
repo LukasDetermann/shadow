@@ -2,13 +2,13 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.PackageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Package;
+import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.PACKAGE_IS_UNNAMED;
-import static io.determann.shadow.meta_meta.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.PACKAGE_IS_UNNAMED;
+import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class PackageRendererImpl implements PackageRenderer
 {

@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Null;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Null;
 
 import javax.lang.model.type.NullType;
 import java.util.Objects;

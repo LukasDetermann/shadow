@@ -1,12 +1,20 @@
 package io.determann.shadow.api.lang_model;
 
-import io.determann.shadow.api.*;
-import io.determann.shadow.api.lang_model.query.*;
-import io.determann.shadow.api.shadow.Class;
-import io.determann.shadow.api.shadow.Enum;
-import io.determann.shadow.api.shadow.Package;
-import io.determann.shadow.api.shadow.Record;
-import io.determann.shadow.api.shadow.*;
+import io.determann.shadow.api.ImplementationDefined;
+import io.determann.shadow.api.lang_model.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.structure.*;
+import io.determann.shadow.api.lang_model.shadow.type.*;
+import io.determann.shadow.api.shadow.Documented;
+import io.determann.shadow.api.shadow.ModuleEnclosed;
+import io.determann.shadow.api.shadow.Nameable;
+import io.determann.shadow.api.shadow.QualifiedNameable;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
 import java.util.Objects;
 

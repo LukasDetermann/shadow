@@ -1,21 +1,21 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.TypeKind;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.query.ShadowReflection;
-import io.determann.shadow.api.reflection.query.WildcardReflection;
-import io.determann.shadow.api.shadow.Shadow;
-import io.determann.shadow.api.shadow.Wildcard;
-import io.determann.shadow.meta_meta.Provider;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
+import io.determann.shadow.api.reflection.shadow.type.WildcardReflection;
+import io.determann.shadow.api.shadow.Provider;
+import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.Wildcard;
 
 import java.lang.reflect.WildcardType;
 import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.converter.Converter.convert;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
 
 
 public class WildcardImpl implements Wildcard,

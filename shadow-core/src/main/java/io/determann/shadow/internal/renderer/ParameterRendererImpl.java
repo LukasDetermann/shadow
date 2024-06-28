@@ -2,12 +2,12 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.ParameterRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.Parameter;
+import io.determann.shadow.api.shadow.structure.Parameter;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.meta_meta.Operations.*;
-import static io.determann.shadow.meta_meta.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ParameterRendererImpl implements ParameterRenderer
 {
