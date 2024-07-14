@@ -1,9 +1,7 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.module.Directive;
@@ -23,10 +21,7 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static java.util.Collections.unmodifiableList;
 
 
-public class ModuleImpl implements Module,
-                                   NameableReflection,
-                                   ShadowReflection,
-                                   QualifiedNameableReflection
+public class ModuleImpl implements ModuleReflection
 {
    private final List<AnnotationUsage> annotationUsages;
    private final NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier;

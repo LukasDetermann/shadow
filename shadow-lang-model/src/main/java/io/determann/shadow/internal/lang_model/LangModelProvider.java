@@ -112,6 +112,11 @@ public class LangModelProvider extends AbstractProvider
              .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing())
              .with(ANNOTATION_USAGE_GET_VALUES, annotationUsage -> query(annotationUsage).getValues())
              .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s))
-             .with(ANNOTATION_USAGE_GET_ANNOTATION, annotationUsage -> query(annotationUsage).getAnnotation());
+             .with(ANNOTATION_USAGE_GET_ANNOTATION, annotationUsage -> query(annotationUsage).getAnnotation())
+             .with(MODULE_GET_PACKAGES, module -> query(module).getPackages())
+             .with(MODULE_IS_OPEN, module -> query(module).isOpen())
+             .with(MODULE_IS_UNNAMED, module -> query(module).isUnnamed())
+             .with(MODULE_IS_AUTOMATIC, module -> query(module).isAutomatic())
+             .with(MODULE_GET_DIRECTIVES, module -> query(module).getDirectives());
    }
 }

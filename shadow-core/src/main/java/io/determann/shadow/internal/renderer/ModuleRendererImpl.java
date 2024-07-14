@@ -12,8 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.PACKAGE_IS_UNNAMED;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
@@ -32,7 +31,7 @@ public class ModuleRendererImpl implements ModuleRenderer
    @Override
    public String declaration()
    {
-      if (module.isUnnamed())
+      if (requestOrThrow(module, MODULE_IS_UNNAMED))
       {
          throw new IllegalArgumentException("cant render a unnamed module");
       }
@@ -47,7 +46,7 @@ public class ModuleRendererImpl implements ModuleRenderer
                          .collect(Collectors.joining()));
       }
 
-      if (module.isOpen())
+      if (requestOrThrow(module, MODULE_IS_OPEN))
       {
          sb.append("open ");
       }
@@ -56,7 +55,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       sb.append(requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       sb.append(" {\n");
 
-      Map<DirectiveKind, List<Directive>> kind = module.getDirectives()
+      Map<DirectiveKind, List<Directive>> kind = requestOrThrow(module, MODULE_GET_DIRECTIVES)
                                                        .stream()
                                                        .collect(groupingBy(Directive::getKind));
 

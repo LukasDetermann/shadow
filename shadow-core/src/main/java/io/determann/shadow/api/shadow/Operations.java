@@ -2,6 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.module.Directive;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -196,4 +197,14 @@ public interface Operations
    public static Operation1<AnnotationUsage, String, AnnotationValue> ANNOTATION_USAGE_GET_VALUE = new Operation1<>("annotationUsage.getValue");
 
    public static Operation0<AnnotationUsage, Annotation> ANNOTATION_USAGE_GET_ANNOTATION = new Operation0<>("annotationUsage.getAnnotation");
+
+   public static Operation0<Module, List<Package>> MODULE_GET_PACKAGES = new Operation0<>("module.getPackages");
+
+   public static Operation0<Module, Boolean> MODULE_IS_OPEN = new Operation0<>("module.isOpen");
+
+   public static Operation0<Module, Boolean> MODULE_IS_UNNAMED = new Operation0<>("module.isUnnamed");
+
+   public static Operation0<Module, Boolean> MODULE_IS_AUTOMATIC = new Operation0<>("module.isAutomatic");
+
+   public static Operation0<Module, List<Directive>> MODULE_GET_DIRECTIVES = new Operation0<>("module.getDirectives");
 }

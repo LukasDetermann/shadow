@@ -10,6 +10,7 @@ import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Class;
@@ -152,6 +153,11 @@ public interface ReflectionQueries
    public static AnnotationUsageReflection query(AnnotationUsage annotationUsage)
    {
       return (AnnotationUsageReflection) validate(annotationUsage);
+   }
+
+   public static ModuleReflection query(Module module)
+   {
+      return (ModuleReflection) validate(module);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

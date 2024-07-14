@@ -9,6 +9,7 @@ import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Class;
@@ -156,6 +157,11 @@ public interface LangModelQueries
    public static AnnotationUsageLangModel query(AnnotationUsage annotationUsage)
    {
       return (AnnotationUsageLangModel) validate(annotationUsage);
+   }
+
+   public static ModuleLangModel query(Module module)
+   {
+      return (ModuleLangModel) validate(module);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

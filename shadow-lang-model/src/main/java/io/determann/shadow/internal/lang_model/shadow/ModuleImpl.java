@@ -4,9 +4,7 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.module.Directive;
@@ -33,10 +31,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl extends ShadowImpl<NoType> implements Module,
-                                                              NameableLangModel,
-                                                              QualifiedNameableLamgModel,
-                                                              DocumentedLangModel
+public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
 {
    private final ModuleElement moduleElement;
 

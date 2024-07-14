@@ -1,9 +1,12 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
 import io.determann.shadow.api.shadow.structure.Module;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,28 +21,28 @@ class ModuleTest extends ShadowTest<Module>
    void testGetPackages()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("java.util.logging"),
-                                                      shadowApi.getModuleOrThrow("java.logging").getPackages()))
+                                                      query(shadowApi.getModuleOrThrow("java.logging")).getPackages()))
                    .compile();
    }
 
    @Test
    void testIsOpen()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getModules().stream().noneMatch(Module::isOpen)))
+      ProcessorTest.process(context -> assertTrue(context.getModules().stream().map(LangModelQueries::query).noneMatch(ModuleLangModel::isOpen)))
                    .compile();
    }
 
    @Test
    void testIsUnnamed()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(1, shadowApi.getModules().stream().filter(Module::isUnnamed).count()))
+      ProcessorTest.process(shadowApi -> assertEquals(1, shadowApi.getModules().stream().map(LangModelQueries::query).filter(ModuleLangModel::isUnnamed).count()))
                    .compile();
    }
 
    @Test
    void testIsAutomatic()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getModules().stream().noneMatch(Module::isAutomatic)))
+      ProcessorTest.process(shadowApi -> assertTrue(shadowApi.getModules().stream().map(LangModelQueries::query).noneMatch(ModuleLangModel::isAutomatic)))
                    .compile();
    }
 
@@ -49,7 +52,7 @@ class ModuleTest extends ShadowTest<Module>
       ProcessorTest.process(shadowApi ->
                                   assertEquals(
                                         "[Requires[[ACC_MANDATED (0x8000],java.base], Exports[java.util.logging], Provides[jdk.internal.logger.DefaultLoggerFinder,sun.util.logging.internal.LoggingProviderImpl]]",
-                                        shadowApi.getModuleOrThrow("java.logging").getDirectives().toString()))
+                                        query(shadowApi.getModuleOrThrow("java.logging")).getDirectives().toString()))
                    .compile();
    }
 }
