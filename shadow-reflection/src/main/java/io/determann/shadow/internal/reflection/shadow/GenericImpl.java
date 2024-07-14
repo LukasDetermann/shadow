@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Generic;
@@ -16,7 +17,6 @@ import java.util.Optional;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
@@ -93,7 +93,7 @@ public class GenericImpl implements GenericReflection
                    .map(generic ->
                         {
                            Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
-                           Optional<Shadow> aSuper = request(generic, GENERIC_GET_SUPER);
+                           Optional<Shadow> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
 
                            return requestOrThrow(aExtends, SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
                                   ((aSuper.isEmpty() && getSuper().isEmpty()) ||
@@ -128,9 +128,9 @@ public class GenericImpl implements GenericReflection
          return false;
       }
 
-      return request(otherGeneric, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             request(otherGeneric, GENERIC_GET_EXTENDS).map(name -> Objects.equals(getExtends(), name)).orElse(false) &&
-             Objects.equals(request(otherGeneric, GENERIC_GET_SUPER), getSuper());
+      return Provider.requestOrEmpty(otherGeneric, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+             Provider.requestOrEmpty(otherGeneric, GENERIC_GET_EXTENDS).map(name -> Objects.equals(getExtends(), name)).orElse(false) &&
+             Objects.equals(Provider.requestOrEmpty(otherGeneric, GENERIC_GET_SUPER), getSuper());
    }
 
    public TypeVariable<?> getReflection()

@@ -70,7 +70,8 @@ public class PropertyTemplateFactory
 
    public static List<PropertyTemplate> templatesFor(Declared declared)
    {
-      Map<String, Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field, NAMEABLE_NAME), Function.identity()));
+      Map<String, Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field,
+                                                                                                                                             NAMEABLE_GET_NAME), Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -174,7 +175,7 @@ public class PropertyTemplateFactory
 
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
-      String name = requestOrThrow(method, NAMEABLE_NAME);
+      String name = requestOrThrow(method, NAMEABLE_GET_NAME);
       List<Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
       Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
@@ -213,7 +214,7 @@ public class PropertyTemplateFactory
 
    private static String toPropertyName(Method method, String prefix)
    {
-      String name = requestOrThrow(method, NAMEABLE_NAME).substring(prefix.length());
+      String name = requestOrThrow(method, NAMEABLE_GET_NAME).substring(prefix.length());
 
       //java beans 8.8
       if (name.length() > 1 && isUpperCase(name.charAt(0)) && isUpperCase(name.charAt(1)))

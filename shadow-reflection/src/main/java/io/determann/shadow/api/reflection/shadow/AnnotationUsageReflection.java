@@ -8,7 +8,7 @@ import io.determann.shadow.api.shadow.type.Annotation;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
@@ -29,7 +29,7 @@ public interface AnnotationUsageReflection extends AnnotationUsage
    {
       return getValues().entrySet()
                         .stream()
-                        .filter(entry -> requestOrThrow(entry.getKey(), NAMEABLE_NAME).equals(methodName))
+                        .filter(entry -> requestOrThrow(entry.getKey(), NAMEABLE_GET_NAME).equals(methodName))
                         .map(Map.Entry::getValue)
                         .findAny();
    }

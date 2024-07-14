@@ -8,8 +8,8 @@ import io.determann.shadow.api.shadow.type.Wildcard;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_EXTENDS;
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_SUPER;
+import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_EXTENDS;
+import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_SUPER;
 
 public class WildcardRendererImpl implements WildcardRenderer
 {
@@ -25,13 +25,13 @@ public class WildcardRendererImpl implements WildcardRenderer
 
    static String type(RenderingContextWrapper context, Wildcard wildcard)
    {
-      Optional<Shadow> wildcardExtends = Provider.request(wildcard, WILDCARD_EXTENDS);
+      Optional<Shadow> wildcardExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
       if (wildcardExtends.isPresent())
       {
          return "? extends " + ShadowRendererImpl.type(context, wildcardExtends.get());
       }
 
-      Optional<Shadow> wildcardSuper = Provider.request(wildcard, WILDCARD_SUPER);
+      Optional<Shadow> wildcardSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
       if (wildcardSuper.isPresent())
       {
          return "? super " + ShadowRendererImpl.type(context, wildcardSuper.get());

@@ -44,8 +44,8 @@ public class WildcardImpl implements Wildcard,
          return false;
       }
       Wildcard wildcard = possibleWildcard.get();
-      Optional<Shadow> otherExtends = Provider.request(wildcard, WILDCARD_EXTENDS);
-      Optional<Shadow> otherSuper = Provider.request(wildcard, WILDCARD_SUPER);
+      Optional<Shadow> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
+      Optional<Shadow> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
 
 
       if ((getExtends().isEmpty() && getSuper().isEmpty()) || (otherExtends.isEmpty() && otherSuper.isEmpty()))
@@ -122,8 +122,8 @@ public class WildcardImpl implements Wildcard,
       {
          return false;
       }
-      return Objects.equals(getExtends(), Provider.request(otherWildcard, WILDCARD_EXTENDS)) &&
-             Objects.equals(getSuper(), Provider.request(otherWildcard, WILDCARD_SUPER));
+      return Objects.equals(getExtends(), Provider.requestOrEmpty(otherWildcard, WILDCARD_GET_EXTENDS)) &&
+             Objects.equals(getSuper(), Provider.requestOrEmpty(otherWildcard, WILDCARD_GET_SUPER));
    }
 
    public WildcardType getReflection()

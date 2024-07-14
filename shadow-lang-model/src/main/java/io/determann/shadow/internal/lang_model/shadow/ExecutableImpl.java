@@ -6,6 +6,7 @@ import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.MethodLangMethod;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -27,7 +28,6 @@ import java.util.Set;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
@@ -240,7 +240,7 @@ public class ExecutableImpl implements ConstructorLangModel,
       {
          return false;
       }
-      return request(otherExecutable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));

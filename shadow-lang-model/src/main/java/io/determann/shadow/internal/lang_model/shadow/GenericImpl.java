@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Generic;
@@ -17,7 +18,6 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 
 public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLangModel
 {
@@ -112,8 +112,8 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLang
       {
          return false;
       }
-      return request(otherGeneric, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             request(otherGeneric, GENERIC_GET_EXTENDS).map(name -> Objects.equals(getExtends(), name)).orElse(false) &&
-             Objects.equals(request(otherGeneric, GENERIC_GET_SUPER), getSuper());
+      return Provider.requestOrEmpty(otherGeneric, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+             Provider.requestOrEmpty(otherGeneric, GENERIC_GET_EXTENDS).map(name -> Objects.equals(getExtends(), name)).orElse(false) &&
+             Objects.equals(Provider.requestOrEmpty(otherGeneric, GENERIC_GET_SUPER), getSuper());
    }
 }

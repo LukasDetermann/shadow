@@ -45,7 +45,7 @@ public class ClassRendererImpl implements ClassRenderer
       }
       sb.append("class");
       sb.append(' ');
-      sb.append(requestOrThrow(aClass, NAMEABLE_NAME));
+      sb.append(requestOrThrow(aClass, NAMEABLE_GET_NAME));
 
       List<Generic> generics = requestOrThrow(aClass, CLASS_GET_GENERICS);
       if (!generics.isEmpty())

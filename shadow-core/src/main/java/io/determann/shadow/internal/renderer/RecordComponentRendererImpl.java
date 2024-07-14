@@ -33,14 +33,14 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       }
       sb.append(ShadowRendererImpl.type(context, requestOrThrow(recordComponent, RECORD_COMPONENT_GET_TYPE)))
         .append(' ')
-        .append(requestOrThrow(recordComponent, NAMEABLE_NAME));
+        .append(requestOrThrow(recordComponent, NAMEABLE_GET_NAME));
 
       return sb.toString();
    }
 
    public static String invocation(RenderingContextWrapper context, RecordComponent recordComponent)
    {
-      return requestOrThrow(requestOrThrow(recordComponent, RECORD_COMPONENT_GET_GETTER), NAMEABLE_NAME) + "()";
+      return requestOrThrow(requestOrThrow(recordComponent, RECORD_COMPONENT_GET_GETTER), NAMEABLE_GET_NAME) + "()";
    }
 
    @Override

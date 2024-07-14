@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.ConstructorReflection;
 import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
@@ -241,7 +241,7 @@ public class ExecutableImpl implements ConstructorReflection,
 
    private boolean isSubSignature(Executable executable)
    {
-      return request(executable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return Provider.requestOrEmpty(executable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              (getParameterTypes().equals(requestOrThrow(executable, EXECUTABLE_GET_PARAMETER_TYPES)));
    }
 
@@ -282,7 +282,7 @@ public class ExecutableImpl implements ConstructorReflection,
       {
          return false;
       }
-      return request(otherExecutable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
              Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));

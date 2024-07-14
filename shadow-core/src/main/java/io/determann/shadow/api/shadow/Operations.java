@@ -21,13 +21,13 @@ public interface Operations
 
    public static Operation1<Shadow, Shadow, Boolean> SHADOW_REPRESENTS_SAME_TYPE = new Operation1<>("shadow.representsSameType");
 
-   public static Operation0<Nameable, String> NAMEABLE_NAME = new Operation0<>("nameable.name");
+   public static Operation0<Nameable, String> NAMEABLE_GET_NAME = new Operation0<>("nameable.getName");
 
    public static Operation0<QualifiedNameable, String> QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME = new Operation0<>("qualifiedNameable.getQualifiedName");
 
-   public static Operation0<Wildcard, Shadow> WILDCARD_EXTENDS = new Operation0<>("wildcard.extends");
+   public static Operation0<Wildcard, Shadow> WILDCARD_GET_EXTENDS = new Operation0<>("wildcard.getExtends");
 
-   public static Operation0<Wildcard, Shadow> WILDCARD_SUPER = new Operation0<>("wildcard.super");
+   public static Operation0<Wildcard, Shadow> WILDCARD_GET_SUPER = new Operation0<>("wildcard.getSuper");
 
    public static Operation0<Primitive, Shadow> PRIMITIVE_AS_BOXED = new Operation0<>("primitive.asBoxed");
 

@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.ReturnLangModel;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Return;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.shadow.Operations.RETURN_GET_TYPE;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class ReturnImpl implements ReturnLangModel
@@ -66,7 +66,7 @@ public class ReturnImpl implements ReturnLangModel
       {
          return false;
       }
-      return request(otherReturn, RETURN_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherReturn, RETURN_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 
    @Override

@@ -50,7 +50,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       {
          sb.append('(');
          sb.append(methods.stream()
-                          .map(method -> requestOrThrow(method, NAMEABLE_NAME) +
+                          .map(method -> requestOrThrow(method, NAMEABLE_GET_NAME) +
                                          " = " +
                                          valueRenderer.apply(method).orElseGet(() ->
                                                                                {

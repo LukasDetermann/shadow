@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Method;
@@ -17,9 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Operations.RECORD_COMPONENT_GET_TYPE;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.TypeKind.RECORD_COMPONENT;
 
 public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements RecordComponentLangModel
@@ -126,7 +126,7 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
       {
          return false;
       }
-      return request(otherRecordComponent, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             request(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 }

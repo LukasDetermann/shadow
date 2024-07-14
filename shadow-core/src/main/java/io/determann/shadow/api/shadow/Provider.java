@@ -19,25 +19,22 @@ public class Provider
 
    private static Map<String, ProviderSpi> providers;
 
+   public static <TYPE extends ImplementationDefined, RESULT> Response<RESULT> request(TYPE instance, Operation0<TYPE, RESULT> operation)
+   {
+      return _request(instance, operation);
+   }
+
    public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(TYPE instance, Operation0<TYPE, RESULT> operation)
    {
       return switch (_request(instance, operation))
       {
          case Response.Result<RESULT>(RESULT result) -> result;
-         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.getName() +
-                                                                                        " not supported for " +
-                                                                                        instance +
-                                                                                        " with implementation " +
-                                                                                        instance.getImplementationName());
-         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.getName() +
-                                                                           " does not return a value for " +
-                                                                           instance +
-                                                                           " with implementation " +
-                                                                           instance.getImplementationName());
+         case Response.Unsupported<RESULT> v -> throw unsupported(instance, operation);
+         case Response.Empty<RESULT> v -> throw noSuchElement(instance, operation);
       };
    }
 
-   public static <TYPE extends ImplementationDefined, RESULT> Optional<RESULT> request(TYPE instance, Operation0<TYPE, RESULT> operation)
+   public static <TYPE extends ImplementationDefined, RESULT> Optional<RESULT> requestOrEmpty(TYPE instance, Operation0<TYPE, RESULT> operation)
    {
       return switch (_request(instance, operation))
       {
@@ -47,6 +44,13 @@ public class Provider
       };
    }
 
+   public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> Response<RESULT> request(TYPE instance,
+                                                                                                Operation1<TYPE, PARAM_1, RESULT> operation,
+                                                                                                PARAM_1 param1)
+   {
+      return _request(instance, operation, param1);
+   }
+
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> RESULT requestOrThrow(TYPE instance,
                                                                                              Operation1<TYPE, PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
@@ -54,22 +58,14 @@ public class Provider
       return switch (_request(instance, operation, param1))
       {
          case Response.Result<RESULT>(RESULT result) -> result;
-         case Response.Unsupported<RESULT> v -> throw new UnsupportedOperationException(operation.getName() +
-                                                                                        " not supported for " +
-                                                                                        instance +
-                                                                                        " with implementation " +
-                                                                                        instance.getImplementationName());
-         case Response.Empty<RESULT> v -> throw new NoSuchElementException(operation.getName() +
-                                                                           " does not return a value for " +
-                                                                           instance +
-                                                                           " with implementation " +
-                                                                           instance.getImplementationName());
+         case Response.Unsupported<RESULT> v -> throw unsupported(instance, operation);
+         case Response.Empty<RESULT> v -> throw noSuchElement(instance, operation);
       };
    }
 
-   public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> Optional<RESULT> request(TYPE instance,
-                                                                                                Operation1<TYPE, PARAM_1, RESULT> operation,
-                                                                                                PARAM_1 param1)
+   public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> Optional<RESULT> requestOrEmpty(TYPE instance,
+                                                                                                       Operation1<TYPE, PARAM_1, RESULT> operation,
+                                                                                                       PARAM_1 param1)
    {
       return switch (_request(instance, operation, param1))
       {
@@ -102,5 +98,25 @@ public class Provider
                                   .map(ServiceLoader.Provider::get)
                                   .collect(Collectors.toMap(ProviderSpi::getImplementationName, Function.identity()));
       }
+   }
+
+   private static <TYPE extends ImplementationDefined, PARAM_1, RESULT> NoSuchElementException noSuchElement(TYPE instance,
+                                                                                                             Operation<TYPE, RESULT> operation)
+   {
+      return new NoSuchElementException(operation.getName() +
+                                        " does not return a value for " +
+                                        instance +
+                                        " with implementation " +
+                                        instance.getImplementationName());
+   }
+
+   private static <TYPE extends ImplementationDefined, PARAM_1, RESULT> UnsupportedOperationException unsupported(TYPE instance,
+                                                                                                                  Operation<TYPE, RESULT> operation)
+   {
+      return new UnsupportedOperationException(operation.getName() +
+                                               " not supported for " +
+                                               instance +
+                                               " with implementation " +
+                                               instance.getImplementationName());
    }
 }

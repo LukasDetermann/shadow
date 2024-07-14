@@ -2,6 +2,7 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.ConstructorRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Class;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
@@ -56,12 +56,12 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       sb.append('(');
 
       List<Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
-      request(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
-            .ifPresent(declared ->
+      Provider.requestOrEmpty(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
+              .ifPresent(declared ->
                        {
                           sb.append(ShadowRendererImpl.type(context, declared));
                           sb.append(' ');
-                          sb.append(requestOrThrow(declared, NAMEABLE_NAME));
+                          sb.append(requestOrThrow(declared, NAMEABLE_GET_NAME));
                           sb.append('.');
                           sb.append("this");
                           if (!parameters.isEmpty())

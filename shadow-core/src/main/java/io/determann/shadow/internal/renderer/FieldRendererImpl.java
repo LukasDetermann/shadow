@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.structure.Field;
 
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Operations.VARIABLE_GET_TYPE;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -39,7 +39,7 @@ public class FieldRendererImpl implements FieldRenderer
       }
       sb.append(ShadowRendererImpl.type(context, requestOrThrow(field, VARIABLE_GET_TYPE)));
       sb.append(' ');
-      sb.append(requestOrThrow(field, NAMEABLE_NAME));
+      sb.append(requestOrThrow(field, NAMEABLE_GET_NAME));
       sb.append(';');
       sb.append('\n');
 

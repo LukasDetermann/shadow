@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class AnnotationRendererImpl implements AnnotationRenderer
@@ -44,7 +44,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
       }
       sb.append("@interface");
       sb.append(' ');
-      sb.append(requestOrThrow(annotation, NAMEABLE_NAME));
+      sb.append(requestOrThrow(annotation, NAMEABLE_GET_NAME));
       sb.append(" {");
       if (!content.isEmpty())
       {

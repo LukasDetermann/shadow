@@ -44,17 +44,17 @@ public class GenericRendererImpl implements GenericRenderer
                .map(declared -> "java.lang.Object".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
                .orElse(false))
          {
-            sb.append(requestOrThrow(generic, NAMEABLE_NAME));
+            sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME));
          }
          else
          {
-            sb.append(requestOrThrow(generic, NAMEABLE_NAME)).append(" extends ").append(ShadowRendererImpl.type(context, aExtends));
+            sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME)).append(" extends ").append(ShadowRendererImpl.type(context, aExtends));
          }
          context.setRenderNestedGenerics(true);
       }
       else
       {
-         sb.append(requestOrThrow(generic, NAMEABLE_NAME));
+         sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME));
       }
       return sb.toString();
    }
@@ -68,6 +68,6 @@ public class GenericRendererImpl implements GenericRenderer
    @Override
    public String type()
    {
-      return requestOrThrow(generic, NAMEABLE_NAME);
+      return requestOrThrow(generic, NAMEABLE_GET_NAME);
    }
 }

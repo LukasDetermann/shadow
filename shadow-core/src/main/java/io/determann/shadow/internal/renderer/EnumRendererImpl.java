@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.DECLARED_GET_DIRECT_INTERFACES;
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -48,7 +48,7 @@ public class EnumRendererImpl implements EnumRenderer
       }
       sb.append("enum");
       sb.append(' ');
-      sb.append(requestOrThrow(anEnum, NAMEABLE_NAME));
+      sb.append(requestOrThrow(anEnum, NAMEABLE_GET_NAME));
       sb.append(' ');
 
       List<Interface> directInterfaces = requestOrThrow(anEnum, DECLARED_GET_DIRECT_INTERFACES);

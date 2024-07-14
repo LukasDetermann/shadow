@@ -51,7 +51,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
       sb.append("record");
       sb.append(' ');
-      sb.append(requestOrThrow(aRecord, NAMEABLE_NAME));
+      sb.append(requestOrThrow(aRecord, NAMEABLE_GET_NAME));
 
       List<Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
       if (!generics.isEmpty())

@@ -17,7 +17,7 @@ import io.determann.shadow.api.shadow.type.Shadow;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -51,14 +51,14 @@ public interface DeclaredReflection extends Declared,
 
    default Field getFieldOrThrow(String simpleName)
    {
-      return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_NAME).equals(simpleName)).findAny().orElseThrow();
+      return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
    List<Field> getFields();
 
    default List<Method> getMethods(String simpleName)
    {
-      return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_NAME).equals(simpleName)).toList();
+      return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).toList();
    }
 
    List<Method> getMethods();

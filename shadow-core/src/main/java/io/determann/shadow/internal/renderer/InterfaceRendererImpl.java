@@ -47,7 +47,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       }
       sb.append("interface");
       sb.append(' ');
-      sb.append(requestOrThrow(anInterface, NAMEABLE_NAME));
+      sb.append(requestOrThrow(anInterface, NAMEABLE_GET_NAME));
 
       List<Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
       if (!generics.isEmpty())

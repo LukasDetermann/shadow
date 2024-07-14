@@ -17,7 +17,7 @@ import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
@@ -47,7 +47,7 @@ public interface ExecutableLangModel extends Annotationable,
 
    default Parameter getParameterOrThrow(String name)
    {
-      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_NAME).equals(name)).findAny().orElseThrow();
+      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_GET_NAME).equals(name)).findAny().orElseThrow();
    }
 
    /**

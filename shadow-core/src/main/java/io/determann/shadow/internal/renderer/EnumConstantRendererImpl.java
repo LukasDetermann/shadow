@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.structure.EnumConstant;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.ENUM_CONSTANT_GET_SURROUNDING;
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_NAME;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
@@ -32,7 +32,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
                                .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                                .collect(Collectors.joining()));
       }
-      sb.append(requestOrThrow(enumConstant, NAMEABLE_NAME));
+      sb.append(requestOrThrow(enumConstant, NAMEABLE_GET_NAME));
       if (!parameters.isEmpty())
       {
          sb.append('(');
@@ -55,7 +55,8 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
 
    public static String type(RenderingContextWrapper context, EnumConstant enumConstant)
    {
-      return context.renderName(requestOrThrow(enumConstant, ENUM_CONSTANT_GET_SURROUNDING)) + '.' + requestOrThrow(enumConstant, NAMEABLE_NAME);
+      return context.renderName(requestOrThrow(enumConstant, ENUM_CONSTANT_GET_SURROUNDING)) + '.' + requestOrThrow(enumConstant,
+                                                                                                                    NAMEABLE_GET_NAME);
    }
 
    @Override

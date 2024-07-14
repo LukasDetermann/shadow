@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
@@ -22,7 +23,6 @@ import java.util.Set;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
@@ -167,7 +167,7 @@ public class ParameterImpl implements ParameterReflection
       {
          return false;
       }
-      return request(otherVariable, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return Provider.requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
              Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
              Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));

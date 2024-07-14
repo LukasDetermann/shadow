@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.RecordComponentReflection;
+import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Method;
@@ -18,7 +19,6 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
@@ -150,8 +150,8 @@ public class RecordComponentImpl implements RecordComponentReflection
       {
          return false;
       }
-      return request(otherRecordComponent, NAMEABLE_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             request(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getReflection()

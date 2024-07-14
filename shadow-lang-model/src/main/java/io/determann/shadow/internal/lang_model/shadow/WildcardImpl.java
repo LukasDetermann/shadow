@@ -13,8 +13,8 @@ import javax.lang.model.type.WildcardType;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_EXTENDS;
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_SUPER;
+import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_EXTENDS;
+import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_SUPER;
 
 public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
                                                                       WildcardLangModel
@@ -76,7 +76,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
       {
          return false;
       }
-      return Objects.equals(getExtends(), Provider.request(otherWildcard, WILDCARD_EXTENDS)) &&
-             Objects.equals(getSuper(), Provider.request(otherWildcard, WILDCARD_SUPER));
+      return Objects.equals(getExtends(), Provider.requestOrEmpty(otherWildcard, WILDCARD_GET_EXTENDS)) &&
+             Objects.equals(getSuper(), Provider.requestOrEmpty(otherWildcard, WILDCARD_GET_SUPER));
    }
 }

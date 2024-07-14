@@ -66,7 +66,7 @@ public interface RenderingContext
             Package aPackage = requestOrThrow(declared, DECLARED_GET_PACKAGE);
             if (!requestOrThrow(aPackage, PACKAGE_IS_UNNAMED) && requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang"))
             {
-               return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_NAME), false);
+               return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_GET_NAME), false);
             }
             return new NameRenderedEvent(declared, requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME), true);
          };
@@ -97,7 +97,7 @@ public interface RenderingContext
        */
       public Builder withSimpleNames()
       {
-         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_NAME), false);
+         nameRenderer = declared -> new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_GET_NAME), false);
          return this;
       }
 

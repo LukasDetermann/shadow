@@ -36,13 +36,13 @@ public class ParameterRendererImpl implements ParameterRenderer
       {
          sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append("... ")
-           .append(requestOrThrow(parameter, NAMEABLE_NAME));
+           .append(requestOrThrow(parameter, NAMEABLE_GET_NAME));
       }
       else
       {
          sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append(' ')
-           .append(requestOrThrow(parameter, NAMEABLE_NAME));
+           .append(requestOrThrow(parameter, NAMEABLE_GET_NAME));
       }
       return sb.toString();
    }
