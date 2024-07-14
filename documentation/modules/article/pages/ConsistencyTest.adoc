@@ -1,0 +1,311 @@
+= Testing the Consistency of Reflection and Annotation processing
+
+== Intro
+
+Java SE and the Java ecosystem offer a multitude of meta programming APIs.
+They serve the same purpose just in different contexts.
+Annotation processing to analyse classes in the during compilation process, or Reflection to do the same at runtime.
+They have context dependent differences.
+Type erasure for example.
+Some Type information is lost at the end of the compilation and no longer present at runtime.
+`+Map<Long, List<String>>+` at compiletime becomes just `+Map+` at runtime.
+With these differences acounted for, there is still a lot of API surface left that should be consistent.
+But is it?
+
+
+This project is an Abstraction for meta-programming.
+
+image::Overview.svg[width= 80%]
+
+=== The Api
+
+The Api is request based.
+As a caller you can request for example a field of a class.
+Accessing fields may or may not be supported.
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=request]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=request]
+endif::[]
+----
+
+Or use a convenience method if `+Optional.empty()+` or throwing an Exception is a fitting default behavior.
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=requestOrEmpty]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=requestOrEmpty]
+endif::[]
+----
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=requestOrThrow]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=requestOrThrow]
+endif::[]
+----
+
+=== Consistency Tests
+
+Testing consistency works like this.
+We start with a String representation of some code.
+This code gets compiled using the `+javax.tools.JavaCompiler+` and the Annotation processing part is executed and tested with the consumer supplied to the method "test".
+The compiled code is intercepted and loaded with a custom Classloader into the runtime.
+There the reflection part is executed and tested with the same consumer.
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=consistency]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=consistency]
+endif::[]
+----
+
+This tests:
+
+* Feature
+** class rendering
+* Api
+** `+request(NAMEABLE_GET_NAME, class)+` and others used internally by the render
+* Adapters
+** `+ReflectionAdapter#generalize+`
+** `+LangModelAdapter#generalize+`
+* Java
+** `+java.lang.Class#getSimpleName+`
+** `+javax.lang.model.element.TypeElement#getSimpleName+`
+
+
+== Findings
+
+=== 1. Provides directive duplicates
+
+With the java platform module system you can enforce encapsulation.
+One way is to declare the implementations of service provider interfaces (Spi) using "provides [Spi-Name] with [Implementation-Name]".
+
+For the module java.desktop this looks like this:
+[%linenums,java]
+----
+module java.desktop {
+
+   //...
+
+    provides javax.sound.midi.spi.MidiDeviceProvider with
+        com.sun.media.sound.MidiInDeviceProvider,
+        com.sun.media.sound.MidiOutDeviceProvider,
+        com.sun.media.sound.RealTimeSequencerProvider,
+        com.sun.media.sound.SoftProvider;
+    provides javax.sound.midi.spi.MidiFileReader with
+        com.sun.media.sound.StandardMidiFileReader;
+    provides javax.sound.midi.spi.MidiFileWriter with
+        com.sun.media.sound.StandardMidiFileWriter;
+    provides javax.sound.midi.spi.SoundbankReader with
+        com.sun.media.sound.AudioFileSoundbankReader,
+        com.sun.media.sound.DLSSoundbankReader,
+        com.sun.media.sound.JARSoundbankReader,
+        com.sun.media.sound.SF2SoundbankReader;
+
+      //...
+}
+----
+
+==== Reflection
+
+Using Reflection we can list the provides directives like this.
+
+[%linenums,java]
+----
+ModuleFinder.ofSystem()
+            .find("java.desktop")
+            .orElseThrow()
+            .descriptor()
+            .provides()
+            .toList();
+----
+
+resulting in
+
+----
+ModuleDescriptor.Provides
+    service javax.sound.midi.spi.MidiDeviceProvider
+    providers
+        com.sun.media.sound.MidiInDeviceProvider
+        com.sun.media.sound.MidiOutDeviceProvider
+        com.sun.media.sound.RealTimeSequencerProvider
+        com.sun.media.sound.SoftProvider
+ModuleDescriptor.Provides
+    service javax.sound.midi.spi.MidiFileReader
+    providers
+        com.sun.media.sound.StandardMidiFileReader
+ModuleDescriptor.Provides
+    service javax.sound.midi.spi.MidiFileWriter
+    providers
+        com.sun.media.sound.StandardMidiFileWriter
+ModuleDescriptor.Provides
+    service javax.sound.midi.spi.SoundbankReader
+    providers
+        com.sun.media.sound.AudioFileSoundbankReader
+        com.sun.media.sound.DLSSoundbankReader
+        com.sun.media.sound.JARSoundbankReader
+        com.sun.media.sound.SF2SoundbankReader
+----
+
+==== Annotation Processing
+
+Accessing the same information with Annotation Processing is a bit more work.
+
+[%linenums,java]
+----
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
+@SupportedAnnotationTypes("*")
+public class Processor extends AbstractProcessor
+{
+   @Override
+   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
+   {
+      ModuleElement javaDesktop = processingEnv.getElementUtils().getModuleElement("java.desktop");
+      javaDesktop.getDirectives()
+                 .stream()
+                 .filter(directive -> directive.getKind().equals(ModuleElement.DirectiveKind.PROVIDES))
+                 .map(ModuleElement.ProvidesDirective.class::cast)
+                 .toList();
+
+      return false;
+   }
+}
+----
+
+And the results contain duplicates.
+
+----
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.MidiDeviceProvider
+    impls
+        com.sun.media.sound.MidiInDeviceProvider
+        com.sun.media.sound.MidiOutDeviceProvider
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.MidiDeviceProvider
+    impls
+        com.sun.media.sound.MidiInDeviceProvider
+        com.sun.media.sound.MidiOutDeviceProvider
+        com.sun.media.sound.RealTimeSequencerProvider
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.MidiDeviceProvider
+    impls
+        com.sun.media.sound.MidiInDeviceProvider
+        com.sun.media.sound.MidiOutDeviceProvider
+        com.sun.media.sound.RealTimeSequencerProvider
+        com.sun.media.sound.SoftProvider
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.MidiFileReader
+    impls
+        com.sun.media.sound.StandardMidiFileReader
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.MidiFileWriter
+    impls
+        com.sun.media.sound.StandardMidiFileWriter
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.SoundbankReader
+    impls
+        com.sun.media.sound.AudioFileSoundbankReader
+        com.sun.media.sound.DLSSoundbankReader
+        com.sun.media.sound.JARSoundbankReader
+        com.sun.media.sound.SF2SoundbankReader
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.SoundbankReader
+    impls
+        com.sun.media.sound.AudioFileSoundbankReader
+        com.sun.media.sound.DLSSoundbankReader
+        com.sun.media.sound.JARSoundbankReader
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.SoundbankReader
+    impls
+        com.sun.media.sound.AudioFileSoundbankReader
+        com.sun.media.sound.DLSSoundbankReader
+ModuleElement.ProvidesDirective
+    service javax.sound.midi.spi.SoundbankReader
+    impls
+        com.sun.media.sound.AudioFileSoundbankReader
+----
+
+=== 2. Receiver Parameter
+
+Receiver parameter got introduced with java 8 and
+https://jcp.org/en/jsr/detail?id=308[JSR 308] but are very rarely used.
+To the point that I have never seen them in the wild.
+
+.The Java language Specification describes them as followed
+[quote,https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-FormalParameter]
+____
+The receiver parameter is an optional syntactic device for an instance method or an inner class's constructor. For an instance method, the receiver parameter represents the object for which the method is invoked. For an inner class's constructor, the receiver parameter represents the immediately enclosing instance of the newly constructed object. In both cases, the receiver parameter exists solely to allow the type of the represented object to be denoted in source code, so that the type may be annotated (§9.7.4). The receiver parameter is not a formal parameter; more precisely, it is not a declaration of any kind of variable (§4.12.3), it is never bound to any value passed as an argument in a method invocation expression or class instance creation expression, and it has no effect whatsoever at run time.
+____
+
+The points we will focus on are, that they can be used in two places, and are a special kind of parameter.
+
+The Handling is inconsistent in Reflection.
+
+==== Method
+
+If we get the parameter for a method like this with `+Executable#getParameters()+` the result does not contain the Receiver.
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/MethodExample.java[lines=3..]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/MethodExample.java[lines=3..]
+endif::[]
+----
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ReceiverConsistencyTest.java[tag=method]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ReceiverConsistencyTest.java[tag=method]
+endif::[]
+----
+
+==== Constructor
+
+If we get the parameter for a constructor with `+Executable#getParameters()+` the result does contain the Receiver.
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ConstructorExample.java[lines=3..]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ConstructorExample.java[lines=3..]
+endif::[]
+----
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/consistency_test/ReceiverConsistencyTest.java[tag=constructor]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/consistency_test/ReceiverConsistencyTest.java[tag=constructor]
+endif::[]
+----
+
+=== Conclusion
+
+Meta programming Apis scale with the complexity of the language.
+Java has many features.
+The Reflection and Annotation-Processing Apis cover a lot of them.
+The only inconsistencies I found are in rarely used Apis for rarely used language features.
+Both are reported.
+I'd like to support the https://openjdk.org/jeps/466[Class-File API] in the short to midterm and test its consistency too.

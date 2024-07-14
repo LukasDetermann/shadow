@@ -84,6 +84,11 @@
                 <version>0.2.0</version>
             </dependency>
             <dependency>
+                <groupId>io.determann</groupId>
+                <artifactId>shadow-consistency-test</artifactId>
+                <version>0.2.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${org.apache.commons.commons-lang3.version}</version>

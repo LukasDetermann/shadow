@@ -23,12 +23,8 @@ class ClassRendererTest
 
       ConsistencyTest.compileTime(context -> context.getClassOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
-                     .withCode("InterpolateGenericsExample.java", """
-                           public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
-                                static class IndependentGeneric<C> {}
-                                static class DependentGeneric<D extends E, E> {}
-                             }
-                            """)
+                     .withCode("InterpolateGenericsExample.java",
+                               "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}")
                      .test(aClass -> assertEquals(
                            "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}\n",
                            render(DEFAULT, aClass).declaration()));

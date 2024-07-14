@@ -1,2 +1,3 @@
 * Articles
+** xref:ConsistencyTest.adoc[Consistency Testing]
 ** xref:Meta Model.adoc[]

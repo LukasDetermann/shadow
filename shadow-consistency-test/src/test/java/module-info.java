@@ -3,6 +3,7 @@ module io.determann.shadow.consistency.test {
    requires io.determann.shadow.annotation.processing;
    requires io.determann.shadow.reflection;
    requires io.determann.shadow.implementation.support;
+   requires io.determann.shadow.consistency;
 
    requires java.desktop;
    requires java.compiler;

@@ -15,7 +15,6 @@ ext:
         mvn -B -f documentation/ clean test &&
         XCOPY documentation\src\test\java\io\determann\shadow documentation\target\antora\io\determann\shadow\ /Y /S &&
         XCOPY shadow-reflection\src\main\java\io\determann\shadow\api\reflection\ReflectionAdapter.java documentation\target\antora\io\determann\shadow\ /Y &&
-        XCOPY shadow-annotation-processing\src\main\java\io\determann\shadow\api\annotation_processing\AnnotationProcessingAdapter.java documentation\target\antora\io\determann\shadow\ /Y &&
         XCOPY shadow-lang-model\src\main\java\io\determann\shadow\api\lang_model\LangModelAdapter.java documentation\target\antora\io\determann\shadow\ /Y
     scan:
       dir: ./target/antora/io/determann/shadow

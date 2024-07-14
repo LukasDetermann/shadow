@@ -16,12 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
-            <artifactId>shadow-annotation-processing</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.determann</groupId>
-            <artifactId>shadow-reflection</artifactId>
+            <artifactId>shadow-consistency-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
