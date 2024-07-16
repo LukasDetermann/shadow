@@ -1,9 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.module;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.Directive;
 
-public abstract class DirectiveImpl implements Directive
+public abstract class DirectiveImpl
 {
    private final LangModelContext context;
 

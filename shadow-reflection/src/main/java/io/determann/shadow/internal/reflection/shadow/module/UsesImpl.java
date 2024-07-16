@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.module;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Uses;
 import io.determann.shadow.api.shadow.type.Declared;
 
@@ -23,12 +22,6 @@ public class UsesImpl implements Uses
    }
 
    @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.USES;
-   }
-
-   @Override
    public boolean equals(Object other)
    {
       if (other == this)
@@ -40,14 +33,13 @@ public class UsesImpl implements Uses
          return false;
       }
       UsesImpl otherUses = (UsesImpl) other;
-      return Objects.equals(getKind(), otherUses.getKind()) &&
-             Objects.equals(getService(), otherUses.getService());
+      return Objects.equals(getService(), otherUses.getService());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getService());
+      return Objects.hash(getService());
    }
 
    @Override

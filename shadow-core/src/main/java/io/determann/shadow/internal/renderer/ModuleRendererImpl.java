@@ -55,14 +55,21 @@ public class ModuleRendererImpl implements ModuleRenderer
       sb.append(requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       sb.append(" {\n");
 
-      Map<DirectiveKind, List<Directive>> kind = requestOrThrow(module, MODULE_GET_DIRECTIVES)
+      Map<Class<? extends Directive>, List<Directive>> kind = requestOrThrow(module, MODULE_GET_DIRECTIVES)
                                                        .stream()
-                                                       .collect(groupingBy(Directive::getKind));
+                                                       .collect(groupingBy(directive -> switch (directive)
+                                                       {
+                                                          case Exports exports -> Exports.class;
+                                                          case Opens opens -> Opens.class;
+                                                          case Provides provides -> Provides.class;
+                                                          case Requires requires -> Requires.class;
+                                                          case Uses uses -> Uses.class;
+                                                       }));
 
-      if (kind.containsKey(DirectiveKind.REQUIRES))
+      if (kind.containsKey(Requires.class))
       {
          Function<DirectiveConverter, Requires> requiresConverter = DirectiveConverter::toRequiresOrThrow;
-         List<Directive> requires = kind.get(DirectiveKind.REQUIRES)
+         List<Directive> requires = kind.get(Requires.class)
                                         .stream()
                                         .map(Converter::convert)
                                         .map(requiresConverter)
@@ -73,30 +80,30 @@ public class ModuleRendererImpl implements ModuleRenderer
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(DirectiveKind.EXPORTS))
+      if (kind.containsKey(Exports.class))
       {
-         sb.append(render(kind.get(DirectiveKind.EXPORTS),
+         sb.append(render(kind.get(Exports.class),
                           DirectiveConverter::toExportsOrThrow,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(DirectiveKind.OPENS))
+      if (kind.containsKey(Opens.class))
       {
-         sb.append(render(kind.get(DirectiveKind.OPENS),
+         sb.append(render(kind.get(Opens.class),
                           DirectiveConverter::toOpensOrThrow,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(DirectiveKind.USES))
+      if (kind.containsKey(Uses.class))
       {
-         sb.append(render(kind.get(DirectiveKind.USES),
+         sb.append(render(kind.get(Uses.class),
                           DirectiveConverter::toUsesOrThrow,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(DirectiveKind.PROVIDES))
+      if (kind.containsKey(Provides.class))
       {
-         sb.append(render(kind.get(DirectiveKind.PROVIDES),
+         sb.append(render(kind.get(Provides.class),
                           DirectiveConverter::toProvidesOrThrow,
                           this::render));
       }

@@ -5,7 +5,7 @@ import io.determann.shadow.api.shadow.structure.Module;
 /**
  * Dependency on another Module
  */
-public interface Requires extends Directive
+public non-sealed interface Requires extends Directive
 {
    /**
     * The dependent module is required at compile time and optional at runtime

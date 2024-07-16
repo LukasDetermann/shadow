@@ -3,7 +3,10 @@ package io.determann.shadow.api.shadow.module;
 /**
  * Relation between modules
  */
-public interface Directive
+public sealed interface Directive permits Exports,
+                                          Opens,
+                                          Provides,
+                                          Requires,
+                                          Uses
 {
-   DirectiveKind getKind();
 }

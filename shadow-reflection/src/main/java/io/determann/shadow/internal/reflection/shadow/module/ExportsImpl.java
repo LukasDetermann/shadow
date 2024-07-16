@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.module;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Exports;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -46,12 +45,6 @@ public class ExportsImpl implements Exports
    }
 
    @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.EXPORTS;
-   }
-
-   @Override
    public boolean equals(Object other)
    {
       if (other == this)
@@ -63,15 +56,14 @@ public class ExportsImpl implements Exports
          return false;
       }
       ExportsImpl otherExports = (ExportsImpl) other;
-      return Objects.equals(getKind(), otherExports.getKind()) &&
-             Objects.equals(getTargetModules(), otherExports.getTargetModules()) &&
+      return Objects.equals(getTargetModules(), otherExports.getTargetModules()) &&
              Objects.equals(getPackage(), otherExports.getPackage());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getPackage(), getTargetModules());
+      return Objects.hash(getPackage(), getTargetModules());
    }
 
    @Override

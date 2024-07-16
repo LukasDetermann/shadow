@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @see Uses
  */
-public interface Provides extends Directive
+public non-sealed interface Provides extends Directive
 {
    /**
     * a service to provide to other modules

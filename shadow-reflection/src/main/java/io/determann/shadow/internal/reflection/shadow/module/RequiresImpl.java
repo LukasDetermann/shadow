@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.module;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Requires;
 import io.determann.shadow.api.shadow.structure.Module;
 
@@ -37,12 +36,6 @@ public class RequiresImpl implements Requires
    }
 
    @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.REQUIRES;
-   }
-
-   @Override
    public boolean equals(Object other)
    {
       if (other == this)
@@ -54,8 +47,7 @@ public class RequiresImpl implements Requires
          return false;
       }
       RequiresImpl otherRequires = (RequiresImpl) other;
-      return Objects.equals(getKind(), otherRequires.getKind()) &&
-             Objects.equals(isStatic(), otherRequires.isStatic()) &&
+      return Objects.equals(isStatic(), otherRequires.isStatic()) &&
              Objects.equals(isTransitive(), otherRequires.isTransitive()) &&
              Objects.equals(getDependency(), otherRequires.getDependency());
    }
@@ -63,7 +55,7 @@ public class RequiresImpl implements Requires
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getDependency(), isStatic(), isTransitive());
+      return Objects.hash(getDependency(), isStatic(), isTransitive());
    }
 
    @Override

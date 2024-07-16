@@ -2,7 +2,6 @@ package io.determann.shadow.internal.lang_model.shadow.module;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Requires;
 import io.determann.shadow.api.shadow.structure.Module;
 
@@ -38,12 +37,6 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    }
 
    @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.REQUIRES;
-   }
-
-   @Override
    public boolean equals(Object other)
    {
       if (other == this)
@@ -54,8 +47,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
       {
          return false;
       }
-      return Objects.equals(getKind(), otherRequires.getKind()) &&
-             Objects.equals(isStatic(), otherRequires.isStatic()) &&
+      return Objects.equals(isStatic(), otherRequires.isStatic()) &&
              Objects.equals(isTransitive(), otherRequires.isTransitive()) &&
              Objects.equals(getDependency(), otherRequires.getDependency());
    }
@@ -63,7 +55,7 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getDependency(), isStatic(), isTransitive());
+      return Objects.hash(getDependency(), isStatic(), isTransitive());
    }
 
    @Override

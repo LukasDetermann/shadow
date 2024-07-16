@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Allows reflection access to {@link #getPackage()} for {@link #getTargetModules()} or {@link #toAll()}
  */
-public interface Opens extends Directive
+public non-sealed interface Opens extends Directive
 {
    /**
     * the package to be accessed by reflection

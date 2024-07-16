@@ -8,7 +8,6 @@ import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.module.Directive;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Provides;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -127,7 +126,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
                          .collect(of((Supplier<List<Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!directive.getKind().equals(DirectiveKind.PROVIDES))
+                                        if (!(directive instanceof Provides))
                                         {
                                            directives.add(directive);
                                            return;
@@ -136,7 +135,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
 
                                         Optional<Provides> existing =
                                               directives.stream()
-                                                        .filter(collected -> collected.getKind().equals(DirectiveKind.PROVIDES))
+                                                        .filter(Provides.class::isInstance)
                                                         .map(Converter::convert)
                                                         .map(DirectiveConverter::toProvidesOrThrow)
                                                         .filter(collected -> query((Shadow) collected.getService()).representsSameType(provides.getService()))

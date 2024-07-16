@@ -2,7 +2,6 @@ package io.determann.shadow.internal.lang_model.shadow.module;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Uses;
 import io.determann.shadow.api.shadow.type.Declared;
 
@@ -26,12 +25,6 @@ public class UsesImpl extends DirectiveImpl implements Uses
    }
 
    @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.USES;
-   }
-
-   @Override
    public boolean equals(Object other)
    {
       if (other == this)
@@ -42,14 +35,13 @@ public class UsesImpl extends DirectiveImpl implements Uses
       {
          return false;
       }
-      return Objects.equals(getKind(), otherUses.getKind()) &&
-             Objects.equals(getService(), otherUses.getService());
+      return Objects.equals(getService(), otherUses.getService());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getService());
+      return Objects.hash(getService());
    }
 
    @Override

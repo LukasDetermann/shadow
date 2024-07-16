@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.module;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.module.DirectiveKind;
 import io.determann.shadow.api.shadow.module.Opens;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -40,11 +39,6 @@ public class OpensImpl implements Opens
       return getTargetModules().isEmpty();
    }
 
-   @Override
-   public DirectiveKind getKind()
-   {
-      return DirectiveKind.OPENS;
-   }
 
    @Override
    public boolean equals(Object other)
@@ -58,15 +52,14 @@ public class OpensImpl implements Opens
          return false;
       }
       OpensImpl otherOpens = (OpensImpl) other;
-      return Objects.equals(getKind(), otherOpens.getKind()) &&
-             Objects.equals(getTargetModules(), otherOpens.getTargetModules()) &&
+      return Objects.equals(getTargetModules(), otherOpens.getTargetModules()) &&
              Objects.equals(getPackage(), otherOpens.getPackage());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(), getPackage(), getTargetModules());
+      return Objects.hash(getPackage(), getTargetModules());
    }
 
    @Override

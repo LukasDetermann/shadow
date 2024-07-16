@@ -23,74 +23,73 @@ public class DirectiveConverterImpl implements DirectiveConverter,
    @Override
    public Exports toExportsOrThrow()
    {
-      return to(DirectiveKind.EXPORTS);
+      return to(Exports.class);
    }
 
    @Override
    public Optional<Exports> toExports()
    {
-      return toOptional(DirectiveKind.EXPORTS);
+      return toOptional(Exports.class);
    }
 
    @Override
    public Opens toOpensOrThrow()
    {
-      return to(DirectiveKind.OPENS);
+      return to(Opens.class);
    }
 
    @Override
    public Optional<Opens> toOpens()
    {
-      return toOptional(DirectiveKind.OPENS);
+      return toOptional(Opens.class);
    }
 
    @Override
    public Provides toProvidesOrThrow()
    {
-      return to(DirectiveKind.PROVIDES);
+      return to(Provides.class);
    }
 
    @Override
    public Optional<Provides> toProvides()
    {
-      return toOptional(DirectiveKind.PROVIDES);
+      return toOptional(Provides.class);
    }
 
    @Override
    public Requires toRequiresOrThrow()
    {
-      return to(DirectiveKind.REQUIRES);
+      return to(Requires.class);
    }
 
    @Override
    public Optional<Requires> toRequires()
    {
-      return toOptional(DirectiveKind.REQUIRES);
+      return toOptional(Requires.class);
    }
 
    @Override
    public Uses toUsesOrThrow()
    {
-      return to(DirectiveKind.USES);
+      return to(Uses.class);
    }
 
    @Override
    public Optional<Uses> toUses()
    {
-      return toOptional(DirectiveKind.USES);
+      return toOptional(Uses.class);
    }
 
-   private <DIRECTIVE extends Directive> DIRECTIVE to(DirectiveKind directiveKind)
+   private <DIRECTIVE extends Directive> DIRECTIVE to(Class<DIRECTIVE> directiveType)
    {
-      //noinspection unchecked
-      return (DIRECTIVE) toOptional(directiveKind).orElseThrow(() -> new IllegalStateException(directive.getKind() +
-                                                                                               " is not a " +
-                                                                                               directiveKind));
+      return toOptional(directiveType).orElseThrow(() -> new IllegalStateException(directive +
+                                                                                   " can not be converted to " +
+                                                                                   directiveType));
    }
 
-   private <DIRECTIVE extends Directive> Optional<DIRECTIVE> toOptional(DirectiveKind directiveKind)
+   private <DIRECTIVE extends Directive> Optional<DIRECTIVE> toOptional(Class<DIRECTIVE> directiveType)
    {
-      if (directiveKind.equals(directive.getKind()))
+      if (directiveType.isInstance(directive))
       {
          //noinspection unchecked
          return Optional.of((DIRECTIVE) directive);

@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.type.Declared;
  *
  * @see Provides
  */
-public interface Uses extends Directive
+public non-sealed interface Uses extends Directive
 {
    Declared getService();
 }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Exports a {@link #getPackage()} to {@link #getTargetModules()} or {@link #toAll()}
  */
-public interface Exports extends Directive
+public non-sealed interface Exports extends Directive
 {
    /**
     * packages to export to every module in {@link #getTargetModules()} or all if the list is empty
