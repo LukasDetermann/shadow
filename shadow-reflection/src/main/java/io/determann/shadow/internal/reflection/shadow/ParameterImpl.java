@@ -67,7 +67,7 @@ public class ParameterImpl implements ParameterReflection
    public Set<Modifier> getModifiers()
    {
       int modifiers = getParameter().getModifiers() & java.lang.reflect.Modifier.parameterModifiers();
-      return ReflectionUtil.getModifiers(modifiers, false, false);
+      return ReflectionUtil.getModifiers(modifiers, false, false, false);
    }
 
    @Override

@@ -83,7 +83,16 @@ public class DeclaredImpl implements Annotation,
    {
       boolean isSealed = getaClass().isSealed();
       int modifiers = getModifiersAsInt();
-      return ReflectionUtil.getModifiers(modifiers, isSealed, false);
+      boolean isNonSealed = isNonSealed(modifiers);
+      return ReflectionUtil.getModifiers(modifiers, isSealed, isNonSealed, false);
+   }
+
+   private boolean isNonSealed(int modifiers)
+   {
+      return !java.lang.reflect.Modifier.isFinal(modifiers) &&
+             !getReflection().isSealed() &&
+             (ofNullable(getReflection().getSuperclass()).map(Class::isSealed).orElse(false) ||
+              stream(getReflection().getInterfaces()).anyMatch(Class::isSealed));
    }
 
    private int getModifiersAsInt()

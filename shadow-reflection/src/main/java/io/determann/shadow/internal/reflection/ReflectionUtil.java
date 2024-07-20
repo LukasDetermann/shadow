@@ -31,7 +31,7 @@ public class ReflectionUtil
       MODIFIER_MAPPERS.add(value -> hasModifier.test(value) ? Optional.of(modifier) : Optional.empty());
    }
 
-   public static Set<Modifier> getModifiers(int modifiers, boolean isSealed, boolean isDefault)
+   public static Set<Modifier> getModifiers(int modifiers, boolean isSealed, boolean isNonSealed, boolean isDefault)
    {
       Set<Modifier> result = MODIFIER_MAPPERS.stream()
                                              .map(mapper -> mapper.apply(modifiers))
@@ -41,6 +41,10 @@ public class ReflectionUtil
       if (isSealed)
       {
          result.add(Modifier.SEALED);
+      }
+      if (isNonSealed)
+      {
+         result.add(Modifier.NON_SEALED);
       }
       if (isDefault)
       {

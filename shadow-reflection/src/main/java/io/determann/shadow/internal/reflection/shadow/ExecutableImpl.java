@@ -69,7 +69,9 @@ public class ExecutableImpl implements ConstructorReflection,
                       (getExecutable() instanceof java.lang.reflect.Method
                        ? java.lang.reflect.Modifier.methodModifiers()
                        : java.lang.reflect.Modifier.constructorModifiers());
+
       return ReflectionUtil.getModifiers(modifiers,
+                                         false,
                                          false,
                                          isDefault);
    }
