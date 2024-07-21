@@ -7,6 +7,7 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.shadow.structure.ModuleEnclosedReflection;
+import io.determann.shadow.api.reflection.shadow.type.AnnotationReflection;
 import io.determann.shadow.api.reflection.shadow.type.EnumReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.NestingKind;
@@ -16,21 +17,24 @@ import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Interface;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
-import java.lang.Class;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public class DeclaredImpl implements Annotation,
+public class DeclaredImpl implements AnnotationReflection,
                                      EnumReflection,
                                      NameableReflection,
                                      ShadowReflection,
@@ -84,7 +88,12 @@ public class DeclaredImpl implements Annotation,
       boolean isSealed = getaClass().isSealed();
       int modifiers = getModifiersAsInt();
       boolean isNonSealed = isNonSealed(modifiers);
-      return ReflectionUtil.getModifiers(modifiers, isSealed, isNonSealed, false);
+
+      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
+                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
+                                 !java.lang.reflect.Modifier.isProtected(modifiers);
+
+      return ReflectionUtil.getModifiers(modifiers, isSealed, isNonSealed, false, isPackagePrivate);
    }
 
    private boolean isNonSealed(int modifiers)
@@ -331,7 +340,7 @@ public class DeclaredImpl implements Annotation,
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
              Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
-             Objects.equals(getModifiers(), otherDeclared.getModifiers());
+             requestOrEmpty(otherDeclared, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 
    public Class<?> getReflection()

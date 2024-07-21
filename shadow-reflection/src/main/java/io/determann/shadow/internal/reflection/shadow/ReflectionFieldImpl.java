@@ -28,7 +28,12 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    public Set<Modifier> getModifiers()
    {
       int modifiers = getField().getModifiers() & java.lang.reflect.Modifier.fieldModifiers();
-      return ReflectionUtil.getModifiers(modifiers, false, false, false);
+
+      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
+                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
+                                 !java.lang.reflect.Modifier.isProtected(modifiers);
+
+      return ReflectionUtil.getModifiers(modifiers, false, false, false, isPackagePrivate);
    }
 
    @Override

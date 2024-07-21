@@ -2,6 +2,8 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.modifier.Modifiable;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.module.Directive;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.property.MutableProperty;
@@ -15,6 +17,7 @@ import io.determann.shadow.api.shadow.type.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface Operations
 {
@@ -207,4 +210,8 @@ public interface Operations
    public static Operation0<Module, Boolean> MODULE_IS_AUTOMATIC = new Operation0<>("module.isAutomatic");
 
    public static Operation0<Module, List<Directive>> MODULE_GET_DIRECTIVES = new Operation0<>("module.getDirectives");
+
+   public static Operation0<Modifiable, Set<Modifier>> MODIFIABLE_GET_MODIFIERS = new Operation0<>("modifiable.getModifiers");
+
+   public static Operation1<Modifiable, Modifier, Boolean> MODIFIABLE_HAS_MODIFIER = new Operation1<>("modifiable.hasModifier");
 }

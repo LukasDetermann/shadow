@@ -17,10 +17,10 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.*;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toUnmodifiableSet;
+import java.util.stream.Collectors;
 
 public interface LangModelAdapter
 {
@@ -159,7 +159,15 @@ public interface LangModelAdapter
 
    static Set<Modifier> getModifiers(Element element)
    {
-      return element.getModifiers().stream().map(LangModelAdapter::mapModifier).collect(toUnmodifiableSet());
+      Set<Modifier> result = element.getModifiers().stream().map(LangModelAdapter::mapModifier).collect(Collectors.toSet());
+      if ((element.getKind().isExecutable() || element.getKind().isDeclaredType() || element.getKind().isVariable()) &&
+          !result.contains(Modifier.PUBLIC) &&
+          !result.contains(Modifier.PROTECTED) &&
+          !result.contains(Modifier.PRIVATE))
+      {
+         result.add(Modifier.PACKAGE_PRIVATE);
+      }
+      return Collections.unmodifiableSet(result);
    }
 
    static Modifier mapModifier(javax.lang.model.element.Modifier modifier)

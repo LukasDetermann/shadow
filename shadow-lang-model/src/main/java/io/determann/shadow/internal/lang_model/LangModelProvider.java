@@ -117,6 +117,8 @@ public class LangModelProvider extends AbstractProvider
              .with(MODULE_IS_OPEN, module -> query(module).isOpen())
              .with(MODULE_IS_UNNAMED, module -> query(module).isUnnamed())
              .with(MODULE_IS_AUTOMATIC, module -> query(module).isAutomatic())
-             .with(MODULE_GET_DIRECTIVES, module -> query(module).getDirectives());
+             .with(MODULE_GET_DIRECTIVES, module -> query(module).getDirectives())
+             .with(MODIFIABLE_GET_MODIFIERS, modifiable -> query(modifiable).getModifiers())
+             .with(MODIFIABLE_HAS_MODIFIER, (modifiable, modifier) -> query(modifiable).hasModifier(modifier));
    }
 }

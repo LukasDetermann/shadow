@@ -20,7 +20,9 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.shadow.modifier.Modifier.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class ExecutableImpl implements ConstructorReflection,
@@ -65,15 +67,21 @@ public class ExecutableImpl implements ConstructorReflection,
    public Set<Modifier> getModifiers()
    {
       boolean isDefault = getExecutable() instanceof java.lang.reflect.Method method && method.isDefault();
+
       int modifiers = getExecutable().getModifiers() &
                       (getExecutable() instanceof java.lang.reflect.Method
                        ? java.lang.reflect.Modifier.methodModifiers()
                        : java.lang.reflect.Modifier.constructorModifiers());
 
+      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
+                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
+                                 !java.lang.reflect.Modifier.isProtected(modifiers);
+
       return ReflectionUtil.getModifiers(modifiers,
                                          false,
                                          false,
-                                         isDefault);
+                                         isDefault,
+                                         isPackagePrivate);
    }
 
    @Override
@@ -195,7 +203,7 @@ public class ExecutableImpl implements ConstructorReflection,
          return false;
       }
 
-      if (isStatic() || method.isStatic())
+      if (isStatic() || requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, STATIC))
       {
          return false;
       }
@@ -204,7 +212,9 @@ public class ExecutableImpl implements ConstructorReflection,
 
       if (TypeKind.CLASS.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
       {
-         if (!method.isPublic() && !method.isProtected() && (!method.isPackagePrivate() || !requestOrThrow(method, EXECUTABLE_GET_PACKAGE).equals(getPackage())))
+         if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC) &&
+             !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PROTECTED) &&
+             (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE) || !requestOrThrow(method, EXECUTABLE_GET_PACKAGE).equals(getPackage())))
          {
             return false;
          }
@@ -222,7 +232,7 @@ public class ExecutableImpl implements ConstructorReflection,
       }
       if (TypeKind.INTERFACE.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
       {
-         if (!method.isPublic())
+         if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC))
          {
             return false;
          }
@@ -286,7 +296,7 @@ public class ExecutableImpl implements ConstructorReflection,
       }
       return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
-             Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
+             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 

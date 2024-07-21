@@ -4,6 +4,7 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.ModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
@@ -21,7 +22,8 @@ public interface VariableLangModel extends Variable,
                                            ShadowLangModel,
                                            DocumentedLangModel,
                                            NameableLangModel,
-                                           ModuleEnclosedLangModel
+                                           ModuleEnclosedLangModel,
+                                           ModifiableLangModel
 {
    /**
     * returns true if this can be cast to that.

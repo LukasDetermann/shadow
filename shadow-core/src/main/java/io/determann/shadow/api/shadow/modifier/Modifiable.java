@@ -1,13 +1,7 @@
 package io.determann.shadow.api.shadow.modifier;
 
-import java.util.Set;
+import io.determann.shadow.api.ImplementationDefined;
 
-public interface Modifiable
+public interface Modifiable extends ImplementationDefined
 {
-   Set<Modifier> getModifiers();
-
-   default boolean hasModifier(Modifier modifier)
-   {
-      return getModifiers().contains(modifier);
-   }
 }

@@ -37,7 +37,7 @@ public class ClassRendererImpl implements ClassRenderer
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                          .collect(Collectors.joining()));
       }
-      Set<Modifier> modifiers = aClass.getModifiers();
+      Set<Modifier> modifiers = requestOrThrow(aClass, MODIFIABLE_GET_MODIFIERS);
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));

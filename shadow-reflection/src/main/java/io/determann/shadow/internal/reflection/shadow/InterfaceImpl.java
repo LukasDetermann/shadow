@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -34,7 +35,7 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
    {
       return getMethods()
             .stream()
-            .filter(method -> method.isAbstract() || isObjectMethod(method))
+            .filter(method -> requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.ABSTRACT) || isObjectMethod(method))
             .collect(Collector.
                            <Method, Set<Method>, Boolean>
                            of(HashSet::new, (methods, method) -> methods.stream()

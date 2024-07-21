@@ -33,10 +33,6 @@ public class RecordRendererImpl implements RecordRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      Set<Modifier> modifiers = new HashSet<>(aRecord.getModifiers());
-      modifiers.remove(Modifier.FINAL);
-      modifiers.remove(Modifier.STATIC);
-
       if (!aRecord.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(aRecord.getDirectAnnotationUsages()
@@ -44,6 +40,12 @@ public class RecordRendererImpl implements RecordRenderer
                           .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                           .collect(Collectors.joining()));
       }
+
+      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(aRecord, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(Modifier.FINAL);
+      modifiers.remove(Modifier.STATIC);
+      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));

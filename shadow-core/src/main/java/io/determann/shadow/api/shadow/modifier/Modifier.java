@@ -7,6 +7,7 @@ public enum Modifier
    PROTECTED,
    PRIVATE,
    ABSTRACT,
+   PACKAGE_PRIVATE,
    DEFAULT,
    STATIC,
    SEALED,

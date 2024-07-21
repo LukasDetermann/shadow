@@ -1,6 +1,7 @@
 package io.determann.shadow.implementation.support.internal.property;
 
 import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Parameter;
@@ -77,7 +78,7 @@ public class PropertyTemplateFactory
       AtomicInteger position = new AtomicInteger();
       Map<String, Map<AccessorType, List<Accessor>>> nameTypeAccessors =
             getMethods(declared).stream()
-                                .filter(method -> !method.isStatic())
+                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
                                 .map(method1 -> toAccessor(method1, position.getAndIncrement()))
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)

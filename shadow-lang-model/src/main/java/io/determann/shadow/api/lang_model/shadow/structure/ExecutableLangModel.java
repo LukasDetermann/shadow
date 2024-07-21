@@ -4,8 +4,7 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.modifier.Modifiable;
+import io.determann.shadow.api.lang_model.shadow.modifier.ModifiableLangModel;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Class;
@@ -28,9 +27,9 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  *    <li>{@link Method}</li>
  * </ul>
  */
-public interface ExecutableLangModel extends Annotationable,
+public interface ExecutableLangModel extends Executable,
                                              NameableLangModel,
-                                             Modifiable,
+                                             ModifiableLangModel,
                                              ModuleEnclosedLangModel,
                                              DocumentedLangModel
 {

@@ -1,5 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
+import io.determann.shadow.api.reflection.shadow.modifier.FinalModifiableReflection;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.structure.Executable;
 import io.determann.shadow.api.shadow.structure.Method;
@@ -14,7 +15,8 @@ import java.util.List;
  * @see Constructor#getParameters()
  */
 public interface ParameterReflection extends Parameter,
-                                             VariableReflection
+                                             VariableReflection,
+                                             FinalModifiableReflection
 {
    /**
     * {@link List#of(Object[])}

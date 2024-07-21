@@ -2,12 +2,13 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.FieldRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Field;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Operations.VARIABLE_GET_TYPE;
+import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class FieldRendererImpl implements FieldRenderer
@@ -32,9 +33,10 @@ public class FieldRendererImpl implements FieldRenderer
                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                         .collect(Collectors.joining()));
       }
-      if (!field.getModifiers().isEmpty())
+      Set<Modifier> modifiers = requestOrThrow(field, MODIFIABLE_GET_MODIFIERS);
+      if (!modifiers.isEmpty())
       {
-         sb.append(ModifierRendererImpl.render(field.getModifiers()));
+         sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
       sb.append(ShadowRendererImpl.type(context, requestOrThrow(field, VARIABLE_GET_TYPE)));

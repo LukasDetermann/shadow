@@ -28,6 +28,7 @@ import java.util.Set;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
@@ -242,7 +243,7 @@ public class ExecutableImpl implements ConstructorLangModel,
       }
       return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
-             Objects.equals(getModifiers(), otherExecutable.getModifiers()) &&
+             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 

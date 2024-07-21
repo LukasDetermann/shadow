@@ -5,6 +5,8 @@ import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.AccessModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.StrictfpModifiableLangModel;
 import io.determann.shadow.api.shadow.NestingKind;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.structure.Field;
@@ -33,6 +35,8 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  * </ul>
  */
 public interface DeclaredLangModel extends Declared,
+                                           AccessModifiableLangModel,
+                                           StrictfpModifiableLangModel,
                                            ShadowLangModel,
                                            NameableLangModel,
                                            QualifiedNameableLamgModel,

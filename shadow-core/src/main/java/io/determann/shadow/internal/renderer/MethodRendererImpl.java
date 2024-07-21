@@ -40,12 +40,13 @@ public class MethodRendererImpl implements MethodRenderer
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                          .collect(Collectors.joining()));
       }
-      Set<Modifier> modifiers = new HashSet<>(method.getModifiers());
+      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(method, MODIFIABLE_GET_MODIFIERS));
       if (!content.isEmpty())
       {
          modifiers.remove(Modifier.ABSTRACT);
       }
 
+      modifiers.remove(Modifier.PACKAGE_PRIVATE);
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));
@@ -99,7 +100,7 @@ public class MethodRendererImpl implements MethodRenderer
                          .collect(Collectors.joining(", ")));
       }
 
-      if (method.isAbstract() && content.isBlank())
+      if (requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.ABSTRACT) && content.isBlank())
       {
          sb.append(';');
       }

@@ -3,6 +3,8 @@ package io.determann.shadow.api.reflection.shadow.type;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.AccessModifiableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.StrictfpModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.structure.ModuleEnclosedReflection;
 import io.determann.shadow.api.shadow.NestingKind;
 import io.determann.shadow.api.shadow.structure.Constructor;
@@ -32,6 +34,8 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  * </ul>
  */
 public interface DeclaredReflection extends Declared,
+                                            AccessModifiableReflection,
+                                            StrictfpModifiableReflection,
                                             ShadowReflection,
                                             NameableReflection,
                                             QualifiedNameableReflection,

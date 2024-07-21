@@ -2,6 +2,7 @@ package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
@@ -18,7 +19,8 @@ import io.determann.shadow.api.shadow.type.Shadow;
 public interface VariableReflection extends Variable,
                                             ShadowReflection,
                                             NameableReflection,
-                                            ModuleEnclosedReflection
+                                            ModuleEnclosedReflection,
+                                            ModifiableReflection
 {
    /**
     * returns true if this can be cast to that.

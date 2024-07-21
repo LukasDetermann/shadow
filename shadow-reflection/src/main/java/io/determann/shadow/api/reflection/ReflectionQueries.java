@@ -4,12 +4,14 @@ import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.*;
 import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
@@ -158,6 +160,56 @@ public interface ReflectionQueries
    public static ModuleReflection query(Module module)
    {
       return (ModuleReflection) validate(module);
+   }
+
+   public static AnnotationReflection query(Annotation annotation)
+   {
+      return (AnnotationReflection) validate(annotation);
+   }
+
+   public static ModifiableReflection query(Modifiable modifiable)
+   {
+      return (ModifiableReflection) validate(modifiable);
+   }
+
+   public static AbstractModifiableReflection query(AbstractModifiable abstractModifiable)
+   {
+      return (AbstractModifiableReflection) validate(abstractModifiable);
+   }
+
+   public static AccessModifiableReflection query(AccessModifiable accessModifiable)
+   {
+      return (AccessModifiableReflection) validate(accessModifiable);
+   }
+
+   public static DefaultModifiableReflection query(DefaultModifiable defaultModifiable)
+   {
+      return (DefaultModifiableReflection) validate(defaultModifiable);
+   }
+
+   public static FinalModifiableReflection query(FinalModifiable finalModifiable)
+   {
+      return (FinalModifiableReflection) validate(finalModifiable);
+   }
+
+   public static NativeModifiableReflection query(NativeModifiable nativeModifiable)
+   {
+      return (NativeModifiableReflection) validate(nativeModifiable);
+   }
+
+   public static SealableReflection query(Sealable sealable)
+   {
+      return (SealableReflection) validate(sealable);
+   }
+
+   public static StaticModifiableReflection query(StaticModifiable staticModifiable)
+   {
+      return (StaticModifiableReflection) validate(staticModifiable);
+   }
+
+   public static StrictfpModifiableReflection query(StrictfpModifiable strictfpModifiable)
+   {
+      return (StrictfpModifiableReflection) validate(strictfpModifiable);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

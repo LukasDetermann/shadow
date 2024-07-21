@@ -1,5 +1,9 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
+import io.determann.shadow.api.lang_model.shadow.modifier.AbstractModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.SealableLangModel;
+import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.property.Property;
@@ -10,7 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClassLangModel extends Class,
-                                        DeclaredLangModel
+                                        DeclaredLangModel,
+                                        AbstractModifiableLangModel,
+                                        StaticModifiableLangModel,
+                                        SealableLangModel,
+                                        FinalModifiableLangModel
 {
    /**
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.

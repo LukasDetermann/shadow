@@ -2,6 +2,7 @@ package io.determann.shadow.api.lang_model;
 
 import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.lang_model.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.Documented;
@@ -9,6 +10,7 @@ import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
@@ -162,6 +164,56 @@ public interface LangModelQueries
    public static ModuleLangModel query(Module module)
    {
       return (ModuleLangModel) validate(module);
+   }
+
+   public static AnnotationLangModel query(Annotation annotation)
+   {
+      return (AnnotationLangModel) validate(annotation);
+   }
+
+   public static ModifiableLangModel query(Modifiable modifiable)
+   {
+      return (ModifiableLangModel) validate(modifiable);
+   }
+
+   public static AbstractModifiableLangModel query(AbstractModifiable abstractModifiable)
+   {
+      return (AbstractModifiableLangModel) validate(abstractModifiable);
+   }
+
+   public static AccessModifiableLangModel query(AccessModifiable accessModifiable)
+   {
+      return (AccessModifiableLangModel) validate(accessModifiable);
+   }
+
+   public static DefaultModifiableLangModel query(DefaultModifiable defaultModifiable)
+   {
+      return (DefaultModifiableLangModel) validate(defaultModifiable);
+   }
+
+   public static FinalModifiableLangModel query(FinalModifiable finalModifiable)
+   {
+      return (FinalModifiableLangModel) validate(finalModifiable);
+   }
+
+   public static NativeModifiableLangModel query(NativeModifiable nativeModifiable)
+   {
+      return (NativeModifiableLangModel) validate(nativeModifiable);
+   }
+
+   public static SealableLangModel query(Sealable sealable)
+   {
+      return (SealableLangModel) validate(sealable);
+   }
+
+   public static StaticModifiableLangModel query(StaticModifiable staticModifiable)
+   {
+      return (StaticModifiableLangModel) validate(staticModifiable);
+   }
+
+   public static StrictfpModifiableLangModel query(StrictfpModifiable strictfpModifiable)
+   {
+      return (StrictfpModifiableLangModel) validate(strictfpModifiable);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

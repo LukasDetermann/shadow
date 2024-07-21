@@ -3,12 +3,14 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.renderer.ConstructorRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.Provider;
+import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Generic;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
@@ -35,9 +37,10 @@ public class ConstructorRendererImpl implements ConstructorRenderer
                               .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                               .collect(Collectors.joining()));
       }
-      if (!constructor.getModifiers().isEmpty())
+      Set<Modifier> modifiers = requestOrThrow(constructor, MODIFIABLE_GET_MODIFIERS);
+      if (!modifiers.isEmpty())
       {
-         sb.append(ModifierRendererImpl.render(constructor.getModifiers()));
+         sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
 

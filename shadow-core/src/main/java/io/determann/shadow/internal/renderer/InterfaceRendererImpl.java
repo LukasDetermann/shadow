@@ -30,8 +30,6 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    public static String declaration(RenderingContextWrapper context, Interface anInterface, String content)
    {
       StringBuilder sb = new StringBuilder();
-      Set<Modifier> modifiers = new HashSet<>(anInterface.getModifiers());
-      modifiers.remove(Modifier.ABSTRACT);
 
       if (!anInterface.getDirectAnnotationUsages().isEmpty())
       {
@@ -40,6 +38,11 @@ public class InterfaceRendererImpl implements InterfaceRenderer
                               .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                               .collect(Collectors.joining()));
       }
+
+      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(anInterface, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(Modifier.ABSTRACT);
+      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));

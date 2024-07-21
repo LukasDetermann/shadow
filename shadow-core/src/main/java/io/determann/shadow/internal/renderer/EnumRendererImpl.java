@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.DECLARED_GET_DIRECT_INTERFACES;
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -31,9 +30,6 @@ public class EnumRendererImpl implements EnumRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      Set<Modifier> modifiers = new HashSet<>(anEnum.getModifiers());
-      modifiers.remove(Modifier.FINAL);
-
       if (!anEnum.getDirectAnnotationUsages().isEmpty())
       {
          sb.append(anEnum.getDirectAnnotationUsages()
@@ -41,6 +37,11 @@ public class EnumRendererImpl implements EnumRenderer
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                          .collect(Collectors.joining()));
       }
+
+      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(anEnum, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(Modifier.FINAL);
+      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));

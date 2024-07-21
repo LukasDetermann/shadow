@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.shadow.Operations.MODIFIABLE_GET_MODIFIERS;
 import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -27,8 +28,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
    public static String declaration(RenderingContextWrapper context, Annotation annotation, String content)
    {
       StringBuilder sb = new StringBuilder();
-      Set<Modifier> modifiers = new HashSet<>(annotation.getModifiers());
-      modifiers.remove(Modifier.ABSTRACT);
+
 
       if (!annotation.getDirectAnnotationUsages().isEmpty())
       {
@@ -37,6 +37,11 @@ public class AnnotationRendererImpl implements AnnotationRenderer
                              .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                              .collect(Collectors.joining()));
       }
+
+      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(annotation, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(Modifier.ABSTRACT);
+      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));

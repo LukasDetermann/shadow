@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ParameterImpl extends VariableImpl implements ParameterLangModel
@@ -65,7 +66,7 @@ public class ParameterImpl extends VariableImpl implements ParameterLangModel
       }
       return Provider.requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
-             Objects.equals(getModifiers(), otherVariable.getModifiers()) &&
+             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
              Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));
    }
 }

@@ -1,5 +1,9 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
+import io.determann.shadow.api.reflection.shadow.modifier.AbstractModifiableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.FinalModifiableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.SealableReflection;
+import io.determann.shadow.api.reflection.shadow.modifier.StaticModifiableReflection;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.property.Property;
@@ -10,7 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClassReflection extends Class,
-                                         DeclaredReflection
+                                         DeclaredReflection,
+                                         AbstractModifiableReflection,
+                                         StaticModifiableReflection,
+                                         SealableReflection,
+                                         FinalModifiableReflection
 {
    /**
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.

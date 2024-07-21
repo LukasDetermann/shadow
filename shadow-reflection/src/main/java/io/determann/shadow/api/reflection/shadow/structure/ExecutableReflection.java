@@ -2,8 +2,7 @@ package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.modifier.Modifiable;
+import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Class;
@@ -26,9 +25,9 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  *    <li>{@link Method}</li>
  * </ul>
  */
-public interface ExecutableReflection extends Annotationable,
+public interface ExecutableReflection extends Executable,
                                               NameableReflection,
-                                              Modifiable,
+                                              ModifiableReflection,
                                               ModuleEnclosedReflection
 {
    /**

@@ -14,8 +14,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static io.determann.shadow.consistency.test.ConsistencyTest.compileTime;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ApiExampleTest
 {
@@ -42,12 +41,7 @@ void request()
       case Response.Empty<Field> empty -> Assertions.fail();
       //accessing fields via reflection is possible and java.lang.System
       //does have a field called "out" therefore a result is expected
-      case Response.Result<Field> result ->
-      {
-         assertTrue(result.value().isPublic());
-         assertTrue(result.value().isStatic());
-         assertTrue(result.value().isFinal());
-      }
+      case Response.Result<Field> result -> assertNotNull(result.value());
    }
 }
 //end::request[]
@@ -65,9 +59,6 @@ void requestOrEmpty()
                                                  "out");
 
    assertTrue(out.isPresent());
-   assertTrue(out.get().isPublic());
-   assertTrue(out.get().isStatic());
-   assertTrue(out.get().isFinal());
 }
 //end::requestOrEmpty[]
 
@@ -83,9 +74,7 @@ void requestOrThrow()
                                        Operations.DECLARED_GET_FIELD,
                                        "out");
 
-   assertTrue(out.isPublic());
-   assertTrue(out.isStatic());
-   assertTrue(out.isFinal());
+   assertNotNull(out);
 }
 //end::requestOrThrow[]
 

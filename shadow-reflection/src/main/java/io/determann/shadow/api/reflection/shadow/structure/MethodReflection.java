@@ -1,9 +1,17 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
+import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Method;
 
 public interface MethodReflection extends Method,
-                                          ExecutableReflection
+                                          ExecutableReflection,
+                                          StaticModifiableReflection,
+                                          DefaultModifiableReflection,
+                                          AccessModifiableReflection,
+                                          AbstractModifiableReflection,
+                                          FinalModifiableReflection,
+                                          StrictfpModifiableReflection,
+                                          NativeModifiableReflection
 {
    boolean overrides(Method method);
 

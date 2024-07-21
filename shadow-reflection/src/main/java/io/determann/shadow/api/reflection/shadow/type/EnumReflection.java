@@ -1,5 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
+import io.determann.shadow.api.reflection.shadow.modifier.StaticModifiableReflection;
 import io.determann.shadow.api.shadow.structure.EnumConstant;
 import io.determann.shadow.api.shadow.type.Enum;
 
@@ -9,7 +10,8 @@ import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public interface EnumReflection extends Enum,
-                                        DeclaredReflection
+                                        DeclaredReflection,
+                                        StaticModifiableReflection
 {
    List<EnumConstant> getEumConstants();
 

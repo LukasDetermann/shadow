@@ -8,6 +8,7 @@ import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.type.AnnotationLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
 import io.determann.shadow.api.shadow.NestingKind;
 import io.determann.shadow.api.shadow.TypeKind;
@@ -16,7 +17,6 @@ import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.Annotation;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -33,9 +33,10 @@ import java.util.Set;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
-public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation,
+public class DeclaredImpl extends ShadowImpl<DeclaredType> implements AnnotationLangModel,
                                                                       EnumLangModel,
                                                                       NameableLangModel,
                                                                       QualifiedNameableLamgModel,
@@ -260,6 +261,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements Annotation
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
              Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
-             Objects.equals(getModifiers(), otherDeclared.getModifiers());
+             requestOrEmpty(otherDeclared, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 }

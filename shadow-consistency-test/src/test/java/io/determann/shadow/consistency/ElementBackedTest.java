@@ -25,13 +25,13 @@ class ElementBackedTest
       ProcessorTest.process(shadowApi ->
                             {
                                Declared arrayList = shadowApi.getClassOrThrow("java.util.ArrayList");
-                               assertEquals(Set.of(Modifier.PUBLIC), arrayList.getModifiers());
+                               assertEquals(Set.of(Modifier.PUBLIC), query(arrayList).getModifiers());
 
                                Field serialVersionUID = query(arrayList).getFields().stream()
                                                                  .filter(field -> query((Nameable) field).getName().equals("serialVersionUID"))
                                                                  .findAny()
                                                                  .orElseThrow();
-                               assertEquals(Set.of(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL), serialVersionUID.getModifiers());
+                               assertEquals(Set.of(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL), query(serialVersionUID).getModifiers());
                             })
                    .compile();
    }

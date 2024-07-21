@@ -7,23 +7,25 @@ import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
+import static io.determann.shadow.api.shadow.modifier.Modifier.*;
+
 public class ReflectionUtil
 {
    private static final Set<IntFunction<Optional<Modifier>>> MODIFIER_MAPPERS = new HashSet<>();
 
    static
    {
-      addModifierMapper(java.lang.reflect.Modifier::isPublic, Modifier.PUBLIC);
-      addModifierMapper(java.lang.reflect.Modifier::isPrivate, Modifier.PRIVATE);
-      addModifierMapper(java.lang.reflect.Modifier::isProtected, Modifier.PROTECTED);
-      addModifierMapper(java.lang.reflect.Modifier::isStatic, Modifier.STATIC);
-      addModifierMapper(java.lang.reflect.Modifier::isFinal, Modifier.FINAL);
-      addModifierMapper(java.lang.reflect.Modifier::isSynchronized, Modifier.SYNCHRONIZED);
-      addModifierMapper(java.lang.reflect.Modifier::isVolatile, Modifier.VOLATILE);
-      addModifierMapper(java.lang.reflect.Modifier::isTransient, Modifier.TRANSIENT);
-      addModifierMapper(java.lang.reflect.Modifier::isNative, Modifier.NATIVE);
-      addModifierMapper(java.lang.reflect.Modifier::isAbstract, Modifier.ABSTRACT);
-      addModifierMapper(java.lang.reflect.Modifier::isStatic, Modifier.STATIC);
+      addModifierMapper(java.lang.reflect.Modifier::isPublic, PUBLIC);
+      addModifierMapper(java.lang.reflect.Modifier::isPrivate, PRIVATE);
+      addModifierMapper(java.lang.reflect.Modifier::isProtected, PROTECTED);
+      addModifierMapper(java.lang.reflect.Modifier::isStatic, STATIC);
+      addModifierMapper(java.lang.reflect.Modifier::isFinal, FINAL);
+      addModifierMapper(java.lang.reflect.Modifier::isSynchronized, SYNCHRONIZED);
+      addModifierMapper(java.lang.reflect.Modifier::isVolatile, VOLATILE);
+      addModifierMapper(java.lang.reflect.Modifier::isTransient, TRANSIENT);
+      addModifierMapper(java.lang.reflect.Modifier::isNative, NATIVE);
+      addModifierMapper(java.lang.reflect.Modifier::isAbstract, ABSTRACT);
+      addModifierMapper(java.lang.reflect.Modifier::isStatic, STATIC);
    }
 
    private static void addModifierMapper(IntPredicate hasModifier, Modifier modifier)
@@ -31,24 +33,29 @@ public class ReflectionUtil
       MODIFIER_MAPPERS.add(value -> hasModifier.test(value) ? Optional.of(modifier) : Optional.empty());
    }
 
-   public static Set<Modifier> getModifiers(int modifiers, boolean isSealed, boolean isNonSealed, boolean isDefault)
+   public static Set<Modifier> getModifiers(int modifiers, boolean isSealed, boolean isNonSealed, boolean isDefault, boolean isPackagePrivate)
    {
       Set<Modifier> result = MODIFIER_MAPPERS.stream()
                                              .map(mapper -> mapper.apply(modifiers))
                                              .filter(Optional::isPresent)
                                              .map(Optional::get)
                                              .collect(Collectors.toCollection(() -> EnumSet.noneOf(Modifier.class)));
+
+      if (isPackagePrivate)
+      {
+         result.add(PACKAGE_PRIVATE);
+      }
       if (isSealed)
       {
-         result.add(Modifier.SEALED);
+         result.add(SEALED);
       }
       if (isNonSealed)
       {
-         result.add(Modifier.NON_SEALED);
+         result.add(NON_SEALED);
       }
       if (isDefault)
       {
-         result.add(Modifier.DEFAULT);
+         result.add(DEFAULT);
       }
       return Collections.unmodifiableSet(result);
    }
