@@ -1,4 +1,4 @@
-package io.determann.shadow.api.shadow.module;
+package io.determann.shadow.api.shadow.directive;
 
 /**
  * Relation between modules

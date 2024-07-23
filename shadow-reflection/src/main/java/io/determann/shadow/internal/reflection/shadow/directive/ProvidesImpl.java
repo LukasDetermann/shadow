@@ -1,7 +1,7 @@
-package io.determann.shadow.internal.reflection.shadow.module;
+package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.module.Provides;
+import io.determann.shadow.api.shadow.directive.Provides;
 import io.determann.shadow.api.shadow.type.Declared;
 
 import java.lang.module.ModuleDescriptor;

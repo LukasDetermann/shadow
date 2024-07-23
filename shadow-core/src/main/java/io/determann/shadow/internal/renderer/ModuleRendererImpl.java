@@ -4,7 +4,7 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.module.*;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.structure.Module;
 
 import java.util.List;

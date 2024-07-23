@@ -1,41 +1,40 @@
-package io.determann.shadow.internal.lang_model.shadow.module;
+package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.Exports;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.directive.Exports;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 
-import javax.lang.model.element.ModuleElement;
+import java.lang.module.ModuleDescriptor;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class ExportsImpl extends DirectiveImpl implements Exports
+public class ExportsImpl implements Exports
 {
 
-   private final ModuleElement.ExportsDirective exportsDirective;
 
-   public ExportsImpl(LangModelContext context, ModuleElement.ExportsDirective exportsDirective)
+   private final ModuleDescriptor.Exports exportsDirective;
+
+   public ExportsImpl(ModuleDescriptor.Exports exportsDirective)
    {
-      super(context);
       this.exportsDirective = exportsDirective;
    }
 
    @Override
    public Package getPackage()
    {
-      return LangModelAdapter.generalizePackage(getApi(), exportsDirective.getPackage());
+      return ReflectionAdapter.getPackage(exportsDirective.source());
    }
 
    @Override
    public List<Module> getTargetModules()
    {
-      return exportsDirective.getTargetModules() == null ?
+      return exportsDirective.targets() == null ?
              Collections.emptyList() :
-             exportsDirective.getTargetModules()
+             exportsDirective.targets()
                              .stream()
-                             .map(moduleElement -> LangModelAdapter.<Module>generalize(getApi(), moduleElement))
+                             .map(ReflectionAdapter::getModuleShadow)
                              .toList();
    }
 
@@ -52,10 +51,11 @@ public class ExportsImpl extends DirectiveImpl implements Exports
       {
          return true;
       }
-      if (!(other instanceof Exports otherExports))
+      if (other == null || !getClass().equals(other.getClass()))
       {
          return false;
       }
+      ExportsImpl otherExports = (ExportsImpl) other;
       return Objects.equals(getTargetModules(), otherExports.getTargetModules()) &&
              Objects.equals(getPackage(), otherExports.getPackage());
    }
@@ -70,5 +70,10 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    public String toString()
    {
       return exportsDirective.toString();
+   }
+
+   public ModuleDescriptor.Exports getReflection()
+   {
+      return exportsDirective;
    }
 }

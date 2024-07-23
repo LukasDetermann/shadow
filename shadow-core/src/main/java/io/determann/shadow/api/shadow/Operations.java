@@ -2,9 +2,9 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.directive.Directive;
 import io.determann.shadow.api.shadow.modifier.Modifiable;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.module.Directive;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.structure.Module;

@@ -1,4 +1,4 @@
-package io.determann.shadow.internal.lang_model.shadow.module;
+package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
 

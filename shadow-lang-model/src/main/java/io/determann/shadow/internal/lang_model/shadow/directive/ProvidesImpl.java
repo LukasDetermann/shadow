@@ -1,8 +1,8 @@
-package io.determann.shadow.internal.lang_model.shadow.module;
+package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.Provides;
+import io.determann.shadow.api.shadow.directive.Provides;
 import io.determann.shadow.api.shadow.type.Declared;
 
 import javax.lang.model.element.ModuleElement;

@@ -2,7 +2,7 @@ package io.determann.shadow.api.converter;
 
 import io.determann.shadow.api.converter.module.*;
 import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.module.*;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;

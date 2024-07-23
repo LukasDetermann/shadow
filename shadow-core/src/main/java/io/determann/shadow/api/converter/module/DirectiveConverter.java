@@ -1,6 +1,6 @@
 package io.determann.shadow.api.converter.module;
 
-import io.determann.shadow.api.shadow.module.*;
+import io.determann.shadow.api.shadow.directive.*;
 
 import java.util.Optional;
 

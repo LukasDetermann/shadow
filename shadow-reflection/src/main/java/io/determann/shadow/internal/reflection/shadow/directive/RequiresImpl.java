@@ -1,39 +1,38 @@
-package io.determann.shadow.internal.lang_model.shadow.module;
+package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.module.Requires;
+import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.directive.Requires;
 import io.determann.shadow.api.shadow.structure.Module;
 
-import javax.lang.model.element.ModuleElement;
+import java.lang.module.ModuleDescriptor;
 import java.util.Objects;
 
-public class RequiresImpl extends DirectiveImpl implements Requires
+public class RequiresImpl implements Requires
 {
-   private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(LangModelContext context, ModuleElement.RequiresDirective requiresDirective)
+   private final ModuleDescriptor.Requires requiresDirective;
+
+   public RequiresImpl(ModuleDescriptor.Requires requiresDirective)
    {
-      super(context);
       this.requiresDirective = requiresDirective;
    }
 
    @Override
    public boolean isStatic()
    {
-      return requiresDirective.isStatic();
+      return  requiresDirective.modifiers().contains(ModuleDescriptor.Requires.Modifier.STATIC);
    }
 
    @Override
    public boolean isTransitive()
    {
-      return requiresDirective.isTransitive();
+      return  requiresDirective.modifiers().contains(ModuleDescriptor.Requires.Modifier.TRANSITIVE);
    }
 
    @Override
    public Module getDependency()
    {
-      return LangModelAdapter.generalize(getApi(), requiresDirective.getDependency());
+      return ReflectionAdapter.getModuleShadow(requiresDirective.name());
    }
 
    @Override
@@ -43,10 +42,11 @@ public class RequiresImpl extends DirectiveImpl implements Requires
       {
          return true;
       }
-      if (!(other instanceof Requires otherRequires))
+      if (other == null || !getClass().equals(other.getClass()))
       {
          return false;
       }
+      RequiresImpl otherRequires = (RequiresImpl) other;
       return Objects.equals(isStatic(), otherRequires.isStatic()) &&
              Objects.equals(isTransitive(), otherRequires.isTransitive()) &&
              Objects.equals(getDependency(), otherRequires.getDependency());
@@ -62,5 +62,10 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    public String toString()
    {
       return requiresDirective.toString();
+   }
+
+   public ModuleDescriptor.Requires getReflection()
+   {
+      return requiresDirective;
    }
 }

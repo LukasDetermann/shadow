@@ -4,7 +4,7 @@ import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
 import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.module.Directive;
+import io.determann.shadow.api.shadow.directive.Directive;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 
