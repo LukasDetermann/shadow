@@ -11,6 +11,7 @@ module io.determann.shadow.lang.model {
    exports io.determann.shadow.api.lang_model.shadow.structure;
    exports io.determann.shadow.api.lang_model.shadow.type;
    exports io.determann.shadow.api.lang_model.shadow.modifier;
+   exports io.determann.shadow.api.lang_model.shadow.directive;
 
    provides io.determann.shadow.api.shadow.ProviderSpi with LangModelProvider;
 }

@@ -2,15 +2,17 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.directive.Opens;
+import io.determann.shadow.api.lang_model.shadow.directive.OpensLangModel;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
-import java.util.Objects;
 
-public class OpensImpl extends DirectiveImpl implements Opens
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
+public class OpensImpl extends DirectiveImpl implements OpensLangModel
 {
    private final ModuleElement.OpensDirective opensDirective;
 
@@ -42,29 +44,26 @@ public class OpensImpl extends DirectiveImpl implements Opens
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (!(other instanceof Opens otherOpens))
-      {
-         return false;
-      }
-      return Objects.equals(getTargetModules(), otherOpens.getTargetModules()) &&
-             Objects.equals(getPackage(), otherOpens.getPackage());
+      return OpensSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getPackage(), getTargetModules());
+      return OpensSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return opensDirective.toString();
+      return OpensSupport.toString(this);
    }
 }

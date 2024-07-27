@@ -1,15 +1,17 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.directive.Provides;
+import io.determann.shadow.api.reflection.shadow.directive.ProvidesReflection;
 import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-public class ProvidesImpl implements Provides
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
+public class ProvidesImpl implements ProvidesReflection
 {
    private final ModuleDescriptor.Provides providesDirective;
 
@@ -35,31 +37,27 @@ public class ProvidesImpl implements Provides
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (other == null || !getClass().equals(other.getClass()))
-      {
-         return false;
-      }
-      ProvidesImpl otherProvides = (ProvidesImpl) other;
-      return Objects.equals(getImplementations(), otherProvides.getImplementations()) &&
-             Objects.equals(getService(), otherProvides.getService());
+      return ProvidesSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getService(), getImplementations());
+      return ProvidesSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return providesDirective.toString();
+      return ProvidesSupport.toString(this);
    }
 
    public ModuleDescriptor.Provides getReflection()

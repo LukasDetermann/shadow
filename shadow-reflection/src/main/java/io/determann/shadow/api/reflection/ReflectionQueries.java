@@ -4,6 +4,7 @@ import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.directive.*;
 import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.*;
@@ -11,6 +12,7 @@ import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -210,6 +212,31 @@ public interface ReflectionQueries
    public static StrictfpModifiableReflection query(StrictfpModifiable strictfpModifiable)
    {
       return (StrictfpModifiableReflection) validate(strictfpModifiable);
+   }
+
+   public static ExportsReflection query(Exports exports)
+   {
+      return (ExportsReflection) validate(exports);
+   }
+
+   public static OpensReflection query(Opens opens)
+   {
+      return (OpensReflection) validate(opens);
+   }
+
+   public static ProvidesReflection query(Provides provides)
+   {
+      return (ProvidesReflection) validate(provides);
+   }
+
+   public static RequiresReflection query(Requires requires)
+   {
+      return (RequiresReflection) validate(requires);
+   }
+
+   public static UsesReflection query(Uses uses)
+   {
+      return (UsesReflection) validate(uses);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

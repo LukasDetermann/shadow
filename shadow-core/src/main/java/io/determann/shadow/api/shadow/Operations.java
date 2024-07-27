@@ -2,7 +2,7 @@ package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
-import io.determann.shadow.api.shadow.directive.Directive;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.Modifiable;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
@@ -214,4 +214,28 @@ public interface Operations
    public static Operation0<Modifiable, Set<Modifier>> MODIFIABLE_GET_MODIFIERS = new Operation0<>("modifiable.getModifiers");
 
    public static Operation1<Modifiable, Modifier, Boolean> MODIFIABLE_HAS_MODIFIER = new Operation1<>("modifiable.hasModifier");
+
+   public static Operation0<Exports, Package> EXPORTS_GET_PACKAGE = new Operation0<>("exports.getPackage");
+
+   public static Operation0<Exports, List<Module>> EXPORTS_GET_TARGET_MODULES = new Operation0<>("exports.getTargetModules");
+
+   public static Operation0<Exports, Boolean> EXPORTS_TO_ALL = new Operation0<>("exports.toAll");
+
+   public static Operation0<Opens, Package> OPENS_GET_PACKAGE = new Operation0<>("opens.getPackage");
+
+   public static Operation0<Opens, List<Module>> OPENS_GET_TARGET_MODULES = new Operation0<>("opens.getTargetModules");
+
+   public static Operation0<Opens, Boolean> OPENS_TO_ALL = new Operation0<>("opens.toAll");
+
+   public static Operation0<Provides, Declared> PROVIDES_GET_SERVICE = new Operation0<>("provides.getService");
+
+   public static Operation0<Provides, List<Declared>> PROVIDES_GET_IMPLEMENTATIONS = new Operation0<>("provides.getImplementations");
+
+   public static Operation0<Requires, Boolean> REQUIRES_IS_STATIC = new Operation0<>("requires.isStatic");
+
+   public static Operation0<Requires, Boolean> REQUIRES_IS_TRANSITIVE = new Operation0<>("requires.isTransitive");
+
+   public static Operation0<Requires, Module> REQUIRES_GET_DEPENDENCY = new Operation0<>("requires.getDependency");
+
+   public static Operation0<Uses, Declared> USES_GET_SERVICE = new Operation0<>("uses.getService");
 }

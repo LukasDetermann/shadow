@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
@@ -138,7 +138,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
                                                         .filter(Provides.class::isInstance)
                                                         .map(Converter::convert)
                                                         .map(DirectiveConverter::toProvidesOrThrow)
-                                                        .filter(collected -> query((Shadow) collected.getService()).representsSameType(provides.getService()))
+                                                        .filter(collected -> query((Shadow) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
                                                         .findAny();
 
                                         if (existing.isEmpty())
@@ -146,7 +146,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
                                            directives.add(directive);
                                            return;
                                         }
-                                        if (existing.get().getImplementations().size() > provides.getImplementations().size())
+                                        if (requestOrThrow(existing.get(),PROVIDES_GET_IMPLEMENTATIONS).size() > requestOrThrow(provides,PROVIDES_GET_IMPLEMENTATIONS).size())
                                         {
                                            return;
                                         }

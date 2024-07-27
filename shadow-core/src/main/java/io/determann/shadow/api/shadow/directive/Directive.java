@@ -1,12 +1,10 @@
 package io.determann.shadow.api.shadow.directive;
 
+import io.determann.shadow.api.ImplementationDefined;
+
 /**
  * Relation between modules
  */
-public sealed interface Directive permits Exports,
-                                          Opens,
-                                          Provides,
-                                          Requires,
-                                          Uses
+public interface Directive extends ImplementationDefined
 {
 }

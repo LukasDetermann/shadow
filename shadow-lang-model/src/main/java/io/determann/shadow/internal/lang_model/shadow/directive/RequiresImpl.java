@@ -2,13 +2,15 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.directive.Requires;
+import io.determann.shadow.api.lang_model.shadow.directive.RequiresLangModel;
 import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import javax.lang.model.element.ModuleElement;
-import java.util.Objects;
 
-public class RequiresImpl extends DirectiveImpl implements Requires
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
+public class RequiresImpl extends DirectiveImpl implements RequiresLangModel
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
@@ -37,30 +39,26 @@ public class RequiresImpl extends DirectiveImpl implements Requires
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (!(other instanceof Requires otherRequires))
-      {
-         return false;
-      }
-      return Objects.equals(isStatic(), otherRequires.isStatic()) &&
-             Objects.equals(isTransitive(), otherRequires.isTransitive()) &&
-             Objects.equals(getDependency(), otherRequires.getDependency());
+      return RequiresSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getDependency(), isStatic(), isTransitive());
+      return RequiresSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return requiresDirective.toString();
+      return RequiresSupport.toString(this);
    }
 }

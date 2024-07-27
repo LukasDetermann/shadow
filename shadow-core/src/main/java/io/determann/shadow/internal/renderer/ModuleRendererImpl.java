@@ -43,7 +43,7 @@ public class ModuleRendererImpl implements ModuleRenderer
          sb.append(module.getDirectAnnotationUsages()
                          .stream()
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                         .collect(Collectors.joining()));
+                         .collect(joining()));
       }
 
       if (requestOrThrow(module, MODULE_IS_OPEN))
@@ -64,6 +64,7 @@ public class ModuleRendererImpl implements ModuleRenderer
                                                           case Provides provides -> Provides.class;
                                                           case Requires requires -> Requires.class;
                                                           case Uses uses -> Uses.class;
+                                                          default -> throw new IllegalStateException("Unexpected value: " + directive);
                                                        }));
 
       if (kind.containsKey(Requires.class))
@@ -73,7 +74,8 @@ public class ModuleRendererImpl implements ModuleRenderer
                                         .stream()
                                         .map(Converter::convert)
                                         .map(requiresConverter)
-                                        .filter(requires1 -> !requestOrThrow(requires1.getDependency(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.base"))
+                                        .filter(requires1 -> !requestOrThrow(requestOrThrow(requires1, REQUIRES_GET_DEPENDENCY),
+                                                                             QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.base"))
                                         .collect(Collectors.toList());
          sb.append(render(requires,
                           requiresConverter,
@@ -132,15 +134,15 @@ public class ModuleRendererImpl implements ModuleRenderer
       StringBuilder sb = new StringBuilder();
       sb.append("requires ");
 
-      if (requires.isTransitive())
+      if (requestOrThrow(requires, REQUIRES_IS_TRANSITIVE))
       {
          sb.append("transitive ");
       }
-      if (requires.isStatic())
+      if (requestOrThrow(requires, REQUIRES_IS_STATIC))
       {
          sb.append("static ");
       }
-      sb.append(requestOrThrow(requires.getDependency(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+      sb.append(requestOrThrow(requestOrThrow(requires, REQUIRES_GET_DEPENDENCY), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       return sb.toString();
    }
 
@@ -148,18 +150,18 @@ public class ModuleRendererImpl implements ModuleRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (requestOrThrow(exports.getPackage(), PACKAGE_IS_UNNAMED))
+      if (requestOrThrow(requestOrThrow(exports, EXPORTS_GET_PACKAGE), PACKAGE_IS_UNNAMED))
       {
          throw new IllegalArgumentException("cant render a unnamed packageName");
       }
 
       sb.append("exports ");
-      sb.append(requestOrThrow(exports.getPackage(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+      sb.append(requestOrThrow(requestOrThrow(exports, EXPORTS_GET_PACKAGE), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
-      if (!exports.toAll())
+      if (!requestOrThrow(exports, EXPORTS_TO_ALL))
       {
          sb.append(" to ");
-         sb.append(exports.getTargetModules().stream()
+         sb.append(requestOrThrow(exports, EXPORTS_GET_TARGET_MODULES).stream()
                           .map(module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
                           .collect(joining(", ")));
       }
@@ -171,18 +173,18 @@ public class ModuleRendererImpl implements ModuleRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (requestOrThrow(opens.getPackage(), PACKAGE_IS_UNNAMED))
+      if (requestOrThrow(requestOrThrow(opens, OPENS_GET_PACKAGE), PACKAGE_IS_UNNAMED))
       {
          throw new IllegalArgumentException("cant render a unnamed packageName");
       }
 
       sb.append("opens ");
-      sb.append(requestOrThrow(opens.getPackage(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+      sb.append(requestOrThrow(requestOrThrow(opens, OPENS_GET_PACKAGE), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
-      if (!opens.toAll())
+      if (!requestOrThrow(opens, OPENS_TO_ALL))
       {
          sb.append(" to ");
-         sb.append(opens.getTargetModules().stream()
+         sb.append(requestOrThrow(opens, OPENS_GET_TARGET_MODULES).stream()
                         .map(module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
                         .collect(joining(", ")));
       }
@@ -192,19 +194,19 @@ public class ModuleRendererImpl implements ModuleRenderer
 
    private String render(Uses uses)
    {
-      return "uses " + requestOrThrow(uses.getService(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
+      return "uses " + requestOrThrow(requestOrThrow(uses,  USES_GET_SERVICE), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
    }
 
    private String render(Provides provides)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("provides ");
-      sb.append(requestOrThrow(provides.getService(), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+      sb.append(requestOrThrow(requestOrThrow(provides, PROVIDES_GET_SERVICE), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
 
-      if (!provides.getImplementations().isEmpty())
+      if (!requestOrThrow(provides, PROVIDES_GET_IMPLEMENTATIONS).isEmpty())
       {
          sb.append(" with ");
-         sb.append(provides.getImplementations()
+         sb.append(requestOrThrow(provides, PROVIDES_GET_IMPLEMENTATIONS)
                            .stream()
                            .map(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))
                            .collect(joining(", ")));

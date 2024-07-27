@@ -119,6 +119,18 @@ public class LangModelProvider extends AbstractProvider
              .with(MODULE_IS_AUTOMATIC, module -> query(module).isAutomatic())
              .with(MODULE_GET_DIRECTIVES, module -> query(module).getDirectives())
              .with(MODIFIABLE_GET_MODIFIERS, modifiable -> query(modifiable).getModifiers())
-             .with(MODIFIABLE_HAS_MODIFIER, (modifiable, modifier) -> query(modifiable).hasModifier(modifier));
+             .with(MODIFIABLE_HAS_MODIFIER, (modifiable, modifier) -> query(modifiable).hasModifier(modifier))
+             .with(EXPORTS_GET_PACKAGE, exports -> query(exports).getPackage())
+             .with(EXPORTS_GET_TARGET_MODULES, exports -> query(exports).getTargetModules())
+             .with(EXPORTS_TO_ALL, exports -> query(exports).toAll())
+             .with(OPENS_GET_PACKAGE, opens -> query(opens).getPackage())
+             .with(OPENS_GET_TARGET_MODULES, opens -> query(opens).getTargetModules())
+             .with(OPENS_TO_ALL, opens -> query(opens).toAll())
+             .with(PROVIDES_GET_SERVICE, provides -> query(provides).getService())
+             .with(PROVIDES_GET_IMPLEMENTATIONS, provides -> query(provides).getImplementations())
+             .with(REQUIRES_IS_STATIC, requires -> query(requires).isStatic())
+             .with(REQUIRES_IS_TRANSITIVE, requires -> query(requires).isTransitive())
+             .with(REQUIRES_GET_DEPENDENCY, requires -> query(requires).getDependency())
+             .with(USES_GET_SERVICE, uses -> query(uses).getService());
    }
 }

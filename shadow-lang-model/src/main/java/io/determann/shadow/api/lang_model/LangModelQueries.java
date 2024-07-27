@@ -2,6 +2,7 @@ package io.determann.shadow.api.lang_model;
 
 import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.lang_model.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.directive.*;
 import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
@@ -10,6 +11,7 @@ import io.determann.shadow.api.shadow.ModuleEnclosed;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -214,6 +216,31 @@ public interface LangModelQueries
    public static StrictfpModifiableLangModel query(StrictfpModifiable strictfpModifiable)
    {
       return (StrictfpModifiableLangModel) validate(strictfpModifiable);
+   }
+
+   public static ExportsLangModel query(Exports exports)
+   {
+      return (ExportsLangModel) validate(exports);
+   }
+
+   public static OpensLangModel query(Opens opens)
+   {
+      return (OpensLangModel) validate(opens);
+   }
+
+   public static ProvidesLangModel query(Provides provides)
+   {
+      return (ProvidesLangModel) validate(provides);
+   }
+
+   public static RequiresLangModel query(Requires requires)
+   {
+      return (RequiresLangModel) validate(requires);
+   }
+
+   public static UsesLangModel query(Uses uses)
+   {
+      return (UsesLangModel) validate(uses);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

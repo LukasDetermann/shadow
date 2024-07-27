@@ -2,14 +2,16 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.directive.Provides;
+import io.determann.shadow.api.lang_model.shadow.directive.ProvidesLangModel;
 import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
-import java.util.Objects;
 
-public class ProvidesImpl extends DirectiveImpl implements Provides
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
+public class ProvidesImpl extends DirectiveImpl implements ProvidesLangModel
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
@@ -35,29 +37,26 @@ public class ProvidesImpl extends DirectiveImpl implements Provides
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (!(other instanceof Provides otherProvides))
-      {
-         return false;
-      }
-      return Objects.equals(getImplementations(), otherProvides.getImplementations()) &&
-             Objects.equals(getService(), otherProvides.getService());
+      return ProvidesSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getService(), getImplementations());
+      return ProvidesSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return providesDirective.toString();
+      return ProvidesSupport.toString(this);
    }
 }

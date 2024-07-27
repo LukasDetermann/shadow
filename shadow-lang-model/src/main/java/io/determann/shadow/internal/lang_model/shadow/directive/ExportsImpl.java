@@ -2,16 +2,18 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.directive.Exports;
+import io.determann.shadow.api.lang_model.shadow.directive.ExportsLangModel;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public class ExportsImpl extends DirectiveImpl implements Exports
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+
+public class ExportsImpl extends DirectiveImpl implements ExportsLangModel
 {
 
    private final ModuleElement.ExportsDirective exportsDirective;
@@ -46,29 +48,26 @@ public class ExportsImpl extends DirectiveImpl implements Exports
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (!(other instanceof Exports otherExports))
-      {
-         return false;
-      }
-      return Objects.equals(getTargetModules(), otherExports.getTargetModules()) &&
-             Objects.equals(getPackage(), otherExports.getPackage());
+      return ExportsSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getPackage(), getTargetModules());
+      return ExportsSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return exportsDirective.toString();
+      return ExportsSupport.toString(this);
    }
 }

@@ -1,12 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.directive.Uses;
+import io.determann.shadow.api.reflection.shadow.directive.UsesReflection;
 import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
-import java.util.Objects;
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class UsesImpl implements Uses
+public class UsesImpl implements UsesReflection
 {
    private final String usesDirective;
 
@@ -22,30 +23,27 @@ public class UsesImpl implements Uses
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (other == null || !getClass().equals(other.getClass()))
-      {
-         return false;
-      }
-      UsesImpl otherUses = (UsesImpl) other;
-      return Objects.equals(getService(), otherUses.getService());
+      return UsesSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getService());
+      return UsesSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return usesDirective;
+      return UsesSupport.toString(this);
    }
 
    public String getReflection()

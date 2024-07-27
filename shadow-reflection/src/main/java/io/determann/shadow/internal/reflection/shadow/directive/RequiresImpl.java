@@ -1,13 +1,15 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.directive.Requires;
+import io.determann.shadow.api.reflection.shadow.directive.RequiresReflection;
 import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import java.lang.module.ModuleDescriptor;
-import java.util.Objects;
 
-public class RequiresImpl implements Requires
+import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+
+public class RequiresImpl implements RequiresReflection
 {
 
    private final ModuleDescriptor.Requires requiresDirective;
@@ -36,32 +38,27 @@ public class RequiresImpl implements Requires
    }
 
    @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
+   }
+
+   @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (other == null || !getClass().equals(other.getClass()))
-      {
-         return false;
-      }
-      RequiresImpl otherRequires = (RequiresImpl) other;
-      return Objects.equals(isStatic(), otherRequires.isStatic()) &&
-             Objects.equals(isTransitive(), otherRequires.isTransitive()) &&
-             Objects.equals(getDependency(), otherRequires.getDependency());
+      return RequiresSupport.equals(this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getDependency(), isStatic(), isTransitive());
+      return RequiresSupport.hashCode(this);
    }
 
    @Override
    public String toString()
    {
-      return requiresDirective.toString();
+      return RequiresSupport.toString(this);
    }
 
    public ModuleDescriptor.Requires getReflection()
