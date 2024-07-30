@@ -53,7 +53,9 @@ class ModuleTest extends ShadowTest<Module>
                                   assertEquals(
                                         "[Requires {getDependency=java.base, isStatic=false, isTransitive=false}, " +
                                         "Exports {getPackage=java.util.logging, getTargetModules=[]}, " +
-                                        "Provides {getService=jdk.internal.logger.DefaultLoggerFinder, getImplementations=[sun.util.logging.internal.LoggingProviderImpl]}]",
+                                        "Provides {getService=Class {getQualifiedName=jdk.internal.logger.DefaultLoggerFinder, getKind=CLASS, " +
+                                        "getModifiers=[PUBLIC]}, getImplementations=[" +
+                                        "Class {getQualifiedName=sun.util.logging.internal.LoggingProviderImpl, getKind=CLASS, getModifiers=[PUBLIC, FINAL]}]}]",
                                         query(shadowApi.getModuleOrThrow("java.logging")).getDirectives().toString()))
                    .compile();
    }

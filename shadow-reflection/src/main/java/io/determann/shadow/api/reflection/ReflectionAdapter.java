@@ -7,8 +7,10 @@ import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.reflection.NamedSupplier;
-import io.determann.shadow.internal.reflection.shadow.*;
+import io.determann.shadow.internal.reflection.shadow.AnnotationUsageImpl;
 import io.determann.shadow.internal.reflection.shadow.directive.*;
+import io.determann.shadow.internal.reflection.shadow.structure.*;
+import io.determann.shadow.internal.reflection.shadow.type.*;
 
 import java.lang.Class;
 import java.lang.Enum;
@@ -50,9 +52,13 @@ public interface ReflectionAdapter
       {
          return (SHADOW) new RecordImpl(aClass, genericShadows);
       }
-      if (aClass.isAnnotation() || aClass.isEnum())
+      if (aClass.isAnnotation())
       {
-         return (SHADOW) new DeclaredImpl(aClass);
+         return (SHADOW) new AnnotationImpl(aClass);
+      }
+      if (aClass.isEnum())
+      {
+         return (SHADOW) new EnumImpl(aClass);
       }
       if (aClass.isInterface())
       {

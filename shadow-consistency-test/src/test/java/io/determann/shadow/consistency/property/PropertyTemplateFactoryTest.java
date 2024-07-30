@@ -2,6 +2,7 @@ package io.determann.shadow.consistency.property;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.shadow.Nameable;
+import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.property.ImmutableProperty;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplate;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory;
@@ -18,6 +19,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -45,7 +49,7 @@ class PropertyTemplateFactoryTest
                                   assertNotNull(descriptor);
 
                                   assertEquals(descriptor.getName(), template.getName());
-                                  assertEquals(descriptor.getPropertyType().toString().replaceAll("[a-z]+ ", ""), template.getType().toString());
+                                  assertEquals(descriptor.getPropertyType().toString().replaceAll("[a-z]+ ", ""), getName(template));
                                   assertEquals(descriptor.getReadMethod().getName(), template.getGetter().toString().replace("()", ""));
                                   if (descriptor.getWriteMethod() == null || template.getSetter() == null)
                                   {
@@ -59,6 +63,19 @@ class PropertyTemplateFactoryTest
                             })
                    .withCompiledClass(Pojo.class)
                    .compile();
+   }
+
+   private static String getName(PropertyTemplate template)
+   {
+      if (template.getType() instanceof QualifiedNameable qualifiedNameable)
+      {
+         return requestOrThrow(qualifiedNameable, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
+      }
+      if (template.getType() instanceof Nameable nameable)
+      {
+         return requestOrThrow(nameable, NAMEABLE_GET_NAME);
+      }
+      return template.getType().toString();
    }
 
    private static BeanInfo getBeanInfo(Class<Pojo> clazz)

@@ -11,7 +11,8 @@ import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl;
-import io.determann.shadow.internal.lang_model.shadow.*;
+import io.determann.shadow.internal.lang_model.shadow.structure.*;
+import io.determann.shadow.internal.lang_model.shadow.type.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
@@ -212,7 +213,8 @@ public interface LangModelAdapter
       return (SHADOW) switch (element.getKind())
       {
          case PACKAGE -> new PackageImpl(context, (PackageElement) element);
-         case ENUM, ANNOTATION_TYPE -> new DeclaredImpl(context, (TypeElement) element);
+         case ENUM -> new EnumImpl(context, (TypeElement) element);
+         case ANNOTATION_TYPE -> new AnnotationImpl(context, (TypeElement) element);
          case RECORD -> new RecordImpl(context, (TypeElement) element);
          case CLASS -> new ClassImpl(context, (TypeElement) element);
          case INTERFACE -> new InterfaceImpl(context, (TypeElement) element);
@@ -244,7 +246,8 @@ public interface LangModelAdapter
             case CLASS -> new ClassImpl(context, ((DeclaredType) typeMirror));
             case INTERFACE -> new InterfaceImpl(context, (DeclaredType) typeMirror);
             case RECORD -> new RecordImpl(context, (DeclaredType) typeMirror);
-            case ANNOTATION_TYPE, ENUM -> new DeclaredImpl(context, (DeclaredType) typeMirror);
+            case ANNOTATION_TYPE -> new AnnotationImpl(context, (DeclaredType) typeMirror);
+            case ENUM -> new EnumImpl(context, (DeclaredType) typeMirror);
             default -> throw new IllegalArgumentException("not implemented");
          };
          case WILDCARD -> new WildcardImpl(context, (WildcardType) typeMirror);

@@ -19,12 +19,12 @@ public class Provider
 
    private static Map<String, ProviderSpi> providers;
 
-   public static <TYPE extends ImplementationDefined, RESULT> Response<RESULT> request(TYPE instance, Operation0<TYPE, RESULT> operation)
+   public static <TYPE extends ImplementationDefined, RESULT> Response<RESULT> request(TYPE instance, Operation0<? super TYPE, RESULT> operation)
    {
       return _request(instance, operation);
    }
 
-   public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(TYPE instance, Operation0<TYPE, RESULT> operation)
+   public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(TYPE instance, Operation0<? super TYPE, RESULT> operation)
    {
       return switch (_request(instance, operation))
       {
@@ -34,7 +34,7 @@ public class Provider
       };
    }
 
-   public static <TYPE extends ImplementationDefined, RESULT> Optional<RESULT> requestOrEmpty(TYPE instance, Operation0<TYPE, RESULT> operation)
+   public static <TYPE extends ImplementationDefined, RESULT> Optional<RESULT> requestOrEmpty(TYPE instance, Operation0<? super TYPE, RESULT> operation)
    {
       return switch (_request(instance, operation))
       {
@@ -45,14 +45,14 @@ public class Provider
    }
 
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> Response<RESULT> request(TYPE instance,
-                                                                                                Operation1<TYPE, PARAM_1, RESULT> operation,
+                                                                                                Operation1<? super TYPE, PARAM_1, RESULT> operation,
                                                                                                 PARAM_1 param1)
    {
       return _request(instance, operation, param1);
    }
 
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> RESULT requestOrThrow(TYPE instance,
-                                                                                             Operation1<TYPE, PARAM_1, RESULT> operation,
+                                                                                             Operation1<? super TYPE, PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
    {
       return switch (_request(instance, operation, param1))
@@ -64,7 +64,7 @@ public class Provider
    }
 
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> Optional<RESULT> requestOrEmpty(TYPE instance,
-                                                                                                       Operation1<TYPE, PARAM_1, RESULT> operation,
+                                                                                                       Operation1<? super TYPE, PARAM_1, RESULT> operation,
                                                                                                        PARAM_1 param1)
    {
       return switch (_request(instance, operation, param1))
@@ -76,7 +76,7 @@ public class Provider
    }
 
    private static <TYPE extends ImplementationDefined, RESULT> Response<RESULT> _request(TYPE instance,
-                                                                                         Operation<TYPE, RESULT> operation,
+                                                                                         Operation<? super TYPE, RESULT> operation,
                                                                                          Object... params)
    {
       init();
@@ -101,7 +101,7 @@ public class Provider
    }
 
    private static <TYPE extends ImplementationDefined, PARAM_1, RESULT> NoSuchElementException noSuchElement(TYPE instance,
-                                                                                                             Operation<TYPE, RESULT> operation)
+                                                                                                             Operation<? super TYPE, RESULT> operation)
    {
       return new NoSuchElementException(operation.getName() +
                                         " does not return a value for " +
@@ -111,7 +111,7 @@ public class Provider
    }
 
    private static <TYPE extends ImplementationDefined, PARAM_1, RESULT> UnsupportedOperationException unsupported(TYPE instance,
-                                                                                                                  Operation<TYPE, RESULT> operation)
+                                                                                                                  Operation<? super TYPE, RESULT> operation)
    {
       return new UnsupportedOperationException(operation.getName() +
                                                " not supported for " +

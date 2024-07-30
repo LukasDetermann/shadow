@@ -22,7 +22,7 @@ public abstract class AbstractProvider implements ProviderSpi
    }
 
    @Override
-   public <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<TYPE, RESULT> operation, Object... params)
+   public <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<? super TYPE, RESULT> operation, Object... params)
    {
       BiFunction<?, Object[], ?> mapping = map.get(operation);
       if (mapping == null)

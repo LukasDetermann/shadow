@@ -1,5 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
+import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -7,7 +8,8 @@ import io.determann.shadow.api.shadow.type.Shadow;
 /**
  * represents primitive types, but not there wrapper classes. for example int, long, short
  */
-public interface PrimitiveReflection extends Primitive
+public interface PrimitiveReflection extends Primitive,
+                                             NameableReflection
 {
    /**
     * returns true if this can be cast to that.

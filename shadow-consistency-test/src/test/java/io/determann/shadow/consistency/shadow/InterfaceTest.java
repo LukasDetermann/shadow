@@ -35,7 +35,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                             query(shadowApi.getInterfaceOrThrow("java.util.function.UnaryOperator"))
                                                   .getDirectInterfaces()
                                                   .stream()
-                                                  .map(Object::toString)
+                                                  .map(anInterface -> query(anInterface).getQualifiedName())
                                                   .toList());
                             })
                    .compile();

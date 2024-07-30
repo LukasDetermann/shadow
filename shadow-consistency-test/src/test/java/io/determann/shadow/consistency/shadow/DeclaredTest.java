@@ -32,7 +32,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                query(shadowApi.getInterfaceOrThrow("java.lang.Comparable"))
                                                         .getGenerics()
                                                         .stream()
-                                                        .map(Object::toString)
+                                                        .map(generic -> query(generic).getName())
                                                         .collect(Collectors.joining())))
                    .compile();
    }

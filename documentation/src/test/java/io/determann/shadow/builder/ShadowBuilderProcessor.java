@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
 import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,7 +100,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                          final MutableProperty property)
    {
       String propertyName = property.getName();
-      String type = property.getType().toString();
+      String type = renderType(property.getType());
       String field = "private " + type + " " + propertyName + ";";
 
       String mutator = """
@@ -127,4 +128,17 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    private record BuilderElement(String field,
                                  String mutator,
                                  String toBuildSetter) {}
+
+   private static String renderType(Shadow shadow)
+   {
+      if (shadow instanceof QualifiedNameable qualifiedNameable)
+      {
+         return query(qualifiedNameable).getQualifiedName();
+      }
+      if (shadow instanceof Nameable nameable)
+      {
+         return query(nameable).getName();
+      }
+      return shadow.toString();
+   }
 }

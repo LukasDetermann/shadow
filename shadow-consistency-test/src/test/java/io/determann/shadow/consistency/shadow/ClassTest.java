@@ -53,7 +53,7 @@ class ClassTest extends DeclaredTest<Class>
                                                       query(shadowApi.getClassOrThrow("PermittedSubClassesExample"))
                                                                .getPermittedSubClasses()
                                                                .stream()
-                                                               .map(Object::toString)
+                                                               .map(aClass -> query(aClass).getQualifiedName())
                                                                .toList()))
                    .withCodeToCompile("PermittedSubClassesExample.java", """
                          public sealed class PermittedSubClassesExample permits PermittedSubClassesExample.Child
