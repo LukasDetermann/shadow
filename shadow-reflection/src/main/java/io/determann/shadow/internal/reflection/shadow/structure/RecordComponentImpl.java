@@ -3,7 +3,6 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.RecordComponentReflection;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -17,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
@@ -109,23 +107,6 @@ public class RecordComponentImpl implements RecordComponentReflection
    public Package getPackage()
    {
       return ReflectionAdapter.generalize(getRecordComponent().getDeclaringRecord().getPackage());
-   }
-
-   @Override
-   public TypeKind getKind()
-   {
-      return TypeKind.RECORD_COMPONENT;
-   }
-
-   @Override
-   public boolean representsSameType(Shadow shadow)
-   {
-      return shadow != null &&
-             convert(shadow).toRecordComponent()
-                            .map(recordComponent1 -> requestOrThrow(requestOrThrow(recordComponent1, RECORD_COMPONENT_GET_TYPE),
-                                                                    SHADOW_REPRESENTS_SAME_TYPE,
-                                                                    getType()))
-                            .orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()

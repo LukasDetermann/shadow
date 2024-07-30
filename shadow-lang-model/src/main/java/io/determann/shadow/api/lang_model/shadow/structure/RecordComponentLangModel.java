@@ -2,7 +2,6 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
@@ -10,7 +9,6 @@ import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 public interface RecordComponentLangModel extends RecordComponent,
-                                                  ShadowLangModel,
                                                   NameableLangModel,
                                                   ModuleEnclosedLangModel
 {

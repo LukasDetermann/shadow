@@ -35,10 +35,7 @@ public enum TypeKind
 
    WILDCARD(false, false, false),
 
-   INTERSECTION(false, false, false),
-
-   RECORD_COMPONENT(false, false, false);
-
+   INTERSECTION(false, false, false);
 
    private final boolean primitive;
    private final boolean declared;

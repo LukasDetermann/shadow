@@ -3,7 +3,6 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -11,7 +10,6 @@ import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.Shadow;
-import io.determann.shadow.internal.lang_model.shadow.type.ShadowImpl;
 
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.type.TypeMirror;
@@ -21,15 +19,18 @@ import java.util.Objects;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Operations.RECORD_COMPONENT_GET_TYPE;
-import static io.determann.shadow.api.shadow.TypeKind.RECORD_COMPONENT;
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements RecordComponentLangModel
+public class RecordComponentImpl implements RecordComponentLangModel
 {
    private final RecordComponentElement recordComponentElement;
+   private final LangModelContext context;
+   private final TypeMirror typeMirror;
 
    public RecordComponentImpl(LangModelContext context, RecordComponentElement recordComponentElement)
    {
-      super(context, recordComponentElement.asType());
+      this.typeMirror = recordComponentElement.asType();
+      this.context = context;
       this.recordComponentElement = recordComponentElement;
    }
 
@@ -72,12 +73,6 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
    public RecordComponentElement getElement()
    {
       return recordComponentElement;
-   }
-
-   @Override
-   public TypeKind getKind()
-   {
-      return RECORD_COMPONENT;
    }
 
    @Override
@@ -129,5 +124,21 @@ public class RecordComponentImpl extends ShadowImpl<TypeMirror> implements Recor
       }
       return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+   }
+
+   public TypeMirror getMirror()
+   {
+      return typeMirror;
+   }
+
+   public LangModelContext getApi()
+   {
+      return context;
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }

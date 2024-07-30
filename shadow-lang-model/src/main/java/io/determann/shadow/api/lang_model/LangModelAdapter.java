@@ -202,6 +202,11 @@ public interface LangModelAdapter
       return new ExecutableImpl(context, element);
    }
 
+   public static RecordComponent generalize(LangModelContext context, RecordComponentElement recordComponentElement)
+   {
+      return new RecordComponentImpl(context, recordComponentElement);
+   }
+
    /**
     * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link Shadow}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.

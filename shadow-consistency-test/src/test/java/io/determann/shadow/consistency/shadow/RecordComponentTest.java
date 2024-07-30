@@ -1,7 +1,6 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.shadow.type.Record;
 import org.junit.jupiter.api.Test;
 
@@ -9,17 +8,12 @@ import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RecordComponentTest extends ShadowTest<RecordComponentLangModel>
+class RecordComponentTest
 {
-   RecordComponentTest()
-   {
-      super(shadowApi -> query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id")));
-   }
-
    @Test
    void testIsSubtype()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(getShadowSupplier().apply(shadowApi)
+      ProcessorTest.process(shadowApi -> assertTrue(query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id"))
                                                                        .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number"))))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
@@ -28,7 +22,7 @@ class RecordComponentTest extends ShadowTest<RecordComponentLangModel>
    @Test
    void testIsAssignableFrom()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(getShadowSupplier().apply(shadowApi)
+      ProcessorTest.process(shadowApi -> assertTrue(query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id"))
                                                                        .isAssignableFrom(shadowApi.getConstants().getPrimitiveLong())))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();

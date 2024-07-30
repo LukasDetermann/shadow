@@ -29,7 +29,7 @@ public class RecordImpl extends DeclaredImpl implements RecordLangModel
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> LangModelAdapter.<RecordComponent>generalize(getApi(), recordComponentElement))
+                         .map(recordComponentElement -> LangModelAdapter.generalize(getApi(), recordComponentElement))
                          .toList();
    }
 

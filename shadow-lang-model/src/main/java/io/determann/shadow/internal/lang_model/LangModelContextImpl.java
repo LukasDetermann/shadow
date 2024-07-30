@@ -11,6 +11,7 @@ import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.internal.lang_model.shadow.structure.RecordComponentImpl;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.TypeMirror;
@@ -174,7 +175,7 @@ public class LangModelContextImpl implements LangModelContext,
    @Override
    public RecordComponent erasure(RecordComponent recordComponent)
    {
-      return erasureImpl(particularType(recordComponent));
+      return erasureImpl(((RecordComponentImpl) recordComponent).getMirror());
    }
 
    @Override

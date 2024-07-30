@@ -4,7 +4,10 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.ArrayReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
@@ -39,29 +42,27 @@ public class ArrayImpl implements ArrayReflection,
       {
          return PRIMITIVE_SUPERTYPES.stream().anyMatch(shadow::equals);
       }
-      if (!TypeKind.ARRAY.equals(requestOrThrow(shadow, SHADOW_GET_KIND)))
+      if (!(shadow instanceof Array otherArray))
       {
          return false;
       }
-      Array otherArray = convert(shadow).toArrayOrThrow();
       Shadow otherComponentShadow = requestOrThrow(otherArray, ARRAY_GET_COMPONENT_TYPE);
 
-      if (TypeKind.ARRAY.equals(requestOrThrow(shadow, SHADOW_GET_KIND)) && TypeKind.ARRAY.equals(requestOrThrow(otherComponentShadow, SHADOW_GET_KIND)))
+      if (componentShadow instanceof Array nestedArray && otherComponentShadow instanceof Array)
       {
-         Array nestedArray = convert(componentShadow).toArrayOrThrow();
          return requestOrThrow(nestedArray, ARRAY_IS_SUBTYPE_OF, otherComponentShadow);
       }
-      if (requestOrThrow(shadow, SHADOW_GET_KIND).isDeclared())
+      if (componentShadow instanceof Declared declared)
       {
-         return requestOrThrow(convert(componentShadow).toDeclaredOrThrow(), DECLARED_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, otherComponentShadow);
       }
-      if (TypeKind.RECORD_COMPONENT.equals(requestOrThrow(componentShadow, SHADOW_GET_KIND)))
+      if (componentShadow instanceof RecordComponent recordComponent)
       {
-         return requestOrThrow(convert(componentShadow).toRecordComponentOrThrow(), RECORD_COMPONENT_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(recordComponent, RECORD_COMPONENT_IS_SUBTYPE_OF, otherComponentShadow);
       }
-      if (requestOrThrow(componentShadow, SHADOW_GET_KIND).isVariable())
+      if (componentShadow instanceof Variable variable)
       {
-         return requestOrThrow(convert(componentShadow).toVariableOrThrow(), VARIABLE_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(variable, VARIABLE_IS_SUBTYPE_OF, otherComponentShadow);
       }
       return false;
    }
