@@ -1,5 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
+import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
@@ -10,6 +11,7 @@ import io.determann.shadow.api.shadow.structure.Package;
 import java.util.List;
 
 public interface ModuleReflection extends Module,
+                                          AnnotationableReflection,
                                           ShadowReflection,
                                           NameableReflection,
                                           QualifiedNameableReflection

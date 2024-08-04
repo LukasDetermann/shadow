@@ -43,8 +43,8 @@ class ReceiverTest
                                                                    .getReceiver()
                                                                    .get();
 
-                               assertEquals(1, receiver.getAnnotationUsages().size());
-                               assertEquals(2, query(receiver.getAnnotationUsages().get(0)).getValueOrThrow("value").asInteger());
+                               assertEquals(1, query(receiver).getAnnotationUsages().size());
+                               assertEquals(2, query(query(receiver).getAnnotationUsages().get(0)).getValueOrThrow("value").asInteger());
                             })
                    .withCodeToCompile("MyAnnotation.java", "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation{int value();}")
                    .withCodeToCompile("ReceiverExample.java", """

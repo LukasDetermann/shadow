@@ -17,8 +17,7 @@ import java.util.regex.Pattern;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.Renderer.render;
-import static io.determann.shadow.api.shadow.Operations.EXECUTABLE_GET_RETURN_TYPE;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 class AnnotationUsageRendererTest
@@ -29,13 +28,13 @@ class AnnotationUsageRendererTest
    @Test
    void usage()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("AnnotationUsageExample")
-                                                    .getAnnotationUsages()
-                                                    .get(0))
+      ConsistencyTest.compileTime(context -> requestOrThrow(context.getClassOrThrow("AnnotationUsageExample"),
+                                                            ANNOTATIONABLE_GET_ANNOTATION_USAGES)
+                           .get(0))
                      .runtime(stringClassFunction ->
                               {
                                  Class example = ReflectionAdapter.generalize(stringClassFunction.apply("AnnotationUsageExample"));
-                                 return example.getAnnotationUsages().get(0);
+                                 return requestOrThrow(example, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
                               })
                      .withCode("AnnotationUsageAnnotation.java", """
                            import java.lang.annotation.ElementType;
@@ -82,7 +81,9 @@ class AnnotationUsageRendererTest
                                           .usage(method ->
                                                        convert(requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE))
                                                              .toClass()
-                                                             .filter(aClass -> requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.String"))
+                                                             .filter(aClass -> requestOrThrow(aClass,
+                                                                                              QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(
+                                                                   "java.lang.String"))
                                                              .map(aClass -> "\"test\"")));
                            });
    }

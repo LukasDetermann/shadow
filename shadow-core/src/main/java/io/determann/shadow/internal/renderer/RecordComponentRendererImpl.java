@@ -2,11 +2,16 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.RecordComponentRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class RecordComponentRendererImpl implements RecordComponentRenderer
@@ -24,9 +29,11 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (!recordComponent.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(recordComponent, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(recordComponent.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                                   .stream()
                                   .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
                                   .collect(Collectors.joining()));

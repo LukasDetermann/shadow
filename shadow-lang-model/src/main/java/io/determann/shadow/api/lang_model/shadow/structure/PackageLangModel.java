@@ -1,15 +1,13 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
-import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
-import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.*;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 
 public interface PackageLangModel extends Package,
+                                          AnnotationableLangModel,
                                           NameableLangModel,
                                           QualifiedNameableLamgModel,
                                           ModuleEnclosedLangModel,

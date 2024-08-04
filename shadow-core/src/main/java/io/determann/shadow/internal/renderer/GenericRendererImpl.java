@@ -2,13 +2,18 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.GenericRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Shadow;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class GenericRendererImpl implements GenericRenderer
@@ -26,9 +31,11 @@ public class GenericRendererImpl implements GenericRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (!generic.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(generic, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(generic.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                           .stream()
                           .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
                           .collect(Collectors.joining()));

@@ -23,7 +23,7 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
+                               AnnotationUsageLangModel defaultValues = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
                                                                                        .getAnnotationUsages()
                                                                                        .get(0));
 
@@ -54,8 +54,8 @@ class AnnotationUsageTest
 
                                assertTrue(defaultValues.getValues().values().stream().allMatch(AnnotationValue::isDefaultValue));
 
-                               AnnotationUsage overwrittenStringValue = query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
-                                     .getFieldOrThrow("testField")
+                               AnnotationUsage overwrittenStringValue = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
+                                     .getFieldOrThrow("testField"))
                                      .getAnnotationUsages()
                                      .get(0);
 
@@ -99,7 +99,7 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
+                               AnnotationUsageLangModel defaultValues = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
                                                                         .getAnnotationUsages()
                                                                         .get(0));
 
@@ -234,7 +234,7 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               AnnotationUsageLangModel defaultValues = query(shadowApi.getClassOrThrow("AnnotationUsageExample")
+                               AnnotationUsageLangModel defaultValues = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
                                                                         .getAnnotationUsages()
                                                                         .get(0));
 

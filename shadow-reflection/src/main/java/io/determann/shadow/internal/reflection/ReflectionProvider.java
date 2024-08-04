@@ -129,6 +129,14 @@ public class ReflectionProvider extends AbstractProvider
              .with(REQUIRES_IS_STATIC, requires -> query(requires).isStatic())
              .with(REQUIRES_IS_TRANSITIVE, requires -> query(requires).isTransitive())
              .with(REQUIRES_GET_DEPENDENCY, requires -> query(requires).getDependency())
-             .with(USES_GET_SERVICE, uses -> query(uses).getService());
+             .with(USES_GET_SERVICE, uses -> query(uses).getService())
+             .with(ANNOTATIONABLE_GET_ANNOTATION_USAGES, annotationable -> query(annotationable).getAnnotationUsages())
+             .with(ANNOTATIONABLE_GET_USAGES_OF, (annotationable, annotation) -> query(annotationable).getUsagesOf(annotation))
+             .withOptional(ANNOTATIONABLE_GET_USAGE_OF, (annotationable, annotation) -> query(annotationable).getUsageOf(annotation))
+             .with(ANNOTATIONABLE_IS_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isAnnotatedWith(annotation))
+             .with(ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES, annotationable -> query(annotationable).getDirectAnnotationUsages())
+             .with(ANNOTATIONABLE_GET_DIRECT_USAGES_OF, (annotationable, annotation) -> query(annotationable).getDirectUsagesOf(annotation))
+             .withOptional(ANNOTATIONABLE_GET_DIRECT_USAGE_OF, (annotationable, annotation) -> query(annotationable).getDirectUsageOf(annotation))
+             .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation));
    }
 }

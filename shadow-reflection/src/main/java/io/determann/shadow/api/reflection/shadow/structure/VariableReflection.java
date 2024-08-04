@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.converter.Converter;
+import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
@@ -17,6 +18,7 @@ import io.determann.shadow.api.shadow.type.Shadow;
  * </ul>
  */
 public interface VariableReflection extends Variable,
+                                            AnnotationableReflection,
                                             ShadowReflection,
                                             NameableReflection,
                                             ModuleEnclosedReflection,

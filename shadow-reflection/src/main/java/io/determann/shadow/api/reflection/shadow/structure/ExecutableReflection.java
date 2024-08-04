@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.converter.Converter;
+import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
 import io.determann.shadow.api.shadow.structure.Package;
@@ -26,6 +27,7 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  * </ul>
  */
 public interface ExecutableReflection extends Executable,
+                                              AnnotationableReflection,
                                               NameableReflection,
                                               ModifiableReflection,
                                               ModuleEnclosedReflection

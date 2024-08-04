@@ -17,9 +17,9 @@ class AnnotationableTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
+                               assertTrue(query(shadowApi.getClassOrThrow("NotAnnotated")).getAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsage> annotations = shadowApi.getClassOrThrow("Child")
+                               List<AnnotationUsage> annotations = query(shadowApi.getClassOrThrow("Child"))
                                                                             .getAnnotationUsages();
 
                                assertEquals(2, annotations.size());
@@ -39,9 +39,9 @@ class AnnotationableTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               assertTrue(shadowApi.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
+                               assertTrue(query(shadowApi.getClassOrThrow("NotAnnotated")).getDirectAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsage> directAnnotations = shadowApi.getClassOrThrow("Child")
+                               List<AnnotationUsage> directAnnotations = query(shadowApi.getClassOrThrow("Child"))
                                                                                   .getDirectAnnotationUsages();
 
                                assertEquals(1, directAnnotations.size());

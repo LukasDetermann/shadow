@@ -2,11 +2,16 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.ParameterRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Parameter;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class ParameterRendererImpl implements ParameterRenderer
@@ -24,9 +29,11 @@ public class ParameterRendererImpl implements ParameterRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (!parameter.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(parameter, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(parameter.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                             .stream()
                             .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
                             .collect(Collectors.joining()));

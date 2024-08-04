@@ -2,13 +2,18 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.FieldRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Field;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class FieldRendererImpl implements FieldRenderer
@@ -26,9 +31,11 @@ public class FieldRendererImpl implements FieldRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (!field.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(field, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(field.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                         .stream()
                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                         .collect(Collectors.joining()));

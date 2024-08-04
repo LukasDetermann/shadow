@@ -238,4 +238,20 @@ public interface Operations
    public static Operation0<Requires, Module> REQUIRES_GET_DEPENDENCY = new Operation0<>("requires.getDependency");
 
    public static Operation0<Uses, Declared> USES_GET_SERVICE = new Operation0<>("uses.getService");
+
+   public static Operation0<Annotationable, List<AnnotationUsage>> ANNOTATIONABLE_GET_ANNOTATION_USAGES = new Operation0<>("annotationable.getAnnotationUsages");
+
+   public static Operation1<Annotationable, Annotation, List<AnnotationUsage>> ANNOTATIONABLE_GET_USAGES_OF = new Operation1<>("annotationUsage.getUsagesOf");
+
+   public static Operation1<Annotationable, Annotation, AnnotationUsage> ANNOTATIONABLE_GET_USAGE_OF = new Operation1<>("annotationUsage.getUsageOf");
+
+   public static Operation1<Annotationable, Annotation, Boolean> ANNOTATIONABLE_IS_ANNOTATED_WITH = new Operation1<>("annotationable.isAnnotatedWith");
+
+   public static Operation0<Annotationable, List<AnnotationUsage>> ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES = new Operation0<>("annotationable.getDirectAnnotationUsages");
+
+   public static Operation1<Annotationable, Annotation, List<AnnotationUsage>> ANNOTATIONABLE_GET_DIRECT_USAGES_OF = new Operation1<>("annotationUsage.getDirectUsagesOf");
+
+   public static Operation1<Annotationable, Annotation, AnnotationUsage> ANNOTATIONABLE_GET_DIRECT_USAGE_OF = new Operation1<>("annotationUsage.getDirectUsageOf");
+
+   public static Operation1<Annotationable, Annotation, Boolean> ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH = new Operation1<>("annotationable.isDirectlyAnnotatedWith");
 }

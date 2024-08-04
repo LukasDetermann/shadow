@@ -2,6 +2,8 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.ClassRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Generic;
@@ -9,10 +11,12 @@ import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -30,9 +34,11 @@ public class ClassRendererImpl implements ClassRenderer
    public static String declaration(RenderingContextWrapper context, Class aClass, String content)
    {
       StringBuilder sb = new StringBuilder();
-      if (!aClass.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(aClass, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(aClass.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                          .stream()
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                          .collect(Collectors.joining()));

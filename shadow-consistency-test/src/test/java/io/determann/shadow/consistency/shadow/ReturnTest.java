@@ -33,8 +33,8 @@ class ReturnTest
                             {
                                Return aReturn = query(query(context.getClassOrThrow("ReturnExample")).getMethods().get(0)).getReturn();
 
-                               assertEquals(1, aReturn.getAnnotationUsages().size());
-                               assertEquals(2, query(aReturn.getAnnotationUsages().get(0)).getValueOrThrow("value").asInteger());
+                               assertEquals(1, query(aReturn).getAnnotationUsages().size());
+                               assertEquals(2, query(query(aReturn).getAnnotationUsages().get(0)).getValueOrThrow("value").asInteger());
                             })
                    .withCodeToCompile("MyAnnotation.java", "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation{int value();}")
                    .withCodeToCompile("ReturnExample.java", """

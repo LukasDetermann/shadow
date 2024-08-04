@@ -2,12 +2,17 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.EnumConstantRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.EnumConstant;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.shadow.Operations.ENUM_CONSTANT_GET_SURROUNDING;
 import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
@@ -25,9 +30,11 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      if (!enumConstant.getDirectAnnotationUsages().isEmpty())
+      //noinspection OptionalContainsCollection
+      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(enumConstant, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
-         sb.append(enumConstant.getDirectAnnotationUsages()
+         sb.append(annotationUsages.get()
                                .stream()
                                .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                                .collect(Collectors.joining()));
