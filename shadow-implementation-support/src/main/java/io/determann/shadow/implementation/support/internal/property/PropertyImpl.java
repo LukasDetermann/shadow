@@ -1,8 +1,8 @@
 package io.determann.shadow.implementation.support.internal.property;
 
-import io.determann.shadow.api.shadow.property.Property;
 import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Shadow;
 

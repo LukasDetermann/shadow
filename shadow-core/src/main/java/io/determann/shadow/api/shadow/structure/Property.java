@@ -1,18 +1,15 @@
-package io.determann.shadow.api.shadow.property;
+package io.determann.shadow.api.shadow.structure;
 
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
 /**
- * A stricter definition of a {@link Property} where the getter is mandatory and the setter missing
- *
- * @see Property
- * @see MutableProperty
+ * This represents the broadest definition of a property. only a {@link #getGetter()} is mandatory
+ * <p>
+ * The search for properties starts with the getter {@link #getGetter()}
  */
-public interface ImmutableProperty
+public interface Property
 {
    /**
     * based on the name of the getter without the prefix. if one of the first 2 chars is uppercase the
@@ -51,4 +48,22 @@ public interface ImmutableProperty
     * when both are present "is" is preferred over get
     */
    Method getGetter();
+
+   /**
+    * a method with the same name as the getter but "set" instead of "is" or "get", return type void and one
+    * parameter being the type of the return of the getter
+    *
+    * @see #getGetter()
+    */
+   Optional<Method> getSetter();
+
+   /**
+    * @see #getSetter()
+    */
+   Method getSetterOrThrow();
+
+   /**
+    * has a {@link #getSetter()}
+    */
+   boolean isMutable();
 }

@@ -4,9 +4,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.AbstractModifiableRefl
 import io.determann.shadow.api.reflection.shadow.modifier.FinalModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.SealableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.StaticModifiableReflection;
-import io.determann.shadow.api.shadow.property.ImmutableProperty;
-import io.determann.shadow.api.shadow.property.MutableProperty;
-import io.determann.shadow.api.shadow.property.Property;
+import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
 
@@ -29,10 +27,6 @@ public interface ClassReflection extends Class,
    List<Class> getPermittedSubClasses();
 
    List<Property> getProperties();
-
-   List<MutableProperty> getMutableProperties();
-
-   List<ImmutableProperty> getImmutableProperties();
 
    /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.

@@ -3,8 +3,6 @@ package io.determann.shadow.api.shadow;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.Modifiable;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.property.ImmutableProperty;
-import io.determann.shadow.api.shadow.property.MutableProperty;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
@@ -93,11 +91,7 @@ public interface Operations
 
    public static Operation0<Class, List<Class>> CLASS_GET_PERMITTED_SUB_CLASSES = new Operation0<>("class.getPermittedSubClasses");
 
-   public static Operation0<Class, List<MutableProperty>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
-
-   public static Operation0<Class, List<MutableProperty>> CLASS_GET_MUTABLE_PROPERTIES = new Operation0<>("class.getMutableProperties");
-
-   public static Operation0<Class, List<ImmutableProperty>> CLASS_GET_IMMUTABLE_PROPERTIES = new Operation0<>("class.getImmutableProperties");
+   public static Operation0<Class, List<Property>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
 
    public static Operation1<Class, Shadow, Boolean> CLASS_IS_ASSIGNABLE_FROM = new Operation1<>("class.isAssignableFrom");
 

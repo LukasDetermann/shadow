@@ -3,7 +3,7 @@ package io.determann.shadow.consistency.property;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
-import io.determann.shadow.api.shadow.property.ImmutableProperty;
+import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplate;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory;
 import org.junit.jupiter.api.Test;
@@ -95,7 +95,7 @@ class PropertyTemplateFactoryTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<ImmutableProperty> properties = query(shadowApi.getClassOrThrow("Child")).getImmutableProperties();
+                               List<Property> properties = query(shadowApi.getClassOrThrow("Child")).getProperties();
 
                                assertEquals(2, properties.size());
                                assertEquals("class", properties.get(0).getName());

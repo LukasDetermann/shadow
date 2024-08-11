@@ -4,7 +4,7 @@ import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext
 import io.determann.shadow.api.annotation_processing.ShadowProcessor;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
-import io.determann.shadow.api.shadow.property.MutableProperty;
+import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -26,14 +26,15 @@ public class ShadowBuilderProcessor extends ShadowProcessor
       //iterate over every class annotated with the BuilderPattern annotation
       for (Class aClass : annotationProcessingContext.getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
-         String toBuildQualifiedName = query((QualifiedNameable) aClass).getQualifiedName();
+         String toBuildQualifiedName = query(aClass).getQualifiedName();
          String builderQualifiedName = toBuildQualifiedName + "ShadowBuilder";//qualifiedName of the companion builder class
-         String builderSimpleName = query((Nameable) aClass).getName() + "ShadowBuilder";//simpleName of the companion builder class
+         String builderSimpleName = query(aClass).getName() + "ShadowBuilder";//simpleName of the companion builder class
          String builderVariableName = uncapitalize(builderSimpleName);
 
          //create a record holding the code needed to render a property in the builder
-         List<BuilderElement> builderElements = query(aClass).getMutableProperties()
+         List<BuilderElement> builderElements = query(aClass).getProperties()
                                                              .stream()
+                                                             .filter(Property::isMutable)
                                                              .map(property -> renderProperty(builderSimpleName,
                                                                                              builderVariableName,
                                                                                              property))
@@ -83,7 +84,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                   return %6$s;
                }
             }
-            """.formatted(query((QualifiedNameable) query(aClass).getPackage()).getQualifiedName(),
+            """.formatted(query(query(aClass).getPackage()).getQualifiedName(),
                           builderSimpleName,
                           fields,
                           mutators,
@@ -97,7 +98,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
     */
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final MutableProperty property)
+                                         final Property property)
    {
       String propertyName = property.getName();
       String type = renderType(property.getType());
@@ -113,7 +114,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                           type,
                           propertyName);
 
-      String toBuildSetter = builderVariableName + "." + query((Nameable) property.getSetter()).getName() + "(" + propertyName + ");";
+      String toBuildSetter = builderVariableName + "." + query(property.getSetterOrThrow()).getName() + "(" + propertyName + ");";
 
       return new BuilderElement(field, mutator, toBuildSetter);
    }

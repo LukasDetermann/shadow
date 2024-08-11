@@ -2,9 +2,7 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
-import io.determann.shadow.api.shadow.property.ImmutableProperty;
-import io.determann.shadow.api.shadow.property.MutableProperty;
-import io.determann.shadow.api.shadow.property.Property;
+import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.implementation.support.api.PropertyFactory;
@@ -59,18 +57,6 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    public List<Property> getProperties()
    {
       return PropertyFactory.propertyOf(this);
-   }
-
-   @Override
-   public List<MutableProperty> getMutableProperties()
-   {
-      return PropertyFactory.mutablePropertyOf(this);
-   }
-
-   @Override
-   public List<ImmutableProperty> getImmutableProperties()
-   {
-      return PropertyFactory.immutablePropertyOf(this);
    }
 
    @Override
