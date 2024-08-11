@@ -2,8 +2,8 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;

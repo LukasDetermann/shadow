@@ -3,8 +3,8 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.ReturnLangModel;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Return;
 import io.determann.shadow.api.shadow.type.Shadow;
 

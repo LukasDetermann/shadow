@@ -2,13 +2,12 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.AnnotationUsageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationValueMapper;
+import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.AnnotationValue;
 import io.determann.shadow.api.shadow.structure.EnumConstant;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Annotation;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -77,85 +75,61 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 
    private static String renderValue(RenderingContextWrapper context, AnnotationValue annotationValue)
    {
-      return annotationValue.map(new AnnotationValueMapper<>()
+      Object value = requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE);
+
+      if (value instanceof String s)
       {
-         @Override
-         public String string(String value)
-         {
-            return '\"' + value + '\"';
-         }
-
-         @Override
-         public String aBoolean(Boolean value)
-         {
-            return String.valueOf(value.booleanValue());
-         }
-
-         @Override
-         public String aByte(Byte value)
-         {
-            return Byte.toString(value);
-         }
-
-         @Override
-         public String aShort(Short value)
-         {
-            return Short.toString(value);
-         }
-
-         @Override
-         public String integer(Integer value)
-         {
-            return Integer.toString(value);
-         }
-
-         @Override
-         public String aLong(Long value)
-         {
-            return Long.toString(value) + 'L';
-         }
-
-         @Override
-         public String character(Character value)
-         {
-            return '\'' + Character.toString(value) + '\'';
-         }
-
-         @Override
-         public String aFloat(Float value)
-         {
-            return Float.toString(value) + 'F';
-         }
-
-         @Override
-         public String aDouble(Double value)
-         {
-            return Double.toString(value) + 'D';
-         }
-
-         @Override
-         public String type(Shadow value)
-         {
-            return ShadowRendererImpl.classDeclaration(context, convert(value).toDeclaredOrThrow());
-         }
-
-         @Override
-         public String enumConstant(EnumConstant value)
-         {
-            return EnumConstantRendererImpl.type(context, value);
-         }
-
-         @Override
-         public String annotationUsage(AnnotationUsage value)
-         {
-            return usage(context, value);
-         }
-
-         @Override
-         public String values(List<AnnotationValue> values)
-         {
-            return '{' + values.stream().map(annotationValue -> renderValue(context, annotationValue)).collect(Collectors.joining(", ")) + '}';
-         }
-      });
+         return '\"' + s + '\"';
+      }
+      if (value instanceof Boolean aBoolean)
+      {
+         return String.valueOf(aBoolean.booleanValue());
+      }
+      if (value instanceof Byte aByte)
+      {
+         return Byte.toString(aByte);
+      }
+      if (value instanceof Short aShort)
+      {
+         return Short.toString(aShort);
+      }
+      if (value instanceof Integer integer)
+      {
+         return Integer.toString(integer);
+      }
+      if (value instanceof Long aLong)
+      {
+         return Long.toString(aLong) + 'L';
+      }
+      if (value instanceof Character character)
+      {
+         return '\'' + Character.toString(character) + '\'';
+      }
+      if (value instanceof Float aFloat)
+      {
+         return Float.toString(aFloat) + 'F';
+      }
+      if (value instanceof Double aDouble)
+      {
+         return Double.toString(aDouble) + 'D';
+      }
+      if (value instanceof Declared declared)
+      {
+         return ShadowRendererImpl.classDeclaration(context, declared);
+      }
+      if (value instanceof EnumConstant enumConstant)
+      {
+         return EnumConstantRendererImpl.type(context, enumConstant);
+      }
+      if (value instanceof AnnotationUsage annotationUsage)
+      {
+         return usage(context, annotationUsage);
+      }
+      if (value instanceof List<?> values)
+      {
+         //noinspection unchecked,OverlyStrongTypeCast
+         return '{' + ((List<AnnotationValue>) values).stream().map(v -> renderValue(context, v)).collect(Collectors.joining(", ")) + '}';
+      }
+      throw new IllegalStateException("Unable to render " + annotationValue);
    }
 }

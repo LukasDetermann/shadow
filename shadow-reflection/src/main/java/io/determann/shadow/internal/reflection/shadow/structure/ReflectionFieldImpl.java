@@ -2,8 +2,8 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.VariableReflection;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;

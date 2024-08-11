@@ -3,8 +3,8 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 

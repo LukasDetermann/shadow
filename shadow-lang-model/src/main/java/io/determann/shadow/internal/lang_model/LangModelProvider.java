@@ -139,6 +139,8 @@ public class LangModelProvider extends AbstractProvider
              .with(ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES, annotationable -> query(annotationable).getDirectAnnotationUsages())
              .with(ANNOTATIONABLE_GET_DIRECT_USAGES_OF, (annotationable, annotation) -> query(annotationable).getDirectUsagesOf(annotation))
              .withOptional(ANNOTATIONABLE_GET_DIRECT_USAGE_OF, (annotationable, annotation) -> query(annotationable).getDirectUsageOf(annotation))
-             .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation));
+             .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation))
+             .with(ANNOTATION_VALUE_IS_DEFAULT, annotationValue -> query(annotationValue).isDefault())
+             .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue());
    }
 }

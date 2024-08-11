@@ -2,6 +2,7 @@ module io.determann.shadow.implementation.support {
 
    exports io.determann.shadow.implementation.support.api;
    exports io.determann.shadow.implementation.support.api.provider;
+   exports io.determann.shadow.implementation.support.api.shadow;
    exports io.determann.shadow.implementation.support.api.shadow.directive;
    exports io.determann.shadow.implementation.support.api.shadow.type;
 

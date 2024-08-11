@@ -1,4 +1,4 @@
-package io.determann.shadow.api.shadow.annotationusage;
+package io.determann.shadow.api.shadow;
 
 import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.shadow.type.Annotation;

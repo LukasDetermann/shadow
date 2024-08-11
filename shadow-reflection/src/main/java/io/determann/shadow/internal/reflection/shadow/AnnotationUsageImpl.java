@@ -2,9 +2,9 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.AnnotationValue;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Annotation;
 
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
 import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_VALUES;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.internal.reflection.shadow.AnnotationValueImpl.create;
 
 public class AnnotationUsageImpl implements AnnotationUsageReflection
 {
@@ -40,11 +41,11 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
                                                 Object defaultValue = method.getDefaultValue();
                                                 if (defaultValue != null)
                                                 {
-                                                   return new AnnotationValueImpl(defaultValue, true);
+                                                   return  create(defaultValue, true);
                                                 }
                                                 try
                                                 {
-                                                   return new AnnotationValueImpl(method.invoke(annotation), false);
+                                                   return create(method.invoke(annotation), false);
                                                 }
                                                 catch (IllegalAccessException | InvocationTargetException e)
                                                 {

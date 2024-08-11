@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow;
 
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
+import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.AnnotationValue;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Annotation;
 

@@ -1,7 +1,5 @@
 package io.determann.shadow.api.shadow;
 
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationValue;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.Modifiable;
 import io.determann.shadow.api.shadow.modifier.Modifier;
@@ -254,4 +252,8 @@ public interface Operations
    public static Operation1<Annotationable, Annotation, AnnotationUsage> ANNOTATIONABLE_GET_DIRECT_USAGE_OF = new Operation1<>("annotationUsage.getDirectUsageOf");
 
    public static Operation1<Annotationable, Annotation, Boolean> ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH = new Operation1<>("annotationable.isDirectlyAnnotatedWith");
+
+   public static Operation0<AnnotationValue, Boolean> ANNOTATION_VALUE_IS_DEFAULT = new Operation0<>("annotationValue.isDefault");
+
+   public static Operation0<AnnotationValue, Object> ANNOTATION_VALUE_GET_VALUE = new Operation0<>("annotationValue.getValue");
 }

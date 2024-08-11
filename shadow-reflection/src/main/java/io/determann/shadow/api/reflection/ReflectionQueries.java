@@ -1,19 +1,12 @@
 package io.determann.shadow.api.reflection;
 
 import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
-import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.*;
 import io.determann.shadow.api.reflection.shadow.directive.*;
 import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.*;
-import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.ModuleEnclosed;
-import io.determann.shadow.api.shadow.Nameable;
-import io.determann.shadow.api.shadow.QualifiedNameable;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -244,6 +237,11 @@ public interface ReflectionQueries
    public static AnnotationableReflection query(Annotationable annotationable)
    {
       return (AnnotationableReflection) validate(annotationable);
+   }
+
+   public static AnnotationValueReflection query(AnnotationValue annotationValue)
+   {
+      return (AnnotationValueReflection) validate(annotationValue);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

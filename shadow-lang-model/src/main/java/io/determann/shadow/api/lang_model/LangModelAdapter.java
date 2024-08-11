@@ -1,7 +1,7 @@
 package io.determann.shadow.api.lang_model;
 
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;

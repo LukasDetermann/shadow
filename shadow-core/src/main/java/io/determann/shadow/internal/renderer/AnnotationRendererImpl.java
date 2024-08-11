@@ -2,8 +2,8 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.AnnotationRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Operations;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.type.Annotation;
 

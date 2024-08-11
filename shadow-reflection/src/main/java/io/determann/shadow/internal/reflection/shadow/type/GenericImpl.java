@@ -2,9 +2,9 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 

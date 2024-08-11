@@ -4,8 +4,8 @@ import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Operations;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.structure.Module;
 

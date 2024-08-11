@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.annotationusage.AnnotationUsage;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.*;
