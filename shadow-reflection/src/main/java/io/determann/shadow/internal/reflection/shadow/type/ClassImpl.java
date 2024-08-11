@@ -1,12 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.structure.PropertyReflection;
 import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
-import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.implementation.support.api.PropertyFactory;
+import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
+import io.determann.shadow.internal.reflection.shadow.structure.PropertyImpl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,9 +55,13 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    }
 
    @Override
-   public List<Property> getProperties()
+   public List<PropertyReflection> getProperties()
    {
-      return PropertyFactory.propertyOf(this);
+      return PropertySupport.propertiesOf(this)
+                            .stream()
+                            .map(PropertyImpl::new)
+                            .map(PropertyReflection.class::cast)
+                            .toList();
    }
 
    @Override

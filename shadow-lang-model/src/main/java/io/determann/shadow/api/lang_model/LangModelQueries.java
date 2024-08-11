@@ -249,6 +249,11 @@ public interface LangModelQueries
       return (AnnotationValueLangModel) validate(annotationValue);
    }
 
+   public static PropertyLangModel query(Property property)
+   {
+      return (PropertyLangModel) validate(property);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

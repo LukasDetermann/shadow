@@ -1,9 +1,9 @@
 package io.determann.shadow.consistency.property;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
-import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplate;
 import io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory;
 import org.junit.jupiter.api.Test;
@@ -95,7 +95,7 @@ class PropertyTemplateFactoryTest
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Property> properties = query(shadowApi.getClassOrThrow("Child")).getProperties();
+                               List<PropertyLangModel> properties = query(shadowApi.getClassOrThrow("Child")).getProperties();
 
                                assertEquals(2, properties.size());
                                assertEquals("class", properties.get(0).getName());

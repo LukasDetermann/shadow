@@ -2,12 +2,13 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.implementation.support.api.PropertyFactory;
+import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
+import io.determann.shadow.internal.lang_model.shadow.structure.PropertyImpl;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -54,9 +55,13 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    }
 
    @Override
-   public List<Property> getProperties()
+   public List<PropertyLangModel> getProperties()
    {
-      return PropertyFactory.propertyOf(this);
+      return PropertySupport.propertiesOf(this)
+                            .stream()
+                            .map(PropertyImpl::new)
+                            .map(PropertyLangModel.class::cast)
+                            .toList();
    }
 
    @Override

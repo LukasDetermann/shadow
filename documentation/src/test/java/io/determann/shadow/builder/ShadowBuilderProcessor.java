@@ -2,9 +2,9 @@ package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
 import io.determann.shadow.api.annotation_processing.ShadowProcessor;
+import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.shadow.Nameable;
 import io.determann.shadow.api.shadow.QualifiedNameable;
-import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -34,7 +34,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          //create a record holding the code needed to render a property in the builder
          List<BuilderElement> builderElements = query(aClass).getProperties()
                                                              .stream()
-                                                             .filter(Property::isMutable)
+                                                             .filter(PropertyLangModel::isMutable)
                                                              .map(property -> renderProperty(builderSimpleName,
                                                                                              builderVariableName,
                                                                                              property))
@@ -98,7 +98,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
     */
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final Property property)
+                                         final PropertyLangModel property)
    {
       String propertyName = property.getName();
       String type = renderType(property.getType());

@@ -244,6 +244,11 @@ public interface ReflectionQueries
       return (AnnotationValueReflection) validate(annotationValue);
    }
 
+   public static PropertyReflection query(Property property)
+   {
+      return (PropertyReflection) validate(property);
+   }
+
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
       if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))

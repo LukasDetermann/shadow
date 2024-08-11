@@ -4,9 +4,9 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Interface;
@@ -69,11 +69,11 @@ class ClassTest extends DeclaredTest<Class>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Property> properties = query(shadowApi.getClassOrThrow("PropertiesExample")).getProperties();
+                               List<PropertyLangModel> properties = query(shadowApi.getClassOrThrow("PropertiesExample")).getProperties();
 
                                assertEquals(2, properties.size());
 
-                               Property id = properties.get(1);
+                               PropertyLangModel id = properties.get(1);
                                assertEquals("id", LangModelQueries.query(id.getField().get()).getName());
                                assertEquals(shadowApi.getConstants().getPrimitiveInt(), query(id.getField().get()).getType());
 

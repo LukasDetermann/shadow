@@ -4,7 +4,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.AbstractModifiableLang
 import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.SealableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
-import io.determann.shadow.api.shadow.structure.Property;
+import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
 
@@ -26,7 +26,7 @@ public interface ClassLangModel extends Class,
 
    List<Class> getPermittedSubClasses();
 
-   List<Property> getProperties();
+   List<PropertyLangModel> getProperties();
 
    /**
     * Equivalent to {@link #isSubtypeOf(Shadow)} except for primitives.

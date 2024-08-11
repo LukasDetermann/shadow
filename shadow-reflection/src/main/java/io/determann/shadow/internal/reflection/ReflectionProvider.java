@@ -137,6 +137,12 @@ public class ReflectionProvider extends AbstractProvider
              .withOptional(ANNOTATIONABLE_GET_DIRECT_USAGE_OF, (annotationable, annotation) -> query(annotationable).getDirectUsageOf(annotation))
              .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation))
              .with(ANNOTATION_VALUE_IS_DEFAULT, annotationValue -> query(annotationValue).isDefault())
-             .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue());
+             .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue())
+             .with(PROPERTY_GET_NAME, property -> query(property).getName())
+             .with(PROPERTY_GET_TYPE, property -> query(property).getType())
+             .withOptional(PROPERTY_GET_FIELD, property -> query(property).getField())
+             .with(PROPERTY_GET_GETTER, property -> query(property).getGetter())
+             .withOptional(PROPERTY_GET_SETTER, property -> query(property).getSetter())
+             .with(PROPERTY_IS_MUTABLE, property -> query(property).isMutable());
    }
 }

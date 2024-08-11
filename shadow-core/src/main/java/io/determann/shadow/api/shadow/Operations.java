@@ -91,7 +91,7 @@ public interface Operations
 
    public static Operation0<Class, List<Class>> CLASS_GET_PERMITTED_SUB_CLASSES = new Operation0<>("class.getPermittedSubClasses");
 
-   public static Operation0<Class, List<Property>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
+   public static Operation0<Class, List<? extends Property>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
 
    public static Operation1<Class, Shadow, Boolean> CLASS_IS_ASSIGNABLE_FROM = new Operation1<>("class.isAssignableFrom");
 
@@ -250,4 +250,16 @@ public interface Operations
    public static Operation0<AnnotationValue, Boolean> ANNOTATION_VALUE_IS_DEFAULT = new Operation0<>("annotationValue.isDefault");
 
    public static Operation0<AnnotationValue, Object> ANNOTATION_VALUE_GET_VALUE = new Operation0<>("annotationValue.getValue");
+
+   public static Operation0<Property, String> PROPERTY_GET_NAME = new Operation0<>("property.getName");
+
+   public static Operation0<Property, Shadow> PROPERTY_GET_TYPE = new Operation0<>("property.getType");
+
+   public static Operation0<Property, Field> PROPERTY_GET_FIELD = new Operation0<>("property.getField");
+
+   public static Operation0<Property, Method> PROPERTY_GET_GETTER = new Operation0<>("property.getGetter");
+
+   public static Operation0<Property, Method> PROPERTY_GET_SETTER = new Operation0<>("property.getSetter");
+
+   public static Operation0<Property, Boolean> PROPERTY_IS_MUTABLE = new Operation0<>("property.isMutable");
 }

@@ -5,10 +5,12 @@ import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Property;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+
+import static io.determann.shadow.implementation.support.internal.SupportProvider.IMPLEMENTATION_NAME;
 
 public class PropertyImpl implements Property
 {
@@ -43,49 +45,31 @@ public class PropertyImpl implements Property
       this.setter = setter;
    }
 
-   @Override
    public String getName()
    {
       return name;
    }
 
-   @Override
    public Shadow getType()
    {
       return shadow;
    }
 
-   @Override
    public Optional<Field> getField()
    {
       return Optional.ofNullable(field);
    }
 
-   @Override
-   public Field getFieldOrThrow()
-   {
-      return getField().orElseThrow();
-   }
-
-   @Override
    public Method getGetter()
    {
       return getter;
    }
 
-   @Override
-   public Method getSetterOrThrow()
-   {
-      return getSetter().orElseThrow();
-   }
-
-   @Override
    public Optional<Method> getSetter()
    {
       return Optional.ofNullable(setter);
    }
 
-   @Override
    public boolean isMutable()
    {
       return getSetter().isPresent();
@@ -94,31 +78,24 @@ public class PropertyImpl implements Property
    @Override
    public int hashCode()
    {
-      return Objects.hash(getType(), getName());
+      return PropertySupport.hashCode(this);
    }
 
    @Override
    public boolean equals(Object other)
    {
-      if (other == this)
-      {
-         return true;
-      }
-      if (!(other instanceof Property otherProperty))
-      {
-         return false;
-      }
-      return Objects.equals(getType(), otherProperty.getType()) &&
-             Objects.equals(getName(), otherProperty.getName());
+      return PropertySupport.equals(this, other);
    }
 
    @Override
    public String toString()
    {
-      return "PropertyImpl{" +
-             "field=" + field +
-             ", getter=" + getter +
-             ", setter=" + setter +
-             '}';
+      return PropertySupport.toString(this);
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }
