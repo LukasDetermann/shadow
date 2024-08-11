@@ -23,7 +23,7 @@ class PackageTest
                                                   "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
                                             query(shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
                                                            .get(0))
-                                                  .getContent());
+                                                  .getDeclared());
                             })
                    .withCodeToCompile("AnyClass.java", """
                          package io.determann.shadow.example.processed.test.packagee.not_empty;

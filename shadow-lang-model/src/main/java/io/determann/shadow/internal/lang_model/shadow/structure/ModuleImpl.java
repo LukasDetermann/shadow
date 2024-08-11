@@ -81,7 +81,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    @Override
    public List<Declared> getDeclared()
    {
-      return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).toList();
+      return getPackages().stream().flatMap(aPackage -> query(aPackage).getDeclared().stream()).toList();
    }
 
    @Override

@@ -64,7 +64,7 @@ public class PackageImpl implements PackageReflection
    @Override
    public List<Declared> getDeclared()
    {
-      return getContent();
+      throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
@@ -77,12 +77,6 @@ public class PackageImpl implements PackageReflection
    public String getQualifiedName()
    {
       return packageSupplier.getName();
-   }
-
-   @Override
-   public List<Declared> getContent()
-   {
-      throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override

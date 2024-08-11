@@ -119,7 +119,8 @@ public class LangModelContextImpl implements LangModelContext,
    {
       return getPackages()
             .stream()
-            .flatMap(packageShadow -> requestOrThrow(packageShadow, PACKAGE_GET_CONTENT) .stream())
+            .flatMap(packageShadow -> requestOrThrow(packageShadow, PACKAGE_GET_DECLARED_LIST) .stream())
+            .map(Declared.class::cast)
             .toList();
    }
 

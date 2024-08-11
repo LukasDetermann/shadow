@@ -46,16 +46,6 @@ public class PackageImpl  implements PackageLangModel
    }
 
    @Override
-   public List<Declared> getContent()
-   {
-      return getElement().getEnclosedElements()
-                         .stream()
-                         .map(TypeElement.class::cast)
-                         .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
-                         .toList();
-   }
-
-   @Override
    public String getQualifiedName()
    {
       return getElement().getQualifiedName().toString();
@@ -75,15 +65,19 @@ public class PackageImpl  implements PackageLangModel
    @Override
    public List<Declared> getDeclared()
    {
-      return getContent();
+      return getElement().getEnclosedElements()
+                         .stream()
+                         .map(TypeElement.class::cast)
+                         .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
+                         .toList();
    }
 
    @Override
    public Optional<Declared> getDeclared(String qualifiedName)
    {
-      return getContent().stream()
-                         .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
-                         .findFirst();
+      return getDeclared().stream()
+                          .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
+                          .findFirst();
    }
 
    @Override

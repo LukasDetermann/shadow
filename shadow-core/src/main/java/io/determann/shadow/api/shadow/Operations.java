@@ -35,9 +35,11 @@ public interface Operations
 
    public static Operation1<Primitive, Shadow, Boolean> PRIMITIVE_IS_ASSIGNABLE_FROM = new Operation1<>("primitive.isAssignableFrom");
 
-   public static Operation0<Package, List<Declared>> PACKAGE_GET_CONTENT = new Operation0<>("package.getContent");
-
    public static Operation0<Package, Boolean> PACKAGE_IS_UNNAMED = new Operation0<>("package.isUnnamed");
+
+   public static Operation1<Package, String, Declared> PACKAGE_GET_DECLARED = new Operation1<>("package.getDeclared");
+
+   public static Operation0<Package, List<? extends Declared>> PACKAGE_GET_DECLARED_LIST = new Operation0<>("package.getDeclaredList");
 
    public static Operation0<ModuleEnclosed, Module> MODULE_ENCLOSED_GET_MODULE = new Operation0<>("moduleEnclosed.getModule");
 
@@ -202,6 +204,10 @@ public interface Operations
    public static Operation0<Module, Boolean> MODULE_IS_AUTOMATIC = new Operation0<>("module.isAutomatic");
 
    public static Operation0<Module, List<Directive>> MODULE_GET_DIRECTIVES = new Operation0<>("module.getDirectives");
+
+   public static Operation1<Module, String, Declared> MODULE_GET_DECLARED = new Operation1<>("module.getDeclared");
+
+   public static Operation0<Module, List<? extends Declared>> MODULE_GET_DECLARED_LIST = new Operation0<>("module.getDeclaredList");
 
    public static Operation0<Modifiable, Set<Modifier>> MODIFIABLE_GET_MODIFIERS = new Operation0<>("modifiable.getModifiers");
 

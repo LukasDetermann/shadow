@@ -5,7 +5,6 @@ import io.determann.shadow.api.shadow.*;
 public interface Package extends Nameable,
                                  QualifiedNameable,
                                  Annotationable,
-                                 DeclaredHolder,
                                  ModuleEnclosed,
                                  Documented
 {

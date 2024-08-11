@@ -31,7 +31,6 @@ public class LangModelProvider extends AbstractProvider
              .with(PRIMITIVE_AS_BOXED, primitive -> query(primitive).asBoxed())
              .with(PRIMITIVE_IS_ASSIGNABLE_FROM, (primitive, shadow) -> query(primitive).isAssignableFrom(shadow))
              .with(PRIMITIVE_IS_SUBTYPE_OF, (primitive, shadow) -> query(primitive).isSubtypeOf(shadow))
-             .with(PACKAGE_GET_CONTENT, aPackage -> query(aPackage).getContent())
              .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed())
              .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule())
              .with(DECLARED_IS_SUBTYPE_OF, (declared, shadow) -> query(declared).isSubtypeOf(shadow))
@@ -145,6 +144,10 @@ public class LangModelProvider extends AbstractProvider
              .withOptional(PROPERTY_GET_FIELD, property -> query(property).getField())
              .with(PROPERTY_GET_GETTER, property -> query(property).getGetter())
              .withOptional(PROPERTY_GET_SETTER, property -> query(property).getSetter())
-             .with(PROPERTY_IS_MUTABLE, property -> query(property).isMutable());
+             .with(PROPERTY_IS_MUTABLE, property -> query(property).isMutable())
+             .withOptional(MODULE_GET_DECLARED, (module, s) -> query(module).getDeclared(s))
+             .with(MODULE_GET_DECLARED_LIST, module -> query(module).getDeclared())
+             .withOptional(PACKAGE_GET_DECLARED, (aPackage, s) -> query(aPackage).getDeclared(s))
+             .with(PACKAGE_GET_DECLARED_LIST, aPackage -> query(aPackage).getDeclared());
    }
 }
