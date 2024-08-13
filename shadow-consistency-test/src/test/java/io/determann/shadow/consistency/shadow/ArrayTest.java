@@ -3,12 +3,12 @@ package io.determann.shadow.consistency.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Intersection;
 import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +72,7 @@ class ArrayTest extends ShadowTest<Array>
 
                                List<Shadow> directSupertypes = query(intArray).getDirectSuperTypes();
                                assertEquals(1, directSupertypes.size());
-                               assertEquals(primitiveArraySuper, query(convert(directSupertypes.get(0)).toIntersectionOrThrow()).getBounds());
+                               assertEquals(primitiveArraySuper, query(((Intersection) directSupertypes.get(0))).getBounds());
                             })
                    .compile();
    }

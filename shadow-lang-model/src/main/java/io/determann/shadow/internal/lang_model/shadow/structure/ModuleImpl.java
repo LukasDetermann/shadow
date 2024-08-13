@@ -1,7 +1,5 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
@@ -22,7 +20,6 @@ import javax.lang.model.type.NoType;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
@@ -127,18 +124,16 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
                          .collect(of((Supplier<List<Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!(directive instanceof Provides))
+                                        if (!(directive instanceof Provides provides))
                                         {
                                            directives.add(directive);
                                            return;
                                         }
-                                        Provides provides = convert(directive).toProvidesOrThrow();
 
                                         Optional<Provides> existing =
                                               directives.stream()
                                                         .filter(Provides.class::isInstance)
-                                                        .map(Converter::convert)
-                                                        .map(DirectiveConverter::toProvidesOrThrow)
+                                                        .map(Provides.class::cast)
                                                         .filter(collected -> query((Shadow) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
                                                         .findAny();
 

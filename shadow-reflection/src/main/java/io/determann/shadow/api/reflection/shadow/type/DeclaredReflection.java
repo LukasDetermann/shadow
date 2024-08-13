@@ -1,6 +1,5 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
@@ -25,7 +24,7 @@ import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_Q
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
- * Anything that can be a file. Can be converted into the following using {@link Converter#convert(DeclaredReflection)}
+ * Anything that can be a file.
  * <ul>
  *    <li>{@link Annotation}</li>
  *    <li>{@link Class}</li>

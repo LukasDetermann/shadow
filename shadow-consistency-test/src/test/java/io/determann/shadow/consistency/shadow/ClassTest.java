@@ -1,14 +1,12 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,13 +32,13 @@ class ClassTest extends DeclaredTest<Class>
       ProcessorTest.process(shadowApi ->
                             {
                                Class integer = shadowApi.getClassOrThrow("java.lang.Integer");
-                               Declared number = shadowApi.getClassOrThrow("java.lang.Number");
+                               Class number = shadowApi.getClassOrThrow("java.lang.Number");
                                assertEquals(query(integer).getSuperClass(), number);
 
-                               Declared object = shadowApi.getClassOrThrow("java.lang.Object");
-                               assertNull(query(convert(object).toClassOrThrow()).getSuperClass());
+                               Class object = shadowApi.getClassOrThrow("java.lang.Object");
+                               assertNull(query(object).getSuperClass());
 
-                               assertEquals(object, query(convert(number).toClassOrThrow()).getSuperClass());
+                               assertEquals(object, query(number).getSuperClass());
                             })
                    .compile();
    }
@@ -192,12 +189,10 @@ class ClassTest extends DeclaredTest<Class>
                                                                                  shadowApi.getClassOrThrow("java.lang.String"),
                                                                                  shadowApi.getConstants().getUnboundWildcard());
                                Class capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
-                                     .toGeneric()
+                               Shadow interpolated = Optional.of((Generic) query(capture).getGenericTypes().get(1))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
-                                     .map(Converter::convert)
-                                     .flatMap(TypeConverter::toInterface)
+                                     .map(Interface.class::cast)
                                      .map(LangModelQueries::query)
                                      .map(InterfaceLangModel::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
@@ -208,8 +203,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                        "InterpolateGenericsExample.IndependentGeneric"),
                                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Class independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
-                                     .toGeneric()
+                               Shadow interpolatedIndependent = Optional.of(((Generic) query(independentCapture).getGenericTypes().get(0)))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
@@ -220,8 +214,7 @@ class ClassTest extends DeclaredTest<Class>
                                                                                          shadowApi.getConstants().getUnboundWildcard(),
                                                                                          shadowApi.getClassOrThrow("java.lang.String"));
                                Class dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
-                                     .toGeneric()
+                               Shadow interpolatedDependent = Optional.of(((Generic) query(dependentCapture).getGenericTypes().get(0)))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();

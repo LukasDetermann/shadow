@@ -1,14 +1,11 @@
 package io.determann.shadow.javadoc.lang_model;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,12 +32,10 @@ public class InterpolateGenericsExample
                                Class capture = context.interpolateGenerics(withGenerics);
 
                                Shadow stringRep = Optional.of(query(capture).getGenericTypes().get(1))
-                                                          .map(Converter::convert)
-                                                          .map(TypeConverter::toGenericOrThrow)
+                                                          .map(Generic.class::cast)
                                                           .map(LangModelQueries::query)
                                                           .map(GenericLangModel::getExtends)
-                                                          .map(Converter::convert)
-                                                          .map(TypeConverter::toInterfaceOrThrow)
+                                                          .map(Interface.class::cast)
                                                           .map(LangModelQueries::query)
                                                           .map(InterfaceLangModel::getGenericTypes)
                                                           .map(shadows -> shadows.get(0))

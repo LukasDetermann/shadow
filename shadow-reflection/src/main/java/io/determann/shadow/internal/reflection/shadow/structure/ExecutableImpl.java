@@ -18,7 +18,6 @@ import java.lang.reflect.AnnotatedType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -223,8 +222,8 @@ public class ExecutableImpl implements ConstructorReflection,
          {
             return false;
          }
-         Class otherSurroundingClass = convert(otherSurrounding).toClassOrThrow();
-         Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
+         Class otherSurroundingClass = ((Class) otherSurrounding);
+         Class surroundingClass = ((Class) getSurrounding());
          if (!requestOrThrow(surroundingClass, DECLARED_IS_SUBTYPE_OF, otherSurroundingClass))
          {
             return false;
@@ -241,8 +240,8 @@ public class ExecutableImpl implements ConstructorReflection,
          {
             return false;
          }
-         Interface otherSurroundingInterface = convert(otherSurrounding).toInterfaceOrThrow();
-         Class surroundingClass = convert(getSurrounding()).toClassOrThrow();
+         Interface otherSurroundingInterface = ((Interface) otherSurrounding);
+         Class surroundingClass = ((Class) getSurrounding());
          if (!requestOrThrow(surroundingClass, DECLARED_GET_INTERFACES).contains(otherSurroundingInterface))
          {
             return false;

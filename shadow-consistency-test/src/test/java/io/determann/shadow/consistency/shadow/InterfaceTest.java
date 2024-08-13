@@ -1,19 +1,18 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
+import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,12 +95,10 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                            shadowApi.getClassOrThrow("java.lang.String"),
                                                                            shadowApi.getConstants().getUnboundWildcard());
                                Interface capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = convert(query(capture).getGenericTypes().get(1))
-                                     .toGeneric()
+                               Shadow interpolated = Optional.of(((Generic) query(capture).getGenericTypes().get(1)))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
-                                     .map(Converter::convert)
-                                     .flatMap(TypeConverter::toInterface)
+                                     .map(Interface.class::cast)
                                      .map(LangModelQueries::query)
                                      .map(InterfaceLangModel::getGenericTypes)
                                      .map(shadows -> shadows.get(0))
@@ -112,8 +109,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                            "InterpolateGenericsExample.IndependentGeneric"),
                                                                                      shadowApi.getConstants().getUnboundWildcard());
                                Interface independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = convert(query(independentCapture).getGenericTypes().get(0))
-                                     .toGeneric()
+                               Shadow interpolatedIndependent = Optional.of(((Generic) query(independentCapture).getGenericTypes().get(0)))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
@@ -123,8 +119,7 @@ class InterfaceTest extends DeclaredTest<Interface>
                                                                                          "InterpolateGenericsExample.DependentGeneric"), shadowApi.getConstants().getUnboundWildcard(),
                                                                                    shadowApi.getClassOrThrow("java.lang.String"));
                                Interface dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = convert(query(dependentCapture).getGenericTypes().get(0))
-                                     .toGeneric()
+                               Shadow interpolatedDependent = Optional.of((Generic) query(dependentCapture).getGenericTypes().get(0))
                                      .map(LangModelQueries::query)
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();

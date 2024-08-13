@@ -1,6 +1,5 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
@@ -21,8 +20,6 @@ import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
- * any code block. Can be converted into the following using {@link Converter#convert(Declared)}
- *
  * <ul>
  *    <li>{@link Constructor}</li>
  *    <li>{@link Method}</li>

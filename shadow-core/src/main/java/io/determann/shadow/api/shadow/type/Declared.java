@@ -1,12 +1,11 @@
 package io.determann.shadow.api.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.modifier.AccessModifiable;
 import io.determann.shadow.api.shadow.modifier.StrictfpModifiable;
 
 /**
- * Anything that can be a file. Can be converted into the following using {@link Converter#convert(Declared)}
+ * Anything that can be a file.
  * <ul>
  *    <li>{@link Annotation}</li>
  *    <li>{@link Class}</li>

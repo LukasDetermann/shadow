@@ -1,7 +1,5 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.DeclaredConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
@@ -179,8 +177,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    {
       return getSuperTypes().stream()
                             .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(Converter::convert)
-                            .map(DeclaredConverter::toInterfaceOrThrow)
+                            .map(Interface.class::cast)
                             .toList();
    }
 

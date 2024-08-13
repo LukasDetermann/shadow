@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,10 +13,9 @@ class IntersectionTest extends ShadowTest<Intersection>
 {
    IntersectionTest()
    {
-      super(shadowApi -> convert(query(query(shadowApi.getClassOrThrow("IntersectionExample"))
-                                                           .getGenerics()
-                                                           .get(0))
-                                                           .getExtends()).toIntersectionOrThrow());
+      super(shadowApi -> ((Intersection) query(query(shadowApi.getClassOrThrow("IntersectionExample"))
+                                                     .getGenerics()
+                                                     .get(0)).getExtends()));
    }
 
    @Test

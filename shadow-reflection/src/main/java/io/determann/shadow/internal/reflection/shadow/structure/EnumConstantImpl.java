@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Class;
@@ -10,7 +11,6 @@ import io.determann.shadow.api.shadow.type.*;
 
 import java.lang.reflect.Field;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -68,12 +68,8 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             convert(shadow).toEnumConstant()
-                            .map(enumConstant -> requestOrThrow(requestOrThrow(enumConstant, VARIABLE_GET_TYPE),
-                                                                SHADOW_REPRESENTS_SAME_TYPE,
-                                                                getType()))
-                            .orElse(false);
+      return shadow instanceof EnumConstant enumConstant &&
+             requestOrThrow(requestOrThrow(enumConstant, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override

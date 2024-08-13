@@ -1,6 +1,5 @@
 package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.shadow.Annotationable;
 import io.determann.shadow.api.shadow.structure.Module;
@@ -29,7 +28,6 @@ import java.util.function.BiConsumer;
  *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
  *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(Annotationable, String)}</li>
- *    <li>convert between sourceCode representations. So called {@link Shadow}s {@link Converter#convert(Shadow)}</li>
  * </ul>
  *
  * @see ShadowProcessor

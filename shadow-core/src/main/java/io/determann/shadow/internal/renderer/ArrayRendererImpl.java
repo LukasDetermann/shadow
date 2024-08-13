@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.renderer.ArrayRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.TypeKind;
@@ -35,7 +34,7 @@ public class ArrayRendererImpl implements ArrayRenderer
       while (hasMoreDimensions(array))
       {
          sb.append("[]");
-         array = Converter.convert(requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE)).toArrayOrThrow();
+         array = ((Array) requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE));
       }
       return sb.toString();
    }

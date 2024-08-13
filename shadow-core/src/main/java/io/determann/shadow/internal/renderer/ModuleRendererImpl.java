@@ -1,7 +1,5 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.module.DirectiveConverter;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
@@ -75,44 +73,42 @@ public class ModuleRendererImpl implements ModuleRenderer
 
       if (kind.containsKey(Requires.class))
       {
-         Function<DirectiveConverter, Requires> requiresConverter = DirectiveConverter::toRequiresOrThrow;
          List<Directive> requires = kind.get(Requires.class)
                                         .stream()
-                                        .map(Converter::convert)
-                                        .map(requiresConverter)
+                                        .map(Requires.class::cast)
                                         .filter(requires1 -> !requestOrThrow(requestOrThrow(requires1, REQUIRES_GET_DEPENDENCY),
                                                                              QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.base"))
                                         .collect(Collectors.toList());
          sb.append(render(requires,
-                          requiresConverter,
+                          Requires.class::cast,
                           this::render));
          sb.append('\n');
       }
       if (kind.containsKey(Exports.class))
       {
          sb.append(render(kind.get(Exports.class),
-                          DirectiveConverter::toExportsOrThrow,
+                          Exports.class::cast,
                           this::render));
          sb.append('\n');
       }
       if (kind.containsKey(Opens.class))
       {
          sb.append(render(kind.get(Opens.class),
-                          DirectiveConverter::toOpensOrThrow,
+                          Opens.class::cast,
                           this::render));
          sb.append('\n');
       }
       if (kind.containsKey(Uses.class))
       {
          sb.append(render(kind.get(Uses.class),
-                          DirectiveConverter::toUsesOrThrow,
+                          Uses.class::cast,
                           this::render));
          sb.append('\n');
       }
       if (kind.containsKey(Provides.class))
       {
          sb.append(render(kind.get(Provides.class),
-                          DirectiveConverter::toProvidesOrThrow,
+                          Provides.class::cast,
                           this::render));
       }
 
@@ -123,12 +119,11 @@ public class ModuleRendererImpl implements ModuleRenderer
    }
 
    private <DIRECTIVE> String render(List<Directive> directives,
-                                     Function<DirectiveConverter, DIRECTIVE> converter,
+                                     Function<Directive, DIRECTIVE> convert,
                                      Function<DIRECTIVE, String> renderer)
    {
       return directives.stream()
-                       .map(Converter::convert)
-                       .map(converter)
+                       .map(convert)
                        .map(renderer)
                        .map(s -> s + ';')
                        .collect(joining("\n"))

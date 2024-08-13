@@ -15,7 +15,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.TypeKind.CLASS;
@@ -111,7 +110,7 @@ public class PropertyTemplateFactory
       {
          return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
-      List<Class> superClasses = Stream.iterate(convert(declared).toClassOrThrow(),
+      List<Class> superClasses = Stream.iterate(((Class) declared),
                                                 Objects::nonNull,
                                                 aClass -> requestOrThrow(aClass, CLASS_GET_SUPER_CLASS)).collect(toList());
 

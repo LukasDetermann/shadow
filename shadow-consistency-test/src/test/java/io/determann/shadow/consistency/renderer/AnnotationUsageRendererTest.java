@@ -4,6 +4,7 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -79,12 +79,18 @@ class AnnotationUsageRendererTest
                                     "@AnnotationUsageAnnotation(stingValue = \"test\", booleanValue = false, byteValue = 1, shortValue = 2, intValue = 3, longValue = 4L, charValue = 'a', floatValue = 5.0F, doubleValue = 6.0D, typeValue = String.class, enumConstantValue = java.lang.annotation.ElementType.ANNOTATION_TYPE, annotationUsageValue = @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.CLASS), asListOfValues = {'b', 'c'})",
                                     render(RenderingContext.DEFAULT, annotationUsage)
                                           .usage(method ->
-                                                       convert(requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE))
-                                                             .toClass()
-                                                             .filter(aClass -> requestOrThrow(aClass,
-                                                                                              QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(
-                                                                   "java.lang.String"))
-                                                             .map(aClass -> "\"test\"")));
+                                                 {
+                                                    Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+                                                    if (!(returnType instanceof Class aClass))
+                                                    {
+                                                       return Optional.empty();
+                                                    }
+                                                    if (requestOrThrow(aClass,QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.String"))
+                                                    {
+                                                       return Optional.of("\"test\"");
+                                                    }
+                                                    return Optional.empty();
+                                                 }));
                            });
    }
 

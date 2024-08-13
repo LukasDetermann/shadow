@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.CLASS_GET_GENERIC_TYPES;
 import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -67,10 +66,7 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return convert(shadow)
-            .toDeclared()
-            .map(declared -> getaClass().isAssignableFrom(ReflectionAdapter.particularize(declared)))
-            .orElse(false);
+      return shadow instanceof Declared declared && getaClass().isAssignableFrom(ReflectionAdapter.particularize(declared));
    }
 
    @Override
@@ -120,16 +116,9 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             convert(shadow)
-                   .toClass()
-                   .map(aClass -> requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES)
-                                                 .stream()
-                                                 .allMatch(shadow1 -> getGenericTypes().stream()
-                                                                              .anyMatch(shadow2 -> requestOrThrow(shadow2,
-                                                                                                                  SHADOW_REPRESENTS_SAME_TYPE,
-                                                                                                                  shadow1))))
-                   .orElse(false);
+      return shadow instanceof Class aClass && requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES)
+            .stream()
+            .allMatch(shadow1 -> getGenericTypes().stream().anyMatch(shadow2 -> requestOrThrow(shadow2, SHADOW_REPRESENTS_SAME_TYPE, shadow1)));
    }
 
    @Override

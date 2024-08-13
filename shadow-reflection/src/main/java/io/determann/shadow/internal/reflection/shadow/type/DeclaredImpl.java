@@ -1,8 +1,5 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.DeclaredConverter;
-import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
@@ -25,7 +22,6 @@ import io.determann.shadow.internal.reflection.ReflectionUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -116,12 +112,7 @@ public class DeclaredImpl implements DeclaredReflection,
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      if (equals(shadow))
-      {
-         return true;
-      }
-
-      return convert(shadow).toDeclared().map(declared -> getSuperTypes().contains(declared)).orElse(false);
+      return equals(shadow) || shadow instanceof Declared declared && getSuperTypes().contains(declared);
    }
 
    @Override
@@ -157,14 +148,12 @@ public class DeclaredImpl implements DeclaredReflection,
    {
       List<Declared> result = stream(getaClass().getGenericInterfaces())
             .map(ReflectionAdapter::generalize)
-            .map(Converter::convert)
-            .map(TypeConverter::toDeclaredOrThrow)
+            .map(Declared.class::cast)
             .collect(Collectors.toList());
 
       ofNullable(getaClass().getGenericSuperclass())
             .map(ReflectionAdapter::generalize)
-            .map(Converter::convert)
-            .map(TypeConverter::toDeclaredOrThrow)
+            .map(Declared.class::cast)
             .ifPresent(result::add);
 
       if (result.isEmpty() && isKind(TypeKind.INTERFACE))
@@ -196,8 +185,7 @@ public class DeclaredImpl implements DeclaredReflection,
    {
       return getSuperTypes().stream()
                             .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(Converter::convert)
-                            .map(DeclaredConverter::toInterfaceOrThrow)
+                            .map(Interface.class::cast)
                             .toList();
    }
 
@@ -262,22 +250,22 @@ public class DeclaredImpl implements DeclaredReflection,
 
       if (isKind(TypeKind.CLASS))
       {
-         List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toClassOrThrow(), CLASS_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow(convert(shadow).toClassOrThrow(), CLASS_GET_GENERICS);
+         List<Generic> thisGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Class) this, CLASS_GET_GENERICS);
+         List<Generic> otherGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Class) shadow, CLASS_GET_GENERICS);
 
          return sameGenerics(thisGenerics, otherGenerics);
       }
       if (isKind(TypeKind.INTERFACE))
       {
-         List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow(convert(shadow).toInterfaceOrThrow(), INTERFACE_GET_GENERICS);
+         List<Generic> thisGenerics = requestOrThrow((Interface) this, INTERFACE_GET_GENERICS);
+         List<Generic> otherGenerics = requestOrThrow((Interface) shadow, INTERFACE_GET_GENERICS);
 
          return sameGenerics(thisGenerics, otherGenerics);
       }
       if (isKind(TypeKind.RECORD))
       {
-         List<Generic> thisGenerics = requestOrThrow(convert(((Declared) this)).toRecordOrThrow(), RECORD_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow(convert(shadow).toRecordOrThrow(), RECORD_GET_GENERICS);
+         List<Generic> thisGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Record) this, RECORD_GET_GENERICS);
+         List<Generic> otherGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Record) shadow, RECORD_GET_GENERICS);
 
          return sameGenerics(thisGenerics, otherGenerics);
       }

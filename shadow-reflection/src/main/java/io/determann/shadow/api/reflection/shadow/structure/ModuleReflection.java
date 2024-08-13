@@ -16,7 +16,6 @@ import io.determann.shadow.api.shadow.type.*;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -55,89 +54,89 @@ public interface ModuleReflection extends Module,
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> convert(declared).toAnnotationOrThrow())
+                          .map(declared -> ((Annotation) declared))
                           .toList();
    }
 
    default Optional<Annotation> getAnnotation(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotation();
+      return getDeclared(qualifiedName).map(Annotation.class::cast);
    }
 
    default Annotation getAnnotationOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toAnnotationOrThrow();
+      return ((Annotation) getDeclaredOrThrow(qualifiedName));
    }
 
    default List<Class> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> convert(declared).toClassOrThrow())
+                          .map(declared -> ((Class) declared))
                           .toList();
    }
 
    default Optional<Class> getClass(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toClass();
+      return getDeclared(qualifiedName).map(Class.class::cast);
    }
 
    default Class getClassOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toClassOrThrow();
+      return ((Class) getDeclaredOrThrow(qualifiedName));
    }
 
    default List<Enum> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> convert(declared).toEnumOrThrow())
+                          .map(declared -> ((Enum) declared))
                           .toList();
    }
 
    default Optional<Enum> getEnum(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toEnum();
+      return getDeclared(qualifiedName).map(Enum.class::cast);
    }
 
    default Enum getEnumOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toEnumOrThrow();
+      return ((Enum) getDeclaredOrThrow(qualifiedName));
    }
 
    default List<Interface> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> convert(declared).toInterfaceOrThrow())
+                          .map(declared -> ((Interface) declared))
                           .toList();
    }
 
    default Optional<Interface> getInterface(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterface();
+      return getDeclared(qualifiedName).map(Interface.class::cast);
    }
 
    default Interface getInterfaceOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toInterfaceOrThrow();
+      return ((Interface) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<io.determann.shadow.api.shadow.type.Record> getRecords()
+   default List<Record> getRecords()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> convert(declared).toRecordOrThrow())
+                          .map(declared -> ((Record) declared))
                           .toList();
    }
 
-   default Optional<io.determann.shadow.api.shadow.type.Record> getRecord(String qualifiedName)
+   default Optional<Record> getRecord(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toRecord();
+      return getDeclared(qualifiedName).map(Record.class::cast);
    }
 
    default Record getRecordOrThrow(String qualifiedName)
    {
-      return convert(getDeclaredOrThrow(qualifiedName)).toRecordOrThrow();
+      return ((Record) getDeclaredOrThrow(qualifiedName));
    }
 }

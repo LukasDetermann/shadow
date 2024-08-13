@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.TypeKind.*;
@@ -62,10 +61,7 @@ public class PrimitiveImpl implements Primitive,
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return convert(shadow)
-            .toPrimitive()
-            .map(primitive -> getaClass().isAssignableFrom(ReflectionAdapter.particularize(primitive)))
-            .orElse(false);
+      return shadow instanceof Primitive primitive && getaClass().isAssignableFrom(ReflectionAdapter.particularize(primitive));
    }
 
    @Override

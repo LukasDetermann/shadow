@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -86,13 +85,10 @@ public class ParameterImpl implements ParameterReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             convert(shadow).toParameter()
-                            .map(parameter1 -> requestOrThrow(requestOrThrow(parameter1, VARIABLE_GET_TYPE),
-                                                              SHADOW_REPRESENTS_SAME_TYPE,
-                                                              getType()))
-                            .orElse(false);
+      return shadow instanceof Parameter parameter &&
+             requestOrThrow(requestOrThrow(parameter, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
+
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {

@@ -8,6 +8,7 @@ import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
@@ -83,37 +83,39 @@ public class ArrayImpl implements ArrayReflection,
       }
       if (TypeKind.ARRAY.equals(requestOrThrow(getComponentType(), SHADOW_GET_KIND)))
       {
-         return requestOrThrow(convert(componentShadow).toArrayOrThrow(), ARRAY_GET_DIRECT_SUPER_TYPES)
-                                        .stream()
-                                        .map(shadow -> {
-                                         if (TypeKind.ARRAY.equals(requestOrThrow(shadow, SHADOW_GET_KIND)))
-                                         {
-                                            return ReflectionAdapter.particularize(convert(shadow).toArrayOrThrow());
-                                         }
-                                         if (requestOrThrow(shadow, SHADOW_GET_KIND).isDeclared())
-                                         {
-                                            return ReflectionAdapter.particularize(convert(shadow).toDeclaredOrThrow());
-                                         }
-                                         if (requestOrThrow(shadow, SHADOW_GET_KIND).isPrimitive())
-                                         {
-                                            return ReflectionAdapter.particularize(convert(shadow).toPrimitiveOrThrow());
-                                         }
-                                         throw new IllegalStateException();
-                                      })
-                                        .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
-                                        .map(ReflectionAdapter::generalize)
-                                        .map(Shadow.class::cast)
-                                        .toList();
+         return requestOrThrow(((Array) componentShadow), ARRAY_GET_DIRECT_SUPER_TYPES)
+               .stream()
+               .map(shadow ->
+                    {
+                       TypeKind typeKind = requestOrThrow(shadow, SHADOW_GET_KIND);
+                       if (TypeKind.ARRAY.equals(typeKind))
+                       {
+                          return ReflectionAdapter.particularize(((Array) shadow));
+                       }
+                       if (typeKind.isDeclared())
+                       {
+                          return ReflectionAdapter.particularize(((Declared) shadow));
+                       }
+                       if (typeKind.isPrimitive())
+                       {
+                          return ReflectionAdapter.particularize((Primitive) shadow);
+                       }
+                       throw new IllegalStateException();
+                    })
+               .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
+               .map(ReflectionAdapter::generalize)
+               .map(Shadow.class::cast)
+               .toList();
       }
 
       List<Class<?>> directSuperTypes = new ArrayList<>();
 
-      convert(componentShadow).toDeclared().ifPresent(declared ->
-                                                    {
-                                                       Class<?> reflection = ReflectionAdapter.particularize(declared);
-                                                       directSuperTypes.add(reflection.getSuperclass());
-                                                       Collections.addAll(directSuperTypes, reflection.getInterfaces());
-                                                    });
+      if (componentShadow instanceof Declared declared)
+      {
+         Class<?> reflection = ReflectionAdapter.particularize(declared);
+         directSuperTypes.add(reflection.getSuperclass());
+         Collections.addAll(directSuperTypes, reflection.getInterfaces());
+      }
 
       return directSuperTypes.stream()
                              .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
@@ -125,11 +127,8 @@ public class ArrayImpl implements ArrayReflection,
    private static boolean isPrimitiveOrObject(Shadow componentShadow)
    {
       return requestOrThrow(componentShadow, SHADOW_GET_KIND).isPrimitive() ||
-             convert(componentShadow)
-                   .toDeclared()
-                   .map(DeclaredImpl.class::cast)
-                   .map(declared -> declared.getaClass().equals(Object.class))
-                   .orElse(false);
+             componentShadow instanceof Declared declared &&
+             requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object");
    }
 
    @Override
@@ -141,15 +140,12 @@ public class ArrayImpl implements ArrayReflection,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             (equals(shadow) ||
-              convert(shadow).toArray()
-                             .map(array1 ->
-                                  {
-                                     Shadow componentType = requestOrThrow(array1, ARRAY_GET_COMPONENT_TYPE);
-                                     return requestOrThrow(componentType, SHADOW_REPRESENTS_SAME_TYPE, getComponentType());
-                                  })
-                             .orElse(false));
+      if (!(shadow instanceof Array array))
+      {
+         return false;
+      }
+      Shadow componentType = requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE);
+      return requestOrThrow(componentType, SHADOW_REPRESENTS_SAME_TYPE, getComponentType());
    }
 
    public Class<?> getArray()

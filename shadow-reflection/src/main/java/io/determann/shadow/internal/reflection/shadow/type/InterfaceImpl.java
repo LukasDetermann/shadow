@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
@@ -74,16 +74,11 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             Converter.convert(shadow)
-                      .toInterface()
-                      .map(anInterface -> requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
-                            .stream()
-                            .allMatch(shadow1 -> getGenericTypes().stream()
-                                                                  .anyMatch(shadow2 -> requestOrThrow(shadow2,
-                                                                                                      SHADOW_REPRESENTS_SAME_TYPE,
-                                                                                                      shadow1))))
-                      .orElse(false);
+      return shadow instanceof Interface anInterface &&
+             requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
+                   .stream()
+                   .allMatch(shadow1 -> getGenericTypes().stream()
+                                                         .anyMatch(shadow2 -> requestOrThrow(shadow2, SHADOW_REPRESENTS_SAME_TYPE, shadow1)));
    }
 
    @Override

@@ -1,6 +1,5 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;

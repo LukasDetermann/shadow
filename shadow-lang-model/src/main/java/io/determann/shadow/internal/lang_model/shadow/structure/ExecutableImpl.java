@@ -1,7 +1,5 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.TypeConverter;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
@@ -101,8 +99,7 @@ public class ExecutableImpl implements ConstructorLangModel,
       return getMirror().getThrownTypes()
                         .stream()
                         .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
-                        .map(Converter::convert)
-                        .map(TypeConverter::toClassOrThrow)
+                        .map(Class.class::cast)
                         .toList();
    }
 

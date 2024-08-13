@@ -1,6 +1,5 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
@@ -19,8 +18,6 @@ import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
- * any code block. Can be converted into the following using {@link Converter#convert(Declared)}
- *
  * <ul>
  *    <li>{@link Constructor}</li>
  *    <li>{@link Method}</li>

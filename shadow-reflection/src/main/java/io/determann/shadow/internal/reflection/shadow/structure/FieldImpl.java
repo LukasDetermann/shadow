@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.FieldReflection;
+import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Class;
@@ -96,11 +96,7 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             Converter.convert(shadow)
-                      .toField()
-                      .map(field -> requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType()))
-                      .orElse(false);
+      return shadow instanceof Field field && requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override

@@ -1,6 +1,5 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;

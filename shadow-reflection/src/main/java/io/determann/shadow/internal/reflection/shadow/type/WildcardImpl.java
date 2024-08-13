@@ -5,6 +5,7 @@ import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.reflection.shadow.type.WildcardReflection;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.api.shadow.type.Wildcard;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
@@ -12,7 +13,6 @@ import io.determann.shadow.implementation.support.api.shadow.type.WildcardSuppor
 import java.lang.reflect.WildcardType;
 import java.util.Optional;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
@@ -38,12 +38,10 @@ public class WildcardImpl implements Wildcard,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      Optional<Wildcard> possibleWildcard = convert(shadow).toWildcard();
-      if (possibleWildcard.isEmpty())
+      if (!(shadow instanceof Wildcard wildcard))
       {
          return false;
       }
-      Wildcard wildcard = possibleWildcard.get();
       Optional<Shadow> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
       Optional<Shadow> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
 
@@ -96,7 +94,7 @@ public class WildcardImpl implements Wildcard,
 
    private boolean isSubType(Shadow shadow, Shadow other)
    {
-      return convert(shadow).toDeclared().map(declared -> requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other)).orElse(false);
+      return shadow instanceof Declared declared && requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other);
    }
 
    public WildcardType getWildcardType()

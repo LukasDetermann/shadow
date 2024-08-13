@@ -2,6 +2,7 @@ package io.determann.shadow.readme;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,6 @@ import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import java.util.List;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,9 +30,8 @@ Shadow myField = query(query(context.getClassOrThrow("MyClass"))
                         .getFieldOrThrow("myField"))
                         .getType();
 //Converters limit the conversion to possible types
-Shadow genericShadow = query(convert(myField).toInterfaceOrThrow())
-                                     .getGenericTypes()
-                                     .get(0);
+Shadow genericShadow = query(((Interface)myField)).getGenericTypes()
+                                                  .get(0);
 
 assertEquals(context.getClassOrThrow("java.lang.String"), genericShadow);
 //end::shadow[]

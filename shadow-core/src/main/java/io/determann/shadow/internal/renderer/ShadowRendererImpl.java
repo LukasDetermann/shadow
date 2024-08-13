@@ -1,10 +1,11 @@
 package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.*;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
@@ -14,16 +15,16 @@ public class ShadowRendererImpl
    {
       return switch (requestOrThrow(shadow, SHADOW_GET_KIND))
       {
-         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, convert(shadow).toPrimitiveOrThrow());
-         case CLASS -> ClassRendererImpl.type(context, convert(shadow).toClassOrThrow());
-         case INTERFACE -> InterfaceRendererImpl.type(context, convert(shadow).toInterfaceOrThrow());
-         case ENUM -> EnumRendererImpl.type(context, convert(shadow).toEnumOrThrow());
-         case ANNOTATION -> AnnotationRendererImpl.type(context, convert(shadow).toAnnotationOrThrow());
-         case RECORD -> RecordRendererImpl.type(context, convert(shadow).toRecordOrThrow());
-         case ARRAY -> ArrayRendererImpl.type(context, convert(shadow).toArrayOrThrow());
-         case GENERIC -> GenericRendererImpl.type(context, convert(shadow).toGenericOrThrow());
-         case WILDCARD -> WildcardRendererImpl.type(context, convert(shadow).toWildcardOrThrow());
-         case INTERSECTION -> IntersectionRendererImpl.type(context, convert(shadow).toIntersectionOrThrow());
+         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, ((Primitive) shadow));
+         case CLASS -> ClassRendererImpl.type(context, ((Class) shadow));
+         case INTERFACE -> InterfaceRendererImpl.type(context, ((Interface) shadow));
+         case ENUM -> EnumRendererImpl.type(context, ((Enum) shadow));
+         case ANNOTATION -> AnnotationRendererImpl.type(context, ((Annotation) shadow));
+         case RECORD -> RecordRendererImpl.type(context, ((Record) shadow));
+         case ARRAY -> ArrayRendererImpl.type(context, ((Array) shadow));
+         case GENERIC -> GenericRendererImpl.type(context, ((Generic) shadow));
+         case WILDCARD -> WildcardRendererImpl.type(context, ((Wildcard) shadow));
+         case INTERSECTION -> IntersectionRendererImpl.type(context, ((Intersection) shadow));
          case VOID -> VoidRendererImpl.type();
          case NULL -> NullRendererImpl.type();
 

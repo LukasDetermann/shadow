@@ -20,7 +20,6 @@ import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
@@ -227,11 +226,11 @@ public class LangModelContextImpl implements LangModelContext,
                                             generics.length +
                                             " are provided");
       }
-      if (Provider.requestOrEmpty(aClass, CLASS_GET_OUTER_TYPE).flatMap(typeMirrorShadow -> convert(typeMirrorShadow)
-                      .toInterface()
-                      .map(anInterface -> !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty())
-                      .or(() -> convert(typeMirrorShadow).toClass().map(aClass1 -> !requestOrThrow(aClass1, CLASS_GET_GENERIC_TYPES).isEmpty())))
-                  .orElse(false))
+      Optional<Declared> outerType = Provider.requestOrEmpty(aClass, CLASS_GET_OUTER_TYPE);
+      if (outerType.isPresent() &&
+          (outerType.get() instanceof Interface anInterface &&
+          !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty() ||
+          outerType.get() instanceof Class aClass1 && !requestOrThrow(aClass1, CLASS_GET_GENERIC_TYPES).isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +

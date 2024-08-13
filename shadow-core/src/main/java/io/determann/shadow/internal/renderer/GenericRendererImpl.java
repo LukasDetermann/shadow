@@ -4,6 +4,7 @@ import io.determann.shadow.api.renderer.GenericRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -46,10 +46,7 @@ public class GenericRendererImpl implements GenericRenderer
          context.setRenderNestedGenerics(false);
 
          Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
-         if (convert(aExtends)
-               .toDeclared()
-               .map(declared -> "java.lang.Object".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
-               .orElse(false))
+         if (aExtends instanceof Declared declared && "java.lang.Object".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
          {
             sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME));
          }

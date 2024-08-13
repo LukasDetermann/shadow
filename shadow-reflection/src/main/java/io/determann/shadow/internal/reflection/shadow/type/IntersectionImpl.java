@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.IntersectionReflection;
 import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.type.Intersection;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
 
@@ -41,11 +41,7 @@ public class IntersectionImpl implements IntersectionReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null &&
-             Converter.convert(shadow)
-                      .toIntersection()
-                      .map(intersection -> sameBounds(getBounds(), requestOrThrow(intersection, INTERSECTION_GET_BOUNDS)))
-                      .orElse(false);
+      return shadow instanceof Intersection intersection && sameBounds(getBounds(), requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
    }
 
    private boolean sameBounds(List<Shadow> shadows, List<Shadow> shadows1)

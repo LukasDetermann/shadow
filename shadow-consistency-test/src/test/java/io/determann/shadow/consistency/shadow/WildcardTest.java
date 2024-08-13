@@ -1,13 +1,12 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.converter.Converter;
-import io.determann.shadow.api.converter.TypeConverter;
-import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Wildcard;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.converter.Converter.convert;
+import java.util.Optional;
+
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,17 +21,15 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetExtends()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
-                                                                       .getMethods("extendsExample")
-                                                                       .get(0))
-                                                                       .getParameterOrThrow("numbers"))
-                                                                       .getType())
-                                                            .toInterface()
-                                                            .map(anInterface -> query(anInterface).getGenericTypes().get(0))
-                                                            .map(Converter::convert)
-                                                            .flatMap(TypeConverter::toWildcard)
-                                                            .flatMap(wildcard -> query(wildcard).getExtends())
-                                                            .orElseThrow()))
+                                                      Optional.of(((Interface) query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                                                                 .getMethods("extendsExample")
+                                                                                                 .get(0))
+                                                                                           .getParameterOrThrow("numbers"))
+                                                                    .getType()))
+                                                              .map(anInterface -> query(anInterface).getGenericTypes().get(0))
+                                                              .map(Wildcard.class::cast)
+                                                              .flatMap(wildcard -> query(wildcard).getExtends())
+                                                              .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {
                             public static void extendsExample(java.util.List<? extends Number> numbers) {}
@@ -46,17 +43,15 @@ class WildcardTest extends ShadowTest<Wildcard>
    void testGetSupper()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      convert(query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
-                                                                       .getMethods("superExample")
-                                                                       .get(0))
-                                                                       .getParameterOrThrow("numbers"))
-                                                                       .getType())
-                                                            .toInterface()
-                                                            .map(anInterface -> query(anInterface).getGenericTypes().get(0))
-                                                            .map(Converter::convert)
-                                                            .flatMap(TypeConverter::toWildcard)
-                                                            .flatMap(wildcard -> LangModelQueries.query(wildcard).getSuper())
-                                                            .orElseThrow()))
+                                                      Optional.of(((Interface) query(query(query(shadowApi.getClassOrThrow("BoundsExample"))
+                                                                                                 .getMethods("superExample")
+                                                                                                 .get(0))
+                                                                                           .getParameterOrThrow("numbers"))
+                                                                    .getType()))
+                                                              .map(anInterface -> query(anInterface).getGenericTypes().get(0))
+                                                              .map(Wildcard.class::cast)
+                                                              .flatMap(wildcard -> query(wildcard).getSuper())
+                                                              .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {
                             public static void extendsExample(java.util.List<? extends Number> numbers) {}

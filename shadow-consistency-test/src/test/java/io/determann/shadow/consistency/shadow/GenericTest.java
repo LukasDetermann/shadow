@@ -4,7 +4,6 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.shadow.type.Generic;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,10 +18,9 @@ class GenericTest extends ShadowTest<Generic>
    void testGetExtends()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      query(convert(query(shadowApi.getClassOrThrow("GenericsExample"))
-                                                                       .getGenericTypes()
-                                                                       .get(0))
-                                                            .toGenericOrThrow())
+                                                      query(((Generic) query(shadowApi.getClassOrThrow("GenericsExample"))
+                                                            .getGenericTypes()
+                                                            .get(0)))
                                                             .getExtends()))
                    .withCodeToCompile("GenericsExample.java", """
                          import java.util.List;
@@ -38,10 +36,9 @@ class GenericTest extends ShadowTest<Generic>
    void testGetEnclosing()
    {
       ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
-                                                      query(convert(query(shadowApi.getClassOrThrow("GenericsExample"))
-                                                                       .getGenericTypes()
-                                                                       .get(0))
-                                                            .toGenericOrThrow())
+                                                      query(((Generic) query(shadowApi.getClassOrThrow("GenericsExample"))
+                                                            .getGenericTypes()
+                                                            .get(0)))
                                                             .getEnclosing()))
                    .withCodeToCompile("GenericsExample.java", """
                          import java.util.List;

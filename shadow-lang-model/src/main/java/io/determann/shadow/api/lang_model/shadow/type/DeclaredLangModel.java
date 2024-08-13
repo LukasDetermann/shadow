@@ -1,6 +1,5 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
-import io.determann.shadow.api.converter.Converter;
 import io.determann.shadow.api.lang_model.shadow.*;
 import io.determann.shadow.api.lang_model.shadow.modifier.AccessModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StrictfpModifiableLangModel;
@@ -22,7 +21,7 @@ import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_Q
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 /**
- * Anything that can be a file. Can be converted into the following using {@link Converter#convert(DeclaredLangModel)}
+ * Anything that can be a file.
  * <ul>
  *    <li>{@link Annotation}</li>
  *    <li>{@link Class}</li>

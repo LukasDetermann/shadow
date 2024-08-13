@@ -2,12 +2,14 @@ package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Wildcard;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.converter.Converter.convert;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
@@ -29,25 +31,20 @@ class WildcardRendererTest
                            """)
                      .test(aClass ->
                            {
-                              Wildcard extendsExample = convert(requestOrThrow(convert(
-                                    requestOrThrow(requestOrThrow(requestOrThrow(aClass,
-                                                                  DECLARED_GET_METHOD,
-                                                                  "extendsExample").get(0), EXECUTABLE_GET_PARAMETERS).get(0),
-                                                   VARIABLE_GET_TYPE)).toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
-                                                                      .get(0))
-                                    .toWildcardOrThrow();
+                              Method extendsMethod = requestOrThrow(aClass, DECLARED_GET_METHOD, "extendsExample").get(0);
+                              Parameter extendsParameter = requestOrThrow(extendsMethod, EXECUTABLE_GET_PARAMETERS).get(0);
+                              Interface extendsParameterType = (Interface) requestOrThrow(extendsParameter, VARIABLE_GET_TYPE);
+                              Wildcard extendsExample = ((Wildcard) requestOrThrow(extendsParameterType, INTERFACE_GET_GENERIC_TYPES).get(0));
 
-                              Wildcard superExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0), EXECUTABLE_GET_PARAMETERS)
-                                                                            .get(0), VARIABLE_GET_TYPE))
-                                                                    .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
-                                                                    .get(0))
-                                    .toWildcardOrThrow();
+                              Method superMethod = requestOrThrow(aClass, DECLARED_GET_METHOD, "superExample").get(0);
+                              Parameter superParameter = requestOrThrow(superMethod, EXECUTABLE_GET_PARAMETERS).get(0);
+                              Interface superParameterType = ((Interface) requestOrThrow(superParameter, VARIABLE_GET_TYPE));
+                              Wildcard superExample = ((Wildcard) requestOrThrow(superParameterType, INTERFACE_GET_GENERIC_TYPES).get(0));
 
-                              Wildcard unboundExample = convert(requestOrThrow(convert(requestOrThrow(requestOrThrow(requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0), EXECUTABLE_GET_PARAMETERS)
-                                                                              .get(0), VARIABLE_GET_TYPE))
-                                                                      .toInterfaceOrThrow(), INTERFACE_GET_GENERIC_TYPES)
-                                                                      .get(0))
-                                    .toWildcardOrThrow();
+                              Method unboundMethod = requestOrThrow(aClass, DECLARED_GET_METHOD, "unboundExample").get(0);
+                              Parameter unboundParameter = requestOrThrow(unboundMethod, EXECUTABLE_GET_PARAMETERS).get(0);
+                              Interface unboundParameterType = ((Interface) requestOrThrow(unboundParameter, VARIABLE_GET_TYPE));
+                              Wildcard unboundExample = ((Wildcard) requestOrThrow(unboundParameterType, INTERFACE_GET_GENERIC_TYPES).get(0));
 
                               Assertions.assertEquals("? extends Number", Renderer.render(DEFAULT, extendsExample).type());
                               assertEquals("? super Number", Renderer.render(DEFAULT, superExample).type());
