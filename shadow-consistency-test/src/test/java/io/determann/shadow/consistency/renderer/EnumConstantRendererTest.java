@@ -2,6 +2,7 @@ package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.type.Enum;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class EnumConstantRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass ->
                            {
@@ -26,7 +27,7 @@ class EnumConstantRendererTest
                               assertEquals("SOURCE(test) {\ntest2\n}\n", render(DEFAULT, constant).declaration("test", "test2"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getEnumOrThrow("AnnotatedEnumConstant"))
+      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("AnnotatedEnumConstant"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("AnnotatedEnumConstant")))
                      .withCode("AnnotatedEnumConstant.java",
                                """
@@ -42,7 +43,7 @@ class EnumConstantRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE")).invocation()));
    }

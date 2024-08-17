@@ -22,7 +22,7 @@ public class MappingBuilder
       return this;
    }
 
-   public <TYPE, RESULT> MappingBuilder withOptional(Operation0<TYPE, RESULT> operation, Function<TYPE, Optional<RESULT>> mapping)
+   public <TYPE, RESULT> MappingBuilder withOptional(Operation0<TYPE, RESULT> operation, Function<TYPE, Optional<? extends RESULT>> mapping)
    {
       //noinspection unchecked
       map.put(operation, (o, objects) -> mapping.apply((TYPE) o));

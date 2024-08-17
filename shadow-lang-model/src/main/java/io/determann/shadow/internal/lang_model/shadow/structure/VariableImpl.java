@@ -2,12 +2,14 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.VariableLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.lang_model.shadow.type.ShadowImpl;
@@ -42,23 +44,23 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(particularType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(particularType((DeclaredLangModel) shadow), getMirror());
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return getTypes(getApi()).isAssignable(particularType(shadow), getMirror());
+      return getTypes(getApi()).isAssignable(particularType((DeclaredLangModel) shadow), getMirror());
    }
 
    @Override
-   public Shadow getType()
+   public ShadowLangModel getType()
    {
       return generalize(getApi(), getElement().asType());
    }
 
    @Override
-   public Package getPackage()
+   public PackageLangModel getPackage()
    {
       return generalizePackage(getApi(), LangModelAdapter.getElements(getApi()).getPackageOf(getElement()));
    }
@@ -81,7 +83,7 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    }
 
    @Override
-   public Module getModule()
+   public ModuleLangModel getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -99,13 +101,13 @@ public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements Var
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

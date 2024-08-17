@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.type.Class;
 import org.junit.jupiter.api.Test;
@@ -26,13 +27,13 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                   .getParameters()
                                                   .size());
 
-                               List<Constructor> constructors = query(shadowApi.getClassOrThrow("ConstructorExample"))
+                               List<ConstructorLangModel> constructors = query(shadowApi.getClassOrThrow("ConstructorExample"))
                                                                          .getConstructors();
                                assertEquals(3, constructors.size());
                                assertEquals(shadowApi.getClassOrThrow("java.lang.Long"),
-                                            query(query(constructors.get(0))
+                                            constructors.get(0)
                                                         .getParameters()
-                                                        .get(0))
+                                                        .get(0)
                                                         .getType());
                             })
                    .withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")

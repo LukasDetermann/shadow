@@ -104,7 +104,7 @@ public class PropertyTemplateFactory
                               .toList();
    }
 
-   private static List<Method> getMethods(Declared declared)
+   private static List<? extends Method> getMethods(Declared declared)
    {
       if (!requestOrThrow(declared, SHADOW_GET_KIND).equals(CLASS))
       {
@@ -116,7 +116,7 @@ public class PropertyTemplateFactory
 
       Collections.reverse(superClasses);
 
-      List<Method> methods = superClasses.stream()
+      List<? extends Method> methods = superClasses.stream()
                                          .flatMap(aClass -> requestOrThrow(aClass, DECLARED_GET_METHODS).stream())
                                          .toList();
 
@@ -176,7 +176,7 @@ public class PropertyTemplateFactory
    private static Optional<Accessor> toAccessor(Method method, int position)
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME);
-      List<Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      List<? extends Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
       Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
       //getter

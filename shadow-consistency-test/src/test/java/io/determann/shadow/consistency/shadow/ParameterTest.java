@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
 import io.determann.shadow.api.shadow.structure.Constructor;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Parameter;
@@ -56,12 +57,12 @@ class ParameterTest extends VariableTest<Parameter>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Parameter> parameters = query(query(shadowApi.getClassOrThrow("VarArgsExample")).getConstructors()
-                                                                                                              .get(0))
-                                                                                                              .getParameters();
+                               List<ParameterLangModel> parameters = shadowApi.getClassOrThrow("VarArgsExample").getConstructors()
+                                                                              .get(0)
+                                                                              .getParameters();
 
-                               assertFalse(query(parameters.get(0)).isVarArgs());
-                               assertTrue(query(parameters.get(1)).isVarArgs());
+                               assertFalse(parameters.get(0).isVarArgs());
+                               assertTrue(parameters.get(1).isVarArgs());
                             })
                    .withCodeToCompile("VarArgsExample.java",
                                       """

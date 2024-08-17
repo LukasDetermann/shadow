@@ -1,14 +1,11 @@
 package io.determann.shadow.api.annotation_processing;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.shadow.Annotationable;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.*;
+import io.determann.shadow.api.lang_model.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Annotation;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -27,7 +24,7 @@ import java.util.function.BiConsumer;
  *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
  *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
- *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(Annotationable, String)}</li>
+ *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(AnnotationableLangModel, String)}</li>
  * </ul>
  *
  * @see ShadowProcessor
@@ -43,7 +40,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Annotationable> getAnnotatedWith(String qualifiedAnnotation);
+   Set<AnnotationableLangModel> getAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -53,7 +50,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Annotationable> getAnnotatedWith(Annotation annotation);
+   Set<AnnotationableLangModel> getAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -63,7 +60,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation);
+   Set<DeclaredLangModel> getDeclaredAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -73,7 +70,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Declared> getDeclaredAnnotatedWith(Annotation annotation);
+   Set<DeclaredLangModel> getDeclaredAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -83,7 +80,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Class> getClassesAnnotatedWith(String qualifiedAnnotation);
+   Set<ClassLangModel> getClassesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -93,7 +90,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Class> getClassesAnnotatedWith(Annotation annotation);
+   Set<ClassLangModel> getClassesAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -103,7 +100,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Enum> getEnumsAnnotatedWith(String qualifiedAnnotation);
+   Set<EnumLangModel> getEnumsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -113,7 +110,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Enum> getEnumsAnnotatedWith(Annotation annotation);
+   Set<EnumLangModel> getEnumsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -123,7 +120,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation);
+   Set<InterfaceLangModel> getInterfacesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -133,7 +130,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Interface> getInterfacesAnnotatedWith(Annotation annotation);
+   Set<InterfaceLangModel> getInterfacesAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -143,7 +140,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Record> getRecordsAnnotatedWith(String qualifiedAnnotation);
+   Set<RecordLangModel> getRecordsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -153,7 +150,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Record> getRecordsAnnotatedWith(Annotation annotation);
+   Set<RecordLangModel> getRecordsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -163,7 +160,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Field> getFieldsAnnotatedWith(String qualifiedAnnotation);
+   Set<FieldLangModel> getFieldsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -173,7 +170,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Field> getFieldsAnnotatedWith(Annotation annotation);
+   Set<FieldLangModel> getFieldsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -183,7 +180,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Parameter> getParametersAnnotatedWith(String qualifiedAnnotation);
+   Set<ParameterLangModel> getParametersAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -193,7 +190,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Parameter> getParametersAnnotatedWith(Annotation annotation);
+   Set<ParameterLangModel> getParametersAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -203,7 +200,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Method> getMethodsAnnotatedWith(String qualifiedAnnotation);
+   Set<MethodLangModel> getMethodsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -213,7 +210,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Method> getMethodsAnnotatedWith(Annotation annotation);
+   Set<MethodLangModel> getMethodsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -223,7 +220,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation);
+   Set<ConstructorLangModel> getConstructorsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -233,7 +230,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Constructor> getConstructorsAnnotatedWith(Annotation annotation);
+   Set<ConstructorLangModel> getConstructorsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -243,7 +240,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation);
+   Set<AnnotationLangModel> getAnnotationsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -253,7 +250,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Annotation> getAnnotationsAnnotatedWith(Annotation annotation);
+   Set<AnnotationLangModel> getAnnotationsAnnotatedWith(Annotation annotation);
    /**
     * Looks up annotated elements in currently compiled code. <br>
     * Annotation processing happens in rounds.
@@ -262,7 +259,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Package> getPackagesAnnotatedWith(String qualifiedAnnotation);
+   Set<PackageLangModel> getPackagesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -272,7 +269,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Package> gePackagesAnnotatedWith(Annotation annotation);
+   Set<PackageLangModel> gePackagesAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -282,7 +279,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Generic> getGenericsAnnotatedWith(String qualifiedAnnotation);
+   Set<GenericLangModel> getGenericsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -292,7 +289,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Generic> geGenericsAnnotatedWith(Annotation annotation);
+   Set<GenericLangModel> geGenericsAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -302,7 +299,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Module> getModulesAnnotatedWith(String qualifiedAnnotation);
+   Set<ModuleLangModel> getModulesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -312,7 +309,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Module> geModulesAnnotatedWith(Annotation annotation);
+   Set<ModuleLangModel> geModulesAnnotatedWith(Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -322,7 +319,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation);
+   Set<RecordComponentLangModel> getRecordComponentsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -332,7 +329,7 @@ public interface AnnotationProcessingContext extends LangModelContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<RecordComponent> geRecordComponentsAnnotatedWith(Annotation annotation);
+   Set<RecordComponentLangModel> geRecordComponentsAnnotatedWith(Annotation annotation);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
@@ -414,9 +411,9 @@ public interface AnnotationProcessingContext extends LangModelContext
 
    void logWarning(String msg);
 
-   void logAndRaiseErrorAt(Annotationable annotationable, String msg);
+   void logAndRaiseErrorAt(AnnotationableLangModel annotationable, String msg);
 
-   void logInfoAt(Annotationable annotationable, String msg);
+   void logInfoAt(AnnotationableLangModel annotationable, String msg);
 
-   void logWarningAt(Annotationable annotationable, String msg);
+   void logWarningAt(AnnotationableLangModel annotationable, String msg);
 }

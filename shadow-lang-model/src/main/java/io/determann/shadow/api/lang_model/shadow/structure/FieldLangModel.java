@@ -3,8 +3,8 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.shadow.modifier.AccessModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
 import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.type.Declared;
 
 public interface FieldLangModel extends Field,
                                         VariableLangModel,
@@ -21,5 +21,5 @@ public interface FieldLangModel extends Field,
    Object getConstantValue();
 
    @Override
-   Declared getSurrounding();
+   DeclaredLangModel getSurrounding();
 }

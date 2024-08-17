@@ -2,10 +2,9 @@ package io.determann.shadow.api.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 
@@ -22,15 +21,15 @@ public interface RecordLangModel extends Record,
       return getRecordComponents().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
-   List<RecordComponent> getRecordComponents();
+   List<RecordComponentLangModel> getRecordComponents();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<Shadow> getGenericTypes();
+   List<ShadowLangModel> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
-   List<Generic> getGenerics();
+   List<GenericLangModel> getGenerics();
 }

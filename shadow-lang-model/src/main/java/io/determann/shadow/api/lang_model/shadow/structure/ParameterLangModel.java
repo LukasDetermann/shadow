@@ -2,7 +2,6 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
 import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Executable;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Parameter;
 
@@ -24,5 +23,5 @@ public interface ParameterLangModel extends Parameter,
    boolean isVarArgs();
 
    @Override
-   Executable getSurrounding();
+   ExecutableLangModel getSurrounding();
 }

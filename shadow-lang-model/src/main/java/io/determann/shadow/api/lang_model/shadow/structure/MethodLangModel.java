@@ -3,15 +3,15 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.Method;
 
-public interface MethodLangMethod extends Method,
-                                          ExecutableLangModel,
-                                          StaticModifiableLangModel,
-                                          DefaultModifiableLangModel,
-                                          AccessModifiableLangModel,
-                                          AbstractModifiableLangModel,
-                                          FinalModifiableLangModel,
-                                          StrictfpModifiableLangModel,
-                                          NativeModifiableLangModel
+public interface MethodLangModel extends Method,
+                                         ExecutableLangModel,
+                                         StaticModifiableLangModel,
+                                         DefaultModifiableLangModel,
+                                         AccessModifiableLangModel,
+                                         AbstractModifiableLangModel,
+                                         FinalModifiableLangModel,
+                                         StrictfpModifiableLangModel,
+                                         NativeModifiableLangModel
 {
    boolean overrides(Method method);
 

@@ -1,31 +1,31 @@
 package io.determann.shadow.api.lang_model;
 
+import io.determann.shadow.api.lang_model.shadow.type.PrimitiveLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
 import io.determann.shadow.api.shadow.type.Null;
-import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Void;
-import io.determann.shadow.api.shadow.type.Wildcard;
 
 public interface LangModelConstants
 {
-   Wildcard getUnboundWildcard();
+   WildcardLangModel getUnboundWildcard();
 
    Null getNull();
 
    Void getVoid();
 
-   Primitive getPrimitiveBoolean();
+   PrimitiveLangModel getPrimitiveBoolean();
 
-   Primitive getPrimitiveByte();
+   PrimitiveLangModel getPrimitiveByte();
 
-   Primitive getPrimitiveShort();
+   PrimitiveLangModel getPrimitiveShort();
 
-   Primitive getPrimitiveInt();
+   PrimitiveLangModel getPrimitiveInt();
 
-   Primitive getPrimitiveLong();
+   PrimitiveLangModel getPrimitiveLong();
 
-   Primitive getPrimitiveChar();
+   PrimitiveLangModel getPrimitiveChar();
 
-   Primitive getPrimitiveFloat();
+   PrimitiveLangModel getPrimitiveFloat();
 
-   Primitive getPrimitiveDouble();
+   PrimitiveLangModel getPrimitiveDouble();
 }

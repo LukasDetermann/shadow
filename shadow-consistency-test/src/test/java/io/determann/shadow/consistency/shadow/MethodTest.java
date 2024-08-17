@@ -2,6 +2,7 @@ package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Class;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static io.determann.shadow.api.shadow.Operations.*;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,22 +22,22 @@ class MethodTest extends ExecutableTest<Method>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Method> methods = query(shadowApi.getClassOrThrow("SubSignature")).getMethods();
-                               Method first = methods.get(0);
-                               Method second = methods.get(1);
-                               Method third = methods.get(2);
-                               Method four = methods.get(3);
-                               Method five = methods.get(4);
-                               Method six = methods.get(5);
-                               Method seven = methods.get(6);
+                               List<MethodLangModel> methods = shadowApi.getClassOrThrow("SubSignature").getMethods();
+                               MethodLangModel first = methods.get(0);
+                               MethodLangModel second = methods.get(1);
+                               MethodLangModel third = methods.get(2);
+                               MethodLangModel four = methods.get(3);
+                               MethodLangModel five = methods.get(4);
+                               MethodLangModel six = methods.get(5);
+                               MethodLangModel seven = methods.get(6);
 
-                               assertTrue(query(first).sameParameterTypes(second));
-                               assertTrue(query(second).sameParameterTypes(first));
-                               assertFalse(query(third).sameParameterTypes(four));
-                               assertFalse(query(four).sameParameterTypes(third));
-                               assertTrue(query(four).sameParameterTypes(five));
-                               assertTrue(query(six).sameParameterTypes(seven));
-                               assertFalse(query(seven).sameParameterTypes(six));
+                               assertTrue(first.sameParameterTypes(second));
+                               assertTrue(second.sameParameterTypes(first));
+                               assertFalse(third.sameParameterTypes(four));
+                               assertFalse(four.sameParameterTypes(third));
+                               assertTrue(four.sameParameterTypes(five));
+                               assertTrue(six.sameParameterTypes(seven));
+                               assertFalse(seven.sameParameterTypes(six));
                             })
                    .withCodeToCompile("SubSignature.java", """
                          import java.util.List;
@@ -58,7 +58,7 @@ class MethodTest extends ExecutableTest<Method>
    @Test
    void testOverrides()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public class MethodExample {

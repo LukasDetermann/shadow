@@ -2,10 +2,10 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import javax.lang.model.element.TypeElement;
@@ -25,7 +25,7 @@ public class RecordImpl extends DeclaredImpl implements RecordLangModel
    }
 
    @Override
-   public List<RecordComponent> getRecordComponents()
+   public List<RecordComponentLangModel> getRecordComponents()
    {
       return getElement().getRecordComponents()
                          .stream()
@@ -34,20 +34,20 @@ public class RecordImpl extends DeclaredImpl implements RecordLangModel
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowLangModel> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericLangModel> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
+                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
                          .toList();
    }
 

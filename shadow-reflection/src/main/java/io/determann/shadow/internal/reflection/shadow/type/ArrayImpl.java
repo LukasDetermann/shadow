@@ -140,12 +140,7 @@ public class ArrayImpl implements ArrayReflection,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      if (!(shadow instanceof Array array))
-      {
-         return false;
-      }
-      Shadow componentType = requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE);
-      return requestOrThrow(componentType, SHADOW_REPRESENTS_SAME_TYPE, getComponentType());
+      return ArraySupport.representsSameType(this, shadow);
    }
 
    public Class<?> getArray()

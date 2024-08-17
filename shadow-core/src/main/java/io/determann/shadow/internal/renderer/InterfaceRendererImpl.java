@@ -36,7 +36,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(anInterface, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(anInterface, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -58,7 +58,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       sb.append(' ');
       sb.append(requestOrThrow(anInterface, NAMEABLE_GET_NAME));
 
-      List<Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
+      List<? extends Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -67,7 +67,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       }
       sb.append(' ');
 
-      List<Interface> directInterfaces = requestOrThrow(anInterface, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends Interface> directInterfaces = requestOrThrow(anInterface, DECLARED_GET_DIRECT_INTERFACES);
 
       if (!directInterfaces.isEmpty())
       {
@@ -97,7 +97,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));
 
-      List<Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
+      List<? extends Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');

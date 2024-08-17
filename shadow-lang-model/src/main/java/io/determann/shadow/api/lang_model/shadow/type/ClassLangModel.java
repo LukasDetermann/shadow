@@ -6,7 +6,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.SealableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,9 @@ public interface ClassLangModel extends Class,
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
     * For {@link Object} null will be returned
     */
-   Class getSuperClass();
+   ClassLangModel getSuperClass();
 
-   List<Class> getPermittedSubClasses();
+   List<ClassLangModel> getPermittedSubClasses();
 
    List<PropertyLangModel> getProperties();
 
@@ -37,22 +37,22 @@ public interface ClassLangModel extends Class,
    /**
     * returns the outer type for not static classes
     */
-   Optional<Declared> getOuterType();
+   Optional<DeclaredLangModel> getOuterType();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<Shadow> getGenericTypes();
+   List<ShadowLangModel> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
-   List<Generic> getGenerics();
+   List<GenericLangModel> getGenerics();
 
    /**
     * Integer -&gt; int<br>
     * Long -&gt; long<br>
     * etc...
     */
-   Primitive asUnboxed();
+   PrimitiveLangModel asUnboxed();
 }

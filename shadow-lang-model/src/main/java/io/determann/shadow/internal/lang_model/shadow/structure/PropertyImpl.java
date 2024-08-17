@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.lang_model.shadow.structure.FieldLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.structure.Property;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
@@ -13,6 +13,9 @@ import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
+/**
+ * implementation note: the casts to LangModel types are safe
+ */
 public class PropertyImpl implements PropertyLangModel
 {
    private final Property delegate;
@@ -29,37 +32,37 @@ public class PropertyImpl implements PropertyLangModel
    }
 
    @Override
-   public Shadow getType()
+   public ShadowLangModel getType()
    {
-      return requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (ShadowLangModel) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override
-   public Optional<Field> getField()
+   public Optional<FieldLangModel> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD);
+      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(FieldLangModel.class::cast);
    }
 
    @Override
-   public Field getFieldOrThrow()
+   public FieldLangModel getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public Method getGetter()
+   public MethodLangModel getGetter()
    {
-      return requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return (MethodLangModel) requestOrThrow(delegate, PROPERTY_GET_GETTER);
    }
 
    @Override
-   public Optional<Method> getSetter()
+   public Optional<MethodLangModel> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER);
+      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(MethodLangModel.class::cast);
    }
 
    @Override
-   public Method getSetterOrThrow()
+   public MethodLangModel getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }

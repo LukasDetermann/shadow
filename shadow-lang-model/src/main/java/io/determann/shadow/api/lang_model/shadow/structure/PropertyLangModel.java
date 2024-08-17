@@ -1,9 +1,8 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Property;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public interface PropertyLangModel extends Property
     *
     * @see #getGetter()
     */
-   Shadow getType();
+   ShadowLangModel getType();
 
    /**
     * a {@link Field} with the name and tye of this property
@@ -35,12 +34,12 @@ public interface PropertyLangModel extends Property
     * @see #getName()
     * @see #getType()
     */
-   Optional<Field> getField();
+   Optional<FieldLangModel> getField();
 
    /**
     * @see #getField()
     */
-   Field getFieldOrThrow();
+   FieldLangModel getFieldOrThrow();
 
    /**
     * 2 possible types of getters
@@ -50,7 +49,7 @@ public interface PropertyLangModel extends Property
     * </ul>
     * when both are present "is" is preferred over get
     */
-   Method getGetter();
+   MethodLangModel getGetter();
 
    /**
     * a method with the same name as the getter but "set" instead of "is" or "get", return type void and one
@@ -58,12 +57,12 @@ public interface PropertyLangModel extends Property
     *
     * @see #getGetter()
     */
-   Optional<Method> getSetter();
+   Optional<MethodLangModel> getSetter();
 
    /**
     * @see #getSetter()
     */
-   Method getSetterOrThrow();
+   MethodLangModel getSetterOrThrow();
 
    /**
     * has a {@link #getSetter()}

@@ -4,15 +4,10 @@ import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
 import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.lang_model.shadow.directive.DirectiveLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.directive.Directive;
 import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +22,7 @@ public interface ModuleLangModel extends Module,
                                          QualifiedNameableLamgModel,
                                          DocumentedLangModel
 {
-   List<Package> getPackages();
+   List<PackageLangModel> getPackages();
 
    /**
     * can everybody use reflection on this module?
@@ -41,104 +36,104 @@ public interface ModuleLangModel extends Module,
    /**
     * Relations between modules
     */
-   List<Directive> getDirectives();
+   List<DirectiveLangModel> getDirectives();
 
-   List<Declared> getDeclared();
+   List<DeclaredLangModel> getDeclared();
 
-   Optional<Declared> getDeclared(String qualifiedName);
+   Optional<DeclaredLangModel> getDeclared(String qualifiedName);
 
-   default Declared getDeclaredOrThrow(String qualifiedName)
+   default DeclaredLangModel getDeclaredOrThrow(String qualifiedName)
    {
       return getDeclared(qualifiedName).orElseThrow();
    }
 
-   default List<Annotation> getAnnotations()
+   default List<AnnotationableLangModel> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Annotation) declared))
+                          .map(declared -> ((AnnotationableLangModel) declared))
                           .toList();
    }
 
-   default Optional<Annotation> getAnnotation(String qualifiedName)
+   default Optional<AnnotationLangModel> getAnnotation(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Annotation.class::cast);
+      return getDeclared(qualifiedName).map(AnnotationLangModel.class::cast);
    }
 
-   default Annotation getAnnotationOrThrow(String qualifiedName)
+   default AnnotationLangModel getAnnotationOrThrow(String qualifiedName)
    {
-      return ((Annotation) getDeclaredOrThrow(qualifiedName));
+      return ((AnnotationLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Class> getClasses()
+   default List<ClassLangModel> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Class) declared))
+                          .map(declared -> ((ClassLangModel) declared))
                           .toList();
    }
 
-   default Optional<Class> getClass(String qualifiedName)
+   default Optional<ClassLangModel> getClass(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Class.class::cast);
+      return getDeclared(qualifiedName).map(ClassLangModel.class::cast);
    }
 
-   default Class getClassOrThrow(String qualifiedName)
+   default ClassLangModel getClassOrThrow(String qualifiedName)
    {
-      return ((Class) getDeclaredOrThrow(qualifiedName));
+      return ((ClassLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Enum> getEnums()
+   default List<EnumLangModel> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Enum) declared))
+                          .map(declared -> ((EnumLangModel) declared))
                           .toList();
    }
 
-   default Optional<Enum> getEnum(String qualifiedName)
+   default Optional<EnumLangModel> getEnum(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Enum.class::cast);
+      return getDeclared(qualifiedName).map(EnumLangModel.class::cast);
    }
 
-   default Enum getEnumOrThrow(String qualifiedName)
+   default EnumLangModel getEnumOrThrow(String qualifiedName)
    {
-      return ((Enum) getDeclaredOrThrow(qualifiedName));
+      return ((EnumLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Interface> getInterfaces()
+   default List<InterfaceLangModel> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Interface) declared))
+                          .map(declared -> ((InterfaceLangModel) declared))
                           .toList();
    }
 
-   default Optional<Interface> getInterface(String qualifiedName)
+   default Optional<InterfaceLangModel> getInterface(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Interface.class::cast);
+      return getDeclared(qualifiedName).map(InterfaceLangModel.class::cast);
    }
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default InterfaceLangModel getInterfaceOrThrow(String qualifiedName)
    {
-      return ((Interface) getDeclaredOrThrow(qualifiedName));
+      return ((InterfaceLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Record> getRecords()
+   default List<RecordLangModel> getRecords()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Record) declared))
+                          .map(declared -> ((RecordLangModel) declared))
                           .toList();
    }
 
-   default Optional<Record> getRecord(String qualifiedName)
+   default Optional<RecordLangModel> getRecord(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Record.class::cast);
+      return getDeclared(qualifiedName).map(RecordLangModel.class::cast);
    }
 
-   default Record getRecordOrThrow(String qualifiedName)
+   default RecordLangModel getRecordOrThrow(String qualifiedName)
    {
-      return ((Record) getDeclaredOrThrow(qualifiedName));
+      return ((RecordLangModel) getDeclaredOrThrow(qualifiedName));
    }
 }

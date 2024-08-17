@@ -3,6 +3,7 @@ package io.determann.shadow.consistency.renderer;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.consistency.test.ConsistencyTest;
@@ -23,13 +24,13 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 class AnnotationUsageRendererTest
 {
 
-   public static final Pattern PATTERN = Pattern.compile("([^(),{])+[ = ]([^(),{])+");
+   private static final Pattern PATTERN = Pattern.compile("([^(),{])+[ = ]([^(),{])+");
 
    @Test
    void usage()
    {
-      ConsistencyTest.compileTime(context -> requestOrThrow(context.getClassOrThrow("AnnotationUsageExample"),
-                                                            ANNOTATIONABLE_GET_ANNOTATION_USAGES)
+      ConsistencyTest.<AnnotationUsage>compileTime(context -> requestOrThrow(context.getClassOrThrow("AnnotationUsageExample"),
+                                                                             ANNOTATIONABLE_GET_ANNOTATION_USAGES)
                            .get(0))
                      .runtime(stringClassFunction ->
                               {

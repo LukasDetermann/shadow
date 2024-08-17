@@ -1,10 +1,12 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.type.ArrayLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Intersection;
-import io.determann.shadow.api.shadow.type.Shadow;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -56,21 +58,21 @@ class ArrayTest extends ShadowTest<Array>
       ProcessorTest.process(shadowApi ->
                             {
                                //declared array -> Object[]
-                               Declared string = shadowApi.getClassOrThrow("java.lang.String");
-                               Array objectArray = shadowApi.asArray(shadowApi.getClassOrThrow("java.lang.Object"));
-                               Array stringArray = shadowApi.asArray(string);
+                               DeclaredLangModel string = shadowApi.getClassOrThrow("java.lang.String");
+                               ArrayLangModel objectArray = shadowApi.asArray(shadowApi.getClassOrThrow("java.lang.Object"));
+                               ArrayLangModel stringArray = shadowApi.asArray(string);
 
-                               List<Shadow> stringArraySupertypes = query(stringArray).getDirectSuperTypes();
+                               List<ShadowLangModel> stringArraySupertypes = stringArray.getDirectSuperTypes();
                                assertEquals(1, stringArraySupertypes.size());
                                assertEquals(objectArray, stringArraySupertypes.get(0));
 
                                //primitive array -> intersection of java.io.Serializable&java.lang.Cloneable
-                               Array intArray = shadowApi.asArray(shadowApi.getConstants().getPrimitiveInt());
-                               Declared serializable = shadowApi.getInterfaceOrThrow("java.io.Serializable");
-                               Declared cloneable = shadowApi.getInterfaceOrThrow("java.lang.Cloneable");
-                               List<Declared> primitiveArraySuper = List.of(serializable, cloneable);
+                               ArrayLangModel intArray = shadowApi.asArray(shadowApi.getConstants().getPrimitiveInt());
+                               DeclaredLangModel serializable = shadowApi.getInterfaceOrThrow("java.io.Serializable");
+                               DeclaredLangModel cloneable = shadowApi.getInterfaceOrThrow("java.lang.Cloneable");
+                               List<DeclaredLangModel> primitiveArraySuper = List.of(serializable, cloneable);
 
-                               List<Shadow> directSupertypes = query(intArray).getDirectSuperTypes();
+                               List<ShadowLangModel> directSupertypes = intArray.getDirectSuperTypes();
                                assertEquals(1, directSupertypes.size());
                                assertEquals(primitiveArraySuper, query(((Intersection) directSupertypes.get(0))).getBounds());
                             })

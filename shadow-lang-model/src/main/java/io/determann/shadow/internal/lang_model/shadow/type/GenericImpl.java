@@ -2,10 +2,10 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -33,13 +33,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLang
    }
 
    @Override
-   public Shadow getExtends()
+   public ShadowLangModel getExtends()
    {
       return LangModelAdapter.generalize(getApi(), getMirror().getUpperBound());
    }
 
    @Override
-   public Optional<Shadow> getSuper()
+   public Optional<ShadowLangModel> getSuper()
    {
       TypeMirror lowerBound = getMirror().getLowerBound();
       if (lowerBound == null || lowerBound.getKind().equals(javax.lang.model.type.TypeKind.NONE))
@@ -73,13 +73,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLang
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

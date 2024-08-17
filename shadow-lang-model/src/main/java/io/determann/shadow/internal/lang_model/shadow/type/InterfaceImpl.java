@@ -2,9 +2,9 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import javax.lang.model.element.TypeElement;
@@ -30,20 +30,20 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceLangModel
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowLangModel> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericLangModel> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
+                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
                          .toList();
    }
 

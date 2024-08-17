@@ -14,10 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.CLASS_GET_GENERIC_TYPES;
-import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
-
 public class ClassImpl extends DeclaredImpl implements ClassReflection
 {
    private final List<Shadow> genericShadows;
@@ -116,9 +112,7 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow instanceof Class aClass && requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES)
-            .stream()
-            .allMatch(shadow1 -> getGenericTypes().stream().anyMatch(shadow2 -> requestOrThrow(shadow2, SHADOW_REPRESENTS_SAME_TYPE, shadow1)));
+      return ClassSupport.representsSameType(this, shadow);
    }
 
    @Override

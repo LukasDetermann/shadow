@@ -3,11 +3,11 @@ package io.determann.shadow.api.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.shadow.*;
 import io.determann.shadow.api.lang_model.shadow.modifier.AccessModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StrictfpModifiableLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.FieldLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.shadow.NestingKind;
-import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Annotation;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Interface;
@@ -52,35 +52,35 @@ public interface DeclaredLangModel extends Declared,
     */
    NestingKind getNesting();
 
-   default Field getFieldOrThrow(String simpleName)
+   default FieldLangModel getFieldOrThrow(String simpleName)
    {
       return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
-   List<Field> getFields();
+   List<FieldLangModel> getFields();
 
-   default List<Method> getMethods(String simpleName)
+   default List<MethodLangModel> getMethods(String simpleName)
    {
       return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).toList();
    }
 
-   List<Method> getMethods();
+   List<MethodLangModel> getMethods();
 
-   List<Constructor> getConstructors();
+   List<ConstructorLangModel> getConstructors();
 
    /**
     * returns the parentClass including interfaces
     */
-   List<Declared> getDirectSuperTypes();
+   List<DeclaredLangModel> getDirectSuperTypes();
 
    /**
     * returns all distinct supertypes including interfaces
     */
-   Set<Declared> getSuperTypes();
+   Set<DeclaredLangModel> getSuperTypes();
 
-   List<Interface> getInterfaces();
+   List<InterfaceLangModel> getInterfaces();
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default InterfaceLangModel getInterfaceOrThrow(String qualifiedName)
    {
       return getInterfaces().stream()
                             .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
@@ -88,10 +88,10 @@ public interface DeclaredLangModel extends Declared,
                             .orElseThrow();
    }
 
-   List<Interface> getDirectInterfaces();
+   List<InterfaceLangModel> getDirectInterfaces();
 
 
-   default Interface getDirectInterfaceOrThrow(String qualifiedName)
+   default InterfaceLangModel getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
                                   .filter(anInterface -> requestOrThrow(anInterface,
@@ -100,7 +100,7 @@ public interface DeclaredLangModel extends Declared,
                                   .orElseThrow();
    }
 
-   Package getPackage();
+   PackageLangModel getPackage();
 
    /**
     * part of the java language specification:

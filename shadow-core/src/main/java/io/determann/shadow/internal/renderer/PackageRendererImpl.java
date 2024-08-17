@@ -35,7 +35,7 @@ public class PackageRendererImpl implements PackageRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(aPackage, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(aPackage, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()

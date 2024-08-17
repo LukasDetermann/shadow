@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class ClassRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("java.lang.Object"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("java.lang.Object"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.Object")))
                      .test(aClass ->
                            {
@@ -21,7 +22,7 @@ class ClassRendererTest
                               assertEquals("public class Object {\ntest\n}\n", render(DEFAULT, aClass).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}")
@@ -29,14 +30,14 @@ class ClassRendererTest
                            "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}\n",
                            render(DEFAULT, aClass).declaration()));
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ClassParent"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ClassParent"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ClassParent")))
                      .withCode("ClassParent.java", "@TestAnnotation\nabstract class ClassParent extends Number {}")
                      .withCode("TestAnnotation.java", "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)\n@interface TestAnnotation{}")
                      .test(aClass -> assertEquals("@TestAnnotation\nabstract class ClassParent extends Number {}\n",
                                                   render(DEFAULT, aClass).declaration()));
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ClassMixedParent"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ClassMixedParent"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ClassMixedParent")))
                      .withCode("ClassMixedParent.java",
                                "abstract class ClassMixedParent extends Number implements java.lang.Comparable<ClassMixedParent>, java.util.function.Consumer<ClassMixedParent> {}")
@@ -52,11 +53,11 @@ class ClassRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("java.lang.Object"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("java.lang.Object"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.Object")))
                      .test(aClass -> assertEquals("Object", render(DEFAULT, aClass).type()));
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                          public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {

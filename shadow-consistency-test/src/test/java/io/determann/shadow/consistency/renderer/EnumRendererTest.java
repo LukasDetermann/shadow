@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Enum;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class EnumRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getEnumOrThrow("EnumMultiParent"))
+      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("EnumMultiParent"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("EnumMultiParent")))
                      .withCode("EnumMultiParent.java", """
                            @TestAnnotation
@@ -51,7 +52,7 @@ class EnumRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy", render(DEFAULT, aClass).type()));
    }

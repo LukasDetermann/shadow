@@ -2,9 +2,9 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.structure.ExecutableLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.structure.Executable;
 import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -28,7 +28,7 @@ public class ParameterImpl extends VariableImpl implements ParameterLangModel
    @Override
    public boolean isVarArgs()
    {
-      List<Parameter> parameters = requestOrThrow(getSurrounding(), EXECUTABLE_GET_PARAMETERS);
+      List<? extends Parameter> parameters = requestOrThrow(getSurrounding(), EXECUTABLE_GET_PARAMETERS);
       return requestOrThrow(getSurrounding(), EXECUTABLE_IS_VAR_ARGS) &&
              query((Shadow) parameters.get(parameters.size() - 1)).representsSameType(this);
    }
@@ -43,7 +43,7 @@ public class ParameterImpl extends VariableImpl implements ParameterLangModel
    }
 
    @Override
-   public Executable getSurrounding()
+   public ExecutableLangModel getSurrounding()
    {
       if (getElement().getEnclosingElement() instanceof ExecutableElement executableElement)
       {

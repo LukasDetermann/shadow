@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class RecordComponentRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
+      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("Long id",
@@ -25,7 +26,7 @@ class RecordComponentRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
+      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("id()",

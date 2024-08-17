@@ -1,7 +1,7 @@
 package io.determann.shadow.api.lang_model.shadow.directive;
 
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
 import io.determann.shadow.api.shadow.directive.Provides;
-import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public non-sealed interface ProvidesLangModel extends DirectiveLangModel,
    /**
     * a service to provide to other modules
     */
-   Declared getService();
+   DeclaredLangModel getService();
 
    /**
     * Implementations of the provided service
     */
-   List<Declared> getImplementations();
+   List<DeclaredLangModel> getImplementations();
 }

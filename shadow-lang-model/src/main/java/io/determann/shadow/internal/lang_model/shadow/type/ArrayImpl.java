@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.type.ArrayLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
@@ -21,22 +22,22 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements ArrayLangM
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType(shadow), getMirror());
+      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType((ShadowLangModel) shadow), getMirror());
    }
 
    @Override
-   public Shadow getComponentType()
+   public ShadowLangModel getComponentType()
    {
       return LangModelAdapter.generalize(getApi(), getMirror().getComponentType());
    }
 
    @Override
-   public List<Shadow> getDirectSuperTypes()
+   public List<ShadowLangModel> getDirectSuperTypes()
    {
       return LangModelAdapter.getTypes(getApi())
                              .directSupertypes(getMirror())
                              .stream()
-                             .map(typeMirror1 -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror1))
+                             .map(typeMirror1 -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror1))
                              .toList();
    }
 
@@ -44,6 +45,12 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements ArrayLangM
    public TypeKind getKind()
    {
       return TypeKind.ARRAY;
+   }
+
+   @Override
+   public boolean representsSameType(Shadow shadow)
+   {
+      return ArraySupport.representsSameType(this, shadow);
    }
 
    @Override

@@ -24,7 +24,7 @@ public class IntersectionRendererImpl implements IntersectionRenderer
 
    public static String type(RenderingContextWrapper context, Intersection intersection)
    {
-      List<Shadow> bounds = requestOrThrow(intersection, INTERSECTION_GET_BOUNDS);
+      List<? extends Shadow> bounds = requestOrThrow(intersection, INTERSECTION_GET_BOUNDS);
       if (bounds.size() <= 1)
       {
          throw new IllegalStateException();

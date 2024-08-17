@@ -1,14 +1,15 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.RecordComponentElement;
@@ -37,35 +38,35 @@ public class RecordComponentImpl implements RecordComponentLangModel
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return getTypes(getApi()).isSubtype(getMirror(), particularType(shadow));
+      return getTypes(getApi()).isSubtype(getMirror(), particularType((ShadowLangModel) shadow));
    }
 
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return getTypes(getApi()).isAssignable(getMirror(), particularType(shadow));
+      return getTypes(getApi()).isAssignable(getMirror(), particularType((ShadowLangModel) shadow));
    }
 
    @Override
-   public Record getRecord()
+   public RecordLangModel getRecord()
    {
       return generalize(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
-   public Shadow getType()
+   public ShadowLangModel getType()
    {
       return generalize(getApi(), getElement().asType());
    }
 
    @Override
-   public Method getGetter()
+   public MethodLangModel getGetter()
    {
-      return (Method) generalize(getApi(), getElement().getAccessor());
+      return (MethodLangModel) generalize(getApi(), getElement().getAccessor());
    }
 
    @Override
-   public Package getPackage()
+   public PackageLangModel getPackage()
    {
       return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
@@ -76,7 +77,7 @@ public class RecordComponentImpl implements RecordComponentLangModel
    }
 
    @Override
-   public Module getModule()
+   public ModuleLangModel getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -88,13 +89,13 @@ public class RecordComponentImpl implements RecordComponentLangModel
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

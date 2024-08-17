@@ -1,5 +1,6 @@
 package io.determann.shadow.consistency.shadow;
 
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ public class ModifiableTest
    @Test
    void sealed()
    {
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("Parent"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("Parent"))
                      .runtime(stringClassFunction -> generalize(stringClassFunction.apply("Parent")))
                      .withCode("Parent.java", "sealed interface Parent permits Child {}")
                      .withCode("Child.java", "non-sealed interface Child extends Parent {}")
@@ -25,7 +26,7 @@ public class ModifiableTest
    @Test
    void nonSealed()
    {
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("Child"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("Child"))
                      .runtime(stringClassFunction -> generalize(stringClassFunction.apply("Child")))
                      .withCode("Parent.java", "sealed interface Parent permits Child {}")
                      .withCode("Child.java", "non-sealed interface Child extends Parent {}")

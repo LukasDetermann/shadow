@@ -4,9 +4,11 @@ import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.shadow.Operation;
 import io.determann.shadow.api.shadow.Operation0;
 import io.determann.shadow.api.shadow.Response;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.*;
 
+import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.api.shadow.Provider.request;
 import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static java.util.Arrays.stream;
@@ -50,7 +52,9 @@ public class SupportSupport
    }
 
    @SafeVarargs
-   public static <TYPE extends ImplementationDefined> String toString(TYPE type, Class<TYPE> typeClass, Operation0<? super TYPE, ?>... operations)
+   public static <TYPE extends ImplementationDefined> String toString(TYPE type,
+                                                                      Class<TYPE> typeClass,
+                                                                      Operation0<? super TYPE, ?>... operations)
    {
       return typeClass.getSimpleName() +
              " {" +
@@ -62,7 +66,7 @@ public class SupportSupport
                    .collect(joining(", ")) +
              "}";
    }
-   
+
    private static Object sortCollection(Object o)
    {
       if (!(o instanceof Collection<?> collection) || collection.isEmpty() || !(collection.iterator().next() instanceof Comparable))
@@ -86,5 +90,42 @@ public class SupportSupport
       }
 
       return name.substring(index + 1);
+   }
+
+
+   @SafeVarargs
+   public static <TYPE extends Shadow> boolean representsSameType(TYPE type,
+                                                                  Class<TYPE> tClass,
+                                                                  Object other,
+                                                                  Operation0<? super TYPE, ?>... operations)
+   {
+      if (type == other)
+      {
+         return true;
+      }
+      if (!tClass.isInstance(other))
+      {
+         return false;
+      }
+      //noinspection unchecked
+      TYPE otherTYPE = (TYPE) other;
+
+      return stream(operations)
+            .allMatch(tOperation ->
+                      {
+                         Response<?> first = request(type, tOperation);
+                         Response<?> second = request(otherTYPE, tOperation);
+
+                         return first instanceof Response.Unsupported<?> ||
+                                second instanceof Response.Unsupported<?> ||
+
+                                (first instanceof Response.Result<?>(Object firstValue) &&
+                                 firstValue instanceof Shadow firstShadow &&
+                                 second instanceof Response.Result<?>(Object secondValue) &&
+                                 secondValue instanceof Shadow secondShadow &&
+                                 requestOrEmpty(firstShadow, SHADOW_REPRESENTS_SAME_TYPE, secondShadow).orElse(false)) ||
+
+                                Objects.equals(first, second);
+                      });
    }
 }

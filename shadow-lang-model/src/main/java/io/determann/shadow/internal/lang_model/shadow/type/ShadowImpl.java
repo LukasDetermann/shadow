@@ -26,7 +26,7 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements ApiHolder
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSameType(getMirror(), LangModelAdapter.particularType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSameType(getMirror(), LangModelAdapter.particularType((ShadowLangModel) shadow));
    }
 
    public MIRROR getMirror()

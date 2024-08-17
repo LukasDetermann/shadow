@@ -3,6 +3,7 @@ package io.determann.shadow.internal.reflection.shadow.type;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.EnumReflection;
 import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class EnumImpl extends DeclaredImpl implements EnumReflection
             .map(java.lang.Enum.class::cast)
             .map(ReflectionAdapter::generalize)
             .toList();
+   }
+
+   @Override
+   public boolean representsSameType(Shadow shadow)
+   {
+      return EnumSupport.representsSameType(this, shadow);
    }
 
    @Override

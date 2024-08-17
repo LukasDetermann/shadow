@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class RecordRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
@@ -27,7 +28,7 @@ class RecordRendererTest
                                     render(DEFAULT, aClass).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("Parameters"))
+      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("Parameters"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Parameters")))
                      .withCode("Parameters.java", "@MyAnnotation\n record Parameters(Long id, String name) implements java.io.Serializable {}")
                      .withCode("MyAnnotation.java",
@@ -39,7 +40,7 @@ class RecordRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")

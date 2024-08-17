@@ -2,11 +2,11 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
 import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Declared;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -63,17 +63,17 @@ public class PackageImpl  implements PackageLangModel
    }
 
    @Override
-   public List<Declared> getDeclared()
+   public List<DeclaredLangModel> getDeclared()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
+                         .map(typeElement -> LangModelAdapter.<DeclaredLangModel>generalize(getApi(), typeElement))
                          .toList();
    }
 
    @Override
-   public Optional<Declared> getDeclared(String qualifiedName)
+   public Optional<DeclaredLangModel> getDeclared(String qualifiedName)
    {
       return getDeclared().stream()
                           .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
@@ -81,7 +81,7 @@ public class PackageImpl  implements PackageLangModel
    }
 
    @Override
-   public Module getModule()
+   public ModuleLangModel getModule()
    {
       return generalize(getApi(), LangModelAdapter.getElements(getApi()).getModuleOf(getElement()));
    }
@@ -99,13 +99,13 @@ public class PackageImpl  implements PackageLangModel
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

@@ -1,13 +1,13 @@
 package io.determann.shadow.api.lang_model;
 
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Annotationable;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.*;
+import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.type.Null;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.api.shadow.type.Void;
-import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl;
@@ -25,42 +25,42 @@ import java.util.stream.Collectors;
 
 public interface LangModelAdapter
 {
-   static AnnotationMirror particularize(AnnotationUsage annotationUsage)
+   static AnnotationMirror particularize(AnnotationUsageLangModel annotationUsage)
    {
       return ((AnnotationUsageImpl) annotationUsage).getAnnotationMirror();
    }
 
-   static DeclaredType particularType(Declared declared)
+   static DeclaredType particularType(DeclaredLangModel declared)
    {
       return ((DeclaredImpl) declared).getMirror();
    }
 
-   static ArrayType particularType(Array array)
+   static ArrayType particularType(ArrayLangModel array)
    {
       return ((ArrayImpl) array).getMirror();
    }
 
-   static ExecutableType particularType(Executable executable)
+   static ExecutableType particularType(ExecutableLangModel executable)
    {
       return ((ExecutableImpl) executable).getMirror();
    }
 
-   static TypeMirror particularType(Shadow shadow)
+   static TypeMirror particularType(ShadowLangModel shadow)
    {
       return ((ShadowImpl) shadow).getMirror();
    }
 
-   static TypeVariable particularType(Generic generic)
+   static TypeVariable particularType(GenericLangModel generic)
    {
       return ((GenericImpl) generic).getMirror();
    }
 
-   static IntersectionType particularType(Intersection intersection)
+   static IntersectionType particularType(IntersectionLangModel intersection)
    {
       return ((IntersectionImpl) intersection).getMirror();
    }
 
-   static NoType particularType(Module module)
+   static NoType particularType(ModuleLangModel module)
    {
       return ((ModuleImpl) module).getMirror();
    }
@@ -70,12 +70,12 @@ public interface LangModelAdapter
       return ((NullImpl) aNull).getMirror();
    }
 
-   static NoType particularType(Package aPackage)
+   static NoType particularType(PackageLangModel aPackage)
    {
       return ((PackageImpl) aPackage).getMirror();
    }
 
-   static PrimitiveType particularType(Primitive primitive)
+   static PrimitiveType particularType(PrimitiveLangModel primitive)
    {
       return ((PrimitiveImpl) primitive).getMirror();
    }
@@ -85,75 +85,75 @@ public interface LangModelAdapter
       return ((VoidImpl) aVoid).getMirror();
    }
 
-   static WildcardType particularType(Wildcard wildcard)
+   static WildcardType particularType(WildcardLangModel wildcard)
    {
       return ((WildcardImpl) wildcard).getMirror();
    }
 
-   static Element particularElement(Annotationable annotationable)
+   static Element particularElement(AnnotationableLangModel annotationable)
    {
-      if (annotationable instanceof Declared declared)
+      if (annotationable instanceof DeclaredLangModel declared)
       {
          return particularElement(declared);
       }
-      if (annotationable instanceof Executable executable)
+      if (annotationable instanceof ExecutableLangModel executable)
       {
          return particularElement(executable);
       }
-      if (annotationable instanceof Generic generic)
+      if (annotationable instanceof GenericLangModel generic)
       {
          return particularElement(generic);
       }
-      if (annotationable instanceof Module module)
+      if (annotationable instanceof ModuleLangModel module)
       {
          return particularElement(module);
       }
-      if (annotationable instanceof Package aPackage)
+      if (annotationable instanceof PackageLangModel aPackage)
       {
          return particularElement(aPackage);
       }
-      if (annotationable instanceof RecordComponent recordComponent)
+      if (annotationable instanceof RecordComponentLangModel recordComponent)
       {
          return particularElement(recordComponent);
       }
-      if (annotationable instanceof Variable variable)
+      if (annotationable instanceof VariableLangModel variable)
       {
          return particularElement(variable);
       }
       throw new IllegalArgumentException();
    }
 
-   static TypeElement particularElement(Declared declared)
+   static TypeElement particularElement(DeclaredLangModel declared)
    {
       return ((DeclaredImpl) declared).getElement();
    }
 
-   static ExecutableElement particularElement(Executable executable)
+   static ExecutableElement particularElement(ExecutableLangModel executable)
    {
       return ((ExecutableImpl) executable).getElement();
    }
 
-   static TypeParameterElement particularElement(Generic generic)
+   static TypeParameterElement particularElement(GenericLangModel generic)
    {
       return ((GenericImpl) generic).getElement();
    }
 
-   static ModuleElement particularElement(Module module)
+   static ModuleElement particularElement(ModuleLangModel module)
    {
       return ((ModuleImpl) module).getElement();
    }
 
-   static PackageElement particularElement(Package aPackage)
+   static PackageElement particularElement(PackageLangModel aPackage)
    {
       return ((PackageImpl) aPackage).getElement();
    }
 
-   static RecordComponentElement particularElement(RecordComponent recordComponent)
+   static RecordComponentElement particularElement(RecordComponentLangModel recordComponent)
    {
       return ((RecordComponentImpl) recordComponent).getElement();
    }
 
-   static VariableElement particularElement(Variable variable)
+   static VariableElement particularElement(VariableLangModel variable)
    {
       return ((VariableImpl) variable).getElement();
    }
@@ -197,12 +197,12 @@ public interface LangModelAdapter
       return new LangModelContextImpl(types, elements);
    }
 
-   static Executable generalize(LangModelContext context, ExecutableElement element)
+   static ExecutableLangModel generalize(LangModelContext context, ExecutableElement element)
    {
       return new ExecutableImpl(context, element);
    }
 
-   public static RecordComponent generalize(LangModelContext context, RecordComponentElement recordComponentElement)
+   public static RecordComponentLangModel generalize(LangModelContext context, RecordComponentElement recordComponentElement)
    {
       return new RecordComponentImpl(context, recordComponentElement);
    }
@@ -213,7 +213,7 @@ public interface LangModelAdapter
     *
     * @see #generalize(LangModelContext, TypeMirror)
     */
-   static <SHADOW extends Shadow> SHADOW generalize(LangModelContext context, Element element)
+   static <SHADOW extends ShadowLangModel> SHADOW generalize(LangModelContext context, Element element)
    {
       return (SHADOW) switch (element.getKind())
       {
@@ -239,7 +239,7 @@ public interface LangModelAdapter
     *
     * @see #generalize(LangModelContext, Element)
     */
-   static <SHADOW extends Shadow> SHADOW generalize(LangModelContext context, TypeMirror typeMirror)
+   static <SHADOW extends ShadowLangModel> SHADOW generalize(LangModelContext context, TypeMirror typeMirror)
    {
       //noinspection unchecked
       return (SHADOW) switch (typeMirror.getKind())
@@ -267,17 +267,17 @@ public interface LangModelAdapter
       };
    }
 
-   static Package generalizePackage(LangModelContext context, NoType aPackage)
+   static PackageLangModel generalizePackage(LangModelContext context, NoType aPackage)
    {
       return new PackageImpl(context, aPackage);
    }
 
-   static Package generalizePackage(LangModelContext context, PackageElement packageElement)
+   static PackageLangModel generalizePackage(LangModelContext context, PackageElement packageElement)
    {
       return new PackageImpl(context, packageElement);
    }
 
-   static List<AnnotationUsage> generalize(LangModelContext context, List<? extends AnnotationMirror> annotationMirrors)
+   static List<AnnotationUsageLangModel> generalize(LangModelContext context, List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(context, annotationMirrors);
    }

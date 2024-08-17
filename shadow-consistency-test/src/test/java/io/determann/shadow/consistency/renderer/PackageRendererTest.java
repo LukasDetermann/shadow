@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class PackageRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getPackageOrThrow("java.base", "java.lang"))
+      ConsistencyTest.<Package>compileTime(context -> context.getPackageOrThrow("java.base", "java.lang"))
                      .runtime(stringClassFunction -> ReflectionAdapter.getPackage("java.lang"))
                      .test(aPackage -> assertEquals("package java.lang;\n", render(DEFAULT, aPackage).declaration()));
    }

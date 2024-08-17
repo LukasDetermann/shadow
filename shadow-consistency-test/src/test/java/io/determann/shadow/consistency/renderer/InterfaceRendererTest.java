@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class InterfaceRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                            public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {
@@ -25,7 +26,7 @@ class InterfaceRendererTest
                            "public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {}\n",
                            render(DEFAULT, aClass).declaration()));
 
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("java.util.function.Function"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("java.util.function.Function"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.util.function.Function")))
                      .test(aClass -> assertEquals("""
                                                   @FunctionalInterface
@@ -39,7 +40,7 @@ class InterfaceRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                          public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {

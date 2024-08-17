@@ -4,7 +4,6 @@ import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Intersection;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
@@ -19,9 +18,9 @@ public interface GenericLangModel extends Generic,
    /**
     * @see Intersection
     */
-   Shadow getExtends();
+   ShadowLangModel getExtends();
 
-   Optional<Shadow> getSuper();
+   Optional<ShadowLangModel> getSuper();
 
    /**
     * returns the class, method constructor etc. this is the generic for

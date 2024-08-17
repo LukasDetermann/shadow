@@ -1,11 +1,15 @@
 package io.determann.shadow.api.lang_model;
 
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
 import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.*;
 
@@ -18,125 +22,125 @@ import static java.util.Arrays.stream;
 
 public interface LangModelContext
 {
-   List<Declared> getDeclared();
+   List<DeclaredLangModel> getDeclared();
 
-   Optional<Declared> getDeclared(String qualifiedName);
+   Optional<DeclaredLangModel> getDeclared(String qualifiedName);
 
-   default Declared getDeclaredOrThrow(String qualifiedName)
+   default DeclaredLangModel getDeclaredOrThrow(String qualifiedName)
    {
       return getDeclared(qualifiedName).orElseThrow();
    }
 
-   default List<Annotation> getAnnotations()
+   default List<AnnotationLangModel> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Annotation) declared))
+                          .map(declared -> ((AnnotationLangModel) declared))
                           .toList();
    }
 
-   default Optional<Annotation> getAnnotation(String qualifiedName)
+   default Optional<AnnotationLangModel> getAnnotation(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Annotation.class::cast);
+      return getDeclared(qualifiedName).map(AnnotationLangModel.class::cast);
    }
 
-   default Annotation getAnnotationOrThrow(String qualifiedName)
+   default AnnotationLangModel getAnnotationOrThrow(String qualifiedName)
    {
-      return ((Annotation) getDeclaredOrThrow(qualifiedName));
+      return ((AnnotationLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Class> getClasses()
+   default List<ClassLangModel> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Class) declared))
+                          .map(declared -> ((ClassLangModel) declared))
                           .toList();
    }
 
-   default Optional<Class> getClass(String qualifiedName)
+   default Optional<ClassLangModel> getClass(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Class.class::cast);
+      return getDeclared(qualifiedName).map(ClassLangModel.class::cast);
    }
 
-   default Class getClassOrThrow(String qualifiedName)
+   default ClassLangModel getClassOrThrow(String qualifiedName)
    {
-      return ((Class) getDeclaredOrThrow(qualifiedName));
+      return ((ClassLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Enum> getEnums()
+   default List<EnumLangModel> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Enum) declared))
+                          .map(declared -> ((EnumLangModel) declared))
                           .toList();
    }
 
-   default Optional<Enum> getEnum(String qualifiedName)
+   default Optional<EnumLangModel> getEnum(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Enum.class::cast);
+      return getDeclared(qualifiedName).map(EnumLangModel.class::cast);
    }
 
-   default Enum getEnumOrThrow(String qualifiedName)
+   default EnumLangModel getEnumOrThrow(String qualifiedName)
    {
-      return ((Enum) getDeclaredOrThrow(qualifiedName));
+      return ((EnumLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Interface> getInterfaces()
+   default List<InterfaceLangModel> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Interface) declared))
+                          .map(declared -> ((InterfaceLangModel) declared))
                           .toList();
    }
 
-   default Optional<Interface> getInterface(String qualifiedName)
+   default Optional<InterfaceLangModel> getInterface(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Interface.class::cast);
+      return getDeclared(qualifiedName).map(InterfaceLangModel.class::cast);
    }
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default InterfaceLangModel getInterfaceOrThrow(String qualifiedName)
    {
-      return ((Interface) getDeclaredOrThrow(qualifiedName));
+      return ((InterfaceLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Record> getRecords()
+   default List<RecordLangModel> getRecords()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Record) declared))
+                          .map(declared -> ((RecordLangModel) declared))
                           .toList();
    }
 
-   default Optional<Record> getRecord(String qualifiedName)
+   default Optional<RecordLangModel> getRecord(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Record.class::cast);
+      return getDeclared(qualifiedName).map(RecordLangModel.class::cast);
    }
 
-   default Record getRecordOrThrow(String qualifiedName)
+   default RecordLangModel getRecordOrThrow(String qualifiedName)
    {
-      return ((Record) getDeclaredOrThrow(qualifiedName));
+      return ((RecordLangModel) getDeclaredOrThrow(qualifiedName));
    }
 
-   List<Module> getModules();
+   List<ModuleLangModel> getModules();
 
-   Optional<Module> getModule(String name);
+   Optional<ModuleLangModel> getModule(String name);
 
-   Module getModuleOrThrow(String name);
+   ModuleLangModel getModuleOrThrow(String name);
 
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
-   List<Package> getPackages(String qualifiedName);
+   List<PackageLangModel> getPackages(String qualifiedName);
 
-   List<Package> getPackages();
+   List<PackageLangModel> getPackages();
 
-   Optional<Package> getPackage(String qualifiedModuleName, String qualifiedPackageName);
+   Optional<PackageLangModel> getPackage(String qualifiedModuleName, String qualifiedPackageName);
 
-   Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
+   PackageLangModel getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
 
-   Optional<Package> getPackage(Module module, String qualifiedPackageName);
+   Optional<PackageLangModel> getPackage(Module module, String qualifiedPackageName);
 
-   Package getPackageOrThrow(Module module, String qualifiedPackageName);
+   PackageLangModel getPackageOrThrow(Module module, String qualifiedPackageName);
 
    LangModelConstants getConstants();
 
@@ -144,12 +148,12 @@ public interface LangModelContext
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
     * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   Class withGenerics(Class aClass, Shadow... generics);
+   ClassLangModel withGenerics(Class aClass, Shadow... generics);
 
    /**
     * like {@link #withGenerics(Class, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
-   default Class withGenerics(Class aClass, String... qualifiedGenerics)
+   default ClassLangModel withGenerics(Class aClass, String... qualifiedGenerics)
    {
       return withGenerics(aClass, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
@@ -160,12 +164,12 @@ public interface LangModelContext
     * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
     * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   Interface withGenerics(Interface anInterface, Shadow... generics);
+   InterfaceLangModel withGenerics(Interface anInterface, Shadow... generics);
 
    /**
     * like {@link #withGenerics(Interface, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
-   default Interface withGenerics(Interface anInterface, String... qualifiedGenerics)
+   default InterfaceLangModel withGenerics(Interface anInterface, String... qualifiedGenerics)
    {
       return withGenerics(anInterface, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
@@ -176,12 +180,12 @@ public interface LangModelContext
     * {@code shadowApi.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
     * {@code shadowApi.getRecordOrThrow("org.example.MyRecord").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code MyRecord<String>}
     */
-   Record withGenerics(Record aRecord, Shadow... generics);
+   RecordLangModel withGenerics(Record aRecord, Shadow... generics);
 
    /**
     * like {@link #withGenerics(Record, Shadow...)} but resolves the names using {@link LangModelContext#getDeclaredOrThrow(String)}
     */
-   default Record withGenerics(Record aRecord, String... qualifiedGenerics)
+   default RecordLangModel withGenerics(Record aRecord, String... qualifiedGenerics)
    {
       return withGenerics(aRecord, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
@@ -195,7 +199,7 @@ public interface LangModelContext
     * <p>
     * for {@link Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
     */
-   Class erasure(Class aClass);
+   ClassLangModel erasure(Class aClass);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -204,7 +208,7 @@ public interface LangModelContext
     * <p>
     * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
-   Interface erasure(Interface anInterface);
+   InterfaceLangModel erasure(Interface anInterface);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -213,7 +217,7 @@ public interface LangModelContext
     * <p>
     * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
-   Record erasure(Record aRecord);
+   RecordLangModel erasure(Record aRecord);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -222,7 +226,7 @@ public interface LangModelContext
     * <p>
     * for {@link Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
     */
-   Array erasure(Array array);
+   ArrayLangModel erasure(Array array);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -231,7 +235,7 @@ public interface LangModelContext
     * <p>
     * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
     */
-   Shadow erasure(Wildcard wildcard);
+   ShadowLangModel erasure(Wildcard wildcard);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -240,7 +244,7 @@ public interface LangModelContext
     * <p>
     * for {@link Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
     */
-   Shadow erasure(Generic generic);
+   ShadowLangModel erasure(Generic generic);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -252,7 +256,7 @@ public interface LangModelContext
     * public class IntersectionExample<T extends Serializable & Collection>{} -> Serializable
     * }</pre>
     */
-   Shadow erasure(Intersection intersection);
+   ShadowLangModel erasure(Intersection intersection);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -261,21 +265,21 @@ public interface LangModelContext
     * <p>
     * for {@link RecordComponent}s this means for example {@code record MyRecord<T>(T t){}} -> {@code record MyRecord<T>(java.lang.Object t){}}
     */
-   RecordComponent erasure(RecordComponent recordComponent);
+   RecordComponentLangModel erasure(RecordComponent recordComponent);
 
    /**
     * convince method returns the erasure of the parameter type
     *
     * @see LangModelContext#erasure(Class)  for example for more information on erasure
     */
-   Shadow erasure(Parameter parameter);
+   ShadowLangModel erasure(Parameter parameter);
 
    /**
     * convince method returns the erasure of the field type
     *
     * @see LangModelContext#erasure(Class)  for example for more information on erasure
     */
-   Shadow erasure(Field field);
+   ShadowLangModel erasure(Field field);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
@@ -286,7 +290,7 @@ public interface LangModelContext
     * The code for the example
     * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
-   Class interpolateGenerics(Class aClass);
+   ClassLangModel interpolateGenerics(Class aClass);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
@@ -297,7 +301,7 @@ public interface LangModelContext
     * The code for the example
     * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
-   Interface interpolateGenerics(Interface anInterface);
+   InterfaceLangModel interpolateGenerics(Interface anInterface);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
@@ -308,34 +312,34 @@ public interface LangModelContext
     * The code for the example
     * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
-   Record interpolateGenerics(Record aRecord);
+   RecordLangModel interpolateGenerics(Record aRecord);
 
    /**
     * String[] -&gt; String[][]
     */
-   Array asArray(Array array);
+   ArrayLangModel asArray(Array array);
 
    /**
     * int -&gt; int[]
     */
-   Array asArray(Primitive primitive);
+   ArrayLangModel asArray(Primitive primitive);
 
 
    /**
     * String -&gt; String[]
     */
-   Array asArray(Declared declared);
+   ArrayLangModel asArray(Declared declared);
 
    /**
     * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
     */
-   Array asArray(Intersection intersection);
+   ArrayLangModel asArray(Intersection intersection);
 
-   Wildcard asExtendsWildcard(Array array);
+   WildcardLangModel asExtendsWildcard(Array array);
 
-   Wildcard asSuperWildcard(Array array);
+   WildcardLangModel asSuperWildcard(Array array);
 
-   Wildcard asExtendsWildcard(Declared array);
+   WildcardLangModel asExtendsWildcard(Declared array);
 
-   Wildcard asSuperWildcard(Declared array);
+   WildcardLangModel asSuperWildcard(Declared array);
 }

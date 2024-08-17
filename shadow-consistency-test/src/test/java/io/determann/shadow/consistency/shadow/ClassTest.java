@@ -121,8 +121,8 @@ class ClassTest extends DeclaredTest<Class>
    {
       ProcessorTest.process(shadowApi ->
                             {
-                               List<Interface> directInterfaces = query(shadowApi.getClassOrThrow("DirectInterfacesExample.Child"))
-                                                                           .getDirectInterfaces();
+                               List<InterfaceLangModel> directInterfaces = shadowApi.getClassOrThrow("DirectInterfacesExample.Child")
+                                                                                    .getDirectInterfaces();
 
                                assertEquals(1, directInterfaces.size());
                                assertEquals(shadowApi.getInterfaceOrThrow("Direct"), directInterfaces.get(0));

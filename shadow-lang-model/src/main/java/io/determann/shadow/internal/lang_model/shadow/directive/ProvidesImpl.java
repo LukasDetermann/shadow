@@ -3,7 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.directive.ProvidesLangModel;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
 import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import javax.lang.model.element.ModuleElement;
@@ -22,17 +22,17 @@ public class ProvidesImpl extends DirectiveImpl implements ProvidesLangModel
    }
 
    @Override
-   public Declared getService()
+   public DeclaredLangModel getService()
    {
       return LangModelAdapter.generalize(getApi(), providesDirective.getService());
    }
 
    @Override
-   public List<Declared> getImplementations()
+   public List<DeclaredLangModel> getImplementations()
    {
       return providesDirective.getImplementations()
                               .stream()
-                              .map(typeElement -> LangModelAdapter.<Declared>generalize(getApi(), typeElement))
+                              .map(typeElement -> LangModelAdapter.<DeclaredLangModel>generalize(getApi(), typeElement))
                               .toList();
    }
 

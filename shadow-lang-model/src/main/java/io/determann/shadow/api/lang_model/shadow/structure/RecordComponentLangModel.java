@@ -3,10 +3,9 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.shadow.AnnotationableLangModel;
 import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 public interface RecordComponentLangModel extends RecordComponent,
@@ -30,11 +29,11 @@ public interface RecordComponentLangModel extends RecordComponent,
    /**
     * returns the record this is a port of
     */
-   Record getRecord();
+   RecordLangModel getRecord();
 
-   Shadow getType();
+   ShadowLangModel getType();
 
-   Method getGetter();
+   MethodLangModel getGetter();
 
-   Package getPackage();
+   PackageLangModel getPackage();
 }

@@ -38,7 +38,7 @@ public class MethodRendererImpl implements MethodRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(method, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(method, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -59,7 +59,7 @@ public class MethodRendererImpl implements MethodRenderer
          sb.append(' ');
       }
 
-      List<Generic> generics = requestOrThrow(method, EXECUTABLE_GET_GENERICS);
+      List<? extends Generic> generics = requestOrThrow(method, EXECUTABLE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -74,7 +74,7 @@ public class MethodRendererImpl implements MethodRenderer
       sb.append(requestOrThrow(method, NAMEABLE_GET_NAME));
       sb.append('(');
 
-      List<Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      List<? extends Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
       Provider.requestOrEmpty(method, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
@@ -97,7 +97,7 @@ public class MethodRendererImpl implements MethodRenderer
       }
       sb.append(')');
 
-      List<Class> aThrow = requestOrThrow(method, EXECUTABLE_GET_THROWS);
+      List<? extends Class> aThrow = requestOrThrow(method, EXECUTABLE_GET_THROWS);
       if (!aThrow.isEmpty())
       {
          sb.append(' ');

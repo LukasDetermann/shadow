@@ -35,7 +35,7 @@ public class EnumRendererImpl implements EnumRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(anEnum, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(anEnum, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -58,7 +58,7 @@ public class EnumRendererImpl implements EnumRenderer
       sb.append(requestOrThrow(anEnum, NAMEABLE_GET_NAME));
       sb.append(' ');
 
-      List<Interface> directInterfaces = requestOrThrow(anEnum, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends Interface> directInterfaces = requestOrThrow(anEnum, DECLARED_GET_DIRECT_INTERFACES);
       if (!directInterfaces.isEmpty())
       {
          sb.append("implements");

@@ -2,18 +2,16 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.MethodLangMethod;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.*;
+import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.api.shadow.structure.Method;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ExecutableType;
@@ -32,7 +30,7 @@ import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMEN
 
 
 public class ExecutableImpl implements ConstructorLangModel,
-                                       MethodLangMethod
+                                       MethodLangModel
 {
    private final LangModelContext context;
    private final ExecutableElement executableElement;
@@ -51,28 +49,28 @@ public class ExecutableImpl implements ConstructorLangModel,
    }
 
    @Override
-   public Return getReturn()
+   public ReturnLangModel getReturn()
    {
       return new ReturnImpl(getApi(), getMirror().getReturnType());
    }
 
    @Override
-   public Shadow getReturnType()
+   public ShadowLangModel getReturnType()
    {
       return generalize(getApi(), getMirror().getReturnType());
    }
 
    @Override
-   public List<Shadow> getParameterTypes()
+   public List<ShadowLangModel> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public Optional<Declared> getReceiverType()
+   public Optional<DeclaredLangModel> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
@@ -83,7 +81,7 @@ public class ExecutableImpl implements ConstructorLangModel,
    }
 
    @Override
-   public Optional<Receiver> getReceiver()
+   public Optional<ReceiverLangModel> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
@@ -94,12 +92,12 @@ public class ExecutableImpl implements ConstructorLangModel,
    }
 
    @Override
-   public List<Class> getThrows()
+   public List<ClassLangModel> getThrows()
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
-                        .map(Class.class::cast)
+                        .map(typeMirror -> LangModelAdapter.<ClassLangModel>generalize(getApi(), typeMirror))
+                        .map(ClassLangModel.class::cast)
                         .toList();
    }
 
@@ -116,7 +114,7 @@ public class ExecutableImpl implements ConstructorLangModel,
    }
 
    @Override
-   public Declared getSurrounding()
+   public DeclaredLangModel getSurrounding()
    {
       return generalize(getApi(), getElement().getEnclosingElement());
    }
@@ -130,14 +128,14 @@ public class ExecutableImpl implements ConstructorLangModel,
    public boolean overrides(Method method)
    {
       return getElements(getApi()).overrides(getElement(),
-                                             particularElement(method),
+                                             particularElement(((MethodLangModel) method)),
                                              particularElement(getSurrounding()));
    }
 
    @Override
    public boolean overwrittenBy(Method method)
    {
-      return getElements(getApi()).overrides(particularElement(method),
+      return getElements(getApi()).overrides(particularElement((MethodLangModel)method),
                                              getElement(),
                                              particularElement(query(method).getSurrounding()));
    }
@@ -145,35 +143,35 @@ public class ExecutableImpl implements ConstructorLangModel,
    @Override
    public boolean sameParameterTypes(Method method)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubsignature(getMirror(), LangModelAdapter.particularType(method));
+      return LangModelAdapter.getTypes(getApi()).isSubsignature(getMirror(), LangModelAdapter.particularType((MethodLangModel)method));
    }
 
    @Override
-   public List<Parameter> getParameters()
+   public List<ParameterLangModel> getParameters()
    {
       return getElement().getParameters()
                          .stream()
-                         .map(variableElement -> LangModelAdapter.<Parameter>generalize(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<ParameterLangModel>generalize(getApi(), variableElement))
                          .toList();
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericLangModel> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
+                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
                          .toList();
    }
 
    @Override
-   public Package getPackage()
+   public PackageLangModel getPackage()
    {
       return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
-   public Module getModule()
+   public ModuleLangModel getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -191,13 +189,13 @@ public class ExecutableImpl implements ConstructorLangModel,
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

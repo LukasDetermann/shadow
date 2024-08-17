@@ -3,8 +3,8 @@ package io.determann.shadow.internal.lang_model.shadow.directive;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.directive.OpensLangModel;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import javax.lang.model.element.ModuleElement;
@@ -23,17 +23,17 @@ public class OpensImpl extends DirectiveImpl implements OpensLangModel
    }
 
    @Override
-   public Package getPackage()
+   public PackageLangModel getPackage()
    {
       return LangModelAdapter.generalizePackage(getApi(), opensDirective.getPackage());
    }
 
    @Override
-   public List<Module> getTargetModules()
+   public List<ModuleLangModel> getTargetModules()
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LangModelAdapter.<Module>generalize(getApi(), moduleElement))
+                           .map(moduleElement -> LangModelAdapter.<ModuleLangModel>generalize(getApi(), moduleElement))
                            .toList();
    }
 

@@ -1,7 +1,6 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -29,5 +28,5 @@ public interface PrimitiveLangModel extends Primitive,
     * long -&gt; Long<br>
     * etc...
     */
-   Class asBoxed();
+   ClassLangModel asBoxed();
 }

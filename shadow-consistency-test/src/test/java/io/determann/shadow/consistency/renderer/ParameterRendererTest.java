@@ -1,10 +1,13 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.ReflectionQueries;
 import io.determann.shadow.api.shadow.Operations;
 import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +23,7 @@ class ParameterRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ReceiverExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
@@ -36,7 +39,7 @@ class ParameterRendererTest
                                                   render(DEFAULT, requestOrThrow(aClass, Operations.DECLARED_GET_METHODS).get(0)).declaration()));
 
 
-      ConsistencyTest.compileTime(context -> context.getInterfaceOrThrow("ParameterExample"))
+      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("ParameterExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ParameterExample")))
                      .withCode("ParameterExample.java", """
                          public interface ParameterExample {
@@ -46,9 +49,7 @@ class ParameterRendererTest
                      .withCode("MyAnnotation.java", "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
                      .test(aClass ->
                            {
-                              List<Parameter> parameters = LangModelQueries.query(LangModelQueries.query(aClass).getMethods()
-                                                                           .get(0))
-                                                                           .getParameters();
+                              List<ParameterLangModel> parameters = LangModelQueries.query(aClass).getMethods().get(0).getParameters();
 
                               assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameters.get(0)).declaration());
                               assertEquals("Long... foo2", render(DEFAULT, parameters.get(1)).declaration());

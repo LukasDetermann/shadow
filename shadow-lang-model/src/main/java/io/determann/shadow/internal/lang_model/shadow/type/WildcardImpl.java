@@ -2,6 +2,8 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -27,7 +29,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
    }
 
    @Override
-   public Optional<Shadow> getExtends()
+   public Optional<ShadowLangModel> getExtends()
    {
       TypeMirror extendsBound = getMirror().getExtendsBound();
       if (extendsBound == null)
@@ -38,7 +40,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
    }
 
    @Override
-   public Optional<Shadow> getSuper()
+   public Optional<ShadowLangModel> getSuper()
    {
       TypeMirror superBound = getMirror().getSuperBound();
       if (superBound == null)
@@ -51,7 +53,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements Wildcard,
    @Override
    public boolean contains(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).contains(getMirror(), LangModelAdapter.particularType(shadow));
+      return LangModelAdapter.getTypes(getApi()).contains(getMirror(), LangModelAdapter.particularType((DeclaredLangModel) shadow));
    }
 
    @Override

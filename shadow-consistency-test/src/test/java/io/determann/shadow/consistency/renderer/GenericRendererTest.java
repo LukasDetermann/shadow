@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class GenericRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("Annotated"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("Annotated"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Annotated")))
                      .withCode("MyAnnotation.java",
                                "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation {} ")
@@ -27,7 +28,7 @@ class GenericRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("Annotated"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("Annotated"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Annotated")))
                      .withCode("Annotated.java", "class Annotated<T> {} ")
                      .test(aClass -> assertEquals("T",

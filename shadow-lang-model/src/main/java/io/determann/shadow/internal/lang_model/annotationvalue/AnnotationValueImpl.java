@@ -2,11 +2,11 @@ package io.determann.shadow.internal.lang_model.annotationvalue;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
 import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -248,7 +248,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public Shadow getValue()
+      public ShadowLangModel getValue()
       {
          return LangModelAdapter.generalize(context, (TypeMirror) annotationValue.getValue());
       }
@@ -265,7 +265,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public EnumConstant getValue()
+      public EnumConstantLangModel getValue()
       {
          return LangModelAdapter.generalize(context, (Element) annotationValue.getValue());
       }
@@ -282,7 +282,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public AnnotationUsage getValue()
+      public AnnotationUsageLangModel getValue()
       {
          return AnnotationUsageImpl.from(context, (AnnotationMirror) annotationValue.getValue());
       }

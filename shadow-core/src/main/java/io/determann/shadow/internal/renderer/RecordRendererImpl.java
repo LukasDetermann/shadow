@@ -38,7 +38,7 @@ public class RecordRendererImpl implements RecordRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(aRecord, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(aRecord, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -61,7 +61,7 @@ public class RecordRendererImpl implements RecordRenderer
       sb.append(' ');
       sb.append(requestOrThrow(aRecord, NAMEABLE_GET_NAME));
 
-      List<Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
+      List<? extends Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -70,7 +70,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
 
       sb.append('(');
-      List<RecordComponent> recordComponents = requestOrThrow(aRecord, RECORD_GET_RECORD_COMPONENTS);
+      List<? extends RecordComponent> recordComponents = requestOrThrow(aRecord, RECORD_GET_RECORD_COMPONENTS);
       if (!recordComponents.isEmpty())
       {
          sb.append(recordComponents.stream()
@@ -79,7 +79,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
       sb.append(')');
 
-      List<Interface> directInterfaces = requestOrThrow(aRecord, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends Interface> directInterfaces = requestOrThrow(aRecord, DECLARED_GET_DIRECT_INTERFACES);
       if (!directInterfaces.isEmpty())
       {
          sb.append(' ');
@@ -111,7 +111,7 @@ public class RecordRendererImpl implements RecordRenderer
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));
 
-      List<Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
+      List<? extends Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');

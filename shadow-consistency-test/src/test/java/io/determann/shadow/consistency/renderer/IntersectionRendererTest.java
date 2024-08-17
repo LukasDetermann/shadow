@@ -1,6 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Intersection;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ class IntersectionRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("IntersectionExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("IntersectionExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("IntersectionExample")))
                      .withCode("IntersectionExample.java",
                                "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")

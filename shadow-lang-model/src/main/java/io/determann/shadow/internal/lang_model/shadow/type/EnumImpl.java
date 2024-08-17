@@ -2,8 +2,9 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import javax.lang.model.element.ElementKind;
@@ -25,14 +26,20 @@ public class EnumImpl extends DeclaredImpl implements EnumLangModel
    }
 
    @Override
-   public List<EnumConstant> getEumConstants()
+   public List<EnumConstantLangModel> getEumConstants()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> ElementKind.ENUM_CONSTANT.equals(element.getKind()))
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> LangModelAdapter.<EnumConstant>generalize(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<EnumConstantLangModel>generalize(getApi(), variableElement))
                          .toList();
+   }
+
+   @Override
+   public boolean representsSameType(Shadow shadow)
+   {
+      return EnumSupport.representsSameType(this, shadow);
    }
 
    @Override

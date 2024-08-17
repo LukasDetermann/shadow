@@ -3,8 +3,8 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.type.IntersectionLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
 
 import javax.lang.model.type.IntersectionType;
@@ -25,10 +25,10 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements In
    }
 
    @Override
-   public List<Shadow> getBounds()
+   public List<ShadowLangModel> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
                         .toList();
    }
 

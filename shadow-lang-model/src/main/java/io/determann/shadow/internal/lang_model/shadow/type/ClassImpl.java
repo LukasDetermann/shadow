@@ -3,9 +3,8 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.lang_model.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.lang_model.shadow.structure.PropertyImpl;
@@ -31,11 +30,11 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType((ShadowLangModel) shadow));
    }
 
    @Override
-   public Class getSuperClass()
+   public ClassLangModel getSuperClass()
    {
       TypeMirror superclass = getElement().getSuperclass();
       if (javax.lang.model.type.TypeKind.NONE.equals(superclass.getKind()))
@@ -46,11 +45,11 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    }
 
    @Override
-   public List<Class> getPermittedSubClasses()
+   public List<ClassLangModel> getPermittedSubClasses()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<Class>generalize(getApi(), typeMirror))
+                         .map(typeMirror -> LangModelAdapter.<ClassLangModel>generalize(getApi(), typeMirror))
                          .toList();
    }
 
@@ -65,7 +64,7 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    }
 
    @Override
-   public Optional<Declared> getOuterType()
+   public Optional<DeclaredLangModel> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
       if (enclosingType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
@@ -76,25 +75,25 @@ public class ClassImpl extends DeclaredImpl implements ClassLangModel
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowLangModel> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericLangModel> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<Generic>generalize(getApi(), element))
+                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
                          .toList();
    }
 
    @Override
-   public Primitive asUnboxed()
+   public PrimitiveLangModel asUnboxed()
    {
       return LangModelAdapter.generalize(getApi(), LangModelAdapter.getTypes(getApi()).unboxedType(getMirror()));
    }

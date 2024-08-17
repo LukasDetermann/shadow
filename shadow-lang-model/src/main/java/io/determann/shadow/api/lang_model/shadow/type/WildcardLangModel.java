@@ -22,14 +22,14 @@ public interface WildcardLangModel extends Wildcard,
     *  List<? extends Number>//@highlight substring="? extends Number"
     *}
     */
-   Optional<Shadow> getExtends();
+   Optional<ShadowLangModel> getExtends();
 
    /**
     * {@snippet :
     *  List<? super Number>//@highlight substring="? super Number"
     *}
     */
-   Optional<Shadow> getSuper();
+   Optional<ShadowLangModel> getSuper();
 
    /**
     * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}

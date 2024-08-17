@@ -1,8 +1,8 @@
 package io.determann.shadow.api.lang_model.shadow.directive;
 
+import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.shadow.directive.Opens;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ public non-sealed interface OpensLangModel extends DirectiveLangModel,
    /**
     * the package to be accessed by reflection
     */
-   Package getPackage();
+   PackageLangModel getPackage();
 
    /**
     * Modules allowed to access {@link #getPackage()} or {@link #toAll()} if the list is empty
     */
-   List<Module> getTargetModules();
+   List<ModuleLangModel> getTargetModules();
 
    boolean toAll();
 }

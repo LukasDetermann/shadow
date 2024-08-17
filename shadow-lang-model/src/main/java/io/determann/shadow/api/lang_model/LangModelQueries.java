@@ -124,9 +124,9 @@ public interface LangModelQueries
       return (ExecutableLangModel) validate(executable);
    }
 
-   public static MethodLangMethod query(Method method)
+   public static MethodLangModel query(Method method)
    {
-      return (MethodLangMethod) validate(method);
+      return (MethodLangModel) validate(method);
    }
 
    public static RecordComponentLangModel query(RecordComponent recordComponent)

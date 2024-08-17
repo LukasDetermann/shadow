@@ -1,8 +1,8 @@
 package io.determann.shadow.api.lang_model.shadow;
 
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.AnnotationLangModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Annotation;
 
 import java.util.Map;
@@ -18,14 +18,14 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  */
 public interface AnnotationUsageLangModel extends AnnotationUsage
 {
-   Map<Method, AnnotationValue> getValues();
+   Map<MethodLangModel, AnnotationValueLangModel> getValues();
 
-   default AnnotationValue getValueOrThrow(String methodName)
+   default AnnotationValueLangModel getValueOrThrow(String methodName)
    {
       return getValue(methodName).orElseThrow();
    }
 
-   default Optional<AnnotationValue> getValue(String methodName)
+   default Optional<AnnotationValueLangModel> getValue(String methodName)
    {
       return getValues().entrySet()
                         .stream()
@@ -34,5 +34,5 @@ public interface AnnotationUsageLangModel extends AnnotationUsage
                         .findAny();
    }
 
-   Annotation getAnnotation();
+   AnnotationLangModel getAnnotation();
 }

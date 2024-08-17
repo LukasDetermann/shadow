@@ -3,6 +3,7 @@ package io.determann.shadow.consistency.renderer;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.ReflectionQueries;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class ConstructorRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
@@ -39,7 +40,7 @@ class ConstructorRendererTest
                                            render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
@@ -77,7 +78,7 @@ class ConstructorRendererTest
                                            render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
@@ -99,7 +100,7 @@ class ConstructorRendererTest
                                            render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
@@ -121,7 +122,7 @@ class ConstructorRendererTest
                                            render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample$Inner")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
@@ -142,7 +143,7 @@ class ConstructorRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {

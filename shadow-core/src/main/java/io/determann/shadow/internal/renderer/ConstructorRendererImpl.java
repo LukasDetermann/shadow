@@ -35,7 +35,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    {
       StringBuilder sb = new StringBuilder();
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(constructor, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(constructor, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -50,7 +50,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
          sb.append(' ');
       }
 
-      List<Generic> generics = requestOrThrow(constructor, EXECUTABLE_GET_GENERICS);
+      List<? extends Generic> generics = requestOrThrow(constructor, EXECUTABLE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -64,7 +64,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
                                         requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)));
       sb.append('(');
 
-      List<Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
+      List<? extends Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
       Provider.requestOrEmpty(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
@@ -85,7 +85,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       sb.append(')');
       sb.append(' ');
 
-      List<Class> aThrow = requestOrThrow(constructor, EXECUTABLE_GET_THROWS);
+      List<? extends Class> aThrow = requestOrThrow(constructor, EXECUTABLE_GET_THROWS);
       if (!aThrow.isEmpty())
       {
          sb.append("throws ");

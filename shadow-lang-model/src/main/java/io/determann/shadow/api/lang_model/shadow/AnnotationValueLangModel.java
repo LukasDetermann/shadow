@@ -1,9 +1,8 @@
 package io.determann.shadow.api.lang_model.shadow;
 
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 
@@ -73,19 +72,19 @@ public sealed interface AnnotationValueLangModel extends AnnotationValue
    non-sealed interface TypeValue extends AnnotationValueLangModel
    {
       @Override
-      Shadow getValue();
+      ShadowLangModel getValue();
    }
 
    non-sealed interface EnumConstantValue extends AnnotationValueLangModel
    {
       @Override
-      EnumConstant getValue();
+      EnumConstantLangModel getValue();
    }
 
    non-sealed interface AnnotationUsageValue extends AnnotationValueLangModel
    {
       @Override
-      AnnotationUsage getValue();
+      AnnotationUsageLangModel getValue();
    }
 
    non-sealed interface Values extends AnnotationValueLangModel

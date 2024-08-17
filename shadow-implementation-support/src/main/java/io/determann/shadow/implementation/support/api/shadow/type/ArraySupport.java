@@ -1,6 +1,7 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
 import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.shadow.Operations.ARRAY_GET_COMPONENT_TYPE;
@@ -23,5 +24,10 @@ public class ArraySupport
    public static String toString(Array array)
    {
       return SupportSupport.toString(array, Array.class, ARRAY_GET_COMPONENT_TYPE);
+   }
+
+   public static boolean representsSameType(Array array, Shadow other)
+   {
+      return SupportSupport.representsSameType(array, Array.class, other, ARRAY_GET_COMPONENT_TYPE);
    }
 }

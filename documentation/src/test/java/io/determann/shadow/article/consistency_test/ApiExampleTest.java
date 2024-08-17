@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.Response;
 import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,6 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.consistency.test.ConsistencyTest.compileTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ApiExampleTest
@@ -88,7 +88,7 @@ void classDeclarationRendering()
    String expectedCode =
          "public class DependentGenerics<A extends Comparable<B>, B extends Comparable<A>> {}\n";
 
-   compileTime(c -> c.getClassOrThrow("DependentGenerics"))
+   ConsistencyTest.<Class>compileTime(c -> c.getClassOrThrow("DependentGenerics"))
          .runtime(cl -> ReflectionAdapter.generalize(cl.apply("DependentGenerics")))
          .withCode("DependentGenerics.java", code)
          .test(aClass -> assertEquals(expectedCode, render(DEFAULT, aClass).declaration()));

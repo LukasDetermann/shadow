@@ -42,7 +42,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
       sb.append(context.renderName(annotation));
 
-      List<Method> methods = requestOrThrow(annotation, DECLARED_GET_METHODS);
+      List<? extends Method> methods = requestOrThrow(annotation, DECLARED_GET_METHODS);
 
       if (!methods.isEmpty())
       {
@@ -52,7 +52,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
                                          " = " +
                                          valueRenderer.apply(method).orElseGet(() ->
                                                                                {
-                                                                                  Map<Method, AnnotationValue> values = requestOrThrow(usage, ANNOTATION_USAGE_GET_VALUES);
+                                                                                  Map<? extends Method, ? extends AnnotationValue> values = requestOrThrow(usage, ANNOTATION_USAGE_GET_VALUES);
                                                                                   return renderValue(context, values.get(method));
                                                                                }))
                           .collect(Collectors.joining(", ")));

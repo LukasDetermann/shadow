@@ -3,6 +3,7 @@ package io.determann.shadow.consistency.renderer;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
@@ -17,11 +18,11 @@ class ArrayRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
+      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
                      .runtime(stringClassFunction -> asArray((Declared) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String"))))
                      .test(aClass -> Assertions.assertEquals("String[]", Renderer.render(RenderingContext.DEFAULT, aClass).type()));
 
-      ConsistencyTest.compileTime(context -> context.asArray(context.asArray(context.getClassOrThrow("java.lang.String"))))
+      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.asArray(context.getClassOrThrow("java.lang.String"))))
                      .runtime(stringClassFunction -> asArray(asArray((Declared) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String")))))
                      .test(aClass -> assertEquals("String[][]", render(RenderingContext.DEFAULT, aClass).type()));
    }
@@ -29,7 +30,7 @@ class ArrayRendererTest
    @Test
    void initialisation()
    {
-      ConsistencyTest.compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
+      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
                      .runtime(stringClassFunction -> asArray((Declared) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String"))))
                      .test(string ->
                            {

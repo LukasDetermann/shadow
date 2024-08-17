@@ -35,7 +35,7 @@ public class ClassRendererImpl implements ClassRenderer
    {
       StringBuilder sb = new StringBuilder();
       //noinspection OptionalContainsCollection
-      Optional<List<AnnotationUsage>> annotationUsages = requestOrEmpty(aClass, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(aClass, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -53,7 +53,7 @@ public class ClassRendererImpl implements ClassRenderer
       sb.append(' ');
       sb.append(requestOrThrow(aClass, NAMEABLE_GET_NAME));
 
-      List<Generic> generics = requestOrThrow(aClass, CLASS_GET_GENERICS);
+      List<? extends Generic> generics = requestOrThrow(aClass, CLASS_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -71,7 +71,7 @@ public class ClassRendererImpl implements ClassRenderer
          sb.append(' ');
       }
 
-      List<Interface> directInterfaces = requestOrThrow(aClass, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends Interface> directInterfaces = requestOrThrow(aClass, DECLARED_GET_DIRECT_INTERFACES);
       if (!directInterfaces.isEmpty())
       {
          sb.append("implements");
@@ -102,7 +102,7 @@ public class ClassRendererImpl implements ClassRenderer
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aClass));
 
-      List<Shadow> genericTypes = requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES);
+      List<? extends Shadow> genericTypes = requestOrThrow(aClass, CLASS_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');

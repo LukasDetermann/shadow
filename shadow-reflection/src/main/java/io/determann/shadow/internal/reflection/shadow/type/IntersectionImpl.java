@@ -41,7 +41,9 @@ public class IntersectionImpl implements IntersectionReflection
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow instanceof Intersection intersection && sameBounds(getBounds(), requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
+      //noinspection unchecked
+      return shadow instanceof Intersection intersection && sameBounds(getBounds(),
+                                                                       (List<Shadow>) requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
    }
 
    private boolean sameBounds(List<Shadow> shadows, List<Shadow> shadows1)

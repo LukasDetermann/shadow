@@ -6,8 +6,6 @@ import io.determann.shadow.api.shadow.type.Null;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.NullSupport;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class NullImpl implements Null,
@@ -16,7 +14,7 @@ public class NullImpl implements Null,
    @Override
    public boolean representsSameType(Shadow shadow)
    {
-      return shadow != null && TypeKind.NULL.equals(requestOrThrow(shadow, SHADOW_GET_KIND));
+      return NullSupport.representsSameType(this, shadow);
    }
 
    @Override

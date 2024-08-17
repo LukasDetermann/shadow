@@ -4,6 +4,7 @@ import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Wildcard;
 import io.determann.shadow.consistency.test.ConsistencyTest;
@@ -20,7 +21,7 @@ class WildcardRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("BoundsExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("BoundsExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("BoundsExample")))
                      .withCode("BoundsExample.java", """
                            public class BoundsExample {

@@ -3,7 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
-import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
 
 import javax.lang.model.element.VariableElement;
 
@@ -15,7 +15,7 @@ public class EnumConstantImpl extends VariableImpl implements EnumConstantLangMo
    }
 
    @Override
-   public Enum getSurrounding()
+   public EnumLangModel getSurrounding()
    {
       return LangModelAdapter.generalize(getApi(), getElement().getEnclosingElement());
    }

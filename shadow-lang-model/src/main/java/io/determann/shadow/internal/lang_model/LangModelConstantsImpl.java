@@ -2,10 +2,10 @@ package io.determann.shadow.internal.lang_model;
 
 import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.type.PrimitiveLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
 import io.determann.shadow.api.shadow.type.Null;
-import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Void;
-import io.determann.shadow.api.shadow.type.Wildcard;
 
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.getTypes;
@@ -21,7 +21,7 @@ public class LangModelConstantsImpl implements LangModelConstants
    }
 
    @Override
-   public Wildcard getUnboundWildcard()
+   public WildcardLangModel getUnboundWildcard()
    {
       return generalize(context, getTypes(context).getWildcardType(null, null));
    }
@@ -39,49 +39,49 @@ public class LangModelConstantsImpl implements LangModelConstants
    }
 
    @Override
-   public Primitive getPrimitiveBoolean()
+   public PrimitiveLangModel getPrimitiveBoolean()
    {
       return generalize(context, getTypes(context).getPrimitiveType(BOOLEAN));
    }
 
    @Override
-   public Primitive getPrimitiveByte()
+   public PrimitiveLangModel getPrimitiveByte()
    {
       return generalize(context, getTypes(context).getPrimitiveType(BYTE));
    }
 
    @Override
-   public Primitive getPrimitiveShort()
+   public PrimitiveLangModel getPrimitiveShort()
    {
       return generalize(context, getTypes(context).getPrimitiveType(SHORT));
    }
 
    @Override
-   public Primitive getPrimitiveInt()
+   public PrimitiveLangModel getPrimitiveInt()
    {
       return generalize(context, getTypes(context).getPrimitiveType(INT));
    }
 
    @Override
-   public Primitive getPrimitiveLong()
+   public PrimitiveLangModel getPrimitiveLong()
    {
       return generalize(context, getTypes(context).getPrimitiveType(LONG));
    }
 
    @Override
-   public Primitive getPrimitiveChar()
+   public PrimitiveLangModel getPrimitiveChar()
    {
       return generalize(context, getTypes(context).getPrimitiveType(CHAR));
    }
 
    @Override
-   public Primitive getPrimitiveFloat()
+   public PrimitiveLangModel getPrimitiveFloat()
    {
       return generalize(context, getTypes(context).getPrimitiveType(FLOAT));
    }
 
    @Override
-   public Primitive getPrimitiveDouble()
+   public PrimitiveLangModel getPrimitiveDouble()
    {
       return generalize(context, getTypes(context).getPrimitiveType(DOUBLE));
    }

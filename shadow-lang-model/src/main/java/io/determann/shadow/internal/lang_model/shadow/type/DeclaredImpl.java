@@ -2,20 +2,14 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.DocumentedLangModel;
-import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
+import io.determann.shadow.api.lang_model.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
 import io.determann.shadow.api.shadow.NestingKind;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.element.ElementKind;
@@ -61,7 +55,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    @Override
    public boolean isSubtypeOf(Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.particularType(shadow));
+      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.particularType((DeclaredLangModel) shadow));
    }
 
    @Override
@@ -95,54 +89,54 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public List<Field> getFields()
+   public List<FieldLangModel> getFields()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
-                         .map(variableElement -> LangModelAdapter.<Field>generalize(getApi(), variableElement))
+                         .map(variableElement -> LangModelAdapter.<FieldLangModel>generalize(getApi(), variableElement))
                          .toList();
    }
 
    @Override
-   public List<Method> getMethods()
+   public List<MethodLangModel> getMethods()
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> LangModelAdapter.generalize(getApi(), element))
-                          .map(Method.class::cast)
+                          .map(MethodLangModel.class::cast)
                           .toList();
    }
 
    @Override
-   public List<Constructor> getConstructors()
+   public List<ConstructorLangModel> getConstructors()
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LangModelAdapter.<Constructor>generalize(getApi(), element))
-                          .map(Constructor.class::cast)
+                          .map(element -> LangModelAdapter.generalize(getApi(), element))
+                          .map(ConstructorLangModel.class::cast)
                           .toList();
    }
 
    @Override
-   public List<Declared> getDirectSuperTypes()
+   public List<DeclaredLangModel> getDirectSuperTypes()
    {
       return LangModelAdapter.getTypes(getApi())
                              .directSupertypes(getMirror())
                              .stream()
-                             .map(typeMirror1 -> LangModelAdapter.<Declared>generalize(getApi(), typeMirror1))
+                             .map(typeMirror1 -> LangModelAdapter.<DeclaredLangModel>generalize(getApi(), typeMirror1))
                              .toList();
    }
 
    @Override
-   public Set<Declared> getSuperTypes()
+   public Set<DeclaredLangModel> getSuperTypes()
    {
       return findAllSupertypes(new HashSet<>(), this);
    }
 
-   private Set<Declared> findAllSupertypes(Set<Declared> found, Declared declared)
+   private Set<DeclaredLangModel> findAllSupertypes(Set<DeclaredLangModel> found, Declared declared)
    {
-      List<Declared> directSupertypes = requestOrThrow(declared, DECLARED_GET_SUPER_TYPES);
+      List<DeclaredLangModel> directSupertypes = (List<DeclaredLangModel>) requestOrThrow(declared, DECLARED_GET_SUPER_TYPES);
       found.addAll(directSupertypes);
       for (Declared directSupertype : directSupertypes)
       {
@@ -164,31 +158,31 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public List<Interface> getDirectInterfaces()
+   public List<InterfaceLangModel> getDirectInterfaces()
    {
       return getElement().getInterfaces()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<Interface>generalize(getApi(), typeMirror))
+                         .map(typeMirror -> LangModelAdapter.<InterfaceLangModel>generalize(getApi(), typeMirror))
                          .toList();
    }
 
    @Override
-   public List<Interface> getInterfaces()
+   public List<InterfaceLangModel> getInterfaces()
    {
       return getSuperTypes().stream()
                             .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(Interface.class::cast)
+                            .map(InterfaceLangModel.class::cast)
                             .toList();
    }
 
    @Override
-   public Package getPackage()
+   public PackageLangModel getPackage()
    {
       return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
-   public Module getModule()
+   public ModuleLangModel getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -206,13 +200,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

@@ -2,11 +2,11 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.ReturnLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.Return;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -27,19 +27,19 @@ public class ReturnImpl implements ReturnLangModel
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageLangModel> getAnnotationUsages()
    {
       return getDirectAnnotationUsages();
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
    {
       return LangModelAdapter.generalize(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
-   public Shadow getType()
+   public ShadowLangModel getType()
    {
       return LangModelAdapter.generalize(context, getTypeMirror());
    }

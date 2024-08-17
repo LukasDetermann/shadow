@@ -29,7 +29,7 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public class DeclaredImpl implements DeclaredReflection,
+public abstract class DeclaredImpl implements DeclaredReflection,
                                      NameableReflection,
                                      ShadowReflection,
                                      QualifiedNameableReflection,
@@ -171,7 +171,7 @@ public class DeclaredImpl implements DeclaredReflection,
 
    private Set<Declared> findAllSupertypes(Set<Declared> found, Declared declared)
    {
-      List<Declared> directSupertypes = requestOrThrow(declared, DECLARED_GET_DIRECT_SUPER_TYPES);
+      List<? extends Declared> directSupertypes = requestOrThrow(declared, DECLARED_GET_DIRECT_SUPER_TYPES);
       found.addAll(directSupertypes);
       for (Declared directSupertype : directSupertypes)
       {
@@ -228,48 +228,6 @@ public class DeclaredImpl implements DeclaredReflection,
          return TypeKind.RECORD;
       }
       return TypeKind.CLASS;
-   }
-
-   @Override
-   public boolean representsSameType(Shadow shadow)
-   {
-      return shadow != null && (equals(shadow) || sameGenerics(shadow));
-   }
-
-   private boolean sameGenerics(Shadow shadow)
-   {
-      if (!getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND)))
-      {
-         return false;
-      }
-      if (isKind(TypeKind.ENUM) ||
-          isKind(TypeKind.ANNOTATION))
-      {
-         return false;
-      }
-
-      if (isKind(TypeKind.CLASS))
-      {
-         List<Generic> thisGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Class) this, CLASS_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Class) shadow, CLASS_GET_GENERICS);
-
-         return sameGenerics(thisGenerics, otherGenerics);
-      }
-      if (isKind(TypeKind.INTERFACE))
-      {
-         List<Generic> thisGenerics = requestOrThrow((Interface) this, INTERFACE_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow((Interface) shadow, INTERFACE_GET_GENERICS);
-
-         return sameGenerics(thisGenerics, otherGenerics);
-      }
-      if (isKind(TypeKind.RECORD))
-      {
-         List<Generic> thisGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Record) this, RECORD_GET_GENERICS);
-         List<Generic> otherGenerics = requestOrThrow((io.determann.shadow.api.shadow.type.Record) shadow, RECORD_GET_GENERICS);
-
-         return sameGenerics(thisGenerics, otherGenerics);
-      }
-      throw new IllegalStateException();
    }
 
    private boolean sameGenerics(List<Generic> generics, List<Generic> generics1)

@@ -3,6 +3,7 @@ package io.determann.shadow.consistency.renderer;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.ReflectionQueries;
+import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ class MethodRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {
@@ -51,7 +52,7 @@ class MethodRendererTest
                                            render(DEFAULT, ReflectionQueries.query(aClass).getMethods("seven").get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("ReceiverExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ReceiverExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
@@ -70,7 +71,7 @@ class MethodRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.compileTime(context -> context.getClassOrThrow("MethodExample"))
+      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
                      .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {

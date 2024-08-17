@@ -6,8 +6,10 @@ import io.determann.shadow.api.lang_model.shadow.ModuleEnclosedLangModel;
 import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.ModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.structure.Field;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 /**
@@ -39,9 +41,9 @@ public interface VariableLangModel extends Variable,
     */
    boolean isAssignableFrom(Shadow shadow);
 
-   Shadow getType();
+   ShadowLangModel getType();
 
-   Package getPackage();
+   PackageLangModel getPackage();
 
    /**
     * The {@link Object} surrounding this {@link VariableLangModel}
