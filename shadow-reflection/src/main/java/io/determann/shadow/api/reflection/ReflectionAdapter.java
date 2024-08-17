@@ -1,20 +1,15 @@
 package io.determann.shadow.api.reflection;
 
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.directive.*;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.directive.*;
+import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.type.*;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 import io.determann.shadow.internal.reflection.shadow.AnnotationUsageImpl;
 import io.determann.shadow.internal.reflection.shadow.directive.*;
 import io.determann.shadow.internal.reflection.shadow.structure.*;
 import io.determann.shadow.internal.reflection.shadow.type.*;
 
-import java.lang.Class;
-import java.lang.Enum;
-import java.lang.Void;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
 import java.lang.module.ModuleReference;
@@ -28,13 +23,13 @@ import java.util.Optional;
 
 public interface ReflectionAdapter
 {
-   public static <SHADOW extends Shadow> SHADOW generalize(Class<?> aClass)
+   public static <SHADOW extends ShadowReflection> SHADOW generalize(Class<?> aClass)
    {
       return generalize(aClass, Collections.emptyList());
    }
 
    @SuppressWarnings("unchecked")
-   private static <SHADOW extends Shadow> SHADOW generalize(Class<?> aClass, List<Shadow> genericShadows)
+   private static <SHADOW extends ShadowReflection> SHADOW generalize(Class<?> aClass, List<ShadowReflection> genericShadows)
    {
       if (aClass.isPrimitive())
       {
@@ -67,30 +62,30 @@ public interface ReflectionAdapter
       return (SHADOW) new ClassImpl(aClass, genericShadows);
    }
 
-   public static Package generalize(java.lang.Package aPackage)
+   public static PackageReflection generalize(java.lang.Package aPackage)
    {
       return new PackageImpl(new NamedSupplier<>(aPackage, java.lang.Package::getName));
    }
 
-   public static Module generalize(java.lang.Module module)
+   public static ModuleReflection generalize(java.lang.Module module)
    {
       return new ModuleImpl(new NamedSupplier<>(module.getDescriptor(), ModuleDescriptor::name),
                             Arrays.stream(module.getAnnotations()).map(ReflectionAdapter::generalize).toList());
    }
 
-   public static Module getModuleShadow(String name)
+   public static ModuleReflection getModuleShadow(String name)
    {
       return new ModuleImpl(new NamedSupplier<>(name,
                                                 () -> ModuleFinder.ofSystem().find(name).orElseThrow().descriptor(),
                                                 ModuleDescriptor::name));
    }
 
-   public static Module generalize(ModuleReference moduleReference)
+   public static ModuleReflection generalize(ModuleReference moduleReference)
    {
       return new ModuleImpl(new NamedSupplier<>(moduleReference.descriptor(), ModuleDescriptor::name));
    }
 
-   public static Shadow generalize(java.lang.reflect.Type type)
+   public static ShadowReflection generalize(java.lang.reflect.Type type)
    {
       if (type instanceof ParameterizedType parameterizedType)
       {
@@ -116,67 +111,67 @@ public interface ReflectionAdapter
       throw new IllegalStateException();
    }
 
-   public static AnnotationUsage generalize(java.lang.annotation.Annotation annotation)
+   public static AnnotationUsageReflection generalize(java.lang.annotation.Annotation annotation)
    {
       return new AnnotationUsageImpl(annotation);
    }
 
-   public static Field generalize(java.lang.reflect.Field field)
+   public static FieldReflection generalize(java.lang.reflect.Field field)
    {
       return new FieldImpl(field);
    }
 
-   public static Method generalize(java.lang.reflect.Method method)
+   public static MethodReflection generalize(java.lang.reflect.Method method)
    {
       return new ExecutableImpl(method);
    }
 
-   public static Constructor generalize(java.lang.reflect.Constructor<?> constructor)
+   public static ConstructorReflection generalize(java.lang.reflect.Constructor<?> constructor)
    {
       return new ExecutableImpl(constructor);
    }
 
-   public static RecordComponent generalize(java.lang.reflect.RecordComponent recordComponent)
+   public static RecordComponentReflection generalize(java.lang.reflect.RecordComponent recordComponent)
    {
-      return (RecordComponent) new RecordComponentImpl(recordComponent);
+      return new RecordComponentImpl(recordComponent);
    }
 
-   public static Parameter generalize(java.lang.reflect.Parameter parameter)
+   public static ParameterReflection generalize(java.lang.reflect.Parameter parameter)
    {
       return new ParameterImpl(parameter);
    }
 
-   public static Shadow generalize(TypeVariable<?> typeVariable)
+   public static ShadowReflection generalize(TypeVariable<?> typeVariable)
    {
       return new GenericImpl(typeVariable);
    }
 
-   public static Requires generalize(ModuleDescriptor.Requires requires)
+   public static RequiresReflection generalize(ModuleDescriptor.Requires requires)
    {
       return new RequiresImpl(requires);
    }
 
-   public static Exports generalize(ModuleDescriptor.Exports exports)
+   public static ExportsReflection generalize(ModuleDescriptor.Exports exports)
    {
       return new ExportsImpl(exports);
    }
 
-   public static Opens generalize(ModuleDescriptor.Opens opens)
+   public static OpensReflection generalize(ModuleDescriptor.Opens opens)
    {
       return new OpensImpl(opens);
    }
 
-   public static Provides generalize(ModuleDescriptor.Provides provides)
+   public static ProvidesReflection generalize(ModuleDescriptor.Provides provides)
    {
       return new ProvidesImpl(provides);
    }
 
-   public static Uses getUsesShadow(String uses)
+   public static UsesReflection getUsesShadow(String uses)
    {
       return new UsesImpl(uses);
    }
 
-   public static Optional<Declared> getDeclared(String qualifiedName)
+   public static Optional<DeclaredReflection> getDeclared(String qualifiedName)
    {
       try
       {
@@ -189,12 +184,12 @@ public interface ReflectionAdapter
       }
    }
 
-   public static Executable generalize(java.lang.reflect.Executable executable)
+   public static ExecutableReflection generalize(java.lang.reflect.Executable executable)
    {
       return new ExecutableImpl(executable);
    }
 
-   public static Package getPackage(String name)
+   public static PackageReflection getPackage(String name)
    {
       return new PackageImpl(new NamedSupplier<>(name, () ->
       {
@@ -207,7 +202,7 @@ public interface ReflectionAdapter
       }, java.lang.Package::getName));
    }
 
-   public static EnumConstant generalize(Enum<?> enumConstant)
+   public static EnumConstantReflection generalize(Enum<?> enumConstant)
    {
       try
       {
@@ -219,97 +214,97 @@ public interface ReflectionAdapter
       }
    }
 
-   public static ModuleDescriptor.Exports particularize(Exports exports)
+   public static ModuleDescriptor.Exports particularize(ExportsReflection exports)
    {
       return ((ExportsImpl) exports).getReflection();
    }
 
-   public static ModuleDescriptor.Opens particularize(Opens opens)
+   public static ModuleDescriptor.Opens particularize(OpensReflection opens)
    {
       return ((OpensImpl) opens).getReflection();
    }
 
-   public static ModuleDescriptor.Provides particularize(Provides provides)
+   public static ModuleDescriptor.Provides particularize(ProvidesReflection provides)
    {
       return ((ProvidesImpl) provides).getReflection();
    }
 
-   public static ModuleDescriptor.Requires particularize(Requires requires)
+   public static ModuleDescriptor.Requires particularize(RequiresReflection requires)
    {
       return ((RequiresImpl) requires).getReflection();
    }
 
-   public static String particularize(Uses uses)
+   public static String particularize(UsesReflection uses)
    {
       return ((UsesImpl) uses).getReflection();
    }
 
-   public static java.lang.annotation.Annotation particularize(AnnotationUsage annotationUsage)
+   public static java.lang.annotation.Annotation particularize(AnnotationUsageReflection annotationUsage)
    {
       return ((AnnotationUsageImpl) annotationUsage).getAnnotationReflection();
    }
 
-   public static Class<?> particularize(Array array)
+   public static Class<?> particularize(ArrayReflection array)
    {
       return ((ArrayImpl) array).getReflection();
    }
 
-   public static Class<?> particularize(Declared declared)
+   public static Class<?> particularize(DeclaredReflection declared)
    {
       return ((DeclaredImpl) declared).getReflection();
    }
 
-   public static java.lang.reflect.Field particularize(EnumConstant enumConstant)
+   public static java.lang.reflect.Field particularize(EnumConstantReflection enumConstant)
    {
       return ((ReflectionFieldImpl<?>) enumConstant).getReflection();
    }
 
-   public static java.lang.reflect.Executable particularize(Executable executable)
+   public static java.lang.reflect.Executable particularize(ExecutableReflection executable)
    {
       return ((ExecutableImpl) executable).getReflection();
    }
 
-   public static java.lang.reflect.Field particularize(Field field)
+   public static java.lang.reflect.Field particularize(FieldReflection field)
    {
       return ((ReflectionFieldImpl<?>) field).getReflection();
    }
 
-   public static TypeVariable<?> particularize(Generic generic)
+   public static TypeVariable<?> particularize(GenericReflection generic)
    {
       return ((GenericImpl) generic).getReflection();
    }
 
-   public static java.lang.reflect.Type[] particularize(Intersection intersection)
+   public static java.lang.reflect.Type[] particularize(IntersectionReflection intersection)
    {
       return ((IntersectionImpl) intersection).getReflection();
    }
 
-   public static ModuleDescriptor particularize(Module module)
+   public static ModuleDescriptor particularize(ModuleReflection module)
    {
       return ((ModuleImpl) module).getReflection();
    }
 
-   public static java.lang.Package particularize(Package aPackage)
+   public static java.lang.Package particularize(PackageReflection aPackage)
    {
       return ((PackageImpl) aPackage).getReflection();
    }
 
-   public static java.lang.reflect.Parameter particularize(Parameter parameter)
+   public static java.lang.reflect.Parameter particularize(ParameterReflection parameter)
    {
       return ((ParameterImpl) parameter).getReflection();
    }
 
-   public static java.lang.Class<?> particularize(Primitive primitive)
+   public static java.lang.Class<?> particularize(PrimitiveReflection primitive)
    {
       return ((PrimitiveImpl) primitive).getReflection();
    }
 
-   public static java.lang.reflect.RecordComponent particularize(RecordComponent recordComponent)
+   public static java.lang.reflect.RecordComponent particularize(RecordComponentReflection recordComponent)
    {
       return ((RecordComponentImpl) recordComponent).getReflection();
    }
 
-   public static WildcardType particularize(Wildcard wildcard)
+   public static WildcardType particularize(WildcardReflection wildcard)
    {
       return ((WildcardImpl) wildcard).getReflection();
    }

@@ -6,7 +6,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.SealableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.StaticModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.structure.PropertyReflection;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,9 @@ public interface ClassReflection extends Class,
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
     * For {@link Object} null will be returned
     */
-   Class getSuperClass();
+   ClassReflection getSuperClass();
 
-   List<Class> getPermittedSubClasses();
+   List<ClassReflection> getPermittedSubClasses();
 
    List<PropertyReflection> getProperties();
 
@@ -37,22 +37,22 @@ public interface ClassReflection extends Class,
    /**
     * returns the outer type for not static classes
     */
-   Optional<Declared> getOuterType();
+   Optional<DeclaredReflection> getOuterType();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<Shadow> getGenericTypes();
+   List<ShadowReflection> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
-   List<Generic> getGenerics();
+   List<GenericReflection> getGenerics();
 
    /**
     * Integer -&gt; int<br>
     * Long -&gt; long<br>
     * etc...
     */
-   Primitive asUnboxed();
+   PrimitiveReflection asUnboxed();
 }

@@ -2,10 +2,9 @@ package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.reflection.shadow.type.RecordReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 public interface RecordComponentReflection extends RecordComponent,
@@ -29,11 +28,11 @@ public interface RecordComponentReflection extends RecordComponent,
    /**
     * returns the record this is a port of
     */
-   Record getRecord();
+   RecordReflection getRecord();
 
-   Shadow getType();
+   ShadowReflection getType();
 
-   Method getGetter();
+   MethodReflection getGetter();
 
-   Package getPackage();
+   PackageReflection getPackage();
 }

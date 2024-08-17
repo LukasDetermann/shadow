@@ -1,21 +1,18 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleEnclosedReflection;
+import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.NestingKind;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
@@ -43,7 +40,7 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
       return ReflectionAdapter.generalize(getaClass().getModule());
    }
@@ -55,7 +52,7 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())
             .map(ReflectionAdapter::generalize)
@@ -63,7 +60,7 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return stream(getaClass().getDeclaredAnnotations())
             .map(ReflectionAdapter::generalize)
@@ -126,34 +123,34 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<Field> getFields()
+   public List<FieldReflection> getFields()
    {
       return stream(getaClass().getDeclaredFields()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public List<Method> getMethods()
+   public List<MethodReflection> getMethods()
    {
       return stream(getaClass().getDeclaredMethods()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public List<Constructor> getConstructors()
+   public List<ConstructorReflection> getConstructors()
    {
       return stream(getaClass().getDeclaredConstructors()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public List<Declared> getDirectSuperTypes()
+   public List<DeclaredReflection> getDirectSuperTypes()
    {
-      List<Declared> result = stream(getaClass().getGenericInterfaces())
+      List<DeclaredReflection> result = stream(getaClass().getGenericInterfaces())
             .map(ReflectionAdapter::generalize)
-            .map(Declared.class::cast)
+            .map(DeclaredReflection.class::cast)
             .collect(Collectors.toList());
 
       ofNullable(getaClass().getGenericSuperclass())
             .map(ReflectionAdapter::generalize)
-            .map(Declared.class::cast)
+            .map(DeclaredReflection.class::cast)
             .ifPresent(result::add);
 
       if (result.isEmpty() && isKind(TypeKind.INTERFACE))
@@ -164,16 +161,16 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public Set<Declared> getSuperTypes()
+   public Set<DeclaredReflection> getSuperTypes()
    {
       return findAllSupertypes(new HashSet<>(), this);
    }
 
-   private Set<Declared> findAllSupertypes(Set<Declared> found, Declared declared)
+   private Set<DeclaredReflection> findAllSupertypes(Set<DeclaredReflection> found, DeclaredReflection declared)
    {
-      List<? extends Declared> directSupertypes = requestOrThrow(declared, DECLARED_GET_DIRECT_SUPER_TYPES);
+      List<DeclaredReflection> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (Declared directSupertype : directSupertypes)
+      for (DeclaredReflection directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
@@ -181,22 +178,22 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<Interface> getInterfaces()
+   public List<InterfaceReflection> getInterfaces()
    {
       return getSuperTypes().stream()
                             .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(Interface.class::cast)
+                            .map(InterfaceReflection.class::cast)
                             .toList();
    }
 
    @Override
-   public List<Interface> getDirectInterfaces()
+   public List<InterfaceReflection> getDirectInterfaces()
    {
-      return stream(getaClass().getInterfaces()).map(ReflectionAdapter::generalize).map(Interface.class::cast).toList();
+      return stream(getaClass().getInterfaces()).map(ReflectionAdapter::generalize).map(InterfaceReflection.class::cast).toList();
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
       return ReflectionAdapter.generalize(getaClass().getPackage());
    }

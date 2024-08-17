@@ -4,7 +4,6 @@ import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Intersection;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
@@ -19,9 +18,9 @@ public interface GenericReflection extends Generic,
    /**
     * @see Intersection
     */
-   Shadow getExtends();
+   ShadowReflection getExtends();
 
-   Optional<Shadow> getSuper();
+   Optional<ShadowReflection> getSuper();
 
    /**
     * returns the class, method constructor etc. this is the generic for

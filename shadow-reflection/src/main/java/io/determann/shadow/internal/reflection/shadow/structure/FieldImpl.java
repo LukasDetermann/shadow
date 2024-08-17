@@ -2,9 +2,10 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.FieldReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
 
@@ -82,13 +83,13 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
-      return requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
+      return (PackageReflection) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override
-   public Declared getSurrounding()
+   public DeclaredReflection getSurrounding()
    {
       return ReflectionAdapter.generalize(getField().getDeclaringClass());
    }
@@ -100,8 +101,8 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
-      return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return (ModuleReflection) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 }

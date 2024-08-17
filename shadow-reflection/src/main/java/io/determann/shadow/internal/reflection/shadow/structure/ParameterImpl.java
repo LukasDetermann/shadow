@@ -1,14 +1,15 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ExecutableReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Executable;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Class;
@@ -36,9 +37,9 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
-      return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return getSurrounding().getModule();
    }
 
    @Override
@@ -48,7 +49,7 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getParameter().getAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -56,7 +57,7 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getParameter().getDeclaredAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -122,19 +123,19 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public Shadow getType()
+   public ShadowReflection getType()
    {
       return ReflectionAdapter.generalize(getParameter().getParameterizedType());
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
-      return requestOrThrow(getSurrounding(), EXECUTABLE_GET_PACKAGE);
+      return getSurrounding().getPackage();
    }
 
    @Override
-   public Executable getSurrounding()
+   public ExecutableReflection getSurrounding()
    {
       return ReflectionAdapter.generalize(getParameter().getDeclaringExecutable());
    }

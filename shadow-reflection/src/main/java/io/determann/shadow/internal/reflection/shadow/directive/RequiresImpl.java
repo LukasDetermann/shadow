@@ -2,7 +2,7 @@ package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.directive.RequiresReflection;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import java.lang.module.ModuleDescriptor;
@@ -32,7 +32,7 @@ public class RequiresImpl implements RequiresReflection
    }
 
    @Override
-   public Module getDependency()
+   public ModuleReflection getDependency()
    {
       return ReflectionAdapter.getModuleShadow(requiresDirective.name());
    }

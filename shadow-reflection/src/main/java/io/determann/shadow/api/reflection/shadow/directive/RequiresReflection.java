@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.directive;
 
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
 import io.determann.shadow.api.shadow.directive.Requires;
-import io.determann.shadow.api.shadow.structure.Module;
 
 /**
  * Dependency on another Module
@@ -22,5 +22,5 @@ public non-sealed interface RequiresReflection extends DirectiveReflection,
     */
    boolean isTransitive();
 
-   Module getDependency();
+   ModuleReflection getDependency();
 }

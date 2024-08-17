@@ -1,6 +1,5 @@
 package io.determann.shadow.api.reflection.shadow;
 
-import io.determann.shadow.api.shadow.AnnotationUsage;
 import io.determann.shadow.api.shadow.Annotationable;
 import io.determann.shadow.api.shadow.type.Annotation;
 
@@ -18,18 +17,18 @@ public interface AnnotationableReflection extends Annotationable
    /**
     * returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
     */
-   List<AnnotationUsage> getAnnotationUsages();
+   List<AnnotationUsageReflection> getAnnotationUsages();
 
-   default List<AnnotationUsage> getUsagesOf(Annotation annotation)
+   default List<AnnotationUsageReflection> getUsagesOf(Annotation annotation)
    {
       return getAnnotationUsages().stream()
                                   .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                   .toList();
    }
 
-   default Optional<AnnotationUsage> getUsageOf(Annotation annotation)
+   default Optional<AnnotationUsageReflection> getUsageOf(Annotation annotation)
    {
-      List<AnnotationUsage> usages = getUsagesOf(annotation);
+      List<AnnotationUsageReflection> usages = getUsagesOf(annotation);
 
       if (usages.isEmpty())
       {
@@ -42,7 +41,7 @@ public interface AnnotationableReflection extends Annotationable
       throw new IllegalArgumentException();
    }
 
-   default AnnotationUsage getUsageOfOrThrow(Annotation annotation)
+   default AnnotationUsageReflection getUsageOfOrThrow(Annotation annotation)
    {
       return getUsageOf(annotation).orElseThrow(IllegalArgumentException::new);
    }
@@ -59,23 +58,23 @@ public interface AnnotationableReflection extends Annotationable
     *
     * @see #getAnnotationUsages()
     */
-   List<AnnotationUsage> getDirectAnnotationUsages();
+   List<AnnotationUsageReflection> getDirectAnnotationUsages();
 
-   default List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
+   default List<AnnotationUsageReflection> getDirectUsagesOf(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
                                         .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                         .toList();
    }
 
-   default Optional<AnnotationUsage> getDirectUsageOf(Annotation annotation)
+   default Optional<AnnotationUsageReflection> getDirectUsageOf(Annotation annotation)
    {
       return getDirectAnnotationUsages().stream()
                                         .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
                                         .findAny();
    }
 
-   default AnnotationUsage getDirectUsageOfOrThrow(Annotation annotation)
+   default AnnotationUsageReflection getDirectUsageOfOrThrow(Annotation annotation)
    {
       return getDirectUsageOf(annotation).orElseThrow();
    }

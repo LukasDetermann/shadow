@@ -22,14 +22,14 @@ public interface WildcardReflection extends Wildcard,
     *  List<? extends Number>//@highlight substring="? extends Number"
     *}
     */
-   Optional<Shadow> getExtends();
+   Optional<ShadowReflection> getExtends();
 
    /**
     * {@snippet :
     *  List<? super Number>//@highlight substring="? super Number"
     *}
     */
-   Optional<Shadow> getSuper();
+   Optional<ShadowReflection> getSuper();
 
    /**
     * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}

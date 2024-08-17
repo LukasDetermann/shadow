@@ -2,7 +2,6 @@ package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.shadow.modifier.FinalModifiableReflection;
 import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Executable;
 import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.structure.Parameter;
 
@@ -24,5 +23,5 @@ public interface ParameterReflection extends Parameter,
    boolean isVarArgs();
 
    @Override
-   Executable getSurrounding();
+   ExecutableReflection getSurrounding();
 }

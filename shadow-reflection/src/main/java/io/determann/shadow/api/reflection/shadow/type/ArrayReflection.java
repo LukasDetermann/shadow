@@ -20,11 +20,11 @@ public interface ArrayReflection extends Array
     *  String[]//@highlight substring="String"
     * }
     */
-   Shadow getComponentType();
+   ShadowReflection getComponentType();
 
    /**
     * returns Object[] for declared Arrays and an {@link Intersection} of {@code java.io.Serializable&java.lang.Cloneable}
     * for primitive Arrays
     */
-   List<Shadow> getDirectSuperTypes();
+   List<ShadowReflection> getDirectSuperTypes();
 }

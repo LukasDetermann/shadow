@@ -1,8 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.type.Generic;
@@ -35,19 +36,19 @@ public class GenericImpl implements GenericReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getTypeVariable().getAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public Shadow getExtends()
+   public ShadowReflection getExtends()
    {
       java.lang.reflect.Type[] bounds = getTypeVariable().getBounds();
       if (bounds.length == 1)
@@ -58,7 +59,7 @@ public class GenericImpl implements GenericReflection
    }
 
    @Override
-   public Optional<Shadow> getSuper()
+   public Optional<ShadowReflection> getSuper()
    {
       return Optional.empty();
    }

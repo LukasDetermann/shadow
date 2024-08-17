@@ -2,7 +2,7 @@ package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.directive.ProvidesReflection;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import java.lang.module.ModuleDescriptor;
@@ -21,13 +21,13 @@ public class ProvidesImpl implements ProvidesReflection
    }
 
    @Override
-   public Declared getService()
+   public DeclaredReflection getService()
    {
       return ReflectionAdapter.getDeclared(providesDirective.service()).orElseThrow();
    }
 
    @Override
-   public List<Declared> getImplementations()
+   public List<DeclaredReflection> getImplementations()
    {
       return providesDirective.providers()
                               .stream()

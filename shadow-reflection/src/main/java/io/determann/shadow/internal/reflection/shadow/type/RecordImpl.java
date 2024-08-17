@@ -1,9 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.structure.RecordComponentReflection;
+import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
 import io.determann.shadow.api.reflection.shadow.type.RecordReflection;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
@@ -15,16 +16,16 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public class RecordImpl extends DeclaredImpl implements RecordReflection
 {
-   private final List<Shadow> genericShadows;
+   private final List<ShadowReflection> genericShadows;
 
-   public RecordImpl(Class<?> aClass, List<Shadow> genericShadows)
+   public RecordImpl(Class<?> aClass, List<ShadowReflection> genericShadows)
    {
       super(aClass);
       this.genericShadows = genericShadows;
    }
 
    @Override
-   public List<RecordComponent> getRecordComponents()
+   public List<RecordComponentReflection> getRecordComponents()
    {
       return Arrays.stream(getaClass().getRecordComponents())
                    .map(ReflectionAdapter::generalize)
@@ -32,15 +33,15 @@ public class RecordImpl extends DeclaredImpl implements RecordReflection
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowReflection> getGenericTypes()
    {
       return genericShadows;
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericReflection> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(GenericReflection.class::cast).toList();
    }
 
    @Override

@@ -2,8 +2,8 @@ package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.directive.ExportsReflection;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
 
 import java.lang.module.ModuleDescriptor;
@@ -22,13 +22,13 @@ public class ExportsImpl implements ExportsReflection
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
       return ReflectionAdapter.getPackage(exportsDirective.source());
    }
 
    @Override
-   public List<Module> getTargetModules()
+   public List<ModuleReflection> getTargetModules()
    {
       return exportsDirective.targets() == null ?
              Collections.emptyList() :

@@ -2,13 +2,14 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.ArrayReflection;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.shadow.type.PrimitiveReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
@@ -24,7 +25,7 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 public class ArrayImpl implements ArrayReflection,
                                   ShadowReflection
 {
-   private static final List<Shadow> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
+   private static final List<ShadowReflection> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
                                                                     new InterfaceImpl(Cloneable.class),
                                                                     new InterfaceImpl(Serializable.class));
    private final Class<?> array;
@@ -68,13 +69,13 @@ public class ArrayImpl implements ArrayReflection,
    }
 
    @Override
-   public Shadow getComponentType()
+   public ShadowReflection getComponentType()
    {
       return ReflectionAdapter.generalize(getArray().getComponentType());
    }
 
    @Override
-   public List<Shadow> getDirectSuperTypes()
+   public List<ShadowReflection> getDirectSuperTypes()
    {
       Shadow componentShadow = getComponentType();
       if (isPrimitiveOrObject(componentShadow))
@@ -90,21 +91,21 @@ public class ArrayImpl implements ArrayReflection,
                        TypeKind typeKind = requestOrThrow(shadow, SHADOW_GET_KIND);
                        if (TypeKind.ARRAY.equals(typeKind))
                        {
-                          return ReflectionAdapter.particularize(((Array) shadow));
+                          return ReflectionAdapter.particularize(((ArrayReflection) shadow));
                        }
                        if (typeKind.isDeclared())
                        {
-                          return ReflectionAdapter.particularize(((Declared) shadow));
+                          return ReflectionAdapter.particularize(((DeclaredReflection) shadow));
                        }
                        if (typeKind.isPrimitive())
                        {
-                          return ReflectionAdapter.particularize((Primitive) shadow);
+                          return ReflectionAdapter.particularize((PrimitiveReflection) shadow);
                        }
                        throw new IllegalStateException();
                     })
                .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
                .map(ReflectionAdapter::generalize)
-               .map(Shadow.class::cast)
+               .map(ShadowReflection.class::cast)
                .toList();
       }
 
@@ -112,7 +113,7 @@ public class ArrayImpl implements ArrayReflection,
 
       if (componentShadow instanceof Declared declared)
       {
-         Class<?> reflection = ReflectionAdapter.particularize(declared);
+         Class<?> reflection = ReflectionAdapter.particularize((DeclaredReflection) declared);
          directSuperTypes.add(reflection.getSuperclass());
          Collections.addAll(directSuperTypes, reflection.getInterfaces());
       }
@@ -120,7 +121,7 @@ public class ArrayImpl implements ArrayReflection,
       return directSuperTypes.stream()
                              .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
                              .map(ReflectionAdapter::generalize)
-                             .map(Shadow.class::cast)
+                             .map(ShadowReflection.class::cast)
                              .toList();
    }
 

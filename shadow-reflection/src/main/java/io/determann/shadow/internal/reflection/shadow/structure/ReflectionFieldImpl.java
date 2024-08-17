@@ -1,8 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.VariableReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -37,7 +38,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public Shadow getType()
+   public ShadowReflection getType()
    {
       return ReflectionAdapter.generalize(field.getType());
    }
@@ -59,7 +60,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getField().getAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -67,7 +68,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getField().getDeclaredAnnotations())
                    .map(ReflectionAdapter::generalize)

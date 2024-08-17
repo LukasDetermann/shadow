@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.ReceiverReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.Receiver;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class ReceiverImpl implements ReceiverReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -34,7 +34,7 @@ public class ReceiverImpl implements ReceiverReflection
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -42,7 +42,7 @@ public class ReceiverImpl implements ReceiverReflection
    }
 
    @Override
-   public Shadow getType()
+   public ShadowReflection getType()
    {
       return ReflectionAdapter.generalize(annotatedType.getType());
    }

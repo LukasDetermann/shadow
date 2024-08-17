@@ -2,6 +2,7 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.type.IntersectionReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.type.Intersection;
 import io.determann.shadow.api.shadow.type.Shadow;
@@ -27,7 +28,7 @@ public class IntersectionImpl implements IntersectionReflection
    }
 
    @Override
-   public List<Shadow> getBounds()
+   public List<ShadowReflection> getBounds()
    {
       return Arrays.stream(bounds).map(ReflectionAdapter::generalize).toList();
    }
@@ -46,14 +47,14 @@ public class IntersectionImpl implements IntersectionReflection
                                                                        (List<Shadow>) requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
    }
 
-   private boolean sameBounds(List<Shadow> shadows, List<Shadow> shadows1)
+   private boolean sameBounds(List<ShadowReflection> shadows, List<Shadow> shadows1)
    {
       if (shadows.size() != shadows1.size())
       {
          return false;
       }
 
-      Iterator<Shadow> iterator = shadows.iterator();
+      Iterator<ShadowReflection> iterator = shadows.iterator();
       Iterator<Shadow> iterator1 = shadows1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {

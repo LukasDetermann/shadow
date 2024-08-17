@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.shadow.modifier.StaticModifiableReflection;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
 import io.determann.shadow.api.shadow.type.Enum;
 
 import java.util.List;
@@ -13,9 +13,9 @@ public interface EnumReflection extends Enum,
                                         DeclaredReflection,
                                         StaticModifiableReflection
 {
-   List<EnumConstant> getEumConstants();
+   List<EnumConstantReflection> getEumConstants();
 
-   default EnumConstant getEnumConstantOrThrow(String simpleName)
+   default EnumConstantReflection getEnumConstantOrThrow(String simpleName)
    {
       return getEumConstants().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }

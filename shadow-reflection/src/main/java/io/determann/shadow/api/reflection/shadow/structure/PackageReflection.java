@@ -3,12 +3,9 @@ package io.determann.shadow.api.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.shadow.type.*;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,102 +24,102 @@ public interface PackageReflection extends Package,
     */
    boolean isUnnamed();
 
-   List<Declared> getDeclared();
+   List<DeclaredReflection> getDeclared();
 
-   Optional<Declared> getDeclared(String qualifiedName);
+   Optional<DeclaredReflection> getDeclared(String qualifiedName);
 
-   default Declared getDeclaredOrThrow(String qualifiedName)
+   default DeclaredReflection getDeclaredOrThrow(String qualifiedName)
    {
       return getDeclared(qualifiedName).orElseThrow();
    }
 
-   default List<Annotation> getAnnotations()
+   default List<AnnotationReflection> getAnnotations()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Annotation) declared))
+                          .map(declared -> ((AnnotationReflection) declared))
                           .toList();
    }
 
-   default Optional<Annotation> getAnnotation(String qualifiedName)
+   default Optional<AnnotationReflection> getAnnotation(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Annotation.class::cast);
+      return getDeclared(qualifiedName).map(AnnotationReflection.class::cast);
    }
 
-   default Annotation getAnnotationOrThrow(String qualifiedName)
+   default AnnotationReflection getAnnotationOrThrow(String qualifiedName)
    {
-      return ((Annotation) getDeclaredOrThrow(qualifiedName));
+      return ((AnnotationReflection) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Class> getClasses()
+   default List<ClassReflection> getClasses()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Class) declared))
+                          .map(declared -> ((ClassReflection) declared))
                           .toList();
    }
 
-   default Optional<Class> getClass(String qualifiedName)
+   default Optional<ClassReflection> getClass(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Class.class::cast);
+      return getDeclared(qualifiedName).map(ClassReflection.class::cast);
    }
 
-   default Class getClassOrThrow(String qualifiedName)
+   default ClassReflection getClassOrThrow(String qualifiedName)
    {
-      return ((Class) getDeclaredOrThrow(qualifiedName));
+      return ((ClassReflection) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Enum> getEnums()
+   default List<EnumReflection> getEnums()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Enum) declared))
+                          .map(declared -> ((EnumReflection) declared))
                           .toList();
    }
 
-   default Optional<Enum> getEnum(String qualifiedName)
+   default Optional<EnumReflection> getEnum(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Enum.class::cast);
+      return getDeclared(qualifiedName).map(EnumReflection.class::cast);
    }
 
-   default Enum getEnumOrThrow(String qualifiedName)
+   default EnumReflection getEnumOrThrow(String qualifiedName)
    {
-      return ((Enum) getDeclaredOrThrow(qualifiedName));
+      return ((EnumReflection) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Interface> getInterfaces()
+   default List<InterfaceReflection> getInterfaces()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Interface) declared))
+                          .map(declared -> ((InterfaceReflection) declared))
                           .toList();
    }
 
-   default Optional<Interface> getInterface(String qualifiedName)
+   default Optional<InterfaceReflection> getInterface(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Interface.class::cast);
+      return getDeclared(qualifiedName).map(InterfaceReflection.class::cast);
    }
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default InterfaceReflection getInterfaceOrThrow(String qualifiedName)
    {
-      return ((Interface) getDeclaredOrThrow(qualifiedName));
+      return ((InterfaceReflection) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Record> getRecords()
+   default List<RecordReflection> getRecords()
    {
       return getDeclared().stream()
                           .filter(declared -> TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                          .map(declared -> ((Record) declared))
+                          .map(declared -> ((RecordReflection) declared))
                           .toList();
    }
 
-   default Optional<Record> getRecord(String qualifiedName)
+   default Optional<RecordReflection> getRecord(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Record.class::cast);
+      return getDeclared(qualifiedName).map(RecordReflection.class::cast);
    }
 
-   default Record getRecordOrThrow(String qualifiedName)
+   default RecordReflection getRecordOrThrow(String qualifiedName)
    {
-      return ((Record) getDeclaredOrThrow(qualifiedName));
+      return ((RecordReflection) getDeclaredOrThrow(qualifiedName));
    }
 }

@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.AnnotationValueReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import java.lang.annotation.Annotation;
@@ -241,7 +241,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public Shadow getValue()
+      public ShadowReflection getValue()
       {
          return ReflectionAdapter.generalize(((Class<?>) annotationValue));
       }
@@ -258,7 +258,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public EnumConstant getValue()
+      public EnumConstantReflection getValue()
       {
          return ReflectionAdapter.generalize((Enum<?>) annotationValue);
       }
@@ -275,7 +275,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public AnnotationUsage getValue()
+      public AnnotationUsageReflection getValue()
       {
          return new AnnotationUsageImpl(((Annotation) annotationValue));
       }

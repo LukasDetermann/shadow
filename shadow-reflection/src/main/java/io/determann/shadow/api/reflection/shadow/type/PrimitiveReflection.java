@@ -1,7 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -29,5 +28,5 @@ public interface PrimitiveReflection extends Primitive,
     * long -&gt; Long<br>
     * etc...
     */
-   Class asBoxed();
+   ClassReflection asBoxed();
 }

@@ -2,9 +2,9 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.structure.PropertyReflection;
-import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.reflection.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.reflection.shadow.structure.PropertyImpl;
@@ -16,21 +16,21 @@ import java.util.Optional;
 
 public class ClassImpl extends DeclaredImpl implements ClassReflection
 {
-   private final List<Shadow> genericShadows;
+   private final List<ShadowReflection> genericShadows;
 
    public ClassImpl(java.lang.Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public ClassImpl(java.lang.Class<?> aClass, List<Shadow> genericShadows)
+   public ClassImpl(java.lang.Class<?> aClass, List<ShadowReflection> genericShadows)
    {
       super(aClass);
       this.genericShadows = genericShadows;
    }
 
    @Override
-   public Class getSuperClass()
+   public ClassReflection getSuperClass()
    {
       java.lang.Class<?> superclass = getaClass().getSuperclass();
       if (superclass == null)
@@ -41,11 +41,11 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    }
 
    @Override
-   public List<Class> getPermittedSubClasses()
+   public List<ClassReflection> getPermittedSubClasses()
    {
       return Arrays.stream(getaClass().getPermittedSubclasses())
                    .map(ReflectionAdapter::generalize)
-                   .map(Class.class::cast)
+                   .map(ClassReflection.class::cast)
                    .toList();
    }
 
@@ -62,11 +62,11 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return shadow instanceof Declared declared && getaClass().isAssignableFrom(ReflectionAdapter.particularize(declared));
+      return shadow instanceof Declared declared && getaClass().isAssignableFrom(ReflectionAdapter.particularize((DeclaredReflection) declared));
    }
 
    @Override
-   public Optional<Declared> getOuterType()
+   public Optional<DeclaredReflection> getOuterType()
    {
       java.lang.Class<?> enclosingClass = getaClass().getEnclosingClass();
       if (enclosingClass == null)
@@ -77,19 +77,19 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowReflection> getGenericTypes()
    {
       return genericShadows;
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericReflection> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(GenericReflection.class::cast).toList();
    }
 
    @Override
-   public Primitive asUnboxed()
+   public PrimitiveReflection asUnboxed()
    {
       if (!getKind().isPrimitive())
       {

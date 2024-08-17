@@ -1,13 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.directive.DirectiveReflection;
 import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.directive.Directive;
 import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
@@ -23,7 +23,7 @@ import static java.util.Collections.unmodifiableList;
 
 public class ModuleImpl implements ModuleReflection
 {
-   private final List<AnnotationUsage> annotationUsages;
+   private final List<AnnotationUsageReflection> annotationUsages;
    private final NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier;
 
    public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier)
@@ -31,7 +31,7 @@ public class ModuleImpl implements ModuleReflection
       this(moduleDescriptorSupplier, Collections.emptyList());
    }
 
-   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<AnnotationUsage> annotationUsages)
+   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<AnnotationUsageReflection> annotationUsages)
    {
       this.moduleDescriptorSupplier = moduleDescriptorSupplier;
       this.annotationUsages = annotationUsages;
@@ -50,25 +50,25 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<Declared> getDeclared()
+   public List<DeclaredReflection> getDeclared()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
-   public Optional<Declared> getDeclared(String qualifiedName)
+   public Optional<DeclaredReflection> getDeclared(String qualifiedName)
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -80,9 +80,9 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<Package> getPackages()
+   public List<PackageReflection> getPackages()
    {
-      return getModuleDescriptor().packages().stream().map(ReflectionAdapter::getPackage).map(Package.class::cast).toList();
+      return getModuleDescriptor().packages().stream().map(ReflectionAdapter::getPackage).map(PackageReflection.class::cast).toList();
    }
 
    @Override
@@ -104,10 +104,10 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<Directive> getDirectives()
+   public List<DirectiveReflection> getDirectives()
    {
       ModuleDescriptor descriptor = getModuleDescriptor();
-      List<Directive> result = descriptor.requires()
+      List<DirectiveReflection> result = descriptor.requires()
                                             .stream()
                                             .map(ReflectionAdapter::generalize)
                                             .collect(Collectors.toCollection(ArrayList::new));

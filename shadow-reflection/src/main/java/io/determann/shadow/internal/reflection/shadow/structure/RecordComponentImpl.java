@@ -1,16 +1,19 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.RecordComponentReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.RecordReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +33,9 @@ public class RecordComponentImpl implements RecordComponentReflection
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
-      return requestOrThrow(getRecord(), MODULE_ENCLOSED_GET_MODULE);
+      return getRecord().getModule();
    }
 
    @Override
@@ -42,13 +45,13 @@ public class RecordComponentImpl implements RecordComponentReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getRecordComponent().getAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getRecordComponent().getDeclaredAnnotations()).map(ReflectionAdapter::generalize).toList();
    }
@@ -86,27 +89,27 @@ public class RecordComponentImpl implements RecordComponentReflection
    }
 
    @Override
-   public Record getRecord()
+   public RecordReflection getRecord()
    {
       return ReflectionAdapter.generalize(getRecordComponent().getDeclaringRecord());
    }
 
    @Override
-   public Shadow getType()
+   public ShadowReflection getType()
    {
       return ReflectionAdapter.generalize(getRecordComponent().getType());
    }
 
    @Override
-   public Method getGetter()
+   public MethodReflection getGetter()
    {
       return ReflectionAdapter.generalize(getRecordComponent().getAccessor());
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
-      return ReflectionAdapter.generalize(getRecordComponent().getDeclaringRecord().getPackage());
+      return getRecord().getPackage();
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()

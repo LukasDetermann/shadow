@@ -1,17 +1,20 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.structure.ConstructorReflection;
-import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.lang.reflect.AnnotatedType;
@@ -35,9 +38,9 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
-      return requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return getSurrounding().getModule();
    }
 
    @Override
@@ -47,7 +50,7 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -55,7 +58,7 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getDeclaredAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -84,16 +87,16 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public List<Parameter> getParameters()
+   public List<ParameterReflection> getParameters()
    {
-      List<Parameter> result = Arrays.stream(getExecutable().getParameters())
+      List<ParameterReflection> result = Arrays.stream(getExecutable().getParameters())
                                      .map(ReflectionAdapter::generalize)
-                                     .map(Parameter.class::cast)
+                                     .map(ParameterReflection.class::cast)
                                      .collect(Collectors.toList());
 
       if (executable instanceof java.lang.reflect.Constructor<?>)
       {
-         Optional<Receiver> receiver = getReceiver();
+         Optional<ReceiverReflection> receiver = getReceiver();
 
          if (receiver.isPresent() &&
              !result.isEmpty() &&
@@ -106,27 +109,27 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public Return getReturn()
+   public ReturnReflection getReturn()
    {
       return new ReturnImpl(getExecutable().getAnnotatedReturnType());
    }
 
    @Override
-   public Shadow getReturnType()
+   public ShadowReflection getReturnType()
    {
       return ReflectionAdapter.generalize(getExecutable().getAnnotatedReturnType().getType());
    }
 
    @Override
-   public List<Shadow> getParameterTypes()
+   public List<ShadowReflection> getParameterTypes()
    {
-      return Arrays.stream(getExecutable().getParameterTypes()).map(ReflectionAdapter::generalize).map(Shadow.class::cast).toList();
+      return Arrays.stream(getExecutable().getParameterTypes()).map(ReflectionAdapter::generalize).map(ShadowReflection.class::cast).toList();
    }
 
    @Override
-   public List<Class> getThrows()
+   public List<ClassReflection> getThrows()
    {
-      return Arrays.stream(getExecutable().getExceptionTypes()).map(ReflectionAdapter::generalize).map(Class.class::cast).toList();
+      return Arrays.stream(getExecutable().getExceptionTypes()).map(ReflectionAdapter::generalize).map(ClassReflection.class::cast).toList();
    }
 
    @Override
@@ -143,25 +146,25 @@ public class ExecutableImpl implements ConstructorReflection,
    }
 
    @Override
-   public Declared getSurrounding()
+   public DeclaredReflection getSurrounding()
    {
       return ReflectionAdapter.generalize(getExecutable().getDeclaringClass());
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
-      return requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
+      return getSurrounding().getPackage();
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericReflection> getGenerics()
    {
-      return Arrays.stream(getExecutable().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
+      return Arrays.stream(getExecutable().getTypeParameters()).map(ReflectionAdapter::generalize).map(GenericReflection.class::cast).toList();
    }
 
    @Override
-   public Optional<Declared> getReceiverType()
+   public Optional<DeclaredReflection> getReceiverType()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
       if (receiverType == null)
@@ -174,11 +177,11 @@ public class ExecutableImpl implements ConstructorReflection,
       {
          return Optional.empty();
       }
-      return Optional.of(((Declared) ReflectionAdapter.generalize(receiverType.getType())));
+      return Optional.of(((DeclaredReflection) ReflectionAdapter.generalize(receiverType.getType())));
    }
 
    @Override
-   public Optional<Receiver> getReceiver()
+   public Optional<ReceiverReflection> getReceiver()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
       if (receiverType == null)

@@ -1,9 +1,8 @@
 package io.determann.shadow.api.reflection.shadow;
 
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.List;
 
@@ -73,19 +72,19 @@ public sealed interface AnnotationValueReflection extends AnnotationValue
    non-sealed interface TypeValue extends AnnotationValueReflection
    {
       @Override
-      Shadow getValue();
+      ShadowReflection getValue();
    }
 
    non-sealed interface EnumConstantValue extends AnnotationValueReflection
    {
       @Override
-      EnumConstant getValue();
+      EnumConstantReflection getValue();
    }
 
    non-sealed interface AnnotationUsageValue extends AnnotationValueReflection
    {
       @Override
-      AnnotationUsage getValue();
+      AnnotationUsageReflection getValue();
    }
 
    non-sealed interface Values extends AnnotationValueReflection

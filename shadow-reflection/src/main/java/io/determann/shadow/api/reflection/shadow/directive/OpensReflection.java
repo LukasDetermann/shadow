@@ -1,8 +1,8 @@
 package io.determann.shadow.api.reflection.shadow.directive;
 
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.api.shadow.directive.Opens;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ public non-sealed interface OpensReflection extends DirectiveReflection,
    /**
     * the package to be accessed by reflection
     */
-   Package getPackage();
+   PackageReflection getPackage();
 
    /**
     * Modules allowed to access {@link #getPackage()} or {@link #toAll()} if the list is empty
     */
-   List<Module> getTargetModules();
+   List<ModuleReflection> getTargetModules();
 
    boolean toAll();
 }

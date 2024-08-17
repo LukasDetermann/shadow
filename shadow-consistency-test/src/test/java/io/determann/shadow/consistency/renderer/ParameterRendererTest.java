@@ -4,8 +4,8 @@ import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.ReflectionQueries;
+import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
 import io.determann.shadow.api.shadow.Operations;
-import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
@@ -56,9 +56,9 @@ class ParameterRendererTest
                            },
                            aClass ->
                            {
-                              List<Parameter> parameters = ReflectionQueries.query(ReflectionQueries.query(aClass).getMethods()
-                                                                            .get(0))
-                                                                            .getParameters();
+                              List<ParameterReflection> parameters = ReflectionQueries.query(aClass).getMethods()
+                                                                                      .get(0)
+                                                                                      .getParameters();
 
                               assertEquals("@MyAnnotation Long arg0", render(DEFAULT, parameters.get(0)).declaration());
                               assertEquals("Long... arg1", render(DEFAULT, parameters.get(1)).declaration());

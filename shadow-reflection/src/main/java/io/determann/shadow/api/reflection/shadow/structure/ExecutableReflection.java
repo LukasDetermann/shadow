@@ -3,12 +3,15 @@ package io.determann.shadow.api.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
+import io.determann.shadow.api.shadow.structure.Constructor;
+import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.structure.Parameter;
 import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.lang.annotation.ElementType;
 import java.util.List;
@@ -38,9 +41,9 @@ public interface ExecutableReflection extends Executable,
     * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
     * {@link Constructor}s with more than one {@link Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
     */
-   List<Parameter> getParameters();
+   List<ParameterReflection> getParameters();
 
-   default Parameter getParameterOrThrow(String name)
+   default ParameterReflection getParameterOrThrow(String name)
    {
       return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_GET_NAME).equals(name)).findAny().orElseThrow();
    }
@@ -48,13 +51,13 @@ public interface ExecutableReflection extends Executable,
    /**
     * Can be annotated using annotations with {@link ElementType#TYPE_USE}
     */
-   Return getReturn();
+   ReturnReflection getReturn();
 
-   Shadow getReturnType();
+   ShadowReflection getReturnType();
 
-   List<Shadow> getParameterTypes();
+   List<ShadowReflection> getParameterTypes();
 
-   List<Class> getThrows();
+   List<ClassReflection> getThrows();
 
    /**
     * {@link List#of(Object[])}
@@ -64,24 +67,24 @@ public interface ExecutableReflection extends Executable,
    /**
     * returns the {@link Declared} that surrounds this {@link ExecutableReflection}
     */
-   Declared getSurrounding();
+   DeclaredReflection getSurrounding();
 
-   Package getPackage();
+   PackageReflection getPackage();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
-   List<Generic> getGenerics();
+   List<GenericReflection> getGenerics();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
     * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
     */
-   Optional<Declared> getReceiverType();
+   Optional<DeclaredReflection> getReceiverType();
 
    /**
     * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
     * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
     */
-   Optional<Receiver> getReceiver();
+   Optional<ReceiverReflection> getReceiver();
 }

@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.directive;
 
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.api.shadow.directive.Provides;
-import io.determann.shadow.api.shadow.type.Declared;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public non-sealed interface ProvidesReflection extends DirectiveReflection,
    /**
     * a service to provide to other modules
     */
-   Declared getService();
+   DeclaredReflection getService();
 
    /**
     * Implementations of the provided service
     */
-   List<Declared> getImplementations();
+   List<DeclaredReflection> getImplementations();
 }

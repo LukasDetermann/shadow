@@ -2,8 +2,8 @@ package io.determann.shadow.internal.reflection.shadow.directive;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.directive.OpensReflection;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import java.lang.module.ModuleDescriptor;
@@ -21,13 +21,13 @@ public class OpensImpl implements OpensReflection
    }
 
    @Override
-   public Package getPackage()
+   public PackageReflection getPackage()
    {
       return ReflectionAdapter.getPackage(opensDirective.source());
    }
 
    @Override
-   public List<Module> getTargetModules()
+   public List<ModuleReflection> getTargetModules()
    {
       return opensDirective.targets()
                            .stream()

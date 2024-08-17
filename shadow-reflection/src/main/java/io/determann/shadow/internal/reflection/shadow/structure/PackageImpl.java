@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
 import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class PackageImpl implements PackageReflection
    }
 
    @Override
-   public Module getModule()
+   public ModuleReflection getModule()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -46,7 +46,7 @@ public class PackageImpl implements PackageReflection
    }
 
    @Override
-   public List<AnnotationUsage> getAnnotationUsages()
+   public List<AnnotationUsageReflection> getAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -54,7 +54,7 @@ public class PackageImpl implements PackageReflection
    }
 
    @Override
-   public List<AnnotationUsage> getDirectAnnotationUsages()
+   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getDeclaredAnnotations())
                    .map(ReflectionAdapter::generalize)
@@ -62,13 +62,13 @@ public class PackageImpl implements PackageReflection
    }
 
    @Override
-   public List<Declared> getDeclared()
+   public List<DeclaredReflection> getDeclared()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
-   public Optional<Declared> getDeclared(String qualifiedName)
+   public Optional<DeclaredReflection> getDeclared(String qualifiedName)
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }

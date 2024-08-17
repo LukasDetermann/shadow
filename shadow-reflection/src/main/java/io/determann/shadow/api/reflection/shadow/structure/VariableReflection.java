@@ -4,8 +4,10 @@ import io.determann.shadow.api.reflection.shadow.AnnotationableReflection;
 import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.ModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.structure.*;
+import io.determann.shadow.api.shadow.structure.EnumConstant;
+import io.determann.shadow.api.shadow.structure.Field;
+import io.determann.shadow.api.shadow.structure.Parameter;
+import io.determann.shadow.api.shadow.structure.Variable;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 /**
@@ -36,9 +38,9 @@ public interface VariableReflection extends Variable,
     */
    boolean isAssignableFrom(Shadow shadow);
 
-   Shadow getType();
+   ShadowReflection getType();
 
-   Package getPackage();
+   PackageReflection getPackage();
 
    /**
     * The {@link Object} surrounding this {@link VariableReflection}

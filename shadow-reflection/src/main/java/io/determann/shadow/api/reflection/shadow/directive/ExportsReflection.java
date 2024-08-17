@@ -1,8 +1,8 @@
 package io.determann.shadow.api.reflection.shadow.directive;
 
+import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
+import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.api.shadow.directive.Exports;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ public non-sealed interface ExportsReflection extends DirectiveReflection,
    /**
     * packages to export to every module in {@link #getTargetModules()} or all if the list is empty
     */
-   Package getPackage();
+   PackageReflection getPackage();
 
    /**
     * The list of modules the package is exported to. or all if the list is empty
     */
-   List<Module> getTargetModules();
+   List<ModuleReflection> getTargetModules();
 
    boolean toAll();
 }

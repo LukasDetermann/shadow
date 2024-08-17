@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
 import io.determann.shadow.api.reflection.shadow.type.PrimitiveReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
@@ -61,11 +61,11 @@ public class PrimitiveImpl implements Primitive,
    @Override
    public boolean isAssignableFrom(Shadow shadow)
    {
-      return shadow instanceof Primitive primitive && getaClass().isAssignableFrom(ReflectionAdapter.particularize(primitive));
+      return shadow instanceof Primitive primitive && getaClass().isAssignableFrom(ReflectionAdapter.particularize((PrimitiveReflection) primitive));
    }
 
    @Override
-   public Class asBoxed()
+   public ClassReflection asBoxed()
    {
       return new ClassImpl(Objects.requireNonNull(PRIMITIVE_BOXED_MAP.get(getaClass())));
    }

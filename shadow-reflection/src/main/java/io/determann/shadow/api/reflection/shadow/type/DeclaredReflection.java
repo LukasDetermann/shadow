@@ -5,12 +5,8 @@ import io.determann.shadow.api.reflection.shadow.NameableReflection;
 import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.AccessModifiableReflection;
 import io.determann.shadow.api.reflection.shadow.modifier.StrictfpModifiableReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleEnclosedReflection;
+import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.shadow.NestingKind;
-import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Annotation;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.api.shadow.type.Interface;
@@ -54,35 +50,35 @@ public interface DeclaredReflection extends Declared,
     */
    NestingKind getNesting();
 
-   default Field getFieldOrThrow(String simpleName)
+   default FieldReflection getFieldOrThrow(String simpleName)
    {
       return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }
 
-   List<Field> getFields();
+   List<FieldReflection> getFields();
 
-   default List<Method> getMethods(String simpleName)
+   default List<MethodReflection> getMethods(String simpleName)
    {
       return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).toList();
    }
 
-   List<Method> getMethods();
+   List<MethodReflection> getMethods();
 
-   List<Constructor> getConstructors();
+   List<ConstructorReflection> getConstructors();
 
    /**
     * returns the parentClass including interfaces
     */
-   List<Declared> getDirectSuperTypes();
+   List<DeclaredReflection> getDirectSuperTypes();
 
    /**
     * returns all distinct supertypes including interfaces
     */
-   Set<Declared> getSuperTypes();
+   Set<DeclaredReflection> getSuperTypes();
 
-   List<Interface> getInterfaces();
+   List<InterfaceReflection> getInterfaces();
 
-   default Interface getInterfaceOrThrow(String qualifiedName)
+   default InterfaceReflection getInterfaceOrThrow(String qualifiedName)
    {
       return getInterfaces().stream()
                             .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
@@ -90,10 +86,10 @@ public interface DeclaredReflection extends Declared,
                             .orElseThrow();
    }
 
-   List<Interface> getDirectInterfaces();
+   List<InterfaceReflection> getDirectInterfaces();
 
 
-   default Interface getDirectInterfaceOrThrow(String qualifiedName)
+   default InterfaceReflection getDirectInterfaceOrThrow(String qualifiedName)
    {
       return getDirectInterfaces().stream()
                                   .filter(anInterface -> requestOrThrow(anInterface,
@@ -102,7 +98,7 @@ public interface DeclaredReflection extends Declared,
                                   .orElseThrow();
    }
 
-   Package getPackage();
+   PackageReflection getPackage();
 
    /**
     * part of the java language specification:

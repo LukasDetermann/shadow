@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.reflection.shadow.structure.FieldReflection;
+import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
 import io.determann.shadow.api.reflection.shadow.structure.PropertyReflection;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.structure.Property;
-import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.Optional;
 
@@ -13,6 +13,9 @@ import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
 import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
+/**
+ * implementation note: the casts to LangModel types are safe
+ */
 public class PropertyImpl implements PropertyReflection
 {
    private final Property delegate;
@@ -29,37 +32,37 @@ public class PropertyImpl implements PropertyReflection
    }
 
    @Override
-   public Shadow getType()
+   public ShadowReflection getType()
    {
-      return requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (ShadowReflection) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override
-   public Optional<Field> getField()
+   public Optional<FieldReflection> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD);
+      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(FieldReflection.class::cast);
    }
 
    @Override
-   public Field getFieldOrThrow()
+   public FieldReflection getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public Method getGetter()
+   public MethodReflection getGetter()
    {
-      return requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return (MethodReflection) requestOrThrow(delegate, PROPERTY_GET_GETTER);
    }
 
    @Override
-   public Optional<Method> getSetter()
+   public Optional<MethodReflection> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER);
+      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(MethodReflection.class::cast);
    }
 
    @Override
-   public Method getSetterOrThrow()
+   public MethodReflection getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }

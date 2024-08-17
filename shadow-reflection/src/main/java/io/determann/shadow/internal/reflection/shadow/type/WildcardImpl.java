@@ -55,7 +55,7 @@ public class WildcardImpl implements Wildcard,
    }
 
    @Override
-   public Optional<Shadow> getExtends()
+   public Optional<ShadowReflection> getExtends()
    {
       java.lang.reflect.Type[] upperBounds = wildcardType.getUpperBounds();
       //? extends Object -> ? : drop the extends Object
@@ -73,7 +73,7 @@ public class WildcardImpl implements Wildcard,
    }
 
    @Override
-   public Optional<Shadow> getSuper()
+   public Optional<ShadowReflection> getSuper()
    {
       java.lang.reflect.Type[] lowerBounds = wildcardType.getLowerBounds();
       return switch (lowerBounds.length)

@@ -2,11 +2,11 @@ package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
+import io.determann.shadow.api.reflection.shadow.AnnotationValueReflection;
+import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
+import io.determann.shadow.api.reflection.shadow.type.AnnotationReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.AnnotationValue;
 import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.type.Annotation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -30,7 +30,7 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
    }
 
    @Override
-   public Map<Method, AnnotationValue> getValues()
+   public Map<MethodReflection, AnnotationValueReflection> getValues()
    {
       return Arrays.stream(annotation.annotationType().getDeclaredMethods())
                    .filter(method -> method.getParameterCount() == 0)
@@ -55,7 +55,7 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
    }
 
    @Override
-   public Annotation getAnnotation()
+   public AnnotationReflection getAnnotation()
    {
       return ReflectionAdapter.generalize(annotation.annotationType());
    }

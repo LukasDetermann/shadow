@@ -1,8 +1,8 @@
 package io.determann.shadow.api.reflection.shadow;
 
+import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
+import io.determann.shadow.api.reflection.shadow.type.AnnotationReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.Method;
 import io.determann.shadow.api.shadow.type.Annotation;
 
 import java.util.Map;
@@ -18,14 +18,14 @@ import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
  */
 public interface AnnotationUsageReflection extends AnnotationUsage
 {
-   Map<Method, AnnotationValue> getValues();
+   Map<MethodReflection, AnnotationValueReflection> getValues();
 
-   default AnnotationValue getValueOrThrow(String methodName)
+   default AnnotationValueReflection getValueOrThrow(String methodName)
    {
       return getValue(methodName).orElseThrow();
    }
 
-   default Optional<AnnotationValue> getValue(String methodName)
+   default Optional<AnnotationValueReflection> getValue(String methodName)
    {
       return getValues().entrySet()
                         .stream()
@@ -34,5 +34,5 @@ public interface AnnotationUsageReflection extends AnnotationUsage
                         .findAny();
    }
 
-   Annotation getAnnotation();
+   AnnotationReflection getAnnotation();
 }

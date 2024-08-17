@@ -1,10 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
 import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
+import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.type.Generic;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
@@ -18,14 +19,14 @@ import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
 {
-   private final List<Shadow> genericShadows;
+   private final List<ShadowReflection> genericShadows;
 
    public InterfaceImpl(Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public InterfaceImpl(Class<?> aClass, List<Shadow> genericShadows)
+   public InterfaceImpl(Class<?> aClass, List<ShadowReflection> genericShadows)
    {
       super(aClass);
       this.genericShadows = genericShadows;
@@ -60,15 +61,15 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection
    }
 
    @Override
-   public List<Shadow> getGenericTypes()
+   public List<ShadowReflection> getGenericTypes()
    {
       return genericShadows;
    }
 
    @Override
-   public List<Generic> getGenerics()
+   public List<GenericReflection> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(GenericReflection.class::cast).toList();
    }
 
    @Override
