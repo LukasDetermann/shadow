@@ -6,6 +6,6 @@ class VoidTest extends ShadowTest<Void>
 {
    VoidTest()
    {
-      super(shadowApi -> shadowApi.getConstants().getVoid());
+      super(context -> context.getConstants().getVoid());
    }
 }

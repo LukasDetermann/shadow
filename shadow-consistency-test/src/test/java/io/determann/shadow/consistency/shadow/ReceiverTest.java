@@ -1,10 +1,9 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.structure.Receiver;
+import io.determann.shadow.api.lang_model.shadow.structure.ReceiverLangModel;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ReceiverTest
@@ -14,13 +13,13 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = query(query(context.getClassOrThrow("ReceiverExample.Inner"))
+                               ReceiverLangModel receiver = context.getClassOrThrow("ReceiverExample.Inner")
                                                                    .getConstructors()
-                                                                   .get(0))
+                                                                   .get(0)
                                                                    .getReceiver()
                                                                    .get();
 
-                               assertEquals(context.getClassOrThrow("ReceiverExample"), query(receiver).getType());
+                               assertEquals(context.getClassOrThrow("ReceiverExample"), receiver.getType());
                             })
                    .withCodeToCompile("ReceiverExample.java", """
                          public class ReceiverExample {
@@ -37,14 +36,14 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               Receiver receiver = query(query(context.getClassOrThrow("ReceiverExample.Inner"))
+                               ReceiverLangModel receiver = context.getClassOrThrow("ReceiverExample.Inner")
                                                                    .getConstructors()
-                                                                   .get(0))
+                                                                   .get(0)
                                                                    .getReceiver()
                                                                    .get();
 
-                               assertEquals(1, query(receiver).getAnnotationUsages().size());
-                               assertEquals(2, query(query(query(receiver).getAnnotationUsages().get(0)).getValueOrThrow("value")).getValue());
+                               assertEquals(1, receiver.getAnnotationUsages().size());
+                               assertEquals(2, receiver.getAnnotationUsages().get(0).getValueOrThrow("value").getValue());
                             })
                    .withCodeToCompile("MyAnnotation.java", "@java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE) @interface MyAnnotation{int value();}")
                    .withCodeToCompile("ReceiverExample.java", """

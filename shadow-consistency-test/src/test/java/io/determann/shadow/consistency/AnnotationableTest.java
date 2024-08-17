@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,15 +14,15 @@ class AnnotationableTest
    @Test
    void getAnnotationsTest()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(shadowApi.getClassOrThrow("NotAnnotated")).getAnnotationUsages().isEmpty());
+                               assertTrue(context.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsageLangModel> annotations = shadowApi.getClassOrThrow("Child").getAnnotationUsages();
+                               List<AnnotationUsageLangModel> annotations = context.getClassOrThrow("Child").getAnnotationUsages();
 
                                assertEquals(2, annotations.size());
-                               assertEquals("ParentAnnotation", query(query(annotations.get(0)).getAnnotation()).getQualifiedName());
-                               assertEquals("ChildAnnotation", query(query(annotations.get(1)).getAnnotation()).getQualifiedName());
+                               assertEquals("ParentAnnotation", annotations.get(0).getAnnotation().getQualifiedName());
+                               assertEquals("ChildAnnotation", annotations.get(1).getAnnotation().getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")
@@ -36,14 +35,14 @@ class AnnotationableTest
    @Test
    void getDirectAnnotationsTest()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(shadowApi.getClassOrThrow("NotAnnotated")).getDirectAnnotationUsages().isEmpty());
+                               assertTrue(context.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsageLangModel> directAnnotations = shadowApi.getClassOrThrow("Child").getDirectAnnotationUsages();
+                               List<AnnotationUsageLangModel> directAnnotations = context.getClassOrThrow("Child").getDirectAnnotationUsages();
 
                                assertEquals(1, directAnnotations.size());
-                               assertEquals("ChildAnnotation", query(query(directAnnotations.get(0)).getAnnotation()).getQualifiedName());
+                               assertEquals("ChildAnnotation", directAnnotations.get(0).getAnnotation().getQualifiedName());
                             })
                    .withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                    .withCodeToCompile("ParentAnnotation.java", "@java.lang.annotation.Inherited @interface ParentAnnotation{}")

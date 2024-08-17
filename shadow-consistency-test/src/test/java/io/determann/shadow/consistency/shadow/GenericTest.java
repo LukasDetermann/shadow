@@ -1,26 +1,26 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.shadow.type.Generic;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericTest extends ShadowTest<Generic>
 {
    GenericTest()
    {
-      super(shadowApi -> query(shadowApi.getInterfaceOrThrow("java.lang.Comparable")).getGenerics().get(0));
+      super(context -> context.getInterfaceOrThrow("java.lang.Comparable").getGenerics().get(0));
    }
 
    @Test
    void testGetExtends()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      query(((Generic) query(shadowApi.getClassOrThrow("GenericsExample"))
-                                                            .getGenericTypes()
-                                                            .get(0)))
+      ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Number"),
+                                                      ((GenericLangModel) context.getClassOrThrow("GenericsExample")
+                                                                                 .getGenericTypes()
+                                                                                 .get(0))
                                                             .getExtends()))
                    .withCodeToCompile("GenericsExample.java", """
                          import java.util.List;
@@ -35,10 +35,10 @@ class GenericTest extends ShadowTest<Generic>
    @Test
    void testGetEnclosing()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("GenericsExample"),
-                                                      query(((Generic) query(shadowApi.getClassOrThrow("GenericsExample"))
+      ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("GenericsExample"),
+                                                      ((GenericLangModel) context.getClassOrThrow("GenericsExample")
                                                             .getGenericTypes()
-                                                            .get(0)))
+                                                            .get(0))
                                                             .getEnclosing()))
                    .withCodeToCompile("GenericsExample.java", """
                          import java.util.List;

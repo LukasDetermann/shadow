@@ -1,14 +1,11 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Interface;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,27 +13,26 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RecordTest extends DeclaredTest<Record>
+class RecordTest extends DeclaredTest<RecordLangModel>
 {
    RecordTest()
    {
-      super(shadowApi -> shadowApi.getRecordOrThrow("RecordExample"));
+      super(context -> context.getRecordOrThrow("RecordExample"));
    }
 
    @Test
    void testgetRecordComponentOrThrow()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               RecordComponent idComponent = query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("id");
-                               assertEquals("id", LangModelQueries.query(idComponent).getName());
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.Long"), query(idComponent).getType());
+                               RecordComponentLangModel idComponent = getShadowSupplier().apply(context).getRecordComponentOrThrow("id");
+                               assertEquals("id", idComponent.getName());
+                               assertEquals(context.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                assertThrows(NoSuchElementException.class,
-                                            () -> query(getShadowSupplier().apply(shadowApi)).getRecordComponentOrThrow("asdf"));
+                                            () -> getShadowSupplier().apply(context).getRecordComponentOrThrow("asdf"));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -45,8 +41,8 @@ class RecordTest extends DeclaredTest<Record>
    @Test
    void testGetDirectInterfaces()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getInterfaceOrThrow("java.io.Serializable")),
-                                                      query(getShadowSupplier().apply(shadowApi)).getDirectInterfaces()))
+      ProcessorTest.process(context -> assertEquals(List.of(context.getInterfaceOrThrow("java.io.Serializable")),
+                                                      getShadowSupplier().apply(context).getDirectInterfaces()))
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
    }
@@ -55,11 +51,11 @@ class RecordTest extends DeclaredTest<Record>
    @Override
    void testisSubtypeOf()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Record")));
-                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Record")));
+                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(getShadowSupplier().apply(context)));
+                               assertFalse(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -69,15 +65,15 @@ class RecordTest extends DeclaredTest<Record>
    @Override
    void testGetDirectSuperTypes()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Record")),
-                                            query(shadowApi.getRecordOrThrow("RecordNoParent")).getDirectSuperTypes());
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.Record")),
+                                            context.getRecordOrThrow("RecordNoParent").getDirectSuperTypes());
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Record"),
-                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
-                                                    shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            query(shadowApi.getRecordOrThrow("RecordMultiParent")).getDirectSuperTypes());
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.Record"),
+                                                    context.getInterfaceOrThrow("java.util.function.Consumer"),
+                                                    context.getInterfaceOrThrow("java.util.function.Supplier")),
+                                            context.getRecordOrThrow("RecordMultiParent").getDirectSuperTypes());
                             })
                    .withCodeToCompile("RecordNoParent.java", "record RecordNoParent() {}")
                    .withCodeToCompile("RecordMultiParent.java", """
@@ -95,16 +91,16 @@ class RecordTest extends DeclaredTest<Record>
    @Override
    void testGetSuperTypes()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"), shadowApi.getClassOrThrow("java.lang.Record")),
-                                            query(shadowApi.getRecordOrThrow("RecordNoParent")).getSuperTypes());
+                               assertEquals(Set.of(context.getClassOrThrow("java.lang.Object"), context.getClassOrThrow("java.lang.Record")),
+                                            context.getRecordOrThrow("RecordNoParent").getSuperTypes());
 
-                               assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                   shadowApi.getClassOrThrow("java.lang.Record"),
-                                                   shadowApi.getInterfaceOrThrow("java.util.function.Consumer"),
-                                                   shadowApi.getInterfaceOrThrow("java.util.function.Supplier")),
-                                            query(shadowApi.getRecordOrThrow("RecordMultiParent")).getSuperTypes());
+                               assertEquals(Set.of(context.getClassOrThrow("java.lang.Object"),
+                                                   context.getClassOrThrow("java.lang.Record"),
+                                                   context.getInterfaceOrThrow("java.util.function.Consumer"),
+                                                   context.getInterfaceOrThrow("java.util.function.Supplier")),
+                                            context.getRecordOrThrow("RecordMultiParent").getSuperTypes());
                             })
                    .withCodeToCompile("RecordNoParent.java", "record RecordNoParent() {}")
                    .withCodeToCompile("RecordMultiParent.java", """
@@ -121,26 +117,26 @@ class RecordTest extends DeclaredTest<Record>
    @Test
    void testWithGenerics()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                                            () -> context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                          "java.lang.String"));
 
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.withGenerics(shadowApi.getRecordOrThrow("SimpleRecord"), "java.io.Serializable"));
+                                            () -> context.withGenerics(context.getRecordOrThrow("SimpleRecord"), "java.io.Serializable"));
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
-                                            query(shadowApi.withGenerics(shadowApi.getRecordOrThrow(
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.String")),
+                                            context.withGenerics(context.getRecordOrThrow(
                                                                                "InterpolateGenericsExample.IndependentGeneric"),
-                                                                         "java.lang.String"))
+                                                                         "java.lang.String")
                                                   .getGenericTypes());
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
-                                                    shadowApi.getClassOrThrow("java.lang.Number")),
-                                            query(shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.String"),
+                                                    context.getClassOrThrow("java.lang.Number")),
+                                            context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
-                                                                   "java.lang.Number"))
+                                                                   "java.lang.Number")
                                                      .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
@@ -158,41 +154,38 @@ class RecordTest extends DeclaredTest<Record>
    @Test
    void testInterpolateGenerics()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               Record declared = shadowApi.withGenerics(shadowApi.getRecordOrThrow("InterpolateGenericsExample"),
-                                                                                  shadowApi.getClassOrThrow("java.lang.String"),
-                                                                                  shadowApi.getConstants().getUnboundWildcard());
-                               Record capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = Optional.of(((Generic) query(capture).getGenericTypes().get(1)))
-                                     .map(LangModelQueries::query)
-                                     .map(GenericLangModel::getExtends)
-                                     .map(Interface.class::cast)
-                                     .map(LangModelQueries::query)
-                                     .map(InterfaceLangModel::getGenericTypes)
-                                     .map(shadows -> shadows.get(0))
-                                     .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
+                               RecordLangModel declared = context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample"),
+                                                                               context.getClassOrThrow("java.lang.String"),
+                                                                               context.getConstants().getUnboundWildcard());
 
-                               Record independentExample = shadowApi.withGenerics(shadowApi.getRecordOrThrow(
-                                     "InterpolateGenericsExample.IndependentGeneric"), shadowApi.getConstants().getUnboundWildcard());
-                               Record independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = Optional.of(((Generic) query(independentCapture).getGenericTypes().get(0)))
-                                     .map(LangModelQueries::query)
+                               RecordLangModel capture = context.interpolateGenerics(declared);
+                               ShadowLangModel interpolated = Optional.of(((GenericLangModel) capture.getGenericTypes().get(1)))
+                                                                      .map(GenericLangModel::getExtends)
+                                                                      .map(InterfaceLangModel.class::cast)
+                                                                      .map(InterfaceLangModel::getGenericTypes)
+                                                                      .map(shadows -> shadows.get(0))
+                                                                      .orElseThrow();
+                               assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
+
+                               RecordLangModel independentExample = context.withGenerics(context.getRecordOrThrow(
+                                     "InterpolateGenericsExample.IndependentGeneric"), context.getConstants().getUnboundWildcard());
+                               RecordLangModel independentCapture = context.interpolateGenerics(independentExample);
+                               ShadowLangModel interpolatedIndependent = Optional.of(((GenericLangModel) independentCapture.getGenericTypes().get(0)))
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
+                               assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               Record dependentExample = shadowApi.withGenerics(shadowApi.getRecordOrThrow(
+                               RecordLangModel dependentExample = context.withGenerics(context.getRecordOrThrow(
                                                                                       "InterpolateGenericsExample.DependentGeneric"),
-                                                                                          shadowApi.getConstants().getUnboundWildcard(),
-                                                                                          shadowApi.getClassOrThrow("java.lang.String"));
-                               Record dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = Optional.of(((Generic) query(dependentCapture).getGenericTypes().get(0)))
-                                     .map(LangModelQueries::query)
+                                                                                          context.getConstants().getUnboundWildcard(),
+                                                                                          context.getClassOrThrow("java.lang.String"));
+                               RecordLangModel dependentCapture = context.interpolateGenerics(dependentExample);
+                               ShadowLangModel interpolatedDependent = Optional.of(((GenericLangModel) dependentCapture.getGenericTypes().get(0)))
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);
+                               assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {

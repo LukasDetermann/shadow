@@ -3,26 +3,24 @@ package io.determann.shadow.consistency.shadow;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
-import io.determann.shadow.api.shadow.type.Wildcard;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-class WildcardTest extends ShadowTest<Wildcard>
+class WildcardTest extends ShadowTest<WildcardLangModel>
 {
    WildcardTest()
    {
-      super(shadowApi -> shadowApi.getConstants().getUnboundWildcard());
+      super(context -> context.getConstants().getUnboundWildcard());
    }
 
    @Test
    void testGetExtends()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      Optional.of(((InterfaceLangModel) shadowApi.getClassOrThrow("BoundsExample")
+      ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Number"),
+                                                      Optional.of(((InterfaceLangModel) context.getClassOrThrow("BoundsExample")
                                                                                                  .getMethods("extendsExample")
                                                                                                  .get(0)
                                                                                                  .getParameterOrThrow("numbers")
@@ -43,8 +41,8 @@ class WildcardTest extends ShadowTest<Wildcard>
    @Test
    void testGetSupper()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Number"),
-                                                      Optional.of(((InterfaceLangModel) shadowApi.getClassOrThrow("BoundsExample")
+      ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Number"),
+                                                      Optional.of(((InterfaceLangModel) context.getClassOrThrow("BoundsExample")
                                                                                                  .getMethods("superExample")
                                                                                                  .get(0)
                                                                                            .getParameterOrThrow("numbers")
@@ -65,19 +63,19 @@ class WildcardTest extends ShadowTest<Wildcard>
    @Test
    void testContains()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Number")))
-                                                   .contains(shadowApi.getClassOrThrow("java.lang.Long")));
+                               assertTrue(context.asExtendsWildcard(context.getClassOrThrow("java.lang.Number"))
+                                                   .contains(context.getClassOrThrow("java.lang.Long")));
 
-                               assertFalse(query(shadowApi.asExtendsWildcard(shadowApi.getClassOrThrow("java.lang.Long")))
-                                                    .contains(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertFalse(context.asExtendsWildcard(context.getClassOrThrow("java.lang.Long"))
+                                                    .contains(context.getClassOrThrow("java.lang.Number")));
 
-                               assertTrue(query(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Long")))
-                                                   .contains(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(context.asSuperWildcard(context.getClassOrThrow("java.lang.Long"))
+                                                   .contains(context.getClassOrThrow("java.lang.Number")));
 
-                               assertFalse(query(shadowApi.asSuperWildcard(shadowApi.getClassOrThrow("java.lang.Number")))
-                                                    .contains(shadowApi.getClassOrThrow("java.lang.Long")));
+                               assertFalse(context.asSuperWildcard(context.getClassOrThrow("java.lang.Number"))
+                                                    .contains(context.getClassOrThrow("java.lang.Long")));
                             })
                    .compile();
    }
@@ -85,11 +83,11 @@ class WildcardTest extends ShadowTest<Wildcard>
    @Override
    void testRepresentsSameType()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertFalse(query(getShadowSupplier().apply(shadowApi)).representsSameType(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(query(getShadowSupplier().apply(shadowApi))
-                                                 .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
+                               assertFalse(getShadowSupplier().apply(context).representsSameType(getShadowSupplier().apply(context)));
+                               assertFalse(getShadowSupplier().apply(context)
+                                                 .representsSameType(context.getClassOrThrow("java.util.jar.Attributes")));
                             })
                    .compile();
    }

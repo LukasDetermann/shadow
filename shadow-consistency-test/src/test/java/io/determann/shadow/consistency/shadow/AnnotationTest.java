@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTATION>
@@ -15,21 +14,23 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    AnnotationTest()
    {
       //noinspection unchecked
-      super(shadowApi -> (ANNOTATION) shadowApi.getAnnotationOrThrow("java.lang.annotation.Retention"));
+      super(context -> (ANNOTATION) context.getAnnotationOrThrow("java.lang.annotation.Retention"));
    }
 
    @Test
    @Override
    void testisSubtypeOf()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
-                                                .isSubtypeOf(shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")));
-                               assertTrue(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
-                                                .isSubtypeOf(shadowApi.getAnnotationOrThrow("java.lang.Override")));
-                               assertFalse(query(shadowApi.getAnnotationOrThrow("java.lang.Override"))
-                                                 .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(context.getAnnotationOrThrow("java.lang.Override")
+                                                   .isSubtypeOf(context.getInterfaceOrThrow("java.lang.annotation.Annotation")));
+
+                               assertTrue(context.getAnnotationOrThrow("java.lang.Override")
+                                                   .isSubtypeOf(context.getAnnotationOrThrow("java.lang.Override")));
+                               
+                               assertFalse(context.getAnnotationOrThrow("java.lang.Override")
+                                                 .isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
                             })
                    .compile();
    }
@@ -38,9 +39,9 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    @Override
    void testGetDirectSuperTypes()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                              shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
-                                                      query(shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent"))
+      ProcessorTest.process(context -> assertEquals(List.of(context.getClassOrThrow("java.lang.Object"),
+                                                              context.getInterfaceOrThrow("java.lang.annotation.Annotation")),
+                                                      context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                             .getDirectSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          public class DirektSuperTypeExample {
@@ -54,9 +55,9 @@ class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTAT
    @Override
    void testGetSuperTypes()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                             shadowApi.getInterfaceOrThrow("java.lang.annotation.Annotation")),
-                                                      query(shadowApi.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent"))
+      ProcessorTest.process(context -> assertEquals(Set.of(context.getClassOrThrow("java.lang.Object"),
+                                                             context.getInterfaceOrThrow("java.lang.annotation.Annotation")),
+                                                      context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent")
                                                             .getSuperTypes()))
                    .withCodeToCompile("DirektSuperTypeExample.java", """
                          public class DirektSuperTypeExample {

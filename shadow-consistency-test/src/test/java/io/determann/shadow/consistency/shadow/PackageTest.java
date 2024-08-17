@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,14 +14,14 @@ class PackageTest
    @Test
    void testGetContent()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(shadowApi.getPackages("asdkfh").isEmpty());
+                               assertTrue(context.getPackages("asdkfh").isEmpty());
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow(
+                               assertEquals(List.of(context.getClassOrThrow(
                                                   "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass")),
-                                            query(shadowApi.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
-                                                           .get(0))
+                                            context.getPackages("io.determann.shadow.example.processed.test.packagee.not_empty")
+                                                           .get(0)
                                                   .getDeclared());
                             })
                    .withCodeToCompile("AnyClass.java", """

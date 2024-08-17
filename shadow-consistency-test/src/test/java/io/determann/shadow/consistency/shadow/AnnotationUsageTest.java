@@ -4,14 +4,11 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
 import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.AnnotationValue;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.function.Function;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationUsageTest
@@ -19,46 +16,45 @@ class AnnotationUsageTest
    @Test
    void testGetValues()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               AnnotationUsageLangModel defaultValues = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
+                               AnnotationUsageLangModel defaultValues = context.getClassOrThrow("AnnotationUsageExample")
                                                                                        .getAnnotationUsages()
-                                                                                       .get(0));
+                                                                                       .get(0);
 
-                               assertEquals("string Value", query(defaultValues.getValueOrThrow("stingValue")).getValue());
-                               assertEquals(false, query(defaultValues.getValueOrThrow("booleanValue")).getValue());
-                               assertEquals((byte) 1, query(defaultValues.getValueOrThrow("byteValue")).getValue());
-                               assertEquals((short) 2, query(defaultValues.getValueOrThrow("shortValue")).getValue());
-                               assertEquals(3, query(defaultValues.getValueOrThrow("intValue")).getValue());
-                               assertEquals(4L, query(defaultValues.getValueOrThrow("longValue")).getValue());
-                               assertEquals('a', query(defaultValues.getValueOrThrow("charValue")).getValue());
-                               assertEquals(5f, query(defaultValues.getValueOrThrow("floatValue")).getValue());
-                               assertEquals(6D, query(defaultValues.getValueOrThrow("doubleValue")).getValue());
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), query(defaultValues.getValueOrThrow("typeValue")).getValue());
-                               assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.ElementType"))
+                               assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").getValue());
+                               assertEquals(false, defaultValues.getValueOrThrow("booleanValue").getValue());
+                               assertEquals((byte) 1, defaultValues.getValueOrThrow("byteValue").getValue());
+                               assertEquals((short) 2, defaultValues.getValueOrThrow("shortValue").getValue());
+                               assertEquals(3, defaultValues.getValueOrThrow("intValue").getValue());
+                               assertEquals(4L, defaultValues.getValueOrThrow("longValue").getValue());
+                               assertEquals('a', defaultValues.getValueOrThrow("charValue").getValue());
+                               assertEquals(5f, defaultValues.getValueOrThrow("floatValue").getValue());
+                               assertEquals(6D, defaultValues.getValueOrThrow("doubleValue").getValue());
+                               assertEquals(context.getClassOrThrow("java.lang.String"), defaultValues.getValueOrThrow("typeValue").getValue());
+                               assertEquals(context.getEnumOrThrow("java.lang.annotation.ElementType")
                                                      .getEnumConstantOrThrow("ANNOTATION_TYPE"),
-                                            query(defaultValues.getValueOrThrow("enumConstantValue")).getValue());
-                               assertEquals(query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).getEnumConstantOrThrow(
+                                            defaultValues.getValueOrThrow("enumConstantValue").getValue());
+                               assertEquals(context.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow(
                                                   "CLASS"),
-                                            ((AnnotationValueLangModel) query(((AnnotationValueLangModel.AnnotationUsageValue) defaultValues.getValueOrThrow(
-                                                  "annotationUsageValue")).getValue()).getValueOrThrow("value")).getValue());
+                                            ((AnnotationValueLangModel.AnnotationUsageValue) defaultValues.getValueOrThrow(
+                                                  "annotationUsageValue")).getValue().getValueOrThrow("value").getValue());
 
-                               AnnotationValue asListOfValues = defaultValues.getValueOrThrow("asListOfValues");
-                               AnnotationValueLangModel valueLangModel = query(asListOfValues);
-                               List<AnnotationValueLangModel> values = ((AnnotationValueLangModel.Values) valueLangModel).getValue();
+                               AnnotationValueLangModel asListOfValues = defaultValues.getValueOrThrow("asListOfValues");
+                               List<AnnotationValueLangModel> values = ((AnnotationValueLangModel.Values) asListOfValues).getValue();
                                List<Object> list = values.stream().map(AnnotationValueLangModel::getValue).toList();
                                assertEquals(List.of('b', 'c'), list);
 
                                assertTrue(defaultValues.getValues().values().stream().map(LangModelQueries::query).allMatch(AnnotationValueLangModel::isDefault));
 
-                               AnnotationUsage overwrittenStringValue = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
-                                     .getFieldOrThrow("testField"))
+                               AnnotationUsageLangModel overwrittenStringValue = context.getClassOrThrow("AnnotationUsageExample")
+                                     .getFieldOrThrow("testField")
                                      .getAnnotationUsages()
                                      .get(0);
 
-                               AnnotationValue annotationValue = query(overwrittenStringValue).getValueOrThrow("stingValue");
-                               assertFalse(query(annotationValue).isDefault());
-                               assertEquals("custom Value", query(annotationValue).getValue());
+                               AnnotationValueLangModel annotationValue = overwrittenStringValue.getValueOrThrow("stingValue");
+                               assertFalse(annotationValue.isDefault());
+                               assertEquals("custom Value", annotationValue.getValue());
                             })
                    .withCodeToCompile("AnnotationUsageAnnotation.java", """
                          import java.lang.annotation.ElementType;
@@ -94,11 +90,11 @@ class AnnotationUsageTest
    @Test
    void testMapValues()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               AnnotationUsageLangModel defaultValues = query(query(shadowApi.getClassOrThrow("AnnotationUsageExample"))
+                               AnnotationUsageLangModel defaultValues = context.getClassOrThrow("AnnotationUsageExample")
                                                                         .getAnnotationUsages()
-                                                                        .get(0));
+                                                                        .get(0);
 
                                Function<AnnotationValueLangModel, Integer> mapper = value ->
                                      switch (value)
@@ -118,19 +114,19 @@ class AnnotationUsageTest
                                         case AnnotationValueLangModel.Values values -> 12;
                                      };
 
-                               assertEquals(0, mapper.apply(query(defaultValues.getValueOrThrow("stingValue"))));
-                               assertEquals(1, mapper.apply(query(defaultValues.getValueOrThrow("booleanValue"))));
-                               assertEquals(2, mapper.apply(query(defaultValues.getValueOrThrow("byteValue"))));
-                               assertEquals(3, mapper.apply(query(defaultValues.getValueOrThrow("shortValue"))));
-                               assertEquals(4, mapper.apply(query(defaultValues.getValueOrThrow("intValue"))));
-                               assertEquals(5, mapper.apply(query(defaultValues.getValueOrThrow("longValue"))));
-                               assertEquals(6, mapper.apply(query(defaultValues.getValueOrThrow("charValue"))));
-                               assertEquals(7, mapper.apply(query(defaultValues.getValueOrThrow("floatValue"))));
-                               assertEquals(8, mapper.apply(query(defaultValues.getValueOrThrow("doubleValue"))));
-                               assertEquals(9, mapper.apply(query(defaultValues.getValueOrThrow("typeValue"))));
-                               assertEquals(10, mapper.apply(query(defaultValues.getValueOrThrow("enumConstantValue"))));
-                               assertEquals(11, mapper.apply(query(defaultValues.getValueOrThrow("annotationUsageValue"))));
-                               assertEquals(12, mapper.apply(query(defaultValues.getValueOrThrow("asListOfValues"))));
+                               assertEquals(0, mapper.apply(defaultValues.getValueOrThrow("stingValue")));
+                               assertEquals(1, mapper.apply(defaultValues.getValueOrThrow("booleanValue")));
+                               assertEquals(2, mapper.apply(defaultValues.getValueOrThrow("byteValue")));
+                               assertEquals(3, mapper.apply(defaultValues.getValueOrThrow("shortValue")));
+                               assertEquals(4, mapper.apply(defaultValues.getValueOrThrow("intValue")));
+                               assertEquals(5, mapper.apply(defaultValues.getValueOrThrow("longValue")));
+                               assertEquals(6, mapper.apply(defaultValues.getValueOrThrow("charValue")));
+                               assertEquals(7, mapper.apply(defaultValues.getValueOrThrow("floatValue")));
+                               assertEquals(8, mapper.apply(defaultValues.getValueOrThrow("doubleValue")));
+                               assertEquals(9, mapper.apply(defaultValues.getValueOrThrow("typeValue")));
+                               assertEquals(10, mapper.apply(defaultValues.getValueOrThrow("enumConstantValue")));
+                               assertEquals(11, mapper.apply(defaultValues.getValueOrThrow("annotationUsageValue")));
+                               assertEquals(12, mapper.apply(defaultValues.getValueOrThrow("asListOfValues")));
                             })
                    .withCodeToCompile("AnnotationUsageAnnotation.java", """
                          import java.lang.annotation.ElementType;

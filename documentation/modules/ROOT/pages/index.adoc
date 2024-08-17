@@ -75,43 +75,6 @@ a| Cell with a list
 |===
 ====
 
-.Safe conversion between objects
-[%collapsible]
-====
-
-Let's say you process the following class and want to get the type of the List
-
-[source,java]
-----
-class MyClass
-{
-   private final List<String> myField;
-}
-----
-
-.Shadow Api
-[source,java]
-----
-ifndef::site-gen-antora[]
-include::../../../../documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=shadow]
-endif::[]
-ifdef::site-gen-antora[]
-include::example$readme/ConversionTest.java[tag=shadow]
-endif::[]
-----
-
-.JDK
-[source,java]
-----
-ifndef::site-gen-antora[]
-include::../../../../documentation/src/test/java/io/determann/shadow/readme/ConversionTest.java[tag=jdk]
-endif::[]
-ifdef::site-gen-antora[]
-include::example$readme/ConversionTest.java[tag=jdk]
-endif::[]
-----
-====
-
 .Better documentation, especially for hard to understand topics
 [%collapsible]
 ====

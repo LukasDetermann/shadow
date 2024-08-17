@@ -19,14 +19,14 @@ abstract class ShadowTest<SHADOW extends Shadow>
    @Test
    void testRepresentsSameType()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(getShadowSupplier().apply(shadowApi))
-                                                .representsSameType(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(query(getShadowSupplier().apply(shadowApi))
-                                                 .representsSameType(shadowApi.getClassOrThrow("java.util.jar.Attributes")));
-                               assertFalse(query(getShadowSupplier().apply(shadowApi))
-                                                 .representsSameType(shadowApi.getConstants().getUnboundWildcard()));
+                               assertTrue(query(getShadowSupplier().apply(context))
+                                                .representsSameType(getShadowSupplier().apply(context)));
+                               assertFalse(query(getShadowSupplier().apply(context))
+                                                 .representsSameType(context.getClassOrThrow("java.util.jar.Attributes")));
+                               assertFalse(query(getShadowSupplier().apply(context))
+                                                 .representsSameType(context.getConstants().getUnboundWildcard()));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
@@ -75,10 +75,10 @@ abstract class ShadowTest<SHADOW extends Shadow>
    @Test
    void testEquals()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(getShadowSupplier().apply(shadowApi), getShadowSupplier().apply(shadowApi));
-                               assertNotEquals(getShadowSupplier().apply(shadowApi), shadowApi.getClassOrThrow("java.util.jar.Attributes"));
+                               assertEquals(getShadowSupplier().apply(context), getShadowSupplier().apply(context));
+                               assertNotEquals(getShadowSupplier().apply(context), context.getClassOrThrow("java.util.jar.Attributes"));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
@@ -127,14 +127,14 @@ abstract class ShadowTest<SHADOW extends Shadow>
    @Test
    void testErasure()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                            shadowApi.erasure(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"),
+                               assertEquals(context.getInterfaceOrThrow("java.util.Collection"),
+                                            context.erasure(context.withGenerics(context.getInterfaceOrThrow("java.util.Collection"),
                                                                                      "java.lang.Object")));
 
-                               assertEquals(shadowApi.getInterfaceOrThrow("java.util.Collection"),
-                                            shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object"));
+                               assertEquals(context.getInterfaceOrThrow("java.util.Collection"),
+                                            context.withGenerics(context.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object"));
                             })
                    .compile();
    }

@@ -1,40 +1,37 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
+import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
 import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Interface;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-class InterfaceTest extends DeclaredTest<Interface>
+class InterfaceTest extends DeclaredTest<InterfaceLangModel>
 {
    InterfaceTest()
    {
-      super(shadowApi -> shadowApi.getInterfaceOrThrow("java.util.function.Function"));
+      super(context -> context.getInterfaceOrThrow("java.util.function.Function"));
    }
 
    @Test
    void testGetDirectInterfaces()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(0, query(shadowApi.getInterfaceOrThrow("java.util.function.Function")).getDirectInterfaces().size());
+                               assertEquals(0, context.getInterfaceOrThrow("java.util.function.Function").getDirectInterfaces().size());
 
                                assertEquals(List.of("java.util.function.Function"),
-                                            query(shadowApi.getInterfaceOrThrow("java.util.function.UnaryOperator"))
+                                            context.getInterfaceOrThrow("java.util.function.UnaryOperator")
                                                   .getDirectInterfaces()
                                                   .stream()
-                                                  .map(anInterface -> query(anInterface).getQualifiedName())
+                                                  .map(QualifiedNameableLamgModel::getQualifiedName)
                                                   .toList());
                             })
                    .compile();
@@ -43,11 +40,11 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Test
    void testIsFunctional()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(shadowApi.getInterfaceOrThrow("java.util.function.Function")).isFunctional());
-                               assertTrue(query(shadowApi.getInterfaceOrThrow("java.lang.Comparable")).isFunctional());
-                               assertFalse(query(shadowApi.getInterfaceOrThrow("java.util.List")).isFunctional());
+                               assertTrue(context.getInterfaceOrThrow("java.util.function.Function").isFunctional());
+                               assertTrue(context.getInterfaceOrThrow("java.lang.Comparable").isFunctional());
+                               assertFalse(context.getInterfaceOrThrow("java.util.List").isFunctional());
                             })
                    .compile();
    }
@@ -55,26 +52,26 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Test
    void testWithGenerics()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
+                                            () -> context.withGenerics(context.getInterfaceOrThrow(
                                                   "InterpolateGenericsExample.DependentGeneric"), "java.lang.String"));
 
                                assertThrows(IllegalArgumentException.class,
-                                            () -> shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("java.io.Serializable"),
+                                            () -> context.withGenerics(context.getInterfaceOrThrow("java.io.Serializable"),
                                                                          "java.io.Serializable"));
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String")),
-                                            query(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
-                                                                   "java.lang.String"))
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.String")),
+                                            context.withGenerics(context.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric"),
+                                                                   "java.lang.String")
                                                      .getGenericTypes());
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.String"),
-                                                    shadowApi.getClassOrThrow("java.lang.Number")),
-                                            query(shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.String"),
+                                                    context.getClassOrThrow("java.lang.Number")),
+                                            context.withGenerics(context.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric"),
                                                                    "java.lang.String",
-                                                                   "java.lang.Number"))
+                                                                   "java.lang.Number")
                                                      .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
@@ -89,41 +86,38 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Test
    void testInterpolateGenerics()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               Interface declared = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow("InterpolateGenericsExample"),
-                                                                           shadowApi.getClassOrThrow("java.lang.String"),
-                                                                           shadowApi.getConstants().getUnboundWildcard());
-                               Interface capture = shadowApi.interpolateGenerics(declared);
-                               Shadow interpolated = Optional.of(((Generic) query(capture).getGenericTypes().get(1)))
-                                     .map(LangModelQueries::query)
-                                     .map(GenericLangModel::getExtends)
-                                     .map(Interface.class::cast)
-                                     .map(LangModelQueries::query)
-                                     .map(InterfaceLangModel::getGenericTypes)
-                                     .map(shadows -> shadows.get(0))
-                                     .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolated);
+                               InterfaceLangModel declared = context.withGenerics(context.getInterfaceOrThrow("InterpolateGenericsExample"),
+                                                                           context.getClassOrThrow("java.lang.String"),
+                                                                           context.getConstants().getUnboundWildcard());
 
-                               Interface independentExample = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
+                               InterfaceLangModel capture = context.interpolateGenerics(declared);
+                               ShadowLangModel interpolated = Optional.of(((GenericLangModel) capture.getGenericTypes().get(1)))
+                                                                      .map(GenericLangModel::getExtends)
+                                                                      .map(InterfaceLangModel.class::cast)
+                                                                      .map(InterfaceLangModel::getGenericTypes)
+                                                                      .map(shadows -> shadows.get(0))
+                                                                      .orElseThrow();
+                               assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
+
+                               InterfaceLangModel independentExample = context.withGenerics(context.getInterfaceOrThrow(
                                                                                            "InterpolateGenericsExample.IndependentGeneric"),
-                                                                                     shadowApi.getConstants().getUnboundWildcard());
-                               Interface independentCapture = shadowApi.interpolateGenerics(independentExample);
-                               Shadow interpolatedIndependent = Optional.of(((Generic) query(independentCapture).getGenericTypes().get(0)))
-                                     .map(LangModelQueries::query)
+                                                                                     context.getConstants().getUnboundWildcard());
+                               InterfaceLangModel independentCapture = context.interpolateGenerics(independentExample);
+                            ShadowLangModel interpolatedIndependent = Optional.of(((GenericLangModel) independentCapture.getGenericTypes().get(0)))
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
+                               assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               Interface dependentExample = shadowApi.withGenerics(shadowApi.getInterfaceOrThrow(
-                                                                                         "InterpolateGenericsExample.DependentGeneric"), shadowApi.getConstants().getUnboundWildcard(),
-                                                                                   shadowApi.getClassOrThrow("java.lang.String"));
-                               Interface dependentCapture = shadowApi.interpolateGenerics(dependentExample);
-                               Shadow interpolatedDependent = Optional.of((Generic) query(dependentCapture).getGenericTypes().get(0))
-                                     .map(LangModelQueries::query)
+                               InterfaceLangModel dependentExample = context.withGenerics(context.getInterfaceOrThrow(
+                                                                                         "InterpolateGenericsExample.DependentGeneric"), context.getConstants().getUnboundWildcard(),
+                                                                                   context.getClassOrThrow("java.lang.String"));
+                               InterfaceLangModel dependentCapture = context.interpolateGenerics(dependentExample);
+                               ShadowLangModel interpolatedDependent = Optional.of((GenericLangModel) dependentCapture.getGenericTypes().get(0))
                                      .map(GenericLangModel::getExtends)
                                      .orElseThrow();
-                               assertEquals(shadowApi.getClassOrThrow("java.lang.String"), interpolatedDependent);
+                               assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
@@ -138,11 +132,11 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Override
    void testisSubtypeOf()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Object")));
-                               assertTrue(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(getShadowSupplier().apply(shadowApi)));
-                               assertFalse(query(getShadowSupplier().apply(shadowApi)).isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number")));
+                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Object")));
+                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(getShadowSupplier().apply(context)));
+                               assertFalse(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
                             })
                    .compile();
    }
@@ -151,16 +145,16 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Override
    void testGetDirectSuperTypes()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object")),
-                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent"))
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.Object")),
+                                            context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent")
                                                   .getDirectSuperTypes());
 
-                               assertEquals(List.of(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                    shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
-                                                    shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent"))
+                               assertEquals(List.of(context.getClassOrThrow("java.lang.Object"),
+                                                    context.getInterfaceOrThrow("java.lang.Comparable"),
+                                                    context.getInterfaceOrThrow("java.util.function.Consumer")),
+                                            context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent")
                                                   .getDirectSuperTypes());
                             })
                    .withCodeToCompile("DirektSuperTypeExample.java", """
@@ -181,16 +175,16 @@ class InterfaceTest extends DeclaredTest<Interface>
    @Override
    void testGetSuperTypes()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object")),
-                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent"))
+                               assertEquals(Set.of(context.getClassOrThrow("java.lang.Object")),
+                                            context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent")
                                                   .getSuperTypes());
 
-                               assertEquals(Set.of(shadowApi.getClassOrThrow("java.lang.Object"),
-                                                   shadowApi.getInterfaceOrThrow("java.lang.Comparable"),
-                                                   shadowApi.getInterfaceOrThrow("java.util.function.Consumer")),
-                                            query(shadowApi.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent"))
+                               assertEquals(Set.of(context.getClassOrThrow("java.lang.Object"),
+                                                   context.getInterfaceOrThrow("java.lang.Comparable"),
+                                                   context.getInterfaceOrThrow("java.util.function.Consumer")),
+                                            context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent")
                                                   .getSuperTypes());
                             })
                    .withCodeToCompile("DirektSuperTypeExample.java", """

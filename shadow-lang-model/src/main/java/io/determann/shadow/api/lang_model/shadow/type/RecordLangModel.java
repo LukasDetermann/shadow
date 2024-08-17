@@ -3,7 +3,6 @@ package io.determann.shadow.api.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.shadow.modifier.FinalModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.modifier.StaticModifiableLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.type.Record;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public interface RecordLangModel extends Record,
                                          StaticModifiableLangModel,
                                          FinalModifiableLangModel
 {
-   default RecordComponent getRecordComponentOrThrow(String simpleName)
+   default RecordComponentLangModel getRecordComponentOrThrow(String simpleName)
    {
       return getRecordComponents().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
    }

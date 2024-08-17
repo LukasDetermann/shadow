@@ -1,27 +1,26 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EnumConstantTest extends VariableTest<EnumConstant>
+class EnumConstantTest extends VariableTest<EnumConstantLangModel>
 {
    EnumConstantTest()
    {
-      super(shadowApi -> query(shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy")).getEnumConstantOrThrow("SOURCE"));
+      super(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow("SOURCE"));
    }
 
    @Test
    void testGetSurrounding()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               Enum anEnum = shadowApi.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
-                               assertEquals(anEnum, query(query(anEnum).getEnumConstantOrThrow("SOURCE")).getSurrounding());
+                               EnumLangModel anEnum = context.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
+                               assertEquals(anEnum, anEnum.getEnumConstantOrThrow("SOURCE").getSurrounding());
                             })
                    .compile();
    }

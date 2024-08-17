@@ -1,10 +1,9 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,8 +12,8 @@ class RecordComponentTest
    @Test
    void testIsSubtype()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id"))
-                                                                       .isSubtypeOf(shadowApi.getClassOrThrow("java.lang.Number"))))
+      ProcessorTest.process(context -> assertTrue(context.getRecordOrThrow("RecordComponentExample").getRecordComponentOrThrow("id")
+                                                                       .isSubtypeOf(context.getClassOrThrow("java.lang.Number"))))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
    }
@@ -22,8 +21,8 @@ class RecordComponentTest
    @Test
    void testIsAssignableFrom()
    {
-      ProcessorTest.process(shadowApi -> assertTrue(query(query(shadowApi.getRecordOrThrow("RecordComponentExample")).getRecordComponentOrThrow("id"))
-                                                                       .isAssignableFrom(shadowApi.getConstants().getPrimitiveLong())))
+      ProcessorTest.process(context -> assertTrue(context.getRecordOrThrow("RecordComponentExample").getRecordComponentOrThrow("id")
+                                                                       .isAssignableFrom(context.getConstants().getPrimitiveLong())))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
    }
@@ -31,10 +30,10 @@ class RecordComponentTest
    @Test
    void testGetRecord()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               Record recordExample = shadowApi.getRecordOrThrow("RecordComponentExample");
-                               assertEquals(recordExample, query(query(recordExample).getRecordComponentOrThrow("id")).getRecord());
+                               RecordLangModel recordExample = context.getRecordOrThrow("RecordComponentExample");
+                               assertEquals(recordExample, recordExample.getRecordComponentOrThrow("id").getRecord());
                             })
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
@@ -43,9 +42,9 @@ class RecordComponentTest
    @Test
    void testGetType()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getClassOrThrow("java.lang.Long"),
-                                                      query(query(shadowApi.getRecordOrThrow("RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id"))
+      ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Long"),
+                                                      context.getRecordOrThrow("RecordComponentExample")
+                                                               .getRecordComponentOrThrow("id")
                                                                .getType()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                    .compile();
@@ -54,9 +53,9 @@ class RecordComponentTest
    @Test
    void testGetGetter()
    {
-      ProcessorTest.process(shadowApi -> assertEquals("id()",
-                                                      query(query(shadowApi.getRecordOrThrow("RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id"))
+      ProcessorTest.process(context -> assertEquals("id()",
+                                                      context.getRecordOrThrow("RecordComponentExample")
+                                                               .getRecordComponentOrThrow("id")
                                                                .getGetter()
                                                                .toString()))
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
@@ -66,11 +65,11 @@ class RecordComponentTest
    @Test
    void testGetPackage()
    {
-      ProcessorTest.process(shadowApi -> assertEquals(shadowApi.getPackages("io.determann.shadow.example.processed.test.recordcomponent")
+      ProcessorTest.process(context -> assertEquals(context.getPackages("io.determann.shadow.example.processed.test.recordcomponent")
                                                                .get(0),
-                                                      query(query(shadowApi.getRecordOrThrow(
-                                                                     "io.determann.shadow.example.processed.test.recordcomponent.RecordComponentExample"))
-                                                               .getRecordComponentOrThrow("id"))
+                                                      context.getRecordOrThrow(
+                                                                     "io.determann.shadow.example.processed.test.recordcomponent.RecordComponentExample")
+                                                               .getRecordComponentOrThrow("id")
                                                                .getPackage()))
                    .withCodeToCompile("RecordComponentExample.java", """
                          package io.determann.shadow.example.processed.test.recordcomponent;

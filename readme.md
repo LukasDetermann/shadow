@@ -124,62 +124,6 @@ Shadow API offers:
 </details>
 
 <details>
-<summary>Safe conversion between objects</summary>
-
-Let’s say you process the following class and want to get the type of
-the List
-
-```java
-class MyClass
-{
-   private final List<String> myField;
-}
-```
-
-Shadow API
-
-```java
-Shadow myField = context.getClassOrThrow("MyClass")
-                        .getFieldOrThrow("myField")
-                        .getType();
-//Converters limit the conversion to possible types
-Shadow genericType = convert(myField).toInterfaceOrThrow()
-                                     .getGenerics()
-                                     .get(0);
-
-assertEquals(context.getClassOrThrow("java.lang.String"),genericType);
-```
-
-JDK
-
-```java
-Elements elements = AnnotationProcessingAdapter.getElements(context);
-//get a type -> Element data structure
-List<? extends Element> myClass = elements.getTypeElement("MyClass")
-                                          .getEnclosedElements();
-
-//get fields of that type -> Element data structure
-VariableElement myField = ElementFilter
-      .fieldsIn(myClass)
-      .stream()
-      .filter(field -> field.getSimpleName()
-                            .toString()
-                            .equals("myField"))
-      .findAny()
-      .orElseThrow();
-
-//get Generic -> switch to Type data structure
-TypeMirror genericType = ((DeclaredType) myField.asType()).getTypeArguments().get(0);
-
-//switch back to Element data structure for comparison
-Element genericElement = ((DeclaredType) genericType).asElement();
-
-assertEquals(elements.getTypeElement("java.lang.String"),genericElement);
-```
-
-</details>
-
-<details>
 <summary>Better documentation, especially for hard to understand topics</summary>
 
 Shadow Api. The javadoc uses @snippet

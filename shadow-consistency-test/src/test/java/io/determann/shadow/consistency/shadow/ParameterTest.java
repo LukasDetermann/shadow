@@ -1,45 +1,43 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
-import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Parameter;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParameterTest extends VariableTest<Parameter>
+class ParameterTest extends VariableTest<ParameterLangModel>
 {
    ParameterTest()
    {
-      super(shadowApi -> query(query(shadowApi.getClassOrThrow("ParameterExample"))
+      super(context -> context.getClassOrThrow("ParameterExample")
             .getMethods("foo")
-            .get(0))
+            .get(0)
             .getParameterOrThrow("foo"));
    }
 
    @Test
    void testGetSurrounding()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               Method method = query(shadowApi.getClassOrThrow("ParameterExample"))
-                                     .getMethods("foo")
-                                     .get(0);
+                               MethodLangModel method = context.getClassOrThrow("ParameterExample")
+                                                               .getMethods("foo")
+                                                               .get(0);
 
-                               Parameter methodParameter = query(method).getParameterOrThrow("foo");
+                               ParameterLangModel methodParameter = method.getParameterOrThrow("foo");
 
-                               assertEquals(method, query(methodParameter).getSurrounding());
+                               assertEquals(method, methodParameter.getSurrounding());
 
-                               Constructor constructor = query(shadowApi.getClassOrThrow("ParameterExample"))
+                               ConstructorLangModel constructor = context.getClassOrThrow("ParameterExample")
                                      .getConstructors()
                                      .get(0);
-                               Parameter constructorParameter = query(constructor).getParameters().get(0);
-                               assertEquals(constructor, query(constructorParameter).getSurrounding());
+                               ParameterLangModel constructorParameter = constructor.getParameters().get(0);
+                               assertEquals(constructor, constructorParameter.getSurrounding());
                             })
                    .withCodeToCompile("ParameterExample.java", """
                          public class ParameterExample
@@ -55,9 +53,9 @@ class ParameterTest extends VariableTest<Parameter>
    @Test
    void isVarArgs()
    {
-      ProcessorTest.process(shadowApi ->
+      ProcessorTest.process(context ->
                             {
-                               List<ParameterLangModel> parameters = shadowApi.getClassOrThrow("VarArgsExample").getConstructors()
+                               List<ParameterLangModel> parameters = context.getClassOrThrow("VarArgsExample").getConstructors()
                                                                               .get(0)
                                                                               .getParameters();
 
