@@ -2,7 +2,7 @@
 
 == Intro
 
-Java SE and the Java ecosystem offer a multitude of meta programming APIs.
+Java SE and the Java ecosystem offer a multitude of Metaprogramming APIs.
 They serve the same purpose just in different contexts.
 Annotation processing to analyse classes in the during compilation process, or Reflection to do the same at runtime.
 They have context dependent differences.
@@ -13,9 +13,9 @@ With these differences acounted for, there is still a lot of API surface left th
 But is it?
 
 
-This project is an Abstraction for meta-programming.
+This project is an Abstraction for Metaprogramming
 
-image::Overview.svg[width= 80%]
+image::ROOT:Overview.svg[width= 80%]
 
 === The Api
 
@@ -303,9 +303,8 @@ endif::[]
 
 === Conclusion
 
-Meta programming Apis scale with the complexity of the language.
+Metaprogramming Apis scale with the complexity of the language.
 Java has many features.
 The Reflection and Annotation-Processing Apis cover a lot of them.
 The only inconsistencies I found are in rarely used Apis for rarely used language features.
 Both are reported.
-I'd like to support the https://openjdk.org/jeps/466[Class-File API] in the short to midterm and test its consistency too.

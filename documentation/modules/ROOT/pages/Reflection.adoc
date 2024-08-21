@@ -2,7 +2,7 @@
 
 == What is this?
 
-The most common type of meta-Programming.
+The most common type of Metaprogramming.
 
 WARNING: This reflection implementation is still experimental.
 

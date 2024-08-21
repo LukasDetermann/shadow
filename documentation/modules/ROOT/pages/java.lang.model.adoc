@@ -2,8 +2,7 @@
 
 == What is this?
 
-`java.lang.model` the the JDKs try at one meta-programming api. its used by
-<<Annotation Processing, Annotation Processing>> and the
+`java.lang.model` is an Api that is used by <<Annotation Processing, Annotation Processing>> and the
 link:https://docs.oracle.com/javase/9/docs/api/jdk/javadoc/doclet/package-summary.html[new Doclet API].
-The Proposal for an implementation based on reflection
-link:https://openjdk.org/jeps/119[JEP 119] was not completed.
+There was a Proposal for an implementation based on reflection
+link:https://openjdk.org/jeps/119[JEP 119] that was not completed.

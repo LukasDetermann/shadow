@@ -2,11 +2,11 @@
 
 == Implementations define the featureset
 
-Meta programming is hard.
+Metaprogramming is hard.
 One of the reasons is that there are a lot of different apis each with their own philosophy, design, quirks limitations and pitfalls.
 This leads to a high barrier of entry and a lot of cognitive complexity.
 There are some projects implemented with technology *A* that should use *B*, but are unable to switch.
-This project aims to provide one api for meta programming.
+This project aims to provide one api for Metaprogramming.
 At the center of it is the *meta model api* that represents the source code.
 
 The project is separated into multiple maven modules.
@@ -15,10 +15,10 @@ And there are multiple modules that implement the api defined in the core module
 There is one implementation module for reflection and one for annotation processing for example.
 
 The *meta model api* is consumed by two clients.
-There is the user of a specific meta programing api like reflection.
+There is the user of a specific Metaprogramming  api like reflection.
 And features for every meta programming type like rendering.
 
-.When using a specific type of meta programming the api needs to:
+.When using a specific type of Metaprogramming the api needs to:
 - be feature complete
 - be discoverable
 - have a low barrier of entry
@@ -389,7 +389,7 @@ In this state the api is annoying and unintuitive to use.
 
 The requirements of the two clients are so different that two apis are beneficial.
 
-The preferred api for specific meta programming implementations like reflection is "Duplicate Model".
+The preferred api for specific Metaprogramming implementations like reflection is "Duplicate Model".
 It provides the best discoverability together with "Generic" and has the lowest barrier of entry.
 This can not be used for common features as there are simply no methods to call in the core module.
 
