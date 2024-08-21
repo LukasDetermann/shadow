@@ -1,20 +1,20 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ExecutableReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Parameter;
-import io.determann.shadow.api.shadow.type.Array;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Primitive;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.R_Executable;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
+import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.type.C_Array;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class ParameterImpl implements ParameterReflection
+public class ParameterImpl implements R_Parameter
 {
    private final java.lang.reflect.Parameter parameter;
 
@@ -37,7 +37,7 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public ModuleReflection getModule()
+   public R_Module getModule()
    {
       return getSurrounding().getModule();
    }
@@ -49,23 +49,23 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getParameter().getAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getParameter().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public Set<Modifier> getModifiers()
+   public Set<C_Modifier> getModifiers()
    {
       int modifiers = getParameter().getModifiers() & java.lang.reflect.Modifier.parameterModifiers();
       return ReflectionUtil.getModifiers(modifiers, false, false, false, false);
@@ -78,30 +78,30 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.PARAMETER;
+      return C_TypeKind.PARAMETER;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      return shadow instanceof Parameter parameter &&
+      return shadow instanceof C_Parameter parameter &&
              requestOrThrow(requestOrThrow(parameter, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Array array)
+      if (getType() instanceof C_Array array)
       {
          return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
       }
@@ -109,13 +109,13 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
       }
@@ -123,21 +123,21 @@ public class ParameterImpl implements ParameterReflection
    }
 
    @Override
-   public ShadowReflection getType()
+   public R_Shadow getType()
    {
-      return ReflectionAdapter.generalize(getParameter().getParameterizedType());
+      return R_Adapter.generalize(getParameter().getParameterizedType());
    }
 
    @Override
-   public PackageReflection getPackage()
+   public R_Package getPackage()
    {
       return getSurrounding().getPackage();
    }
 
    @Override
-   public ExecutableReflection getSurrounding()
+   public R_Executable getSurrounding()
    {
-      return ReflectionAdapter.generalize(getParameter().getDeclaringExecutable());
+      return R_Adapter.generalize(getParameter().getDeclaringExecutable());
    }
 
    public java.lang.reflect.Parameter getParameter()
@@ -161,7 +161,7 @@ public class ParameterImpl implements ParameterReflection
       {
          return true;
       }
-      if (!(other instanceof Parameter otherVariable))
+      if (!(other instanceof C_Parameter otherVariable))
       {
          return false;
       }

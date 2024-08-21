@@ -1,21 +1,21 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.C_Declared;
 
 public class NameRenderedEvent
 {
-   private final Declared rendered;
+   private final C_Declared rendered;
    private final String name;
    private final boolean qualified;
 
-   public NameRenderedEvent(Declared rendered, String name, boolean qualified)
+   public NameRenderedEvent(C_Declared rendered, String name, boolean qualified)
    {
       this.rendered = rendered;
       this.name = name;
       this.qualified = qualified;
    }
 
-   public Declared getRendered()
+   public C_Declared getRendered()
    {
       return rendered;
    }

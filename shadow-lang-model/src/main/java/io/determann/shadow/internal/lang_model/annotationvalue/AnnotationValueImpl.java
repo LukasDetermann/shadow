@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.lang_model.annotationvalue;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.AnnotationValue;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -19,13 +19,13 @@ import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMEN
 
 public abstract class AnnotationValueImpl
 {
-   protected final LangModelContext context;
+   protected final LM_Context context;
    private final boolean defaultValue;
    private final javax.lang.model.element.AnnotationValue annotationValue;
 
-   public static AnnotationValueLangModel create(LangModelContext context,
-                                                 javax.lang.model.element.AnnotationValue annotationValue,
-                                                 boolean defaultValue)
+   public static LM_AnnotationValue create(LM_Context context,
+                                           javax.lang.model.element.AnnotationValue annotationValue,
+                                           boolean defaultValue)
    {
       Object value = annotationValue.getValue();
 
@@ -84,11 +84,11 @@ public abstract class AnnotationValueImpl
       throw new IllegalStateException();
    }
 
-   private static class StringValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.StringValue
+   private static class StringValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.StringValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      StringValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      StringValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -101,11 +101,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class BooleanValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.BooleanValue
+   private static class BooleanValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.BooleanValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      BooleanValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      BooleanValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -118,11 +118,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ByteValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.ByteValue
+   private static class ByteValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.ByteValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      ByteValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      ByteValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -135,11 +135,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ShortValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.ShortValue
+   private static class ShortValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.ShortValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      ShortValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      ShortValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -152,11 +152,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class IntegerValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.IntegerValue
+   private static class IntegerValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.IntegerValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      IntegerValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      IntegerValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -169,11 +169,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class LongValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.LongValue
+   private static class LongValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.LongValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      LongValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      LongValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -186,11 +186,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class CharacterValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.CharacterValue
+   private static class CharacterValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.CharacterValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      CharacterValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      CharacterValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -203,11 +203,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class FloatValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.FloatValue
+   private static class FloatValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.FloatValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      FloatValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      FloatValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -220,11 +220,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class DoubleValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.DoubleValue
+   private static class DoubleValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.DoubleValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      DoubleValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      DoubleValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -237,69 +237,69 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class TypeValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.TypeValue
+   private static class TypeValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.TypeValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      TypeValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      TypeValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public ShadowLangModel getValue()
+      public LM_Shadow getValue()
       {
-         return LangModelAdapter.generalize(context, (TypeMirror) annotationValue.getValue());
+         return LM_Adapter.generalize(context, (TypeMirror) annotationValue.getValue());
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.EnumConstantValue
+   private static class EnumConstantValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.EnumConstantValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      EnumConstantValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      EnumConstantValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public EnumConstantLangModel getValue()
+      public LM_EnumConstant getValue()
       {
-         return LangModelAdapter.generalize(context, (Element) annotationValue.getValue());
+         return LM_Adapter.generalize(context, (Element) annotationValue.getValue());
       }
    }
 
-   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements AnnotationValueLangModel.AnnotationUsageValue
+   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.AnnotationUsageValue
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      AnnotationUsageValueImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      AnnotationUsageValueImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public AnnotationUsageLangModel getValue()
+      public LM_AnnotationUsage getValue()
       {
          return AnnotationUsageImpl.from(context, (AnnotationMirror) annotationValue.getValue());
       }
    }
 
-   private static class ValuesImpl extends AnnotationValueImpl implements AnnotationValueLangModel.Values
+   private static class ValuesImpl extends AnnotationValueImpl implements LM_AnnotationValue.Values
    {
       private final javax.lang.model.element.AnnotationValue annotationValue;
 
-      ValuesImpl(LangModelContext context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
+      ValuesImpl(LM_Context context, javax.lang.model.element.AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public List<AnnotationValueLangModel> getValue()
+      public List<LM_AnnotationValue> getValue()
       {
          //noinspection unchecked
          return ((Collection<javax.lang.model.element.AnnotationValue>) annotationValue.getValue())
@@ -308,12 +308,12 @@ public abstract class AnnotationValueImpl
                      context,
                      annotationValue1,
                      isDefault()))
-               .map(AnnotationValueLangModel.class::cast)
+               .map(LM_AnnotationValue.class::cast)
                .toList();
       }
    }
 
-   private AnnotationValueImpl(LangModelContext context, boolean defaultValue, javax.lang.model.element.AnnotationValue annotationValue)
+   private AnnotationValueImpl(LM_Context context, boolean defaultValue, javax.lang.model.element.AnnotationValue annotationValue)
    {
       this.context = context;
       this.defaultValue = defaultValue;
@@ -332,7 +332,7 @@ public abstract class AnnotationValueImpl
 
    public abstract Object getValue();
 
-   private <VALUE extends AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
+   private <VALUE extends C_AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
    {
       if (valueClass.isInstance(this))
       {
@@ -345,19 +345,19 @@ public abstract class AnnotationValueImpl
    @Override
    public boolean equals(Object other)
    {
-      return AnnotationValueSupport.equals((AnnotationValue) this, other);
+      return AnnotationValueSupport.equals((C_AnnotationValue) this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return AnnotationValueSupport.hashCode(((AnnotationValue) this));
+      return AnnotationValueSupport.hashCode(((C_AnnotationValue) this));
    }
 
    @Override
    public String toString()
    {
-      return AnnotationValueSupport.toString((AnnotationValue) this);
+      return AnnotationValueSupport.toString((C_AnnotationValue) this);
    }
 
    public String getImplementationName()

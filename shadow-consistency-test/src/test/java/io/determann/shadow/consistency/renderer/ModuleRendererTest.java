@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +17,8 @@ class ModuleRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Module>compileTime(context -> context.getModuleOrThrow("java.desktop"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.getModuleShadow("java.desktop"))
+      ConsistencyTest.<C_Module>compileTime(context -> context.getModuleOrThrow("java.desktop"))
+                     .runtime(stringClassFunction -> R_Adapter.getModuleShadow("java.desktop"))
                      .test(aClass -> assertEquals(EXPECTED_RENDERING, render(DEFAULT, aClass).declaration()),
                            aClass -> assertEquals(sort(EXPECTED_RENDERING), sort(render(DEFAULT, aClass).declaration())));
    }

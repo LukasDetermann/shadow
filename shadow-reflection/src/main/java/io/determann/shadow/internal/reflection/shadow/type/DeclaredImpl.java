@@ -1,19 +1,19 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.NameableReflection;
-import io.determann.shadow.api.reflection.shadow.QualifiedNameableReflection;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.R_Nameable;
+import io.determann.shadow.api.reflection.shadow.R_QualifiedNameable;
 import io.determann.shadow.api.reflection.shadow.structure.*;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
-import io.determann.shadow.api.reflection.shadow.type.InterfaceReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.NestingKind;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.reflection.shadow.type.R_Interface;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_NestingKind;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Generic;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.util.*;
@@ -26,11 +26,11 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public abstract class DeclaredImpl implements DeclaredReflection,
-                                     NameableReflection,
-                                     ShadowReflection,
-                                     QualifiedNameableReflection,
-                                     ModuleEnclosedReflection
+public abstract class DeclaredImpl implements R_Declared,
+                                              R_Nameable,
+                                              R_Shadow,
+                                              R_QualifiedNameable,
+                                              R_ModuleEnclosed
 {
    private final Class<?> aClass;
 
@@ -40,9 +40,9 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public ModuleReflection getModule()
+   public R_Module getModule()
    {
-      return ReflectionAdapter.generalize(getaClass().getModule());
+      return R_Adapter.generalize(getaClass().getModule());
    }
 
    @Override
@@ -52,18 +52,18 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())
-            .map(ReflectionAdapter::generalize)
+            .map(R_Adapter::generalize)
             .toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return stream(getaClass().getDeclaredAnnotations())
-            .map(ReflectionAdapter::generalize)
+            .map(R_Adapter::generalize)
             .toList();
    }
 
@@ -74,7 +74,7 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public Set<Modifier> getModifiers()
+   public Set<C_Modifier> getModifiers()
    {
       boolean isSealed = getaClass().isSealed();
       int modifiers = getModifiersAsInt();
@@ -97,9 +97,9 @@ public abstract class DeclaredImpl implements DeclaredReflection,
 
    private int getModifiersAsInt()
    {
-      TypeKind typeKind = getKind();
+      C_TypeKind typeKind = getKind();
 
-      if (typeKind.equals(TypeKind.INTERFACE) || typeKind.equals(TypeKind.ANNOTATION))
+      if (typeKind.equals(C_TypeKind.INTERFACE) || typeKind.equals(C_TypeKind.ANNOTATION))
       {
          return getaClass().getModifiers() & java.lang.reflect.Modifier.interfaceModifiers();
       }
@@ -107,53 +107,53 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      return equals(shadow) || shadow instanceof Declared declared && getSuperTypes().contains(declared);
+      return equals(shadow) || shadow instanceof C_Declared declared && getSuperTypes().contains(declared);
    }
 
    @Override
-   public NestingKind getNesting()
+   public C_NestingKind getNesting()
    {
       if (getaClass().isAnonymousClass() || getaClass().isLocalClass() || getaClass().isMemberClass())
       {
-         return NestingKind.INNER;
+         return C_NestingKind.INNER;
       }
-      return NestingKind.OUTER;
+      return C_NestingKind.OUTER;
    }
 
    @Override
-   public List<FieldReflection> getFields()
+   public List<R_Field> getFields()
    {
-      return stream(getaClass().getDeclaredFields()).map(ReflectionAdapter::generalize).toList();
+      return stream(getaClass().getDeclaredFields()).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public List<MethodReflection> getMethods()
+   public List<R_Method> getMethods()
    {
-      return stream(getaClass().getDeclaredMethods()).map(ReflectionAdapter::generalize).toList();
+      return stream(getaClass().getDeclaredMethods()).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public List<ConstructorReflection> getConstructors()
+   public List<R_Constructor> getConstructors()
    {
-      return stream(getaClass().getDeclaredConstructors()).map(ReflectionAdapter::generalize).toList();
+      return stream(getaClass().getDeclaredConstructors()).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public List<DeclaredReflection> getDirectSuperTypes()
+   public List<R_Declared> getDirectSuperTypes()
    {
-      List<DeclaredReflection> result = stream(getaClass().getGenericInterfaces())
-            .map(ReflectionAdapter::generalize)
-            .map(DeclaredReflection.class::cast)
+      List<R_Declared> result = stream(getaClass().getGenericInterfaces())
+            .map(R_Adapter::generalize)
+            .map(R_Declared.class::cast)
             .collect(Collectors.toList());
 
       ofNullable(getaClass().getGenericSuperclass())
-            .map(ReflectionAdapter::generalize)
-            .map(DeclaredReflection.class::cast)
+            .map(R_Adapter::generalize)
+            .map(R_Declared.class::cast)
             .ifPresent(result::add);
 
-      if (result.isEmpty() && isKind(TypeKind.INTERFACE))
+      if (result.isEmpty() && isKind(C_TypeKind.INTERFACE))
       {
          result.add(new ClassImpl(Object.class));
       }
@@ -161,16 +161,16 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public Set<DeclaredReflection> getSuperTypes()
+   public Set<R_Declared> getSuperTypes()
    {
       return findAllSupertypes(new HashSet<>(), this);
    }
 
-   private Set<DeclaredReflection> findAllSupertypes(Set<DeclaredReflection> found, DeclaredReflection declared)
+   private Set<R_Declared> findAllSupertypes(Set<R_Declared> found, R_Declared declared)
    {
-      List<DeclaredReflection> directSupertypes = declared.getDirectSuperTypes();
+      List<R_Declared> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (DeclaredReflection directSupertype : directSupertypes)
+      for (R_Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
@@ -178,24 +178,24 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public List<InterfaceReflection> getInterfaces()
+   public List<R_Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(InterfaceReflection.class::cast)
+                            .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                            .map(R_Interface.class::cast)
                             .toList();
    }
 
    @Override
-   public List<InterfaceReflection> getDirectInterfaces()
+   public List<R_Interface> getDirectInterfaces()
    {
-      return stream(getaClass().getInterfaces()).map(ReflectionAdapter::generalize).map(InterfaceReflection.class::cast).toList();
+      return stream(getaClass().getInterfaces()).map(R_Adapter::generalize).map(R_Interface.class::cast).toList();
    }
 
    @Override
-   public PackageReflection getPackage()
+   public R_Package getPackage()
    {
-      return ReflectionAdapter.generalize(getaClass().getPackage());
+      return R_Adapter.generalize(getaClass().getPackage());
    }
 
    @Override
@@ -205,37 +205,37 @@ public abstract class DeclaredImpl implements DeclaredReflection,
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
       if (getaClass().isEnum())
       {
-         return TypeKind.ENUM;
+         return C_TypeKind.ENUM;
       }
       //care. an annotation is a interface
       if (getaClass().isAnnotation())
       {
-         return TypeKind.ANNOTATION;
+         return C_TypeKind.ANNOTATION;
       }
       if (getaClass().isInterface())
       {
-         return TypeKind.INTERFACE;
+         return C_TypeKind.INTERFACE;
       }
       if (getaClass().isRecord())
       {
-         return TypeKind.RECORD;
+         return C_TypeKind.RECORD;
       }
-      return TypeKind.CLASS;
+      return C_TypeKind.CLASS;
    }
 
-   private boolean sameGenerics(List<Generic> generics, List<Generic> generics1)
+   private boolean sameGenerics(List<C_Generic> generics, List<C_Generic> generics1)
    {
       if (generics.size() != generics1.size())
       {
          return false;
       }
 
-      Iterator<Generic> iterator = generics.iterator();
-      Iterator<Generic> iterator1 = generics1.iterator();
+      Iterator<C_Generic> iterator = generics.iterator();
+      Iterator<C_Generic> iterator1 = generics1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {
          if (!requestOrThrow(iterator.next(), SHADOW_REPRESENTS_SAME_TYPE, iterator1.next()))
@@ -266,7 +266,7 @@ public abstract class DeclaredImpl implements DeclaredReflection,
       {
          return true;
       }
-      if (!(other instanceof Declared otherDeclared))
+      if (!(other instanceof C_Declared otherDeclared))
       {
          return false;
       }

@@ -2,7 +2,7 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.NameRenderedEvent;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.type.C_Declared;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,7 +16,7 @@ public class RenderingContextWrapper implements RenderingContext
    public RenderingContextWrapper(RenderingContext renderingContext) {this.renderingContext = renderingContext;}
 
    @Override
-   public String renderName(Declared declared)
+   public String renderName(C_Declared declared)
    {
       return renderingContext.renderName(declared);
    }
@@ -28,7 +28,7 @@ public class RenderingContextWrapper implements RenderingContext
    }
 
    @Override
-   public Function<Declared, NameRenderedEvent> getNameRenderer()
+   public Function<C_Declared, NameRenderedEvent> getNameRenderer()
    {
       return renderingContext.getNameRenderer();
    }

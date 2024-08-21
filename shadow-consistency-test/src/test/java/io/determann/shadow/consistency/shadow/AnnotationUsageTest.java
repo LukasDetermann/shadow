@@ -1,9 +1,9 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LangModelQueries;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
+import io.determann.shadow.api.lang_model.LM_Queries;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,9 +18,9 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(context ->
                             {
-                               AnnotationUsageLangModel defaultValues = context.getClassOrThrow("AnnotationUsageExample")
-                                                                                       .getAnnotationUsages()
-                                                                                       .get(0);
+                               LM_AnnotationUsage defaultValues = context.getClassOrThrow("AnnotationUsageExample")
+                                                                         .getAnnotationUsages()
+                                                                         .get(0);
 
                                assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").getValue());
                                assertEquals(false, defaultValues.getValueOrThrow("booleanValue").getValue());
@@ -37,22 +37,22 @@ class AnnotationUsageTest
                                             defaultValues.getValueOrThrow("enumConstantValue").getValue());
                                assertEquals(context.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow(
                                                   "CLASS"),
-                                            ((AnnotationValueLangModel.AnnotationUsageValue) defaultValues.getValueOrThrow(
+                                            ((LM_AnnotationValue.AnnotationUsageValue) defaultValues.getValueOrThrow(
                                                   "annotationUsageValue")).getValue().getValueOrThrow("value").getValue());
 
-                               AnnotationValueLangModel asListOfValues = defaultValues.getValueOrThrow("asListOfValues");
-                               List<AnnotationValueLangModel> values = ((AnnotationValueLangModel.Values) asListOfValues).getValue();
-                               List<Object> list = values.stream().map(AnnotationValueLangModel::getValue).toList();
+                               LM_AnnotationValue asListOfValues = defaultValues.getValueOrThrow("asListOfValues");
+                               List<LM_AnnotationValue> values = ((LM_AnnotationValue.Values) asListOfValues).getValue();
+                               List<Object> list = values.stream().map(LM_AnnotationValue::getValue).toList();
                                assertEquals(List.of('b', 'c'), list);
 
-                               assertTrue(defaultValues.getValues().values().stream().map(LangModelQueries::query).allMatch(AnnotationValueLangModel::isDefault));
+                               assertTrue(defaultValues.getValues().values().stream().map(LM_Queries::query).allMatch(LM_AnnotationValue::isDefault));
 
-                               AnnotationUsageLangModel overwrittenStringValue = context.getClassOrThrow("AnnotationUsageExample")
-                                     .getFieldOrThrow("testField")
-                                     .getAnnotationUsages()
-                                     .get(0);
+                               LM_AnnotationUsage overwrittenStringValue = context.getClassOrThrow("AnnotationUsageExample")
+                                                                                  .getFieldOrThrow("testField")
+                                                                                  .getAnnotationUsages()
+                                                                                  .get(0);
 
-                               AnnotationValueLangModel annotationValue = overwrittenStringValue.getValueOrThrow("stingValue");
+                               LM_AnnotationValue annotationValue = overwrittenStringValue.getValueOrThrow("stingValue");
                                assertFalse(annotationValue.isDefault());
                                assertEquals("custom Value", annotationValue.getValue());
                             })
@@ -92,26 +92,26 @@ class AnnotationUsageTest
    {
       ProcessorTest.process(context ->
                             {
-                               AnnotationUsageLangModel defaultValues = context.getClassOrThrow("AnnotationUsageExample")
-                                                                        .getAnnotationUsages()
-                                                                        .get(0);
+                               LM_AnnotationUsage defaultValues = context.getClassOrThrow("AnnotationUsageExample")
+                                                                         .getAnnotationUsages()
+                                                                         .get(0);
 
-                               Function<AnnotationValueLangModel, Integer> mapper = value ->
+                               Function<LM_AnnotationValue, Integer> mapper = value ->
                                      switch (value)
                                      {
-                                        case AnnotationValueLangModel.AnnotationUsageValue annotationUsageValue -> 11;
-                                        case AnnotationValueLangModel.BooleanValue booleanValue -> 1;
-                                        case AnnotationValueLangModel.ByteValue byteValue -> 2;
-                                        case AnnotationValueLangModel.CharacterValue characterValue -> 6;
-                                        case AnnotationValueLangModel.DoubleValue doubleValue -> 8;
-                                        case AnnotationValueLangModel.EnumConstantValue enumConstantValue -> 10;
-                                        case AnnotationValueLangModel.FloatValue floatValue -> 7;
-                                        case AnnotationValueLangModel.IntegerValue integerValue -> 4;
-                                        case AnnotationValueLangModel.LongValue longValue -> 5;
-                                        case AnnotationValueLangModel.ShortValue shortValue -> 3;
-                                        case AnnotationValueLangModel.StringValue stringValue -> 0;
-                                        case AnnotationValueLangModel.TypeValue typeValue -> 9;
-                                        case AnnotationValueLangModel.Values values -> 12;
+                                        case LM_AnnotationValue.AnnotationUsageValue annotationUsageValue -> 11;
+                                        case LM_AnnotationValue.BooleanValue booleanValue -> 1;
+                                        case LM_AnnotationValue.ByteValue byteValue -> 2;
+                                        case LM_AnnotationValue.CharacterValue characterValue -> 6;
+                                        case LM_AnnotationValue.DoubleValue doubleValue -> 8;
+                                        case LM_AnnotationValue.EnumConstantValue enumConstantValue -> 10;
+                                        case LM_AnnotationValue.FloatValue floatValue -> 7;
+                                        case LM_AnnotationValue.IntegerValue integerValue -> 4;
+                                        case LM_AnnotationValue.LongValue longValue -> 5;
+                                        case LM_AnnotationValue.ShortValue shortValue -> 3;
+                                        case LM_AnnotationValue.StringValue stringValue -> 0;
+                                        case LM_AnnotationValue.TypeValue typeValue -> 9;
+                                        case LM_AnnotationValue.Values values -> 12;
                                      };
 
                                assertEquals(0, mapper.apply(defaultValues.getValueOrThrow("stingValue")));

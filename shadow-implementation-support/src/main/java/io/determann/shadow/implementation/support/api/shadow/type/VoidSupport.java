@@ -1,23 +1,23 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.api.shadow.type.C_Void;
 
 import java.util.Objects;
 
 public class VoidSupport
 {
-   public static boolean equals(Void aVoid, Object other)
+   public static boolean equals(C_Void aVoid, Object other)
    {
-      return other instanceof Void;
+      return other instanceof C_Void;
    }
 
-   public static int hashCode(Void aVoid)
+   public static int hashCode(C_Void aVoid)
    {
-      return Objects.hash(Void.class);
+      return Objects.hash(C_Void.class);
    }
 
-   public static String toString(Void aVoid)
+   public static String toString(C_Void aVoid)
    {
-      return Void.class.getSimpleName();
+      return C_Void.class.getSimpleName();
    }
 }

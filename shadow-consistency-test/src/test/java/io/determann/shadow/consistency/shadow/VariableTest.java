@@ -1,10 +1,10 @@
 package io.determann.shadow.consistency.shadow;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.FieldLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.VariableLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Parameter;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Variable;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
@@ -12,9 +12,9 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class VariableTest<VARIABLE extends VariableLangModel> extends ShadowTest<VARIABLE>
+abstract class VariableTest<VARIABLE extends LM_Variable> extends ShadowTest<VARIABLE>
 {
-   VariableTest(Function<AnnotationProcessingContext, VARIABLE> variableSupplier)
+   VariableTest(Function<AP_Context, VARIABLE> variableSupplier)
    {
       super(variableSupplier);
    }
@@ -24,9 +24,9 @@ abstract class VariableTest<VARIABLE extends VariableLangModel> extends ShadowTe
    {
       ProcessorTest.process(context ->
                             {
-                               ParameterLangModel parameter = context.getClassOrThrow("ParameterExample")
-                                                                     .getConstructors().get(0)
-                                                                     .getParameters().get(0);
+                               LM_Parameter parameter = context.getClassOrThrow("ParameterExample")
+                                                               .getConstructors().get(0)
+                                                               .getParameters().get(0);
                                assertTrue(parameter.isSubtypeOf(context.getClassOrThrow("java.lang.String")));
                             })
                    .withCodeToCompile("ParameterExample.java", """
@@ -45,8 +45,8 @@ abstract class VariableTest<VARIABLE extends VariableLangModel> extends ShadowTe
    {
       ProcessorTest.process(context ->
                             {
-                               FieldLangModel field = context.getClassOrThrow("FieldExample")
-                                                             .getFields().get(0);
+                               LM_Field field = context.getClassOrThrow("FieldExample")
+                                                       .getFields().get(0);
                                assertTrue(field.isAssignableFrom(context.getClassOrThrow("java.lang.Integer")));
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")

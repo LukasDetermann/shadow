@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
-import io.determann.shadow.api.reflection.shadow.type.PrimitiveReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Primitive;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.type.R_Class;
+import io.determann.shadow.api.reflection.shadow.type.R_Primitive;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 
 import java.util.HashMap;
@@ -15,15 +15,15 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.shadow.TypeKind.*;
+import static io.determann.shadow.api.shadow.C_TypeKind.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class PrimitiveImpl implements Primitive,
-                                      PrimitiveReflection,
-                                      ShadowReflection
+public class PrimitiveImpl implements C_Primitive,
+                                      R_Primitive,
+                                      R_Shadow
 {
    private final java.lang.Class<?> aClass;
-   private static final Map<java.lang.Class<?>, TypeKind> CLASS_KIND_MAP = new HashMap<>();
+   private static final Map<java.lang.Class<?>, C_TypeKind> CLASS_KIND_MAP = new HashMap<>();
    static {
       CLASS_KIND_MAP.put(Boolean.TYPE, BOOLEAN);
       CLASS_KIND_MAP.put(Byte.TYPE, BYTE);
@@ -53,31 +53,31 @@ public class PrimitiveImpl implements Primitive,
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
       return false;
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      return shadow instanceof Primitive primitive && getaClass().isAssignableFrom(ReflectionAdapter.particularize((PrimitiveReflection) primitive));
+      return shadow instanceof C_Primitive primitive && getaClass().isAssignableFrom(R_Adapter.particularize((R_Primitive) primitive));
    }
 
    @Override
-   public ClassReflection asBoxed()
+   public R_Class asBoxed()
    {
       return new ClassImpl(Objects.requireNonNull(PRIMITIVE_BOXED_MAP.get(getaClass())));
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       return getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND));
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
       return Objects.requireNonNull(CLASS_KIND_MAP.get(getaClass()));
    }

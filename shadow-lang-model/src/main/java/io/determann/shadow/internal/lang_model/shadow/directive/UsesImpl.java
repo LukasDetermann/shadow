@@ -1,29 +1,29 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.directive.UsesLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Uses;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
 import javax.lang.model.element.ModuleElement;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class UsesImpl extends DirectiveImpl implements UsesLangModel
+public class UsesImpl extends DirectiveImpl implements LM_Uses
 {
    private final ModuleElement.UsesDirective usesDirective;
 
-   public UsesImpl(LangModelContext context, ModuleElement.UsesDirective usesDirective)
+   public UsesImpl(LM_Context context, ModuleElement.UsesDirective usesDirective)
    {
       super(context);
       this.usesDirective = usesDirective;
    }
 
    @Override
-   public DeclaredLangModel getService()
+   public LM_Declared getService()
    {
-      return LangModelAdapter.generalize(getApi(), usesDirective.getService());
+      return LM_Adapter.generalize(getApi(), usesDirective.getService());
    }
 
    @Override

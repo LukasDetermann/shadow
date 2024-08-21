@@ -1,10 +1,10 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.Array;
+import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,20 +18,20 @@ class ArrayRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
-                     .runtime(stringClassFunction -> asArray((DeclaredReflection) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String"))))
+      ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
+                     .runtime(stringClassFunction -> asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))))
                      .test(aClass -> Assertions.assertEquals("String[]", Renderer.render(RenderingContext.DEFAULT, aClass).type()));
 
-      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.asArray(context.getClassOrThrow("java.lang.String"))))
-                     .runtime(stringClassFunction -> asArray(asArray((DeclaredReflection) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String")))))
+      ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.asArray(context.getClassOrThrow("java.lang.String"))))
+                     .runtime(stringClassFunction -> asArray(asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String")))))
                      .test(aClass -> assertEquals("String[][]", render(RenderingContext.DEFAULT, aClass).type()));
    }
 
    @Test
    void initialisation()
    {
-      ConsistencyTest.<Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
-                     .runtime(stringClassFunction -> asArray((DeclaredReflection) ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String"))))
+      ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
+                     .runtime(stringClassFunction -> asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))))
                      .test(string ->
                            {
                               assertEquals("new String[3][1]", render(RenderingContext.DEFAULT, string).initialisation(3, 1));

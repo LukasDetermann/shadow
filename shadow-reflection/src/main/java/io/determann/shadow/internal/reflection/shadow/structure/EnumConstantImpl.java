@@ -1,13 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
-import io.determann.shadow.api.reflection.shadow.type.EnumReflection;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
+import io.determann.shadow.api.reflection.shadow.type.R_Enum;
+import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import io.determann.shadow.api.shadow.type.*;
 
 import java.lang.reflect.Field;
@@ -15,7 +13,7 @@ import java.lang.reflect.Field;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstantReflection
+public class EnumConstantImpl extends ReflectionFieldImpl<C_Enum> implements R_EnumConstant
 {
    public EnumConstantImpl(Field field)
    {
@@ -23,17 +21,17 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Array array)
+      if (getType() instanceof C_Array array)
       {
          return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
       }
@@ -41,13 +39,13 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
       }
@@ -55,27 +53,27 @@ public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumC
    }
 
    @Override
-   public PackageReflection getPackage()
+   public R_Package getPackage()
    {
-      return (PackageReflection) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
+      return (R_Package) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override
-   public EnumReflection getSurrounding()
+   public R_Enum getSurrounding()
    {
-      return ReflectionAdapter.generalize(getField().getDeclaringClass());
+      return R_Adapter.generalize(getField().getDeclaringClass());
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      return shadow instanceof EnumConstant enumConstant &&
+      return shadow instanceof C_EnumConstant enumConstant &&
              requestOrThrow(requestOrThrow(enumConstant, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override
-   public ModuleReflection getModule()
+   public R_Module getModule()
    {
-      return (ModuleReflection) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return (R_Module) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 }

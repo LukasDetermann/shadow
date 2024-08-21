@@ -4,12 +4,12 @@ import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.renderer.ConstructorRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Constructor;
-import io.determann.shadow.api.shadow.structure.Parameter;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_Constructor;
+import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Generic;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,19 +23,19 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public class ConstructorRendererImpl implements ConstructorRenderer
 {
    private final RenderingContextWrapper context;
-   private final Constructor constructor;
+   private final C_Constructor constructor;
 
-   public ConstructorRendererImpl(RenderingContext renderingContext, Constructor constructor)
+   public ConstructorRendererImpl(RenderingContext renderingContext, C_Constructor constructor)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.constructor = constructor;
    }
 
-   public static String declaration(RenderingContextWrapper context, Constructor constructor, String content)
+   public static String declaration(RenderingContextWrapper context, C_Constructor constructor, String content)
    {
       StringBuilder sb = new StringBuilder();
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(constructor, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(constructor, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -43,14 +43,14 @@ public class ConstructorRendererImpl implements ConstructorRenderer
                               .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                               .collect(Collectors.joining()));
       }
-      Set<Modifier> modifiers = requestOrThrow(constructor, MODIFIABLE_GET_MODIFIERS);
+      Set<C_Modifier> modifiers = requestOrThrow(constructor, MODIFIABLE_GET_MODIFIERS);
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
 
-      List<? extends Generic> generics = requestOrThrow(constructor, EXECUTABLE_GET_GENERICS);
+      List<? extends C_Generic> generics = requestOrThrow(constructor, EXECUTABLE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -64,7 +64,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
                                         requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)));
       sb.append('(');
 
-      List<? extends Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
+      List<? extends C_Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
       Provider.requestOrEmpty(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
@@ -85,7 +85,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       sb.append(')');
       sb.append(' ');
 
-      List<? extends Class> aThrow = requestOrThrow(constructor, EXECUTABLE_GET_THROWS);
+      List<? extends C_Class> aThrow = requestOrThrow(constructor, EXECUTABLE_GET_THROWS);
       if (!aThrow.isEmpty())
       {
          sb.append("throws ");

@@ -1,87 +1,87 @@
 package io.determann.shadow.internal.lang_model;
 
-import io.determann.shadow.api.lang_model.LangModelConstants;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.type.PrimitiveLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
-import io.determann.shadow.api.shadow.type.Null;
-import io.determann.shadow.api.shadow.type.Void;
+import io.determann.shadow.api.lang_model.LM_Constants;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Primitive;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
+import io.determann.shadow.api.shadow.type.C_Null;
+import io.determann.shadow.api.shadow.type.C_Void;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.getTypes;
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
 import static javax.lang.model.type.TypeKind.*;
 
-public class LangModelConstantsImpl implements LangModelConstants
+public class LangModelConstantsImpl implements LM_Constants
 {
-   private final LangModelContext context;
+   private final LM_Context context;
 
-   LangModelConstantsImpl(LangModelContext context)
+   LangModelConstantsImpl(LM_Context context)
    {
       this.context = context;
    }
 
    @Override
-   public WildcardLangModel getUnboundWildcard()
+   public LM_Wildcard getUnboundWildcard()
    {
       return generalize(context, getTypes(context).getWildcardType(null, null));
    }
 
    @Override
-   public Null getNull()
+   public C_Null getNull()
    {
       return generalize(context, getTypes(context).getNullType());
    }
 
    @Override
-   public Void getVoid()
+   public C_Void getVoid()
    {
       return generalize(context, getTypes(context).getNoType(VOID));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveBoolean()
+   public LM_Primitive getPrimitiveBoolean()
    {
       return generalize(context, getTypes(context).getPrimitiveType(BOOLEAN));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveByte()
+   public LM_Primitive getPrimitiveByte()
    {
       return generalize(context, getTypes(context).getPrimitiveType(BYTE));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveShort()
+   public LM_Primitive getPrimitiveShort()
    {
       return generalize(context, getTypes(context).getPrimitiveType(SHORT));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveInt()
+   public LM_Primitive getPrimitiveInt()
    {
       return generalize(context, getTypes(context).getPrimitiveType(INT));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveLong()
+   public LM_Primitive getPrimitiveLong()
    {
       return generalize(context, getTypes(context).getPrimitiveType(LONG));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveChar()
+   public LM_Primitive getPrimitiveChar()
    {
       return generalize(context, getTypes(context).getPrimitiveType(CHAR));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveFloat()
+   public LM_Primitive getPrimitiveFloat()
    {
       return generalize(context, getTypes(context).getPrimitiveType(FLOAT));
    }
 
    @Override
-   public PrimitiveLangModel getPrimitiveDouble()
+   public LM_Primitive getPrimitiveDouble()
    {
       return generalize(context, getTypes(context).getPrimitiveType(DOUBLE));
    }

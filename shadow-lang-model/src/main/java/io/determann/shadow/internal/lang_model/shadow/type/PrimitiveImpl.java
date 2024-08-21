@@ -1,55 +1,55 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.PrimitiveLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Primitive;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 
 import javax.lang.model.type.PrimitiveType;
 
-public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements PrimitiveLangModel
+public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements LM_Primitive
 {
-   public PrimitiveImpl(LangModelContext context, PrimitiveType primitiveTypeMirror)
+   public PrimitiveImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
    {
       super(context, primitiveTypeMirror);
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(LangModelAdapter.particularType((ShadowLangModel) shadow), getMirror());
+      return LM_Adapter.getTypes(getApi()).isSubtype(LM_Adapter.particularType((LM_Shadow) shadow), getMirror());
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType((ShadowLangModel) shadow));
+      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Shadow) shadow));
    }
 
    @Override
-   public ClassLangModel asBoxed()
+   public LM_Class asBoxed()
    {
-      return LangModelAdapter
-                     .generalize(getApi(), LangModelAdapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+      return LM_Adapter
+                     .generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
       return switch (getMirror().getKind())
       {
-         case BOOLEAN -> TypeKind.BOOLEAN;
-         case BYTE -> TypeKind.BYTE;
-         case SHORT -> TypeKind.SHORT;
-         case INT -> TypeKind.INT;
-         case LONG -> TypeKind.LONG;
-         case CHAR -> TypeKind.CHAR;
-         case FLOAT -> TypeKind.FLOAT;
-         case DOUBLE -> TypeKind.DOUBLE;
+         case BOOLEAN -> C_TypeKind.BOOLEAN;
+         case BYTE -> C_TypeKind.BYTE;
+         case SHORT -> C_TypeKind.SHORT;
+         case INT -> C_TypeKind.INT;
+         case LONG -> C_TypeKind.LONG;
+         case CHAR -> C_TypeKind.CHAR;
+         case FLOAT -> C_TypeKind.FLOAT;
+         case DOUBLE -> C_TypeKind.DOUBLE;
          default -> throw new IllegalStateException();
       };
    }

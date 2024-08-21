@@ -1,13 +1,13 @@
 package io.determann.shadow.implementation.support.internal.property;
 
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Parameter;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_Field;
+import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.shadow.TypeKind.CLASS;
-import static io.determann.shadow.api.shadow.TypeKind.VOID;
+import static io.determann.shadow.api.shadow.C_TypeKind.CLASS;
+import static io.determann.shadow.api.shadow.C_TypeKind.VOID;
 import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;
@@ -30,13 +30,13 @@ public class PropertyTemplateFactory
 {
    private static class Accessor
    {
-      private final Method method;
+      private final C_Method method;
       private final AccessorType type;
       private final String prefix;
       private final String name;
       private final int position;
 
-      private Accessor(Method method, AccessorType type, String prefix, String name, int position)
+      private Accessor(C_Method method, AccessorType type, String prefix, String name, int position)
       {
          this.method = method;
          this.type = type;
@@ -45,7 +45,7 @@ public class PropertyTemplateFactory
          this.position = position;
       }
 
-      public Method getMethod() {return method;}
+      public C_Method getMethod() {return method;}
 
       public AccessorType getType() {return type;}
 
@@ -68,16 +68,16 @@ public class PropertyTemplateFactory
 
    private PropertyTemplateFactory() {}
 
-   public static List<PropertyTemplate> templatesFor(Declared declared)
+   public static List<PropertyTemplate> templatesFor(C_Declared declared)
    {
-      Map<String, Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field,
-                                                                                                                                             NAMEABLE_GET_NAME), Function.identity()));
+      Map<String, C_Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field,
+                                                                                                                                               NAMEABLE_GET_NAME), Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
       Map<String, Map<AccessorType, List<Accessor>>> nameTypeAccessors =
             getMethods(declared).stream()
-                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
+                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, C_Modifier.STATIC))
                                 .map(method1 -> toAccessor(method1, position.getAndIncrement()))
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
@@ -90,7 +90,7 @@ public class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      Shadow shadow = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
+                                      C_Shadow shadow = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
 
                                       PropertyTemplate template = new PropertyTemplate(name, shadow, getter.getMethod());
 
@@ -104,30 +104,30 @@ public class PropertyTemplateFactory
                               .toList();
    }
 
-   private static List<? extends Method> getMethods(Declared declared)
+   private static List<? extends C_Method> getMethods(C_Declared declared)
    {
       if (!requestOrThrow(declared, SHADOW_GET_KIND).equals(CLASS))
       {
          return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
-      List<Class> superClasses = Stream.iterate(((Class) declared),
-                                                Objects::nonNull,
+      List<C_Class> superClasses = Stream.iterate(((C_Class) declared),
+                                                  Objects::nonNull,
                                                 aClass -> requestOrThrow(aClass, CLASS_GET_SUPER_CLASS)).collect(toList());
 
       Collections.reverse(superClasses);
 
-      List<? extends Method> methods = superClasses.stream()
-                                         .flatMap(aClass -> requestOrThrow(aClass, DECLARED_GET_METHODS).stream())
-                                         .toList();
+      List<? extends C_Method> methods = superClasses.stream()
+                                                     .flatMap(aClass -> requestOrThrow(aClass, DECLARED_GET_METHODS).stream())
+                                                     .toList();
 
       return methods.stream()
                     .filter(method -> methods.stream().noneMatch(method1 -> requestOrThrow(method, METHOD_OVERWRITTEN_BY, method1)))
                     .toList();
    }
 
-   private static Optional<Field> findField(Map<String, Field> nameField, Shadow shadow, String name)
+   private static Optional<C_Field> findField(Map<String, C_Field> nameField, C_Shadow shadow, String name)
    {
-      Field field = nameField.get(name);
+      C_Field field = nameField.get(name);
       if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
       {
          return Optional.empty();
@@ -135,7 +135,7 @@ public class PropertyTemplateFactory
       return Optional.of(field);
    }
 
-   private static Optional<Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Shadow shadow)
+   private static Optional<C_Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C_Shadow shadow)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
@@ -173,17 +173,17 @@ public class PropertyTemplateFactory
       throw new IllegalStateException();
    }
 
-   private static Optional<Accessor> toAccessor(Method method, int position)
+   private static Optional<Accessor> toAccessor(C_Method method, int position)
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME);
-      List<? extends Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
-      Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+      List<? extends C_Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      C_Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
       //getter
       if (!requestOrThrow(returnType, SHADOW_GET_KIND).equals(VOID))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = requestOrThrow(returnType, SHADOW_GET_KIND).equals(TypeKind.BOOLEAN) &&
+         boolean hasIsPrefix = requestOrThrow(returnType, SHADOW_GET_KIND).equals(C_TypeKind.BOOLEAN) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
 
@@ -212,7 +212,7 @@ public class PropertyTemplateFactory
       return Optional.empty();
    }
 
-   private static String toPropertyName(Method method, String prefix)
+   private static String toPropertyName(C_Method method, String prefix)
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME).substring(prefix.length());
 

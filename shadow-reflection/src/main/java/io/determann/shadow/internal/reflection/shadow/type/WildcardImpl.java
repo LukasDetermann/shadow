@@ -1,13 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.reflection.shadow.type.WildcardReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
-import io.determann.shadow.api.shadow.type.Wildcard;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Wildcard;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Wildcard;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
 
 import java.lang.reflect.WildcardType;
@@ -18,9 +18,9 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 
-public class WildcardImpl implements Wildcard,
-                                     WildcardReflection,
-                                     ShadowReflection
+public class WildcardImpl implements C_Wildcard,
+                                     R_Wildcard,
+                                     R_Shadow
 {
    private final WildcardType wildcardType;
 
@@ -30,20 +30,20 @@ public class WildcardImpl implements Wildcard,
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.WILDCARD;
+      return C_TypeKind.WILDCARD;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      if (!(shadow instanceof Wildcard wildcard))
+      if (!(shadow instanceof C_Wildcard wildcard))
       {
          return false;
       }
-      Optional<Shadow> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
-      Optional<Shadow> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
+      Optional<C_Shadow> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
+      Optional<C_Shadow> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
 
 
       if ((getExtends().isEmpty() && getSuper().isEmpty()) || (otherExtends.isEmpty() && otherSuper.isEmpty()))
@@ -55,7 +55,7 @@ public class WildcardImpl implements Wildcard,
    }
 
    @Override
-   public Optional<ShadowReflection> getExtends()
+   public Optional<R_Shadow> getExtends()
    {
       java.lang.reflect.Type[] upperBounds = wildcardType.getUpperBounds();
       //? extends Object -> ? : drop the extends Object
@@ -67,34 +67,34 @@ public class WildcardImpl implements Wildcard,
       return switch (upperBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(ReflectionAdapter.generalize(upperBounds[0]));
+         case 1 -> Optional.of(R_Adapter.generalize(upperBounds[0]));
          default -> Optional.of(new IntersectionImpl(upperBounds));
       };
    }
 
    @Override
-   public Optional<ShadowReflection> getSuper()
+   public Optional<R_Shadow> getSuper()
    {
       java.lang.reflect.Type[] lowerBounds = wildcardType.getLowerBounds();
       return switch (lowerBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(ReflectionAdapter.generalize(lowerBounds[0]));
+         case 1 -> Optional.of(R_Adapter.generalize(lowerBounds[0]));
          default -> Optional.of(new IntersectionImpl(lowerBounds));
       };
    }
 
    @Override
-   public boolean contains(Shadow shadow)
+   public boolean contains(C_Shadow shadow)
    {
       return equals(shadow) ||
              (getExtends().isPresent() && (getExtends().get().equals(shadow) || isSubType(getExtends().get(), shadow))) ||
              (getSuper().isPresent() && (getSuper().get().equals(shadow) || isSubType(shadow, getSuper().get())));
    }
 
-   private boolean isSubType(Shadow shadow, Shadow other)
+   private boolean isSubType(C_Shadow shadow, C_Shadow other)
    {
-      return shadow instanceof Declared declared && requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other);
+      return shadow instanceof C_Declared declared && requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other);
    }
 
    public WildcardType getWildcardType()

@@ -1,14 +1,14 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.C_Primitive;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class PrimitiveTest extends ShadowTest<Primitive>
+class PrimitiveTest extends ShadowTest<C_Primitive>
 {
    PrimitiveTest()
    {

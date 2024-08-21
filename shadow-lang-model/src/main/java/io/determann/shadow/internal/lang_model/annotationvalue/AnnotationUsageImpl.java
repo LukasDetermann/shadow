@@ -1,13 +1,13 @@
 package io.determann.shadow.internal.lang_model.annotationvalue;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.AnnotationLangModel;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
@@ -18,50 +18,50 @@ import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl.create;
 
-public class AnnotationUsageImpl implements AnnotationUsageLangModel
+public class AnnotationUsageImpl implements LM_AnnotationUsage
 {
-   private final LangModelContext context;
+   private final LM_Context context;
    private final AnnotationMirror annotationMirror;
 
-   public static List<AnnotationUsageLangModel> from(LangModelContext langModelContext,
-                                            Collection<? extends AnnotationMirror> annotationMirrors)
+   public static List<LM_AnnotationUsage> from(LM_Context langModelContext,
+                                               Collection<? extends AnnotationMirror> annotationMirrors)
    {
       return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
-   static AnnotationUsageLangModel from(LangModelContext langModelContext, AnnotationMirror annotationMirror)
+   static LM_AnnotationUsage from(LM_Context langModelContext, AnnotationMirror annotationMirror)
    {
       return new AnnotationUsageImpl(langModelContext, annotationMirror);
    }
 
-   private AnnotationUsageImpl(LangModelContext context, AnnotationMirror annotationMirror)
+   private AnnotationUsageImpl(LM_Context context, AnnotationMirror annotationMirror)
    {
       this.context = context;
       this.annotationMirror = annotationMirror;
    }
 
    @Override
-   public Map<MethodLangModel, AnnotationValueLangModel> getValues()
+   public Map<LM_Method, LM_AnnotationValue> getValues()
    {
-      Map<MethodLangModel, AnnotationValueLangModel> result = new LinkedHashMap<>();
+      Map<LM_Method, LM_AnnotationValue> result = new LinkedHashMap<>();
 
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withoutDefaults = annotationMirror.getElementValues();
 
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withDefaults =
-            LangModelAdapter.getElements(getApi()).getElementValuesWithDefaults(annotationMirror);
+            LM_Adapter.getElements(getApi()).getElementValuesWithDefaults(annotationMirror);
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put((MethodLangModel) LangModelAdapter.generalize(getApi(), entry.getKey()),
+         result.put((LM_Method) LM_Adapter.generalize(getApi(), entry.getKey()),
                     create(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
    }
 
    @Override
-   public AnnotationLangModel getAnnotation()
+   public LM_Annotation getAnnotation()
    {
-      return LangModelAdapter.generalize(getApi(), annotationMirror.getAnnotationType());
+      return LM_Adapter.generalize(getApi(), annotationMirror.getAnnotationType());
    }
 
    @Override
@@ -75,7 +75,7 @@ public class AnnotationUsageImpl implements AnnotationUsageLangModel
       return annotationMirror;
    }
 
-   public LangModelContext getApi()
+   public LM_Context getApi()
    {
       return context;
    }
@@ -94,7 +94,7 @@ public class AnnotationUsageImpl implements AnnotationUsageLangModel
       {
          return true;
       }
-      if (!(other instanceof AnnotationUsage otherAnnotationUsage))
+      if (!(other instanceof C_AnnotationUsage otherAnnotationUsage))
       {
          return false;
       }

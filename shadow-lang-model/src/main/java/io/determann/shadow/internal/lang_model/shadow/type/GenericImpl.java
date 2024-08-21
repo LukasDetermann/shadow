@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.TypeKind;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -14,51 +14,51 @@ import javax.lang.model.type.TypeVariable;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 
-public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLangModel
+public class GenericImpl extends ShadowImpl<TypeVariable> implements LM_Generic
 {
    private final TypeParameterElement typeParameterElement;
 
-   public GenericImpl(LangModelContext context, TypeParameterElement typeParameterElement)
+   public GenericImpl(LM_Context context, TypeParameterElement typeParameterElement)
    {
       super(context, ((TypeVariable) typeParameterElement.asType()));
       this.typeParameterElement = typeParameterElement;
    }
 
-   public GenericImpl(LangModelContext context, TypeVariable typeMirror)
+   public GenericImpl(LM_Context context, TypeVariable typeMirror)
    {
       super(context, typeMirror);
-      this.typeParameterElement = (TypeParameterElement) LangModelAdapter.getTypes(getApi()).asElement(typeMirror);
+      this.typeParameterElement = (TypeParameterElement) LM_Adapter.getTypes(getApi()).asElement(typeMirror);
    }
 
    @Override
-   public ShadowLangModel getExtends()
+   public LM_Shadow getExtends()
    {
-      return LangModelAdapter.generalize(getApi(), getMirror().getUpperBound());
+      return LM_Adapter.generalize(getApi(), getMirror().getUpperBound());
    }
 
    @Override
-   public Optional<ShadowLangModel> getSuper()
+   public Optional<LM_Shadow> getSuper()
    {
       TypeMirror lowerBound = getMirror().getLowerBound();
       if (lowerBound == null || lowerBound.getKind().equals(javax.lang.model.type.TypeKind.NONE))
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.generalize(getApi(), lowerBound));
+      return Optional.of(LM_Adapter.generalize(getApi(), lowerBound));
    }
 
    @Override
    public Object getEnclosing()
    {
-      return LangModelAdapter.generalize(getApi(), getElement().getGenericElement());
+      return LM_Adapter.generalize(getApi(), getElement().getGenericElement());
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.GENERIC;
+      return C_TypeKind.GENERIC;
    }
 
    public TypeParameterElement getElement()
@@ -73,13 +73,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements GenericLang
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getAnnotationUsages()
+   public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return generalize(getApi(), LM_Adapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
+   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }

@@ -1,7 +1,7 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Annotation;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.MODULE_ENCLOSED_GET_MODULE;
@@ -9,24 +9,24 @@ import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIE
 
 public class AnnotationSupport
 {
-   public static boolean equals(Annotation annotation, Object other)
+   public static boolean equals(C_Annotation annotation, Object other)
    {
-      return DeclaredSupport.equals(annotation, other, Annotation.class);
+      return DeclaredSupport.equals(annotation, other, C_Annotation.class);
    }
 
-   public static int hashCode(Annotation annotation)
+   public static int hashCode(C_Annotation annotation)
    {
       return DeclaredSupport.hashCode(annotation);
    }
 
-   public static String toString(Annotation annotation)
+   public static String toString(C_Annotation annotation)
    {
-      return DeclaredSupport.toString(annotation, Annotation.class);
+      return DeclaredSupport.toString(annotation, C_Annotation.class);
    }
 
-   public static boolean representsSameType(Annotation annotation, Shadow other)
+   public static boolean representsSameType(C_Annotation annotation, C_Shadow other)
    {
-      return SupportSupport.representsSameType(annotation, Annotation.class, other,
+      return SupportSupport.representsSameType(annotation, C_Annotation.class, other,
                                                MODULE_ENCLOSED_GET_MODULE,
                                                //should be the binary name. this is close enough for most cases
                                                QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);

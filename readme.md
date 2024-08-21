@@ -15,7 +15,7 @@ standard.
 This project is an Abstraction for Metaprogramming
 
 
-<img src="_images/Overview.svg" style="width:80.0%" alt="Overview" />
+<img src="https://www.shadow.determann.io/Shadow-Api/_images/Overview.svg" style="width:80.0%" alt="Overview" />
 
 
 It has two Types of Apis
@@ -41,24 +41,24 @@ field of a class. Accessing fields may or may not be supported.
 void request()
 {
    //adapter for the reflection api
-   Class systemClass = ReflectionAdapter.generalize(System.class);
+   C_Class systemClass = R_Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System
-   Response<Field> out = Provider.request(systemClass,
-                                          Operations.DECLARED_GET_FIELD,
-                                          "out");
+   Response<C_Field> out = Provider.request(systemClass,
+                                            Operations.DECLARED_GET_FIELD,
+                                            "out");
 
    switch (out)
    {
       //the implementation may not support this operation
       //e.g. it's impossible to access fields with reflection
-      case Response.Unsupported<Field> unsupported -> Assertions.fail();
+      case Response.Unsupported<C_Field> unsupported -> Assertions.fail();
       //the implementation may support this operation, but there is no
       //result for this instance
       //e.g. the class java.lang.System does not have a field called "out"
-      case Response.Empty<Field> empty -> Assertions.fail();
+      case Response.Empty<C_Field> empty -> Assertions.fail();
       //accessing fields via reflection is possible and java.lang.System
       //does have a field called "out" therefore a result is expected
-      case Response.Result<Field> result -> assertNotNull(result.value());
+      case Response.Result<C_Field> result -> assertNotNull(result.value());
    }
 }
 ```
@@ -71,12 +71,12 @@ Exception is a fitting default behavior.
 void requestOrEmpty()
 {
    //adapter for the reflection api
-   Class systemClass = ReflectionAdapter.generalize(System.class);
+   C_Class systemClass = R_Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System.
    //If its unsupported an Empty Optional is returned
-   Optional<Field> out = Provider.requestOrEmpty(systemClass,
-                                                 Operations.DECLARED_GET_FIELD,
-                                                 "out");
+   Optional<C_Field> out = Provider.requestOrEmpty(systemClass,
+                                                   Operations.DECLARED_GET_FIELD,
+                                                   "out");
 
    assertTrue(out.isPresent());
 }
@@ -86,12 +86,12 @@ void requestOrEmpty()
 void requestOrThrow()
 {
    //adapter for the reflection api
-   Class systemClass = ReflectionAdapter.generalize(System.class);
+   C_Class systemClass = R_Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System.
    //If its unsupported an Exception is thrown
-   Field out = Provider.requestOrThrow(systemClass,
-                                       Operations.DECLARED_GET_FIELD,
-                                       "out");
+   C_Field out = Provider.requestOrThrow(systemClass,
+                                         Operations.DECLARED_GET_FIELD,
+                                         "out");
 
    assertNotNull(out);
 }
@@ -116,13 +116,13 @@ This Annotation Processor generates Builder
 ``` highlightjs
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.annotation_processing.ShadowProcessor;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.annotation_processing.AP_Context;
+import io.determann.shadow.api.annotation_processing.AP_Processor;
+import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
+import io.determann.shadow.api.lang_model.shadow.LM_QualifiedNameable;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -133,13 +133,13 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 /**
  * Builds a companion Builder class for each annotated class
  */
-public class ShadowBuilderProcessor extends ShadowProcessor
+public class ShadowBuilderProcessor extends AP_Processor
 {
    @Override
-   public void process(final AnnotationProcessingContext context)
+   public void process(final AP_Context context)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (ClassLangModel aClass : context
+      for (LM_Class aClass : context
             .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
@@ -153,7 +153,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          List<BuilderElement> builderElements =
                aClass.getProperties()
                      .stream()
-                     .filter(PropertyLangModel::isMutable)
+                     .filter(LM_Property::isMutable)
                      .map(property -> renderProperty(builderSimpleName,
                                                      builderVariableName,
                                                      property))
@@ -172,7 +172,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    /**
     * renders a companion builder class
     */
-   private String renderBuilder(final ClassLangModel aClass,
+   private String renderBuilder(final LM_Class aClass,
                                 final String toBuildQualifiedName,
                                 final String builderSimpleName,
                                 final String builderVariableName,
@@ -191,12 +191,12 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                                 .collect(Collectors.joining("\n\n"));
       return """
             package %1$s;
-                  
+
             public class %2$s{
                %3$s
-                  
+
             %4$s
-                  
+
                public %5$s build() {
                   %5$s %6$s = new %5$s();
                   %7$s
@@ -217,7 +217,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
     */
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final PropertyLangModel property)
+                                         final LM_Property property)
    {
       String propertyName = property.getName();
       String type = renderType(property.getType());
@@ -251,13 +251,13 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                  String mutator,
                                  String toBuildSetter) {}
 
-   private static String renderType(ShadowLangModel shadow)
+   private static String renderType(LM_Shadow shadow)
    {
-      if (shadow instanceof QualifiedNameableLamgModel qualifiedNameable)
+      if (shadow instanceof LM_QualifiedNameable qualifiedNameable)
       {
          return qualifiedNameable.getQualifiedName();
       }
-      if (shadow instanceof NameableLangModel nameable)
+      if (shadow instanceof LM_Nameable nameable)
       {
          return nameable.getName();
       }
@@ -271,13 +271,9 @@ public class ShadowBuilderProcessor extends ShadowProcessor
 
 ## Supported
 
-- <a href="Annotation%20Processing.html" class="xref page">Annotation
-  Processing</a>
-
-- <a href="java.lang.model.html" class="xref page">java.lang.model</a>
-
-- <a href="Reflection.html" class="xref page">reflection</a>
-  (experimental)
+- [Annotation Processing](https://www.shadow.determann.io/Shadow-Api/Annotation%20Processing.html)
+- [java.lang.model](https://www.shadow.determann.io/Shadow-Api/java.lang.model.html)
+- [reflection](https://www.shadow.determann.io/Shadow-Api/Reflection.html) (experimental)
 
 
 

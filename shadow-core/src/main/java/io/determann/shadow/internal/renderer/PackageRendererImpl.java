@@ -3,8 +3,8 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.PackageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.structure.Package;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.C_Package;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +18,15 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public class PackageRendererImpl implements PackageRenderer
 {
    private final RenderingContextWrapper context;
-   private final Package aPackage;
+   private final C_Package aPackage;
 
-   public PackageRendererImpl(RenderingContext renderingContext, Package aPackage)
+   public PackageRendererImpl(RenderingContext renderingContext, C_Package aPackage)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.aPackage = aPackage;
    }
 
-   public static String declaration(RenderingContextWrapper context, Package aPackage)
+   public static String declaration(RenderingContextWrapper context, C_Package aPackage)
    {
       if (requestOrThrow(aPackage, PACKAGE_IS_UNNAMED))
       {
@@ -35,7 +35,7 @@ public class PackageRendererImpl implements PackageRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(aPackage, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(aPackage, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()

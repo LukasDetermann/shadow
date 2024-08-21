@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ReturnReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.structure.Return;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.R_Return;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.structure.C_Return;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.RETURN_GET_TYPE;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class ReturnImpl implements ReturnReflection
+public class ReturnImpl implements R_Return
 {
    private final AnnotatedType annotatedType;
 
@@ -25,25 +25,25 @@ public class ReturnImpl implements ReturnReflection
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public ShadowReflection getType()
+   public R_Shadow getType()
    {
-      return ReflectionAdapter.generalize(getAnnotatedType().getType());
+      return R_Adapter.generalize(getAnnotatedType().getType());
    }
 
    public AnnotatedType getAnnotatedType()
@@ -58,7 +58,7 @@ public class ReturnImpl implements ReturnReflection
       {
          return true;
       }
-      if (!(other instanceof Return otherReturn))
+      if (!(other instanceof C_Return otherReturn))
       {
          return false;
       }

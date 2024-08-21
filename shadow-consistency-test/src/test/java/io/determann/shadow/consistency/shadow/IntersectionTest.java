@@ -1,20 +1,20 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.IntersectionLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class IntersectionTest extends ShadowTest<IntersectionLangModel>
+class IntersectionTest extends ShadowTest<LM_Intersection>
 {
    IntersectionTest()
    {
-      super(context -> ((IntersectionLangModel) context.getClassOrThrow("IntersectionExample")
-                                                     .getGenerics()
-                                                     .get(0).getExtends()));
+      super(context -> ((LM_Intersection) context.getClassOrThrow("IntersectionExample")
+                                                 .getGenerics()
+                                                 .get(0).getExtends()));
    }
 
    @Test

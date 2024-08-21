@@ -1,23 +1,23 @@
 package io.determann.shadow.api.reflection;
 
-import io.determann.shadow.api.reflection.shadow.type.ArrayReflection;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
-import io.determann.shadow.api.reflection.shadow.type.PrimitiveReflection;
+import io.determann.shadow.api.reflection.shadow.type.R_Array;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.reflection.shadow.type.R_Primitive;
 
 public class Reflection
 {
-   public static ArrayReflection asArray(ArrayReflection array)
+   public static R_Array asArray(R_Array array)
    {
-      return ReflectionAdapter.generalize(ReflectionAdapter.particularize(array).arrayType());
+      return R_Adapter.generalize(R_Adapter.particularize(array).arrayType());
    }
 
-   public static ArrayReflection asArray(PrimitiveReflection primitive)
+   public static R_Array asArray(R_Primitive primitive)
    {
-      return ReflectionAdapter.generalize(ReflectionAdapter.particularize(primitive).arrayType());
+      return R_Adapter.generalize(R_Adapter.particularize(primitive).arrayType());
    }
 
-   public static ArrayReflection asArray(DeclaredReflection declared)
+   public static R_Array asArray(R_Declared declared)
    {
-      return ReflectionAdapter.generalize(ReflectionAdapter.particularize(declared).arrayType());
+      return R_Adapter.generalize(R_Adapter.particularize(declared).arrayType());
    }
 }

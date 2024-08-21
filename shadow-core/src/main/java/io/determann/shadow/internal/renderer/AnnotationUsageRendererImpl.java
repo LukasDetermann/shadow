@@ -2,12 +2,12 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.AnnotationUsageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.AnnotationValue;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.type.Annotation;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.C_AnnotationValue;
+import io.determann.shadow.api.shadow.structure.C_EnumConstant;
+import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.type.C_Declared;
 
 import java.util.List;
 import java.util.Map;
@@ -21,28 +21,28 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {
    private final RenderingContextWrapper context;
-   private final AnnotationUsage usage;
+   private final C_AnnotationUsage usage;
 
-   public AnnotationUsageRendererImpl(RenderingContext renderingContext, AnnotationUsage usage)
+   public AnnotationUsageRendererImpl(RenderingContext renderingContext, C_AnnotationUsage usage)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.usage = usage;
    }
 
-   public static String usage(RenderingContextWrapper context, AnnotationUsage usage)
+   public static String usage(RenderingContextWrapper context, C_AnnotationUsage usage)
    {
       return usage(method -> Optional.empty(), context, usage);
    }
 
-   private static String usage(Function<Method, Optional<String>> valueRenderer, RenderingContextWrapper context, AnnotationUsage usage)
+   private static String usage(Function<C_Method, Optional<String>> valueRenderer, RenderingContextWrapper context, C_AnnotationUsage usage)
    {
       StringBuilder sb = new StringBuilder();
       sb.append('@');
 
-      Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
+      C_Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
       sb.append(context.renderName(annotation));
 
-      List<? extends Method> methods = requestOrThrow(annotation, DECLARED_GET_METHODS);
+      List<? extends C_Method> methods = requestOrThrow(annotation, DECLARED_GET_METHODS);
 
       if (!methods.isEmpty())
       {
@@ -52,7 +52,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
                                          " = " +
                                          valueRenderer.apply(method).orElseGet(() ->
                                                                                {
-                                                                                  Map<? extends Method, ? extends AnnotationValue> values = requestOrThrow(usage, ANNOTATION_USAGE_GET_VALUES);
+                                                                                  Map<? extends C_Method, ? extends C_AnnotationValue> values = requestOrThrow(usage, ANNOTATION_USAGE_GET_VALUES);
                                                                                   return renderValue(context, values.get(method));
                                                                                }))
                           .collect(Collectors.joining(", ")));
@@ -68,12 +68,12 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
    }
 
    @Override
-   public String usage(Function<Method, Optional<String>> valueRenderer)
+   public String usage(Function<C_Method, Optional<String>> valueRenderer)
    {
       return usage(valueRenderer, context, usage);
    }
 
-   private static String renderValue(RenderingContextWrapper context, AnnotationValue annotationValue)
+   private static String renderValue(RenderingContextWrapper context, C_AnnotationValue annotationValue)
    {
       Object value = requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE);
 
@@ -113,22 +113,22 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       {
          return Double.toString(aDouble) + 'D';
       }
-      if (value instanceof Declared declared)
+      if (value instanceof C_Declared declared)
       {
          return ShadowRendererImpl.classDeclaration(context, declared);
       }
-      if (value instanceof EnumConstant enumConstant)
+      if (value instanceof C_EnumConstant enumConstant)
       {
          return EnumConstantRendererImpl.type(context, enumConstant);
       }
-      if (value instanceof AnnotationUsage annotationUsage)
+      if (value instanceof C_AnnotationUsage annotationUsage)
       {
          return usage(context, annotationUsage);
       }
       if (value instanceof List<?> values)
       {
          //noinspection unchecked,OverlyStrongTypeCast
-         return '{' + ((List<AnnotationValue>) values).stream().map(v -> renderValue(context, v)).collect(Collectors.joining(", ")) + '}';
+         return '{' + ((List<C_AnnotationValue>) values).stream().map(v -> renderValue(context, v)).collect(Collectors.joining(", ")) + '}';
       }
       throw new IllegalStateException("Unable to render " + annotationValue);
    }

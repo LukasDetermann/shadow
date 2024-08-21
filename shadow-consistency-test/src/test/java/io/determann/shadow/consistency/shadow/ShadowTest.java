@@ -1,20 +1,20 @@
 package io.determann.shadow.consistency.shadow;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
 
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LM_Queries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class ShadowTest<SHADOW extends Shadow>
+abstract class ShadowTest<SHADOW extends C_Shadow>
 {
-   private final Function<AnnotationProcessingContext, SHADOW> shadowSupplier;
+   private final Function<AP_Context, SHADOW> shadowSupplier;
 
-   protected ShadowTest(Function<AnnotationProcessingContext, SHADOW> shadowSupplier) {this.shadowSupplier = shadowSupplier;}
+   protected ShadowTest(Function<AP_Context, SHADOW> shadowSupplier) {this.shadowSupplier = shadowSupplier;}
 
    @Test
    void testRepresentsSameType()
@@ -139,7 +139,7 @@ abstract class ShadowTest<SHADOW extends Shadow>
                    .compile();
    }
 
-   protected Function<AnnotationProcessingContext, SHADOW> getShadowSupplier()
+   protected Function<AP_Context, SHADOW> getShadowSupplier()
    {
       return shadowSupplier;
    }

@@ -2,7 +2,7 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.PrimitiveRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.Primitive;
+import io.determann.shadow.api.shadow.type.C_Primitive;
 
 import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.Provider.requestOrThrow;
@@ -10,15 +10,15 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {
    private final RenderingContextWrapper context;
-   private final Primitive primitive;
+   private final C_Primitive primitive;
 
-   public PrimitiveRendererImpl(RenderingContext renderingContext, Primitive primitive)
+   public PrimitiveRendererImpl(RenderingContext renderingContext, C_Primitive primitive)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.primitive = primitive;
    }
 
-   public static String type(RenderingContextWrapper context, Primitive primitive)
+   public static String type(RenderingContextWrapper context, C_Primitive primitive)
    {
       return switch (requestOrThrow(primitive, SHADOW_GET_KIND))
       {

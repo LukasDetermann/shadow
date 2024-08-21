@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ReceiverReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.structure.Receiver;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.R_Receiver;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.structure.C_Receiver;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.RECEIVER_GET_TYPE;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class ReceiverImpl implements ReceiverReflection
+public class ReceiverImpl implements R_Receiver
 {
    private final AnnotatedType annotatedType;
 
@@ -26,25 +26,25 @@ public class ReceiverImpl implements ReceiverReflection
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public ShadowReflection getType()
+   public R_Shadow getType()
    {
-      return ReflectionAdapter.generalize(annotatedType.getType());
+      return R_Adapter.generalize(annotatedType.getType());
    }
 
    public AnnotatedType getAnnotatedType()
@@ -72,7 +72,7 @@ public class ReceiverImpl implements ReceiverReflection
       {
          return true;
       }
-      if (!(other instanceof Receiver otherReceiver))
+      if (!(other instanceof C_Receiver otherReceiver))
       {
          return false;
       }

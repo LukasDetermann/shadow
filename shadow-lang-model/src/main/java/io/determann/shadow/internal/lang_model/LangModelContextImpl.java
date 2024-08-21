@@ -1,20 +1,18 @@
 package io.determann.shadow.internal.lang_model;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelConstants;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.LangModelContextImplementation;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Constants;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.LM_ContextImplementation;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.structure.Parameter;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.structure.C_Field;
+import io.determann.shadow.api.shadow.structure.C_Module;
+import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.lang_model.shadow.structure.RecordComponentImpl;
 
@@ -27,13 +25,13 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LM_Adapter.*;
+import static io.determann.shadow.api.lang_model.LM_Queries.query;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public class LangModelContextImpl implements LangModelContext,
-                                             LangModelContextImplementation
+public class LangModelContextImpl implements LM_Context,
+                                             LM_ContextImplementation
 {
    private final Types types;
    private final Elements elements;
@@ -45,29 +43,29 @@ public class LangModelContextImpl implements LangModelContext,
    }
 
    @Override
-   public List<ModuleLangModel> getModules()
+   public List<LM_Module> getModules()
    {
       return elements.getAllModuleElements()
                      .stream()
-                     .map(moduleElement -> LangModelAdapter.<ModuleLangModel>generalize(this, moduleElement))
+                     .map(moduleElement -> LM_Adapter.<LM_Module>generalize(this, moduleElement))
                      .toList();
    }
 
    @Override
-   public Optional<ModuleLangModel> getModule(String name)
+   public Optional<LM_Module> getModule(String name)
    {
       return ofNullable(elements.getModuleElement(name))
-            .map(moduleElement -> LangModelAdapter.generalize(this, moduleElement));
+            .map(moduleElement -> LM_Adapter.generalize(this, moduleElement));
    }
    
    @Override
-   public ModuleLangModel getModuleOrThrow(String name)
+   public LM_Module getModuleOrThrow(String name)
    {
       return getModule(name).orElseThrow();
    }
 
    @Override
-   public List<PackageLangModel> getPackages(String qualifiedName)
+   public List<LM_Package> getPackages(String qualifiedName)
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()
@@ -76,7 +74,7 @@ public class LangModelContextImpl implements LangModelContext,
    }
 
    @Override
-   public List<PackageLangModel> getPackages()
+   public List<LM_Package> getPackages()
    {
       return elements.getAllModuleElements()
                      .stream()
@@ -87,141 +85,141 @@ public class LangModelContextImpl implements LangModelContext,
    }
 
    @Override
-   public Optional<PackageLangModel> getPackage(String qualifiedModuleName, String qualifiedPackageName)
+   public Optional<LM_Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getPackage(getModuleOrThrow(qualifiedModuleName), qualifiedPackageName);
    }
 
    @Override
-   public PackageLangModel getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
+   public LM_Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getPackage(qualifiedModuleName, qualifiedPackageName).orElseThrow();
    }
 
    @Override
-   public Optional<PackageLangModel> getPackage(Module module, String qualifiedPackageName)
+   public Optional<LM_Package> getPackage(C_Module module, String qualifiedPackageName)
    {
-      return ofNullable(elements.getPackageElement(particularElement((ModuleLangModel) module), qualifiedPackageName))
+      return ofNullable(elements.getPackageElement(particularElement((LM_Module) module), qualifiedPackageName))
             .map(packageElement -> generalizePackage(this, packageElement));
    }
 
    @Override
-   public PackageLangModel getPackageOrThrow(Module module, String qualifiedPackageName)
+   public LM_Package getPackageOrThrow(C_Module module, String qualifiedPackageName)
    {
       return getPackage(module, qualifiedPackageName).orElseThrow();
    }
 
    @Override
-   public Optional<DeclaredLangModel> getDeclared(String qualifiedName)
+   public Optional<LM_Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(elements.getTypeElement(qualifiedName))
-            .map(typeElement -> LangModelAdapter.generalize(this, typeElement));
+            .map(typeElement -> LM_Adapter.generalize(this, typeElement));
    }
 
    @Override
-   public List<DeclaredLangModel> getDeclared()
+   public List<LM_Declared> getDeclared()
    {
       return getPackages()
             .stream()
             .flatMap(packageShadow -> requestOrThrow(packageShadow, PACKAGE_GET_DECLARED_LIST) .stream())
-            .map(DeclaredLangModel.class::cast)
+            .map(LM_Declared.class::cast)
             .toList();
    }
 
    @Override
-   public LangModelConstants getConstants()
+   public LM_Constants getConstants()
    {
       return new LangModelConstantsImpl(this);
    }
 
 
    @Override
-   public ClassLangModel erasure(Class aClass)
+   public LM_Class erasure(C_Class aClass)
    {
-      return erasureImpl(particularType((DeclaredLangModel) aClass));
+      return erasureImpl(particularType((LM_Declared) aClass));
    }
 
    @Override
-   public InterfaceLangModel erasure(Interface anInterface)
+   public LM_Interface erasure(C_Interface anInterface)
    {
-      return erasureImpl(particularType((DeclaredLangModel) anInterface));
+      return erasureImpl(particularType((LM_Declared) anInterface));
    }
 
    @Override
-   public RecordLangModel erasure(Record aRecord)
+   public LM_Record erasure(C_Record aRecord)
    {
-      return erasureImpl(particularType((DeclaredLangModel) aRecord));
+      return erasureImpl(particularType((LM_Declared) aRecord));
    }
 
    @Override
-   public ArrayLangModel erasure(Array array)
+   public LM_Array erasure(C_Array array)
    {
-      return erasureImpl(particularType((DeclaredLangModel) array));
+      return erasureImpl(particularType((LM_Declared) array));
    }
 
    @Override
-   public ShadowLangModel erasure(Wildcard wildcard)
+   public LM_Shadow erasure(C_Wildcard wildcard)
    {
-      return erasureImpl(particularType((DeclaredLangModel) wildcard));
+      return erasureImpl(particularType((LM_Declared) wildcard));
    }
 
    @Override
-   public ShadowLangModel erasure(Generic generic)
+   public LM_Shadow erasure(C_Generic generic)
    {
-      return erasureImpl(particularType((DeclaredLangModel) generic));
+      return erasureImpl(particularType((LM_Declared) generic));
    }
 
    @Override
-   public ShadowLangModel erasure(Intersection intersection)
+   public LM_Shadow erasure(C_Intersection intersection)
    {
-      return erasureImpl(particularType((DeclaredLangModel) intersection));
+      return erasureImpl(particularType((LM_Declared) intersection));
    }
 
    @Override
-   public RecordComponentLangModel erasure(RecordComponent recordComponent)
+   public LM_RecordComponent erasure(C_RecordComponent recordComponent)
    {
       return erasureImpl(((RecordComponentImpl) recordComponent).getMirror());
    }
 
    @Override
-   public ShadowLangModel erasure(Parameter parameter)
+   public LM_Shadow erasure(C_Parameter parameter)
    {
-      return erasureImpl(particularType((DeclaredLangModel) parameter));
+      return erasureImpl(particularType((LM_Declared) parameter));
    }
 
    @Override
-   public ShadowLangModel erasure(Field field)
+   public LM_Shadow erasure(C_Field field)
    {
-      return erasureImpl(particularType((DeclaredLangModel) field));
+      return erasureImpl(particularType((LM_Declared) field));
    }
 
-   private <S extends Shadow> S erasureImpl(TypeMirror typeMirror)
+   private <S extends C_Shadow> S erasureImpl(TypeMirror typeMirror)
    {
-      return LangModelAdapter.generalize(this, types.erasure(typeMirror));
-   }
-
-   @Override
-   public ClassLangModel interpolateGenerics(Class aClass)
-   {
-      return LangModelAdapter.generalize(this, types.capture(particularType((DeclaredLangModel) aClass)));
+      return LM_Adapter.generalize(this, types.erasure(typeMirror));
    }
 
    @Override
-   public InterfaceLangModel interpolateGenerics(Interface anInterface)
+   public LM_Class interpolateGenerics(C_Class aClass)
    {
-      return LangModelAdapter.generalize(this, types.capture(particularType((DeclaredLangModel) anInterface)));
+      return LM_Adapter.generalize(this, types.capture(particularType((LM_Declared) aClass)));
    }
 
    @Override
-   public RecordLangModel interpolateGenerics(Record aRecord)
+   public LM_Interface interpolateGenerics(C_Interface anInterface)
    {
-      return LangModelAdapter.generalize(this, types.capture(particularType((DeclaredLangModel) aRecord)));
+      return LM_Adapter.generalize(this, types.capture(particularType((LM_Declared) anInterface)));
    }
 
    @Override
-   public ClassLangModel withGenerics(Class aClass, Shadow... generics)
+   public LM_Record interpolateGenerics(C_Record aRecord)
    {
-      List<? extends Generic> generics1 = requestOrThrow(aClass, CLASS_GET_GENERICS);
+      return LM_Adapter.generalize(this, types.capture(particularType((LM_Declared) aRecord)));
+   }
+
+   @Override
+   public LM_Class withGenerics(C_Class aClass, C_Shadow... generics)
+   {
+      List<? extends C_Generic> generics1 = requestOrThrow(aClass, CLASS_GET_GENERICS);
       if (generics.length == 0 || generics1.size() != generics.length)
       {
          throw new IllegalArgumentException(requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
@@ -231,28 +229,28 @@ public class LangModelContextImpl implements LangModelContext,
                                             generics.length +
                                             " are provided");
       }
-      Optional<Declared> outerType = Provider.requestOrEmpty(aClass, CLASS_GET_OUTER_TYPE);
+      Optional<C_Declared> outerType = Provider.requestOrEmpty(aClass, CLASS_GET_OUTER_TYPE);
       if (outerType.isPresent() &&
-          (outerType.get() instanceof Interface anInterface &&
-          !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty() ||
-          outerType.get() instanceof Class aClass1 && !requestOrThrow(aClass1, CLASS_GET_GENERIC_TYPES).isEmpty()))
+          (outerType.get() instanceof C_Interface anInterface &&
+           !requestOrThrow(anInterface, INTERFACE_GET_GENERICS).isEmpty() ||
+           outerType.get() instanceof C_Class aClass1 && !requestOrThrow(aClass1, CLASS_GET_GENERIC_TYPES).isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             requestOrThrow(aClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(ShadowLangModel.class::cast)
-            .map(LangModelAdapter::particularType)
+            .map(LM_Shadow.class::cast)
+            .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 
-      return LangModelAdapter.generalize(this, types.getDeclaredType(particularElement(((ClassLangModel) aClass)), typeMirrors));
+      return LM_Adapter.generalize(this, types.getDeclaredType(particularElement(((LM_Class) aClass)), typeMirrors));
    }
 
    @Override
-   public InterfaceLangModel withGenerics(Interface anInterface, Shadow... generics)
+   public LM_Interface withGenerics(C_Interface anInterface, C_Shadow... generics)
    {
-      List<? extends Generic> generics1 = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
+      List<? extends C_Generic> generics1 = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
       if (generics.length == 0 || generics1.size() != generics.length)
       {
          throw new IllegalArgumentException(requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
@@ -263,15 +261,15 @@ public class LangModelContextImpl implements LangModelContext,
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(ShadowLangModel.class::cast)
-            .map(LangModelAdapter::particularType)
+            .map(LM_Shadow.class::cast)
+            .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 
-      return LangModelAdapter.generalize(this, types.getDeclaredType(particularElement(((InterfaceLangModel) anInterface)), typeMirrors));
+      return LM_Adapter.generalize(this, types.getDeclaredType(particularElement(((LM_Interface) anInterface)), typeMirrors));
    }
 
    @Override
-   public RecordLangModel withGenerics(Record aRecord, Shadow... generics)
+   public LM_Record withGenerics(C_Record aRecord, C_Shadow... generics)
    {
       if (generics.length == 0 || query(aRecord).getGenerics().size() != generics.length)
       {
@@ -283,59 +281,59 @@ public class LangModelContextImpl implements LangModelContext,
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(ShadowLangModel.class::cast)
-            .map(LangModelAdapter::particularType)
+            .map(LM_Shadow.class::cast)
+            .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 
-      return LangModelAdapter.generalize(this, types.getDeclaredType(particularElement(((RecordLangModel) aRecord)), typeMirrors));
+      return LM_Adapter.generalize(this, types.getDeclaredType(particularElement(((LM_Record) aRecord)), typeMirrors));
    }
 
    @Override
-   public ArrayLangModel asArray(Array array)
+   public LM_Array asArray(C_Array array)
    {
-      return LangModelAdapter.generalize(this, types.getArrayType(particularType((ArrayLangModel) array)));
+      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Array) array)));
    }
 
    @Override
-   public ArrayLangModel asArray(Primitive primitive)
+   public LM_Array asArray(C_Primitive primitive)
    {
-      return LangModelAdapter.generalize(this, types.getArrayType(particularType((PrimitiveLangModel) primitive)));
+      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Primitive) primitive)));
    }
 
    @Override
-   public ArrayLangModel asArray(Declared declared)
+   public LM_Array asArray(C_Declared declared)
    {
-      return LangModelAdapter.generalize(this, types.getArrayType(particularType((DeclaredLangModel) declared)));
+      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Declared) declared)));
    }
 
    @Override
-   public ArrayLangModel asArray(Intersection intersection)
+   public LM_Array asArray(C_Intersection intersection)
    {
-      return LangModelAdapter.generalize(this, types.getArrayType(particularType((IntersectionLangModel) intersection)));
+      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Intersection) intersection)));
    }
 
    @Override
-   public WildcardLangModel asExtendsWildcard(Array array)
+   public LM_Wildcard asExtendsWildcard(C_Array array)
    {
-      return LangModelAdapter.generalize(this, types.getWildcardType(particularType((ArrayLangModel) array), null));
+      return LM_Adapter.generalize(this, types.getWildcardType(particularType((LM_Array) array), null));
    }
 
    @Override
-   public WildcardLangModel asSuperWildcard(Array array)
+   public LM_Wildcard asSuperWildcard(C_Array array)
    {
-      return LangModelAdapter.generalize(this, types.getWildcardType(null, particularType((ArrayLangModel) array)));
+      return LM_Adapter.generalize(this, types.getWildcardType(null, particularType((LM_Array) array)));
    }
 
    @Override
-   public WildcardLangModel asExtendsWildcard(Declared declared)
+   public LM_Wildcard asExtendsWildcard(C_Declared declared)
    {
-      return LangModelAdapter.generalize(this, types.getWildcardType(particularType((DeclaredLangModel) declared), null));
+      return LM_Adapter.generalize(this, types.getWildcardType(particularType((LM_Declared) declared), null));
    }
 
    @Override
-   public WildcardLangModel asSuperWildcard(Declared declared)
+   public LM_Wildcard asSuperWildcard(C_Declared declared)
    {
-      return LangModelAdapter.generalize(this, types.getWildcardType(null, particularType((DeclaredLangModel) declared)));
+      return LM_Adapter.generalize(this, types.getWildcardType(null, particularType((LM_Declared) declared)));
    }
 
    @Override

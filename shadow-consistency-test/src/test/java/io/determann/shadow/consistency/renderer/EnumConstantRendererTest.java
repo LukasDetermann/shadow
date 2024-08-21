@@ -1,8 +1,8 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.structure.EnumConstant;
-import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.structure.C_EnumConstant;
+import io.determann.shadow.api.shadow.type.C_Enum;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -17,18 +17,18 @@ class EnumConstantRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+      ConsistencyTest.<C_Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass ->
                            {
-                              EnumConstant constant = requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE");
+                              C_EnumConstant constant = requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE");
                               assertEquals("SOURCE\n", render(DEFAULT, constant).declaration());
                               assertEquals("SOURCE(test)\n", render(DEFAULT, constant).declaration("test"));
                               assertEquals("SOURCE(test) {\ntest2\n}\n", render(DEFAULT, constant).declaration("test", "test2"));
                            });
 
-      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("AnnotatedEnumConstant"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("AnnotatedEnumConstant")))
+      ConsistencyTest.<C_Enum>compileTime(context -> context.getEnumOrThrow("AnnotatedEnumConstant"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("AnnotatedEnumConstant")))
                      .withCode("AnnotatedEnumConstant.java",
                                """
                                      enum AnnotatedEnumConstant{
@@ -43,8 +43,8 @@ class EnumConstantRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+      ConsistencyTest.<C_Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, requestOrThrow(aClass, ENUM_GET_ENUM_CONSTANT, "SOURCE")).invocation()));
    }
 }

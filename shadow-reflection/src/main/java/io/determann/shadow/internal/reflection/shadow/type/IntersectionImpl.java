@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.type.IntersectionReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Intersection;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.type.R_Intersection;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.type.C_Intersection;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 
-public class IntersectionImpl implements IntersectionReflection
+public class IntersectionImpl implements R_Intersection
 {
    private final java.lang.reflect.Type[] bounds;
 
@@ -28,34 +28,34 @@ public class IntersectionImpl implements IntersectionReflection
    }
 
    @Override
-   public List<ShadowReflection> getBounds()
+   public List<R_Shadow> getBounds()
    {
-      return Arrays.stream(bounds).map(ReflectionAdapter::generalize).toList();
+      return Arrays.stream(bounds).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.INTERSECTION;
+      return C_TypeKind.INTERSECTION;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       //noinspection unchecked
-      return shadow instanceof Intersection intersection && sameBounds(getBounds(),
-                                                                       (List<Shadow>) requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
+      return shadow instanceof C_Intersection intersection && sameBounds(getBounds(),
+                                                                         (List<C_Shadow>) requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
    }
 
-   private boolean sameBounds(List<ShadowReflection> shadows, List<Shadow> shadows1)
+   private boolean sameBounds(List<R_Shadow> shadows, List<C_Shadow> shadows1)
    {
       if (shadows.size() != shadows1.size())
       {
          return false;
       }
 
-      Iterator<ShadowReflection> iterator = shadows.iterator();
-      Iterator<Shadow> iterator1 = shadows1.iterator();
+      Iterator<R_Shadow> iterator = shadows.iterator();
+      Iterator<C_Shadow> iterator1 = shadows1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {
          if (!requestOrThrow(iterator.next(), SHADOW_REPRESENTS_SAME_TYPE, iterator1.next()))

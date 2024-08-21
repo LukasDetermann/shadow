@@ -3,10 +3,10 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.EnumRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.type.Enum;
-import io.determann.shadow.api.shadow.type.Interface;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.type.C_Enum;
+import io.determann.shadow.api.shadow.type.C_Interface;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,20 +22,20 @@ import static java.util.stream.Collectors.joining;
 public class EnumRendererImpl implements EnumRenderer
 {
    private final RenderingContextWrapper context;
-   private final Enum anEnum;
+   private final C_Enum anEnum;
 
-   public EnumRendererImpl(RenderingContext renderingContext, Enum anEnum)
+   public EnumRendererImpl(RenderingContext renderingContext, C_Enum anEnum)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.anEnum = anEnum;
    }
 
-   public static String declaration(RenderingContextWrapper context, Enum anEnum, String content)
+   public static String declaration(RenderingContextWrapper context, C_Enum anEnum, String content)
    {
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(anEnum, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(anEnum, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -44,9 +44,9 @@ public class EnumRendererImpl implements EnumRenderer
                          .collect(Collectors.joining()));
       }
 
-      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(anEnum, MODIFIABLE_GET_MODIFIERS));
-      modifiers.remove(Modifier.FINAL);
-      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+      Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(anEnum, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(C_Modifier.FINAL);
+      modifiers.remove(C_Modifier.PACKAGE_PRIVATE);
 
       if (!modifiers.isEmpty())
       {
@@ -58,7 +58,7 @@ public class EnumRendererImpl implements EnumRenderer
       sb.append(requestOrThrow(anEnum, NAMEABLE_GET_NAME));
       sb.append(' ');
 
-      List<? extends Interface> directInterfaces = requestOrThrow(anEnum, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends C_Interface> directInterfaces = requestOrThrow(anEnum, DECLARED_GET_DIRECT_INTERFACES);
       if (!directInterfaces.isEmpty())
       {
          sb.append("implements");
@@ -84,7 +84,7 @@ public class EnumRendererImpl implements EnumRenderer
       return sb.toString();
    }
 
-   public static String type(RenderingContextWrapper context, Enum anEnum)
+   public static String type(RenderingContextWrapper context, C_Enum anEnum)
    {
       return context.renderName(anEnum);
    }

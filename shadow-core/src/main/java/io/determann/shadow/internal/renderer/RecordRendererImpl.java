@@ -3,13 +3,13 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.RecordRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Interface;
-import io.determann.shadow.api.shadow.type.Record;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_RecordComponent;
+import io.determann.shadow.api.shadow.type.C_Generic;
+import io.determann.shadow.api.shadow.type.C_Interface;
+import io.determann.shadow.api.shadow.type.C_Record;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,20 +25,20 @@ import static java.util.stream.Collectors.joining;
 public class RecordRendererImpl implements RecordRenderer
 {
    private final RenderingContextWrapper context;
-   private final Record aRecord;
+   private final C_Record aRecord;
 
-   public RecordRendererImpl(RenderingContext renderingContext, Record aRecord)
+   public RecordRendererImpl(RenderingContext renderingContext, C_Record aRecord)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.aRecord = aRecord;
    }
 
-   public static String declaration(RenderingContextWrapper context, Record aRecord, String content)
+   public static String declaration(RenderingContextWrapper context, C_Record aRecord, String content)
    {
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(aRecord, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(aRecord, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -47,10 +47,10 @@ public class RecordRendererImpl implements RecordRenderer
                           .collect(Collectors.joining()));
       }
 
-      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(aRecord, MODIFIABLE_GET_MODIFIERS));
-      modifiers.remove(Modifier.FINAL);
-      modifiers.remove(Modifier.STATIC);
-      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+      Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(aRecord, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(C_Modifier.FINAL);
+      modifiers.remove(C_Modifier.STATIC);
+      modifiers.remove(C_Modifier.PACKAGE_PRIVATE);
 
       if (!modifiers.isEmpty())
       {
@@ -61,7 +61,7 @@ public class RecordRendererImpl implements RecordRenderer
       sb.append(' ');
       sb.append(requestOrThrow(aRecord, NAMEABLE_GET_NAME));
 
-      List<? extends Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
+      List<? extends C_Generic> generics = requestOrThrow(aRecord, RECORD_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -70,7 +70,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
 
       sb.append('(');
-      List<? extends RecordComponent> recordComponents = requestOrThrow(aRecord, RECORD_GET_RECORD_COMPONENTS);
+      List<? extends C_RecordComponent> recordComponents = requestOrThrow(aRecord, RECORD_GET_RECORD_COMPONENTS);
       if (!recordComponents.isEmpty())
       {
          sb.append(recordComponents.stream()
@@ -79,7 +79,7 @@ public class RecordRendererImpl implements RecordRenderer
       }
       sb.append(')');
 
-      List<? extends Interface> directInterfaces = requestOrThrow(aRecord, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends C_Interface> directInterfaces = requestOrThrow(aRecord, DECLARED_GET_DIRECT_INTERFACES);
       if (!directInterfaces.isEmpty())
       {
          sb.append(' ');
@@ -106,12 +106,12 @@ public class RecordRendererImpl implements RecordRenderer
       return sb.toString();
    }
 
-   public static String type(RenderingContextWrapper context, Record aRecord)
+   public static String type(RenderingContextWrapper context, C_Record aRecord)
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));
 
-      List<? extends Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
+      List<? extends C_Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');

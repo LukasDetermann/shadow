@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Enum;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EnumTest extends DeclaredTest<EnumLangModel>
+class EnumTest extends DeclaredTest<LM_Enum>
 {
    EnumTest()
    {

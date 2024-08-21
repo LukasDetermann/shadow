@@ -1,8 +1,8 @@
 package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.Operations;
-import io.determann.shadow.api.shadow.structure.Package;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.structure.C_Package;
+import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.internal.renderer.RenderingContextImpl;
 
 import java.util.ArrayList;
@@ -31,11 +31,11 @@ public interface RenderingContext
       return builder;
    }
 
-   String renderName(Declared declared);
+   String renderName(C_Declared declared);
 
    void onNameRendered(Consumer<NameRenderedEvent> onNameRendered);
 
-   Function<Declared, NameRenderedEvent> getNameRenderer();
+   Function<C_Declared, NameRenderedEvent> getNameRenderer();
 
    List<Consumer<NameRenderedEvent>> getNameRenderedListeners();
 
@@ -43,7 +43,7 @@ public interface RenderingContext
    {
       private List<Consumer<NameRenderedEvent>> nameRenderedListeners = new ArrayList<>();
 
-      private Function<Declared, NameRenderedEvent> nameRenderer;
+      private Function<C_Declared, NameRenderedEvent> nameRenderer;
 
       public Builder withNameRenderedListener(Consumer<NameRenderedEvent> nameRenderedListener)
       {
@@ -63,7 +63,7 @@ public interface RenderingContext
       {
          nameRenderer = declared ->
          {
-            Package aPackage = requestOrThrow(declared, DECLARED_GET_PACKAGE);
+            C_Package aPackage = requestOrThrow(declared, DECLARED_GET_PACKAGE);
             if (!requestOrThrow(aPackage, PACKAGE_IS_UNNAMED) && requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang"))
             {
                return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_GET_NAME), false);

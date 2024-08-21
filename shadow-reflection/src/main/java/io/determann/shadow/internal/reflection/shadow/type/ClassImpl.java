@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.structure.PropertyReflection;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.structure.R_Property;
 import io.determann.shadow.api.reflection.shadow.type.*;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.reflection.shadow.structure.PropertyImpl;
@@ -14,82 +14,82 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class ClassImpl extends DeclaredImpl implements ClassReflection
+public class ClassImpl extends DeclaredImpl implements R_Class
 {
-   private final List<ShadowReflection> genericShadows;
+   private final List<R_Shadow> genericShadows;
 
    public ClassImpl(java.lang.Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public ClassImpl(java.lang.Class<?> aClass, List<ShadowReflection> genericShadows)
+   public ClassImpl(java.lang.Class<?> aClass, List<R_Shadow> genericShadows)
    {
       super(aClass);
       this.genericShadows = genericShadows;
    }
 
    @Override
-   public ClassReflection getSuperClass()
+   public R_Class getSuperClass()
    {
       java.lang.Class<?> superclass = getaClass().getSuperclass();
       if (superclass == null)
       {
          return null;
       }
-      return ReflectionAdapter.generalize(superclass);
+      return R_Adapter.generalize(superclass);
    }
 
    @Override
-   public List<ClassReflection> getPermittedSubClasses()
+   public List<R_Class> getPermittedSubClasses()
    {
       return Arrays.stream(getaClass().getPermittedSubclasses())
-                   .map(ReflectionAdapter::generalize)
-                   .map(ClassReflection.class::cast)
+                   .map(R_Adapter::generalize)
+                   .map(R_Class.class::cast)
                    .toList();
    }
 
    @Override
-   public List<PropertyReflection> getProperties()
+   public List<R_Property> getProperties()
    {
       return PropertySupport.propertiesOf(this)
                             .stream()
                             .map(PropertyImpl::new)
-                            .map(PropertyReflection.class::cast)
+                            .map(R_Property.class::cast)
                             .toList();
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      return shadow instanceof Declared declared && getaClass().isAssignableFrom(ReflectionAdapter.particularize((DeclaredReflection) declared));
+      return shadow instanceof C_Declared declared && getaClass().isAssignableFrom(R_Adapter.particularize((R_Declared) declared));
    }
 
    @Override
-   public Optional<DeclaredReflection> getOuterType()
+   public Optional<R_Declared> getOuterType()
    {
       java.lang.Class<?> enclosingClass = getaClass().getEnclosingClass();
       if (enclosingClass == null)
       {
          return Optional.empty();
       }
-      return Optional.of(ReflectionAdapter.generalize(enclosingClass));
+      return Optional.of(R_Adapter.generalize(enclosingClass));
    }
 
    @Override
-   public List<ShadowReflection> getGenericTypes()
+   public List<R_Shadow> getGenericTypes()
    {
       return genericShadows;
    }
 
    @Override
-   public List<GenericReflection> getGenerics()
+   public List<R_Generic> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(ReflectionAdapter::generalize).map(GenericReflection.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(R_Adapter::generalize).map(R_Generic.class::cast).toList();
    }
 
    @Override
-   public PrimitiveReflection asUnboxed()
+   public R_Primitive asUnboxed()
    {
       if (!getKind().isPrimitive())
       {
@@ -110,7 +110,7 @@ public class ClassImpl extends DeclaredImpl implements ClassReflection
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       return ClassSupport.representsSameType(this, shadow);
    }

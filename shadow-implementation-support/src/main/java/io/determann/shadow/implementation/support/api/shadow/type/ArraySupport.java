@@ -1,33 +1,33 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Array;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Array;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.ARRAY_GET_COMPONENT_TYPE;
 
 public class ArraySupport
 {
-   public static boolean equals(Array array, Object other)
+   public static boolean equals(C_Array array, Object other)
    {
       return SupportSupport.equals(array,
-                                   Array.class,
+                                   C_Array.class,
                                    other,
                                    ARRAY_GET_COMPONENT_TYPE);
    }
 
-   public static int hashCode(Array array)
+   public static int hashCode(C_Array array)
    {
       return SupportSupport.hashCode(array, ARRAY_GET_COMPONENT_TYPE);
    }
 
-   public static String toString(Array array)
+   public static String toString(C_Array array)
    {
-      return SupportSupport.toString(array, Array.class, ARRAY_GET_COMPONENT_TYPE);
+      return SupportSupport.toString(array, C_Array.class, ARRAY_GET_COMPONENT_TYPE);
    }
 
-   public static boolean representsSameType(Array array, Shadow other)
+   public static boolean representsSameType(C_Array array, C_Shadow other)
    {
-      return SupportSupport.representsSameType(array, Array.class, other, ARRAY_GET_COMPONENT_TYPE);
+      return SupportSupport.representsSameType(array, C_Array.class, other, ARRAY_GET_COMPONENT_TYPE);
    }
 }

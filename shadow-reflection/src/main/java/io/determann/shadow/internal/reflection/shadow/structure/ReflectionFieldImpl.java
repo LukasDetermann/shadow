@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.structure.VariableReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.structure.R_Variable;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.lang.reflect.Field;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements VariableReflection
+public abstract class ReflectionFieldImpl<SURROUNDING extends C_Shadow> implements R_Variable
 {
    private final Field field;
 
@@ -26,7 +26,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public Set<Modifier> getModifiers()
+   public Set<C_Modifier> getModifiers()
    {
       int modifiers = getField().getModifiers() & java.lang.reflect.Modifier.fieldModifiers();
 
@@ -38,19 +38,19 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public ShadowReflection getType()
+   public R_Shadow getType()
    {
-      return ReflectionAdapter.generalize(field.getType());
+      return R_Adapter.generalize(field.getType());
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
       if (field.isEnumConstant())
       {
-         return TypeKind.ENUM_CONSTANT;
+         return C_TypeKind.ENUM_CONSTANT;
       }
-      return TypeKind.FIELD;
+      return C_TypeKind.FIELD;
    }
 
    @Override
@@ -60,18 +60,18 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends Shadow> implements
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getField().getAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getField().getDeclaredAnnotations())
-                   .map(ReflectionAdapter::generalize)
+                   .map(R_Adapter::generalize)
                    .toList();
    }
 

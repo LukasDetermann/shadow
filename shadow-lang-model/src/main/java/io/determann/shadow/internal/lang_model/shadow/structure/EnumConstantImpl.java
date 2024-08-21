@@ -1,22 +1,22 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.structure.EnumConstantLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.EnumLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Enum;
 
 import javax.lang.model.element.VariableElement;
 
-public class EnumConstantImpl extends VariableImpl implements EnumConstantLangModel
+public class EnumConstantImpl extends VariableImpl implements LM_EnumConstant
 {
-   public EnumConstantImpl(LangModelContext context, VariableElement variableElement)
+   public EnumConstantImpl(LM_Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }
 
    @Override
-   public EnumLangModel getSurrounding()
+   public LM_Enum getSurrounding()
    {
-      return LangModelAdapter.generalize(getApi(), getElement().getEnclosingElement());
+      return LM_Adapter.generalize(getApi(), getElement().getEnclosingElement());
    }
 }

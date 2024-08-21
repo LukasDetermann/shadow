@@ -1,6 +1,6 @@
 package io.determann.shadow.consistency.test;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.AP_Context;
 
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -17,11 +17,11 @@ import static javax.tools.JavaFileObject.Kind.SOURCE;
 
 public class ConsistencyTest<SUT>
 {
-   private final Function<AnnotationProcessingContext, SUT> compileTimeExecutable;
+   private final Function<AP_Context, SUT> compileTimeExecutable;
    private Function<Function<String, Class<?>>, SUT> runtimeExecutable;
    private final List<JavaFileObject> toCompile;
 
-   public ConsistencyTest(Function<AnnotationProcessingContext, SUT> compileTime,
+   public ConsistencyTest(Function<AP_Context, SUT> compileTime,
                           Function<Function<String, Class<?>>, SUT> runtime,
                           List<JavaFileObject> toCompile)
    {
@@ -30,13 +30,13 @@ public class ConsistencyTest<SUT>
       this.toCompile = toCompile;
    }
 
-   private ConsistencyTest(Function<AnnotationProcessingContext, SUT> compileTime)
+   private ConsistencyTest(Function<AP_Context, SUT> compileTime)
    {
       this.compileTimeExecutable = Objects.requireNonNull(compileTime);
       this.toCompile = new ArrayList<>();
    }
 
-   public static <SUT> ConsistencyTest<SUT> compileTime(Function<AnnotationProcessingContext, SUT> compileTime)
+   public static <SUT> ConsistencyTest<SUT> compileTime(Function<AP_Context, SUT> compileTime)
    {
       return new ConsistencyTest<>(compileTime);
    }

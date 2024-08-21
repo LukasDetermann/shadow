@@ -1,6 +1,6 @@
 package io.determann.shadow.api.annotation_processing.test;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.AP_Context;
 
 /**
  * A Callback that will be executed in an annotation processor
@@ -8,5 +8,5 @@ import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext
 @FunctionalInterface
 public interface ProcessingCallback
 {
-   void process(AnnotationProcessingContext annotationProcessingContext);
+   void process(AP_Context annotationProcessingContext);
 }

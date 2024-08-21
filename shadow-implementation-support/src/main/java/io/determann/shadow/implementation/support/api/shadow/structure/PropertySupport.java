@@ -1,7 +1,7 @@
 package io.determann.shadow.implementation.support.api.shadow.structure;
 
-import io.determann.shadow.api.shadow.structure.Property;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.shadow.structure.C_Property;
+import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.implementation.support.internal.property.PropertyImpl;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
@@ -12,23 +12,23 @@ import static io.determann.shadow.api.Operations.PROPERTY_GET_TYPE;
 
 public class PropertySupport
 {
-   public static List<Property> propertiesOf(Declared declared)
+   public static List<C_Property> propertiesOf(C_Declared declared)
    {
       return PropertyImpl.of(declared);
    }
 
-   public static boolean equals(Property property, Object other)
+   public static boolean equals(C_Property property, Object other)
    {
-      return SupportSupport.equals(property, Property.class, other, PROPERTY_GET_NAME, PROPERTY_GET_TYPE);
+      return SupportSupport.equals(property, C_Property.class, other, PROPERTY_GET_NAME, PROPERTY_GET_TYPE);
    }
 
-   public static int hashCode(Property property)
+   public static int hashCode(C_Property property)
    {
       return SupportSupport.hashCode(property, PROPERTY_GET_NAME, PROPERTY_GET_TYPE);
    }
 
-   public static String toString(Property property)
+   public static String toString(C_Property property)
    {
-      return SupportSupport.toString(property, Property.class, PROPERTY_GET_NAME, PROPERTY_GET_TYPE);
+      return SupportSupport.toString(property, C_Property.class, PROPERTY_GET_NAME, PROPERTY_GET_TYPE);
    }
 }

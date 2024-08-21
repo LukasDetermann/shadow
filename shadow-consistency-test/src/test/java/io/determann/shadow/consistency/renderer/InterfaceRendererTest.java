@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Interface;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ class InterfaceRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
+      ConsistencyTest.<C_Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                            public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {
                               interface IndependentGeneric<C> {}
@@ -26,8 +26,8 @@ class InterfaceRendererTest
                            "public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> extends java.io.Serializable {}\n",
                            render(DEFAULT, aClass).declaration()));
 
-      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("java.util.function.Function"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.util.function.Function")))
+      ConsistencyTest.<C_Interface>compileTime(context -> context.getInterfaceOrThrow("java.util.function.Function"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("java.util.function.Function")))
                      .test(aClass -> assertEquals("""
                                                   @FunctionalInterface
                                                   public interface Function<T, R> {
@@ -40,8 +40,8 @@ class InterfaceRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.<Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
+      ConsistencyTest.<C_Interface>compileTime(context -> context.getInterfaceOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java", """
                          public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
                             interface IndependentGeneric<C> {}

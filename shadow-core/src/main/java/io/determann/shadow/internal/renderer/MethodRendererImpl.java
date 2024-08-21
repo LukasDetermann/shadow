@@ -4,12 +4,12 @@ import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.renderer.MethodRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.structure.Parameter;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Generic;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Generic;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,20 +25,20 @@ public class MethodRendererImpl implements MethodRenderer
 {
 
    private final RenderingContextWrapper context;
-   private final Method method;
+   private final C_Method method;
 
-   public MethodRendererImpl(RenderingContext renderingContext, Method method)
+   public MethodRendererImpl(RenderingContext renderingContext, C_Method method)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.method = method;
    }
 
-   public static String declaration(RenderingContextWrapper context, Method method, String content)
+   public static String declaration(RenderingContextWrapper context, C_Method method, String content)
    {
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(method, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(method, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -46,20 +46,20 @@ public class MethodRendererImpl implements MethodRenderer
                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
                          .collect(Collectors.joining()));
       }
-      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(method, MODIFIABLE_GET_MODIFIERS));
+      Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(method, MODIFIABLE_GET_MODIFIERS));
       if (!content.isEmpty())
       {
-         modifiers.remove(Modifier.ABSTRACT);
+         modifiers.remove(C_Modifier.ABSTRACT);
       }
 
-      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+      modifiers.remove(C_Modifier.PACKAGE_PRIVATE);
       if (!modifiers.isEmpty())
       {
          sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
 
-      List<? extends Generic> generics = requestOrThrow(method, EXECUTABLE_GET_GENERICS);
+      List<? extends C_Generic> generics = requestOrThrow(method, EXECUTABLE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -74,7 +74,7 @@ public class MethodRendererImpl implements MethodRenderer
       sb.append(requestOrThrow(method, NAMEABLE_GET_NAME));
       sb.append('(');
 
-      List<? extends Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      List<? extends C_Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
       Provider.requestOrEmpty(method, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
@@ -97,7 +97,7 @@ public class MethodRendererImpl implements MethodRenderer
       }
       sb.append(')');
 
-      List<? extends Class> aThrow = requestOrThrow(method, EXECUTABLE_GET_THROWS);
+      List<? extends C_Class> aThrow = requestOrThrow(method, EXECUTABLE_GET_THROWS);
       if (!aThrow.isEmpty())
       {
          sb.append(' ');
@@ -106,7 +106,7 @@ public class MethodRendererImpl implements MethodRenderer
                          .collect(Collectors.joining(", ")));
       }
 
-      if (requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.ABSTRACT) && content.isBlank())
+      if (requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, C_Modifier.ABSTRACT) && content.isBlank())
       {
          sb.append(';');
       }

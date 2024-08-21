@@ -1,18 +1,17 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.structure.FieldReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
-import io.determann.shadow.api.shadow.structure.Field;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.structure.R_Field;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.type.*;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldReflection
+public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Field
 {
    public FieldImpl(java.lang.reflect.Field field)
    {
@@ -51,17 +50,17 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
       }
-      if (getType() instanceof Array array)
+      if (getType() instanceof C_Array array)
       {
          return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
       }
@@ -69,13 +68,13 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      if (getType() instanceof Primitive primitive)
+      if (getType() instanceof C_Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
       }
-      if (getType() instanceof Class aClass)
+      if (getType() instanceof C_Class aClass)
       {
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
       }
@@ -83,26 +82,26 @@ public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldRef
    }
 
    @Override
-   public PackageReflection getPackage()
+   public R_Package getPackage()
    {
-      return (PackageReflection) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
+      return (R_Package) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override
-   public DeclaredReflection getSurrounding()
+   public R_Declared getSurrounding()
    {
-      return ReflectionAdapter.generalize(getField().getDeclaringClass());
+      return R_Adapter.generalize(getField().getDeclaringClass());
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      return shadow instanceof Field field && requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
+      return shadow instanceof C_Field field && requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override
-   public ModuleReflection getModule()
+   public R_Module getModule()
    {
-      return (ModuleReflection) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return (R_Module) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 }

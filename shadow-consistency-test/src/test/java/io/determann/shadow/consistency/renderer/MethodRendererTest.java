@@ -1,9 +1,9 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.lang_model.LangModelQueries;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.ReflectionQueries;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.lang_model.LM_Queries;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.R_Queries;
+import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +19,8 @@ class MethodRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {
                               @MyAnnotation
@@ -35,25 +35,25 @@ class MethodRendererTest
                            {
                               assertEquals(
                                     "@MyAnnotation\nabstract <T> void varArgsMethod(String... args) throws java.io.FileNotFoundException;\n",
-                                    render(DEFAULT, LangModelQueries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
+                                    render(DEFAULT, LM_Queries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
                               assertEquals("public void six(java.util.List list) {}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getMethods("six").get(0)).declaration());
+                                           render(DEFAULT, LM_Queries.query(aClass).getMethods("six").get(0)).declaration());
                               assertEquals("public void seven(java.util.List<String> strings) {\ntest\n}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getMethods("seven").get(0)).declaration("test"));
+                                           render(DEFAULT, LM_Queries.query(aClass).getMethods("seven").get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals(
                                     "@MyAnnotation\nabstract <T> void varArgsMethod(String... arg0) throws java.io.FileNotFoundException;\n",
-                                    render(DEFAULT, ReflectionQueries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
+                                    render(DEFAULT, R_Queries.query(aClass).getMethods("varArgsMethod").get(0)).declaration());
                               assertEquals("public void six(java.util.List arg0) {}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getMethods("six").get(0)).declaration());
+                                           render(DEFAULT, R_Queries.query(aClass).getMethods("six").get(0)).declaration());
                               assertEquals("public void seven(java.util.List<String> arg0) {\ntest\n}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getMethods("seven").get(0)).declaration("test"));
+                                           render(DEFAULT, R_Queries.query(aClass).getMethods("seven").get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ReceiverExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ReceiverExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ReceiverExample")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
                               private void receiver(@MyAnnotation ReceiverExample ReceiverExample.this) {}
@@ -71,8 +71,8 @@ class MethodRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public abstract class MethodExample {
                               abstract <T> void varArgsMethod(String... args);

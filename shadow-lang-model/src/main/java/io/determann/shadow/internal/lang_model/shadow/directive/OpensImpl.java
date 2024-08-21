@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.directive.OpensLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Opens;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import javax.lang.model.element.ModuleElement;
@@ -12,28 +12,28 @@ import java.util.List;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class OpensImpl extends DirectiveImpl implements OpensLangModel
+public class OpensImpl extends DirectiveImpl implements LM_Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(LangModelContext langModelContext, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(LM_Context langModelContext, ModuleElement.OpensDirective opensDirective)
    {
       super(langModelContext);
       this.opensDirective = opensDirective;
    }
 
    @Override
-   public PackageLangModel getPackage()
+   public LM_Package getPackage()
    {
-      return LangModelAdapter.generalizePackage(getApi(), opensDirective.getPackage());
+      return LM_Adapter.generalizePackage(getApi(), opensDirective.getPackage());
    }
 
    @Override
-   public List<ModuleLangModel> getTargetModules()
+   public List<LM_Module> getTargetModules()
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LangModelAdapter.<ModuleLangModel>generalize(getApi(), moduleElement))
+                           .map(moduleElement -> LM_Adapter.<LM_Module>generalize(getApi(), moduleElement))
                            .toList();
    }
 

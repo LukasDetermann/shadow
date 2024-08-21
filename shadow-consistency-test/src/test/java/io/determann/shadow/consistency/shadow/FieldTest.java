@@ -1,14 +1,14 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.FieldLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FieldTest extends VariableTest<FieldLangModel>
+class FieldTest extends VariableTest<LM_Field>
 {
    FieldTest()
    {
@@ -20,7 +20,7 @@ class FieldTest extends VariableTest<FieldLangModel>
    {
       ProcessorTest.process(context ->
                             {
-                               ClassLangModel aClass = context.getClassOrThrow("FieldExample");
+                               LM_Class aClass = context.getClassOrThrow("FieldExample");
                                assertEquals(aClass, aClass.getFieldOrThrow("ID").getSurrounding());
                             })
                    .withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")

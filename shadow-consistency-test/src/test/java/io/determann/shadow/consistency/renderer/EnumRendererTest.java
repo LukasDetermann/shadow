@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Enum;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Enum;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ class EnumRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("EnumMultiParent"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("EnumMultiParent")))
+      ConsistencyTest.<C_Enum>compileTime(context -> context.getEnumOrThrow("EnumMultiParent"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("EnumMultiParent")))
                      .withCode("EnumMultiParent.java", """
                            @TestAnnotation
                            public enum EnumMultiParent implements java.util.function.Consumer<EnumMultiParent>, java.util.function.Supplier<EnumMultiParent> {
@@ -52,8 +52,8 @@ class EnumRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.<Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
+      ConsistencyTest.<C_Enum>compileTime(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("java.lang.annotation.RetentionPolicy")))
                      .test(aClass -> assertEquals("java.lang.annotation.RetentionPolicy", render(DEFAULT, aClass).type()));
    }
 }

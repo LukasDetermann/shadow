@@ -1,12 +1,12 @@
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.annotation_processing.ShadowProcessor;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.lang_model.shadow.QualifiedNameableLamgModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.annotation_processing.AP_Context;
+import io.determann.shadow.api.annotation_processing.AP_Processor;
+import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
+import io.determann.shadow.api.lang_model.shadow.LM_QualifiedNameable;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +17,13 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 /**
  * Builds a companion Builder class for each annotated class
  */
-public class ShadowBuilderProcessor extends ShadowProcessor
+public class ShadowBuilderProcessor extends AP_Processor
 {
    @Override
-   public void process(final AnnotationProcessingContext context)
+   public void process(final AP_Context context)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (ClassLangModel aClass : context
+      for (LM_Class aClass : context
             .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
@@ -37,7 +37,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
          List<BuilderElement> builderElements =
                aClass.getProperties()
                      .stream()
-                     .filter(PropertyLangModel::isMutable)
+                     .filter(LM_Property::isMutable)
                      .map(property -> renderProperty(builderSimpleName,
                                                      builderVariableName,
                                                      property))
@@ -56,7 +56,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
    /**
     * renders a companion builder class
     */
-   private String renderBuilder(final ClassLangModel aClass,
+   private String renderBuilder(final LM_Class aClass,
                                 final String toBuildQualifiedName,
                                 final String builderSimpleName,
                                 final String builderVariableName,
@@ -101,7 +101,7 @@ public class ShadowBuilderProcessor extends ShadowProcessor
     */
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final PropertyLangModel property)
+                                         final LM_Property property)
    {
       String propertyName = property.getName();
       String type = renderType(property.getType());
@@ -135,13 +135,13 @@ public class ShadowBuilderProcessor extends ShadowProcessor
                                  String mutator,
                                  String toBuildSetter) {}
 
-   private static String renderType(ShadowLangModel shadow)
+   private static String renderType(LM_Shadow shadow)
    {
-      if (shadow instanceof QualifiedNameableLamgModel qualifiedNameable)
+      if (shadow instanceof LM_QualifiedNameable qualifiedNameable)
       {
          return qualifiedNameable.getQualifiedName();
       }
-      if (shadow instanceof NameableLangModel nameable)
+      if (shadow instanceof LM_Nameable nameable)
       {
          return nameable.getName();
       }

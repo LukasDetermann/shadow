@@ -15,23 +15,23 @@ public class InterpolateGenericsExample
       ProcessorTest.process(context ->
                             {
                                //@start region="InterpolateGenerics.interpolateGenerics"
-                               ClassLangModel myClass = context.getClassOrThrow("MyClass");
-                               DeclaredLangModel string = context.getDeclaredOrThrow("java.lang.String");
+                               LM_Class myClass = context.getClassOrThrow("MyClass");
+                               LM_Declared string = context.getDeclaredOrThrow("java.lang.String");
 
-                               ClassLangModel withGenerics = context.withGenerics(myClass,
-                                                                                  string,
-                                                                                  //the unboundWildcard will be replaced with the result
-                                                                                  context.getConstants().getUnboundWildcard());
+                               LM_Class withGenerics = context.withGenerics(myClass,
+                                                                            string,
+                                                                            //the unboundWildcard will be replaced with the result
+                                                                            context.getConstants().getUnboundWildcard());
 
-                               ClassLangModel capture = context.interpolateGenerics(withGenerics);
+                               LM_Class capture = context.interpolateGenerics(withGenerics);
 
-                               ShadowLangModel stringRep = Optional.of(capture.getGenericTypes().get(1))
-                                                                   .map(GenericLangModel.class::cast)
-                                                                   .map(GenericLangModel::getExtends)
-                                                                   .map(InterfaceLangModel.class::cast)
-                                                                   .map(InterfaceLangModel::getGenericTypes)
-                                                                   .map(shadows -> shadows.get(0))
-                                                                   .orElseThrow();
+                               LM_Shadow stringRep = Optional.of(capture.getGenericTypes().get(1))
+                                                             .map(LM_Generic.class::cast)
+                                                             .map(LM_Generic::getExtends)
+                                                             .map(LM_Interface.class::cast)
+                                                             .map(LM_Interface::getGenericTypes)
+                                                             .map(shadows -> shadows.get(0))
+                                                             .orElseThrow();
 
                                Assertions.assertEquals(string, stringRep);
                                //@end

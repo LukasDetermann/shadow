@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.directive.ExportsLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Exports;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
 
 import javax.lang.model.element.ModuleElement;
@@ -13,31 +13,31 @@ import java.util.List;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class ExportsImpl extends DirectiveImpl implements ExportsLangModel
+public class ExportsImpl extends DirectiveImpl implements LM_Exports
 {
 
    private final ModuleElement.ExportsDirective exportsDirective;
 
-   public ExportsImpl(LangModelContext context, ModuleElement.ExportsDirective exportsDirective)
+   public ExportsImpl(LM_Context context, ModuleElement.ExportsDirective exportsDirective)
    {
       super(context);
       this.exportsDirective = exportsDirective;
    }
 
    @Override
-   public PackageLangModel getPackage()
+   public LM_Package getPackage()
    {
-      return LangModelAdapter.generalizePackage(getApi(), exportsDirective.getPackage());
+      return LM_Adapter.generalizePackage(getApi(), exportsDirective.getPackage());
    }
 
    @Override
-   public List<ModuleLangModel> getTargetModules()
+   public List<LM_Module> getTargetModules()
    {
       return exportsDirective.getTargetModules() == null ?
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> LangModelAdapter.<ModuleLangModel>generalize(getApi(), moduleElement))
+                             .map(moduleElement -> LM_Adapter.<LM_Module>generalize(getApi(), moduleElement))
                              .toList();
    }
 

@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Record;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ class RecordRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
+      ConsistencyTest.<C_Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
                      .test(aClass ->
@@ -28,8 +28,8 @@ class RecordRendererTest
                                     render(DEFAULT, aClass).declaration("test"));
                            });
 
-      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("Parameters"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("Parameters")))
+      ConsistencyTest.<C_Record>compileTime(context -> context.getRecordOrThrow("Parameters"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("Parameters")))
                      .withCode("Parameters.java", "@MyAnnotation\n record Parameters(Long id, String name) implements java.io.Serializable {}")
                      .withCode("MyAnnotation.java",
                                "@java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME) @interface MyAnnotation {} ")
@@ -40,8 +40,8 @@ class RecordRendererTest
    @Test
    void type()
    {
-      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
+      ConsistencyTest.<C_Record>compileTime(context -> context.getRecordOrThrow("InterpolateGenericsExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("InterpolateGenericsExample")))
                      .withCode("InterpolateGenericsExample.java",
                                "public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {}")
                      .test(aClass -> assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>",

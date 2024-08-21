@@ -1,11 +1,11 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.structure.Method;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,21 +15,21 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MethodTest extends ExecutableTest<Method>
+class MethodTest extends ExecutableTest<C_Method>
 {
    @Test
    void testisSubSignatureOf()
    {
       ProcessorTest.process(context ->
                             {
-                               List<MethodLangModel> methods = context.getClassOrThrow("SubSignature").getMethods();
-                               MethodLangModel first = methods.get(0);
-                               MethodLangModel second = methods.get(1);
-                               MethodLangModel third = methods.get(2);
-                               MethodLangModel four = methods.get(3);
-                               MethodLangModel five = methods.get(4);
-                               MethodLangModel six = methods.get(5);
-                               MethodLangModel seven = methods.get(6);
+                               List<LM_Method> methods = context.getClassOrThrow("SubSignature").getMethods();
+                               LM_Method first = methods.get(0);
+                               LM_Method second = methods.get(1);
+                               LM_Method third = methods.get(2);
+                               LM_Method four = methods.get(3);
+                               LM_Method five = methods.get(4);
+                               LM_Method six = methods.get(5);
+                               LM_Method seven = methods.get(6);
 
                                assertTrue(first.sameParameterTypes(second));
                                assertTrue(second.sameParameterTypes(first));
@@ -58,8 +58,8 @@ class MethodTest extends ExecutableTest<Method>
    @Test
    void testOverrides()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("MethodExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("MethodExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("MethodExample")))
                      .withCode("MethodExample.java", """
                            public class MethodExample {
                               @Override
@@ -219,7 +219,7 @@ class MethodTest extends ExecutableTest<Method>
    {
       ProcessorTest.process(context ->
                             {
-                               ClassLangModel aClass = context.getClassOrThrow("MethodExample");
+                               LM_Class aClass = context.getClassOrThrow("MethodExample");
                                assertEquals(aClass, aClass.getMethods("toString").get(0).getSurrounding());
                             })
                    .withCodeToCompile("MethodExample.java", """
@@ -271,7 +271,7 @@ class MethodTest extends ExecutableTest<Method>
    {
       ProcessorTest.process(context ->
                             {
-                               ClassLangModel aClass = context.getClassOrThrow("MethodExample");
+                               LM_Class aClass = context.getClassOrThrow("MethodExample");
 
                                assertTrue(aClass.getMethods("toString").get(0).getReceiverType().isEmpty());
                                assertEquals(aClass, aClass.getMethods("receiver").get(0).getReceiverType().orElseThrow());

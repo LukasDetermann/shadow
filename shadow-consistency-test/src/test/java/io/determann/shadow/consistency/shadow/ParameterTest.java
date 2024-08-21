@@ -1,16 +1,16 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Constructor;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Parameter;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParameterTest extends VariableTest<ParameterLangModel>
+class ParameterTest extends VariableTest<LM_Parameter>
 {
    ParameterTest()
    {
@@ -25,18 +25,18 @@ class ParameterTest extends VariableTest<ParameterLangModel>
    {
       ProcessorTest.process(context ->
                             {
-                               MethodLangModel method = context.getClassOrThrow("ParameterExample")
-                                                               .getMethods("foo")
-                                                               .get(0);
+                               LM_Method method = context.getClassOrThrow("ParameterExample")
+                                                         .getMethods("foo")
+                                                         .get(0);
 
-                               ParameterLangModel methodParameter = method.getParameterOrThrow("foo");
+                               LM_Parameter methodParameter = method.getParameterOrThrow("foo");
 
                                assertEquals(method, methodParameter.getSurrounding());
 
-                               ConstructorLangModel constructor = context.getClassOrThrow("ParameterExample")
-                                     .getConstructors()
-                                     .get(0);
-                               ParameterLangModel constructorParameter = constructor.getParameters().get(0);
+                               LM_Constructor constructor = context.getClassOrThrow("ParameterExample")
+                                                                   .getConstructors()
+                                                                   .get(0);
+                               LM_Parameter constructorParameter = constructor.getParameters().get(0);
                                assertEquals(constructor, constructorParameter.getSurrounding());
                             })
                    .withCodeToCompile("ParameterExample.java", """
@@ -55,9 +55,9 @@ class ParameterTest extends VariableTest<ParameterLangModel>
    {
       ProcessorTest.process(context ->
                             {
-                               List<ParameterLangModel> parameters = context.getClassOrThrow("VarArgsExample").getConstructors()
-                                                                              .get(0)
-                                                                              .getParameters();
+                               List<LM_Parameter> parameters = context.getClassOrThrow("VarArgsExample").getConstructors()
+                                                                      .get(0)
+                                                                      .getParameters();
 
                                assertFalse(parameters.get(0).isVarArgs());
                                assertTrue(parameters.get(1).isVarArgs());

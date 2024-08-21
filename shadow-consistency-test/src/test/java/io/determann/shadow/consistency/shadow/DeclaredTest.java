@@ -1,9 +1,10 @@
 package io.determann.shadow.consistency.shadow;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
+import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.NameableLangModel;
-import io.determann.shadow.api.shadow.type.Declared;
+import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
+import io.determann.shadow.api.shadow.C_NestingKind;
+import io.determann.shadow.api.shadow.type.C_Declared;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -15,9 +16,9 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLARED>
+abstract class DeclaredTest<DECLARED extends C_Declared> extends ShadowTest<DECLARED>
 {
-   DeclaredTest(Function<AnnotationProcessingContext, DECLARED> shadowSupplier)
+   DeclaredTest(Function<AP_Context, DECLARED> shadowSupplier)
    {
       super(shadowSupplier);
    }
@@ -32,7 +33,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                context.getInterfaceOrThrow("java.lang.Comparable")
                                                         .getGenerics()
                                                         .stream()
-                                                        .map(NameableLangModel::getName)
+                                                        .map(LM_Nameable::getName)
                                                         .collect(Collectors.joining())))
                    .compile();
    }
@@ -42,8 +43,8 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
    {
       ProcessorTest.process(context ->
                             {
-                               assertEquals(io.determann.shadow.api.shadow.NestingKind.OUTER, context.getClassOrThrow("NestingExample").getNesting());
-                               assertEquals(io.determann.shadow.api.shadow.NestingKind.INNER, context.getClassOrThrow("NestingExample.Inner").getNesting());
+                               assertEquals(C_NestingKind.OUTER, context.getClassOrThrow("NestingExample").getNesting());
+                               assertEquals(C_NestingKind.INNER, context.getClassOrThrow("NestingExample.Inner").getNesting());
                             })
                    .withCodeToCompile("NestingExample.java",
                                       """
@@ -77,7 +78,7 @@ abstract class DeclaredTest<DECLARED extends Declared> extends ShadowTest<DECLAR
                                                context.getClassOrThrow("MyClass")
                                                         .getFields()
                                                         .stream()
-                                                        .map(NameableLangModel::getName)
+                                                        .map(LM_Nameable::getName)
                                                         .collect(Collectors.toList())))
                    .withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                    .compile();

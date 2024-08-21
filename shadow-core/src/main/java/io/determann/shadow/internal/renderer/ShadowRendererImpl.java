@@ -1,9 +1,6 @@
 package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Enum;
-import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.*;
 
 import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
@@ -11,20 +8,20 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class ShadowRendererImpl
 {
-   public static String type(RenderingContextWrapper context, Shadow shadow)
+   public static String type(RenderingContextWrapper context, C_Shadow shadow)
    {
       return switch (requestOrThrow(shadow, SHADOW_GET_KIND))
       {
-         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, ((Primitive) shadow));
-         case CLASS -> ClassRendererImpl.type(context, ((Class) shadow));
-         case INTERFACE -> InterfaceRendererImpl.type(context, ((Interface) shadow));
-         case ENUM -> EnumRendererImpl.type(context, ((Enum) shadow));
-         case ANNOTATION -> AnnotationRendererImpl.type(context, ((Annotation) shadow));
-         case RECORD -> RecordRendererImpl.type(context, ((Record) shadow));
-         case ARRAY -> ArrayRendererImpl.type(context, ((Array) shadow));
-         case GENERIC -> GenericRendererImpl.type(context, ((Generic) shadow));
-         case WILDCARD -> WildcardRendererImpl.type(context, ((Wildcard) shadow));
-         case INTERSECTION -> IntersectionRendererImpl.type(context, ((Intersection) shadow));
+         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, ((C_Primitive) shadow));
+         case CLASS -> ClassRendererImpl.type(context, ((C_Class) shadow));
+         case INTERFACE -> InterfaceRendererImpl.type(context, ((C_Interface) shadow));
+         case ENUM -> EnumRendererImpl.type(context, ((C_Enum) shadow));
+         case ANNOTATION -> AnnotationRendererImpl.type(context, ((C_Annotation) shadow));
+         case RECORD -> RecordRendererImpl.type(context, ((C_Record) shadow));
+         case ARRAY -> ArrayRendererImpl.type(context, ((C_Array) shadow));
+         case GENERIC -> GenericRendererImpl.type(context, ((C_Generic) shadow));
+         case WILDCARD -> WildcardRendererImpl.type(context, ((C_Wildcard) shadow));
+         case INTERSECTION -> IntersectionRendererImpl.type(context, ((C_Intersection) shadow));
          case VOID -> VoidRendererImpl.type();
          case NULL -> NullRendererImpl.type();
 
@@ -32,7 +29,7 @@ public class ShadowRendererImpl
       };
    }
 
-   public static String classDeclaration(RenderingContext context, Declared declared)
+   public static String classDeclaration(RenderingContext context, C_Declared declared)
    {
       return context.renderName(declared) + ".class";
    }

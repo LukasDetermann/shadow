@@ -1,9 +1,9 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.ConstructorLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.shadow.structure.Constructor;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Constructor;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.shadow.structure.C_Constructor;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ConstructorTest extends ExecutableTest<Constructor>
+class ConstructorTest extends ExecutableTest<C_Constructor>
 {
    @Test
    void testGetParameters()
@@ -26,8 +26,8 @@ class ConstructorTest extends ExecutableTest<Constructor>
                                                   .getParameters()
                                                   .size());
 
-                               List<ConstructorLangModel> constructors = context.getClassOrThrow("ConstructorExample")
-                                                                         .getConstructors();
+                               List<LM_Constructor> constructors = context.getClassOrThrow("ConstructorExample")
+                                                                          .getConstructors();
                                assertEquals(3, constructors.size());
                                assertEquals(context.getClassOrThrow("java.lang.Long"),
                                             constructors.get(0)
@@ -146,7 +146,7 @@ class ConstructorTest extends ExecutableTest<Constructor>
    {
       ProcessorTest.process(context ->
                             {
-                               ClassLangModel aClass = context.getClassOrThrow("ConstructorExample");
+                               LM_Class aClass = context.getClassOrThrow("ConstructorExample");
                                assertEquals(aClass, aClass.getConstructors().get(0).getSurrounding());
                             })
                    .withCodeToCompile("ConstructorExample.java", """

@@ -1,21 +1,21 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.shadow.type.C_Record;
 
 public class RecordSupport
 {
-   public static boolean equals(Record record, Object other)
+   public static boolean equals(C_Record record, Object other)
    {
-      return DeclaredSupport.equals(record, other, Record.class);
+      return DeclaredSupport.equals(record, other, C_Record.class);
    }
 
-   public static int hashCode(Record record)
+   public static int hashCode(C_Record record)
    {
       return DeclaredSupport.hashCode(record);
    }
 
-   public static String toString(Record record)
+   public static String toString(C_Record record)
    {
-      return DeclaredSupport.toString(record, Record.class);
+      return DeclaredSupport.toString(record, C_Record.class);
    }
 }

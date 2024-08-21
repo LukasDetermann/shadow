@@ -3,8 +3,8 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.RecordComponentRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,20 +17,20 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public class RecordComponentRendererImpl implements RecordComponentRenderer
 {
    private final RenderingContextWrapper context;
-   private final RecordComponent recordComponent;
+   private final C_RecordComponent recordComponent;
 
-   public RecordComponentRendererImpl(RenderingContext renderingContext, RecordComponent recordComponent)
+   public RecordComponentRendererImpl(RenderingContext renderingContext, C_RecordComponent recordComponent)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.recordComponent = recordComponent;
    }
 
-   public static String declaration(RenderingContextWrapper context, RecordComponent recordComponent)
+   public static String declaration(RenderingContextWrapper context, C_RecordComponent recordComponent)
    {
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(recordComponent, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(recordComponent, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -45,7 +45,7 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
       return sb.toString();
    }
 
-   public static String invocation(RenderingContextWrapper context, RecordComponent recordComponent)
+   public static String invocation(RenderingContextWrapper context, C_RecordComponent recordComponent)
    {
       return requestOrThrow(requestOrThrow(recordComponent, RECORD_COMPONENT_GET_GETTER), NAMEABLE_GET_NAME) + "()";
    }

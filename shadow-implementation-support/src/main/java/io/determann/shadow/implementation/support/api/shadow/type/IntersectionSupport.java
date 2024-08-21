@@ -1,27 +1,27 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Intersection;
+import io.determann.shadow.api.shadow.type.C_Intersection;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
 
 public class IntersectionSupport
 {
-   public static boolean equals(Intersection intersection, Object other)
+   public static boolean equals(C_Intersection intersection, Object other)
    {
       return SupportSupport.equals(intersection,
-                                   Intersection.class,
+                                   C_Intersection.class,
                                    other,
                                    INTERSECTION_GET_BOUNDS);
    }
 
-   public static int hashCode(Intersection intersection)
+   public static int hashCode(C_Intersection intersection)
    {
       return SupportSupport.hashCode(intersection, INTERSECTION_GET_BOUNDS);
    }
 
-   public static String toString(Intersection intersection)
+   public static String toString(C_Intersection intersection)
    {
-      return SupportSupport.toString(intersection, Intersection.class, INTERSECTION_GET_BOUNDS);
+      return SupportSupport.toString(intersection, C_Intersection.class, INTERSECTION_GET_BOUNDS);
    }
 }

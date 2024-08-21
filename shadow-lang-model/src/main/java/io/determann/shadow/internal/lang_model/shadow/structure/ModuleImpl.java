@@ -1,17 +1,17 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.directive.DirectiveLangModel;
-import io.determann.shadow.api.lang_model.shadow.directive.ProvidesLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.directive.Provides;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Directive;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Provides;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.directive.C_Provides;
+import io.determann.shadow.api.shadow.structure.C_Module;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.lang_model.shadow.directive.*;
 import io.determann.shadow.internal.lang_model.shadow.type.ShadowImpl;
 
@@ -23,26 +23,26 @@ import java.util.function.Supplier;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
-import static io.determann.shadow.api.lang_model.LangModelQueries.query;
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Queries.query;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
+public class ModuleImpl extends ShadowImpl<NoType> implements LM_Module
 {
    private final ModuleElement moduleElement;
 
-   public ModuleImpl(LangModelContext context, ModuleElement moduleElement)
+   public ModuleImpl(LM_Context context, ModuleElement moduleElement)
    {
       super(context, (NoType) moduleElement.asType());
       this.moduleElement = moduleElement;
    }
 
-   public ModuleImpl(LangModelContext context, NoType noType)
+   public ModuleImpl(LM_Context context, NoType noType)
    {
       super(context, noType);
-      this.moduleElement = LangModelAdapter.getElements(getApi()).getModuleElement(noType.toString());
+      this.moduleElement = LM_Adapter.getElements(getApi()).getModuleElement(noType.toString());
       if (moduleElement == null)
       {
          throw new IllegalStateException(noType + " is not unique");
@@ -50,9 +50,9 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.MODULE;
+      return C_TypeKind.MODULE;
    }
 
    public ModuleElement getElement()
@@ -61,12 +61,12 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    }
 
    @Override
-   public List<PackageLangModel> getPackages()
+   public List<LM_Package> getPackages()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .map(PackageElement.class::cast)
-                         .map(element -> LangModelAdapter.generalizePackage(getApi(), element))
+                         .map(element -> LM_Adapter.generalizePackage(getApi(), element))
                          .toList();
    }
 
@@ -77,16 +77,16 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    }
 
    @Override
-   public List<DeclaredLangModel> getDeclared()
+   public List<LM_Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> query(aPackage).getDeclared().stream()).toList();
    }
 
    @Override
-   public Optional<DeclaredLangModel> getDeclared(String qualifiedName)
+   public Optional<LM_Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(LangModelAdapter.getElements(getApi()).getTypeElement(getElement(), qualifiedName))
-            .map(typeElement -> LangModelAdapter.generalize(getApi(), typeElement));
+      return ofNullable(LM_Adapter.getElements(getApi()).getTypeElement(getElement(), qualifiedName))
+            .map(typeElement -> LM_Adapter.generalize(getApi(), typeElement));
    }
 
    @Override
@@ -104,11 +104,11 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    @Override
    public boolean isAutomatic()
    {
-      return LangModelAdapter.getElements(getApi()).isAutomaticModule(getElement());
+      return LM_Adapter.getElements(getApi()).isAutomaticModule(getElement());
    }
 
    @Override
-   public List<DirectiveLangModel> getDirectives()
+   public List<LM_Directive> getDirectives()
    {
       return getElement().getDirectives()
                          .stream()
@@ -121,21 +121,21 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
                                        case USES -> new UsesImpl(getApi(), ((ModuleElement.UsesDirective) directive));
                                        case PROVIDES -> new ProvidesImpl(getApi(), ((ModuleElement.ProvidesDirective) directive));
                                     })
-                         .map(DirectiveLangModel.class::cast)
-                         .collect(of((Supplier<List<DirectiveLangModel>>) ArrayList::new,
+                         .map(LM_Directive.class::cast)
+                         .collect(of((Supplier<List<LM_Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!(directive instanceof ProvidesLangModel provides))
+                                        if (!(directive instanceof LM_Provides provides))
                                         {
                                            directives.add(directive);
                                            return;
                                         }
 
-                                        Optional<Provides> existing =
+                                        Optional<C_Provides> existing =
                                               directives.stream()
-                                                        .filter(Provides.class::isInstance)
-                                                        .map(Provides.class::cast)
-                                                        .filter(collected -> query((Shadow) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
+                                                        .filter(C_Provides.class::isInstance)
+                                                        .map(C_Provides.class::cast)
+                                                        .filter(collected -> query((C_Shadow) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
                                                         .findAny();
 
                                         if (existing.isEmpty())
@@ -162,7 +162,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
 
    //com.sun.tools.javac.code.Types.TypeRelation#visitType throes exceptions for modules
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       return equals(shadow);
    }
@@ -176,17 +176,17 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
    @Override
    public String getJavaDoc()
    {
-      return LangModelAdapter.getElements(getApi()).getDocComment(getElement());
+      return LM_Adapter.getElements(getApi()).getDocComment(getElement());
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getAnnotationUsages()
+   public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LangModelAdapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return generalize(getApi(), LM_Adapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
+   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }
@@ -210,7 +210,7 @@ public class ModuleImpl extends ShadowImpl<NoType> implements ModuleLangModel
       {
          return true;
       }
-      if (!(other instanceof Module otherModule))
+      if (!(other instanceof C_Module otherModule))
       {
          return false;
       }

@@ -1,16 +1,16 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.structure.EnumConstantReflection;
-import io.determann.shadow.api.reflection.shadow.type.EnumReflection;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
+import io.determann.shadow.api.reflection.shadow.type.R_Enum;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import java.util.List;
 
 import static java.util.Arrays.stream;
 
-public class EnumImpl extends DeclaredImpl implements EnumReflection
+public class EnumImpl extends DeclaredImpl implements R_Enum
 {
    public EnumImpl(Class<?> aClass)
    {
@@ -18,16 +18,16 @@ public class EnumImpl extends DeclaredImpl implements EnumReflection
    }
 
    @Override
-   public List<EnumConstantReflection> getEumConstants()
+   public List<R_EnumConstant> getEumConstants()
    {
       return stream(getaClass().getEnumConstants())
             .map(java.lang.Enum.class::cast)
-            .map(ReflectionAdapter::generalize)
+            .map(R_Adapter::generalize)
             .toList();
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       return EnumSupport.representsSameType(this, shadow);
    }

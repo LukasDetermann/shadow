@@ -1,20 +1,20 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.directive.RequiresLangModel;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.directive.LM_Requires;
+import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import javax.lang.model.element.ModuleElement;
 
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class RequiresImpl extends DirectiveImpl implements RequiresLangModel
+public class RequiresImpl extends DirectiveImpl implements LM_Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(LangModelContext context, ModuleElement.RequiresDirective requiresDirective)
+   public RequiresImpl(LM_Context context, ModuleElement.RequiresDirective requiresDirective)
    {
       super(context);
       this.requiresDirective = requiresDirective;
@@ -33,9 +33,9 @@ public class RequiresImpl extends DirectiveImpl implements RequiresLangModel
    }
 
    @Override
-   public Module getDependency()
+   public C_Module getDependency()
    {
-      return LangModelAdapter.generalize(getApi(), requiresDirective.getDependency());
+      return LM_Adapter.generalize(getApi(), requiresDirective.getDependency());
    }
 
    @Override

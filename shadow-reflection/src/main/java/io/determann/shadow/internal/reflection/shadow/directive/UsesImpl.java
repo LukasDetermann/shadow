@@ -1,13 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.directive.UsesReflection;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.directive.R_Uses;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class UsesImpl implements UsesReflection
+public class UsesImpl implements R_Uses
 {
    private final String usesDirective;
 
@@ -17,9 +17,9 @@ public class UsesImpl implements UsesReflection
    }
 
    @Override
-   public DeclaredReflection getService()
+   public R_Declared getService()
    {
-      return ReflectionAdapter.getDeclared(usesDirective).orElseThrow();
+      return R_Adapter.getDeclared(usesDirective).orElseThrow();
    }
 
    @Override

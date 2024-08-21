@@ -4,7 +4,7 @@ import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.Operation;
 import io.determann.shadow.api.Operation0;
 import io.determann.shadow.api.Response;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import java.util.*;
 
@@ -56,7 +56,14 @@ public class SupportSupport
                                                                       Class<TYPE> typeClass,
                                                                       Operation0<? super TYPE, ?>... operations)
    {
-      return typeClass.getSimpleName() +
+      String simpleName = typeClass.getSimpleName();
+      int index = simpleName.indexOf('_');
+      if (index != -1 && index + 1 < simpleName.length())
+      {
+         simpleName = simpleName.substring(index + 1);
+      }
+
+      return simpleName +
              " {" +
              stream(operations)
                    .map(operation -> getOperationName(operation) + "=" + requestOrEmpty(type, operation)
@@ -94,10 +101,10 @@ public class SupportSupport
 
 
    @SafeVarargs
-   public static <TYPE extends Shadow> boolean representsSameType(TYPE type,
-                                                                  Class<TYPE> tClass,
-                                                                  Object other,
-                                                                  Operation0<? super TYPE, ?>... operations)
+   public static <TYPE extends C_Shadow> boolean representsSameType(TYPE type,
+                                                                    Class<TYPE> tClass,
+                                                                    Object other,
+                                                                    Operation0<? super TYPE, ?>... operations)
    {
       if (type == other)
       {
@@ -120,9 +127,9 @@ public class SupportSupport
                                 second instanceof Response.Unsupported<?> ||
 
                                 (first instanceof Response.Result<?>(Object firstValue) &&
-                                 firstValue instanceof Shadow firstShadow &&
+                                 firstValue instanceof C_Shadow firstShadow &&
                                  second instanceof Response.Result<?>(Object secondValue) &&
-                                 secondValue instanceof Shadow secondShadow &&
+                                 secondValue instanceof C_Shadow secondShadow &&
                                  requestOrEmpty(firstShadow, SHADOW_REPRESENTS_SAME_TYPE, secondShadow).orElse(false)) ||
 
                                 Objects.equals(first, second);

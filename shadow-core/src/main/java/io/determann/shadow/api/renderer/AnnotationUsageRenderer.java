@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.structure.Method;
+import io.determann.shadow.api.shadow.structure.C_Method;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -17,5 +17,5 @@ public interface AnnotationUsageRenderer
     * <p>
     * if an empty optional is supplied the value of the original AnnotationUsage will be used
     */
-   String usage(Function<Method, Optional<String>> valueRenderer);
+   String usage(Function<C_Method, Optional<String>> valueRenderer);
 }

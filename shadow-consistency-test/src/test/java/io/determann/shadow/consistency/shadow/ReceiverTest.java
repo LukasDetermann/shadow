@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.ReceiverLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Receiver;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,11 +13,11 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               ReceiverLangModel receiver = context.getClassOrThrow("ReceiverExample.Inner")
-                                                                   .getConstructors()
-                                                                   .get(0)
-                                                                   .getReceiver()
-                                                                   .get();
+                               LM_Receiver receiver = context.getClassOrThrow("ReceiverExample.Inner")
+                                                             .getConstructors()
+                                                             .get(0)
+                                                             .getReceiver()
+                                                             .get();
 
                                assertEquals(context.getClassOrThrow("ReceiverExample"), receiver.getType());
                             })
@@ -36,11 +36,11 @@ class ReceiverTest
    {
       ProcessorTest.process(context ->
                             {
-                               ReceiverLangModel receiver = context.getClassOrThrow("ReceiverExample.Inner")
-                                                                   .getConstructors()
-                                                                   .get(0)
-                                                                   .getReceiver()
-                                                                   .get();
+                               LM_Receiver receiver = context.getClassOrThrow("ReceiverExample.Inner")
+                                                             .getConstructors()
+                                                             .get(0)
+                                                             .getReceiver()
+                                                             .get();
 
                                assertEquals(1, receiver.getAnnotationUsages().size());
                                assertEquals(2, receiver.getAnnotationUsages().get(0).getValueOrThrow("value").getValue());

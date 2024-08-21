@@ -1,0 +1,16 @@
+package io.determann.shadow.api.lang_model.shadow.modifier;
+
+import io.determann.shadow.api.shadow.modifier.C_Modifiable;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+
+import java.util.Set;
+
+public interface LM_Modifiable extends C_Modifiable
+{
+   Set<C_Modifier> getModifiers();
+
+   default boolean hasModifier(C_Modifier modifier)
+   {
+      return getModifiers().contains(modifier);
+   }
+}

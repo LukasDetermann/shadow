@@ -3,11 +3,11 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.InterfaceRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Interface;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.type.C_Generic;
+import io.determann.shadow.api.shadow.type.C_Interface;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,20 +23,20 @@ import static java.util.stream.Collectors.joining;
 public class InterfaceRendererImpl implements InterfaceRenderer
 {
    private final RenderingContextWrapper context;
-   private final Interface anInterface;
+   private final C_Interface anInterface;
 
-   public InterfaceRendererImpl(RenderingContext renderingContext, Interface anInterface)
+   public InterfaceRendererImpl(RenderingContext renderingContext, C_Interface anInterface)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.anInterface = anInterface;
    }
 
-   public static String declaration(RenderingContextWrapper context, Interface anInterface, String content)
+   public static String declaration(RenderingContextWrapper context, C_Interface anInterface, String content)
    {
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(anInterface, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(anInterface, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -45,9 +45,9 @@ public class InterfaceRendererImpl implements InterfaceRenderer
                               .collect(Collectors.joining()));
       }
 
-      Set<Modifier> modifiers = new HashSet<>(requestOrThrow(anInterface, MODIFIABLE_GET_MODIFIERS));
-      modifiers.remove(Modifier.ABSTRACT);
-      modifiers.remove(Modifier.PACKAGE_PRIVATE);
+      Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(anInterface, MODIFIABLE_GET_MODIFIERS));
+      modifiers.remove(C_Modifier.ABSTRACT);
+      modifiers.remove(C_Modifier.PACKAGE_PRIVATE);
 
       if (!modifiers.isEmpty())
       {
@@ -58,7 +58,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       sb.append(' ');
       sb.append(requestOrThrow(anInterface, NAMEABLE_GET_NAME));
 
-      List<? extends Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
+      List<? extends C_Generic> generics = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
       if (!generics.isEmpty())
       {
          sb.append('<');
@@ -67,7 +67,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       }
       sb.append(' ');
 
-      List<? extends Interface> directInterfaces = requestOrThrow(anInterface, DECLARED_GET_DIRECT_INTERFACES);
+      List<? extends C_Interface> directInterfaces = requestOrThrow(anInterface, DECLARED_GET_DIRECT_INTERFACES);
 
       if (!directInterfaces.isEmpty())
       {
@@ -92,12 +92,12 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       return sb.toString();
    }
 
-   public static String type(RenderingContextWrapper context, Interface anInterface)
+   public static String type(RenderingContextWrapper context, C_Interface anInterface)
    {
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));
 
-      List<? extends Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
+      List<? extends C_Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');

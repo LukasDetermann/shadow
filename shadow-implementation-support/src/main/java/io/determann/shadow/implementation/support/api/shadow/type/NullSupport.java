@@ -1,29 +1,29 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.Null;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Null;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import java.util.Objects;
 
 public class NullSupport
 {
-   public static boolean equals(Null aNull, Object other)
+   public static boolean equals(C_Null aNull, Object other)
    {
-      return other instanceof Null;
+      return other instanceof C_Null;
    }
 
-   public static int hashCode(Null aNull)
+   public static int hashCode(C_Null aNull)
    {
-      return Objects.hash(Null.class);
+      return Objects.hash(C_Null.class);
    }
 
-   public static String toString(Null aNull)
+   public static String toString(C_Null aNull)
    {
-      return Null.class.getSimpleName();
+      return C_Null.class.getSimpleName();
    }
 
-   public static boolean representsSameType(Null aNull, Shadow other)
+   public static boolean representsSameType(C_Null aNull, C_Shadow other)
    {
-      return other instanceof Null;
+      return other instanceof C_Null;
    }
 }

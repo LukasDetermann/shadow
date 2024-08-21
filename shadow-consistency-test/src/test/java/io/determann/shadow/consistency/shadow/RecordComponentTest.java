@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +32,7 @@ class RecordComponentTest
    {
       ProcessorTest.process(context ->
                             {
-                               RecordLangModel recordExample = context.getRecordOrThrow("RecordComponentExample");
+                               LM_Record recordExample = context.getRecordOrThrow("RecordComponentExample");
                                assertEquals(recordExample, recordExample.getRecordComponentOrThrow("id").getRecord());
                             })
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")

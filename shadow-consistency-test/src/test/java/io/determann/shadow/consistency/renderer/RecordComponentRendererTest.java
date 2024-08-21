@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Record;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Record;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +16,8 @@ class RecordComponentRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
+      ConsistencyTest.<C_Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("Long id",
                                                   render(DEFAULT, requestOrThrow(aClass, RECORD_GET_RECORD_COMPONENT, "id")).declaration()));
@@ -26,8 +26,8 @@ class RecordComponentRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.<Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("RecordComponentExample")))
+      ConsistencyTest.<C_Record>compileTime(context -> context.getRecordOrThrow("RecordComponentExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("RecordComponentExample")))
                      .withCode("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .test(aClass -> assertEquals("id()",
                                                   render(DEFAULT, requestOrThrow(aClass, RECORD_GET_RECORD_COMPONENT, "id")).invocation()));

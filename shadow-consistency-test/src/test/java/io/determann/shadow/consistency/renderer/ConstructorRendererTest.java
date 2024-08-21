@@ -1,9 +1,9 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.lang_model.LangModelQueries;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.ReflectionQueries;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.lang_model.LM_Queries;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.R_Queries;
+import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,8 @@ class ConstructorRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(Long id) {}
@@ -28,20 +28,20 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public ConstructorExample(Long id) {}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(Long id) {\ntest\n}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("public ConstructorExample(Long arg0) {}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(Long arg0) {\ntest\n}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               @TestAnnotation
@@ -56,30 +56,30 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("@TestAnnotation\npublic ConstructorExample(String name) throws java.io.IOException {}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("""
                                                  @TestAnnotation
                                                  public ConstructorExample(String name) throws java.io.IOException {
                                                  test
                                                  }
                                                  """,
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("@TestAnnotation\npublic ConstructorExample(String arg0) throws java.io.IOException {}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("""
                                                  @TestAnnotation
                                                  public ConstructorExample(String arg0) throws java.io.IOException {
                                                  test
                                                  }
                                                  """,
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(String... names) {}
@@ -88,20 +88,20 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public ConstructorExample(String... names) {}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(String... names) {\ntest\n}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            },
                            aClass ->
                            {
                               assertEquals("public ConstructorExample(String... arg0) {}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public ConstructorExample(String... arg0) {\ntest\n}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public <T> ConstructorExample(T t) {}
@@ -110,20 +110,20 @@ class ConstructorRendererTest
                      .test(aClass ->
                            {
                               assertEquals("public <T> ConstructorExample(T t) {\ntest\n}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                               assertEquals("public <T> ConstructorExample(T t) {}\n",
-                                           render(DEFAULT, LangModelQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, LM_Queries.query(aClass).getConstructors().get(0)).declaration());
                            },
                            aClass ->
                            {
                               assertEquals("public <T> ConstructorExample(T arg0) {}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration());
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration());
                               assertEquals("public <T> ConstructorExample(T arg0) {\ntest\n}\n",
-                                           render(DEFAULT, ReflectionQueries.query(aClass).getConstructors().get(0)).declaration("test"));
+                                           render(DEFAULT, R_Queries.query(aClass).getConstructors().get(0)).declaration("test"));
                            });
 
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ReceiverExample$Inner")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ReceiverExample.Inner"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ReceiverExample$Inner")))
                      .withCode("ReceiverExample.java", """
                            public class ReceiverExample {
                               public class Inner {
@@ -143,8 +143,8 @@ class ConstructorRendererTest
    @Test
    void invocation()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("ConstructorExample")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("ConstructorExample"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("ConstructorExample")))
                      .withCode("ConstructorExample.java", """
                            public class ConstructorExample {
                               public ConstructorExample(Long id) {}

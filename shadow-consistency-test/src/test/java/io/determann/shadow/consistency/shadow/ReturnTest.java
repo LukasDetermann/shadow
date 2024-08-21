@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.ReturnLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Return;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +13,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               ReturnLangModel aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
+                               LM_Return aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
 
                                assertEquals(context.getClassOrThrow("java.lang.Integer"), aReturn.getType());
                             })
@@ -30,7 +30,7 @@ class ReturnTest
    {
       ProcessorTest.process(context ->
                             {
-                               ReturnLangModel aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
+                               LM_Return aReturn = context.getClassOrThrow("ReturnExample").getMethods().get(0).getReturn();
 
                                assertEquals(1, aReturn.getAnnotationUsages().size());
                                assertEquals(2, aReturn.getAnnotationUsages().get(0).getValueOrThrow("value").getValue());

@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +16,8 @@ class FieldRendererTest
    @Test
    void declaration()
    {
-      ConsistencyTest.<Class>compileTime(context -> context.getClassOrThrow("java.lang.String"))
-                     .runtime(stringClassFunction -> ReflectionAdapter.generalize(stringClassFunction.apply("java.lang.String")))
+      ConsistencyTest.<C_Class>compileTime(context -> context.getClassOrThrow("java.lang.String"))
+                     .runtime(stringClassFunction -> R_Adapter.generalize(stringClassFunction.apply("java.lang.String")))
                      .test(aClass -> assertEquals("@jdk.internal.vm.annotation.Stable\nprivate final byte value;\n",
                                                   render(DEFAULT, requestOrThrow(aClass, DECLARED_GET_FIELD, "value"))
                                                         .declaration()));

@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ReturnLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.structure.Return;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Return;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.structure.C_Return;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -15,33 +15,33 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.RETURN_GET_TYPE;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class ReturnImpl implements ReturnLangModel
+public class ReturnImpl implements LM_Return
 {
-   private final LangModelContext context;
+   private final LM_Context context;
    private final TypeMirror typeMirror;
 
-   public ReturnImpl(LangModelContext context, TypeMirror typeMirror)
+   public ReturnImpl(LM_Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getAnnotationUsages()
+   public List<LM_AnnotationUsage> getAnnotationUsages()
    {
       return getDirectAnnotationUsages();
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
+   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LangModelAdapter.generalize(context, getTypeMirror().getAnnotationMirrors());
+      return LM_Adapter.generalize(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
-   public ShadowLangModel getType()
+   public LM_Shadow getType()
    {
-      return LangModelAdapter.generalize(context, getTypeMirror());
+      return LM_Adapter.generalize(context, getTypeMirror());
    }
 
    public TypeMirror getTypeMirror()
@@ -62,7 +62,7 @@ public class ReturnImpl implements ReturnLangModel
       {
          return true;
       }
-      if (!(other instanceof Return otherReturn))
+      if (!(other instanceof C_Return otherReturn))
       {
          return false;
       }

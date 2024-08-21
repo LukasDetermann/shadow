@@ -1,14 +1,14 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.shadow.structure.C_Module;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ModuleTest extends ShadowTest<Module>
+class ModuleTest extends ShadowTest<C_Module>
 {
    ModuleTest()
    {
@@ -26,19 +26,19 @@ class ModuleTest extends ShadowTest<Module>
    @Test
    void testIsOpen()
    {
-      ProcessorTest.process(context -> assertTrue(context.getModules().stream().noneMatch(ModuleLangModel::isOpen))).compile();
+      ProcessorTest.process(context -> assertTrue(context.getModules().stream().noneMatch(LM_Module::isOpen))).compile();
    }
 
    @Test
    void testIsUnnamed()
    {
-      ProcessorTest.process(context -> assertEquals(1, context.getModules().stream().filter(ModuleLangModel::isUnnamed).count())).compile();
+      ProcessorTest.process(context -> assertEquals(1, context.getModules().stream().filter(LM_Module::isUnnamed).count())).compile();
    }
 
    @Test
    void testIsAutomatic()
    {
-      ProcessorTest.process(context -> assertTrue(context.getModules().stream().noneMatch(ModuleLangModel::isAutomatic))).compile();
+      ProcessorTest.process(context -> assertTrue(context.getModules().stream().noneMatch(LM_Module::isAutomatic))).compile();
    }
 
    @Test

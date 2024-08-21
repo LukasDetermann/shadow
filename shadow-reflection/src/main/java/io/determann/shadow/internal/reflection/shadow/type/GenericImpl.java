@@ -1,13 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
-import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.type.Generic;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.type.R_Generic;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.type.C_Generic;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import java.lang.reflect.TypeVariable;
@@ -17,10 +17,10 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
+import static io.determann.shadow.api.reflection.R_Adapter.generalize;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class GenericImpl implements GenericReflection
+public class GenericImpl implements R_Generic
 {
    private final TypeVariable<?> typeVariable;
 
@@ -36,19 +36,19 @@ public class GenericImpl implements GenericReflection
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getAnnotations()).map(ReflectionAdapter::generalize).toList();
+      return Arrays.stream(getTypeVariable().getAnnotations()).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(ReflectionAdapter::generalize).toList();
+      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(R_Adapter::generalize).toList();
    }
 
    @Override
-   public ShadowReflection getExtends()
+   public R_Shadow getExtends()
    {
       java.lang.reflect.Type[] bounds = getTypeVariable().getBounds();
       if (bounds.length == 1)
@@ -59,7 +59,7 @@ public class GenericImpl implements GenericReflection
    }
 
    @Override
-   public Optional<ShadowReflection> getSuper()
+   public Optional<R_Shadow> getSuper()
    {
       return Optional.empty();
    }
@@ -79,21 +79,21 @@ public class GenericImpl implements GenericReflection
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.GENERIC;
+      return C_TypeKind.GENERIC;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      if (!(shadow instanceof Generic generic))
+      if (!(shadow instanceof C_Generic generic))
       {
          return false;
       }
 
-      Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
-      Optional<Shadow> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
+      C_Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
+      Optional<C_Shadow> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
 
       return requestOrThrow(aExtends, SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
              ((aSuper.isEmpty() && getSuper().isEmpty()) ||

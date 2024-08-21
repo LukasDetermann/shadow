@@ -1,11 +1,11 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RecordTest extends DeclaredTest<RecordLangModel>
+class RecordTest extends DeclaredTest<LM_Record>
 {
    RecordTest()
    {
@@ -27,7 +27,7 @@ class RecordTest extends DeclaredTest<RecordLangModel>
    {
       ProcessorTest.process(context ->
                             {
-                               RecordComponentLangModel idComponent = getShadowSupplier().apply(context).getRecordComponentOrThrow("id");
+                               LM_RecordComponent idComponent = getShadowSupplier().apply(context).getRecordComponentOrThrow("id");
                                assertEquals("id", idComponent.getName());
                                assertEquals(context.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
@@ -156,35 +156,35 @@ class RecordTest extends DeclaredTest<RecordLangModel>
    {
       ProcessorTest.process(context ->
                             {
-                               RecordLangModel declared = context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample"),
-                                                                               context.getClassOrThrow("java.lang.String"),
-                                                                               context.getConstants().getUnboundWildcard());
+                               LM_Record declared = context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample"),
+                                                                         context.getClassOrThrow("java.lang.String"),
+                                                                         context.getConstants().getUnboundWildcard());
 
-                               RecordLangModel capture = context.interpolateGenerics(declared);
-                               ShadowLangModel interpolated = Optional.of(((GenericLangModel) capture.getGenericTypes().get(1)))
-                                                                      .map(GenericLangModel::getExtends)
-                                                                      .map(InterfaceLangModel.class::cast)
-                                                                      .map(InterfaceLangModel::getGenericTypes)
-                                                                      .map(shadows -> shadows.get(0))
-                                                                      .orElseThrow();
+                               LM_Record capture = context.interpolateGenerics(declared);
+                               LM_Shadow interpolated = Optional.of(((LM_Generic) capture.getGenericTypes().get(1)))
+                                                                .map(LM_Generic::getExtends)
+                                                                .map(LM_Interface.class::cast)
+                                                                .map(LM_Interface::getGenericTypes)
+                                                                .map(shadows -> shadows.get(0))
+                                                                .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                               RecordLangModel independentExample = context.withGenerics(context.getRecordOrThrow(
+                               LM_Record independentExample = context.withGenerics(context.getRecordOrThrow(
                                      "InterpolateGenericsExample.IndependentGeneric"), context.getConstants().getUnboundWildcard());
-                               RecordLangModel independentCapture = context.interpolateGenerics(independentExample);
-                               ShadowLangModel interpolatedIndependent = Optional.of(((GenericLangModel) independentCapture.getGenericTypes().get(0)))
-                                     .map(GenericLangModel::getExtends)
-                                     .orElseThrow();
+                               LM_Record independentCapture = context.interpolateGenerics(independentExample);
+                               LM_Shadow interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
+                                                                           .map(LM_Generic::getExtends)
+                                                                           .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               RecordLangModel dependentExample = context.withGenerics(context.getRecordOrThrow(
+                               LM_Record dependentExample = context.withGenerics(context.getRecordOrThrow(
                                                                                       "InterpolateGenericsExample.DependentGeneric"),
-                                                                                          context.getConstants().getUnboundWildcard(),
-                                                                                          context.getClassOrThrow("java.lang.String"));
-                               RecordLangModel dependentCapture = context.interpolateGenerics(dependentExample);
-                               ShadowLangModel interpolatedDependent = Optional.of(((GenericLangModel) dependentCapture.getGenericTypes().get(0)))
-                                     .map(GenericLangModel::getExtends)
-                                     .orElseThrow();
+                                                                                 context.getConstants().getUnboundWildcard(),
+                                                                                 context.getClassOrThrow("java.lang.String"));
+                               LM_Record dependentCapture = context.interpolateGenerics(dependentExample);
+                               LM_Shadow interpolatedDependent = Optional.of(((LM_Generic) dependentCapture.getGenericTypes().get(0)))
+                                                                         .map(LM_Generic::getExtends)
+                                                                         .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """

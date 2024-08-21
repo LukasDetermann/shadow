@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.lang_model.ApiHolder;
 
 import javax.lang.model.type.TypeMirror;
@@ -11,22 +11,22 @@ import javax.lang.model.type.TypeMirror;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public abstract class ShadowImpl<MIRROR extends TypeMirror> implements ApiHolder,
-                                                                       ShadowLangModel
+                                                                       LM_Shadow
 {
-   private final LangModelContext context;
+   private final LM_Context context;
 
    private final MIRROR typeMirror;
 
-   protected ShadowImpl(LangModelContext context, MIRROR typeMirror)
+   protected ShadowImpl(LM_Context context, MIRROR typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSameType(getMirror(), LangModelAdapter.particularType((ShadowLangModel) shadow));
+      return LM_Adapter.getTypes(getApi()).isSameType(getMirror(), LM_Adapter.particularType((LM_Shadow) shadow));
    }
 
    public MIRROR getMirror()
@@ -35,7 +35,7 @@ public abstract class ShadowImpl<MIRROR extends TypeMirror> implements ApiHolder
    }
 
    @Override
-   public LangModelContext getApi()
+   public LM_Context getApi()
    {
       return context;
    }

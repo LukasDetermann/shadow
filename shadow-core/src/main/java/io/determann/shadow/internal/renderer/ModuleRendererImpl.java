@@ -3,9 +3,9 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.directive.*;
-import io.determann.shadow.api.shadow.structure.Module;
+import io.determann.shadow.api.shadow.structure.C_Module;
 
 import java.util.List;
 import java.util.Map;
@@ -22,9 +22,9 @@ import static java.util.stream.Collectors.joining;
 public class ModuleRendererImpl implements ModuleRenderer
 {
    private final RenderingContextWrapper context;
-   private final Module module;
+   private final C_Module module;
 
-   public ModuleRendererImpl(RenderingContext renderingContext, Module module)
+   public ModuleRendererImpl(RenderingContext renderingContext, C_Module module)
    {
       this.context = new RenderingContextWrapper(renderingContext);
       this.module = module;
@@ -41,7 +41,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       StringBuilder sb = new StringBuilder();
 
       //noinspection OptionalContainsCollection
-      Optional<List<? extends AnnotationUsage>> annotationUsages = requestOrEmpty(module, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
+      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(module, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
       if (!annotationUsages.map(List::isEmpty).orElse(true))
       {
          sb.append(annotationUsages.get()
@@ -59,56 +59,56 @@ public class ModuleRendererImpl implements ModuleRenderer
       sb.append(requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       sb.append(" {\n");
 
-      Map<Class<? extends Directive>, List<Directive>> kind = requestOrThrow(module, MODULE_GET_DIRECTIVES)
+      Map<Class<? extends C_Directive>, List<C_Directive>> kind = requestOrThrow(module, MODULE_GET_DIRECTIVES)
                                                        .stream()
                                                        .collect(groupingBy(directive -> switch (directive)
                                                        {
-                                                          case Exports exports -> Exports.class;
-                                                          case Opens opens -> Opens.class;
-                                                          case Provides provides -> Provides.class;
-                                                          case Requires requires -> Requires.class;
-                                                          case Uses uses -> Uses.class;
+                                                          case C_Exports exports -> C_Exports.class;
+                                                          case C_Opens opens -> C_Opens.class;
+                                                          case C_Provides provides -> C_Provides.class;
+                                                          case C_Requires requires -> C_Requires.class;
+                                                          case C_Uses uses -> C_Uses.class;
                                                           default -> throw new IllegalStateException("Unexpected value: " + directive);
                                                        }));
 
-      if (kind.containsKey(Requires.class))
+      if (kind.containsKey(C_Requires.class))
       {
-         List<Directive> requires = kind.get(Requires.class)
-                                        .stream()
-                                        .map(Requires.class::cast)
-                                        .filter(requires1 -> !requestOrThrow(requestOrThrow(requires1, REQUIRES_GET_DEPENDENCY),
+         List<C_Directive> requires = kind.get(C_Requires.class)
+                                          .stream()
+                                          .map(C_Requires.class::cast)
+                                          .filter(requires1 -> !requestOrThrow(requestOrThrow(requires1, REQUIRES_GET_DEPENDENCY),
                                                                              QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.base"))
-                                        .collect(Collectors.toList());
+                                          .collect(Collectors.toList());
          sb.append(render(requires,
-                          Requires.class::cast,
+                          C_Requires.class::cast,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(Exports.class))
+      if (kind.containsKey(C_Exports.class))
       {
-         sb.append(render(kind.get(Exports.class),
-                          Exports.class::cast,
+         sb.append(render(kind.get(C_Exports.class),
+                          C_Exports.class::cast,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(Opens.class))
+      if (kind.containsKey(C_Opens.class))
       {
-         sb.append(render(kind.get(Opens.class),
-                          Opens.class::cast,
+         sb.append(render(kind.get(C_Opens.class),
+                          C_Opens.class::cast,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(Uses.class))
+      if (kind.containsKey(C_Uses.class))
       {
-         sb.append(render(kind.get(Uses.class),
-                          Uses.class::cast,
+         sb.append(render(kind.get(C_Uses.class),
+                          C_Uses.class::cast,
                           this::render));
          sb.append('\n');
       }
-      if (kind.containsKey(Provides.class))
+      if (kind.containsKey(C_Provides.class))
       {
-         sb.append(render(kind.get(Provides.class),
-                          Provides.class::cast,
+         sb.append(render(kind.get(C_Provides.class),
+                          C_Provides.class::cast,
                           this::render));
       }
 
@@ -118,8 +118,8 @@ public class ModuleRendererImpl implements ModuleRenderer
       return sb.toString();
    }
 
-   private <DIRECTIVE> String render(List<Directive> directives,
-                                     Function<Directive, DIRECTIVE> convert,
+   private <DIRECTIVE> String render(List<C_Directive> directives,
+                                     Function<C_Directive, DIRECTIVE> convert,
                                      Function<DIRECTIVE, String> renderer)
    {
       return directives.stream()
@@ -130,7 +130,7 @@ public class ModuleRendererImpl implements ModuleRenderer
              + '\n';
    }
 
-   private String render(Requires requires)
+   private String render(C_Requires requires)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("requires ");
@@ -147,7 +147,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       return sb.toString();
    }
 
-   private String render(Exports exports)
+   private String render(C_Exports exports)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -170,7 +170,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       return sb.toString();
    }
 
-   private String render(Opens opens)
+   private String render(C_Opens opens)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -193,12 +193,12 @@ public class ModuleRendererImpl implements ModuleRenderer
       return sb.toString();
    }
 
-   private String render(Uses uses)
+   private String render(C_Uses uses)
    {
       return "uses " + requestOrThrow(requestOrThrow(uses,  USES_GET_SERVICE), QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
    }
 
-   private String render(Provides provides)
+   private String render(C_Provides provides)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("provides ");

@@ -1,53 +1,53 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
-public class RecordImpl extends DeclaredImpl implements RecordLangModel
+public class RecordImpl extends DeclaredImpl implements LM_Record
 {
-   public RecordImpl(LangModelContext context, DeclaredType declaredTypeMirror)
+   public RecordImpl(LM_Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public RecordImpl(LangModelContext context, TypeElement typeElement)
+   public RecordImpl(LM_Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
 
    @Override
-   public List<RecordComponentLangModel> getRecordComponents()
+   public List<LM_RecordComponent> getRecordComponents()
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> LangModelAdapter.generalize(getApi(), recordComponentElement))
+                         .map(recordComponentElement -> LM_Adapter.generalize(getApi(), recordComponentElement))
                          .toList();
    }
 
    @Override
-   public List<ShadowLangModel> getGenericTypes()
+   public List<LM_Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<GenericLangModel> getGenerics()
+   public List<LM_Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
+                         .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
    }
 

@@ -1,15 +1,15 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WildcardTest extends ShadowTest<WildcardLangModel>
+class WildcardTest extends ShadowTest<LM_Wildcard>
 {
    WildcardTest()
    {
@@ -20,14 +20,14 @@ class WildcardTest extends ShadowTest<WildcardLangModel>
    void testGetExtends()
    {
       ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Number"),
-                                                      Optional.of(((InterfaceLangModel) context.getClassOrThrow("BoundsExample")
-                                                                                                 .getMethods("extendsExample")
-                                                                                                 .get(0)
-                                                                                                 .getParameterOrThrow("numbers")
-                                                                                                 .getType()))
+                                                      Optional.of(((LM_Interface) context.getClassOrThrow("BoundsExample")
+                                                                                         .getMethods("extendsExample")
+                                                                                         .get(0)
+                                                                                         .getParameterOrThrow("numbers")
+                                                                                         .getType()))
                                                               .map(anInterface -> anInterface.getGenericTypes().get(0))
-                                                              .map(WildcardLangModel.class::cast)
-                                                              .flatMap(WildcardLangModel::getExtends)
+                                                              .map(LM_Wildcard.class::cast)
+                                                              .flatMap(LM_Wildcard::getExtends)
                                                               .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {
@@ -42,14 +42,14 @@ class WildcardTest extends ShadowTest<WildcardLangModel>
    void testGetSupper()
    {
       ProcessorTest.process(context -> assertEquals(context.getClassOrThrow("java.lang.Number"),
-                                                      Optional.of(((InterfaceLangModel) context.getClassOrThrow("BoundsExample")
-                                                                                                 .getMethods("superExample")
-                                                                                                 .get(0)
-                                                                                           .getParameterOrThrow("numbers")
-                                                                    .getType()))
+                                                      Optional.of(((LM_Interface) context.getClassOrThrow("BoundsExample")
+                                                                                         .getMethods("superExample")
+                                                                                         .get(0)
+                                                                                         .getParameterOrThrow("numbers")
+                                                                                         .getType()))
                                                               .map(anInterface -> anInterface.getGenericTypes().get(0))
-                                                              .map(WildcardLangModel.class::cast)
-                                                              .flatMap(WildcardLangModel::getSuper)
+                                                              .map(LM_Wildcard.class::cast)
+                                                              .flatMap(LM_Wildcard::getSuper)
                                                               .orElseThrow()))
                    .withCodeToCompile("BoundsExample.java", """
                          public class BoundsExample {

@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.directive.OpensReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.directive.R_Opens;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import java.lang.module.ModuleDescriptor;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class OpensImpl implements OpensReflection
+public class OpensImpl implements R_Opens
 {
    private final ModuleDescriptor.Opens opensDirective;
 
@@ -21,17 +21,17 @@ public class OpensImpl implements OpensReflection
    }
 
    @Override
-   public PackageReflection getPackage()
+   public R_Package getPackage()
    {
-      return ReflectionAdapter.getPackage(opensDirective.source());
+      return R_Adapter.getPackage(opensDirective.source());
    }
 
    @Override
-   public List<ModuleReflection> getTargetModules()
+   public List<R_Module> getTargetModules()
    {
       return opensDirective.targets()
                            .stream()
-                           .map(ReflectionAdapter::getModuleShadow)
+                           .map(R_Adapter::getModuleShadow)
                            .toList();
    }
 

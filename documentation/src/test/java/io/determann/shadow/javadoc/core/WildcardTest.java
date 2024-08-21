@@ -1,8 +1,8 @@
 package io.determann.shadow.javadoc.core;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.ClassLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.WildcardLangModel;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ public class WildcardTest
       ProcessorTest.process(context ->
                             {
                                //@start region="Wildcard.contains"
-                               ClassLangModel number = context.getClassOrThrow("java.lang.Number");
-                               WildcardLangModel wildcard = context.asExtendsWildcard(number);
+                               LM_Class number = context.getClassOrThrow("java.lang.Number");
+                               LM_Wildcard wildcard = context.asExtendsWildcard(number);
                                Assertions.assertTrue(wildcard.contains(context.getClassOrThrow("java.lang.Long")));//@highlight substring="contains"
                                //@end
                             })

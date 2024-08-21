@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,7 +18,7 @@ class AnnotationableTest
                             {
                                assertTrue(context.getClassOrThrow("NotAnnotated").getAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsageLangModel> annotations = context.getClassOrThrow("Child").getAnnotationUsages();
+                               List<LM_AnnotationUsage> annotations = context.getClassOrThrow("Child").getAnnotationUsages();
 
                                assertEquals(2, annotations.size());
                                assertEquals("ParentAnnotation", annotations.get(0).getAnnotation().getQualifiedName());
@@ -39,7 +39,7 @@ class AnnotationableTest
                             {
                                assertTrue(context.getClassOrThrow("NotAnnotated").getDirectAnnotationUsages().isEmpty());
 
-                               List<AnnotationUsageLangModel> directAnnotations = context.getClassOrThrow("Child").getDirectAnnotationUsages();
+                               List<LM_AnnotationUsage> directAnnotations = context.getClassOrThrow("Child").getDirectAnnotationUsages();
 
                                assertEquals(1, directAnnotations.size());
                                assertEquals("ChildAnnotation", directAnnotations.get(0).getAnnotation().getQualifiedName());

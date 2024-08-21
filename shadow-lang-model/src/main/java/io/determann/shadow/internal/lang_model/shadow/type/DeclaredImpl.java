@@ -1,16 +1,16 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.*;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
-import io.determann.shadow.api.lang_model.shadow.type.DeclaredLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.shadow.NestingKind;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.modifier.Modifier;
-import io.determann.shadow.api.shadow.type.Declared;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
+import io.determann.shadow.api.shadow.C_NestingKind;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -24,50 +24,50 @@ import java.util.Set;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
+import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 
-public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLangModel,
-                                                                      NameableLangModel,
-                                                                      QualifiedNameableLamgModel,
-                                                                      ModuleEnclosedLangModel,
-                                                                      DocumentedLangModel
+public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declared,
+                                                                      LM_Nameable,
+                                                                      LM_QualifiedNameable,
+                                                                      LM_ModuleEnclosed,
+                                                                      LM_Documented
 {
    private final TypeElement typeElement;
 
-   DeclaredImpl(LangModelContext context, DeclaredType declaredTypeMirror)
+   DeclaredImpl(LM_Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
       this.typeElement = (TypeElement) declaredTypeMirror.asElement();
    }
 
-   DeclaredImpl(LangModelContext context, TypeElement typeElement)
+   DeclaredImpl(LM_Context context, TypeElement typeElement)
    {
       super(context, (DeclaredType) typeElement.asType());
       this.typeElement = typeElement;
    }
 
    @Override
-   public Set<Modifier> getModifiers()
+   public Set<C_Modifier> getModifiers()
    {
-      return LangModelAdapter.getModifiers(getElement());
+      return LM_Adapter.getModifiers(getElement());
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isSubtype(getMirror(), LangModelAdapter.particularType((DeclaredLangModel) shadow));
+      return LM_Adapter.getTypes(getApi()).isSubtype(getMirror(), LM_Adapter.particularType((LM_Declared) shadow));
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
       return switch (getElement().getKind())
       {
-         case ENUM -> TypeKind.ENUM;
-         case CLASS -> TypeKind.CLASS;
-         case INTERFACE -> TypeKind.INTERFACE;
-         case ANNOTATION_TYPE -> TypeKind.ANNOTATION;
-         case RECORD -> TypeKind.RECORD;
+         case ENUM -> C_TypeKind.ENUM;
+         case CLASS -> C_TypeKind.CLASS;
+         case INTERFACE -> C_TypeKind.INTERFACE;
+         case ANNOTATION_TYPE -> C_TypeKind.ANNOTATION;
+         case RECORD -> C_TypeKind.RECORD;
          default -> throw new IllegalStateException();
       };
    }
@@ -78,67 +78,67 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public NestingKind getNesting()
+   public C_NestingKind getNesting()
    {
       return switch (getElement().getNestingKind())
       {
-         case MEMBER -> NestingKind.INNER;
-         case TOP_LEVEL -> NestingKind.OUTER;
+         case MEMBER -> C_NestingKind.INNER;
+         case TOP_LEVEL -> C_NestingKind.OUTER;
          default -> throw new IllegalStateException();
       };
    }
 
    @Override
-   public List<FieldLangModel> getFields()
+   public List<LM_Field> getFields()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
-                         .map(variableElement -> LangModelAdapter.<FieldLangModel>generalize(getApi(), variableElement))
+                         .map(variableElement -> LM_Adapter.<LM_Field>generalize(getApi(), variableElement))
                          .toList();
    }
 
    @Override
-   public List<MethodLangModel> getMethods()
+   public List<LM_Method> getMethods()
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LangModelAdapter.generalize(getApi(), element))
-                          .map(MethodLangModel.class::cast)
+                          .map(element -> LM_Adapter.generalize(getApi(), element))
+                          .map(LM_Method.class::cast)
                           .toList();
    }
 
    @Override
-   public List<ConstructorLangModel> getConstructors()
+   public List<LM_Constructor> getConstructors()
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LangModelAdapter.generalize(getApi(), element))
-                          .map(ConstructorLangModel.class::cast)
+                          .map(element -> LM_Adapter.generalize(getApi(), element))
+                          .map(LM_Constructor.class::cast)
                           .toList();
    }
 
    @Override
-   public List<DeclaredLangModel> getDirectSuperTypes()
+   public List<LM_Declared> getDirectSuperTypes()
    {
-      return LangModelAdapter.getTypes(getApi())
-                             .directSupertypes(getMirror())
-                             .stream()
-                             .map(typeMirror1 -> LangModelAdapter.<DeclaredLangModel>generalize(getApi(), typeMirror1))
-                             .toList();
+      return LM_Adapter.getTypes(getApi())
+                       .directSupertypes(getMirror())
+                       .stream()
+                       .map(typeMirror1 -> LM_Adapter.<LM_Declared>generalize(getApi(), typeMirror1))
+                       .toList();
    }
 
    @Override
-   public Set<DeclaredLangModel> getSuperTypes()
+   public Set<LM_Declared> getSuperTypes()
    {
       return findAllSupertypes(new HashSet<>(), this);
    }
 
-   private Set<DeclaredLangModel> findAllSupertypes(Set<DeclaredLangModel> found, Declared declared)
+   private Set<LM_Declared> findAllSupertypes(Set<LM_Declared> found, C_Declared declared)
    {
-      List<DeclaredLangModel> directSupertypes = (List<DeclaredLangModel>) requestOrThrow(declared, DECLARED_GET_SUPER_TYPES);
+      List<LM_Declared> directSupertypes = (List<LM_Declared>) requestOrThrow(declared, DECLARED_GET_SUPER_TYPES);
       found.addAll(directSupertypes);
-      for (Declared directSupertype : directSupertypes)
+      for (C_Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
@@ -158,31 +158,31 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public List<InterfaceLangModel> getDirectInterfaces()
+   public List<LM_Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<InterfaceLangModel>generalize(getApi(), typeMirror))
+                         .map(typeMirror -> LM_Adapter.<LM_Interface>generalize(getApi(), typeMirror))
                          .toList();
    }
 
    @Override
-   public List<InterfaceLangModel> getInterfaces()
+   public List<LM_Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
-                            .map(InterfaceLangModel.class::cast)
+                            .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                            .map(LM_Interface.class::cast)
                             .toList();
    }
 
    @Override
-   public PackageLangModel getPackage()
+   public LM_Package getPackage()
    {
       return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    @Override
-   public ModuleLangModel getModule()
+   public LM_Module getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -200,13 +200,13 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getAnnotationUsages()
+   public List<LM_AnnotationUsage> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
+   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }
@@ -232,7 +232,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements DeclaredLa
       {
          return true;
       }
-      if (!(other instanceof Declared otherDeclared))
+      if (!(other instanceof C_Declared otherDeclared))
       {
          return false;
       }

@@ -1,7 +1,7 @@
 package io.determann.shadow;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.type.Class;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.shadow.type.C_Class;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ class Reflection
    {
       //@formatter:off
  //tag::gettingStarted[]
- Class shadow = ReflectionAdapter.generalize(this.getClass());
+ C_Class shadow = R_Adapter.generalize(this.getClass());
  //end::gettingStarted[]
  // @formatter:on
       Assertions.assertNotNull(shadow);

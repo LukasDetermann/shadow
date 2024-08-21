@@ -1,8 +1,8 @@
 package io.determann.shadow.consistency.shadow;
 
-import io.determann.shadow.api.shadow.structure.Executable;
+import io.determann.shadow.api.shadow.structure.C_Executable;
 
-abstract class ExecutableTest<EXECUTABLE extends Executable>
+abstract class ExecutableTest<EXECUTABLE extends C_Executable>
 {
    abstract void testGetParameters();
 

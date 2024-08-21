@@ -1,14 +1,14 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.directive.DirectiveReflection;
-import io.determann.shadow.api.reflection.shadow.structure.ModuleReflection;
-import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
-import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
-import io.determann.shadow.api.shadow.TypeKind;
-import io.determann.shadow.api.shadow.structure.Module;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.directive.R_Directive;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.shadow.C_TypeKind;
+import io.determann.shadow.api.shadow.structure.C_Module;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.lang.module.ModuleDescriptor;
@@ -21,9 +21,9 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static java.util.Collections.unmodifiableList;
 
 
-public class ModuleImpl implements ModuleReflection
+public class ModuleImpl implements R_Module
 {
-   private final List<AnnotationUsageReflection> annotationUsages;
+   private final List<R_AnnotationUsage> annotationUsages;
    private final NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier;
 
    public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier)
@@ -31,7 +31,7 @@ public class ModuleImpl implements ModuleReflection
       this(moduleDescriptorSupplier, Collections.emptyList());
    }
 
-   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<AnnotationUsageReflection> annotationUsages)
+   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<R_AnnotationUsage> annotationUsages)
    {
       this.moduleDescriptorSupplier = moduleDescriptorSupplier;
       this.annotationUsages = annotationUsages;
@@ -50,25 +50,25 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<AnnotationUsageReflection> getAnnotationUsages()
+   public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<AnnotationUsageReflection> getDirectAnnotationUsages()
+   public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<DeclaredReflection> getDeclared()
+   public List<R_Declared> getDeclared()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
-   public Optional<DeclaredReflection> getDeclared(String qualifiedName)
+   public Optional<R_Declared> getDeclared(String qualifiedName)
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -80,9 +80,9 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<PackageReflection> getPackages()
+   public List<R_Package> getPackages()
    {
-      return getModuleDescriptor().packages().stream().map(ReflectionAdapter::getPackage).map(PackageReflection.class::cast).toList();
+      return getModuleDescriptor().packages().stream().map(R_Adapter::getPackage).map(R_Package.class::cast).toList();
    }
 
    @Override
@@ -104,40 +104,40 @@ public class ModuleImpl implements ModuleReflection
    }
 
    @Override
-   public List<DirectiveReflection> getDirectives()
+   public List<R_Directive> getDirectives()
    {
       ModuleDescriptor descriptor = getModuleDescriptor();
-      List<DirectiveReflection> result = descriptor.requires()
-                                            .stream()
-                                            .map(ReflectionAdapter::generalize)
-                                            .collect(Collectors.toCollection(ArrayList::new));
+      List<R_Directive> result = descriptor.requires()
+                                           .stream()
+                                           .map(R_Adapter::generalize)
+                                           .collect(Collectors.toCollection(ArrayList::new));
       result.addAll(descriptor.exports()
                               .stream()
-                              .map(ReflectionAdapter::generalize)
+                              .map(R_Adapter::generalize)
                               .toList());
       result.addAll(descriptor.opens()
                               .stream()
-                              .map(ReflectionAdapter::generalize)
+                              .map(R_Adapter::generalize)
                               .toList());
       result.addAll(descriptor.uses()
                               .stream()
-                              .map(ReflectionAdapter::getUsesShadow)
+                              .map(R_Adapter::getUsesShadow)
                               .toList());
       result.addAll(descriptor.provides()
                               .stream()
-                              .map(ReflectionAdapter::generalize)
+                              .map(R_Adapter::generalize)
                               .toList());
       return unmodifiableList(result);
    }
 
    @Override
-   public TypeKind getKind()
+   public C_TypeKind getKind()
    {
-      return TypeKind.MODULE;
+      return C_TypeKind.MODULE;
    }
 
    @Override
-   public boolean representsSameType(Shadow shadow)
+   public boolean representsSameType(C_Shadow shadow)
    {
       return equals(shadow);
    }
@@ -160,7 +160,7 @@ public class ModuleImpl implements ModuleReflection
       {
          return true;
       }
-      if (!(other instanceof Module otherModule))
+      if (!(other instanceof C_Module otherModule))
       {
          return false;
       }

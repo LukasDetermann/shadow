@@ -1,24 +1,24 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.type.GenericLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.InterfaceLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
-public class InterfaceImpl extends DeclaredImpl implements InterfaceLangModel
+public class InterfaceImpl extends DeclaredImpl implements LM_Interface
 {
-   public InterfaceImpl(LangModelContext context, DeclaredType declaredTypeMirror)
+   public InterfaceImpl(LM_Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public InterfaceImpl(LangModelContext context, TypeElement typeElement)
+   public InterfaceImpl(LM_Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
@@ -26,24 +26,24 @@ public class InterfaceImpl extends DeclaredImpl implements InterfaceLangModel
    @Override
    public boolean isFunctional()
    {
-      return LangModelAdapter.getElements(getApi()).isFunctionalInterface(getElement());
+      return LM_Adapter.getElements(getApi()).isFunctionalInterface(getElement());
    }
 
    @Override
-   public List<ShadowLangModel> getGenericTypes()
+   public List<LM_Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<GenericLangModel> getGenerics()
+   public List<LM_Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
+                         .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
    }
 

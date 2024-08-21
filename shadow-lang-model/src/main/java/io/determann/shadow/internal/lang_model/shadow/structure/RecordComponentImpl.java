@@ -1,16 +1,16 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
-import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
-import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.structure.RecordComponent;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.shadow.structure.C_RecordComponent;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.type.TypeMirror;
@@ -19,16 +19,16 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Operations.RECORD_COMPONENT_GET_TYPE;
-import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
+import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
-public class RecordComponentImpl implements RecordComponentLangModel
+public class RecordComponentImpl implements LM_RecordComponent
 {
    private final RecordComponentElement recordComponentElement;
-   private final LangModelContext context;
+   private final LM_Context context;
    private final TypeMirror typeMirror;
 
-   public RecordComponentImpl(LangModelContext context, RecordComponentElement recordComponentElement)
+   public RecordComponentImpl(LM_Context context, RecordComponentElement recordComponentElement)
    {
       this.typeMirror = recordComponentElement.asType();
       this.context = context;
@@ -36,37 +36,37 @@ public class RecordComponentImpl implements RecordComponentLangModel
    }
 
    @Override
-   public boolean isSubtypeOf(Shadow shadow)
+   public boolean isSubtypeOf(C_Shadow shadow)
    {
-      return getTypes(getApi()).isSubtype(getMirror(), particularType((ShadowLangModel) shadow));
+      return getTypes(getApi()).isSubtype(getMirror(), particularType((LM_Shadow) shadow));
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      return getTypes(getApi()).isAssignable(getMirror(), particularType((ShadowLangModel) shadow));
+      return getTypes(getApi()).isAssignable(getMirror(), particularType((LM_Shadow) shadow));
    }
 
    @Override
-   public RecordLangModel getRecord()
+   public LM_Record getRecord()
    {
       return generalize(getApi(), getElement().getEnclosingElement());
    }
 
    @Override
-   public ShadowLangModel getType()
+   public LM_Shadow getType()
    {
       return generalize(getApi(), getElement().asType());
    }
 
    @Override
-   public MethodLangModel getGetter()
+   public LM_Method getGetter()
    {
-      return (MethodLangModel) generalize(getApi(), getElement().getAccessor());
+      return (LM_Method) generalize(getApi(), getElement().getAccessor());
    }
 
    @Override
-   public PackageLangModel getPackage()
+   public LM_Package getPackage()
    {
       return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
@@ -77,7 +77,7 @@ public class RecordComponentImpl implements RecordComponentLangModel
    }
 
    @Override
-   public ModuleLangModel getModule()
+   public LM_Module getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
    }
@@ -89,13 +89,13 @@ public class RecordComponentImpl implements RecordComponentLangModel
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getAnnotationUsages()
+   public List<LM_AnnotationUsage> getAnnotationUsages()
    {
       return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AnnotationUsageLangModel> getDirectAnnotationUsages()
+   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
    }
@@ -119,7 +119,7 @@ public class RecordComponentImpl implements RecordComponentLangModel
       {
          return true;
       }
-      if (!(other instanceof RecordComponent otherRecordComponent))
+      if (!(other instanceof C_RecordComponent otherRecordComponent))
       {
          return false;
       }
@@ -132,7 +132,7 @@ public class RecordComponentImpl implements RecordComponentLangModel
       return typeMirror;
    }
 
-   public LangModelContext getApi()
+   public LM_Context getApi()
    {
       return context;
    }

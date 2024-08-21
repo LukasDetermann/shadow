@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.test;
 
-import io.determann.shadow.api.annotation_processing.AnnotationProcessingContext;
-import io.determann.shadow.api.annotation_processing.ShadowProcessor;
+import io.determann.shadow.api.annotation_processing.AP_Context;
+import io.determann.shadow.api.annotation_processing.AP_Processor;
 import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 
 import javax.annotation.processing.Processor;
@@ -51,10 +51,10 @@ public class ConsistencyProcessor
 
    private Processor createProcessor()
    {
-      return new ShadowProcessor()
+      return new AP_Processor()
       {
          @Override
-         public void process(AnnotationProcessingContext annotationProcessingContext)
+         public void process(AP_Context annotationProcessingContext)
          {
             processingCallback.process(annotationProcessingContext);
          }

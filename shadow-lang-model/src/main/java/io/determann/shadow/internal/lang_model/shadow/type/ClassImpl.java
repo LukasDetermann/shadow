@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LangModelAdapter;
-import io.determann.shadow.api.lang_model.LangModelContext;
-import io.determann.shadow.api.lang_model.shadow.structure.PropertyLangModel;
+import io.determann.shadow.api.lang_model.LM_Adapter;
+import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.lang_model.shadow.structure.PropertyImpl;
@@ -15,87 +15,87 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
-public class ClassImpl extends DeclaredImpl implements ClassLangModel
+public class ClassImpl extends DeclaredImpl implements LM_Class
 {
-   public ClassImpl(LangModelContext context, DeclaredType declaredTypeMirror)
+   public ClassImpl(LM_Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public ClassImpl(LangModelContext context, TypeElement typeElement)
+   public ClassImpl(LM_Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
 
    @Override
-   public boolean isAssignableFrom(Shadow shadow)
+   public boolean isAssignableFrom(C_Shadow shadow)
    {
-      return LangModelAdapter.getTypes(getApi()).isAssignable(getMirror(), LangModelAdapter.particularType((ShadowLangModel) shadow));
+      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Shadow) shadow));
    }
 
    @Override
-   public ClassLangModel getSuperClass()
+   public LM_Class getSuperClass()
    {
       TypeMirror superclass = getElement().getSuperclass();
       if (javax.lang.model.type.TypeKind.NONE.equals(superclass.getKind()))
       {
          return null;
       }
-      return LangModelAdapter.generalize(getApi(), superclass);
+      return LM_Adapter.generalize(getApi(), superclass);
    }
 
    @Override
-   public List<ClassLangModel> getPermittedSubClasses()
+   public List<LM_Class> getPermittedSubClasses()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
-                         .map(typeMirror -> LangModelAdapter.<ClassLangModel>generalize(getApi(), typeMirror))
+                         .map(typeMirror -> LM_Adapter.<LM_Class>generalize(getApi(), typeMirror))
                          .toList();
    }
 
    @Override
-   public List<PropertyLangModel> getProperties()
+   public List<LM_Property> getProperties()
    {
       return PropertySupport.propertiesOf(this)
                             .stream()
                             .map(PropertyImpl::new)
-                            .map(PropertyLangModel.class::cast)
+                            .map(LM_Property.class::cast)
                             .toList();
    }
 
    @Override
-   public Optional<DeclaredLangModel> getOuterType()
+   public Optional<LM_Declared> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
       if (enclosingType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
       {
          return Optional.empty();
       }
-      return Optional.of(LangModelAdapter.generalize(getApi(), enclosingType));
+      return Optional.of(LM_Adapter.generalize(getApi(), enclosingType));
    }
 
    @Override
-   public List<ShadowLangModel> getGenericTypes()
+   public List<LM_Shadow> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LangModelAdapter.<ShadowLangModel>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<GenericLangModel> getGenerics()
+   public List<LM_Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LangModelAdapter.<GenericLangModel>generalize(getApi(), element))
+                         .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
    }
 
    @Override
-   public PrimitiveLangModel asUnboxed()
+   public LM_Primitive asUnboxed()
    {
-      return LangModelAdapter.generalize(getApi(), LangModelAdapter.getTypes(getApi()).unboxedType(getMirror()));
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).unboxedType(getMirror()));
    }
 
    @Override

@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow;
 
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
-import io.determann.shadow.api.reflection.shadow.AnnotationValueReflection;
-import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
-import io.determann.shadow.api.reflection.shadow.type.AnnotationReflection;
-import io.determann.shadow.api.shadow.AnnotationUsage;
+import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
+import io.determann.shadow.api.reflection.shadow.R_AnnotationValue;
+import io.determann.shadow.api.reflection.shadow.structure.R_Method;
+import io.determann.shadow.api.reflection.shadow.type.R_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -20,7 +20,7 @@ import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.internal.reflection.shadow.AnnotationValueImpl.create;
 
-public class AnnotationUsageImpl implements AnnotationUsageReflection
+public class AnnotationUsageImpl implements R_AnnotationUsage
 {
    private final java.lang.annotation.Annotation annotation;
 
@@ -30,12 +30,12 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
    }
 
    @Override
-   public Map<MethodReflection, AnnotationValueReflection> getValues()
+   public Map<R_Method, R_AnnotationValue> getValues()
    {
       return Arrays.stream(annotation.annotationType().getDeclaredMethods())
                    .filter(method -> method.getParameterCount() == 0)
                    .filter(method -> !Modifier.isStatic(method.getModifiers() & Modifier.methodModifiers()))
-                   .collect(Collectors.toMap(ReflectionAdapter::generalize,
+                   .collect(Collectors.toMap(R_Adapter::generalize,
                                              method ->
                                              {
                                                 Object defaultValue = method.getDefaultValue();
@@ -55,9 +55,9 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
    }
 
    @Override
-   public AnnotationReflection getAnnotation()
+   public R_Annotation getAnnotation()
    {
-      return ReflectionAdapter.generalize(annotation.annotationType());
+      return R_Adapter.generalize(annotation.annotationType());
    }
 
 
@@ -75,7 +75,7 @@ public class AnnotationUsageImpl implements AnnotationUsageReflection
       {
          return true;
       }
-      if (!(other instanceof AnnotationUsage otherAnnotationUsage))
+      if (!(other instanceof C_AnnotationUsage otherAnnotationUsage))
       {
          return false;
       }

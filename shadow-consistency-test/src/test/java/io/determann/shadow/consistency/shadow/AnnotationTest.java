@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.type.Annotation;
+import io.determann.shadow.api.shadow.type.C_Annotation;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AnnotationTest<ANNOTATION extends Annotation> extends DeclaredTest<ANNOTATION>
+class AnnotationTest<ANNOTATION extends C_Annotation> extends DeclaredTest<ANNOTATION>
 {
    AnnotationTest()
    {

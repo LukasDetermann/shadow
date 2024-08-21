@@ -1,11 +1,11 @@
 package io.determann.shadow.consistency.renderer;
 
-import io.determann.shadow.api.reflection.ReflectionAdapter;
+import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.type.Class;
-import io.determann.shadow.api.shadow.type.Shadow;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,12 +29,12 @@ class AnnotationUsageRendererTest
    @Test
    void usage()
    {
-      ConsistencyTest.<AnnotationUsage>compileTime(context -> requestOrThrow(context.getClassOrThrow("AnnotationUsageExample"),
-                                                                             ANNOTATIONABLE_GET_ANNOTATION_USAGES)
+      ConsistencyTest.<C_AnnotationUsage>compileTime(context -> requestOrThrow(context.getClassOrThrow("AnnotationUsageExample"),
+                                                                               ANNOTATIONABLE_GET_ANNOTATION_USAGES)
                            .get(0))
                      .runtime(stringClassFunction ->
                               {
-                                 Class example = ReflectionAdapter.generalize(stringClassFunction.apply("AnnotationUsageExample"));
+                                 C_Class example = R_Adapter.generalize(stringClassFunction.apply("AnnotationUsageExample"));
                                  return requestOrThrow(example, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
                               })
                      .withCode("AnnotationUsageAnnotation.java", """
@@ -81,8 +81,8 @@ class AnnotationUsageRendererTest
                                     render(RenderingContext.DEFAULT, annotationUsage)
                                           .usage(method ->
                                                  {
-                                                    Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
-                                                    if (!(returnType instanceof Class aClass))
+                                                    C_Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+                                                    if (!(returnType instanceof C_Class aClass))
                                                     {
                                                        return Optional.empty();
                                                     }

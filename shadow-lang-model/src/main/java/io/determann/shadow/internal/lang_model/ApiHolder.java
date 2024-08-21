@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model;
 
-import io.determann.shadow.api.lang_model.LangModelContext;
+import io.determann.shadow.api.lang_model.LM_Context;
 
 public interface ApiHolder
 {
-   LangModelContext getApi();
+   LM_Context getApi();
 }
