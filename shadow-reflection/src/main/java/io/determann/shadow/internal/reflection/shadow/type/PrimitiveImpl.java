@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.TypeKind.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 

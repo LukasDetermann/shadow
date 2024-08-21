@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelConstants;
 import io.determann.shadow.api.lang_model.LangModelContext;
@@ -8,7 +9,6 @@ import io.determann.shadow.api.lang_model.shadow.structure.ModuleLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.structure.Module;
 import io.determann.shadow.api.shadow.structure.Parameter;
@@ -25,10 +25,10 @@ import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.Optional;
 
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 

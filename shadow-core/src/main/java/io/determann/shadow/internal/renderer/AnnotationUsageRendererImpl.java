@@ -15,8 +15,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {

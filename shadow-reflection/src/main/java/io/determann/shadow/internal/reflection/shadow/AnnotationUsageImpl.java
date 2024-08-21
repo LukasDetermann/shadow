@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.AnnotationValueReflection;
 import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
 import io.determann.shadow.api.reflection.shadow.type.AnnotationReflection;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Provider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.internal.reflection.shadow.AnnotationValueImpl.create;
 

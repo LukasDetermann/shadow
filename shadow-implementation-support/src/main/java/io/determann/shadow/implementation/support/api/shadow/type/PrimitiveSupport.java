@@ -3,7 +3,7 @@ package io.determann.shadow.implementation.support.api.shadow.type;
 import io.determann.shadow.api.shadow.type.Primitive;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
 
 public class PrimitiveSupport
 {

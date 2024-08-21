@@ -1,4 +1,4 @@
-package io.determann.shadow.api.shadow;
+package io.determann.shadow.api;
 
 
 public sealed interface Operation<TYPE, RESULT> permits AbstractOperation

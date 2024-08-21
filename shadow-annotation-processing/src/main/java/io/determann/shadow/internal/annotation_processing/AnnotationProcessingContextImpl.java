@@ -36,10 +36,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.particularElement;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static java.lang.System.err;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toSet;

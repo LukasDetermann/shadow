@@ -8,8 +8,8 @@ import io.determann.shadow.api.shadow.structure.Package;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface PackageLangModel extends Package,
                                           AnnotationableLangModel,

@@ -5,10 +5,10 @@ import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.Operations.CLASS_GET_GENERICS;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.shadow.Operations.CLASS_GET_GENERICS;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericRendererTest

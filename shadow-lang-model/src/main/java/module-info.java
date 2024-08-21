@@ -1,3 +1,4 @@
+import io.determann.shadow.api.ProviderSpi;
 import io.determann.shadow.internal.lang_model.LangModelProvider;
 
 module io.determann.shadow.lang.model {
@@ -13,5 +14,5 @@ module io.determann.shadow.lang.model {
    exports io.determann.shadow.api.lang_model.shadow.modifier;
    exports io.determann.shadow.api.lang_model.shadow.directive;
 
-   provides io.determann.shadow.api.shadow.ProviderSpi with LangModelProvider;
+   provides ProviderSpi with LangModelProvider;
 }

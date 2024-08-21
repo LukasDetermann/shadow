@@ -6,8 +6,8 @@ import io.determann.shadow.api.shadow.type.Enum;
 import io.determann.shadow.api.shadow.type.Record;
 import io.determann.shadow.api.shadow.type.*;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class ShadowRendererImpl
 {

@@ -6,8 +6,8 @@ import io.determann.shadow.api.shadow.type.Annotation;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * anything that can be annotated

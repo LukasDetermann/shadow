@@ -1,9 +1,9 @@
 package io.determann.shadow.article.consistency_test;
 
+import io.determann.shadow.api.Operations;
+import io.determann.shadow.api.Provider;
+import io.determann.shadow.api.Response;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
-import io.determann.shadow.api.shadow.Operations;
-import io.determann.shadow.api.shadow.Provider;
-import io.determann.shadow.api.shadow.Response;
 import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;

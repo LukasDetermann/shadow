@@ -11,8 +11,8 @@ import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class RecordImpl extends DeclaredImpl implements RecordReflection
 {

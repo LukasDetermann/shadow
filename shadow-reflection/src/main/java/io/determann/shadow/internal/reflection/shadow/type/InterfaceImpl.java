@@ -13,8 +13,8 @@ import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSuppo
 import java.util.*;
 import java.util.stream.Collector;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements InterfaceReflection

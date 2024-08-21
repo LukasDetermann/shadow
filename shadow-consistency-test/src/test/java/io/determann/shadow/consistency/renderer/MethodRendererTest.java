@@ -7,11 +7,11 @@ import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.Operations.DECLARED_GET_METHOD;
+import static io.determann.shadow.api.Operations.DECLARED_GET_METHODS;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.shadow.Operations.DECLARED_GET_METHOD;
-import static io.determann.shadow.api.shadow.Operations.DECLARED_GET_METHODS;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodRendererTest

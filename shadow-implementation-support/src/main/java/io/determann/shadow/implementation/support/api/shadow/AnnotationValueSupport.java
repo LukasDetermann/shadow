@@ -3,8 +3,8 @@ package io.determann.shadow.implementation.support.api.shadow;
 import io.determann.shadow.api.shadow.AnnotationValue;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_VALUE_GET_VALUE;
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_VALUE_IS_DEFAULT;
+import static io.determann.shadow.api.Operations.ANNOTATION_VALUE_GET_VALUE;
+import static io.determann.shadow.api.Operations.ANNOTATION_VALUE_IS_DEFAULT;
 
 public class AnnotationValueSupport
 {

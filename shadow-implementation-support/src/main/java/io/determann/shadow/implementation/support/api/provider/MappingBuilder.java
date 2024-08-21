@@ -1,8 +1,8 @@
 package io.determann.shadow.implementation.support.api.provider;
 
-import io.determann.shadow.api.shadow.Operation;
-import io.determann.shadow.api.shadow.Operation0;
-import io.determann.shadow.api.shadow.Operation1;
+import io.determann.shadow.api.Operation;
+import io.determann.shadow.api.Operation0;
+import io.determann.shadow.api.Operation1;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,8 +4,8 @@ import io.determann.shadow.api.shadow.type.Annotation;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.MODULE_ENCLOSED_GET_MODULE;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Operations.MODULE_ENCLOSED_GET_MODULE;
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 
 public class AnnotationSupport
 {

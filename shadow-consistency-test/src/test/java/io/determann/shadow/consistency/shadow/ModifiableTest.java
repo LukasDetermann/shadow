@@ -4,9 +4,9 @@ import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.Operations.MODIFIABLE_HAS_MODIFIER;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.reflection.ReflectionAdapter.generalize;
-import static io.determann.shadow.api.shadow.Operations.MODIFIABLE_HAS_MODIFIER;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.modifier.Modifier.NON_SEALED;
 import static io.determann.shadow.api.shadow.modifier.Modifier.SEALED;
 import static org.junit.jupiter.api.Assertions.assertTrue;

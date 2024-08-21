@@ -1,11 +1,11 @@
 package io.determann.shadow.consistency.renderer;
 
+import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.lang_model.LangModelQueries;
 import io.determann.shadow.api.lang_model.shadow.structure.ParameterLangModel;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.ReflectionQueries;
 import io.determann.shadow.api.reflection.shadow.structure.ParameterReflection;
-import io.determann.shadow.api.shadow.Operations;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.Interface;
 import io.determann.shadow.consistency.test.ConsistencyTest;
@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParameterRendererTest

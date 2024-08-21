@@ -15,8 +15,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.TypeKind.CLASS;
 import static io.determann.shadow.api.shadow.TypeKind.VOID;
 import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.GETTER;

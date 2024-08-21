@@ -17,9 +17,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 class AnnotationUsageRendererTest
 {

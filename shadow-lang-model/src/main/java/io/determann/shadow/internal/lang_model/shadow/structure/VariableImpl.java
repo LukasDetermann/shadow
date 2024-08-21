@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 
 public abstract class VariableImpl extends ShadowImpl<TypeMirror> implements VariableLangModel
 {

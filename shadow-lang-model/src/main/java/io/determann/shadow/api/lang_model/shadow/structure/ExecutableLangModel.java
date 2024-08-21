@@ -19,8 +19,8 @@ import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * <ul>

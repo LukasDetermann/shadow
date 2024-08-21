@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.determann.shadow.api.Operations.MODULE_ENCLOSED_GET_MODULE;
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.generalize;
-import static io.determann.shadow.api.shadow.Operations.MODULE_ENCLOSED_GET_MODULE;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class PackageImpl  implements PackageLangModel

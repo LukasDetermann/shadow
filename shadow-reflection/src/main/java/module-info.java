@@ -1,3 +1,4 @@
+import io.determann.shadow.api.ProviderSpi;
 import io.determann.shadow.internal.reflection.ReflectionProvider;
 
 module io.determann.shadow.reflection {
@@ -12,5 +13,5 @@ module io.determann.shadow.reflection {
    exports io.determann.shadow.api.reflection.shadow.modifier;
    exports io.determann.shadow.api.reflection.shadow.directive;
 
-   provides io.determann.shadow.api.shadow.ProviderSpi with ReflectionProvider;
+   provides ProviderSpi with ReflectionProvider;
 }

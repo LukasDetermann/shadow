@@ -1,9 +1,9 @@
 package io.determann.shadow.implementation.support.api.provider;
 
 import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.shadow.Operation;
-import io.determann.shadow.api.shadow.ProviderSpi;
-import io.determann.shadow.api.shadow.Response;
+import io.determann.shadow.api.Operation;
+import io.determann.shadow.api.ProviderSpi;
+import io.determann.shadow.api.Response;
 
 import java.util.Map;
 import java.util.Optional;

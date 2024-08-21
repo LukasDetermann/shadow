@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.renderer;
 
+import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.FieldRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Operations;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Field;
 
@@ -12,9 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class FieldRendererImpl implements FieldRenderer
 {

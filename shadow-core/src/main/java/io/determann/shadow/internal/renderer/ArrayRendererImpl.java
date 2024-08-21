@@ -5,9 +5,9 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.type.Array;
 
-import static io.determann.shadow.api.shadow.Operations.ARRAY_GET_COMPONENT_TYPE;
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.ARRAY_GET_COMPONENT_TYPE;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 

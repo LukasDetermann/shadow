@@ -4,8 +4,8 @@ import io.determann.shadow.api.renderer.PrimitiveRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.type.Primitive;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {

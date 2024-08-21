@@ -1,6 +1,4 @@
-package io.determann.shadow.api.shadow;
-
-import io.determann.shadow.api.ImplementationDefined;
+package io.determann.shadow.api;
 
 import java.util.Map;
 import java.util.NoSuchElementException;

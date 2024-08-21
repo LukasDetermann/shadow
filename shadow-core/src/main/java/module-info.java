@@ -1,3 +1,5 @@
+import io.determann.shadow.api.ProviderSpi;
+
 module io.determann.shadow.api {
 
    exports io.determann.shadow.api;
@@ -8,5 +10,5 @@ module io.determann.shadow.api {
    exports io.determann.shadow.api.shadow.structure;
    exports io.determann.shadow.api.shadow.type;
 
-   uses io.determann.shadow.api.shadow.ProviderSpi;
+   uses ProviderSpi;
 }

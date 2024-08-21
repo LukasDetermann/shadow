@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
@@ -8,7 +9,6 @@ import io.determann.shadow.api.lang_model.shadow.structure.PackageLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.RecordComponentLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.RecordLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.ShadowLangModel;
-import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.type.Shadow;
 
@@ -17,9 +17,9 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Operations.RECORD_COMPONENT_GET_TYPE;
 import static io.determann.shadow.api.lang_model.LangModelAdapter.*;
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Operations.RECORD_COMPONENT_GET_TYPE;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class RecordComponentImpl implements RecordComponentLangModel

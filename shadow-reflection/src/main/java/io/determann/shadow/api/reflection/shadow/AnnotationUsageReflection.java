@@ -8,8 +8,8 @@ import io.determann.shadow.api.shadow.type.Annotation;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * {@link Annotation} represents the java file for the java concept of an annotation. This on the other hand represents

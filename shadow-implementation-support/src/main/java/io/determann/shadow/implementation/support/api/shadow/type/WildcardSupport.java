@@ -3,8 +3,8 @@ package io.determann.shadow.implementation.support.api.shadow.type;
 import io.determann.shadow.api.shadow.type.Wildcard;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_EXTENDS;
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_SUPER;
+import static io.determann.shadow.api.Operations.WILDCARD_GET_EXTENDS;
+import static io.determann.shadow.api.Operations.WILDCARD_GET_SUPER;
 
 public class WildcardSupport
 {

@@ -1,18 +1,18 @@
 package io.determann.shadow.internal.renderer;
 
+import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.RecordComponentRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Operations;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class RecordComponentRendererImpl implements RecordComponentRenderer
 {

@@ -12,8 +12,8 @@ import io.determann.shadow.api.shadow.type.*;
 
 import java.lang.reflect.Field;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class EnumConstantImpl extends ReflectionFieldImpl<Enum> implements EnumConstantReflection
 {

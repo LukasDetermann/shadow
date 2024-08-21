@@ -3,8 +3,8 @@ package io.determann.shadow.implementation.support.api.shadow.directive;
 import io.determann.shadow.api.shadow.directive.Exports;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.EXPORTS_GET_PACKAGE;
-import static io.determann.shadow.api.shadow.Operations.EXPORTS_GET_TARGET_MODULES;
+import static io.determann.shadow.api.Operations.EXPORTS_GET_PACKAGE;
+import static io.determann.shadow.api.Operations.EXPORTS_GET_TARGET_MODULES;
 
 public class ExportsSupport
 {

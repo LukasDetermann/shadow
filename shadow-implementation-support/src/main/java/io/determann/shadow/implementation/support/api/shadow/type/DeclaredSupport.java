@@ -3,7 +3,7 @@ package io.determann.shadow.implementation.support.api.shadow.type;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.Operations.*;
 
 class DeclaredSupport
 {

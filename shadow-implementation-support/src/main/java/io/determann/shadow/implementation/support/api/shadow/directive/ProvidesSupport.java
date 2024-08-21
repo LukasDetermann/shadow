@@ -3,8 +3,8 @@ package io.determann.shadow.implementation.support.api.shadow.directive;
 import io.determann.shadow.api.shadow.directive.Provides;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.PROVIDES_GET_IMPLEMENTATIONS;
-import static io.determann.shadow.api.shadow.Operations.PROVIDES_GET_SERVICE;
+import static io.determann.shadow.api.Operations.PROVIDES_GET_IMPLEMENTATIONS;
+import static io.determann.shadow.api.Operations.PROVIDES_GET_SERVICE;
 
 public class ProvidesSupport
 {

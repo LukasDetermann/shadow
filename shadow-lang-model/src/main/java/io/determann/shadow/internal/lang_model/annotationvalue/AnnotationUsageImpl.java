@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.annotationvalue;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LangModelAdapter;
 import io.determann.shadow.api.lang_model.LangModelContext;
 import io.determann.shadow.api.lang_model.shadow.AnnotationUsageLangModel;
@@ -7,14 +8,13 @@ import io.determann.shadow.api.lang_model.shadow.AnnotationValueLangModel;
 import io.determann.shadow.api.lang_model.shadow.structure.MethodLangModel;
 import io.determann.shadow.api.lang_model.shadow.type.AnnotationLangModel;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Provider;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
-import static io.determann.shadow.api.shadow.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
 import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 import static io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl.create;
 

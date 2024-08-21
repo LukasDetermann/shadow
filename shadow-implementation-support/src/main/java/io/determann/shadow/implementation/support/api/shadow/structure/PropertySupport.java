@@ -7,8 +7,8 @@ import io.determann.shadow.implementation.support.internal.shadow.SupportSupport
 
 import java.util.List;
 
-import static io.determann.shadow.api.shadow.Operations.PROPERTY_GET_NAME;
-import static io.determann.shadow.api.shadow.Operations.PROPERTY_GET_TYPE;
+import static io.determann.shadow.api.Operations.PROPERTY_GET_NAME;
+import static io.determann.shadow.api.Operations.PROPERTY_GET_TYPE;
 
 public class PropertySupport
 {

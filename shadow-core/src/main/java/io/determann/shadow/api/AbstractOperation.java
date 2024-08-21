@@ -1,4 +1,4 @@
-package io.determann.shadow.api.shadow;
+package io.determann.shadow.api;
 
 public abstract sealed class AbstractOperation<TYPE, RESULT> implements Operation<TYPE, RESULT> permits Operation0,
                                                                                                         Operation1

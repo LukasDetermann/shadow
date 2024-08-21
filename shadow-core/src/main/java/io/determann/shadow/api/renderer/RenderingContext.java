@@ -1,6 +1,6 @@
 package io.determann.shadow.api.renderer;
 
-import io.determann.shadow.api.shadow.Operations;
+import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.shadow.structure.Package;
 import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.internal.renderer.RenderingContextImpl;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface RenderingContext
 {

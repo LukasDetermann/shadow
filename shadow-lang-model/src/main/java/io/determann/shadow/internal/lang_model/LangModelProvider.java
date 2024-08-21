@@ -7,8 +7,8 @@ import io.determann.shadow.api.shadow.type.Declared;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
+import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.lang_model.LangModelQueries.query;
-import static io.determann.shadow.api.shadow.Operations.*;
 
 public class LangModelProvider extends AbstractProvider
 {

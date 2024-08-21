@@ -1,5 +1,6 @@
-package io.determann.shadow.api.shadow;
+package io.determann.shadow.api;
 
+import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.Modifiable;
 import io.determann.shadow.api.shadow.modifier.Modifier;

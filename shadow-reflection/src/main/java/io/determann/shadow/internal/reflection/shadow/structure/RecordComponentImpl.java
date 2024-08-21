@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.MethodReflection;
@@ -8,7 +9,6 @@ import io.determann.shadow.api.reflection.shadow.structure.PackageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.RecordComponentReflection;
 import io.determann.shadow.api.reflection.shadow.type.RecordReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.structure.RecordComponent;
 import io.determann.shadow.api.shadow.type.Array;
 import io.determann.shadow.api.shadow.type.Class;
@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class RecordComponentImpl implements RecordComponentReflection

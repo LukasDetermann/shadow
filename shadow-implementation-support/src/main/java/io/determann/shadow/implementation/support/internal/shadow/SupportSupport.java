@@ -1,16 +1,16 @@
 package io.determann.shadow.implementation.support.internal.shadow;
 
 import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.shadow.Operation;
-import io.determann.shadow.api.shadow.Operation0;
-import io.determann.shadow.api.shadow.Response;
+import io.determann.shadow.api.Operation;
+import io.determann.shadow.api.Operation0;
+import io.determann.shadow.api.Response;
 import io.determann.shadow.api.shadow.type.Shadow;
 
 import java.util.*;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.api.shadow.Provider.request;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.Provider.request;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 

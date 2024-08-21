@@ -1,4 +1,4 @@
-package io.determann.shadow.api.shadow;
+package io.determann.shadow.api;
 
 
 public final class Operation0<TYPE, RESULT> extends AbstractOperation<TYPE, RESULT>

@@ -16,9 +16,9 @@ import io.determann.shadow.api.shadow.type.Shadow;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * Anything that can be a file.

@@ -6,8 +6,8 @@ import io.determann.shadow.api.shadow.type.Enum;
 
 import java.util.List;
 
-import static io.determann.shadow.api.shadow.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface EnumReflection extends Enum,
                                         DeclaredReflection,

@@ -19,9 +19,9 @@ import io.determann.shadow.internal.reflection.ReflectionUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;

@@ -1,19 +1,19 @@
 package io.determann.shadow.internal.renderer;
 
+import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.PackageRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.AnnotationUsage;
-import io.determann.shadow.api.shadow.Operations;
 import io.determann.shadow.api.shadow.structure.Package;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.PACKAGE_IS_UNNAMED;
-import static io.determann.shadow.api.shadow.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.PACKAGE_IS_UNNAMED;
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class PackageRendererImpl implements PackageRenderer
 {

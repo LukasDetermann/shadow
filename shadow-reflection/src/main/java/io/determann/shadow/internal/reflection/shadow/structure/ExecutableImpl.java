@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.ReflectionAdapter;
 import io.determann.shadow.api.reflection.shadow.AnnotationUsageReflection;
 import io.determann.shadow.api.reflection.shadow.structure.*;
@@ -7,7 +8,6 @@ import io.determann.shadow.api.reflection.shadow.type.ClassReflection;
 import io.determann.shadow.api.reflection.shadow.type.DeclaredReflection;
 import io.determann.shadow.api.reflection.shadow.type.GenericReflection;
 import io.determann.shadow.api.reflection.shadow.type.ShadowReflection;
-import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.TypeKind;
 import io.determann.shadow.api.shadow.modifier.Modifier;
 import io.determann.shadow.api.shadow.structure.Executable;
@@ -21,9 +21,9 @@ import java.lang.reflect.AnnotatedType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrEmpty;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.modifier.Modifier.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 

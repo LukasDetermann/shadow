@@ -6,8 +6,8 @@ import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.api.shadow.type.Void;
 import io.determann.shadow.implementation.support.api.shadow.type.VoidSupport;
 
-import static io.determann.shadow.api.shadow.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class VoidImpl implements Void,

@@ -1,15 +1,15 @@
 package io.determann.shadow.internal.renderer;
 
+import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.renderer.WildcardRenderer;
-import io.determann.shadow.api.shadow.Provider;
 import io.determann.shadow.api.shadow.type.Shadow;
 import io.determann.shadow.api.shadow.type.Wildcard;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_EXTENDS;
-import static io.determann.shadow.api.shadow.Operations.WILDCARD_GET_SUPER;
+import static io.determann.shadow.api.Operations.WILDCARD_GET_EXTENDS;
+import static io.determann.shadow.api.Operations.WILDCARD_GET_SUPER;
 
 public class WildcardRendererImpl implements WildcardRenderer
 {

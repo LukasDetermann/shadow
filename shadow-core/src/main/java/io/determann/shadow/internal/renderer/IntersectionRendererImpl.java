@@ -8,8 +8,8 @@ import io.determann.shadow.api.shadow.type.Shadow;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.Operations.INTERSECTION_GET_BOUNDS;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class IntersectionRendererImpl implements IntersectionRenderer
 {

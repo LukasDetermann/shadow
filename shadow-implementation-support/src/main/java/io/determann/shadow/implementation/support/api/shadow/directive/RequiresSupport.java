@@ -3,7 +3,7 @@ package io.determann.shadow.implementation.support.api.shadow.directive;
 import io.determann.shadow.api.shadow.directive.Requires;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
-import static io.determann.shadow.api.shadow.Operations.*;
+import static io.determann.shadow.api.Operations.*;
 
 public class RequiresSupport
 {

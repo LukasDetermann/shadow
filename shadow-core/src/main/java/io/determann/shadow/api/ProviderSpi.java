@@ -1,6 +1,4 @@
-package io.determann.shadow.api.shadow;
-
-import io.determann.shadow.api.ImplementationDefined;
+package io.determann.shadow.api;
 
 public interface ProviderSpi
 {

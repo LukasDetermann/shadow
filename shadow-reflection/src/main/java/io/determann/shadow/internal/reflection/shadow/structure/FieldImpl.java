@@ -9,8 +9,8 @@ import io.determann.shadow.api.shadow.structure.Field;
 import io.determann.shadow.api.shadow.type.Class;
 import io.determann.shadow.api.shadow.type.*;
 
-import static io.determann.shadow.api.shadow.Operations.*;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class FieldImpl extends ReflectionFieldImpl<Declared> implements FieldReflection
 {

@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static io.determann.shadow.api.shadow.Operations.INTERSECTION_GET_BOUNDS;
-import static io.determann.shadow.api.shadow.Operations.SHADOW_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
+import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
+import static io.determann.shadow.api.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 

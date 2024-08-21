@@ -6,10 +6,10 @@ import io.determann.shadow.api.shadow.type.Enum;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.Operations.ENUM_GET_ENUM_CONSTANT;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.shadow.Operations.ENUM_GET_ENUM_CONSTANT;
-import static io.determann.shadow.api.shadow.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumConstantRendererTest
