@@ -15,7 +15,7 @@ standard.
 This project is an Abstraction for Metaprogramming
 
 
-<img src="https://www.shadow.determann.io/Shadow-Api/_images/Overview.svg" style="width:80.0%" alt="Overview" />
+![Overview](https://www.shadow.determann.io/Shadow-Api/_images/Overview.svg)
 
 
 It has two Types of Apis
