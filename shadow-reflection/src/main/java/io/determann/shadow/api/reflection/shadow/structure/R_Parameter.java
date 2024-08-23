@@ -13,9 +13,9 @@ import java.util.List;
  * @see C_Method#getParameters()
  * @see C_Constructor#getParameters()
  */
-public interface R_Parameter extends C_Parameter,
-                                     R_Variable,
-                                     R_FinalModifiable
+public non-sealed interface R_Parameter extends C_Parameter,
+                                                R_Variable,
+                                                R_FinalModifiable
 {
    /**
     * {@link List#of(Object[])}

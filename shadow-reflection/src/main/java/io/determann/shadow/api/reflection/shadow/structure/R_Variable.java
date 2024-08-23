@@ -18,12 +18,17 @@ import io.determann.shadow.api.shadow.type.C_Shadow;
  *    <li>{@link C_Parameter}</li>
  * </ul>
  */
-public interface R_Variable extends C_Variable,
-                                    R_Annotationable,
-                                    R_Shadow,
-                                    R_Nameable,
-                                    R_ModuleEnclosed,
-                                    R_Modifiable
+public sealed interface R_Variable
+
+      extends C_Variable,
+              R_Annotationable,
+              R_Nameable,
+              R_ModuleEnclosed,
+              R_Modifiable
+
+      permits R_EnumConstant,
+              R_Field,
+              R_Parameter
 {
    /**
     * returns true if this can be cast to that.

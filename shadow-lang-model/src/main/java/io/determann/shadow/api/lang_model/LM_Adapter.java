@@ -171,7 +171,7 @@ public interface LM_Adapter
       return Collections.unmodifiableSet(result);
    }
 
-   static C_Modifier mapModifier(javax.lang.model.element.Modifier modifier)
+   static C_Modifier mapModifier(Modifier modifier)
    {
       return switch (modifier)
       {
@@ -202,6 +202,17 @@ public interface LM_Adapter
       return new ExecutableImpl(context, element);
    }
 
+   static LM_Variable generalize(LM_Context context, VariableElement element)
+   {
+      return switch (element.getKind())
+      {
+         case ENUM_CONSTANT -> new EnumConstantImpl(context, element);
+         case FIELD -> new FieldImpl(context, element);
+         case PARAMETER -> new ParameterImpl(context, element);
+         default -> throw new IllegalArgumentException();
+      };
+   }
+
    public static LM_RecordComponent generalize(LM_Context context, RecordComponentElement recordComponentElement)
    {
       return new RecordComponentImpl(context, recordComponentElement);
@@ -223,14 +234,11 @@ public interface LM_Adapter
          case RECORD -> new RecordImpl(context, (TypeElement) element);
          case CLASS -> new ClassImpl(context, (TypeElement) element);
          case INTERFACE -> new InterfaceImpl(context, (TypeElement) element);
-         case ENUM_CONSTANT -> new EnumConstantImpl(context, (VariableElement) element);
-         case FIELD -> new FieldImpl(context, (VariableElement) element);
-         case PARAMETER -> new ParameterImpl(context, (VariableElement) element);
          case TYPE_PARAMETER -> new GenericImpl(context, (TypeParameterElement) element);
          case MODULE -> new ModuleImpl(context, (ModuleElement) element);
          case RECORD_COMPONENT -> new RecordComponentImpl(context, (RecordComponentElement) element);
-         case OTHER, STATIC_INIT, INSTANCE_INIT, EXCEPTION_PARAMETER, RESOURCE_VARIABLE, BINDING_VARIABLE, LOCAL_VARIABLE, METHOD, CONSTRUCTOR ->
-               throw new IllegalArgumentException("not implemented");
+         case METHOD, CONSTRUCTOR, PARAMETER, FIELD, ENUM_CONSTANT, OTHER, STATIC_INIT, INSTANCE_INIT, EXCEPTION_PARAMETER, RESOURCE_VARIABLE,
+              BINDING_VARIABLE, LOCAL_VARIABLE -> throw new IllegalArgumentException("not implemented");
       };
    }
 
@@ -282,7 +290,7 @@ public interface LM_Adapter
       return AnnotationUsageImpl.from(context, annotationMirrors);
    }
 
-   static javax.lang.model.element.AnnotationValue generalize(AnnotationValue annotationValue)
+   static AnnotationValue generalize(AnnotationValue annotationValue)
    {
       return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
    }

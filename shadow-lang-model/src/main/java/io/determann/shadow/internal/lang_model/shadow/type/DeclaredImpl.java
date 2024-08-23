@@ -14,6 +14,7 @@ import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.ElementFilter;
 import java.util.HashSet;
@@ -94,7 +95,9 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
-                         .map(variableElement -> LM_Adapter.<LM_Field>generalize(getApi(), variableElement))
+                         .map(VariableElement.class::cast)
+                         .map(variableElement -> LM_Adapter.generalize(getApi(), variableElement))
+                         .map(LM_Field.class::cast)
                          .toList();
    }
 

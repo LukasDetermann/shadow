@@ -1,24 +1,16 @@
 package io.determann.shadow.consistency.shadow;
 
-import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Parameter;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Variable;
 import org.junit.jupiter.api.Test;
 
-import java.util.function.Function;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-abstract class VariableTest<VARIABLE extends LM_Variable> extends ShadowTest<VARIABLE>
+abstract class VariableTest<VARIABLE extends LM_Variable>
 {
-   VariableTest(Function<AP_Context, VARIABLE> variableSupplier)
-   {
-      super(variableSupplier);
-   }
-
    @Test
    void testIsSubtypeOf()
    {

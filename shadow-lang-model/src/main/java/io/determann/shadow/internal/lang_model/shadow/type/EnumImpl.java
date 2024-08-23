@@ -32,7 +32,8 @@ public class EnumImpl extends DeclaredImpl implements LM_Enum
                          .stream()
                          .filter(element -> ElementKind.ENUM_CONSTANT.equals(element.getKind()))
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> LM_Adapter.<LM_EnumConstant>generalize(getApi(), variableElement))
+                         .map(variableElement -> LM_Adapter.generalize(getApi(), variableElement))
+                         .map(LM_EnumConstant.class::cast)
                          .toList();
    }
 

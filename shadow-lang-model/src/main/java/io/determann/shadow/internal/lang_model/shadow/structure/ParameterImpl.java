@@ -6,7 +6,6 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Executable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.type.C_Shadow;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
@@ -16,7 +15,6 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Queries.query;
 
 public class ParameterImpl extends VariableImpl implements LM_Parameter
 {
@@ -30,16 +28,14 @@ public class ParameterImpl extends VariableImpl implements LM_Parameter
    {
       List<? extends C_Parameter> parameters = requestOrThrow(getSurrounding(), EXECUTABLE_GET_PARAMETERS);
       return requestOrThrow(getSurrounding(), EXECUTABLE_IS_VAR_ARGS) &&
-             query((C_Shadow) parameters.get(parameters.size() - 1)).representsSameType(this);
+             parameters.get(parameters.size() - 1).equals(this);
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(),
-                          getName(),
-                          getSurrounding(),
-                          isVarArgs());
+      return Objects.hash(getName(),
+                          getSurrounding());
    }
 
    @Override
@@ -66,7 +62,6 @@ public class ParameterImpl extends VariableImpl implements LM_Parameter
       }
       return Provider.requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
-             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
-             Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));
+             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 }

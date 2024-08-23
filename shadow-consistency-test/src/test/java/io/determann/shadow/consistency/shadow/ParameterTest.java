@@ -12,14 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ParameterTest extends VariableTest<LM_Parameter>
 {
-   ParameterTest()
-   {
-      super(context -> context.getClassOrThrow("ParameterExample")
-            .getMethods("foo")
-            .get(0)
-            .getParameterOrThrow("foo"));
-   }
-
    @Test
    void testGetSurrounding()
    {

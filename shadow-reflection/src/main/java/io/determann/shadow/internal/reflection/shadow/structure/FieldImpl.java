@@ -5,7 +5,6 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Field;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.type.*;
 
 import static io.determann.shadow.api.Operations.*;
@@ -91,12 +90,6 @@ public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Fiel
    public R_Declared getSurrounding()
    {
       return R_Adapter.generalize(getField().getDeclaringClass());
-   }
-
-   @Override
-   public boolean representsSameType(C_Shadow shadow)
-   {
-      return shadow instanceof C_Field field && requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override

@@ -14,6 +14,7 @@ import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -151,7 +152,9 @@ public class ExecutableImpl implements LM_Constructor,
    {
       return getElement().getParameters()
                          .stream()
-                         .map(variableElement -> LM_Adapter.<LM_Parameter>generalize(getApi(), variableElement))
+                         .map(VariableElement.class::cast)
+                         .map(variableElement -> LM_Adapter.generalize(getApi(), variableElement))
+                         .map(LM_Parameter.class::cast)
                          .toList();
    }
 

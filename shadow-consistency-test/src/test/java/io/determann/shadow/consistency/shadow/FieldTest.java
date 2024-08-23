@@ -10,11 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FieldTest extends VariableTest<LM_Field>
 {
-   FieldTest()
-   {
-      super(context -> context.getClassOrThrow("java.lang.String").getFieldOrThrow("value"));
-   }
-
    @Test
    void testGetSurrounding()
    {

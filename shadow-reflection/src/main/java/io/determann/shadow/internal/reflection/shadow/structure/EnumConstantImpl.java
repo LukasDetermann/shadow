@@ -5,7 +5,6 @@ import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Enum;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import io.determann.shadow.api.shadow.type.*;
 
 import java.lang.reflect.Field;
@@ -62,13 +61,6 @@ public class EnumConstantImpl extends ReflectionFieldImpl<C_Enum> implements R_E
    public R_Enum getSurrounding()
    {
       return R_Adapter.generalize(getField().getDeclaringClass());
-   }
-
-   @Override
-   public boolean representsSameType(C_Shadow shadow)
-   {
-      return shadow instanceof C_EnumConstant enumConstant &&
-             requestOrThrow(requestOrThrow(enumConstant, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
    }
 
    @Override

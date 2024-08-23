@@ -19,11 +19,6 @@ public enum C_TypeKind
    ANNOTATION(false, true, false),
    RECORD(false, true, false),
 
-   //variables
-   ENUM_CONSTANT(false, false, true),
-   FIELD(false, false, true),
-   PARAMETER(false, false, true),
-
    //strange stuff
    VOID(false, false, false),
    MODULE(false, false, false),

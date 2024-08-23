@@ -13,9 +13,9 @@ import java.util.List;
  * @see C_Method#getParameters()
  * @see C_Constructor#getParameters()
  */
-public interface LM_Parameter extends C_Parameter,
-                                      LM_Variable,
-                                      LM_FinalModifiable
+public non-sealed interface LM_Parameter extends C_Parameter,
+                                                 LM_Variable,
+                                                 LM_FinalModifiable
 {
    /**
     * {@link List#of(Object[])}

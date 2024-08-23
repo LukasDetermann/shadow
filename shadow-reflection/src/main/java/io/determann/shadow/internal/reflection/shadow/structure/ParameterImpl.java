@@ -8,7 +8,6 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Array;
@@ -78,19 +77,6 @@ public class ParameterImpl implements R_Parameter
    }
 
    @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.PARAMETER;
-   }
-
-   @Override
-   public boolean representsSameType(C_Shadow shadow)
-   {
-      return shadow instanceof C_Parameter parameter &&
-             requestOrThrow(requestOrThrow(parameter, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, getType());
-   }
-
-   @Override
    public boolean isSubtypeOf(C_Shadow shadow)
    {
       if (getType() instanceof C_Primitive primitive)
@@ -148,10 +134,8 @@ public class ParameterImpl implements R_Parameter
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(),
-                          getName(),
-                          getSurrounding(),
-                          isVarArgs());
+      return Objects.hash(getName(),
+                          getSurrounding());
    }
 
    @Override
@@ -167,8 +151,7 @@ public class ParameterImpl implements R_Parameter
       }
       return Provider.requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
-             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
-             Objects.equals(isVarArgs(), requestOrThrow(otherVariable, PARAMETER_IS_VAR_ARGS));
+             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 
    public java.lang.reflect.Parameter getReflection()

@@ -20,13 +20,18 @@ import io.determann.shadow.api.shadow.type.C_Shadow;
  *    <li>{@link C_Parameter}</li>
  * </ul>
  */
-public interface LM_Variable extends C_Variable,
-                                     LM_Annotationable,
-                                     LM_Shadow,
-                                     LM_Documented,
-                                     LM_Nameable,
-                                     LM_ModuleEnclosed,
-                                     LM_Modifiable
+public sealed interface LM_Variable
+
+      extends C_Variable,
+              LM_Annotationable,
+              LM_Documented,
+              LM_Nameable,
+              LM_ModuleEnclosed,
+              LM_Modifiable
+
+      permits LM_EnumConstant,
+              LM_Field,
+              LM_Parameter
 {
    /**
     * returns true if this can be cast to that.

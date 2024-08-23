@@ -25,7 +25,7 @@ public class ShadowRendererImpl
          case VOID -> VoidRendererImpl.type();
          case NULL -> NullRendererImpl.type();
 
-         case MODULE, ENUM_CONSTANT, FIELD, PARAMETER -> throw new IllegalArgumentException();
+         case MODULE -> throw new IllegalArgumentException();
       };
    }
 

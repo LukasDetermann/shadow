@@ -9,11 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumConstantTest extends VariableTest<LM_EnumConstant>
 {
-   EnumConstantTest()
-   {
-      super(context -> context.getEnumOrThrow("java.lang.annotation.RetentionPolicy").getEnumConstantOrThrow("SOURCE"));
-   }
-
    @Test
    void testGetSurrounding()
    {
