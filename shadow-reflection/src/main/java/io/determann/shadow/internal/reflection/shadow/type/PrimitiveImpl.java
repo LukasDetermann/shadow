@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Primitive;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
@@ -18,13 +19,14 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.C_TypeKind.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class PrimitiveImpl implements C_Primitive,
-                                      R_Primitive,
+public class PrimitiveImpl implements R_Primitive,
                                       R_Shadow
 {
    private final java.lang.Class<?> aClass;
    private static final Map<java.lang.Class<?>, C_TypeKind> CLASS_KIND_MAP = new HashMap<>();
-   static {
+
+   static
+   {
       CLASS_KIND_MAP.put(Boolean.TYPE, BOOLEAN);
       CLASS_KIND_MAP.put(Byte.TYPE, BYTE);
       CLASS_KIND_MAP.put(Character.TYPE, CHAR);
@@ -36,7 +38,9 @@ public class PrimitiveImpl implements C_Primitive,
    }
 
    private static final Map<java.lang.Class<?>, java.lang.Class<?>> PRIMITIVE_BOXED_MAP = new HashMap<>();
-   static {
+
+   static
+   {
       PRIMITIVE_BOXED_MAP.put(Boolean.TYPE, Boolean.class);
       PRIMITIVE_BOXED_MAP.put(Byte.TYPE, Byte.class);
       PRIMITIVE_BOXED_MAP.put(Character.TYPE, Character.class);
@@ -104,6 +108,11 @@ public class PrimitiveImpl implements C_Primitive,
       };
    }
 
+   @Override
+   public R_Array asArray()
+   {
+      return R_Adapter.generalize(aClass.arrayType());
+   }
 
    @Override
    public int hashCode()

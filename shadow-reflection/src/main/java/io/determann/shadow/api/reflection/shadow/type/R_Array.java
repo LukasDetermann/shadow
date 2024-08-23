@@ -27,4 +27,9 @@ public interface R_Array extends C_Array
     * for primitive Arrays
     */
    List<R_Shadow> getDirectSuperTypes();
+
+   /**
+    * [] -> [][]
+    */
+   R_Array asArray();
 }

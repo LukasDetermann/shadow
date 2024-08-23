@@ -75,6 +75,12 @@ public class ArrayImpl implements R_Array,
    }
 
    @Override
+   public R_Array asArray()
+   {
+      return R_Adapter.generalize(array.arrayType());
+   }
+
+   @Override
    public List<R_Shadow> getDirectSuperTypes()
    {
       C_Shadow componentShadow = getComponentType();

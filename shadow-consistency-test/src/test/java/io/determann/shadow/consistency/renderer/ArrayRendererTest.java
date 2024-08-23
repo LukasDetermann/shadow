@@ -9,7 +9,6 @@ import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.reflection.Reflection.asArray;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,11 +18,11 @@ class ArrayRendererTest
    void type()
    {
       ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
-                     .runtime(stringClassFunction -> asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))))
+                     .runtime(stringClassFunction -> ((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))).asArray())
                      .test(aClass -> Assertions.assertEquals("String[]", Renderer.render(RenderingContext.DEFAULT, aClass).type()));
 
       ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.asArray(context.getClassOrThrow("java.lang.String"))))
-                     .runtime(stringClassFunction -> asArray(asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String")))))
+                     .runtime(stringClassFunction -> ((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))).asArray().asArray())
                      .test(aClass -> assertEquals("String[][]", render(RenderingContext.DEFAULT, aClass).type()));
    }
 
@@ -31,7 +30,7 @@ class ArrayRendererTest
    void initialisation()
    {
       ConsistencyTest.<C_Array>compileTime(context -> context.asArray(context.getClassOrThrow("java.lang.String")))
-                     .runtime(stringClassFunction -> asArray((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))))
+                     .runtime(stringClassFunction -> ((R_Declared) R_Adapter.generalize(stringClassFunction.apply("java.lang.String"))).asArray())
                      .test(string ->
                            {
                               assertEquals("new String[3][1]", render(RenderingContext.DEFAULT, string).initialisation(3, 1));

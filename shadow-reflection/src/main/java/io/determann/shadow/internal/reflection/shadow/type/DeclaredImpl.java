@@ -5,6 +5,7 @@ import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.R_QualifiedNameable;
 import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Interface;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
@@ -202,6 +203,12 @@ public abstract class DeclaredImpl implements R_Declared,
    public String getBinaryName()
    {
       return getaClass().getName();
+   }
+
+   @Override
+   public R_Array asArray()
+   {
+      return R_Adapter.generalize(aClass.arrayType());
    }
 
    @Override

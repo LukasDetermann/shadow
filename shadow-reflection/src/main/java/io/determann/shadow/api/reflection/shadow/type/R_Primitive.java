@@ -29,4 +29,9 @@ public interface R_Primitive extends C_Primitive,
     * etc...
     */
    R_Class asBoxed();
+
+   /**
+    * int -> int[]
+    */
+   R_Array asArray();
 }
