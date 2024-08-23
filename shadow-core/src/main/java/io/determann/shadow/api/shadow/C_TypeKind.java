@@ -3,43 +3,41 @@ package io.determann.shadow.api.shadow;
 public enum C_TypeKind
 {
    //primitives
-   BOOLEAN(true, false, false),
-   BYTE(true, false, false),
-   SHORT(true, false, false),
-   INT(true, false, false),
-   LONG(true, false, false),
-   CHAR(true, false, false),
-   FLOAT(true, false, false),
-   DOUBLE(true, false, false),
+   BOOLEAN(true, false),
+   BYTE(true, false),
+   SHORT(true, false),
+   INT(true, false),
+   LONG(true, false),
+   CHAR(true, false),
+   FLOAT(true, false),
+   DOUBLE(true, false),
 
    //declared
-   CLASS(false, true, false),
-   INTERFACE(false, true, false),
-   ENUM(false, true, false),
-   ANNOTATION(false, true, false),
-   RECORD(false, true, false),
+   CLASS(false, true),
+   INTERFACE(false, true),
+   ENUM(false, true),
+   ANNOTATION(false, true),
+   RECORD(false, true),
 
    //strange stuff
-   VOID(false, false, false),
-   NULL(false, false, false),
+   VOID(false, false),
+   NULL(false, false),
 
-   ARRAY(false, false, false),
+   ARRAY(false, false),
 
-   GENERIC(false, false, false),
+   GENERIC(false, false),
 
-   WILDCARD(false, false, false),
+   WILDCARD(false, false),
 
-   INTERSECTION(false, false, false);
+   INTERSECTION(false, false);
 
    private final boolean primitive;
    private final boolean declared;
-   private final boolean variable;
 
-   C_TypeKind(boolean primitive, boolean declared, boolean variable)
+   C_TypeKind(boolean primitive, boolean declared)
    {
       this.primitive = primitive;
       this.declared = declared;
-      this.variable = variable;
    }
 
    public boolean isPrimitive()
@@ -50,11 +48,5 @@ public enum C_TypeKind
    public boolean isDeclared()
    {
       return declared;
-   }
-
-
-   public boolean isVariable()
-   {
-      return variable;
    }
 }
