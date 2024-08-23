@@ -218,6 +218,11 @@ public interface LM_Adapter
       return new RecordComponentImpl(context, recordComponentElement);
    }
 
+   public static LM_Module generalize(LM_Context context, ModuleElement moduleElement)
+   {
+      return new ModuleImpl(context, moduleElement);
+   }
+
    /**
     * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link C_Shadow}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.

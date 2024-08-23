@@ -16,7 +16,6 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface R_Module extends C_Module,
                                   R_Annotationable,
-                                  R_Shadow,
                                   R_Nameable,
                                   R_QualifiedNameable
 {

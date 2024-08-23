@@ -2,19 +2,13 @@ package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
-import io.determann.shadow.api.shadow.structure.C_Module;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ModuleTest extends ShadowTest<C_Module>
+class ModuleTest
 {
-   ModuleTest()
-   {
-      super(context -> context.getModuleOrThrow("java.base"));
-   }
-
    @Test
    void testGetPackages()
    {

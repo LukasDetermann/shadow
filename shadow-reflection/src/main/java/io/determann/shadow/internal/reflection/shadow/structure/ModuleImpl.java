@@ -6,7 +6,6 @@ import io.determann.shadow.api.reflection.shadow.directive.R_Directive;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.reflection.NamedSupplier;
@@ -130,13 +129,6 @@ public class ModuleImpl implements R_Module
       return unmodifiableList(result);
    }
 
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.MODULE;
-   }
-
-   @Override
    public boolean representsSameType(C_Shadow shadow)
    {
       return equals(shadow);

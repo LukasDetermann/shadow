@@ -17,7 +17,6 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface LM_Module extends C_Module,
                                    LM_Annotationable,
-                                   LM_Shadow,
                                    LM_Nameable,
                                    LM_QualifiedNameable,
                                    LM_Documented

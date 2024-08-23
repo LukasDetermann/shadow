@@ -47,7 +47,7 @@ public class LangModelContextImpl implements LM_Context,
    {
       return elements.getAllModuleElements()
                      .stream()
-                     .map(moduleElement -> LM_Adapter.<LM_Module>generalize(this, moduleElement))
+                     .map(moduleElement -> LM_Adapter.generalize(this, moduleElement))
                      .toList();
    }
 

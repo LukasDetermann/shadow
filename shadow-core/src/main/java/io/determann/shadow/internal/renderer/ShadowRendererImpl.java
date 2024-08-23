@@ -24,8 +24,6 @@ public class ShadowRendererImpl
          case INTERSECTION -> IntersectionRendererImpl.type(context, ((C_Intersection) shadow));
          case VOID -> VoidRendererImpl.type();
          case NULL -> NullRendererImpl.type();
-
-         case MODULE -> throw new IllegalArgumentException();
       };
    }
 

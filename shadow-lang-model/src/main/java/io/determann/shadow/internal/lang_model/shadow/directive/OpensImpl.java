@@ -33,7 +33,7 @@ public class OpensImpl extends DirectiveImpl implements LM_Opens
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LM_Adapter.<LM_Module>generalize(getApi(), moduleElement))
+                           .map(moduleElement -> LM_Adapter.generalize(getApi(), moduleElement))
                            .toList();
    }
 

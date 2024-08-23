@@ -8,12 +8,10 @@ import io.determann.shadow.api.lang_model.shadow.directive.LM_Provides;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.directive.C_Provides;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.internal.lang_model.shadow.directive.*;
-import io.determann.shadow.internal.lang_model.shadow.type.ShadowImpl;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
@@ -25,34 +23,34 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
+import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl extends ShadowImpl<NoType> implements LM_Module
+public class ModuleImpl implements LM_Module
 {
    private final ModuleElement moduleElement;
+   private final NoType noType;
+   private final LM_Context context;
+
 
    public ModuleImpl(LM_Context context, ModuleElement moduleElement)
    {
-      super(context, (NoType) moduleElement.asType());
+      this.context = context;
+      noType = (NoType) moduleElement.asType();
       this.moduleElement = moduleElement;
    }
 
    public ModuleImpl(LM_Context context, NoType noType)
    {
-      super(context, noType);
+      this.context = context;
+      this.noType = noType;
       this.moduleElement = LM_Adapter.getElements(getApi()).getModuleElement(noType.toString());
       if (moduleElement == null)
       {
          throw new IllegalStateException(noType + " is not unique");
       }
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.MODULE;
    }
 
    public ModuleElement getElement()
@@ -160,13 +158,6 @@ public class ModuleImpl extends ShadowImpl<NoType> implements LM_Module
                                      IDENTITY_FINISH));
    }
 
-   //com.sun.tools.javac.code.Types.TypeRelation#visitType throes exceptions for modules
-   @Override
-   public boolean representsSameType(C_Shadow shadow)
-   {
-      return equals(shadow);
-   }
-
    @Override
    public String getName()
    {
@@ -189,6 +180,16 @@ public class ModuleImpl extends ShadowImpl<NoType> implements LM_Module
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
+   }
+
+   public NoType getMirror()
+   {
+      return noType;
+   }
+
+   public LM_Context getApi()
+   {
+      return context;
    }
 
    @Override
@@ -215,5 +216,11 @@ public class ModuleImpl extends ShadowImpl<NoType> implements LM_Module
          return false;
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherModule, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+   }
+
+   @Override
+   public String getImplementationName()
+   {
+      return IMPLEMENTATION_NAME;
    }
 }
