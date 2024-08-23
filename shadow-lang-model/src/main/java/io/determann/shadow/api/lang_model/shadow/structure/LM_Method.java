@@ -3,15 +3,15 @@ package io.determann.shadow.api.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
-public interface LM_Method extends C_Method,
-                                   LM_Executable,
-                                   LM_StaticModifiable,
-                                   LM_DefaultModifiable,
-                                   LM_AccessModifiable,
-                                   LM_AbstractModifiable,
-                                   LM_FinalModifiable,
-                                   LM_StrictfpModifiable,
-                                   LM_NativeModifiable
+public non-sealed interface LM_Method extends C_Method,
+                                              LM_Executable,
+                                              LM_StaticModifiable,
+                                              LM_DefaultModifiable,
+                                              LM_AccessModifiable,
+                                              LM_AbstractModifiable,
+                                              LM_FinalModifiable,
+                                              LM_StrictfpModifiable,
+                                              LM_NativeModifiable
 {
    boolean overrides(C_Method method);
 

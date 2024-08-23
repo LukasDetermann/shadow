@@ -26,11 +26,16 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
  *    <li>{@link C_Method}</li>
  * </ul>
  */
-public interface R_Executable extends C_Executable,
-                                      R_Annotationable,
-                                      R_Nameable,
-                                      R_Modifiable,
-                                      R_ModuleEnclosed
+public sealed interface R_Executable
+
+      extends C_Executable,
+              R_Annotationable,
+              R_Nameable,
+              R_Modifiable,
+              R_ModuleEnclosed
+
+      permits R_Constructor,
+              R_Method
 {
    /**
     * {@snippet :

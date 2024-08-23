@@ -28,12 +28,17 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
  *    <li>{@link C_Method}</li>
  * </ul>
  */
-public interface LM_Executable extends C_Executable,
-                                       LM_Annotationable,
-                                       LM_Nameable,
-                                       LM_Modifiable,
-                                       LM_ModuleEnclosed,
-                                       LM_Documented
+public sealed interface LM_Executable
+
+      extends C_Executable,
+              LM_Annotationable,
+              LM_Nameable,
+              LM_Modifiable,
+              LM_ModuleEnclosed,
+              LM_Documented
+
+      permits LM_Constructor,
+              LM_Method
 {
    /**
     * {@snippet :

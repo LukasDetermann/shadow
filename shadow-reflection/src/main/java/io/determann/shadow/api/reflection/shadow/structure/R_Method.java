@@ -3,15 +3,15 @@ package io.determann.shadow.api.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
-public interface R_Method extends C_Method,
-                                  R_Executable,
-                                  R_StaticModifiable,
-                                  R_DefaultModifiable,
-                                  R_AccessModifiable,
-                                  R_AbstractModifiable,
-                                  R_FinalModifiable,
-                                  R_StrictfpModifiable,
-                                  R_NativeModifiable
+public non-sealed interface R_Method extends C_Method,
+                                             R_Executable,
+                                             R_StaticModifiable,
+                                             R_DefaultModifiable,
+                                             R_AccessModifiable,
+                                             R_AbstractModifiable,
+                                             R_FinalModifiable,
+                                             R_StrictfpModifiable,
+                                             R_NativeModifiable
 {
    boolean overrides(C_Method method);
 
