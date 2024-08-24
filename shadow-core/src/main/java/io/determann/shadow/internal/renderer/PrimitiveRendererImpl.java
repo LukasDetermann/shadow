@@ -2,7 +2,7 @@ package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.PrimitiveRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
 import static io.determann.shadow.api.Provider.requestOrThrow;

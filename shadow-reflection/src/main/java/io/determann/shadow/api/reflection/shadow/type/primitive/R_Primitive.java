@@ -1,14 +1,28 @@
-package io.determann.shadow.api.lang_model.shadow.type;
+package io.determann.shadow.api.reflection.shadow.type.primitive;
 
-import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
-import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.reflection.shadow.R_Nameable;
+import io.determann.shadow.api.reflection.shadow.type.R_Array;
+import io.determann.shadow.api.reflection.shadow.type.R_Class;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 /**
  * represents primitive types, but not there wrapper classes. for example int, long, short
  */
-public interface LM_Primitive extends C_Primitive,
-                                      LM_Nameable
+public sealed interface R_Primitive
+
+      extends C_Primitive,
+              R_Shadow,
+              R_Nameable
+
+      permits R_boolean,
+              R_byte,
+              R_double,
+              R_float,
+              R_int,
+              R_long,
+              R_short
 {
    /**
     * returns true if this can be cast to that.
@@ -28,5 +42,10 @@ public interface LM_Primitive extends C_Primitive,
     * long -&gt; Long<br>
     * etc...
     */
-   LM_Class asBoxed();
+   R_Class asBoxed();
+
+   /**
+    * int -> int[]
+    */
+   R_Array asArray();
 }

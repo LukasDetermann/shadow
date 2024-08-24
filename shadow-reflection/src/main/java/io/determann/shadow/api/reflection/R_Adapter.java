@@ -4,6 +4,7 @@ import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.directive.*;
 import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.*;
+import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 import io.determann.shadow.internal.reflection.shadow.AnnotationUsageImpl;
 import io.determann.shadow.internal.reflection.shadow.directive.*;

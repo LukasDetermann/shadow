@@ -5,7 +5,11 @@ import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Enum;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Array;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Enum;
+import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.lang.reflect.Field;
 

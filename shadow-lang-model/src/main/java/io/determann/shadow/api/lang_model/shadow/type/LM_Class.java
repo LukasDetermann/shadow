@@ -5,6 +5,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Sealable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_StaticModifiable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
+import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 

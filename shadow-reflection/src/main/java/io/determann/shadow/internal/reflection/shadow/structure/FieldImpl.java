@@ -5,7 +5,11 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Field;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Array;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;

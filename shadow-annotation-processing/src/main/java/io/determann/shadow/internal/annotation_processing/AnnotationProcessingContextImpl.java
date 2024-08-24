@@ -16,6 +16,7 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;

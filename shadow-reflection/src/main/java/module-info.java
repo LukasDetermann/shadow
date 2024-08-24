@@ -12,6 +12,7 @@ module io.determann.shadow.reflection {
    exports io.determann.shadow.api.reflection.shadow.structure;
    exports io.determann.shadow.api.reflection.shadow.modifier;
    exports io.determann.shadow.api.reflection.shadow.directive;
+   exports io.determann.shadow.api.reflection.shadow.type.primitive;
 
    provides ProviderSpi with ReflectionProvider;
 }

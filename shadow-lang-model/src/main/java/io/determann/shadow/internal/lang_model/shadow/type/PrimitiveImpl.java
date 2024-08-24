@@ -3,15 +3,21 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Primitive;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.primitive.*;
 import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 
 import javax.lang.model.type.PrimitiveType;
 
-public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements LM_Primitive
+public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements LM_boolean,
+                                                                        LM_byte,
+                                                                        LM_double,
+                                                                        LM_float,
+                                                                        LM_int,
+                                                                        LM_long,
+                                                                        LM_short
 {
    public PrimitiveImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
    {
@@ -33,8 +39,7 @@ public class PrimitiveImpl extends ShadowImpl<PrimitiveType> implements LM_Primi
    @Override
    public LM_Class asBoxed()
    {
-      return LM_Adapter
-                     .generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
    }
 
    @Override

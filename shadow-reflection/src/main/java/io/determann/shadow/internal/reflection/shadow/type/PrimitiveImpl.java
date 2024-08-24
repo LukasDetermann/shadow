@@ -3,11 +3,10 @@ package io.determann.shadow.internal.reflection.shadow.type;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
-import io.determann.shadow.api.reflection.shadow.type.R_Primitive;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.primitive.*;
 import io.determann.shadow.api.shadow.C_TypeKind;
-import io.determann.shadow.api.shadow.type.C_Primitive;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 
 import java.util.HashMap;
@@ -19,8 +18,13 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.shadow.C_TypeKind.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
-public class PrimitiveImpl implements R_Primitive,
-                                      R_Shadow
+public class PrimitiveImpl implements R_boolean,
+                                      R_byte,
+                                      R_double,
+                                      R_float,
+                                      R_int,
+                                      R_long,
+                                      R_short
 {
    private final java.lang.Class<?> aClass;
    private static final Map<java.lang.Class<?>, C_TypeKind> CLASS_KIND_MAP = new HashMap<>();

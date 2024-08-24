@@ -13,6 +13,7 @@ module io.determann.shadow.lang.model {
    exports io.determann.shadow.api.lang_model.shadow.type;
    exports io.determann.shadow.api.lang_model.shadow.modifier;
    exports io.determann.shadow.api.lang_model.shadow.directive;
+   exports io.determann.shadow.api.lang_model.shadow.type.primitive;
 
    provides ProviderSpi with LangModelProvider;
 }

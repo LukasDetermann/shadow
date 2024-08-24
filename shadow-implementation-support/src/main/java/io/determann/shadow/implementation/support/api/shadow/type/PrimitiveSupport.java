@@ -1,6 +1,6 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
-import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;

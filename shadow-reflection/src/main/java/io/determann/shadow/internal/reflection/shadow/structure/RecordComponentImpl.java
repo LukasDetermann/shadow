@@ -12,8 +12,8 @@ import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Primitive;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.Arrays;
 import java.util.List;

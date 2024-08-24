@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.modifier.C_Modifiable;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.List;
 import java.util.Map;

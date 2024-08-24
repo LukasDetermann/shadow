@@ -5,6 +5,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.R_FinalModifiable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_Sealable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
 import io.determann.shadow.api.reflection.shadow.structure.R_Property;
+import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 

@@ -2,7 +2,11 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.structure.R_Property;
-import io.determann.shadow.api.reflection.shadow.type.*;
+import io.determann.shadow.api.reflection.shadow.type.R_Class;
+import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.reflection.shadow.type.R_Generic;
+import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;

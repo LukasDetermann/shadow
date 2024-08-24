@@ -9,6 +9,7 @@ module io.determann.shadow.api {
    exports io.determann.shadow.api.shadow.directive;
    exports io.determann.shadow.api.shadow.structure;
    exports io.determann.shadow.api.shadow.type;
+   exports io.determann.shadow.api.shadow.type.primitive;
 
    uses ProviderSpi;
 }

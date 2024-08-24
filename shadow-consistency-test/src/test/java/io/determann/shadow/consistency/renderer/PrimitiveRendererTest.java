@@ -1,7 +1,7 @@
 package io.determann.shadow.consistency.renderer;
 
 import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.shadow.type.C_Primitive;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Test;
 

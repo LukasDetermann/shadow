@@ -3,6 +3,7 @@ package io.determann.shadow.api.renderer;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.renderer.*;
 
 public interface Renderer

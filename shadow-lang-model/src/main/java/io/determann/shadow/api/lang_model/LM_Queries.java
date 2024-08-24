@@ -6,11 +6,13 @@ import io.determann.shadow.api.lang_model.shadow.directive.*;
 import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
+import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.*;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.Objects;
 
