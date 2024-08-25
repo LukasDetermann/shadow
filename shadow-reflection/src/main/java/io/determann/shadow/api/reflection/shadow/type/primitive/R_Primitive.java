@@ -18,6 +18,7 @@ public sealed interface R_Primitive
 
       permits R_boolean,
               R_byte,
+              R_char,
               R_double,
               R_float,
               R_int,

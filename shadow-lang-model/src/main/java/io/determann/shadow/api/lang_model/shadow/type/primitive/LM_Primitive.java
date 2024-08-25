@@ -15,6 +15,7 @@ public sealed interface LM_Primitive
 
       permits LM_boolean,
               LM_byte,
+              LM_char,
               LM_double,
               LM_float,
               LM_int,

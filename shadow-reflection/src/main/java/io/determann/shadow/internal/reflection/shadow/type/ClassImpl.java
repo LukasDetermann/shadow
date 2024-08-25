@@ -99,18 +99,7 @@ public class ClassImpl extends DeclaredImpl implements R_Class
       {
          throw new IllegalArgumentException();
       }
-      return new PrimitiveImpl(switch (getKind())
-                               {
-                                  case BOOLEAN -> boolean.class;
-                                  case BYTE -> byte.class;
-                                  case SHORT -> short.class;
-                                  case INT -> int.class;
-                                  case LONG -> long.class;
-                                  case CHAR -> char.class;
-                                  case FLOAT -> float.class;
-                                  case DOUBLE -> double.class;
-                                  default -> throw new IllegalArgumentException();
-                               });
+      return R_Adapter.generalize(getReflection());
    }
 
    @Override

@@ -10,6 +10,7 @@ import io.determann.shadow.internal.reflection.shadow.AnnotationUsageImpl;
 import io.determann.shadow.internal.reflection.shadow.directive.*;
 import io.determann.shadow.internal.reflection.shadow.structure.*;
 import io.determann.shadow.internal.reflection.shadow.type.*;
+import io.determann.shadow.internal.reflection.shadow.type.primitive.PrimitiveImpl;
 
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
@@ -38,7 +39,7 @@ public interface R_Adapter
          {
             return (SHADOW) new VoidImpl();
          }
-         return (SHADOW) new PrimitiveImpl(aClass);
+         return getPrimitive(aClass);
       }
       if (aClass.isArray())
       {
@@ -61,6 +62,44 @@ public interface R_Adapter
          return (SHADOW) new InterfaceImpl(aClass, genericShadows);
       }
       return (SHADOW) new ClassImpl(aClass, genericShadows);
+   }
+
+   @SuppressWarnings("unchecked")
+   private static <SHADOW extends R_Shadow> SHADOW getPrimitive(Class<?> aClass)
+   {
+      if (aClass.equals(Boolean.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_booleanImpl(aClass);
+      }
+      if (aClass.equals(Byte.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_byteImpl(aClass);
+      }
+      if (aClass.equals(Short.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_shortImpl(aClass);
+      }
+      if (aClass.equals(Integer.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_intImpl(aClass);
+      }
+      if (aClass.equals(Long.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_longImpl(aClass);
+      }
+      if (aClass.equals(Character.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_charImpl(aClass);
+      }
+      if (aClass.equals(Float.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_floatImpl(aClass);
+      }
+      if (aClass.equals(Double.TYPE))
+      {
+         return (SHADOW) new PrimitiveImpl.R_doubleImpl(aClass);
+      }
+      throw new IllegalStateException();
    }
 
    public static R_Package generalize(java.lang.Package aPackage)

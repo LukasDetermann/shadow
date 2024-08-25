@@ -14,6 +14,7 @@ import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageIm
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.internal.lang_model.shadow.structure.*;
 import io.determann.shadow.internal.lang_model.shadow.type.*;
+import io.determann.shadow.internal.lang_model.shadow.type.primitive.PrimitiveImpl;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
@@ -258,7 +259,14 @@ public interface LM_Adapter
       //noinspection unchecked
       return (SHADOW) switch (typeMirror.getKind())
       {
-         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> new PrimitiveImpl(context, (PrimitiveType) typeMirror);
+         case BOOLEAN -> new PrimitiveImpl.LM_booleanImpl(context, (PrimitiveType) typeMirror);
+         case BYTE -> new PrimitiveImpl.LM_byteImpl(context, (PrimitiveType) typeMirror);
+         case SHORT -> new PrimitiveImpl.LM_shortImpl(context, (PrimitiveType) typeMirror);
+         case INT -> new PrimitiveImpl.LM_intImpl(context, (PrimitiveType) typeMirror);
+         case LONG -> new PrimitiveImpl.LM_longImpl(context, (PrimitiveType) typeMirror);
+         case CHAR -> new PrimitiveImpl.LM_charImpl(context, (PrimitiveType) typeMirror);
+         case FLOAT -> new PrimitiveImpl.LM_floatImpl(context, (PrimitiveType) typeMirror);
+         case DOUBLE -> new PrimitiveImpl.LM_doubleImpl(context, (PrimitiveType) typeMirror);
          case ARRAY -> new ArrayImpl(context, (ArrayType) typeMirror);
          case DECLARED -> switch (getTypes(context).asElement(typeMirror).getKind())
          {
