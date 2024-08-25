@@ -4,27 +4,25 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
-import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-
 public class ShadowRendererImpl
 {
    public static String type(RenderingContextWrapper context, C_Shadow shadow)
    {
-      return switch (requestOrThrow(shadow, SHADOW_GET_KIND))
+      return switch (shadow)
       {
-         case BOOLEAN, BYTE, SHORT, INT, LONG, CHAR, FLOAT, DOUBLE -> PrimitiveRendererImpl.type(context, ((C_Primitive) shadow));
-         case CLASS -> ClassRendererImpl.type(context, ((C_Class) shadow));
-         case INTERFACE -> InterfaceRendererImpl.type(context, ((C_Interface) shadow));
-         case ENUM -> EnumRendererImpl.type(context, ((C_Enum) shadow));
-         case ANNOTATION -> AnnotationRendererImpl.type(context, ((C_Annotation) shadow));
-         case RECORD -> RecordRendererImpl.type(context, ((C_Record) shadow));
-         case ARRAY -> ArrayRendererImpl.type(context, ((C_Array) shadow));
-         case GENERIC -> GenericRendererImpl.type(context, ((C_Generic) shadow));
-         case WILDCARD -> WildcardRendererImpl.type(context, ((C_Wildcard) shadow));
-         case INTERSECTION -> IntersectionRendererImpl.type(context, ((C_Intersection) shadow));
-         case VOID -> VoidRendererImpl.type();
-         case NULL -> NullRendererImpl.type();
+         case C_Primitive primitive -> PrimitiveRendererImpl.type(context, primitive);
+         case C_Class aClass -> ClassRendererImpl.type(context, aClass);
+         case C_Interface anInterface -> InterfaceRendererImpl.type(context, anInterface);
+         case C_Enum anEnum -> EnumRendererImpl.type(context, anEnum);
+         case C_Annotation annotation -> AnnotationRendererImpl.type(context, annotation);
+         case C_Record record -> RecordRendererImpl.type(context, record);
+         case C_Array array -> ArrayRendererImpl.type(context, array);
+         case C_Generic generic -> GenericRendererImpl.type(context, generic);
+         case C_Wildcard wildcard -> WildcardRendererImpl.type(context, wildcard);
+         case C_Intersection intersection -> IntersectionRendererImpl.type(context, intersection);
+         case C_Void aVoid -> VoidRendererImpl.type();
+         case C_Null aNull -> NullRendererImpl.type();
+         default -> throw new IllegalArgumentException();
       };
    }
 

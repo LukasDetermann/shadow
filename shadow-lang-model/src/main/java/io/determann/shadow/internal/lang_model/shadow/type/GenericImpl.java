@@ -5,7 +5,6 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -53,12 +52,6 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements LM_Generic
    public Object getEnclosing()
    {
       return LM_Adapter.generalize(getApi(), getElement().getGenericElement());
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.GENERIC;
    }
 
    public TypeParameterElement getElement()

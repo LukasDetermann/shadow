@@ -42,9 +42,9 @@ class ModuleTest
                                   assertEquals(
                                         "[Requires {getDependency=java.base, isStatic=false, isTransitive=false}, " +
                                         "Exports {getPackage=java.util.logging, getTargetModules=[]}, " +
-                                        "Provides {getService=Class {getQualifiedName=jdk.internal.logger.DefaultLoggerFinder, getKind=CLASS, " +
+                                        "Provides {getService=Class {getQualifiedName=jdk.internal.logger.DefaultLoggerFinder, " +
                                         "getModifiers=[PUBLIC]}, getImplementations=[" +
-                                        "Class {getQualifiedName=sun.util.logging.internal.LoggingProviderImpl, getKind=CLASS, getModifiers=[PUBLIC, FINAL]}]}]",
+                                        "Class {getQualifiedName=sun.util.logging.internal.LoggingProviderImpl, getModifiers=[PUBLIC, FINAL]}]}]",
                                         context.getModuleOrThrow("java.logging").getDirectives().toString()))
                    .compile();
    }

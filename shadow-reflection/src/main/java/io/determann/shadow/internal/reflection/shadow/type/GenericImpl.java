@@ -5,7 +5,6 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
@@ -76,12 +75,6 @@ public class GenericImpl implements R_Generic
          return generalize(executable);
       }
       throw new IllegalStateException();
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.GENERIC;
    }
 
    @Override

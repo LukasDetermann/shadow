@@ -5,12 +5,12 @@ import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
 import java.io.Serializable;
@@ -88,24 +88,23 @@ public class ArrayImpl implements R_Array,
       {
          return PRIMITIVE_SUPERTYPES;
       }
-      if (C_TypeKind.ARRAY.equals(requestOrThrow(getComponentType(), SHADOW_GET_KIND)))
+      if (componentShadow instanceof C_Array componentArray)
       {
-         return requestOrThrow(((C_Array) componentShadow), ARRAY_GET_DIRECT_SUPER_TYPES)
+         return requestOrThrow(componentArray, ARRAY_GET_DIRECT_SUPER_TYPES)
                .stream()
                .map(shadow ->
                     {
-                       C_TypeKind typeKind = requestOrThrow(shadow, SHADOW_GET_KIND);
-                       if (C_TypeKind.ARRAY.equals(typeKind))
+                       if (shadow instanceof R_Array array)
                        {
-                          return R_Adapter.particularize(((R_Array) shadow));
+                          return R_Adapter.particularize(array);
                        }
-                       if (typeKind.isDeclared())
+                       if (shadow instanceof R_Declared declared)
                        {
-                          return R_Adapter.particularize(((R_Declared) shadow));
+                          return R_Adapter.particularize(declared);
                        }
-                       if (typeKind.isPrimitive())
+                       if (shadow instanceof R_Primitive primitive)
                        {
-                          return R_Adapter.particularize((R_Primitive) shadow);
+                          return R_Adapter.particularize(primitive);
                        }
                        throw new IllegalStateException();
                     })
@@ -133,15 +132,9 @@ public class ArrayImpl implements R_Array,
 
    private static boolean isPrimitiveOrObject(C_Shadow componentShadow)
    {
-      return requestOrThrow(componentShadow, SHADOW_GET_KIND).isPrimitive() ||
+      return componentShadow instanceof C_Primitive ||
              componentShadow instanceof C_Declared declared &&
              requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object");
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.ARRAY;
    }
 
    @Override

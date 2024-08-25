@@ -14,8 +14,6 @@ import java.util.Set;
 
 public interface Operations
 {
-   public static Operation0<C_Shadow, C_TypeKind> SHADOW_GET_KIND = new Operation0<>("shadow.getKind");
-
    public static Operation1<C_Shadow, C_Shadow, Boolean> SHADOW_REPRESENTS_SAME_TYPE = new Operation1<>("shadow.representsSameType");
 
    public static Operation0<C_Nameable, String> NAMEABLE_GET_NAME = new Operation0<>("nameable.getName");

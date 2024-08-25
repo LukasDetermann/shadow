@@ -4,7 +4,6 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
 
 import javax.lang.model.type.IntersectionType;
@@ -16,12 +15,6 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements LM
    public IntersectionImpl(LM_Context context, IntersectionType intersectionType)
    {
       super(context, intersectionType);
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.INTERSECTION;
    }
 
    @Override

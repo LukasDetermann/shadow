@@ -69,35 +69,35 @@ public interface R_Adapter
    {
       if (aClass.equals(Boolean.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_booleanImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_booleanImpl();
       }
       if (aClass.equals(Byte.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_byteImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_byteImpl();
       }
       if (aClass.equals(Short.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_shortImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_shortImpl();
       }
       if (aClass.equals(Integer.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_intImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_intImpl();
       }
       if (aClass.equals(Long.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_longImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_longImpl();
       }
       if (aClass.equals(Character.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_charImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_charImpl();
       }
       if (aClass.equals(Float.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_floatImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_floatImpl();
       }
       if (aClass.equals(Double.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_doubleImpl(aClass);
+         return (SHADOW) new PrimitiveImpl.R_doubleImpl();
       }
       throw new IllegalStateException();
    }

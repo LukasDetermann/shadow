@@ -4,7 +4,6 @@ import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.reflection.shadow.type.R_Wildcard;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.api.shadow.type.C_Wildcard;
@@ -27,12 +26,6 @@ public class WildcardImpl implements C_Wildcard,
    public WildcardImpl(WildcardType wildcardType)
    {
       this.wildcardType = wildcardType;
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.WILDCARD;
    }
 
    @Override

@@ -3,7 +3,6 @@ package io.determann.shadow.internal.reflection.shadow.type;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Intersection;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Intersection;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
@@ -31,12 +30,6 @@ public class IntersectionImpl implements R_Intersection
    public List<R_Shadow> getBounds()
    {
       return Arrays.stream(bounds).map(R_Adapter::generalize).toList();
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.INTERSECTION;
    }
 
    @Override

@@ -4,7 +4,6 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
@@ -39,12 +38,6 @@ public final class ArrayImpl extends ShadowImpl<ArrayType> implements LM_Array
                        .stream()
                        .map(typeMirror1 -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror1))
                        .toList();
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.ARRAY;
    }
 
    @Override

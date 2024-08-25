@@ -1,6 +1,5 @@
 package io.determann.shadow.implementation.support.internal.property;
 
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -8,6 +7,8 @@ import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Void;
+import io.determann.shadow.api.shadow.type.primitive.C_boolean;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,8 +18,6 @@ import java.util.stream.Stream;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.shadow.C_TypeKind.CLASS;
-import static io.determann.shadow.api.shadow.C_TypeKind.VOID;
 import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
 import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;
@@ -106,18 +105,18 @@ public class PropertyTemplateFactory
 
    private static List<? extends C_Method> getMethods(C_Declared declared)
    {
-      if (!requestOrThrow(declared, SHADOW_GET_KIND).equals(CLASS))
+      if (!(declared instanceof C_Class aClass))
       {
          return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
-      List<C_Class> superClasses = Stream.iterate(((C_Class) declared),
+      List<C_Class> superClasses = Stream.iterate((aClass),
                                                   Objects::nonNull,
-                                                aClass -> requestOrThrow(aClass, CLASS_GET_SUPER_CLASS)).collect(toList());
+                                                  aClass1 -> requestOrThrow(aClass1, CLASS_GET_SUPER_CLASS)).collect(toList());
 
       Collections.reverse(superClasses);
 
       List<? extends C_Method> methods = superClasses.stream()
-                                                     .flatMap(aClass -> requestOrThrow(aClass, DECLARED_GET_METHODS).stream())
+                                                     .flatMap(aClass1 -> requestOrThrow(aClass1, DECLARED_GET_METHODS).stream())
                                                      .toList();
 
       return methods.stream()
@@ -180,10 +179,10 @@ public class PropertyTemplateFactory
       C_Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
       //getter
-      if (!requestOrThrow(returnType, SHADOW_GET_KIND).equals(VOID))
+      if (!(returnType instanceof C_Void))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = requestOrThrow(returnType, SHADOW_GET_KIND).equals(C_TypeKind.BOOLEAN) &&
+         boolean hasIsPrefix = returnType instanceof C_boolean &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
 
@@ -201,9 +200,7 @@ public class PropertyTemplateFactory
          return Optional.empty();
       }
       //setter
-      boolean couldBeSetter = requestOrThrow(returnType, SHADOW_GET_KIND).equals(VOID) &&
-                              name.startsWith(SET_PREFIX) &&
-                              name.length() > 3;
+      boolean couldBeSetter = name.startsWith(SET_PREFIX) && name.length() > 3;
 
       if (couldBeSetter && parameters.size() == 1)
       {

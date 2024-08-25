@@ -8,7 +8,6 @@ import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
 import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -212,7 +211,7 @@ public class ExecutableImpl implements R_Constructor,
 
       C_Declared otherSurrounding = requestOrThrow(method, EXECUTABLE_GET_SURROUNDING);
 
-      if (C_TypeKind.CLASS.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
+      if (otherSurrounding instanceof C_Class otherSurroundingClass)
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC) &&
              !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PROTECTED) &&
@@ -221,30 +220,26 @@ public class ExecutableImpl implements R_Constructor,
             return false;
          }
 
-         if (!C_TypeKind.CLASS.equals(requestOrThrow(getSurrounding(), SHADOW_GET_KIND)))
+         if (!(getSurrounding() instanceof C_Class surroundingClass))
          {
             return false;
          }
-         C_Class otherSurroundingClass = ((C_Class) otherSurrounding);
-         C_Class surroundingClass = ((C_Class) getSurrounding());
          if (!requestOrThrow(surroundingClass, DECLARED_IS_SUBTYPE_OF, otherSurroundingClass))
          {
             return false;
          }
       }
-      if (C_TypeKind.INTERFACE.equals(requestOrThrow(otherSurrounding, SHADOW_GET_KIND)))
+      if (otherSurrounding instanceof C_Interface otherSurroundingInterface)
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC))
          {
             return false;
          }
 
-         if (!C_TypeKind.CLASS.equals(requestOrThrow(getSurrounding(), SHADOW_GET_KIND)))
+         if (!(getSurrounding() instanceof C_Class surroundingClass))
          {
             return false;
          }
-         C_Interface otherSurroundingInterface = ((C_Interface) otherSurrounding);
-         C_Class surroundingClass = ((C_Class) getSurrounding());
          if (!requestOrThrow(surroundingClass, DECLARED_GET_INTERFACES).contains(otherSurroundingInterface))
          {
             return false;

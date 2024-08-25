@@ -6,14 +6,10 @@ import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.LM_QualifiedNameable;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Directive;
 import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.structure.C_Module;
 
 import java.util.List;
 import java.util.Optional;
-
-import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface LM_Module extends C_Module,
                                    LM_Annotationable,
@@ -49,7 +45,6 @@ public interface LM_Module extends C_Module,
    default List<LM_Annotationable> getAnnotations()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
                           .map(declared -> ((LM_Annotationable) declared))
                           .toList();
    }
@@ -67,7 +62,7 @@ public interface LM_Module extends C_Module,
    default List<LM_Class> getClasses()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof LM_Class)
                           .map(declared -> ((LM_Class) declared))
                           .toList();
    }
@@ -85,7 +80,7 @@ public interface LM_Module extends C_Module,
    default List<LM_Enum> getEnums()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof LM_Enum)
                           .map(declared -> ((LM_Enum) declared))
                           .toList();
    }
@@ -103,7 +98,7 @@ public interface LM_Module extends C_Module,
    default List<LM_Interface> getInterfaces()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof LM_Interface)
                           .map(declared -> ((LM_Interface) declared))
                           .toList();
    }
@@ -121,7 +116,7 @@ public interface LM_Module extends C_Module,
    default List<LM_Record> getRecords()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof LM_Record)
                           .map(declared -> ((LM_Record) declared))
                           .toList();
    }

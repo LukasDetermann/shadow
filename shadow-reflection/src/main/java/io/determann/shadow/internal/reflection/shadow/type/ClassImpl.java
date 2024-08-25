@@ -9,6 +9,7 @@ import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.reflection.shadow.structure.PropertyImpl;
@@ -95,11 +96,12 @@ public class ClassImpl extends DeclaredImpl implements R_Class
    @Override
    public R_Primitive asUnboxed()
    {
-      if (!getKind().isPrimitive())
+      R_Shadow generalized = R_Adapter.generalize(getReflection());
+      if (!(generalized instanceof C_Primitive))
       {
          throw new IllegalArgumentException();
       }
-      return R_Adapter.generalize(getReflection());
+      return (R_Primitive) generalized;
    }
 
    @Override

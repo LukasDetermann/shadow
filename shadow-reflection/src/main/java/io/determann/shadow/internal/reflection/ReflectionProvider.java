@@ -25,7 +25,6 @@ public class ReflectionProvider extends AbstractProvider
    {
       builder.with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
              .with(QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
-             .with(SHADOW_GET_KIND, shadow -> query(shadow).getKind())
              .with(SHADOW_REPRESENTS_SAME_TYPE, (shadow, shadow2) -> query(shadow).representsSameType(shadow2))
              .withOptional(WILDCARD_GET_EXTENDS, wildcard -> query(wildcard).getExtends())
              .withOptional(WILDCARD_GET_SUPER, wildcard -> query(wildcard).getSuper())

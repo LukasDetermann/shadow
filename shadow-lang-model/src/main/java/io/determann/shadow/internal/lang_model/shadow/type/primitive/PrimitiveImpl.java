@@ -5,7 +5,6 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.*;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
@@ -15,7 +14,6 @@ import javax.lang.model.type.PrimitiveType;
 
 public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 {
-   private final C_TypeKind typeKind;
    private final String name;
 
    public static class LM_booleanImpl extends PrimitiveImpl implements LM_boolean
@@ -23,7 +21,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_booleanImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.BOOLEAN, "boolean");
+         super(context, primitiveTypeMirror, "boolean");
       }
    }
 
@@ -32,7 +30,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_byteImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.BYTE, "byte");
+         super(context, primitiveTypeMirror, "byte");
       }
    }
 
@@ -41,7 +39,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_charImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.CHAR, "char");
+         super(context, primitiveTypeMirror, "char");
       }
    }
 
@@ -50,7 +48,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_doubleImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.DOUBLE, "double");
+         super(context, primitiveTypeMirror, "double");
       }
    }
 
@@ -59,7 +57,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_floatImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.FLOAT, "float");
+         super(context, primitiveTypeMirror, "float");
       }
    }
 
@@ -68,7 +66,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_intImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.INT, "int");
+         super(context, primitiveTypeMirror, "int");
       }
    }
 
@@ -77,7 +75,7 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_longImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.LONG, "long");
+         super(context, primitiveTypeMirror, "long");
       }
    }
 
@@ -86,14 +84,13 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
 
       public LM_shortImpl(LM_Context context, PrimitiveType primitiveTypeMirror)
       {
-         super(context, primitiveTypeMirror, C_TypeKind.SHORT, "short");
+         super(context, primitiveTypeMirror, "short");
       }
    }
 
-   protected PrimitiveImpl(LM_Context context, PrimitiveType primitiveTypeMirror, C_TypeKind typeKind, String name)
+   protected PrimitiveImpl(LM_Context context, PrimitiveType primitiveTypeMirror, String name)
    {
       super(context, primitiveTypeMirror);
-      this.typeKind = typeKind;
       this.name = name;
    }
 
@@ -110,12 +107,6 @@ public abstract class PrimitiveImpl extends ShadowImpl<PrimitiveType>
    public LM_Class asBoxed()
    {
       return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return typeKind;
    }
 
    public String getName()

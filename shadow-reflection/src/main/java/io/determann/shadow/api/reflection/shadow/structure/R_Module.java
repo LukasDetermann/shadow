@@ -5,14 +5,10 @@ import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.R_QualifiedNameable;
 import io.determann.shadow.api.reflection.shadow.directive.R_Directive;
 import io.determann.shadow.api.reflection.shadow.type.*;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.structure.C_Module;
 
 import java.util.List;
 import java.util.Optional;
-
-import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface R_Module extends C_Module,
                                   R_Annotationable,
@@ -47,7 +43,7 @@ public interface R_Module extends C_Module,
    default List<R_Annotation> getAnnotations()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.ANNOTATION.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof R_Annotation)
                           .map(declared -> ((R_Annotation) declared))
                           .toList();
    }
@@ -65,7 +61,7 @@ public interface R_Module extends C_Module,
    default List<R_Class> getClasses()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.CLASS.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof R_Class)
                           .map(declared -> ((R_Class) declared))
                           .toList();
    }
@@ -83,7 +79,7 @@ public interface R_Module extends C_Module,
    default List<R_Enum> getEnums()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.ENUM.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof R_Enum)
                           .map(declared -> ((R_Enum) declared))
                           .toList();
    }
@@ -101,7 +97,7 @@ public interface R_Module extends C_Module,
    default List<R_Interface> getInterfaces()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof R_Interface)
                           .map(declared -> ((R_Interface) declared))
                           .toList();
    }
@@ -119,7 +115,7 @@ public interface R_Module extends C_Module,
    default List<R_Record> getRecords()
    {
       return getDeclared().stream()
-                          .filter(declared -> C_TypeKind.RECORD.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                          .filter(declared -> declared instanceof R_Record)
                           .map(declared -> ((R_Record) declared))
                           .toList();
    }

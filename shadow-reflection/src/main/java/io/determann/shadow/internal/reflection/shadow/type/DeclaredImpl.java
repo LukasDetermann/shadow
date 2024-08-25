@@ -2,19 +2,13 @@ package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.R_Nameable;
-import io.determann.shadow.api.reflection.shadow.R_QualifiedNameable;
 import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Interface;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
 import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.util.*;
@@ -27,11 +21,7 @@ import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEME
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public abstract class DeclaredImpl implements R_Declared,
-                                              R_Nameable,
-                                              R_Shadow,
-                                              R_QualifiedNameable,
-                                              R_ModuleEnclosed
+public abstract class DeclaredImpl implements R_Declared
 {
    private final Class<?> aClass;
 
@@ -98,9 +88,7 @@ public abstract class DeclaredImpl implements R_Declared,
 
    private int getModifiersAsInt()
    {
-      C_TypeKind typeKind = getKind();
-
-      if (typeKind.equals(C_TypeKind.INTERFACE) || typeKind.equals(C_TypeKind.ANNOTATION))
+      if (this instanceof C_Interface || this instanceof C_Annotation)
       {
          return getaClass().getModifiers() & java.lang.reflect.Modifier.interfaceModifiers();
       }
@@ -154,7 +142,7 @@ public abstract class DeclaredImpl implements R_Declared,
             .map(R_Declared.class::cast)
             .ifPresent(result::add);
 
-      if (result.isEmpty() && isKind(C_TypeKind.INTERFACE))
+      if (result.isEmpty() && this instanceof R_Interface)
       {
          result.add(new ClassImpl(Object.class));
       }
@@ -182,7 +170,7 @@ public abstract class DeclaredImpl implements R_Declared,
    public List<R_Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                            .filter(declared -> declared instanceof R_Interface)
                             .map(R_Interface.class::cast)
                             .toList();
    }
@@ -209,29 +197,6 @@ public abstract class DeclaredImpl implements R_Declared,
    public R_Array asArray()
    {
       return R_Adapter.generalize(aClass.arrayType());
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      if (getaClass().isEnum())
-      {
-         return C_TypeKind.ENUM;
-      }
-      //care. an annotation is a interface
-      if (getaClass().isAnnotation())
-      {
-         return C_TypeKind.ANNOTATION;
-      }
-      if (getaClass().isInterface())
-      {
-         return C_TypeKind.INTERFACE;
-      }
-      if (getaClass().isRecord())
-      {
-         return C_TypeKind.RECORD;
-      }
-      return C_TypeKind.CLASS;
    }
 
    private boolean sameGenerics(List<C_Generic> generics, List<C_Generic> generics1)
@@ -261,8 +226,7 @@ public abstract class DeclaredImpl implements R_Declared,
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(),
-                          getQualifiedName(),
+      return Objects.hash(getQualifiedName(),
                           getModifiers());
    }
 
@@ -278,7 +242,6 @@ public abstract class DeclaredImpl implements R_Declared,
          return false;
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
-             Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              requestOrEmpty(otherDeclared, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 

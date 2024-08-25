@@ -2,12 +2,11 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.shadow.*;
+import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Shadow;
@@ -27,11 +26,7 @@ import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 
-public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declared,
-                                                                      LM_Nameable,
-                                                                      LM_QualifiedNameable,
-                                                                      LM_ModuleEnclosed,
-                                                                      LM_Documented
+public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declared
 {
    private final TypeElement typeElement;
 
@@ -57,20 +52,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
    public boolean isSubtypeOf(C_Shadow shadow)
    {
       return LM_Adapter.getTypes(getApi()).isSubtype(getMirror(), LM_Adapter.particularType((LM_Declared) shadow));
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return switch (getElement().getKind())
-      {
-         case ENUM -> C_TypeKind.ENUM;
-         case CLASS -> C_TypeKind.CLASS;
-         case INTERFACE -> C_TypeKind.INTERFACE;
-         case ANNOTATION_TYPE -> C_TypeKind.ANNOTATION;
-         case RECORD -> C_TypeKind.RECORD;
-         default -> throw new IllegalStateException();
-      };
    }
 
    public TypeElement getElement()
@@ -173,7 +154,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
    public List<LM_Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> C_TypeKind.INTERFACE.equals(requestOrThrow(declared, SHADOW_GET_KIND)))
+                            .filter(declared -> declared instanceof LM_Interface)
                             .map(LM_Interface.class::cast)
                             .toList();
    }
@@ -223,8 +204,7 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
    @Override
    public int hashCode()
    {
-      return Objects.hash(getKind(),
-                          getQualifiedName(),
+      return Objects.hash(getQualifiedName(),
                           getModifiers());
    }
 
@@ -240,7 +220,6 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
          return false;
       }
       return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
-             Objects.equals(getKind(), requestOrThrow(otherDeclared, SHADOW_GET_KIND)) &&
              requestOrEmpty(otherDeclared, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }
 }

@@ -5,101 +5,86 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.primitive.*;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Shadow;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
+import io.determann.shadow.api.shadow.type.primitive.*;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.reflection.shadow.type.ClassImpl;
 
-import static io.determann.shadow.api.Operations.SHADOW_GET_KIND;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.shadow.C_TypeKind.*;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public abstract class PrimitiveImpl implements ImplementationDefined
 {
    private final Class<?> aClass;
    private final Class<?> boxedClass;
-   private final C_TypeKind typeKind;
+   private final Class<?> primitiveType;
    private final String name;
 
    public static class R_booleanImpl extends PrimitiveImpl implements R_boolean
    {
-
-      public R_booleanImpl(Class<?> aClass)
+      public R_booleanImpl()
       {
-         super(aClass, Boolean.class, BOOLEAN, "boolean");
+         super(Boolean.TYPE, Boolean.class, C_boolean.class, "boolean");
       }
-
    }
+
    public static class R_byteImpl extends PrimitiveImpl implements R_byte
    {
-
-      public R_byteImpl(Class<?> aClass)
+      public R_byteImpl()
       {
-         super(aClass, Byte.class, BYTE, "byte");
+         super(Byte.TYPE, Byte.class, C_boolean.class, "byte");
       }
-
    }
    public static class R_charImpl extends PrimitiveImpl implements R_char
    {
-
-      public R_charImpl(Class<?> aClass)
+      public R_charImpl()
       {
-         super(aClass, Character.class, CHAR, "char");
+         super(Character.TYPE, Character.class, C_char.class, "char");
       }
-
    }
+
    public static class R_doubleImpl extends PrimitiveImpl implements R_double
    {
-
-      public R_doubleImpl(Class<?> aClass)
+      public R_doubleImpl()
       {
-         super(aClass, Double.class, DOUBLE, "double");
+         super(Double.TYPE, Double.class, C_double.class, "double");
       }
-
    }
+
    public static class R_floatImpl extends PrimitiveImpl implements R_float
    {
-
-      public R_floatImpl(Class<?> aClass)
+      public R_floatImpl()
       {
-         super(aClass, Float.class, FLOAT, "float");
+         super(Float.TYPE, Float.class, C_float.class, "float");
       }
-
    }
+
    public static class R_intImpl extends PrimitiveImpl implements R_int
    {
-
-      public R_intImpl(Class<?> aClass)
+      public R_intImpl()
       {
-         super(aClass, Integer.class, INT, "int");
+         super(Integer.TYPE, Integer.class, C_int.class, "int");
       }
-
    }
+
    public static class R_longImpl extends PrimitiveImpl implements R_long
    {
-
-      public R_longImpl(Class<?> aClass)
+      public R_longImpl()
       {
-         super(aClass, Long.class, LONG, "long");
+         super(Long.TYPE, Long.class, C_long.class, "long");
       }
-
    }
    public static class R_shortImpl extends PrimitiveImpl implements R_short
    {
-
-      public R_shortImpl(Class<?> aClass)
+      public R_shortImpl()
       {
-         super(aClass, Short.class, SHORT, "short");
+         super(Short.TYPE, Short.class, C_short.class, "short");
       }
-
    }
 
-   protected PrimitiveImpl(Class<?> aClass, Class<?> boxedClass, C_TypeKind typeKind, String name)
+   protected PrimitiveImpl(Class<?> aClass, Class<?> boxedClass, Class<?> primitiveType, String name)
    {
+      this.primitiveType = primitiveType;
       this.boxedClass = boxedClass;
-      this.typeKind = typeKind;
       this.name = name;
       this.aClass = aClass;
    }
@@ -121,12 +106,7 @@ public abstract class PrimitiveImpl implements ImplementationDefined
 
    public boolean representsSameType(C_Shadow shadow)
    {
-      return getKind().equals(requestOrThrow(shadow, SHADOW_GET_KIND));
-   }
-
-   public C_TypeKind getKind()
-   {
-      return typeKind;
+      return primitiveType.isInstance(shadow);
    }
 
    public Class<?> getaClass()

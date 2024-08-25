@@ -5,7 +5,6 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
-import io.determann.shadow.api.shadow.C_TypeKind;
 import io.determann.shadow.api.shadow.type.C_Shadow;
 import io.determann.shadow.api.shadow.type.C_Wildcard;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
@@ -20,12 +19,6 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements C_Wildcard
    public WildcardImpl(LM_Context context, WildcardType wildcardTypeMirror)
    {
       super(context, wildcardTypeMirror);
-   }
-
-   @Override
-   public C_TypeKind getKind()
-   {
-      return C_TypeKind.WILDCARD;
    }
 
    @Override
