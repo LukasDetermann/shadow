@@ -18,7 +18,7 @@ public interface R_Interface extends C_Interface,
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<R_Shadow> getGenericTypes();
+   List<R_Type> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}

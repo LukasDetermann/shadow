@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WildcardTest extends ShadowTest<LM_Wildcard>
+class WildcardTest extends TypeTest<LM_Wildcard>
 {
    WildcardTest()
    {
@@ -85,9 +85,9 @@ class WildcardTest extends ShadowTest<LM_Wildcard>
    {
       ProcessorTest.process(context ->
                             {
-                               assertFalse(getShadowSupplier().apply(context).representsSameType(getShadowSupplier().apply(context)));
-                               assertFalse(getShadowSupplier().apply(context)
-                                                 .representsSameType(context.getClassOrThrow("java.util.jar.Attributes")));
+                               assertFalse(getTypeSupplier().apply(context).representsSameType(getTypeSupplier().apply(context)));
+                               assertFalse(getTypeSupplier().apply(context)
+                                                            .representsSameType(context.getClassOrThrow("java.util.jar.Attributes")));
                             })
                    .compile();
    }

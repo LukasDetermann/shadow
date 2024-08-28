@@ -1,7 +1,7 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
 import io.determann.shadow.api.shadow.type.C_Enum;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.MODULE_ENCLOSED_GET_MODULE;
@@ -24,7 +24,7 @@ public class EnumSupport
       return DeclaredSupport.toString(anEnum, C_Enum.class);
    }
 
-   public static boolean representsSameType(C_Enum anEnum, C_Shadow other)
+   public static boolean representsSameType(C_Enum anEnum, C_Type other)
    {
       return SupportSupport.representsSameType(anEnum, C_Enum.class, other,
                                                MODULE_ENCLOSED_GET_MODULE,

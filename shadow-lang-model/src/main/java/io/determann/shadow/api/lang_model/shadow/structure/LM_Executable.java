@@ -8,7 +8,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.LM_Modifiable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -61,9 +61,9 @@ public sealed interface LM_Executable
     */
    LM_Return getReturn();
 
-   LM_Shadow getReturnType();
+   LM_Type getReturnType();
 
-   List<LM_Shadow> getParameterTypes();
+   List<LM_Type> getParameterTypes();
 
    List<LM_Class> getThrows();
 

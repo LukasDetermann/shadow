@@ -4,9 +4,9 @@ import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import java.lang.reflect.TypeVariable;
@@ -47,7 +47,7 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public R_Shadow getExtends()
+   public R_Type getExtends()
    {
       java.lang.reflect.Type[] bounds = getTypeVariable().getBounds();
       if (bounds.length == 1)
@@ -58,7 +58,7 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public Optional<R_Shadow> getSuper()
+   public Optional<R_Type> getSuper()
    {
       return Optional.empty();
    }
@@ -78,20 +78,20 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      if (!(shadow instanceof C_Generic generic))
+      if (!(type instanceof C_Generic generic))
       {
          return false;
       }
 
-      C_Shadow aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
-      Optional<C_Shadow> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
+      C_Type aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
+      Optional<C_Type> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
 
-      return requestOrThrow(aExtends, SHADOW_REPRESENTS_SAME_TYPE, getExtends()) &&
+      return requestOrThrow(aExtends, TYPE_REPRESENTS_SAME_TYPE, getExtends()) &&
              ((aSuper.isEmpty() && getSuper().isEmpty()) ||
               (aSuper.isPresent() && getSuper().isPresent()) &&
-              requestOrThrow(aSuper.get(), SHADOW_REPRESENTS_SAME_TYPE, getSuper().get()));
+              requestOrThrow(aSuper.get(), TYPE_REPRESENTS_SAME_TYPE, getSuper().get()));
    }
 
    public TypeVariable<?> getTypeVariable()

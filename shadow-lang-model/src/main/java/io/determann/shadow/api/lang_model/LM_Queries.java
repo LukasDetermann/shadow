@@ -41,9 +41,9 @@ public interface LM_Queries
       return ((LM_Primitive) validate(primitive));
    }
 
-   public static LM_Shadow query(C_Shadow shadow)
+   public static LM_Type query(C_Type type)
    {
-      return ((LM_Shadow) validate(shadow));
+      return ((LM_Type) validate(type));
    }
 
    public static LM_Package query(C_Package aPackage)

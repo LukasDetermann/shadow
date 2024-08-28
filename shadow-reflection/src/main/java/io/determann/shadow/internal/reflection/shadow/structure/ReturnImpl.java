@@ -4,7 +4,7 @@ import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.structure.R_Return;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Return;
 
 import java.lang.reflect.AnnotatedType;
@@ -41,7 +41,7 @@ public class ReturnImpl implements R_Return
    }
 
    @Override
-   public R_Shadow getType()
+   public R_Type getType()
    {
       return R_Adapter.generalize(getAnnotatedType().getType());
    }
@@ -62,7 +62,7 @@ public class ReturnImpl implements R_Return
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherReturn, RETURN_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherReturn, RETURN_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
    }
 
    @Override

@@ -4,7 +4,7 @@ import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Property;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import static io.determann.shadow.implementation.support.internal.SupportProvide
 public class PropertyImpl implements C_Property
 {
    private final String name;
-   private final C_Shadow shadow;
+   private final C_Type type;
    private final C_Field field;
    private final C_Method getter;
    private final C_Method setter;
@@ -33,13 +33,13 @@ public class PropertyImpl implements C_Property
    }
 
    private PropertyImpl(String name,
-                        C_Shadow shadow,
+                        C_Type type,
                         C_Field field,
                         C_Method getter,
                         C_Method setter)
    {
       this.name = name;
-      this.shadow = shadow;
+      this.type = type;
       this.field = field;
       this.getter = getter;
       this.setter = setter;
@@ -50,9 +50,9 @@ public class PropertyImpl implements C_Property
       return name;
    }
 
-   public C_Shadow getType()
+   public C_Type getType()
    {
-      return shadow;
+      return type;
    }
 
    public Optional<C_Field> getField()

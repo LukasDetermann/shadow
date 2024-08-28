@@ -6,7 +6,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.R_Modifiable;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -58,9 +58,9 @@ public sealed interface R_Executable
     */
    R_Return getReturn();
 
-   R_Shadow getReturnType();
+   R_Type getReturnType();
 
-   List<R_Shadow> getParameterTypes();
+   List<R_Type> getParameterTypes();
 
    List<R_Class> getThrows();
 

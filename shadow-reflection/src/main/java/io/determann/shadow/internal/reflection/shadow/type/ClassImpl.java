@@ -5,10 +5,10 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Property;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
@@ -21,17 +21,17 @@ import java.util.Optional;
 
 public class ClassImpl extends DeclaredImpl implements R_Class
 {
-   private final List<R_Shadow> genericShadows;
+   private final List<R_Type> genericTypes;
 
    public ClassImpl(java.lang.Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public ClassImpl(java.lang.Class<?> aClass, List<R_Shadow> genericShadows)
+   public ClassImpl(java.lang.Class<?> aClass, List<R_Type> genericTypes)
    {
       super(aClass);
-      this.genericShadows = genericShadows;
+      this.genericTypes = genericTypes;
    }
 
    @Override
@@ -65,9 +65,9 @@ public class ClassImpl extends DeclaredImpl implements R_Class
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
-      return shadow instanceof C_Declared declared && getaClass().isAssignableFrom(R_Adapter.particularize((R_Declared) declared));
+      return type instanceof C_Declared declared && getaClass().isAssignableFrom(R_Adapter.particularize((R_Declared) declared));
    }
 
    @Override
@@ -82,9 +82,9 @@ public class ClassImpl extends DeclaredImpl implements R_Class
    }
 
    @Override
-   public List<R_Shadow> getGenericTypes()
+   public List<R_Type> getGenericTypes()
    {
-      return genericShadows;
+      return genericTypes;
    }
 
    @Override
@@ -96,7 +96,7 @@ public class ClassImpl extends DeclaredImpl implements R_Class
    @Override
    public R_Primitive asUnboxed()
    {
-      R_Shadow generalized = R_Adapter.generalize(getReflection());
+      R_Type generalized = R_Adapter.generalize(getReflection());
       if (!(generalized instanceof C_Primitive))
       {
          throw new IllegalArgumentException();
@@ -105,9 +105,9 @@ public class ClassImpl extends DeclaredImpl implements R_Class
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return ClassSupport.representsSameType(this, shadow);
+      return ClassSupport.representsSameType(this, type);
    }
 
    @Override

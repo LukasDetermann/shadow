@@ -41,13 +41,13 @@ public class ParameterRendererImpl implements ParameterRenderer
 
       if (requestOrThrow(parameter, PARAMETER_IS_VAR_ARGS))
       {
-         sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
+         sb.append(TypeRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append("... ")
            .append(requestOrThrow(parameter, NAMEABLE_GET_NAME));
       }
       else
       {
-         sb.append(ShadowRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
+         sb.append(TypeRendererImpl.type(context, requestOrThrow(parameter, VARIABLE_GET_TYPE)))
            .append(' ')
            .append(requestOrThrow(parameter, NAMEABLE_GET_NAME));
       }

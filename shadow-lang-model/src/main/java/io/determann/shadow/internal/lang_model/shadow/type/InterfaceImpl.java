@@ -4,7 +4,7 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import javax.lang.model.element.TypeElement;
@@ -30,11 +30,11 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
    }
 
    @Override
-   public List<LM_Shadow> getGenericTypes()
+   public List<LM_Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
    }
 

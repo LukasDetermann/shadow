@@ -1,7 +1,7 @@
 package io.determann.shadow.api.lang_model.shadow;
 
 import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public sealed interface LM_AnnotationValue extends C_AnnotationValue
    non-sealed interface TypeValue extends LM_AnnotationValue
    {
       @Override
-      LM_Shadow getValue();
+      LM_Type getValue();
    }
 
    non-sealed interface EnumConstantValue extends LM_AnnotationValue

@@ -10,7 +10,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.shadow.directive.C_Provides;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.internal.lang_model.shadow.directive.*;
 
 import javax.lang.model.element.ModuleElement;
@@ -133,7 +133,7 @@ public class ModuleImpl implements LM_Module
                                               directives.stream()
                                                         .filter(C_Provides.class::isInstance)
                                                         .map(C_Provides.class::cast)
-                                                        .filter(collected -> query((C_Shadow) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
+                                                        .filter(collected -> query((C_Type) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
                                                         .findAny();
 
                                         if (existing.isEmpty())

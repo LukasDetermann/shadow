@@ -9,6 +9,6 @@ package io.determann.shadow.api.shadow.type;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface C_Wildcard extends C_Shadow
+public interface C_Wildcard extends C_Type
 {
 }

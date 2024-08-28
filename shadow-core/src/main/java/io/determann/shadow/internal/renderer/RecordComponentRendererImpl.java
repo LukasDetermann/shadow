@@ -38,7 +38,7 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
                                   .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
                                   .collect(Collectors.joining()));
       }
-      sb.append(ShadowRendererImpl.type(context, requestOrThrow(recordComponent, RECORD_COMPONENT_GET_TYPE)))
+      sb.append(TypeRendererImpl.type(context, requestOrThrow(recordComponent, RECORD_COMPONENT_GET_TYPE)))
         .append(' ')
         .append(requestOrThrow(recordComponent, NAMEABLE_GET_NAME));
 

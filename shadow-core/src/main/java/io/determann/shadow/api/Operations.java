@@ -14,21 +14,21 @@ import java.util.Set;
 
 public interface Operations
 {
-   public static Operation1<C_Shadow, C_Shadow, Boolean> SHADOW_REPRESENTS_SAME_TYPE = new Operation1<>("shadow.representsSameType");
+   public static Operation1<C_Type, C_Type, Boolean> TYPE_REPRESENTS_SAME_TYPE = new Operation1<>("type.representsSameType");
 
    public static Operation0<C_Nameable, String> NAMEABLE_GET_NAME = new Operation0<>("nameable.getName");
 
    public static Operation0<C_QualifiedNameable, String> QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME = new Operation0<>("qualifiedNameable.getQualifiedName");
 
-   public static Operation0<C_Wildcard, C_Shadow> WILDCARD_GET_EXTENDS = new Operation0<>("wildcard.getExtends");
+   public static Operation0<C_Wildcard, C_Type> WILDCARD_GET_EXTENDS = new Operation0<>("wildcard.getExtends");
 
-   public static Operation0<C_Wildcard, C_Shadow> WILDCARD_GET_SUPER = new Operation0<>("wildcard.getSuper");
+   public static Operation0<C_Wildcard, C_Type> WILDCARD_GET_SUPER = new Operation0<>("wildcard.getSuper");
 
-   public static Operation0<C_Primitive, C_Shadow> PRIMITIVE_AS_BOXED = new Operation0<>("primitive.asBoxed");
+   public static Operation0<C_Primitive, C_Type> PRIMITIVE_AS_BOXED = new Operation0<>("primitive.asBoxed");
 
-   public static Operation1<C_Primitive, C_Shadow, Boolean> PRIMITIVE_IS_SUBTYPE_OF = new Operation1<>("primitive.isSubtypeOf");
+   public static Operation1<C_Primitive, C_Type, Boolean> PRIMITIVE_IS_SUBTYPE_OF = new Operation1<>("primitive.isSubtypeOf");
 
-   public static Operation1<C_Primitive, C_Shadow, Boolean> PRIMITIVE_IS_ASSIGNABLE_FROM = new Operation1<>("primitive.isAssignableFrom");
+   public static Operation1<C_Primitive, C_Type, Boolean> PRIMITIVE_IS_ASSIGNABLE_FROM = new Operation1<>("primitive.isAssignableFrom");
 
    public static Operation0<C_Package, Boolean> PACKAGE_IS_UNNAMED = new Operation0<>("package.isUnnamed");
 
@@ -38,7 +38,7 @@ public interface Operations
 
    public static Operation0<C_ModuleEnclosed, C_Module> MODULE_ENCLOSED_GET_MODULE = new Operation0<>("moduleEnclosed.getModule");
 
-   public static Operation1<C_Declared, C_Shadow, Boolean> DECLARED_IS_SUBTYPE_OF = new Operation1<>("declared.isSubtypeOf");
+   public static Operation1<C_Declared, C_Type, Boolean> DECLARED_IS_SUBTYPE_OF = new Operation1<>("declared.isSubtypeOf");
 
    public static Operation0<C_Declared, C_NestingKind> DECLARED_GET_NESTING = new Operation0<>("declared.getNesting");
 
@@ -72,7 +72,7 @@ public interface Operations
 
    public static Operation0<C_Interface, Boolean> INTERFACE_IS_FUNCTIONAL = new Operation0<>("Interface.isFunctional");
 
-   public static Operation0<C_Interface, List<? extends C_Shadow>> INTERFACE_GET_GENERIC_TYPES = new Operation0<>("interface.getGenericTypes");
+   public static Operation0<C_Interface, List<? extends C_Type>> INTERFACE_GET_GENERIC_TYPES = new Operation0<>("interface.getGenericTypes");
 
    public static Operation0<C_Interface, List<? extends C_Generic>> INTERFACE_GET_GENERICS = new Operation0<>("interface.getGenerics");
 
@@ -80,7 +80,7 @@ public interface Operations
 
    public static Operation1<C_Record, String, C_RecordComponent> RECORD_GET_RECORD_COMPONENT = new Operation1<>("record.getRecordComponent");
 
-   public static Operation0<C_Record, List<? extends C_Shadow>> RECORD_GET_GENERIC_TYPES = new Operation0<>("record.getGenericTypes");
+   public static Operation0<C_Record, List<? extends C_Type>> RECORD_GET_GENERIC_TYPES = new Operation0<>("record.getGenericTypes");
 
    public static Operation0<C_Record, List<? extends C_Generic>> RECORD_GET_GENERICS = new Operation0<>("record.getGenerics");
 
@@ -90,21 +90,21 @@ public interface Operations
 
    public static Operation0<C_Class, List<? extends C_Property>> CLASS_GET_PROPERTIES = new Operation0<>("class.getProperties");
 
-   public static Operation1<C_Class, C_Shadow, Boolean> CLASS_IS_ASSIGNABLE_FROM = new Operation1<>("class.isAssignableFrom");
+   public static Operation1<C_Class, C_Type, Boolean> CLASS_IS_ASSIGNABLE_FROM = new Operation1<>("class.isAssignableFrom");
 
    public static Operation0<C_Class, C_Declared> CLASS_GET_OUTER_TYPE = new Operation0<>("class.getOuterType");
 
-   public static Operation0<C_Class, List<? extends C_Shadow>> CLASS_GET_GENERIC_TYPES = new Operation0<>("class.getGenericTypes");
+   public static Operation0<C_Class, List<? extends C_Type>> CLASS_GET_GENERIC_TYPES = new Operation0<>("class.getGenericTypes");
 
    public static Operation0<C_Class, List<? extends C_Generic>> CLASS_GET_GENERICS = new Operation0<>("class.getGenerics");
 
    public static Operation0<C_Class, C_Primitive> CLASS_AS_UNBOXED = new Operation0<>("class.asUnboxed");
 
-   public static Operation1<C_Array, C_Shadow, Boolean> ARRAY_IS_SUBTYPE_OF = new Operation1<>("array.isSubtypeOf");
+   public static Operation1<C_Array, C_Type, Boolean> ARRAY_IS_SUBTYPE_OF = new Operation1<>("array.isSubtypeOf");
 
-   public static Operation0<C_Array, C_Shadow> ARRAY_GET_COMPONENT_TYPE = new Operation0<>("array.getComponentType");
+   public static Operation0<C_Array, C_Type> ARRAY_GET_COMPONENT_TYPE = new Operation0<>("array.getComponentType");
 
-   public static Operation0<C_Array, List<? extends C_Shadow>> ARRAY_GET_DIRECT_SUPER_TYPES = new Operation0<>("array.getDirectSuperTypes");
+   public static Operation0<C_Array, List<? extends C_Type>> ARRAY_GET_DIRECT_SUPER_TYPES = new Operation0<>("array.getDirectSuperTypes");
 
    public static Operation0<C_EnumConstant, C_Enum> ENUM_CONSTANT_GET_SURROUNDING = new Operation0<>("enumConstant.getSurrounding");
 
@@ -118,11 +118,11 @@ public interface Operations
 
    public static Operation0<C_Parameter, C_Executable> PARAMETER_GET_SURROUNDING = new Operation0<>("parameter.getSurrounding");
 
-   public static Operation1<C_Variable, C_Shadow, Boolean> VARIABLE_IS_SUBTYPE_OF = new Operation1<>("variable.isSubtypeOf");
+   public static Operation1<C_Variable, C_Type, Boolean> VARIABLE_IS_SUBTYPE_OF = new Operation1<>("variable.isSubtypeOf");
 
-   public static Operation1<C_Variable, C_Shadow, Boolean> VARIABLE_IS_ASSIGNABLE_FROM = new Operation1<>("variable.isAssignableFrom");
+   public static Operation1<C_Variable, C_Type, Boolean> VARIABLE_IS_ASSIGNABLE_FROM = new Operation1<>("variable.isAssignableFrom");
 
-   public static Operation0<C_Variable, C_Shadow> VARIABLE_GET_TYPE = new Operation0<>("variable.getType");
+   public static Operation0<C_Variable, C_Type> VARIABLE_GET_TYPE = new Operation0<>("variable.getType");
 
    public static Operation0<C_Variable, C_Package> VARIABLE_GET_PACKAGE = new Operation0<>("variable.getPackage");
 
@@ -134,9 +134,9 @@ public interface Operations
 
    public static Operation0<C_Executable, C_Return> EXECUTABLE_GET_RETURN = new Operation0<>("executable.getReturn");
 
-   public static Operation0<C_Executable, C_Shadow> EXECUTABLE_GET_RETURN_TYPE = new Operation0<>("executable.getReturnType");
+   public static Operation0<C_Executable, C_Type> EXECUTABLE_GET_RETURN_TYPE = new Operation0<>("executable.getReturnType");
 
-   public static Operation0<C_Executable, List<? extends C_Shadow>> EXECUTABLE_GET_PARAMETER_TYPES = new Operation0<>("executable.getParameterTypes");
+   public static Operation0<C_Executable, List<? extends C_Type>> EXECUTABLE_GET_PARAMETER_TYPES = new Operation0<>("executable.getParameterTypes");
 
    public static Operation0<C_Executable, List<? extends C_Class>> EXECUTABLE_GET_THROWS = new Operation0<>("executable.getThrows");
 
@@ -160,27 +160,27 @@ public interface Operations
 
    public static Operation0<C_Method, Boolean> METHOD_IS_BRIDGE = new Operation0<>("method.isBridge");
 
-   public static Operation1<C_RecordComponent, C_Shadow, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new Operation1<>("recordComponent.isSubtypeOf");
+   public static Operation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new Operation1<>("recordComponent.isSubtypeOf");
 
-   public static Operation1<C_RecordComponent, C_Shadow, Boolean> RECORD_COMPONENT_IS_ASSIGNABLE_FROM = new Operation1<>("recordComponent.isAssignableFrom");
+   public static Operation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_ASSIGNABLE_FROM = new Operation1<>("recordComponent.isAssignableFrom");
 
    public static Operation0<C_RecordComponent, C_Record> RECORD_COMPONENT_GET_RECORD = new Operation0<>("RecordComponent.getRecord");
 
-   public static Operation0<C_RecordComponent, C_Shadow> RECORD_COMPONENT_GET_TYPE = new Operation0<>("recordComponent.getType");
+   public static Operation0<C_RecordComponent, C_Type> RECORD_COMPONENT_GET_TYPE = new Operation0<>("recordComponent.getType");
 
    public static Operation0<C_RecordComponent, C_Method> RECORD_COMPONENT_GET_GETTER = new Operation0<>("recordComponent.getGetter");
 
    public static Operation0<C_RecordComponent, C_Package> RECORD_COMPONENT_GET_PACKAGE = new Operation0<>("recordComponent.getPackage");
 
-   public static Operation0<C_Return, C_Shadow> RETURN_GET_TYPE = new Operation0<>("return.getType");
+   public static Operation0<C_Return, C_Type> RETURN_GET_TYPE = new Operation0<>("return.getType");
 
-   public static Operation0<C_Receiver, C_Shadow> RECEIVER_GET_TYPE = new Operation0<>("receiver.getType");
+   public static Operation0<C_Receiver, C_Type> RECEIVER_GET_TYPE = new Operation0<>("receiver.getType");
 
-   public static Operation0<C_Intersection, List<? extends C_Shadow>> INTERSECTION_GET_BOUNDS = new Operation0<>("intersection.getBounds");
+   public static Operation0<C_Intersection, List<? extends C_Type>> INTERSECTION_GET_BOUNDS = new Operation0<>("intersection.getBounds");
 
-   public static Operation0<C_Generic, C_Shadow> GENERIC_GET_EXTENDS = new Operation0<>("generic.getExtends");
+   public static Operation0<C_Generic, C_Type> GENERIC_GET_EXTENDS = new Operation0<>("generic.getExtends");
 
-   public static Operation0<C_Generic, C_Shadow> GENERIC_GET_SUPER = new Operation0<>("generic.getSuper");
+   public static Operation0<C_Generic, C_Type> GENERIC_GET_SUPER = new Operation0<>("generic.getSuper");
 
    public static Operation0<C_Generic, Object> GENERIC_GET_ENCLOSING = new Operation0<>("generic.getEnclosing");
 
@@ -254,7 +254,7 @@ public interface Operations
 
    public static Operation0<C_Property, String> PROPERTY_GET_NAME = new Operation0<>("property.getName");
 
-   public static Operation0<C_Property, C_Shadow> PROPERTY_GET_TYPE = new Operation0<>("property.getType");
+   public static Operation0<C_Property, C_Type> PROPERTY_GET_TYPE = new Operation0<>("property.getType");
 
    public static Operation0<C_Property, C_Field> PROPERTY_GET_FIELD = new Operation0<>("property.getField");
 

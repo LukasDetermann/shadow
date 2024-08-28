@@ -3,9 +3,9 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.C_Wildcard;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
 
@@ -13,8 +13,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import java.util.Optional;
 
-public class WildcardImpl extends ShadowImpl<WildcardType> implements C_Wildcard,
-                                                                      LM_Wildcard
+public class WildcardImpl extends TypeImpl<WildcardType> implements C_Wildcard,
+                                                                    LM_Wildcard
 {
    public WildcardImpl(LM_Context context, WildcardType wildcardTypeMirror)
    {
@@ -22,7 +22,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements C_Wildcard
    }
 
    @Override
-   public Optional<LM_Shadow> getExtends()
+   public Optional<LM_Type> getExtends()
    {
       TypeMirror extendsBound = getMirror().getExtendsBound();
       if (extendsBound == null)
@@ -33,7 +33,7 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements C_Wildcard
    }
 
    @Override
-   public Optional<LM_Shadow> getSuper()
+   public Optional<LM_Type> getSuper()
    {
       TypeMirror superBound = getMirror().getSuperBound();
       if (superBound == null)
@@ -44,9 +44,9 @@ public class WildcardImpl extends ShadowImpl<WildcardType> implements C_Wildcard
    }
 
    @Override
-   public boolean contains(C_Shadow shadow)
+   public boolean contains(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).contains(getMirror(), LM_Adapter.particularType((LM_Declared) shadow));
+      return LM_Adapter.getTypes(getApi()).contains(getMirror(), LM_Adapter.particularType((LM_Declared) type));
    }
 
    @Override

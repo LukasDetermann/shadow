@@ -64,12 +64,12 @@ public class MethodRendererImpl implements MethodRenderer
       {
          sb.append('<');
          sb.append(generics.stream()
-                           .map(generic -> ShadowRendererImpl.type(context, generic))
+                           .map(generic -> TypeRendererImpl.type(context, generic))
                            .collect(Collectors.joining(", ")));
          sb.append('>');
          sb.append(' ');
       }
-      sb.append(ShadowRendererImpl.type(context, requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE)));
+      sb.append(TypeRendererImpl.type(context, requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE)));
       sb.append(' ');
       sb.append(requestOrThrow(method, NAMEABLE_GET_NAME));
       sb.append('(');
@@ -78,7 +78,7 @@ public class MethodRendererImpl implements MethodRenderer
       Provider.requestOrEmpty(method, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
-                          sb.append(ShadowRendererImpl.type(context, declared));
+                          sb.append(TypeRendererImpl.type(context, declared));
                           sb.append(' ');
                           sb.append(requestOrThrow(declared, NAMEABLE_GET_NAME));
                           sb.append('.');
@@ -102,7 +102,7 @@ public class MethodRendererImpl implements MethodRenderer
       {
          sb.append(' ');
          sb.append("throws ");
-         sb.append(aThrow.stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
+         sb.append(aThrow.stream().map(aClass -> TypeRendererImpl.type(context, aClass))
                          .collect(Collectors.joining(", ")));
       }
 

@@ -122,7 +122,7 @@ import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.LM_QualifiedNameable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -251,17 +251,17 @@ public class ShadowBuilderProcessor extends AP_Processor
                                  String mutator,
                                  String toBuildSetter) {}
 
-   private static String renderType(LM_Shadow shadow)
+   private static String renderType(LM_Type type)
    {
-      if (shadow instanceof LM_QualifiedNameable qualifiedNameable)
+      if (type instanceof LM_QualifiedNameable qualifiedNameable)
       {
          return qualifiedNameable.getQualifiedName();
       }
-      if (shadow instanceof LM_Nameable nameable)
+      if (type instanceof LM_Nameable nameable)
       {
          return nameable.getName();
       }
-      return shadow.toString();
+      return type.toString();
    }
 }
 ```

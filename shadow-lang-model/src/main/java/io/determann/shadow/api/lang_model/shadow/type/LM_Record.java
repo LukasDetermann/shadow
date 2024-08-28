@@ -25,7 +25,7 @@ public interface LM_Record extends C_Record,
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<LM_Shadow> getGenericTypes();
+   List<LM_Type> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}

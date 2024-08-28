@@ -25,13 +25,13 @@ public class InterpolateGenericsExample
 
                                LM_Class capture = context.interpolateGenerics(withGenerics);
 
-                               LM_Shadow stringRep = Optional.of(capture.getGenericTypes().get(1))
-                                                             .map(LM_Generic.class::cast)
-                                                             .map(LM_Generic::getExtends)
-                                                             .map(LM_Interface.class::cast)
-                                                             .map(LM_Interface::getGenericTypes)
-                                                             .map(shadows -> shadows.get(0))
-                                                             .orElseThrow();
+                               LM_Type stringRep = Optional.of(capture.getGenericTypes().get(1))
+                                                           .map(LM_Generic.class::cast)
+                                                           .map(LM_Generic::getExtends)
+                                                           .map(LM_Interface.class::cast)
+                                                           .map(LM_Interface::getGenericTypes)
+                                                           .map(types -> types.get(0))
+                                                           .orElseThrow();
 
                                Assertions.assertEquals(string, stringRep);
                                //@end

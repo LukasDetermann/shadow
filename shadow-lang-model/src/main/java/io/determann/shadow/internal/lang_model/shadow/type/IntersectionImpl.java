@@ -3,13 +3,13 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
 
 import javax.lang.model.type.IntersectionType;
 import java.util.List;
 
-public class IntersectionImpl extends ShadowImpl<IntersectionType> implements LM_Intersection
+public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_Intersection
 {
 
    public IntersectionImpl(LM_Context context, IntersectionType intersectionType)
@@ -18,10 +18,10 @@ public class IntersectionImpl extends ShadowImpl<IntersectionType> implements LM
    }
 
    @Override
-   public List<LM_Shadow> getBounds()
+   public List<LM_Type> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
    }
 

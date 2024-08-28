@@ -22,7 +22,7 @@ public class ArrayRendererImpl implements ArrayRenderer
 
    public static String type(RenderingContextWrapper context, C_Array array)
    {
-      return ShadowRendererImpl.type(context, requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE));
+      return TypeRendererImpl.type(context, requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE));
    }
 
    private static String renderDimensions(C_Array array)

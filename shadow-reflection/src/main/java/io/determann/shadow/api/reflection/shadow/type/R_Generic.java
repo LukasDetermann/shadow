@@ -12,15 +12,15 @@ import java.util.Optional;
  */
 public interface R_Generic extends C_Generic,
                                    R_Annotationable,
-                                   R_Shadow,
+                                   R_Type,
                                    R_Nameable
 {
    /**
     * @see C_Intersection
     */
-   R_Shadow getExtends();
+   R_Type getExtends();
 
-   Optional<R_Shadow> getSuper();
+   Optional<R_Type> getSuper();
 
    /**
     * returns the class, method constructor etc. this is the generic for

@@ -7,7 +7,7 @@ import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Null;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.C_Void;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 import io.determann.shadow.internal.lang_model.annotationvalue.AnnotationUsageImpl;
@@ -47,9 +47,9 @@ public interface LM_Adapter
       return ((ExecutableImpl) executable).getMirror();
    }
 
-   static TypeMirror particularType(LM_Shadow shadow)
+   static TypeMirror particularType(LM_Type type)
    {
-      return ((ShadowImpl) shadow).getMirror();
+      return ((TypeImpl) type).getMirror();
    }
 
    static TypeVariable particularType(LM_Generic generic)
@@ -226,14 +226,14 @@ public interface LM_Adapter
    }
 
    /**
-    * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link C_Shadow}
+    * {@link Element}s represent a usage. so for example a field may have the type {@code List<String>}. When you want the resulting {@link C_Type}
     * to represent {@code List<String>} and not just {@code List<T>} use the {@link Element} to create it.
     *
     * @see #generalize(LM_Context, TypeMirror)
     */
-   static <SHADOW extends LM_Shadow> SHADOW generalize(LM_Context context, Element element)
+   static <TYPE extends LM_Type> TYPE generalize(LM_Context context, Element element)
    {
-      return (SHADOW) switch (element.getKind())
+      return (TYPE) switch (element.getKind())
       {
          case PACKAGE -> new PackageImpl(context, (PackageElement) element);
          case ENUM -> new EnumImpl(context, (TypeElement) element);
@@ -254,10 +254,10 @@ public interface LM_Adapter
     *
     * @see #generalize(LM_Context, Element)
     */
-   static <SHADOW extends LM_Shadow> SHADOW generalize(LM_Context context, TypeMirror typeMirror)
+   static <TYPE extends LM_Type> TYPE generalize(LM_Context context, TypeMirror typeMirror)
    {
       //noinspection unchecked
-      return (SHADOW) switch (typeMirror.getKind())
+      return (TYPE) switch (typeMirror.getKind())
       {
          case BOOLEAN -> new PrimitiveImpl.LM_booleanImpl(context, (PrimitiveType) typeMirror);
          case BYTE -> new PrimitiveImpl.LM_byteImpl(context, (PrimitiveType) typeMirror);

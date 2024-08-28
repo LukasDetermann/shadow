@@ -4,7 +4,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayTest extends ShadowTest<C_Array>
+class ArrayTest extends TypeTest<C_Array>
 {
    ArrayTest()
    {
@@ -61,7 +61,7 @@ class ArrayTest extends ShadowTest<C_Array>
                                LM_Array objectArray = context.asArray(context.getClassOrThrow("java.lang.Object"));
                                LM_Array stringArray = context.asArray(string);
 
-                               List<LM_Shadow> stringArraySupertypes = stringArray.getDirectSuperTypes();
+                               List<LM_Type> stringArraySupertypes = stringArray.getDirectSuperTypes();
                                assertEquals(1, stringArraySupertypes.size());
                                assertEquals(objectArray, stringArraySupertypes.get(0));
 
@@ -71,7 +71,7 @@ class ArrayTest extends ShadowTest<C_Array>
                                LM_Declared cloneable = context.getInterfaceOrThrow("java.lang.Cloneable");
                                List<LM_Declared> primitiveArraySuper = List.of(serializable, cloneable);
 
-                               List<LM_Shadow> directSupertypes = intArray.getDirectSuperTypes();
+                               List<LM_Type> directSupertypes = intArray.getDirectSuperTypes();
                                assertEquals(1, directSupertypes.size());
                                assertEquals(primitiveArraySuper, ((LM_Intersection) directSupertypes.get(0)).getBounds());
                             })

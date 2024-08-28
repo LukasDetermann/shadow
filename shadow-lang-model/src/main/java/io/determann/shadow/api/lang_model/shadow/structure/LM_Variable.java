@@ -5,12 +5,12 @@ import io.determann.shadow.api.lang_model.shadow.LM_Documented;
 import io.determann.shadow.api.lang_model.shadow.LM_ModuleEnclosed;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Modifiable;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Variable;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 /**
  * Can be converted using {@link Converter#convert(LM_Variable)}
@@ -35,18 +35,18 @@ public sealed interface LM_Variable
 {
    /**
     * returns true if this can be cast to that.
-    * This can be useful if you want to check if a shadow implements for example a
-    * {@link java.util.Collection} {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * This can be useful if you want to check if a type implements for example a
+    * {@link java.util.Collection} {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     */
-   boolean isSubtypeOf(C_Shadow shadow);
+   boolean isSubtypeOf(C_Type type);
 
    /**
-    * Equivalent to {@link #isSubtypeOf(C_Shadow)} except for primitives.
+    * Equivalent to {@link #isSubtypeOf(C_Type)} except for primitives.
     * if one is a primitive and the other is not it tries to convert them
     */
-   boolean isAssignableFrom(C_Shadow shadow);
+   boolean isAssignableFrom(C_Type type);
 
-   LM_Shadow getType();
+   LM_Type getType();
 
    LM_Package getPackage();
 

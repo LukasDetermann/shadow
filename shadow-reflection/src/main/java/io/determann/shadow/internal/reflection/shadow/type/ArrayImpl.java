@@ -3,13 +3,13 @@ package io.determann.shadow.internal.reflection.shadow.type;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
@@ -23,11 +23,11 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class ArrayImpl implements R_Array,
-                                  R_Shadow
+                                  R_Type
 {
-   private static final List<R_Shadow> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
-                                                                      new InterfaceImpl(Cloneable.class),
-                                                                      new InterfaceImpl(Serializable.class));
+   private static final List<R_Type> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
+                                                                    new InterfaceImpl(Cloneable.class),
+                                                                    new InterfaceImpl(Serializable.class));
    private final Class<?> array;
 
    public ArrayImpl(Class<?> array)
@@ -36,40 +36,40 @@ public class ArrayImpl implements R_Array,
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
-      C_Shadow componentShadow = getComponentType();
-      if (isPrimitiveOrObject(componentShadow))
+      C_Type componentType = getComponentType();
+      if (isPrimitiveOrObject(componentType))
       {
-         return PRIMITIVE_SUPERTYPES.stream().anyMatch(shadow::equals);
+         return PRIMITIVE_SUPERTYPES.stream().anyMatch(type::equals);
       }
-      if (!(shadow instanceof C_Array otherArray))
+      if (!(type instanceof C_Array otherArray))
       {
          return false;
       }
-      C_Shadow otherComponentShadow = requestOrThrow(otherArray, ARRAY_GET_COMPONENT_TYPE);
+      C_Type otherComponentType = requestOrThrow(otherArray, ARRAY_GET_COMPONENT_TYPE);
 
-      if (componentShadow instanceof C_Array nestedArray && otherComponentShadow instanceof C_Array)
+      if (componentType instanceof C_Array nestedArray && otherComponentType instanceof C_Array)
       {
-         return requestOrThrow(nestedArray, ARRAY_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(nestedArray, ARRAY_IS_SUBTYPE_OF, otherComponentType);
       }
-      if (componentShadow instanceof C_Declared declared)
+      if (componentType instanceof C_Declared declared)
       {
-         return requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, otherComponentType);
       }
-      if (componentShadow instanceof C_RecordComponent recordComponent)
+      if (componentType instanceof C_RecordComponent recordComponent)
       {
-         return requestOrThrow(recordComponent, RECORD_COMPONENT_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(recordComponent, RECORD_COMPONENT_IS_SUBTYPE_OF, otherComponentType);
       }
-      if (componentShadow instanceof C_Variable variable)
+      if (componentType instanceof C_Variable variable)
       {
-         return requestOrThrow(variable, VARIABLE_IS_SUBTYPE_OF, otherComponentShadow);
+         return requestOrThrow(variable, VARIABLE_IS_SUBTYPE_OF, otherComponentType);
       }
       return false;
    }
 
    @Override
-   public R_Shadow getComponentType()
+   public R_Type getComponentType()
    {
       return R_Adapter.generalize(getArray().getComponentType());
    }
@@ -81,28 +81,28 @@ public class ArrayImpl implements R_Array,
    }
 
    @Override
-   public List<R_Shadow> getDirectSuperTypes()
+   public List<R_Type> getDirectSuperTypes()
    {
-      C_Shadow componentShadow = getComponentType();
-      if (isPrimitiveOrObject(componentShadow))
+      C_Type componentType = getComponentType();
+      if (isPrimitiveOrObject(componentType))
       {
          return PRIMITIVE_SUPERTYPES;
       }
-      if (componentShadow instanceof C_Array componentArray)
+      if (componentType instanceof C_Array componentArray)
       {
          return requestOrThrow(componentArray, ARRAY_GET_DIRECT_SUPER_TYPES)
                .stream()
-               .map(shadow ->
+               .map(type ->
                     {
-                       if (shadow instanceof R_Array array)
+                       if (type instanceof R_Array array)
                        {
                           return R_Adapter.particularize(array);
                        }
-                       if (shadow instanceof R_Declared declared)
+                       if (type instanceof R_Declared declared)
                        {
                           return R_Adapter.particularize(declared);
                        }
-                       if (shadow instanceof R_Primitive primitive)
+                       if (type instanceof R_Primitive primitive)
                        {
                           return R_Adapter.particularize(primitive);
                        }
@@ -110,13 +110,13 @@ public class ArrayImpl implements R_Array,
                     })
                .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
                .map(R_Adapter::generalize)
-               .map(R_Shadow.class::cast)
+               .map(R_Type.class::cast)
                .toList();
       }
 
       List<Class<?>> directSuperTypes = new ArrayList<>();
 
-      if (componentShadow instanceof C_Declared declared)
+      if (componentType instanceof C_Declared declared)
       {
          Class<?> reflection = R_Adapter.particularize((R_Declared) declared);
          directSuperTypes.add(reflection.getSuperclass());
@@ -126,21 +126,21 @@ public class ArrayImpl implements R_Array,
       return directSuperTypes.stream()
                              .map(aClass -> java.lang.reflect.Array.newInstance(aClass, 0).getClass())
                              .map(R_Adapter::generalize)
-                             .map(R_Shadow.class::cast)
+                             .map(R_Type.class::cast)
                              .toList();
    }
 
-   private static boolean isPrimitiveOrObject(C_Shadow componentShadow)
+   private static boolean isPrimitiveOrObject(C_Type componentType)
    {
-      return componentShadow instanceof C_Primitive ||
-             componentShadow instanceof C_Declared declared &&
+      return componentType instanceof C_Primitive ||
+             componentType instanceof C_Declared declared &&
              requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang.Object");
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return ArraySupport.representsSameType(this, shadow);
+      return ArraySupport.representsSameType(this, type);
    }
 
    public Class<?> getArray()

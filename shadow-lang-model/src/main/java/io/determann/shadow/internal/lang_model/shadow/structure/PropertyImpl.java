@@ -3,7 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Property;
 
 import java.util.Optional;
@@ -32,9 +32,9 @@ public class PropertyImpl implements LM_Property
    }
 
    @Override
-   public LM_Shadow getType()
+   public LM_Type getType()
    {
-      return (LM_Shadow) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (LM_Type) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override

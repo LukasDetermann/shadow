@@ -22,9 +22,9 @@ class EnumTest extends DeclaredTest<LM_Enum>
    {
       ProcessorTest.process(context ->
                             {
-                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Object")));
-                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(getShadowSupplier().apply(context)));
-                               assertFalse(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
+                               assertTrue(getTypeSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Object")));
+                               assertTrue(getTypeSupplier().apply(context).isSubtypeOf(getTypeSupplier().apply(context)));
+                               assertFalse(getTypeSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
                             }).compile();
    }
 

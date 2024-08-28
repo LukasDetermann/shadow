@@ -8,7 +8,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -56,17 +56,17 @@ public class ExecutableImpl implements LM_Constructor,
    }
 
    @Override
-   public LM_Shadow getReturnType()
+   public LM_Type getReturnType()
    {
       return generalize(getApi(), getMirror().getReturnType());
    }
 
    @Override
-   public List<LM_Shadow> getParameterTypes()
+   public List<LM_Type> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
    }
 

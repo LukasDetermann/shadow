@@ -14,7 +14,7 @@ import io.determann.shadow.api.shadow.modifier.C_StrictfpModifiable;
  *    <li>{@link C_Record}</li>
  * </ul>
  */
-public interface C_Declared extends C_Shadow,
+public interface C_Declared extends C_Type,
                                     C_Annotationable,
                                     C_AccessModifiable,
                                     C_StrictfpModifiable,

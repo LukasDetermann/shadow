@@ -4,7 +4,7 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 
-public class GenericImpl extends ShadowImpl<TypeVariable> implements LM_Generic
+public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
 {
    private final TypeParameterElement typeParameterElement;
 
@@ -32,13 +32,13 @@ public class GenericImpl extends ShadowImpl<TypeVariable> implements LM_Generic
    }
 
    @Override
-   public LM_Shadow getExtends()
+   public LM_Type getExtends()
    {
       return LM_Adapter.generalize(getApi(), getMirror().getUpperBound());
    }
 
    @Override
-   public Optional<LM_Shadow> getSuper()
+   public Optional<LM_Type> getSuper()
    {
       TypeMirror lowerBound = getMirror().getLowerBound();
       if (lowerBound == null || lowerBound.getKind().equals(javax.lang.model.type.TypeKind.NONE))

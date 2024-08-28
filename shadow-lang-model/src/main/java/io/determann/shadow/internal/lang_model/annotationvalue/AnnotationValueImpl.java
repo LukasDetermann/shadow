@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
@@ -250,7 +250,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public LM_Shadow getValue()
+      public LM_Type getValue()
       {
          return LM_Adapter.generalize(context, (TypeMirror) annotationValue.getValue());
       }

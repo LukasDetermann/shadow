@@ -8,11 +8,11 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.structure.R_RecordComponent;
 import io.determann.shadow.api.reflection.shadow.type.R_Record;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.Arrays;
@@ -57,33 +57,33 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Array array)
       {
-         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, type);
       }
       return false;
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
       return false;
    }
@@ -95,7 +95,7 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public R_Shadow getType()
+   public R_Type getType()
    {
       return R_Adapter.generalize(getRecordComponent().getType());
    }
@@ -135,7 +135,7 @@ public class RecordComponentImpl implements R_RecordComponent
          return false;
       }
       return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
    }
 
    public java.lang.reflect.RecordComponent getReflection()

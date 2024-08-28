@@ -96,9 +96,9 @@ public abstract class DeclaredImpl implements R_Declared
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
-      return equals(shadow) || shadow instanceof C_Declared declared && getSuperTypes().contains(declared);
+      return equals(type) || type instanceof C_Declared declared && getSuperTypes().contains(declared);
    }
 
    @Override
@@ -210,7 +210,7 @@ public abstract class DeclaredImpl implements R_Declared
       Iterator<C_Generic> iterator1 = generics1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {
-         if (!requestOrThrow(iterator.next(), SHADOW_REPRESENTS_SAME_TYPE, iterator1.next()))
+         if (!requestOrThrow(iterator.next(), TYPE_REPRESENTS_SAME_TYPE, iterator1.next()))
          {
             return false;
          }

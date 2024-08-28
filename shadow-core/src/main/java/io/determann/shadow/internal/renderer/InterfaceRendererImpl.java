@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +62,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(generics.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(generics.stream().map(type -> TypeRendererImpl.type(context, type)).collect(joining(", ")));
          sb.append('>');
       }
       sb.append(' ');
@@ -97,11 +97,11 @@ public class InterfaceRendererImpl implements InterfaceRenderer
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(anInterface));
 
-      List<? extends C_Shadow> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
+      List<? extends C_Type> genericTypes = requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');
-         sb.append(genericTypes.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(genericTypes.stream().map(type -> TypeRendererImpl.type(context, type)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

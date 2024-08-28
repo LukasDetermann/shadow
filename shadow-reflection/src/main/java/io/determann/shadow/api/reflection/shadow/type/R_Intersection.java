@@ -9,7 +9,7 @@ import java.util.List;
  * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
  *}
  */
-public interface R_Intersection extends R_Shadow,
+public interface R_Intersection extends R_Type,
                                         C_Intersection
 {
    /**
@@ -17,5 +17,5 @@ public interface R_Intersection extends R_Shadow,
     * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
     *}
     */
-   List<R_Shadow> getBounds();
+   List<R_Type> getBounds();
 }

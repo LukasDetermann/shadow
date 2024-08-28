@@ -4,7 +4,7 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Enum;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import javax.lang.model.element.ElementKind;
@@ -38,9 +38,9 @@ public class EnumImpl extends DeclaredImpl implements LM_Enum
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return EnumSupport.representsSameType(this, shadow);
+      return EnumSupport.representsSameType(this, type);
    }
 
    @Override

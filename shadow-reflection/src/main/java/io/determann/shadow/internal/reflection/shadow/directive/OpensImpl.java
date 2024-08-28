@@ -31,7 +31,7 @@ public class OpensImpl implements R_Opens
    {
       return opensDirective.targets()
                            .stream()
-                           .map(R_Adapter::getModuleShadow)
+                           .map(R_Adapter::getModuleType)
                            .toList();
    }
 

@@ -4,7 +4,7 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationValue;
 import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
@@ -241,7 +241,7 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public R_Shadow getValue()
+      public R_Type getValue()
       {
          return R_Adapter.generalize(((Class<?>) annotationValue));
       }

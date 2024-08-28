@@ -6,7 +6,7 @@ import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.C_Void;
 import io.determann.shadow.api.shadow.type.primitive.C_boolean;
 
@@ -89,12 +89,12 @@ public class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C_Shadow shadow = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
+                                      C_Type type = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
 
-                                      PropertyTemplate template = new PropertyTemplate(name, shadow, getter.getMethod());
+                                      PropertyTemplate template = new PropertyTemplate(name, type, getter.getMethod());
 
-                                      findSetter(entry.getValue(), shadow).ifPresent(template::setSetter);
-                                      findField(nameField, shadow, name).ifPresent(template::setField);
+                                      findSetter(entry.getValue(), type).ifPresent(template::setSetter);
+                                      findField(nameField, type, name).ifPresent(template::setField);
 
                                       return new AbstractMap.SimpleEntry<>(getter.getPosition(), template);
                                    })
@@ -124,22 +124,23 @@ public class PropertyTemplateFactory
                     .toList();
    }
 
-   private static Optional<C_Field> findField(Map<String, C_Field> nameField, C_Shadow shadow, String name)
+   private static Optional<C_Field> findField(Map<String, C_Field> nameField, C_Type type, String name)
    {
       C_Field field = nameField.get(name);
-      if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
+      if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), TYPE_REPRESENTS_SAME_TYPE, type))
       {
          return Optional.empty();
       }
       return Optional.of(field);
    }
 
-   private static Optional<C_Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C_Shadow shadow)
+   private static Optional<C_Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C_Type type)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).getMethod(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE), SHADOW_REPRESENTS_SAME_TYPE, shadow))
+          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).getMethod(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE),
+                          TYPE_REPRESENTS_SAME_TYPE, type))
       {
          return Optional.empty();
       }
@@ -176,7 +177,7 @@ public class PropertyTemplateFactory
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME);
       List<? extends C_Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
-      C_Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+      C_Type returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
 
       //getter
       if (!(returnType instanceof C_Void))

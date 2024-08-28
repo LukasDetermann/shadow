@@ -50,7 +50,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    private final RoundEnvironment roundEnv;
    private final int processingRound;
    private final LM_Context langModelContext;
-   private BiConsumer<AP_Context, Throwable> exceptionHandler = (shadowApi, throwable) ->
+   private BiConsumer<AP_Context, Throwable> exceptionHandler = (context, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -58,9 +58,9 @@ public class AnnotationProcessingContextImpl implements AP_Context,
       logAndRaiseError(stringWriter.toString());
       throw new RuntimeException(throwable);
    };
-   private BiConsumer<AP_Context, AP_DiagnosticContext> diagnosticHandler = (shadowApi, diagnosticContext) ->
+   private BiConsumer<AP_Context, AP_DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
    {
-      if (!shadowApi.isProcessingOver())
+      if (!context.isProcessingOver())
       {
          String duration = Duration.between(diagnosticContext.getStart(), diagnosticContext.getEnd()).toString()
                                    .substring(2)
@@ -75,7 +75,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
                  "\n");
       }
    };
-   private BiConsumer<AP_Context, String> systemOutHandler = (shadowApi, s) ->
+   private BiConsumer<AP_Context, String> systemOutHandler = (context, s) ->
    {
       if (!getProcessingEnv().toString().startsWith("javac"))
       {
@@ -560,19 +560,19 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public LM_Class withGenerics(C_Class aClass, C_Shadow... generics)
+   public LM_Class withGenerics(C_Class aClass, C_Type... generics)
    {
       return langModelContext.withGenerics(aClass, generics);
    }
 
    @Override
-   public LM_Interface withGenerics(C_Interface anInterface, C_Shadow... generics)
+   public LM_Interface withGenerics(C_Interface anInterface, C_Type... generics)
    {
       return langModelContext.withGenerics(anInterface, generics);
    }
 
    @Override
-   public LM_Record withGenerics(C_Record aRecord, C_Shadow... generics)
+   public LM_Record withGenerics(C_Record aRecord, C_Type... generics)
    {
       return langModelContext.withGenerics(aRecord, generics);
    }
@@ -602,19 +602,19 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public LM_Shadow erasure(C_Wildcard wildcard)
+   public LM_Type erasure(C_Wildcard wildcard)
    {
       return langModelContext.erasure(wildcard);
    }
 
    @Override
-   public LM_Shadow erasure(C_Generic generic)
+   public LM_Type erasure(C_Generic generic)
    {
       return langModelContext.erasure(generic);
    }
 
    @Override
-   public LM_Shadow erasure(C_Intersection intersection)
+   public LM_Type erasure(C_Intersection intersection)
    {
       return langModelContext.erasure(intersection);
    }
@@ -626,13 +626,13 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public LM_Shadow erasure(C_Parameter parameter)
+   public LM_Type erasure(C_Parameter parameter)
    {
       return langModelContext.erasure(parameter);
    }
 
    @Override
-   public LM_Shadow erasure(C_Field field)
+   public LM_Type erasure(C_Field field)
    {
       return langModelContext.erasure(field);
    }

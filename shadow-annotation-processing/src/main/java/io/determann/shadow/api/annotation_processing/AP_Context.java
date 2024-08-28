@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.shadow.LM_Annotationable;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.type.C_Annotation;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -28,7 +28,7 @@ import java.util.function.BiConsumer;
  * </ul>
  *
  * @see AP_Processor
- * @see C_Shadow
+ * @see C_Type
  */
 public interface AP_Context extends LM_Context
 {

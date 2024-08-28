@@ -8,9 +8,9 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.type.TypeMirror;
@@ -36,15 +36,15 @@ public class RecordComponentImpl implements LM_RecordComponent
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
-      return getTypes(getApi()).isSubtype(getMirror(), particularType((LM_Shadow) shadow));
+      return getTypes(getApi()).isSubtype(getMirror(), particularType((LM_Type) type));
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
-      return getTypes(getApi()).isAssignable(getMirror(), particularType((LM_Shadow) shadow));
+      return getTypes(getApi()).isAssignable(getMirror(), particularType((LM_Type) type));
    }
 
    @Override
@@ -54,7 +54,7 @@ public class RecordComponentImpl implements LM_RecordComponent
    }
 
    @Override
-   public LM_Shadow getType()
+   public LM_Type getType()
    {
       return generalize(getApi(), getElement().asType());
    }
@@ -124,7 +124,7 @@ public class RecordComponentImpl implements LM_RecordComponent
          return false;
       }
       return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
    }
 
    public TypeMirror getMirror()

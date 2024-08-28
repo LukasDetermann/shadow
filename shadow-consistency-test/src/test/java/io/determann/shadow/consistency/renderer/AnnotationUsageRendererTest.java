@@ -5,7 +5,7 @@ import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.consistency.test.ConsistencyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -81,7 +81,7 @@ class AnnotationUsageRendererTest
                                     render(RenderingContext.DEFAULT, annotationUsage)
                                           .usage(method ->
                                                  {
-                                                    C_Shadow returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+                                                    C_Type returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
                                                     if (!(returnType instanceof C_Class aClass))
                                                     {
                                                        return Optional.empty();

@@ -1,7 +1,7 @@
 package io.determann.shadow.implementation.support.api.shadow.type;
 
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import static io.determann.shadow.api.Operations.*;
@@ -23,7 +23,7 @@ public class ClassSupport
       return DeclaredSupport.toString(aClass, C_Class.class);
    }
 
-   public static boolean representsSameType(C_Class aClass, C_Shadow other)
+   public static boolean representsSameType(C_Class aClass, C_Type other)
    {
       return SupportSupport.representsSameType(aClass, C_Class.class, other,
                                                MODULE_ENCLOSED_GET_MODULE,

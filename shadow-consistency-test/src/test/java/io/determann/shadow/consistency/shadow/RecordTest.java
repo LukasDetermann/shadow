@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -27,12 +27,12 @@ class RecordTest extends DeclaredTest<LM_Record>
    {
       ProcessorTest.process(context ->
                             {
-                               LM_RecordComponent idComponent = getShadowSupplier().apply(context).getRecordComponentOrThrow("id");
+                               LM_RecordComponent idComponent = getTypeSupplier().apply(context).getRecordComponentOrThrow("id");
                                assertEquals("id", idComponent.getName());
                                assertEquals(context.getClassOrThrow("java.lang.Long"), idComponent.getType());
 
                                assertThrows(NoSuchElementException.class,
-                                            () -> getShadowSupplier().apply(context).getRecordComponentOrThrow("asdf"));
+                                            () -> getTypeSupplier().apply(context).getRecordComponentOrThrow("asdf"));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -42,7 +42,7 @@ class RecordTest extends DeclaredTest<LM_Record>
    void testGetDirectInterfaces()
    {
       ProcessorTest.process(context -> assertEquals(List.of(context.getInterfaceOrThrow("java.io.Serializable")),
-                                                      getShadowSupplier().apply(context).getDirectInterfaces()))
+                                                    getTypeSupplier().apply(context).getDirectInterfaces()))
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
    }
@@ -53,9 +53,9 @@ class RecordTest extends DeclaredTest<LM_Record>
    {
       ProcessorTest.process(context ->
                             {
-                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Record")));
-                               assertTrue(getShadowSupplier().apply(context).isSubtypeOf(getShadowSupplier().apply(context)));
-                               assertFalse(getShadowSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
+                               assertTrue(getTypeSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Record")));
+                               assertTrue(getTypeSupplier().apply(context).isSubtypeOf(getTypeSupplier().apply(context)));
+                               assertFalse(getTypeSupplier().apply(context).isSubtypeOf(context.getClassOrThrow("java.lang.Number")));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .compile();
@@ -161,20 +161,20 @@ class RecordTest extends DeclaredTest<LM_Record>
                                                                          context.getConstants().getUnboundWildcard());
 
                                LM_Record capture = context.interpolateGenerics(declared);
-                               LM_Shadow interpolated = Optional.of(((LM_Generic) capture.getGenericTypes().get(1)))
-                                                                .map(LM_Generic::getExtends)
-                                                                .map(LM_Interface.class::cast)
-                                                                .map(LM_Interface::getGenericTypes)
-                                                                .map(shadows -> shadows.get(0))
-                                                                .orElseThrow();
+                               LM_Type interpolated = Optional.of(((LM_Generic) capture.getGenericTypes().get(1)))
+                                                              .map(LM_Generic::getExtends)
+                                                              .map(LM_Interface.class::cast)
+                                                              .map(LM_Interface::getGenericTypes)
+                                                              .map(types -> types.get(0))
+                                                              .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
                                LM_Record independentExample = context.withGenerics(context.getRecordOrThrow(
                                      "InterpolateGenericsExample.IndependentGeneric"), context.getConstants().getUnboundWildcard());
                                LM_Record independentCapture = context.interpolateGenerics(independentExample);
-                               LM_Shadow interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
-                                                                           .map(LM_Generic::getExtends)
-                                                                           .orElseThrow();
+                               LM_Type interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
+                                                                         .map(LM_Generic::getExtends)
+                                                                         .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
                                LM_Record dependentExample = context.withGenerics(context.getRecordOrThrow(
@@ -182,9 +182,9 @@ class RecordTest extends DeclaredTest<LM_Record>
                                                                                  context.getConstants().getUnboundWildcard(),
                                                                                  context.getClassOrThrow("java.lang.String"));
                                LM_Record dependentCapture = context.interpolateGenerics(dependentExample);
-                               LM_Shadow interpolatedDependent = Optional.of(((LM_Generic) dependentCapture.getGenericTypes().get(0)))
-                                                                         .map(LM_Generic::getExtends)
-                                                                         .orElseThrow();
+                               LM_Type interpolatedDependent = Optional.of(((LM_Generic) dependentCapture.getGenericTypes().get(0)))
+                                                                       .map(LM_Generic::getExtends)
+                                                                       .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """

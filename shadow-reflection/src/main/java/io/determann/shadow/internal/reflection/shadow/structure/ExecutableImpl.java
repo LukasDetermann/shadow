@@ -7,7 +7,7 @@ import io.determann.shadow.api.reflection.shadow.structure.*;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -114,15 +114,15 @@ public class ExecutableImpl implements R_Constructor,
    }
 
    @Override
-   public R_Shadow getReturnType()
+   public R_Type getReturnType()
    {
       return R_Adapter.generalize(getExecutable().getAnnotatedReturnType().getType());
    }
 
    @Override
-   public List<R_Shadow> getParameterTypes()
+   public List<R_Type> getParameterTypes()
    {
-      return Arrays.stream(getExecutable().getParameterTypes()).map(R_Adapter::generalize).map(R_Shadow.class::cast).toList();
+      return Arrays.stream(getExecutable().getParameterTypes()).map(R_Adapter::generalize).map(R_Type.class::cast).toList();
    }
 
    @Override

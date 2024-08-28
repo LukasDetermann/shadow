@@ -9,7 +9,7 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.shadow.C_NestingKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -26,7 +26,7 @@ import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 
-public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declared
+public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
 {
    private final TypeElement typeElement;
 
@@ -49,9 +49,9 @@ public class DeclaredImpl extends ShadowImpl<DeclaredType> implements LM_Declare
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(getMirror(), LM_Adapter.particularType((LM_Declared) shadow));
+      return LM_Adapter.getTypes(getApi()).isSubtype(getMirror(), LM_Adapter.particularType((LM_Declared) type));
    }
 
    public TypeElement getElement()

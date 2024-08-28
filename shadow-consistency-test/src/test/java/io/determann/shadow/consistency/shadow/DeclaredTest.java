@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-abstract class DeclaredTest<DECLARED extends C_Declared> extends ShadowTest<DECLARED>
+abstract class DeclaredTest<DECLARED extends C_Declared> extends TypeTest<DECLARED>
 {
-   DeclaredTest(Function<AP_Context, DECLARED> shadowSupplier)
+   DeclaredTest(Function<AP_Context, DECLARED> typeSupplier)
    {
-      super(shadowSupplier);
+      super(typeSupplier);
    }
 
    abstract void testisSubtypeOf();

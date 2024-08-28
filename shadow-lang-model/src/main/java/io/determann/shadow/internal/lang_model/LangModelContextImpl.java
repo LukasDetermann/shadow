@@ -123,7 +123,7 @@ public class LangModelContextImpl implements LM_Context,
    {
       return getPackages()
             .stream()
-            .flatMap(packageShadow -> requestOrThrow(packageShadow, PACKAGE_GET_DECLARED_LIST) .stream())
+            .flatMap(packageType -> requestOrThrow(packageType, PACKAGE_GET_DECLARED_LIST) .stream())
             .map(LM_Declared.class::cast)
             .toList();
    }
@@ -160,19 +160,19 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public LM_Shadow erasure(C_Wildcard wildcard)
+   public LM_Type erasure(C_Wildcard wildcard)
    {
       return erasureImpl(particularType((LM_Declared) wildcard));
    }
 
    @Override
-   public LM_Shadow erasure(C_Generic generic)
+   public LM_Type erasure(C_Generic generic)
    {
       return erasureImpl(particularType((LM_Declared) generic));
    }
 
    @Override
-   public LM_Shadow erasure(C_Intersection intersection)
+   public LM_Type erasure(C_Intersection intersection)
    {
       return erasureImpl(particularType((LM_Declared) intersection));
    }
@@ -184,18 +184,18 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public LM_Shadow erasure(C_Parameter parameter)
+   public LM_Type erasure(C_Parameter parameter)
    {
       return erasureImpl(particularType((LM_Declared) parameter));
    }
 
    @Override
-   public LM_Shadow erasure(C_Field field)
+   public LM_Type erasure(C_Field field)
    {
       return erasureImpl(particularType((LM_Declared) field));
    }
 
-   private <S extends C_Shadow> S erasureImpl(TypeMirror typeMirror)
+   private <S extends C_Type> S erasureImpl(TypeMirror typeMirror)
    {
       return LM_Adapter.generalize(this, types.erasure(typeMirror));
    }
@@ -219,7 +219,7 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public LM_Class withGenerics(C_Class aClass, C_Shadow... generics)
+   public LM_Class withGenerics(C_Class aClass, C_Type... generics)
    {
       List<? extends C_Generic> generics1 = requestOrThrow(aClass, CLASS_GET_GENERICS);
       if (generics.length == 0 || generics1.size() != generics.length)
@@ -242,7 +242,7 @@ public class LangModelContextImpl implements LM_Context,
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(LM_Shadow.class::cast)
+            .map(LM_Type.class::cast)
             .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 
@@ -250,7 +250,7 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public LM_Interface withGenerics(C_Interface anInterface, C_Shadow... generics)
+   public LM_Interface withGenerics(C_Interface anInterface, C_Type... generics)
    {
       List<? extends C_Generic> generics1 = requestOrThrow(anInterface, INTERFACE_GET_GENERICS);
       if (generics.length == 0 || generics1.size() != generics.length)
@@ -263,7 +263,7 @@ public class LangModelContextImpl implements LM_Context,
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(LM_Shadow.class::cast)
+            .map(LM_Type.class::cast)
             .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 
@@ -271,7 +271,7 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public LM_Record withGenerics(C_Record aRecord, C_Shadow... generics)
+   public LM_Record withGenerics(C_Record aRecord, C_Type... generics)
    {
       if (generics.length == 0 || query(aRecord).getGenerics().size() != generics.length)
       {
@@ -283,7 +283,7 @@ public class LangModelContextImpl implements LM_Context,
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(LM_Shadow.class::cast)
+            .map(LM_Type.class::cast)
             .map(LM_Adapter::particularType)
             .toArray(TypeMirror[]::new);
 

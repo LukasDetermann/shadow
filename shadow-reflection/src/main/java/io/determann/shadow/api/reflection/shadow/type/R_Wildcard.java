@@ -1,6 +1,6 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.C_Wildcard;
 
 import java.util.Optional;
@@ -15,24 +15,24 @@ import java.util.Optional;
  *}
  */
 public interface R_Wildcard extends C_Wildcard,
-                                    R_Shadow
+                                    R_Type
 {
    /**
     * {@snippet :
     *  List<? extends Number>//@highlight substring="? extends Number"
     *}
     */
-   Optional<R_Shadow> getExtends();
+   Optional<R_Type> getExtends();
 
    /**
     * {@snippet :
     *  List<? super Number>//@highlight substring="? super Number"
     *}
     */
-   Optional<R_Shadow> getSuper();
+   Optional<R_Type> getSuper();
 
    /**
     * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}
     */
-   boolean contains(C_Shadow shadow);
+   boolean contains(C_Type type);
 }

@@ -2,22 +2,22 @@ package io.determann.shadow.implementation.support.internal.property;
 
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.Objects;
 
 public class PropertyTemplate
 {
    private final String name;
-   private final C_Shadow shadow;
+   private final C_Type type;
    private C_Method setter;
    private final C_Method getter;
    private C_Field field;
 
-   PropertyTemplate(String name, C_Shadow shadow, C_Method getter)
+   PropertyTemplate(String name, C_Type type, C_Method getter)
    {
       this.name = name;
-      this.shadow = shadow;
+      this.type = type;
       this.getter = getter;
    }
 
@@ -26,9 +26,9 @@ public class PropertyTemplate
       return name;
    }
 
-   public C_Shadow getType()
+   public C_Type getType()
    {
-      return shadow;
+      return type;
    }
 
    public C_Method getSetter()
@@ -83,7 +83,7 @@ public class PropertyTemplate
    {
       return "PropertyTemplate{" +
              "name='" + name + '\'' +
-             ", type=" + shadow +
+             ", type=" + type +
              ", setter=" + setter +
              ", getter=" + getter +
              ", field=" + field +

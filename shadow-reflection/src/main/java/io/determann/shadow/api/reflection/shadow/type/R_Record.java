@@ -25,7 +25,7 @@ public interface R_Record extends C_Record,
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<R_Shadow> getGenericTypes();
+   List<R_Type> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}

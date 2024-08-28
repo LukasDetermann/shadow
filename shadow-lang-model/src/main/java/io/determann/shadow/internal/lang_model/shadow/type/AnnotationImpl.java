@@ -2,7 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Annotation;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.AnnotationSupport;
 
 import javax.lang.model.element.TypeElement;
@@ -21,9 +21,9 @@ public class AnnotationImpl extends DeclaredImpl implements LM_Annotation
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return AnnotationSupport.representsSameType(this, shadow);
+      return AnnotationSupport.representsSameType(this, type);
    }
 
    @Override

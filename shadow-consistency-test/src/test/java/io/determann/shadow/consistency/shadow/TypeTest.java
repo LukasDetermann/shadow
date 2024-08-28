@@ -2,7 +2,7 @@ package io.determann.shadow.consistency.shadow;
 
 import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
@@ -10,22 +10,22 @@ import java.util.function.Function;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class ShadowTest<SHADOW extends C_Shadow>
+abstract class TypeTest<TYPE extends C_Type>
 {
-   private final Function<AP_Context, SHADOW> shadowSupplier;
+   private final Function<AP_Context, TYPE> typeSupplier;
 
-   protected ShadowTest(Function<AP_Context, SHADOW> shadowSupplier) {this.shadowSupplier = shadowSupplier;}
+   protected TypeTest(Function<AP_Context, TYPE> typeSupplier) {this.typeSupplier = typeSupplier;}
 
    @Test
    void testRepresentsSameType()
    {
       ProcessorTest.process(context ->
                             {
-                               assertTrue(query(getShadowSupplier().apply(context))
-                                                .representsSameType(getShadowSupplier().apply(context)));
-                               assertFalse(query(getShadowSupplier().apply(context))
+                               assertTrue(query(getTypeSupplier().apply(context))
+                                                .representsSameType(getTypeSupplier().apply(context)));
+                               assertFalse(query(getTypeSupplier().apply(context))
                                                  .representsSameType(context.getClassOrThrow("java.util.jar.Attributes")));
-                               assertFalse(query(getShadowSupplier().apply(context))
+                               assertFalse(query(getTypeSupplier().apply(context))
                                                  .representsSameType(context.getConstants().getUnboundWildcard()));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
@@ -77,8 +77,8 @@ abstract class ShadowTest<SHADOW extends C_Shadow>
    {
       ProcessorTest.process(context ->
                             {
-                               assertEquals(getShadowSupplier().apply(context), getShadowSupplier().apply(context));
-                               assertNotEquals(getShadowSupplier().apply(context), context.getClassOrThrow("java.util.jar.Attributes"));
+                               assertEquals(getTypeSupplier().apply(context), getTypeSupplier().apply(context));
+                               assertNotEquals(getTypeSupplier().apply(context), context.getClassOrThrow("java.util.jar.Attributes"));
                             })
                    .withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                    .withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
@@ -139,8 +139,8 @@ abstract class ShadowTest<SHADOW extends C_Shadow>
                    .compile();
    }
 
-   protected Function<AP_Context, SHADOW> getShadowSupplier()
+   protected Function<AP_Context, TYPE> getTypeSupplier()
    {
-      return shadowSupplier;
+      return typeSupplier;
    }
 }

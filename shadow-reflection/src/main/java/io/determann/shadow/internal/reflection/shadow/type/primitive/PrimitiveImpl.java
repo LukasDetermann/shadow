@@ -5,7 +5,7 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.primitive.*;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.*;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.reflection.shadow.type.ClassImpl;
@@ -89,14 +89,14 @@ public abstract class PrimitiveImpl implements ImplementationDefined
       this.aClass = aClass;
    }
 
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
       return false;
    }
 
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
-      return shadow instanceof C_Primitive primitive && getaClass().isAssignableFrom(R_Adapter.particularize((R_Primitive) primitive));
+      return type instanceof C_Primitive primitive && getaClass().isAssignableFrom(R_Adapter.particularize((R_Primitive) primitive));
    }
 
    public R_Class asBoxed()
@@ -104,9 +104,9 @@ public abstract class PrimitiveImpl implements ImplementationDefined
       return new ClassImpl(boxedClass);
    }
 
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return primitiveType.isInstance(shadow);
+      return primitiveType.isInstance(type);
    }
 
    public Class<?> getaClass()

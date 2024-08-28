@@ -5,6 +5,6 @@ package io.determann.shadow.api.shadow.type;
  * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
  *}
  */
-public interface C_Intersection extends C_Shadow
+public interface C_Intersection extends C_Type
 {
 }

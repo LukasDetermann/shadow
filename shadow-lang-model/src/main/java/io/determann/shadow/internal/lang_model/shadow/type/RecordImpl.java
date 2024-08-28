@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import javax.lang.model.element.TypeElement;
@@ -34,11 +34,11 @@ public class RecordImpl extends DeclaredImpl implements LM_Record
    }
 
    @Override
-   public List<LM_Shadow> getGenericTypes()
+   public List<LM_Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
    }
 

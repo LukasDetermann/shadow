@@ -8,7 +8,7 @@ import io.determann.shadow.api.reflection.shadow.type.R_Enum;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Enum;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.lang.reflect.Field;
@@ -24,33 +24,33 @@ public class EnumConstantImpl extends ReflectionFieldImpl<C_Enum> implements R_E
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Array array)
       {
-         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, type);
       }
       return false;
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
       return false;
    }

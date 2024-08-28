@@ -7,7 +7,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.LM_StaticModifiable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +30,10 @@ public interface LM_Class extends C_Class,
    List<LM_Property> getProperties();
 
    /**
-    * Equivalent to {@link #isSubtypeOf(C_Shadow)} except for primitives.
+    * Equivalent to {@link #isSubtypeOf(C_Type)} except for primitives.
     * if one is a primitive and the other is not it tries to convert them
     */
-   boolean isAssignableFrom(C_Shadow shadow);
+   boolean isAssignableFrom(C_Type type);
 
    /**
     * returns the outer type for not static classes
@@ -43,7 +43,7 @@ public interface LM_Class extends C_Class,
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<LM_Shadow> getGenericTypes();
+   List<LM_Type> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}

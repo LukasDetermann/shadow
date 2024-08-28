@@ -6,10 +6,10 @@ import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Variable;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -39,17 +39,17 @@ public abstract class VariableImpl
       return LM_Adapter.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(particularType((LM_Declared) shadow), getMirror());
+      return LM_Adapter.getTypes(getApi()).isSubtype(particularType((LM_Declared) type), getMirror());
    }
 
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
-      return getTypes(getApi()).isAssignable(particularType((LM_Declared) shadow), getMirror());
+      return getTypes(getApi()).isAssignable(particularType((LM_Declared) type), getMirror());
    }
 
-   public LM_Shadow getType()
+   public LM_Type getType()
    {
       return generalize(getApi(), getElement().asType());
    }

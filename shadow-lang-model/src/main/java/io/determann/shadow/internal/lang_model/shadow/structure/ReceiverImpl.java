@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Receiver;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Receiver;
 
 import javax.lang.model.type.TypeMirror;
@@ -39,7 +39,7 @@ public class ReceiverImpl implements LM_Receiver
    }
 
    @Override
-   public LM_Shadow getType()
+   public LM_Type getType()
    {
       return LM_Adapter.generalize(context, getTypeMirror());
    }
@@ -66,7 +66,7 @@ public class ReceiverImpl implements LM_Receiver
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherReceiver, RECEIVER_GET_TYPE).map(shadow -> Objects.equals(shadow, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherReceiver, RECEIVER_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
    }
 
    @Override

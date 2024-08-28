@@ -7,7 +7,7 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.lang.module.ModuleDescriptor;
@@ -120,7 +120,7 @@ public class ModuleImpl implements R_Module
                               .toList());
       result.addAll(descriptor.uses()
                               .stream()
-                              .map(R_Adapter::getUsesShadow)
+                              .map(R_Adapter::getUsesType)
                               .toList());
       result.addAll(descriptor.provides()
                               .stream()
@@ -129,9 +129,9 @@ public class ModuleImpl implements R_Module
       return unmodifiableList(result);
    }
 
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return equals(shadow);
+      return equals(type);
    }
 
    public ModuleDescriptor getModuleDescriptor()

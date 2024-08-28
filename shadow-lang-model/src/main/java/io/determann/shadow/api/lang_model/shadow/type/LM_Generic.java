@@ -12,15 +12,15 @@ import java.util.Optional;
  */
 public interface LM_Generic extends C_Generic,
                                     LM_Annotationable,
-                                    LM_Shadow,
+                                    LM_Type,
                                     LM_Nameable
 {
    /**
     * @see C_Intersection
     */
-   LM_Shadow getExtends();
+   LM_Type getExtends();
 
-   Optional<LM_Shadow> getSuper();
+   Optional<LM_Type> getSuper();
 
    /**
     * returns the class, method constructor etc. this is the generic for

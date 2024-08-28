@@ -6,9 +6,9 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Shadow;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.lang_model.shadow.structure.PropertyImpl;
@@ -32,9 +32,9 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Shadow) shadow));
+      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Type) type));
    }
 
    @Override
@@ -79,11 +79,11 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    }
 
    @Override
-   public List<LM_Shadow> getGenericTypes()
+   public List<LM_Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Shadow>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
    }
 

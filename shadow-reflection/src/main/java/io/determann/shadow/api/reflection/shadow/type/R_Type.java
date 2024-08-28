@@ -1,11 +1,11 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
-public interface R_Shadow extends C_Shadow
+public interface R_Type extends C_Type
 {
    /**
     * type equals from the compiler perspective. for example ? does not equal ? for the compiler
     */
-   boolean representsSameType(C_Shadow shadow);
+   boolean representsSameType(C_Type type);
 }

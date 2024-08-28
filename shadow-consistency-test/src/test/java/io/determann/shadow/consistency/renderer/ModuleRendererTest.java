@@ -18,7 +18,7 @@ class ModuleRendererTest
    void declaration()
    {
       ConsistencyTest.<C_Module>compileTime(context -> context.getModuleOrThrow("java.desktop"))
-                     .runtime(stringClassFunction -> R_Adapter.getModuleShadow("java.desktop"))
+                     .runtime(stringClassFunction -> R_Adapter.getModuleType("java.desktop"))
                      .test(aClass -> assertEquals(EXPECTED_RENDERING, render(DEFAULT, aClass).declaration()),
                            aClass -> assertEquals(sort(EXPECTED_RENDERING), sort(render(DEFAULT, aClass).declaration())));
    }

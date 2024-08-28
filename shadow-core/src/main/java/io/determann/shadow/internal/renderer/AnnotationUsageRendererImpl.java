@@ -115,7 +115,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       }
       if (value instanceof C_Declared declared)
       {
-         return ShadowRendererImpl.classDeclaration(context, declared);
+         return TypeRendererImpl.classDeclaration(context, declared);
       }
       if (value instanceof C_EnumConstant enumConstant)
       {

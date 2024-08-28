@@ -7,12 +7,12 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Executable;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
@@ -77,39 +77,39 @@ public class ParameterImpl implements R_Parameter
    }
 
    @Override
-   public boolean isSubtypeOf(C_Shadow shadow)
+   public boolean isSubtypeOf(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, type);
       }
       if (getType() instanceof C_Array array)
       {
-         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, shadow);
+         return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, type);
       }
       return false;
    }
 
    @Override
-   public boolean isAssignableFrom(C_Shadow shadow)
+   public boolean isAssignableFrom(C_Type type)
    {
       if (getType() instanceof C_Primitive primitive)
       {
-         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, type);
       }
       if (getType() instanceof C_Class aClass)
       {
-         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, shadow);
+         return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
       return false;
    }
 
    @Override
-   public R_Shadow getType()
+   public R_Type getType()
    {
       return R_Adapter.generalize(getParameter().getParameterizedType());
    }

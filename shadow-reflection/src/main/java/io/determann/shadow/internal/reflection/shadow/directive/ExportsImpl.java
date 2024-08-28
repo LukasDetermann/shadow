@@ -34,7 +34,7 @@ public class ExportsImpl implements R_Exports
              Collections.emptyList() :
              exportsDirective.targets()
                              .stream()
-                             .map(R_Adapter::getModuleShadow)
+                             .map(R_Adapter::getModuleType)
                              .toList();
    }
 

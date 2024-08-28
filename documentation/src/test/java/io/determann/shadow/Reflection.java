@@ -12,9 +12,9 @@ class Reflection
    {
       //@formatter:off
  //tag::gettingStarted[]
- C_Class shadow = R_Adapter.generalize(this.getClass());
+ C_Class type = R_Adapter.generalize(this.getClass());
  //end::gettingStarted[]
  // @formatter:on
-      Assertions.assertNotNull(shadow);
+      Assertions.assertNotNull(type);
    }
 }

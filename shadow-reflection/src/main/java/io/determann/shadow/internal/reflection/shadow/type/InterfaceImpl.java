@@ -3,11 +3,11 @@ package io.determann.shadow.internal.reflection.shadow.type;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
 import io.determann.shadow.api.reflection.shadow.type.R_Interface;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import java.util.*;
@@ -19,17 +19,17 @@ import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 public class InterfaceImpl extends DeclaredImpl implements R_Interface
 {
-   private final List<R_Shadow> genericShadows;
+   private final List<R_Type> genericTypes;
 
    public InterfaceImpl(Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public InterfaceImpl(Class<?> aClass, List<R_Shadow> genericShadows)
+   public InterfaceImpl(Class<?> aClass, List<R_Type> genericTypes)
    {
       super(aClass);
-      this.genericShadows = genericShadows;
+      this.genericTypes = genericTypes;
    }
 
    @Override
@@ -61,9 +61,9 @@ public class InterfaceImpl extends DeclaredImpl implements R_Interface
    }
 
    @Override
-   public List<R_Shadow> getGenericTypes()
+   public List<R_Type> getGenericTypes()
    {
-      return genericShadows;
+      return genericTypes;
    }
 
    @Override
@@ -73,13 +73,13 @@ public class InterfaceImpl extends DeclaredImpl implements R_Interface
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return shadow instanceof C_Interface anInterface &&
+      return type instanceof C_Interface anInterface &&
              requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
                    .stream()
-                   .allMatch(shadow1 -> getGenericTypes().stream()
-                                                         .anyMatch(shadow2 -> requestOrThrow(shadow2, SHADOW_REPRESENTS_SAME_TYPE, shadow1)));
+                   .allMatch(type1 -> getGenericTypes().stream()
+                                                         .anyMatch(type2 -> requestOrThrow(type2, TYPE_REPRESENTS_SAME_TYPE, type1)));
    }
 
    @Override

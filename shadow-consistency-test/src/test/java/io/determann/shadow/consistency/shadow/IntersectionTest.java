@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class IntersectionTest extends ShadowTest<LM_Intersection>
+class IntersectionTest extends TypeTest<LM_Intersection>
 {
    IntersectionTest()
    {
@@ -22,7 +22,7 @@ class IntersectionTest extends ShadowTest<LM_Intersection>
    {
       ProcessorTest.process(context -> assertEquals(List.of(context.getInterfaceOrThrow("java.util.Collection"),
                                                               context.getInterfaceOrThrow("java.io.Serializable")),
-                                                      getShadowSupplier().apply(context).getBounds()))
+                                                    getTypeSupplier().apply(context).getBounds()))
                    .withCodeToCompile("IntersectionExample.java",
                                       "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{\n}")
                    .compile();

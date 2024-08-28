@@ -41,9 +41,9 @@ public interface R_Queries
       return ((R_Primitive) validate(primitive));
    }
 
-   public static R_Shadow query(C_Shadow shadow)
+   public static R_Type query(C_Type type)
    {
-      return ((R_Shadow) validate(shadow));
+      return ((R_Type) validate(type));
    }
 
    public static R_Package query(C_Package aPackage)

@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow;
 
 import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public sealed interface R_AnnotationValue extends C_AnnotationValue
    non-sealed interface TypeValue extends R_AnnotationValue
    {
       @Override
-      R_Shadow getValue();
+      R_Type getValue();
    }
 
    non-sealed interface EnumConstantValue extends R_AnnotationValue

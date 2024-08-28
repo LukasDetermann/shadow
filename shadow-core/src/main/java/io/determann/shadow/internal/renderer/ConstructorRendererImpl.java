@@ -60,15 +60,15 @@ public class ConstructorRendererImpl implements ConstructorRenderer
          sb.append('>');
          sb.append(' ');
       }
-      sb.append(ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
-                                        requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)));
+      sb.append(TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
+                                      requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)));
       sb.append('(');
 
       List<? extends C_Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
       Provider.requestOrEmpty(constructor, EXECUTABLE_GET_RECEIVER_TYPE)
               .ifPresent(declared ->
                        {
-                          sb.append(ShadowRendererImpl.type(context, declared));
+                          sb.append(TypeRendererImpl.type(context, declared));
                           sb.append(' ');
                           sb.append(requestOrThrow(declared, NAMEABLE_GET_NAME));
                           sb.append('.');
@@ -89,7 +89,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
       if (!aThrow.isEmpty())
       {
          sb.append("throws ");
-         sb.append(aThrow.stream().map(aClass -> ShadowRendererImpl.type(context, aClass))
+         sb.append(aThrow.stream().map(aClass -> TypeRendererImpl.type(context, aClass))
                          .collect(Collectors.joining(", ")));
          sb.append(" ");
       }
@@ -131,8 +131,8 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    @Override
    public String invocation(String parameters)
    {
-      return ShadowRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
-                                     requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)) +
+      return TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
+                                   requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)) +
              '(' +
              parameters +
              ')';

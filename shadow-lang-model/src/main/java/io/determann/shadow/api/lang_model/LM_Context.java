@@ -141,57 +141,57 @@ public interface LM_Context
    LM_Constants getConstants();
 
    /**
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
+    * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code context.getDeclaredOrThrow("java.util.List").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   LM_Class withGenerics(C_Class aClass, C_Shadow... generics);
+   LM_Class withGenerics(C_Class aClass, C_Type... generics);
 
    /**
-    * like {@link #withGenerics(C_Class, C_Shadow...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(C_Class, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
     */
    default LM_Class withGenerics(C_Class aClass, String... qualifiedGenerics)
    {
       return withGenerics(aClass, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
-            .toArray(C_Shadow[]::new));
+            .toArray(C_Type[]::new));
    }
 
    /**
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code shadowApi.getDeclaredOrThrow("java.util.List").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
+    * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code context.getDeclaredOrThrow("java.util.List").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
     */
-   LM_Interface withGenerics(C_Interface anInterface, C_Shadow... generics);
+   LM_Interface withGenerics(C_Interface anInterface, C_Type... generics);
 
    /**
-    * like {@link #withGenerics(C_Interface, C_Shadow...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(C_Interface, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
     */
    default LM_Interface withGenerics(C_Interface anInterface, String... qualifiedGenerics)
    {
       return withGenerics(anInterface, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
-            .toArray(C_Shadow[]::new));
+            .toArray(C_Type[]::new));
    }
 
    /**
-    * {@code shadowApi.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
-    * {@code shadowApi.getRecordOrThrow("org.example.MyRecord").withGenerics(shadowApi.getDeclaredOrThrow("java.lang.String"))} represents {@code MyRecord<String>}
+    * {@code context.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
+    * {@code context.getRecordOrThrow("org.example.MyRecord").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code MyRecord<String>}
     */
-   LM_Record withGenerics(C_Record aRecord, C_Shadow... generics);
+   LM_Record withGenerics(C_Record aRecord, C_Type... generics);
 
    /**
-    * like {@link #withGenerics(C_Record, C_Shadow...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
+    * like {@link #withGenerics(C_Record, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
     */
    default LM_Record withGenerics(C_Record aRecord, String... qualifiedGenerics)
    {
       return withGenerics(aRecord, stream(qualifiedGenerics)
             .map(this::getDeclaredOrThrow)
-            .toArray(C_Shadow[]::new));
+            .toArray(C_Type[]::new));
    }
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
     */
@@ -200,7 +200,7 @@ public interface LM_Context
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
@@ -209,7 +209,7 @@ public interface LM_Context
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
     */
@@ -218,7 +218,7 @@ public interface LM_Context
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
     */
@@ -227,37 +227,37 @@ public interface LM_Context
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
     */
-   LM_Shadow erasure(C_Wildcard wildcard);
+   LM_Type erasure(C_Wildcard wildcard);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
     */
-   LM_Shadow erasure(C_Generic generic);
+   LM_Type erasure(C_Generic generic);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <pre>{@code
     * The erasure of an IntersectionType is its first bound type
     * public class IntersectionExample<T extends Collection & Serializable>{} -> Collection
     * public class IntersectionExample<T extends Serializable & Collection>{} -> Serializable
     * }</pre>
     */
-   LM_Shadow erasure(C_Intersection intersection);
+   LM_Type erasure(C_Intersection intersection);
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
-    * {@code shadowToTest.erasure().isSubtypeOf(shadowApi.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
     * <p>
     * for {@link C_RecordComponent}s this means for example {@code record MyRecord<T>(T t){}} -> {@code record MyRecord<T>(java.lang.Object t){}}
     */
@@ -268,14 +268,14 @@ public interface LM_Context
     *
     * @see LM_Context#erasure(C_Class)  for example for more information on erasure
     */
-   LM_Shadow erasure(C_Parameter parameter);
+   LM_Type erasure(C_Parameter parameter);
 
    /**
     * convince method returns the erasure of the field type
     *
     * @see LM_Context#erasure(C_Class)  for example for more information on erasure
     */
-   LM_Shadow erasure(C_Field field);
+   LM_Type erasure(C_Field field);
 
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.

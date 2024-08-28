@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GenericTest extends ShadowTest<C_Generic>
+class GenericTest extends TypeTest<C_Generic>
 {
    GenericTest()
    {

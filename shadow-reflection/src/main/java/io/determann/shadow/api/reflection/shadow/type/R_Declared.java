@@ -10,7 +10,7 @@ import io.determann.shadow.api.shadow.C_NestingKind;
 import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
 import java.util.Set;
@@ -33,17 +33,17 @@ public interface R_Declared extends C_Declared,
                                     R_Annotationable,
                                     R_AccessModifiable,
                                     R_StrictfpModifiable,
-                                    R_Shadow,
+                                    R_Type,
                                     R_Nameable,
                                     R_QualifiedNameable,
                                     R_ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.
-    * This can be useful if you want to check if a shadow implements for example a {@link java.util.Collection}
+    * This can be useful if you want to check if a type implements for example a {@link java.util.Collection}
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
     */
-   boolean isSubtypeOf(C_Shadow shadow);
+   boolean isSubtypeOf(C_Type type);
 
    /**
     * is it an outer or inner class? etc.

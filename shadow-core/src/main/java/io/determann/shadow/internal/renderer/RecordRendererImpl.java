@@ -9,7 +9,7 @@ import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.api.shadow.type.C_Record;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +65,7 @@ public class RecordRendererImpl implements RecordRenderer
       if (!generics.isEmpty())
       {
          sb.append('<');
-         sb.append(generics.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(generics.stream().map(type -> TypeRendererImpl.type(context, type)).collect(joining(", ")));
          sb.append('>');
       }
 
@@ -111,11 +111,11 @@ public class RecordRendererImpl implements RecordRenderer
       StringBuilder sb = new StringBuilder();
       sb.append(context.renderName(aRecord));
 
-      List<? extends C_Shadow> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
+      List<? extends C_Type> genericTypes = requestOrThrow(aRecord, RECORD_GET_GENERIC_TYPES);
       if (!genericTypes.isEmpty())
       {
          sb.append('<');
-         sb.append(genericTypes.stream().map(shadow -> ShadowRendererImpl.type(context, shadow)).collect(joining(", ")));
+         sb.append(genericTypes.stream().map(type -> TypeRendererImpl.type(context, type)).collect(joining(", ")));
          sb.append('>');
       }
       return sb.toString();

@@ -46,7 +46,7 @@ public class FieldRendererImpl implements FieldRenderer
          sb.append(ModifierRendererImpl.render(modifiers));
          sb.append(' ');
       }
-      sb.append(ShadowRendererImpl.type(context, requestOrThrow(field, VARIABLE_GET_TYPE)));
+      sb.append(TypeRendererImpl.type(context, requestOrThrow(field, VARIABLE_GET_TYPE)));
       sb.append(' ');
       sb.append(requestOrThrow(field, NAMEABLE_GET_NAME));
       sb.append(';');

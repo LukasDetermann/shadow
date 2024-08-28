@@ -4,11 +4,11 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
-public class ShadowRendererImpl
+public class TypeRendererImpl
 {
-   public static String type(RenderingContextWrapper context, C_Shadow shadow)
+   public static String type(RenderingContextWrapper context, C_Type type)
    {
-      return switch (shadow)
+      return switch (type)
       {
          case C_Primitive primitive -> PrimitiveRendererImpl.type(context, primitive);
          case C_Class aClass -> ClassRendererImpl.type(context, aClass);

@@ -3,7 +3,7 @@ package io.determann.shadow.internal.renderer;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.renderer.WildcardRenderer;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.C_Wildcard;
 
 import java.util.Optional;
@@ -25,16 +25,16 @@ public class WildcardRendererImpl implements WildcardRenderer
 
    static String type(RenderingContextWrapper context, C_Wildcard wildcard)
    {
-      Optional<C_Shadow> wildcardExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
+      Optional<C_Type> wildcardExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
       if (wildcardExtends.isPresent())
       {
-         return "? extends " + ShadowRendererImpl.type(context, wildcardExtends.get());
+         return "? extends " + TypeRendererImpl.type(context, wildcardExtends.get());
       }
 
-      Optional<C_Shadow> wildcardSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
+      Optional<C_Type> wildcardSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
       if (wildcardSuper.isPresent())
       {
-         return "? super " + ShadowRendererImpl.type(context, wildcardSuper.get());
+         return "? super " + TypeRendererImpl.type(context, wildcardSuper.get());
       }
       return "?";
    }

@@ -25,79 +25,79 @@ import java.util.Optional;
 
 public interface R_Adapter
 {
-   public static <SHADOW extends R_Shadow> SHADOW generalize(Class<?> aClass)
+   public static <TYPE extends R_Type> TYPE generalize(Class<?> aClass)
    {
       return generalize(aClass, Collections.emptyList());
    }
 
    @SuppressWarnings("unchecked")
-   private static <SHADOW extends R_Shadow> SHADOW generalize(Class<?> aClass, List<R_Shadow> genericShadows)
+   private static <TYPE extends R_Type> TYPE generalize(Class<?> aClass, List<R_Type> genericTypes)
    {
       if (aClass.isPrimitive())
       {
          if (aClass.equals(Void.TYPE))
          {
-            return (SHADOW) new VoidImpl();
+            return (TYPE) new VoidImpl();
          }
          return getPrimitive(aClass);
       }
       if (aClass.isArray())
       {
-         return (SHADOW) new ArrayImpl(aClass);
+         return (TYPE) new ArrayImpl(aClass);
       }
       if (aClass.isRecord())
       {
-         return (SHADOW) new RecordImpl(aClass, genericShadows);
+         return (TYPE) new RecordImpl(aClass, genericTypes);
       }
       if (aClass.isAnnotation())
       {
-         return (SHADOW) new AnnotationImpl(aClass);
+         return (TYPE) new AnnotationImpl(aClass);
       }
       if (aClass.isEnum())
       {
-         return (SHADOW) new EnumImpl(aClass);
+         return (TYPE) new EnumImpl(aClass);
       }
       if (aClass.isInterface())
       {
-         return (SHADOW) new InterfaceImpl(aClass, genericShadows);
+         return (TYPE) new InterfaceImpl(aClass, genericTypes);
       }
-      return (SHADOW) new ClassImpl(aClass, genericShadows);
+      return (TYPE) new ClassImpl(aClass, genericTypes);
    }
 
    @SuppressWarnings("unchecked")
-   private static <SHADOW extends R_Shadow> SHADOW getPrimitive(Class<?> aClass)
+   private static <TYPE extends R_Type> TYPE getPrimitive(Class<?> aClass)
    {
       if (aClass.equals(Boolean.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_booleanImpl();
+         return (TYPE) new PrimitiveImpl.R_booleanImpl();
       }
       if (aClass.equals(Byte.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_byteImpl();
+         return (TYPE) new PrimitiveImpl.R_byteImpl();
       }
       if (aClass.equals(Short.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_shortImpl();
+         return (TYPE) new PrimitiveImpl.R_shortImpl();
       }
       if (aClass.equals(Integer.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_intImpl();
+         return (TYPE) new PrimitiveImpl.R_intImpl();
       }
       if (aClass.equals(Long.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_longImpl();
+         return (TYPE) new PrimitiveImpl.R_longImpl();
       }
       if (aClass.equals(Character.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_charImpl();
+         return (TYPE) new PrimitiveImpl.R_charImpl();
       }
       if (aClass.equals(Float.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_floatImpl();
+         return (TYPE) new PrimitiveImpl.R_floatImpl();
       }
       if (aClass.equals(Double.TYPE))
       {
-         return (SHADOW) new PrimitiveImpl.R_doubleImpl();
+         return (TYPE) new PrimitiveImpl.R_doubleImpl();
       }
       throw new IllegalStateException();
    }
@@ -113,7 +113,7 @@ public interface R_Adapter
                             Arrays.stream(module.getAnnotations()).map(R_Adapter::generalize).toList());
    }
 
-   public static R_Module getModuleShadow(String name)
+   public static R_Module getModuleType(String name)
    {
       return new ModuleImpl(new NamedSupplier<>(name,
                                                 () -> ModuleFinder.ofSystem().find(name).orElseThrow().descriptor(),
@@ -125,7 +125,7 @@ public interface R_Adapter
       return new ModuleImpl(new NamedSupplier<>(moduleReference.descriptor(), ModuleDescriptor::name));
    }
 
-   public static R_Shadow generalize(java.lang.reflect.Type type)
+   public static R_Type generalize(java.lang.reflect.Type type)
    {
       if (type instanceof ParameterizedType parameterizedType)
       {
@@ -181,7 +181,7 @@ public interface R_Adapter
       return new ParameterImpl(parameter);
    }
 
-   public static R_Shadow generalize(TypeVariable<?> typeVariable)
+   public static R_Type generalize(TypeVariable<?> typeVariable)
    {
       return new GenericImpl(typeVariable);
    }
@@ -206,7 +206,7 @@ public interface R_Adapter
       return new ProvidesImpl(provides);
    }
 
-   public static R_Uses getUsesShadow(String uses)
+   public static R_Uses getUsesType(String uses)
    {
       return new UsesImpl(uses);
    }

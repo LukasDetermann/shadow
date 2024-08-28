@@ -4,11 +4,11 @@ import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.Operation;
 import io.determann.shadow.api.Operation0;
 import io.determann.shadow.api.Response;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.*;
 
-import static io.determann.shadow.api.Operations.SHADOW_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.Operations.TYPE_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.api.Provider.request;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static java.util.Arrays.stream;
@@ -101,10 +101,10 @@ public class SupportSupport
 
 
    @SafeVarargs
-   public static <TYPE extends C_Shadow> boolean representsSameType(TYPE type,
-                                                                    Class<TYPE> tClass,
-                                                                    Object other,
-                                                                    Operation0<? super TYPE, ?>... operations)
+   public static <TYPE extends C_Type> boolean representsSameType(TYPE type,
+                                                                  Class<TYPE> tClass,
+                                                                  Object other,
+                                                                  Operation0<? super TYPE, ?>... operations)
    {
       if (type == other)
       {
@@ -127,10 +127,10 @@ public class SupportSupport
                                 second instanceof Response.Unsupported<?> ||
 
                                 (first instanceof Response.Result<?>(Object firstValue) &&
-                                 firstValue instanceof C_Shadow firstShadow &&
+                                 firstValue instanceof C_Type firstType &&
                                  second instanceof Response.Result<?>(Object secondValue) &&
-                                 secondValue instanceof C_Shadow secondShadow &&
-                                 requestOrEmpty(firstShadow, SHADOW_REPRESENTS_SAME_TYPE, secondShadow).orElse(false)) ||
+                                 secondValue instanceof C_Type secondType &&
+                                 requestOrEmpty(firstType, TYPE_REPRESENTS_SAME_TYPE, secondType).orElse(false)) ||
 
                                 Objects.equals(first, second);
                       });

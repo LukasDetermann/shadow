@@ -34,7 +34,7 @@ public class RequiresImpl implements R_Requires
    @Override
    public R_Module getDependency()
    {
-      return R_Adapter.getModuleShadow(requiresDirective.name());
+      return R_Adapter.getModuleType(requiresDirective.name());
    }
 
    @Override

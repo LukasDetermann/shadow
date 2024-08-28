@@ -6,7 +6,7 @@ import io.determann.shadow.implementation.support.api.shadow.type.VoidSupport;
 
 import javax.lang.model.type.NoType;
 
-public class VoidImpl extends ShadowImpl<NoType> implements C_Void
+public class VoidImpl extends TypeImpl<NoType> implements C_Void
 {
    public VoidImpl(LM_Context context, NoType typeMirror)
    {

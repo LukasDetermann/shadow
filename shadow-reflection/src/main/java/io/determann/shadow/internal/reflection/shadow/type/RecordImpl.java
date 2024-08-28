@@ -4,9 +4,9 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.structure.R_RecordComponent;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
 import io.determann.shadow.api.reflection.shadow.type.R_Record;
-import io.determann.shadow.api.reflection.shadow.type.R_Shadow;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.type.C_Record;
-import io.determann.shadow.api.shadow.type.C_Shadow;
+import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import java.util.Arrays;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class RecordImpl extends DeclaredImpl implements R_Record
 {
-   private final List<R_Shadow> genericShadows;
+   private final List<R_Type> genericTypes;
 
-   public RecordImpl(Class<?> aClass, List<R_Shadow> genericShadows)
+   public RecordImpl(Class<?> aClass, List<R_Type> genericTypes)
    {
       super(aClass);
-      this.genericShadows = genericShadows;
+      this.genericTypes = genericTypes;
    }
 
    @Override
@@ -31,9 +31,9 @@ public class RecordImpl extends DeclaredImpl implements R_Record
    }
 
    @Override
-   public List<R_Shadow> getGenericTypes()
+   public List<R_Type> getGenericTypes()
    {
-      return genericShadows;
+      return genericTypes;
    }
 
    @Override
@@ -43,9 +43,9 @@ public class RecordImpl extends DeclaredImpl implements R_Record
    }
 
    @Override
-   public boolean representsSameType(C_Shadow shadow)
+   public boolean representsSameType(C_Type type)
    {
-      return shadow instanceof C_Record;
+      return type instanceof C_Record;
    }
 
    @Override

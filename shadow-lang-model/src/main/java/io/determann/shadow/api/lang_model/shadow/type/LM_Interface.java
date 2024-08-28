@@ -18,7 +18,7 @@ public interface LM_Interface extends C_Interface,
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */
-   List<LM_Shadow> getGenericTypes();
+   List<LM_Type> getGenericTypes();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
