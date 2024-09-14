@@ -1,8 +1,10 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
+import io.determann.shadow.api.lang_model.shadow.LM_Erasable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_StaticModifiable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
+import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.api.shadow.type.C_Record;
 
 import java.util.List;
@@ -13,7 +15,8 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 public interface LM_Record extends C_Record,
                                    LM_Declared,
                                    LM_StaticModifiable,
-                                   LM_FinalModifiable
+                                   LM_FinalModifiable,
+                                   LM_Erasable
 {
    default LM_RecordComponent getRecordComponentOrThrow(String simpleName)
    {
@@ -31,4 +34,14 @@ public interface LM_Record extends C_Record,
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
    List<LM_Generic> getGenerics();
+
+   /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link C_Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
+    */
+   @Override
+   LM_Record erasure();
 }

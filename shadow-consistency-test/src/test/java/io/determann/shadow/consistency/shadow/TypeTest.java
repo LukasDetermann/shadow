@@ -130,8 +130,8 @@ abstract class TypeTest<TYPE extends C_Type>
       ProcessorTest.process(context ->
                             {
                                assertEquals(context.getInterfaceOrThrow("java.util.Collection"),
-                                            context.erasure(context.withGenerics(context.getInterfaceOrThrow("java.util.Collection"),
-                                                                                     "java.lang.Object")));
+                                            context.withGenerics(context.getInterfaceOrThrow("java.util.Collection"),
+                                                                 "java.lang.Object").erasure());
 
                                assertEquals(context.getInterfaceOrThrow("java.util.Collection"),
                                             context.withGenerics(context.getInterfaceOrThrow("java.util.Collection"), "java.lang.Object"));

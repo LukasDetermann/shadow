@@ -9,6 +9,9 @@ import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSu
 import javax.lang.model.type.IntersectionType;
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+
 public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_Intersection
 {
 
@@ -23,6 +26,12 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_I
       return getMirror().getBounds().stream()
                         .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
                         .toList();
+   }
+
+   @Override
+   public LM_Intersection erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
 
 public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
 {
@@ -28,7 +29,7 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
    public GenericImpl(LM_Context context, TypeVariable typeMirror)
    {
       super(context, typeMirror);
-      this.typeParameterElement = (TypeParameterElement) LM_Adapter.getTypes(getApi()).asElement(typeMirror);
+      this.typeParameterElement = (TypeParameterElement) getTypes(getApi()).asElement(typeMirror);
    }
 
    @Override
@@ -75,6 +76,12 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return generalize(getApi(), getElement().getAnnotationMirrors());
+   }
+
+   @Override
+   public LM_Generic erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

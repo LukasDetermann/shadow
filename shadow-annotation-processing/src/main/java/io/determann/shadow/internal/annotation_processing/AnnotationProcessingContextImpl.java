@@ -11,10 +11,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.C_Annotationable;
 import io.determann.shadow.api.shadow.C_QualifiedNameable;
-import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
@@ -575,66 +572,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    public LM_Record withGenerics(C_Record aRecord, C_Type... generics)
    {
       return langModelContext.withGenerics(aRecord, generics);
-   }
-
-   @Override
-   public LM_Class erasure(C_Class aClass)
-   {
-      return langModelContext.erasure(aClass);
-   }
-
-   @Override
-   public LM_Interface erasure(C_Interface anInterface)
-   {
-      return langModelContext.erasure(anInterface);
-   }
-
-   @Override
-   public LM_Record erasure(C_Record aRecord)
-   {
-      return langModelContext.erasure(aRecord);
-   }
-
-   @Override
-   public LM_Array erasure(C_Array array)
-   {
-      return langModelContext.erasure(array);
-   }
-
-   @Override
-   public LM_Type erasure(C_Wildcard wildcard)
-   {
-      return langModelContext.erasure(wildcard);
-   }
-
-   @Override
-   public LM_Type erasure(C_Generic generic)
-   {
-      return langModelContext.erasure(generic);
-   }
-
-   @Override
-   public LM_Type erasure(C_Intersection intersection)
-   {
-      return langModelContext.erasure(intersection);
-   }
-
-   @Override
-   public LM_RecordComponent erasure(C_RecordComponent recordComponent)
-   {
-      return langModelContext.erasure(recordComponent);
-   }
-
-   @Override
-   public LM_Type erasure(C_Parameter parameter)
-   {
-      return langModelContext.erasure(parameter);
-   }
-
-   @Override
-   public LM_Type erasure(C_Field field)
-   {
-      return langModelContext.erasure(field);
    }
 
    @Override

@@ -13,6 +13,9 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import java.util.Optional;
 
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+
 public class WildcardImpl extends TypeImpl<WildcardType> implements C_Wildcard,
                                                                     LM_Wildcard
 {
@@ -29,7 +32,7 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements C_Wildcard,
       {
          return Optional.empty();
       }
-      return Optional.of(LM_Adapter.generalize(getApi(), extendsBound));
+      return Optional.of(generalize(getApi(), extendsBound));
    }
 
    @Override
@@ -40,13 +43,19 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements C_Wildcard,
       {
          return Optional.empty();
       }
-      return Optional.of(LM_Adapter.generalize(getApi(), superBound));
+      return Optional.of(generalize(getApi(), superBound));
    }
 
    @Override
    public boolean contains(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).contains(getMirror(), LM_Adapter.particularType((LM_Declared) type));
+      return getTypes(getApi()).contains(getMirror(), LM_Adapter.particularType((LM_Declared) type));
+   }
+
+   @Override
+   public LM_Wildcard erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

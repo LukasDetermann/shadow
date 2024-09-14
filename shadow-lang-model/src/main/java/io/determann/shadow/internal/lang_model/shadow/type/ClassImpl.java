@@ -19,6 +19,9 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+
 public class ClassImpl extends DeclaredImpl implements LM_Class
 {
    public ClassImpl(LM_Context context, DeclaredType declaredTypeMirror)
@@ -34,7 +37,7 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    @Override
    public boolean isAssignableFrom(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Type) type));
+      return getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Type) type));
    }
 
    @Override
@@ -45,7 +48,7 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
       {
          return null;
       }
-      return LM_Adapter.generalize(getApi(), superclass);
+      return generalize(getApi(), superclass);
    }
 
    @Override
@@ -75,7 +78,7 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
       {
          return Optional.empty();
       }
-      return Optional.of(LM_Adapter.generalize(getApi(), enclosingType));
+      return Optional.of(generalize(getApi(), enclosingType));
    }
 
    @Override
@@ -99,7 +102,13 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    @Override
    public LM_Primitive asUnboxed()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).unboxedType(getMirror()));
+      return generalize(getApi(), getTypes(getApi()).unboxedType(getMirror()));
+   }
+
+   @Override
+   public LM_Class erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

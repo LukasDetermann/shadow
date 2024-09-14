@@ -17,8 +17,8 @@ public class GenericUsageTest
                             {
                                //@start region="GenericUsage.isSubtypeOf"
                                LM_Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
-                               LM_Interface erasure = context.erasure(interfaceToTest);
-                               LM_Interface erasedCollection = context.erasure(context.getInterfaceOrThrow("java.util.Collection"));
+                               LM_Interface erasure = interfaceToTest.erasure();
+                               LM_Interface erasedCollection = context.getInterfaceOrThrow("java.util.Collection").erasure();
                                Assertions.assertTrue(erasure.isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
                                //@end
                             })

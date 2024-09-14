@@ -1,5 +1,6 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
+import io.determann.shadow.api.lang_model.shadow.LM_Erasable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_AbstractModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Sealable;
@@ -17,7 +18,8 @@ public interface LM_Class extends C_Class,
                                   LM_AbstractModifiable,
                                   LM_StaticModifiable,
                                   LM_Sealable,
-                                  LM_FinalModifiable
+                                  LM_FinalModifiable,
+                                  LM_Erasable
 {
    /**
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
@@ -56,4 +58,13 @@ public interface LM_Class extends C_Class,
     * etc...
     */
    LM_Primitive asUnboxed();
+
+   /**
+    * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
+    * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
+    * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
+    * <p>
+    * for {@link C_Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
+    */
+   LM_Class erasure();
 }

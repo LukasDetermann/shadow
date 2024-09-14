@@ -10,6 +10,9 @@ import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 import javax.lang.model.type.ArrayType;
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+
 public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
 {
 
@@ -21,19 +24,19 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
    @Override
    public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(LM_Adapter.particularType((LM_Type) type), getMirror());
+      return getTypes(getApi()).isSubtype(LM_Adapter.particularType((LM_Type) type), getMirror());
    }
 
    @Override
    public LM_Type getComponentType()
    {
-      return LM_Adapter.generalize(getApi(), getMirror().getComponentType());
+      return generalize(getApi(), getMirror().getComponentType());
    }
 
    @Override
    public List<LM_Type> getDirectSuperTypes()
    {
-      return LM_Adapter.getTypes(getApi())
+      return getTypes(getApi())
                        .directSupertypes(getMirror())
                        .stream()
                        .map(typeMirror1 -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror1))
@@ -44,6 +47,12 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
    public boolean representsSameType(C_Type type)
    {
       return ArraySupport.representsSameType(this, type);
+   }
+
+   @Override
+   public LM_Array erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

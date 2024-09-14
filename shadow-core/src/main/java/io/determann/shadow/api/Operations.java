@@ -263,4 +263,6 @@ public interface Operations
    public static Operation0<C_Property, C_Method> PROPERTY_GET_SETTER = new Operation0<>("property.getSetter");
 
    public static Operation0<C_Property, Boolean> PROPERTY_IS_MUTABLE = new Operation0<>("property.isMutable");
+
+   public static Operation0<C_Erasable, C_Erasable> ERASABLE_ERASURE = new Operation0<>("erasable.erasure");
 }

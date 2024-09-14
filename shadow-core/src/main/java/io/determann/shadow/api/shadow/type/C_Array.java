@@ -1,5 +1,8 @@
 package io.determann.shadow.api.shadow.type;
 
-public interface C_Array extends C_Type
+import io.determann.shadow.api.shadow.C_Erasable;
+
+public interface C_Array extends C_Type,
+                                 C_Erasable
 {
 }

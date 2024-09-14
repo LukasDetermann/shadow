@@ -7,16 +7,11 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.LM_ContextImplementation;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
-import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
-import io.determann.shadow.internal.lang_model.shadow.structure.RecordComponentImpl;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.TypeMirror;
@@ -132,72 +127,6 @@ public class LangModelContextImpl implements LM_Context,
    public LM_Constants getConstants()
    {
       return new LangModelConstantsImpl(this);
-   }
-
-
-   @Override
-   public LM_Class erasure(C_Class aClass)
-   {
-      return erasureImpl(particularType((LM_Declared) aClass));
-   }
-
-   @Override
-   public LM_Interface erasure(C_Interface anInterface)
-   {
-      return erasureImpl(particularType((LM_Declared) anInterface));
-   }
-
-   @Override
-   public LM_Record erasure(C_Record aRecord)
-   {
-      return erasureImpl(particularType((LM_Declared) aRecord));
-   }
-
-   @Override
-   public LM_Array erasure(C_Array array)
-   {
-      return erasureImpl(particularType((LM_Declared) array));
-   }
-
-   @Override
-   public LM_Type erasure(C_Wildcard wildcard)
-   {
-      return erasureImpl(particularType((LM_Declared) wildcard));
-   }
-
-   @Override
-   public LM_Type erasure(C_Generic generic)
-   {
-      return erasureImpl(particularType((LM_Declared) generic));
-   }
-
-   @Override
-   public LM_Type erasure(C_Intersection intersection)
-   {
-      return erasureImpl(particularType((LM_Declared) intersection));
-   }
-
-   @Override
-   public LM_RecordComponent erasure(C_RecordComponent recordComponent)
-   {
-      return erasureImpl(((RecordComponentImpl) recordComponent).getMirror());
-   }
-
-   @Override
-   public LM_Type erasure(C_Parameter parameter)
-   {
-      return erasureImpl(particularType((LM_Declared) parameter));
-   }
-
-   @Override
-   public LM_Type erasure(C_Field field)
-   {
-      return erasureImpl(particularType((LM_Declared) field));
-   }
-
-   private <S extends C_Type> S erasureImpl(TypeMirror typeMirror)
-   {
-      return LM_Adapter.generalize(this, types.erasure(typeMirror));
    }
 
    @Override

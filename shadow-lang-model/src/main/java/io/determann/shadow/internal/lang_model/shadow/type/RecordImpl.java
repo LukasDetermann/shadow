@@ -12,6 +12,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
+import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
+import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+
 public class RecordImpl extends DeclaredImpl implements LM_Record
 {
    public RecordImpl(LM_Context context, DeclaredType declaredTypeMirror)
@@ -29,7 +32,7 @@ public class RecordImpl extends DeclaredImpl implements LM_Record
    {
       return getElement().getRecordComponents()
                          .stream()
-                         .map(recordComponentElement -> LM_Adapter.generalize(getApi(), recordComponentElement))
+                         .map(recordComponentElement -> generalize(getApi(), recordComponentElement))
                          .toList();
    }
 
@@ -49,6 +52,12 @@ public class RecordImpl extends DeclaredImpl implements LM_Record
                          .stream()
                          .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
+   }
+
+   @Override
+   public LM_Record erasure()
+   {
+      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
    }
 
    @Override

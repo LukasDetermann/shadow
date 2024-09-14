@@ -1,6 +1,7 @@
 package io.determann.shadow.api.shadow.type;
 
 import io.determann.shadow.api.shadow.C_Annotationable;
+import io.determann.shadow.api.shadow.C_Erasable;
 import io.determann.shadow.api.shadow.C_Nameable;
 
 /**
@@ -8,6 +9,7 @@ import io.determann.shadow.api.shadow.C_Nameable;
  */
 public interface C_Generic extends C_Type,
                                    C_Nameable,
-                                   C_Annotationable
+                                   C_Annotationable,
+                                   C_Erasable
 {
 }
