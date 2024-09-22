@@ -1,4 +1,4 @@
-package io.determann.shadow.consistency.shadow;
+package io.determann.shadow.consistency.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;

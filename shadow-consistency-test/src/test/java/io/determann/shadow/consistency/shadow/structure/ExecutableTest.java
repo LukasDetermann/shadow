@@ -1,4 +1,4 @@
-package io.determann.shadow.consistency.shadow;
+package io.determann.shadow.consistency.shadow.structure;
 
 import io.determann.shadow.api.shadow.structure.C_Executable;
 

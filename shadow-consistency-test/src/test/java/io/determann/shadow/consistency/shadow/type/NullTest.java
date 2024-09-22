@@ -1,4 +1,4 @@
-package io.determann.shadow.consistency.shadow;
+package io.determann.shadow.consistency.shadow.type;
 
 import io.determann.shadow.api.shadow.type.C_Null;
 

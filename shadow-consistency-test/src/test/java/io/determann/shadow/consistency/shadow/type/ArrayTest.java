@@ -1,4 +1,4 @@
-package io.determann.shadow.consistency.shadow;
+package io.determann.shadow.consistency.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
@@ -7,6 +7,7 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.consistency.shadow.TypeTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
