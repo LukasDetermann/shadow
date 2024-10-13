@@ -10,6 +10,7 @@ module io.determann.shadow.consistency.test {
 
    requires org.junit.jupiter.api;
 
+   opens io.determann.shadow.consistency to org.junit.platform.commons;
    opens io.determann.shadow.consistency.shadow to org.junit.platform.commons;
    opens io.determann.shadow.consistency.property to org.junit.platform.commons;
    opens io.determann.shadow.consistency.renderer to org.junit.platform.commons;

@@ -7,20 +7,14 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.consistency.shadow.TypeTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayTest extends TypeTest<C_Array>
+class ArrayTest
 {
-   ArrayTest()
-   {
-      super(context -> context.asArray(context.getClassOrThrow("java.lang.String")));
-   }
-
    @Test
    void isSubtypeOfTest()
    {
