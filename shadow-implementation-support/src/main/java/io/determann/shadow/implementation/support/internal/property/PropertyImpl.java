@@ -1,5 +1,6 @@
 package io.determann.shadow.implementation.support.internal.property;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Property;
@@ -10,7 +11,7 @@ import io.determann.shadow.implementation.support.api.shadow.structure.PropertyS
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.implementation.support.internal.SupportProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.implementation.support.internal.SupportProvider.IMPLEMENTATION;
 
 public class PropertyImpl implements C_Property
 {
@@ -94,8 +95,8 @@ public class PropertyImpl implements C_Property
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

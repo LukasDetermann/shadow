@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Uses;
@@ -7,8 +8,6 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
 import javax.lang.model.element.ModuleElement;
-
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class UsesImpl extends DirectiveImpl implements LM_Uses
 {
@@ -27,9 +26,9 @@ public class UsesImpl extends DirectiveImpl implements LM_Uses
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 
    @Override

@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Exports;
@@ -10,8 +11,6 @@ import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSu
 import javax.lang.model.element.ModuleElement;
 import java.util.Collections;
 import java.util.List;
-
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class ExportsImpl extends DirectiveImpl implements LM_Exports
 {
@@ -48,9 +47,9 @@ public class ExportsImpl extends DirectiveImpl implements LM_Exports
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 
    @Override

@@ -11,11 +11,9 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
  * represents primitive types, but not there wrapper classes. for example int, long, short
  */
 public sealed interface R_Primitive
-
       extends C_Primitive,
               R_Type,
               R_Nameable
-
       permits R_boolean,
               R_byte,
               R_char,

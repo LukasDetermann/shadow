@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.RECEIVER_GET_TYPE;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class ReceiverImpl implements LM_Receiver
 {
@@ -70,8 +70,8 @@ public class ReceiverImpl implements LM_Receiver
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return context.getImplementation();
    }
 }

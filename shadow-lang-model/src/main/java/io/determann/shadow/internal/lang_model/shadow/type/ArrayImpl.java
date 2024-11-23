@@ -10,8 +10,7 @@ import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 import javax.lang.model.type.ArrayType;
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
-import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 
 public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
 {
@@ -24,7 +23,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
    @Override
    public boolean isSubtypeOf(C_Type type)
    {
-      return getTypes(getApi()).isSubtype(LM_Adapter.particularType((LM_Type) type), getMirror());
+      return getTypes(getApi()).isSubtype(particularType((LM_Type) type), getMirror());
    }
 
    @Override
@@ -41,6 +40,12 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
                        .stream()
                        .map(typeMirror1 -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror1))
                        .toList();
+   }
+
+   @Override
+   public LM_Array asArray()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
    }
 
    @Override

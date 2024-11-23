@@ -1,11 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.type.C_Null;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.NullSupport;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class NullImpl implements C_Null,
                                  R_Type
@@ -35,8 +36,8 @@ public class NullImpl implements C_Null,
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

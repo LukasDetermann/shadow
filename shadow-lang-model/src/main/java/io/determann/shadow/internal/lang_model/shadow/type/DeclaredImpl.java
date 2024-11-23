@@ -4,6 +4,7 @@ import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.shadow.C_NestingKind;
@@ -139,6 +140,12 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    public String getBinaryName()
    {
       return getElements(getApi()).getBinaryName(getElement()).toString();
+   }
+
+   @Override
+   public LM_Array asArray()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
    }
 
    @Override

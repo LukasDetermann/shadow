@@ -65,7 +65,7 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    {
       return PropertySupport.propertiesOf(this)
                             .stream()
-                            .map(PropertyImpl::new)
+                            .map(delegate -> new PropertyImpl(getApi(), delegate))
                             .map(LM_Property.class::cast)
                             .toList();
    }

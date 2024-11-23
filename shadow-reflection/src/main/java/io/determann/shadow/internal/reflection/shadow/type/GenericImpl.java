@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
@@ -16,8 +17,8 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static io.determann.shadow.api.reflection.R_Adapter.generalize;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class GenericImpl implements R_Generic
 {
@@ -124,8 +125,8 @@ public class GenericImpl implements R_Generic
 
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

@@ -109,4 +109,9 @@ public interface LM_Declared extends C_Declared,
     * The binary name of a member type consists of the binary name of its immediately enclosing type, followed by $, followed by the simple name of the member.
     */
    String getBinaryName();
+
+   /**
+    * String -&gt; String[]
+    */
+   LM_Array asArray();
 }

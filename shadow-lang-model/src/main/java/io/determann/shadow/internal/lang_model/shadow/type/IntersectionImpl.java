@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSupport;
@@ -32,6 +33,12 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_I
    public LM_Intersection erasure()
    {
       return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
+   }
+
+   @Override
+   public LM_Array asArray()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
    }
 
    @Override

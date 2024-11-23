@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.directive.R_Provides;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
@@ -9,7 +10,7 @@ import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class ProvidesImpl implements R_Provides
 {
@@ -37,9 +38,9 @@ public class ProvidesImpl implements R_Provides
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 
    @Override

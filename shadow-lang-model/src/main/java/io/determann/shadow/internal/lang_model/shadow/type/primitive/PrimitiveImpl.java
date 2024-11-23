@@ -2,6 +2,7 @@ package io.determann.shadow.internal.lang_model.shadow.type.primitive;
 
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.*;
@@ -107,6 +108,11 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
    public LM_Class asBoxed()
    {
       return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+   }
+
+   public LM_Array asArray()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
    }
 
    public String getName()

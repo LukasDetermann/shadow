@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
 import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static io.determann.shadow.internal.reflection.shadow.AnnotationValueImpl.create;
 
 public class AnnotationUsageImpl implements R_AnnotationUsage
@@ -89,8 +90,8 @@ public class AnnotationUsageImpl implements R_AnnotationUsage
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

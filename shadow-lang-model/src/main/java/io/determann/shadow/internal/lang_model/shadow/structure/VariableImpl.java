@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
@@ -21,7 +22,6 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public abstract class VariableImpl
 {
@@ -99,9 +99,9 @@ public abstract class VariableImpl
       return variableElement.asType();
    }
 
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 
    @Override

@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class ArrayImpl implements R_Array,
                                   R_Type
@@ -172,8 +173,8 @@ public class ArrayImpl implements R_Array,
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

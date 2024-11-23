@@ -13,14 +13,14 @@ public interface LM_Array extends C_Array,
    /**
     * returns true if this can be cast to that.
     * This can be useful if you want to check if a type implements for example a
-    * {@link java.util.Collection} {@snippet file= "GenericUsageTest.java" region="GenericUsage.isSubtypeOf"}
+    * {@link java.util.Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
     */
    boolean isSubtypeOf(C_Type type);
 
    /**
     * {@snippet :
     *  String[]//@highlight substring="String"
-    * }
+    *}
     */
    LM_Type getComponentType();
 
@@ -29,6 +29,11 @@ public interface LM_Array extends C_Array,
     * for primitive Arrays
     */
    List<LM_Type> getDirectSuperTypes();
+
+   /**
+    * String[] -&gt; String[][]
+    */
+   LM_Array asArray();
 
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.

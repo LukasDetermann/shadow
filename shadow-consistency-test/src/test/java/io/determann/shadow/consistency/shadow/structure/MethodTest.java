@@ -127,7 +127,7 @@ class MethodTest extends ExecutableTest<C_Method>
    void testGetParameterTypes()
    {
       ProcessorTest.process(context ->
-                                  assertEquals(List.of(context.asArray(context.getClassOrThrow("java.lang.String"))),
+                                  assertEquals(List.of(context.getClassOrThrow("java.lang.String").asArray()),
                                                context.getClassOrThrow("MethodExample")
                                                                .getMethods("varArgsMethod").get(0).getParameterTypes()))
                    .withCodeToCompile("MethodExample.java", """

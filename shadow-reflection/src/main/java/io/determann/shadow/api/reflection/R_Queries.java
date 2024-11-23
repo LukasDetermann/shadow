@@ -16,7 +16,7 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.Objects;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static java.util.Objects.requireNonNull;
 
 public interface R_Queries
@@ -248,9 +248,10 @@ public interface R_Queries
 
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
-      if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))
+      if (!Objects.equals(requireNonNull(toValidate.getImplementation()), IMPLEMENTATION))
       {
-         throw new IllegalArgumentException("Tried to use \"" + IMPLEMENTATION_NAME + " \" to query \"" + toValidate + "\" based on \"" + toValidate.getImplementationName() + "\"");
+         throw new IllegalArgumentException("Tried to use \"" +
+                                            IMPLEMENTATION + " \" to query \"" + toValidate + "\" based on \"" + toValidate.getImplementation() + "\"");
       }
       return toValidate;
    }

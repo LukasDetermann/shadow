@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
@@ -20,7 +21,6 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Operations.RECORD_COMPONENT_GET_TYPE;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class RecordComponentImpl implements LM_RecordComponent
 {
@@ -138,8 +138,8 @@ public class RecordComponentImpl implements LM_RecordComponent
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 }

@@ -17,5 +17,9 @@
             <groupId>io.determann</groupId>
             <artifactId>shadow-lang-model</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow-tck</artifactId>
+        </dependency>
     </dependencies>
 </project>

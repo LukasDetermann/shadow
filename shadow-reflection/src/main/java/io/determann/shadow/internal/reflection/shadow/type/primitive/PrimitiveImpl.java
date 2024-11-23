@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type.primitive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.ImplementationDefined;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
@@ -10,7 +11,7 @@ import io.determann.shadow.api.shadow.type.primitive.*;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.reflection.shadow.type.ClassImpl;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public abstract class PrimitiveImpl implements ImplementationDefined
 {
@@ -149,8 +150,8 @@ public abstract class PrimitiveImpl implements ImplementationDefined
 
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

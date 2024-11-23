@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
@@ -27,7 +28,6 @@ import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 
 public class ExecutableImpl implements LM_Constructor,
@@ -246,8 +246,8 @@ public class ExecutableImpl implements LM_Constructor,
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 }

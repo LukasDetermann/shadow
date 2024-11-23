@@ -16,7 +16,7 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.Objects;
 
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.internal.lang_model.LangModelContextImpl.IMPLEMENTATION_NAME;
 import static java.util.Objects.requireNonNull;
 
 public interface LM_Queries
@@ -253,9 +253,15 @@ public interface LM_Queries
 
    private static <T extends ImplementationDefined> T validate(T toValidate)
    {
-      if (!Objects.equals(requireNonNull(toValidate.getImplementationName()), IMPLEMENTATION_NAME))
+      if (!Objects.equals(requireNonNull(toValidate.getImplementation().getName()), IMPLEMENTATION_NAME))
       {
-         throw new IllegalArgumentException("Tried to use \"" + IMPLEMENTATION_NAME + " \" to query \"" + toValidate + "\" based on \"" + toValidate.getImplementationName() + "\"");
+         throw new IllegalArgumentException("Tried to use \"" +
+                                            IMPLEMENTATION_NAME +
+                                            " \" to query \"" +
+                                            toValidate +
+                                            "\" based on \"" +
+                                            toValidate.getImplementation() +
+                                            "\"");
       }
       return toValidate;
    }

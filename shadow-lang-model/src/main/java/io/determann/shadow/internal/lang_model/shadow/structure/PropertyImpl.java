@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
@@ -11,7 +13,6 @@ import java.util.Optional;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 /**
  * implementation note: the casts to LangModel types are safe
@@ -19,10 +20,12 @@ import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMEN
 public class PropertyImpl implements LM_Property
 {
    private final C_Property delegate;
+   private final LM_Context context;
 
-   public PropertyImpl(C_Property delegate)
+   public PropertyImpl(LM_Context api, C_Property delegate)
    {
       this.delegate = delegate;
+      this.context = api;
    }
 
    @Override
@@ -74,8 +77,8 @@ public class PropertyImpl implements LM_Property
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return context.getImplementation();
    }
 }

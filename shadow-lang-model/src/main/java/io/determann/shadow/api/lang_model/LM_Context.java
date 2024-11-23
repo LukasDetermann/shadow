@@ -1,11 +1,11 @@
 package io.determann.shadow.api.lang_model;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +14,8 @@ import static java.util.Arrays.stream;
 
 public interface LM_Context
 {
+   Implementation getImplementation();
+
    List<LM_Declared> getDeclared();
 
    Optional<LM_Declared> getDeclared(String qualifiedName);
@@ -216,27 +218,6 @@ public interface LM_Context
     * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
     */
    LM_Record interpolateGenerics(C_Record aRecord);
-
-   /**
-    * String[] -&gt; String[][]
-    */
-   LM_Array asArray(C_Array array);
-
-   /**
-    * int -&gt; int[]
-    */
-   LM_Array asArray(C_Primitive primitive);
-
-
-   /**
-    * String -&gt; String[]
-    */
-   LM_Array asArray(C_Declared declared);
-
-   /**
-    * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
-    */
-   LM_Array asArray(C_Intersection intersection);
 
    LM_Wildcard asExtendsWildcard(C_Array array);
 

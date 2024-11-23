@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.RECEIVER_GET_TYPE;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class ReceiverImpl implements R_Receiver
 {
@@ -54,9 +55,9 @@ public class ReceiverImpl implements R_Receiver
 
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 
    @Override

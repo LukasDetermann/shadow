@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.structure.*;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
@@ -251,8 +252,8 @@ public abstract class DeclaredImpl implements R_Declared
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

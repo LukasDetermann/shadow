@@ -1,5 +1,6 @@
 package io.determann.shadow.implementation.support.internal;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 import io.determann.shadow.implementation.support.internal.property.PropertyImpl;
@@ -8,12 +9,12 @@ import static io.determann.shadow.api.Operations.*;
 
 public class SupportProvider extends AbstractProvider
 {
-   public static final String IMPLEMENTATION_NAME = "io.determann.shadow-implementation-support";
+   public static final Implementation IMPLEMENTATION = new Implementation("io.determann.shadow-implementation-support");
    
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 
    @Override

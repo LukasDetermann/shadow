@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
@@ -23,7 +24,6 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
@@ -219,8 +219,8 @@ public class ModuleImpl implements LM_Module
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 }

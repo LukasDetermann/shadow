@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.annotationvalue;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
@@ -16,8 +17,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Collection;
 import java.util.List;
-
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public abstract class AnnotationValueImpl
 {
@@ -362,8 +361,8 @@ public abstract class AnnotationValueImpl
       return AnnotationValueSupport.toString((C_AnnotationValue) this);
    }
 
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return context.getImplementation();
    }
 }

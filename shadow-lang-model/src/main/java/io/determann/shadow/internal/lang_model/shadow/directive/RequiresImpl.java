@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Requires;
@@ -7,8 +8,6 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import javax.lang.model.element.ModuleElement;
-
-import static io.determann.shadow.internal.lang_model.LangModelProvider.IMPLEMENTATION_NAME;
 
 public class RequiresImpl extends DirectiveImpl implements LM_Requires
 {
@@ -39,9 +38,9 @@ public class RequiresImpl extends DirectiveImpl implements LM_Requires
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return getApi().getImplementation();
    }
 
    @Override

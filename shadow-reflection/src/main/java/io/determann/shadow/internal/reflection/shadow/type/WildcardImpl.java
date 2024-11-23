@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 
 public class WildcardImpl implements C_Wildcard,
@@ -120,8 +121,8 @@ public class WildcardImpl implements C_Wildcard,
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

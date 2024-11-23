@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.annotation_processing;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.AP_DiagnosticContext;
 import io.determann.shadow.api.lang_model.LM_Adapter;
@@ -13,7 +14,6 @@ import io.determann.shadow.api.shadow.C_Annotationable;
 import io.determann.shadow.api.shadow.C_QualifiedNameable;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -593,30 +593,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public LM_Array asArray(C_Array array)
-   {
-      return langModelContext.asArray(array);
-   }
-
-   @Override
-   public LM_Array asArray(C_Primitive primitive)
-   {
-      return langModelContext.asArray(primitive);
-   }
-
-   @Override
-   public LM_Array asArray(C_Declared declared)
-   {
-      return langModelContext.asArray(declared);
-   }
-
-   @Override
-   public LM_Array asArray(C_Intersection intersection)
-   {
-      return langModelContext.asArray(intersection);
-   }
-
-   @Override
    public LM_Wildcard asExtendsWildcard(C_Array array)
    {
       return langModelContext.asExtendsWildcard(array);
@@ -662,6 +638,12 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    public Elements getElements()
    {
       return LM_Adapter.getElements(langModelContext);
+   }
+
+   @Override
+   public Implementation getImplementation()
+   {
+      return langModelContext.getImplementation();
    }
 
    public ProcessingEnvironment getProcessingEnv()

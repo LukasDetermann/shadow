@@ -1,11 +1,12 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.directive.R_Uses;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class UsesImpl implements R_Uses
 {
@@ -23,9 +24,9 @@ public class UsesImpl implements R_Uses
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 
    @Override

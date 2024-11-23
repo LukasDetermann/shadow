@@ -1,5 +1,6 @@
 package io.determann.shadow.api.reflection;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.directive.*;
 import io.determann.shadow.api.reflection.shadow.structure.*;
@@ -25,6 +26,8 @@ import java.util.Optional;
 
 public interface R_Adapter
 {
+   Implementation IMPLEMENTATION = new Implementation("io.determann.shadow-reflection");
+
    public static <TYPE extends R_Type> TYPE generalize(Class<?> aClass)
    {
       return generalize(aClass, Collections.emptyList());
@@ -227,6 +230,11 @@ public interface R_Adapter
    public static R_Executable generalize(java.lang.reflect.Executable executable)
    {
       return new ExecutableImpl(executable);
+   }
+
+   public static Optional<R_Package> getPackage(String moduleName, String packageName)
+   {
+      return getModuleType(moduleName).getPackages().stream().filter(rPackage -> rPackage.getQualifiedName().equals(packageName)).findAny();
    }
 
    public static R_Package getPackage(String name)

@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.type.R_Intersection;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
@@ -14,7 +15,7 @@ import java.util.List;
 import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
 import static io.determann.shadow.api.Operations.TYPE_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 
 public class IntersectionImpl implements R_Intersection
@@ -84,8 +85,8 @@ public class IntersectionImpl implements R_Intersection
 
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

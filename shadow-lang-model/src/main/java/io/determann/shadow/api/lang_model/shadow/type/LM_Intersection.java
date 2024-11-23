@@ -33,4 +33,9 @@ public interface LM_Intersection extends LM_Type,
     */
    @Override
    LM_Intersection erasure();
+
+   /**
+    * {@code Collection & Serializable} -&gt;  {@code Collection & Serializable[]}
+    */
+   LM_Array asArray();
 }

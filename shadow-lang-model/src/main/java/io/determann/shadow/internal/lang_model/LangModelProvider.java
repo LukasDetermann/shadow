@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.lang_model;
 
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.type.C_Declared;
@@ -9,23 +10,31 @@ import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
+import static io.determann.shadow.internal.lang_model.LangModelContextImpl.IMPLEMENTATION_NAME;
 
 public class LangModelProvider extends AbstractProvider
 {
-
-   public static final String IMPLEMENTATION_NAME = "io.determann.shadow-lang-model";
-
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return new Implementation(IMPLEMENTATION_NAME);
    }
-
 
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
+      builder.withOptional(GET_PACKAGE, (implementation, moduleName, packageName) -> ((LangModelImplementation) implementation).getContext().getPackage(moduleName, packageName))
+             .with(GET_PACKAGES, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getPackages(name))
+             .withOptional(GET_MODULE, (implementation, name) ->   ((LangModelImplementation) implementation).getContext().getModule(name))
+             .withOptional(GET_DECLARED, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getDeclared(name))
+             .with(GET_BOOLEAN,implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveBoolean())
+             .with(GET_BYTE, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveByte())
+             .with(GET_SHORT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveShort())
+             .with(GET_INT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveInt())
+             .with(GET_CHAR, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveChar())
+             .with(GET_FLOAT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveFloat())
+             .with(GET_DOUBLE, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveDouble())
+             .with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
              .with(QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
              .with(TYPE_REPRESENTS_SAME_TYPE, (type, type1) -> query(type).representsSameType(type1))
              .withOptional(WILDCARD_GET_EXTENDS, wildcard -> query(wildcard).getExtends())
@@ -33,6 +42,7 @@ public class LangModelProvider extends AbstractProvider
              .with(PRIMITIVE_AS_BOXED, primitive -> query(primitive).asBoxed())
              .with(PRIMITIVE_IS_ASSIGNABLE_FROM, (primitive, type) -> query(primitive).isAssignableFrom(type))
              .with(PRIMITIVE_IS_SUBTYPE_OF, (primitive, type) -> query(primitive).isSubtypeOf(type))
+             .with(PRIMITIVE_AS_ARRAY, primitive -> query(primitive).asArray())
              .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed())
              .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule())
              .with(DECLARED_IS_SUBTYPE_OF, (declared, type) -> query(declared).isSubtypeOf(type))
@@ -50,6 +60,7 @@ public class LangModelProvider extends AbstractProvider
              .with(DECLARED_GET_DIRECT_INTERFACES, declared -> query(declared).getDirectInterfaces())
              .with(DECLARED_GET_DIRECT_INTERFACE, (declared, s) -> query(declared).getDirectInterfaceOrThrow(s))
              .with(DECLARED_GET_PACKAGE, declared -> query(declared).getPackage())
+             .with(DECLARED_AS_ARRAY, declared -> query(declared).asArray())
              .with(ENUM_GET_ENUM_CONSTANT, (anEnum, s) -> query(anEnum).getEnumConstantOrThrow(s))
              .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants())
              .with(INTERFACE_IS_FUNCTIONAL, anInterface -> query(anInterface).isFunctional())
@@ -70,6 +81,7 @@ public class LangModelProvider extends AbstractProvider
              .with(ARRAY_IS_SUBTYPE_OF, (array, type) -> query(array).isSubtypeOf(type))
              .with(ARRAY_GET_COMPONENT_TYPE, array -> query(array).getComponentType())
              .with(ARRAY_GET_DIRECT_SUPER_TYPES, array -> query(array).getDirectSuperTypes())
+             .with(ARRAY_AS_ARRAY, array -> query(array).asArray())
              .with(ENUM_CONSTANT_GET_SURROUNDING, enumConstant -> query(enumConstant).getSurrounding())
              .with(FIELD_IS_CONSTANT, field -> query(field).isConstant())
              .with(FIELD_GET_CONSTANT_VALUE, field -> query(field).getConstantValue())
@@ -106,6 +118,7 @@ public class LangModelProvider extends AbstractProvider
              .with(RETURN_GET_TYPE, aReturn -> query(aReturn).getType())
              .with(RECEIVER_GET_TYPE, receiver -> query(receiver).getType())
              .with(INTERSECTION_GET_BOUNDS, intersection -> query(intersection).getBounds())
+             .with(INTERSECTION_AS_ARRAY, intersection -> query(intersection).asArray())
              .with(GENERIC_GET_EXTENDS, generic -> query(generic).getExtends())
              .withOptional(GENERIC_GET_SUPER, generic -> query(generic).getSuper())
              .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing())

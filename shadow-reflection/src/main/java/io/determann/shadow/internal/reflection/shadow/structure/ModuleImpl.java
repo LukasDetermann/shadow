@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.directive.R_Directive;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static java.util.Collections.unmodifiableList;
 
 
@@ -166,8 +167,8 @@ public class ModuleImpl implements R_Module
 
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

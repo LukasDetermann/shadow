@@ -1,8 +1,10 @@
 package io.determann.shadow.api;
 
+import io.determann.shadow.api.operation.Operation;
+
 public interface ProviderSpi
 {
-   public String getImplementationName();
+   public Implementation getImplementation();
 
-   <RESULT, TYPE extends ImplementationDefined> Response<RESULT> request(TYPE instance, Operation<? super TYPE, RESULT> operation, Object... params);
+   <RESULT> Response<RESULT> request(Object instance, Operation<RESULT> operation, Object... params);
 }

@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.shadow.structure.R_Field;
 import io.determann.shadow.api.reflection.shadow.structure.R_Method;
 import io.determann.shadow.api.reflection.shadow.structure.R_Property;
@@ -11,7 +12,7 @@ import java.util.Optional;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 /**
  * implementation note: the casts to LangModel types are safe
@@ -74,8 +75,8 @@ public class PropertyImpl implements R_Property
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

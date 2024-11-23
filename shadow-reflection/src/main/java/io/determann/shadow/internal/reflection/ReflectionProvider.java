@@ -1,29 +1,42 @@
 package io.determann.shadow.internal.reflection;
 
 
+import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
+import java.util.Collections;
+
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.reflection.R_Queries.query;
 
 public class ReflectionProvider extends AbstractProvider
 {
-   public static final String IMPLEMENTATION_NAME = "io.determann.shadow-reflection";
-
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return R_Adapter.IMPLEMENTATION;
    }
 
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
+      builder.withOptional(GET_PACKAGE, (implementation, moduleName, packageName) -> R_Adapter.getPackage(moduleName, packageName))
+             .with(GET_PACKAGES, (implementation, name) -> Collections.singletonList(R_Adapter.getPackage(name)))
+             .with(GET_MODULE, (implementation, name) -> R_Adapter.getModuleType(name))
+             .withOptional(GET_DECLARED, (implementation, name) -> R_Adapter.getDeclared(name))
+             .with(GET_BOOLEAN, implementation -> R_Adapter.generalize(Boolean.TYPE))
+             .with(GET_BYTE, implementation -> R_Adapter.generalize(byte.class))
+             .with(GET_SHORT, implementation -> R_Adapter.generalize(short.class))
+             .with(GET_INT, implementation -> R_Adapter.generalize(int.class))
+             .with(GET_CHAR, implementation -> R_Adapter.generalize(char.class))
+             .with(GET_FLOAT, implementation -> R_Adapter.generalize(float.class))
+             .with(GET_DOUBLE, implementation -> R_Adapter.generalize(double.class))
+             .with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
              .with(QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
              .with(TYPE_REPRESENTS_SAME_TYPE, (type, type1) -> query(type).representsSameType(type1))
              .withOptional(WILDCARD_GET_EXTENDS, wildcard -> query(wildcard).getExtends())
@@ -31,6 +44,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(PRIMITIVE_AS_BOXED, primitive -> query(primitive).asBoxed())
              .with(PRIMITIVE_IS_ASSIGNABLE_FROM, (primitive, type) -> query(primitive).isAssignableFrom(type))
              .with(PRIMITIVE_IS_SUBTYPE_OF, (primitive, type) -> query(primitive).isSubtypeOf(type))
+             .with(PRIMITIVE_AS_ARRAY, primitive -> query(primitive).asArray())
              .with(PACKAGE_IS_UNNAMED, aPackage -> query(aPackage).isUnnamed())
              .with(MODULE_ENCLOSED_GET_MODULE, moduleEnclosed -> query(moduleEnclosed).getModule())
              .with(DECLARED_IS_SUBTYPE_OF, (declared, type) -> query(declared).isSubtypeOf(type))
@@ -48,6 +62,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(DECLARED_GET_DIRECT_INTERFACES, declared -> query(declared).getDirectInterfaces())
              .with(DECLARED_GET_DIRECT_INTERFACE, (declared, s) -> query(declared).getDirectInterfaceOrThrow(s))
              .with(DECLARED_GET_PACKAGE, declared -> query(declared).getPackage())
+             .with(DECLARED_AS_ARRAY, declared -> query(declared).asArray())
              .with(ENUM_GET_ENUM_CONSTANT, (anEnum, s) -> query(anEnum).getEnumConstantOrThrow(s))
              .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants())
              .with(INTERFACE_IS_FUNCTIONAL, anInterface -> query(anInterface).isFunctional())
@@ -68,6 +83,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(ARRAY_IS_SUBTYPE_OF, (array, type) -> query(array).isSubtypeOf(type))
              .with(ARRAY_GET_COMPONENT_TYPE, array -> query(array).getComponentType())
              .with(ARRAY_GET_DIRECT_SUPER_TYPES, array -> query(array).getDirectSuperTypes())
+             .with(ARRAY_AS_ARRAY, array -> query(array).asArray())
              .with(ENUM_CONSTANT_GET_SURROUNDING, enumConstant -> query(enumConstant).getSurrounding())
              .with(FIELD_IS_CONSTANT, field -> query(field).isConstant())
              .with(FIELD_GET_CONSTANT_VALUE, field -> query(field).getConstantValue())

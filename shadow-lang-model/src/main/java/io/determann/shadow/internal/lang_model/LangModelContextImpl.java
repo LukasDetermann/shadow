@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.lang_model;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Constants;
@@ -8,10 +9,8 @@ import io.determann.shadow.api.lang_model.LM_ContextImplementation;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.TypeMirror;
@@ -30,13 +29,22 @@ import static java.util.Optional.ofNullable;
 public class LangModelContextImpl implements LM_Context,
                                              LM_ContextImplementation
 {
+   public static final String IMPLEMENTATION_NAME = "io.determann.shadow-lang-model";
    private final Types types;
    private final Elements elements;
+   private final Implementation implementation;
 
    public LangModelContextImpl(Types types, Elements elements)
    {
       this.types = types;
       this.elements = elements;
+      implementation = new LangModelImplementation(IMPLEMENTATION_NAME, this);
+   }
+
+   @Override
+   public Implementation getImplementation()
+   {
+      return implementation;
    }
 
    @Override
@@ -217,30 +225,6 @@ public class LangModelContextImpl implements LM_Context,
             .toArray(TypeMirror[]::new);
 
       return LM_Adapter.generalize(this, types.getDeclaredType(particularElement(((LM_Record) aRecord)), typeMirrors));
-   }
-
-   @Override
-   public LM_Array asArray(C_Array array)
-   {
-      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Array) array)));
-   }
-
-   @Override
-   public LM_Array asArray(C_Primitive primitive)
-   {
-      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Primitive) primitive)));
-   }
-
-   @Override
-   public LM_Array asArray(C_Declared declared)
-   {
-      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Declared) declared)));
-   }
-
-   @Override
-   public LM_Array asArray(C_Intersection intersection)
-   {
-      return LM_Adapter.generalize(this, types.getArrayType(particularType((LM_Intersection) intersection)));
    }
 
    @Override

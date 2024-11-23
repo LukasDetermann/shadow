@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
 {
@@ -68,8 +69,8 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
       return field;
    }
 
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

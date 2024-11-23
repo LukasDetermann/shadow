@@ -39,7 +39,8 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.junit.jupiter.junit-jupiter-api.version>5.9.1</org.junit.jupiter.junit-jupiter-api.version>
+        <org.junit.jupiter.junit-jupiter-api.version>5.10.2</org.junit.jupiter.junit-jupiter-api.version>
+        <org.junit.jupiter.junit-platform-suite.version>1.10.2</org.junit.jupiter.junit-platform-suite.version>
         <org.apache.maven.plugins.maven-surefire-plugin.version>3.1.0</org.apache.maven.plugins.maven-surefire-plugin.version>
         <org.apache.maven.plugins.maven-source-plugin.version>2.2.1</org.apache.maven.plugins.maven-source-plugin.version>
         <org.apache.maven.plugins.maven-javadoc-plugin>3.6.3</org.apache.maven.plugins.maven-javadoc-plugin>
@@ -56,6 +57,12 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${org.junit.jupiter.junit-jupiter-api.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-suite</artifactId>
+                <version>${org.junit.jupiter.junit-platform-suite.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -86,6 +93,11 @@
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-consistency-test</artifactId>
+                <version>0.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.determann</groupId>
+                <artifactId>shadow-tck</artifactId>
                 <version>0.2.0</version>
             </dependency>
             <dependency>

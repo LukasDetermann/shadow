@@ -1,9 +1,9 @@
 package io.determann.shadow.implementation.support.internal.shadow;
 
 import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.Operation;
-import io.determann.shadow.api.Operation0;
 import io.determann.shadow.api.Response;
+import io.determann.shadow.api.operation.InstanceOperation;
+import io.determann.shadow.api.operation.InstanceOperation0;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.*;
@@ -20,7 +20,7 @@ public class SupportSupport
    public static <TYPE extends ImplementationDefined> boolean equals(TYPE type,
                                                                      Class<TYPE> tClass,
                                                                      Object other,
-                                                                     Operation0<? super TYPE, ?>... operations)
+                                                                     InstanceOperation0<? super TYPE, ?>... operations)
    {
       if (type == other)
       {
@@ -46,7 +46,7 @@ public class SupportSupport
    }
 
    @SafeVarargs
-   public static <TYPE extends ImplementationDefined> int hashCode(TYPE type, Operation0<? super TYPE, ?>... operations)
+   public static <TYPE extends ImplementationDefined> int hashCode(TYPE type, InstanceOperation0<? super TYPE, ?>... operations)
    {
       return Objects.hash(stream(operations).map(typeOperation -> request(type, typeOperation)).toArray());
    }
@@ -54,7 +54,7 @@ public class SupportSupport
    @SafeVarargs
    public static <TYPE extends ImplementationDefined> String toString(TYPE type,
                                                                       Class<TYPE> typeClass,
-                                                                      Operation0<? super TYPE, ?>... operations)
+                                                                      InstanceOperation0<? super TYPE, ?>... operations)
    {
       String simpleName = typeClass.getSimpleName();
       int index = simpleName.indexOf('_');
@@ -87,9 +87,9 @@ public class SupportSupport
       return objects;
    }
 
-   private static String getOperationName(Operation<?, ?> operation)
+   private static String getOperationName(InstanceOperation<?, ?> instanceOperation)
    {
-      String name = operation.getName();
+      String name = instanceOperation.getName();
       int index = name.lastIndexOf(".");
       if (index == -1)
       {
@@ -104,7 +104,7 @@ public class SupportSupport
    public static <TYPE extends C_Type> boolean representsSameType(TYPE type,
                                                                   Class<TYPE> tClass,
                                                                   Object other,
-                                                                  Operation0<? super TYPE, ?>... operations)
+                                                                  InstanceOperation0<? super TYPE, ?>... operations)
    {
       if (type == other)
       {

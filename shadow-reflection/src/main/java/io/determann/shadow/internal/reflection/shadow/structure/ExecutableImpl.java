@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
@@ -23,8 +24,8 @@ import java.util.stream.Collectors;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static io.determann.shadow.api.shadow.modifier.C_Modifier.*;
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
 
 public class ExecutableImpl implements R_Constructor,
                                        R_Method
@@ -303,8 +304,8 @@ public class ExecutableImpl implements R_Constructor,
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 }

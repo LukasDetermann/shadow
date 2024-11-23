@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
+import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.directive.R_Exports;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
@@ -10,7 +11,7 @@ import java.lang.module.ModuleDescriptor;
 import java.util.Collections;
 import java.util.List;
 
-import static io.determann.shadow.internal.reflection.ReflectionProvider.IMPLEMENTATION_NAME;
+import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class ExportsImpl implements R_Exports
 {
@@ -45,9 +46,9 @@ public class ExportsImpl implements R_Exports
    }
 
    @Override
-   public String getImplementationName()
+   public Implementation getImplementation()
    {
-      return IMPLEMENTATION_NAME;
+      return IMPLEMENTATION;
    }
 
    @Override
