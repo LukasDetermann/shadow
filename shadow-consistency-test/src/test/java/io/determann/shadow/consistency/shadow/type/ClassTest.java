@@ -141,28 +141,28 @@ class ClassTest extends DeclaredTest<C_Class>
       ProcessorTest.process(context ->
                             {
                                assertThrows(IllegalArgumentException.class,
-                                            () -> context.withGenerics(context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric"),
-                                                                         "java.lang.String"));
+                                            () -> context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                         .withGenerics("java.lang.String"));
 
                                assertThrows(IllegalArgumentException.class,
-                                            () -> context.withGenerics(context.getClassOrThrow("java.lang.String"), "java.lang.String"));
+                                            () -> context.getClassOrThrow("java.lang.String").withGenerics("java.lang.String"));
 
                                assertEquals(context.getClassOrThrow("java.lang.String"),
-                                            context.withGenerics(context.getClassOrThrow("WithGenericsExample.Inner"), "java.lang.String")
-                                                     .getGenericTypes()
-                                                     .get(0));
+                                            context.getClassOrThrow("WithGenericsExample.Inner").withGenerics("java.lang.String")
+                                                   .getGenericTypes()
+                                                   .get(0));
 
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String")),
-                                            context.withGenerics(context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric"),
-                                                                   "java.lang.String")
-                                                     .getGenericTypes());
+                                            context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                   .withGenerics("java.lang.String")
+                                                   .getGenericTypes());
 
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String"),
                                                     context.getClassOrThrow("java.lang.Number")),
-                                            context.withGenerics(context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric"),
-                                                                   "java.lang.String",
-                                                                   "java.lang.Number")
-                                                     .getGenericTypes());
+                                            context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                   .withGenerics("java.lang.String",
+                                                                 "java.lang.Number")
+                                                   .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public class InterpolateGenericsExample <A extends java.lang.Comparable<B>, B extends java.lang.Comparable<A>> {
@@ -183,10 +183,11 @@ class ClassTest extends DeclaredTest<C_Class>
    {
       ProcessorTest.process(context ->
                             {
-                               LM_Class declared = context.withGenerics(context.getClassOrThrow("InterpolateGenericsExample"),
-                                                                        context.getClassOrThrow("java.lang.String"),
+                               LM_Class declared = context.getClassOrThrow("InterpolateGenericsExample")
+                                                          .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                         context.getConstants().getUnboundWildcard());
-                               LM_Class capture = context.interpolateGenerics(declared);
+
+                               LM_Class capture = declared.interpolateGenerics();
                                LM_Type interpolated = Optional.of((LM_Generic) capture.getGenericTypes().get(1))
                                                               .map(LM_Generic::getExtends)
                                                               .map(LM_Interface.class::cast)
@@ -195,20 +196,20 @@ class ClassTest extends DeclaredTest<C_Class>
                                                               .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                               LM_Class independentExample = context.withGenerics(context.getClassOrThrow(
-                                                                                       "InterpolateGenericsExample.IndependentGeneric"),
-                                                                                  context.getConstants().getUnboundWildcard());
-                               LM_Class independentCapture = context.interpolateGenerics(independentExample);
+                               LM_Class independentExample = context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                    .withGenerics(context.getConstants().getUnboundWildcard());
+
+                               LM_Class independentCapture = independentExample.interpolateGenerics();
                                LM_Type interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
                                                                          .map(LM_Generic::getExtends)
                                                                          .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               LM_Class dependentExample = context.withGenerics(context.getClassOrThrow(
-                                                                                     "InterpolateGenericsExample.DependentGeneric"),
-                                                                                context.getConstants().getUnboundWildcard(),
+                               LM_Class dependentExample = context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                  .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                 context.getClassOrThrow("java.lang.String"));
-                               LM_Class dependentCapture = context.interpolateGenerics(dependentExample);
+
+                               LM_Class dependentCapture = dependentExample.interpolateGenerics();
                                LM_Type interpolatedDependent = Optional.of(((LM_Generic) dependentCapture.getGenericTypes().get(0)))
                                                                        .map(LM_Generic::getExtends)
                                                                        .orElseThrow();

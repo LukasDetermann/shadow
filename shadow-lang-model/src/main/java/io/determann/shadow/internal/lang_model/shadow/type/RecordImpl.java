@@ -10,10 +10,12 @@ import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static java.util.Arrays.stream;
 
 public class RecordImpl extends DeclaredImpl implements LM_Record
 {
@@ -52,6 +54,39 @@ public class RecordImpl extends DeclaredImpl implements LM_Record
                          .stream()
                          .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
+   }
+
+   @Override
+   public LM_Record withGenerics(LM_Type... generics)
+   {
+      if (generics.length == 0 || getGenerics().size() != generics.length)
+      {
+         throw new IllegalArgumentException(getQualifiedName() +
+                                            " has " +
+                                            getGenerics().size() +
+                                            " generics. " +
+                                            generics.length +
+                                            " are provided");
+      }
+      TypeMirror[] typeMirrors = stream(generics)
+            .map(LM_Adapter::particularType)
+            .toArray(TypeMirror[]::new);
+
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getDeclaredType(getElement(), typeMirrors));
+   }
+
+   @Override
+   public LM_Record withGenerics(String... qualifiedGenerics)
+   {
+      return withGenerics(stream(qualifiedGenerics)
+                                .map(name -> getApi().getDeclaredOrThrow(name))
+                                .toArray(LM_Type[]::new));
+   }
+
+   @Override
+   public LM_Record interpolateGenerics()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).capture(getMirror()));
    }
 
    @Override

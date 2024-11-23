@@ -3,10 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
@@ -21,6 +18,7 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static java.util.Arrays.stream;
 
 public class ClassImpl extends DeclaredImpl implements LM_Class
 {
@@ -97,6 +95,49 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
                          .stream()
                          .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
                          .toList();
+   }
+
+   @Override
+   public LM_Class withGenerics(LM_Type... generics)
+   {
+      if (generics.length == 0 || getGenerics().size() != generics.length)
+      {
+         throw new IllegalArgumentException(getQualifiedName() +
+                                            " has " +
+                                            getGenerics().size() +
+                                            " generics. " +
+                                            generics.length +
+                                            " are provided");
+      }
+      Optional<LM_Declared> outerType = getOuterType();
+      if (outerType.isPresent() &&
+          (outerType.get() instanceof LM_Interface anInterface &&
+           !anInterface.getGenerics().isEmpty() ||
+           outerType.get() instanceof LM_Class aClass1 && !aClass1.getGenerics().isEmpty()))
+      {
+         throw new IllegalArgumentException("cant add generics to " +
+                                            getQualifiedName() +
+                                            " when the class is not static and the outer class has generics");
+      }
+      TypeMirror[] typeMirrors = stream(generics)
+            .map(LM_Adapter::particularType)
+            .toArray(TypeMirror[]::new);
+
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getDeclaredType(getElement(), typeMirrors));
+   }
+
+   @Override
+   public LM_Class withGenerics(String... qualifiedGenerics)
+   {
+      return withGenerics(stream(qualifiedGenerics)
+                                .map(name -> getApi().getDeclaredOrThrow(name))
+                                .toArray(LM_Type[]::new));
+   }
+
+   @Override
+   public LM_Class interpolateGenerics()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).capture(getMirror()));
    }
 
    @Override

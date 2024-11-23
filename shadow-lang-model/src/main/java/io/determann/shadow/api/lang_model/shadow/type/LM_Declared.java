@@ -114,4 +114,8 @@ public interface LM_Declared extends C_Declared,
     * String -&gt; String[]
     */
    LM_Array asArray();
+
+   LM_Wildcard asExtendsWildcard();
+
+   LM_Wildcard asSuperWildcard();
 }

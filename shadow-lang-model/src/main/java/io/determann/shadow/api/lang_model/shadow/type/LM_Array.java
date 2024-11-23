@@ -35,6 +35,11 @@ public interface LM_Array extends C_Array,
     */
    LM_Array asArray();
 
+
+   LM_Wildcard asExtendsWildcard();
+
+   LM_Wildcard asSuperWildcard();
+
    /**
     * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
     * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}

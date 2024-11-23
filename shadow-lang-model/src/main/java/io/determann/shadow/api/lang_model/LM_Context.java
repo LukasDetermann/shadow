@@ -5,12 +5,12 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Enum;
+import io.determann.shadow.api.shadow.type.C_Interface;
+import io.determann.shadow.api.shadow.type.C_Record;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Arrays.stream;
 
 public interface LM_Context
 {
@@ -137,93 +137,4 @@ public interface LM_Context
    LM_Package getPackageOrThrow(C_Module module, String qualifiedPackageName);
 
    LM_Constants getConstants();
-
-   /**
-    * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code context.getDeclaredOrThrow("java.util.List").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
-    */
-   LM_Class withGenerics(C_Class aClass, C_Type... generics);
-
-   /**
-    * like {@link #withGenerics(C_Class, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
-    */
-   default LM_Class withGenerics(C_Class aClass, String... qualifiedGenerics)
-   {
-      return withGenerics(aClass, stream(qualifiedGenerics)
-            .map(this::getDeclaredOrThrow)
-            .toArray(C_Type[]::new));
-   }
-
-   /**
-    * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
-    * {@code context.getDeclaredOrThrow("java.util.List").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
-    */
-   LM_Interface withGenerics(C_Interface anInterface, C_Type... generics);
-
-   /**
-    * like {@link #withGenerics(C_Interface, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
-    */
-   default LM_Interface withGenerics(C_Interface anInterface, String... qualifiedGenerics)
-   {
-      return withGenerics(anInterface, stream(qualifiedGenerics)
-            .map(this::getDeclaredOrThrow)
-            .toArray(C_Type[]::new));
-   }
-
-   /**
-    * {@code context.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
-    * {@code context.getRecordOrThrow("org.example.MyRecord").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code MyRecord<String>}
-    */
-   LM_Record withGenerics(C_Record aRecord, C_Type... generics);
-
-   /**
-    * like {@link #withGenerics(C_Record, C_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
-    */
-   default LM_Record withGenerics(C_Record aRecord, String... qualifiedGenerics)
-   {
-      return withGenerics(aRecord, stream(qualifiedGenerics)
-            .map(this::getDeclaredOrThrow)
-            .toArray(C_Type[]::new));
-   }
-
-   /**
-    * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
-    * <p>
-    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
-    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
-    * <p>
-    * The code for the example
-    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
-    */
-   LM_Class interpolateGenerics(C_Class aClass);
-
-   /**
-    * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
-    * <p>
-    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
-    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
-    * <p>
-    * The code for the example
-    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
-    */
-   LM_Interface interpolateGenerics(C_Interface anInterface);
-
-   /**
-    * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
-    * <p>
-    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
-    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
-    * <p>
-    * The code for the example
-    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
-    */
-   LM_Record interpolateGenerics(C_Record aRecord);
-
-   LM_Wildcard asExtendsWildcard(C_Array array);
-
-   LM_Wildcard asSuperWildcard(C_Array array);
-
-   LM_Wildcard asExtendsWildcard(C_Declared array);
-
-   LM_Wildcard asSuperWildcard(C_Declared array);
 }

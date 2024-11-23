@@ -18,12 +18,11 @@ public class InterpolateGenericsExample
                                LM_Class myClass = context.getClassOrThrow("MyClass");
                                LM_Declared string = context.getDeclaredOrThrow("java.lang.String");
 
-                               LM_Class withGenerics = context.withGenerics(myClass,
-                                                                            string,
+                               LM_Class withGenerics = myClass.withGenerics(string,
                                                                             //the unboundWildcard will be replaced with the result
                                                                             context.getConstants().getUnboundWildcard());
 
-                               LM_Class capture = context.interpolateGenerics(withGenerics);
+                               LM_Class capture = withGenerics.interpolateGenerics();
 
                                LM_Type stringRep = Optional.of(capture.getGenericTypes().get(1))
                                                            .map(LM_Generic.class::cast)

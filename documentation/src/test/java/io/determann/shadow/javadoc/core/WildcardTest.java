@@ -15,7 +15,7 @@ public class WildcardTest
                             {
                                //@start region="Wildcard.contains"
                                LM_Class number = context.getClassOrThrow("java.lang.Number");
-                               LM_Wildcard wildcard = context.asExtendsWildcard(number);
+                               LM_Wildcard wildcard = number.asExtendsWildcard();
                                Assertions.assertTrue(wildcard.contains(context.getClassOrThrow("java.lang.Long")));//@highlight substring="contains"
                                //@end
                             })

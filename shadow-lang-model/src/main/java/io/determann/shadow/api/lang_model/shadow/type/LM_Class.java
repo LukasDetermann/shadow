@@ -1,5 +1,6 @@
 package io.determann.shadow.api.lang_model.shadow.type;
 
+import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_Erasable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_AbstractModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
@@ -51,6 +52,28 @@ public interface LM_Class extends C_Class,
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */
    List<LM_Generic> getGenerics();
+
+   /**
+    * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
+    * {@code context.getDeclaredOrThrow("java.util.List").withGenerics(context.getDeclaredOrThrow("java.lang.String"))} represents {@code List<String>}
+    */
+   LM_Class withGenerics(LM_Type... generics);
+
+   /**
+    * like {@link #withGenerics(LM_Type...)} but resolves the names using {@link LM_Context#getDeclaredOrThrow(String)}
+    */
+   LM_Class withGenerics(String... qualifiedGenerics);
+
+   /**
+    * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
+    * <p>
+    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
+    * <p>
+    * The code for the example
+    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
+    */
+   LM_Class interpolateGenerics();
 
    /**
     * Integer -&gt; int<br>

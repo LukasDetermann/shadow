@@ -120,24 +120,24 @@ class RecordTest extends DeclaredTest<LM_Record>
       ProcessorTest.process(context ->
                             {
                                assertThrows(IllegalArgumentException.class,
-                                            () -> context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
-                                                                         "java.lang.String"));
+                                            () -> context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                         .withGenerics("java.lang.String"));
 
                                assertThrows(IllegalArgumentException.class,
-                                            () -> context.withGenerics(context.getRecordOrThrow("SimpleRecord"), "java.io.Serializable"));
+                                            () -> context.getRecordOrThrow("SimpleRecord")
+                                                         .withGenerics("java.io.Serializable"));
 
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String")),
-                                            context.withGenerics(context.getRecordOrThrow(
-                                                                               "InterpolateGenericsExample.IndependentGeneric"),
-                                                                         "java.lang.String")
-                                                  .getGenericTypes());
+                                            context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                   .withGenerics("java.lang.String")
+                                                   .getGenericTypes());
 
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String"),
                                                     context.getClassOrThrow("java.lang.Number")),
-                                            context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric"),
-                                                                   "java.lang.String",
-                                                                   "java.lang.Number")
-                                                     .getGenericTypes());
+                                            context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                   .withGenerics("java.lang.String",
+                                                                 "java.lang.Number")
+                                                   .getGenericTypes());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
@@ -156,11 +156,11 @@ class RecordTest extends DeclaredTest<LM_Record>
    {
       ProcessorTest.process(context ->
                             {
-                               LM_Record declared = context.withGenerics(context.getRecordOrThrow("InterpolateGenericsExample"),
-                                                                         context.getClassOrThrow("java.lang.String"),
+                               LM_Record declared = context.getRecordOrThrow("InterpolateGenericsExample")
+                                                           .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                          context.getConstants().getUnboundWildcard());
 
-                               LM_Record capture = context.interpolateGenerics(declared);
+                               LM_Record capture = declared.interpolateGenerics();
                                LM_Type interpolated = Optional.of(((LM_Generic) capture.getGenericTypes().get(1)))
                                                               .map(LM_Generic::getExtends)
                                                               .map(LM_Interface.class::cast)
@@ -169,19 +169,20 @@ class RecordTest extends DeclaredTest<LM_Record>
                                                               .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                               LM_Record independentExample = context.withGenerics(context.getRecordOrThrow(
-                                     "InterpolateGenericsExample.IndependentGeneric"), context.getConstants().getUnboundWildcard());
-                               LM_Record independentCapture = context.interpolateGenerics(independentExample);
+                               LM_Record independentExample = context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                     .withGenerics(context.getConstants().getUnboundWildcard());
+
+                               LM_Record independentCapture = independentExample.interpolateGenerics();
                                LM_Type interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
                                                                          .map(LM_Generic::getExtends)
                                                                          .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               LM_Record dependentExample = context.withGenerics(context.getRecordOrThrow(
-                                                                                      "InterpolateGenericsExample.DependentGeneric"),
-                                                                                 context.getConstants().getUnboundWildcard(),
+                               LM_Record dependentExample = context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                   .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                  context.getClassOrThrow("java.lang.String"));
-                               LM_Record dependentCapture = context.interpolateGenerics(dependentExample);
+
+                               LM_Record dependentCapture = dependentExample.interpolateGenerics();
                                LM_Type interpolatedDependent = Optional.of(((LM_Generic) dependentCapture.getGenericTypes().get(0)))
                                                                        .map(LM_Generic::getExtends)
                                                                        .orElseThrow();

@@ -65,16 +65,16 @@ class WildcardTest extends TypeTest<LM_Wildcard>
    {
       ProcessorTest.process(context ->
                             {
-                               assertTrue(context.asExtendsWildcard(context.getClassOrThrow("java.lang.Number"))
+                               assertTrue(context.getClassOrThrow("java.lang.Number").asExtendsWildcard()
                                                    .contains(context.getClassOrThrow("java.lang.Long")));
 
-                               assertFalse(context.asExtendsWildcard(context.getClassOrThrow("java.lang.Long"))
+                               assertFalse(context.getClassOrThrow("java.lang.Long").asExtendsWildcard()
                                                     .contains(context.getClassOrThrow("java.lang.Number")));
 
-                               assertTrue(context.asSuperWildcard(context.getClassOrThrow("java.lang.Long"))
+                               assertTrue(context.getClassOrThrow("java.lang.Long").asSuperWildcard()
                                                    .contains(context.getClassOrThrow("java.lang.Number")));
 
-                               assertFalse(context.asSuperWildcard(context.getClassOrThrow("java.lang.Number"))
+                               assertFalse(context.getClassOrThrow("java.lang.Number").asSuperWildcard()
                                                     .contains(context.getClassOrThrow("java.lang.Long")));
                             })
                    .compile();

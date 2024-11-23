@@ -13,7 +13,7 @@ import io.determann.shadow.api.lang_model.shadow.type.*;
 import io.determann.shadow.api.shadow.C_Annotationable;
 import io.determann.shadow.api.shadow.C_QualifiedNameable;
 import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Annotation;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -554,66 +554,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    public LM_Constants getConstants()
    {
       return langModelContext.getConstants();
-   }
-
-   @Override
-   public LM_Class withGenerics(C_Class aClass, C_Type... generics)
-   {
-      return langModelContext.withGenerics(aClass, generics);
-   }
-
-   @Override
-   public LM_Interface withGenerics(C_Interface anInterface, C_Type... generics)
-   {
-      return langModelContext.withGenerics(anInterface, generics);
-   }
-
-   @Override
-   public LM_Record withGenerics(C_Record aRecord, C_Type... generics)
-   {
-      return langModelContext.withGenerics(aRecord, generics);
-   }
-
-   @Override
-   public LM_Class interpolateGenerics(C_Class aClass)
-   {
-      return langModelContext.interpolateGenerics(aClass);
-   }
-
-   @Override
-   public LM_Interface interpolateGenerics(C_Interface anInterface)
-   {
-      return langModelContext.interpolateGenerics(anInterface);
-   }
-
-   @Override
-   public LM_Record interpolateGenerics(C_Record aRecord)
-   {
-      return langModelContext.interpolateGenerics(aRecord);
-   }
-
-   @Override
-   public LM_Wildcard asExtendsWildcard(C_Array array)
-   {
-      return langModelContext.asExtendsWildcard(array);
-   }
-
-   @Override
-   public LM_Wildcard asSuperWildcard(C_Array array)
-   {
-      return langModelContext.asSuperWildcard(array);
-   }
-
-   @Override
-   public LM_Wildcard asExtendsWildcard(C_Declared array)
-   {
-      return langModelContext.asExtendsWildcard(array);
-   }
-
-   @Override
-   public LM_Wildcard asSuperWildcard(C_Declared array)
-   {
-      return langModelContext.asSuperWildcard(array);
    }
 
    @Override

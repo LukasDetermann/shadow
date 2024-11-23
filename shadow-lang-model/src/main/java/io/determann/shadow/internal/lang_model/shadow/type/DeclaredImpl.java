@@ -7,6 +7,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
 import io.determann.shadow.api.shadow.C_NestingKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Declared;
@@ -146,6 +147,18 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    public LM_Array asArray()
    {
       return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
+   }
+
+   @Override
+   public LM_Wildcard asExtendsWildcard()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getWildcardType(getMirror(), null));
+   }
+
+   @Override
+   public LM_Wildcard asSuperWildcard()
+   {
+      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getWildcardType(null, getMirror()));
    }
 
    @Override
