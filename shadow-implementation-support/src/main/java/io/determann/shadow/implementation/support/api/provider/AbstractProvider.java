@@ -5,13 +5,12 @@ import io.determann.shadow.api.Response;
 import io.determann.shadow.api.operation.Operation;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 public abstract class AbstractProvider implements ProviderSpi
 {
    //Map<Operation<RESULT>, BiFunction<INSTANCE, PARAMETER, RESULT>>
-   private final Map<Operation<?>, BiFunction<?, Object[], ?>> map;
+   private final Map<Operation<?>, BiFunction<?, Object[], Response<?>>> map;
 
    protected AbstractProvider()
    {
@@ -39,21 +38,7 @@ public abstract class AbstractProvider implements ProviderSpi
          return new Response.Unsupported<>();
       }
       //noinspection unchecked
-      Object result = ((BiFunction<Object, Object[], ?>) mapping).apply(instance, params);
-
-      if (result instanceof Response<?> response)
-      {
-         //noinspection unchecked
-         return ((Response<RESULT>) response);
-      }
-      if (result instanceof Optional<?> optional)
-      {
-         //noinspection unchecked
-         return optional.map(o -> (Response<RESULT>) new Response.Result<>(o)).orElseGet(Response.Empty::new);
-      }
-
-      //noinspection unchecked
-      return new Response.Result<>(((RESULT) result));
+      return ((BiFunction<Object, Object[], Response<RESULT>>) mapping).apply(instance, params);
    }
 
    protected abstract void addMappings(MappingBuilder builder);
