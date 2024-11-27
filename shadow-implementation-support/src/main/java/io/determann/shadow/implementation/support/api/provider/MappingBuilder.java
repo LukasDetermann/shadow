@@ -1,6 +1,7 @@
 package io.determann.shadow.implementation.support.api.provider;
 
 import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.Response;
 import io.determann.shadow.api.operation.*;
 
 import java.util.HashMap;
@@ -28,6 +29,12 @@ public class MappingBuilder
       return this;
    }
 
+   public <FROM, RESULT> MappingBuilder withMapping(StaticOperation0<FROM> operation, Function<Implementation, Response<RESULT>> supplier)
+   {
+      map.put(operation, (o, objects) -> supplier.apply((Implementation) o));
+      return this;
+   }
+
    //static 1
 
    public <PARAM_1, RESULT> MappingBuilder with(StaticOperation1<PARAM_1, RESULT> operation,
@@ -46,6 +53,14 @@ public class MappingBuilder
       return this;
    }
 
+   public <PARAM_1, FROM, RESULT> MappingBuilder withMapping(StaticOperation1<PARAM_1, FROM> operation,
+                                                             BiFunction<Implementation, PARAM_1, Response<RESULT>> supplier)
+   {
+      //noinspection unchecked
+      map.put(operation, (o, objects) -> supplier.apply(((Implementation) o), ((PARAM_1) objects[0])));
+      return this;
+   }
+
    //static 2
 
    public <PARAM_1, PARAM_2, RESULT> MappingBuilder with(StaticOperation2<PARAM_1, PARAM_2, RESULT> operation,
@@ -58,6 +73,14 @@ public class MappingBuilder
 
    public <PARAM_1, PARAM_2, RESULT> MappingBuilder withOptional(StaticOperation2<PARAM_1, PARAM_2, RESULT> operation,
                                                                  TriFunction<Implementation, PARAM_1, PARAM_2, Optional<? extends RESULT>> supplier)
+   {
+      //noinspection unchecked
+      map.put(operation, (o, objects) -> supplier.apply((Implementation) o, (PARAM_1) objects[0], (PARAM_2) objects[1]));
+      return this;
+   }
+
+   public <PARAM_1, PARAM_2, FROM, RESULT> MappingBuilder withMapping(StaticOperation2<PARAM_1, PARAM_2, FROM> operation,
+                                                                      TriFunction<Implementation, PARAM_1, PARAM_2, Response<RESULT>> supplier)
    {
       //noinspection unchecked
       map.put(operation, (o, objects) -> supplier.apply((Implementation) o, (PARAM_1) objects[0], (PARAM_2) objects[1]));
@@ -81,6 +104,14 @@ public class MappingBuilder
       return this;
    }
 
+   public <TYPE, FROM, RESULT> MappingBuilder withMapping(InstanceOperation0<TYPE, FROM> operation,
+                                                          Function<TYPE, Response<RESULT>> mapping)
+   {
+      //noinspection unchecked
+      map.put(operation, (o, objects) -> mapping.apply((TYPE) o));
+      return this;
+   }
+
    //instance 1
 
    public <TYPE, PARAM_1, RESULT> MappingBuilder with(InstanceOperation1<TYPE, PARAM_1, RESULT> operation,
@@ -93,6 +124,14 @@ public class MappingBuilder
 
    public <TYPE, PARAM_1, RESULT> MappingBuilder withOptional(InstanceOperation1<TYPE, PARAM_1, RESULT> operation,
                                                               BiFunction<TYPE, PARAM_1, Optional<RESULT>> mapping)
+   {
+      //noinspection unchecked
+      map.put(operation, (o, objects) -> mapping.apply((TYPE) o, (PARAM_1) objects[0]));
+      return this;
+   }
+
+   public <TYPE, PARAM_1, FROM, RESULT> MappingBuilder withMapping(InstanceOperation1<FROM, PARAM_1, RESULT> operation,
+                                                                   BiFunction<TYPE, PARAM_1, Response<RESULT>> mapping)
    {
       //noinspection unchecked
       map.put(operation, (o, objects) -> mapping.apply((TYPE) o, (PARAM_1) objects[0]));

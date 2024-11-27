@@ -5,7 +5,7 @@ import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
@@ -29,13 +29,19 @@ public class ReflectionProvider extends AbstractProvider
              .with(GET_PACKAGES, (implementation, name) -> Collections.singletonList(R_Adapter.getPackage(name)))
              .with(GET_MODULE, (implementation, name) -> R_Adapter.getModuleType(name))
              .withOptional(GET_DECLARED, (implementation, name) -> R_Adapter.getDeclared(name))
+             .withMapping(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))
+             .withMapping(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Class.class))
+             .withMapping(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Enum.class))
+             .withMapping(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Interface.class))
+             .withMapping(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Record.class))
              .with(GET_BOOLEAN, implementation -> R_Adapter.generalize(Boolean.TYPE))
-             .with(GET_BYTE, implementation -> R_Adapter.generalize(byte.class))
-             .with(GET_SHORT, implementation -> R_Adapter.generalize(short.class))
-             .with(GET_INT, implementation -> R_Adapter.generalize(int.class))
-             .with(GET_CHAR, implementation -> R_Adapter.generalize(char.class))
-             .with(GET_FLOAT, implementation -> R_Adapter.generalize(float.class))
-             .with(GET_DOUBLE, implementation -> R_Adapter.generalize(double.class))
+             .with(GET_BYTE, implementation -> R_Adapter.generalize(Byte.TYPE))
+             .with(GET_SHORT, implementation -> R_Adapter.generalize(Short.TYPE))
+             .with(GET_INT, implementation -> R_Adapter.generalize(Integer.TYPE))
+             .with(GET_LONG, implementation -> R_Adapter.generalize(Long.TYPE))
+             .with(GET_CHAR, implementation -> R_Adapter.generalize(Character.TYPE))
+             .with(GET_FLOAT, implementation -> R_Adapter.generalize(Float.TYPE))
+             .with(GET_DOUBLE, implementation -> R_Adapter.generalize(Double.TYPE))
              .with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
              .with(QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
              .with(TYPE_REPRESENTS_SAME_TYPE, (type, type1) -> query(type).representsSameType(type1))

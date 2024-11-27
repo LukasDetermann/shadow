@@ -4,7 +4,7 @@ package io.determann.shadow.internal.lang_model;
 import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
@@ -27,10 +27,16 @@ public class LangModelProvider extends AbstractProvider
              .with(GET_PACKAGES, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getPackages(name))
              .withOptional(GET_MODULE, (implementation, name) ->   ((LangModelImplementation) implementation).getContext().getModule(name))
              .withOptional(GET_DECLARED, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getDeclared(name))
+             .withMapping(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))
+             .withMapping(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Class.class))
+             .withMapping(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Enum.class))
+             .withMapping(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Interface.class))
+             .withMapping(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Record.class))
              .with(GET_BOOLEAN,implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveBoolean())
              .with(GET_BYTE, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveByte())
              .with(GET_SHORT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveShort())
              .with(GET_INT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveInt())
+             .with(GET_LONG, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveLong())
              .with(GET_CHAR, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveChar())
              .with(GET_FLOAT, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveFloat())
              .with(GET_DOUBLE, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveDouble())

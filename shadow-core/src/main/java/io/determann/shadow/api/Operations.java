@@ -24,6 +24,16 @@ public interface Operations
 
    public static StaticOperation1<String, C_Declared> GET_DECLARED = new StaticOperation1<>("getDeclared");
 
+   public static StaticOperation1<String, C_Annotation> GET_ANNOTATION = new StaticOperation1<>("getAnnotation");
+
+   public static StaticOperation1<String, C_Class> GET_CLASS = new StaticOperation1<>("getClass");
+
+   public static StaticOperation1<String, C_Enum> GET_ENUM = new StaticOperation1<>("getEnum");
+
+   public static StaticOperation1<String, C_Interface> GET_INTERFACE = new StaticOperation1<>("getInterface");
+
+   public static StaticOperation1<String, C_Record> GET_RECORD = new StaticOperation1<>("getRecord");
+
    public static StaticOperation1<String, C_Module> GET_MODULE = new StaticOperation1<>("getModule");
 
    public static StaticOperation0<C_Primitive> GET_BOOLEAN = new StaticOperation0<>("getBoolean");
