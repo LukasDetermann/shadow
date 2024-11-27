@@ -2,169 +2,188 @@ package io.determann.shadow.tck.internal.renderer;
 
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.tck.internal.RenderingTestBuilder;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.Operations.DECLARED_GET_CONSTRUCTORS;
+import static io.determann.shadow.api.Operations.GET_CLASS;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.tck.internal.RenderingTestBuilder.renderingTest;
+import static io.determann.shadow.tck.internal.TckTest.withSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConstructorRendererTest
 {
    @Test
+   void emptyDeclaration()
+   {
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(Long id) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+
+                     assertEquals("public ConstructorExample(Long id) {}\n", render(DEFAULT, constructor).declaration());
+                  });
+   }
+
+   @Test
    void declaration()
    {
-      RenderingTestBuilder<C_Class> paramExample = renderingTest(C_Class.class).withSource("ConstructorExample.java", """
-                                                                                     public class ConstructorExample {
-                                                                                        public ConstructorExample(Long id) {}
-                                                                                     }
-                                                                                     """)
-                                                                               .withToRender("ConstructorExample");
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(Long id) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
 
-      paramExample.withRender(cClass ->
-                              {
-                                 C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                 return render(DEFAULT, constructor).declaration();
-                              })
-                  .withExpected("public ConstructorExample(Long id) {}\n")
-                  .test();
+                     assertEquals("public ConstructorExample(Long id) {\ntest\n}\n", render(DEFAULT, constructor).declaration("test"));
+                  });
+   }
 
-      paramExample.withRender(cClass ->
-                              {
-                                 C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                 return render(DEFAULT, constructor).declaration("test");
-                              })
-                  .withExpected("public ConstructorExample(Long id) {\ntest\n}\n")
-                  .test();
+   @Test
+   void exceptionDeclaration()
+   {
+      String expected = "public ConstructorExample(String name) throws java.io.IOException {}\n";
 
-      RenderingTestBuilder<C_Class> throwsTest = renderingTest(C_Class.class).withSource("ConstructorExample.java", """
-                                                                                   public class ConstructorExample {
-                                                                                      @TestAnnotation
-                                                                                      public ConstructorExample(String name) throws java.io.IOException {}
-                                                                                   }
-                                                                                   """)
-                                                                             .withSource("TestAnnotation.java", """
-                                                                                   @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
-                                                                                   public @interface TestAnnotation {
-                                                                                   }
-                                                                                   """)
-                                                                             .withToRender("ConstructorExample");
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(String name) throws java.io.IOException {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
 
-      throwsTest.withRender(cClass ->
-                            {
-                               C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                               return render(DEFAULT, constructor).declaration();
-                            })
-                .withExpected("@TestAnnotation\npublic ConstructorExample(String name) throws java.io.IOException {}\n")
-                .test();
+                     assertEquals(expected, render(DEFAULT, constructor).declaration());
+                  });
+   }
 
-      throwsTest.withRender(cClass ->
-                            {
-                               C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                               return render(DEFAULT, constructor).declaration("test");
-                            })
-                .withExpected("""
-                                    @TestAnnotation
-                                    public ConstructorExample(String name) throws java.io.IOException {
-                                    test
-                                    }
-                                    """)
-                .test();
+   @Test
+   void annotatedDeclaration()
+   {
+      String expected = """
+            @TestAnnotation
+            public ConstructorExample(String name) throws java.io.IOException {
+            test
+            }
+            """;
 
-      RenderingTestBuilder<C_Class> varargsTest = renderingTest(C_Class.class).withSource("ConstructorExample.java", """
-                                                                                    public class ConstructorExample {
-                                                                                       public ConstructorExample(String... names) {}
-                                                                                    }
-                                                                                    """)
-                                                                              .withToRender("ConstructorExample");
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               @TestAnnotation
+               public ConstructorExample(String name) throws java.io.IOException {}
+            }
+            """)
+            .withSource("TestAnnotation.java", """
+                  @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
+                  public @interface TestAnnotation {
+                  }
+                  """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
 
-      varargsTest.withRender(cClass ->
-                             {
-                                C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                return render(DEFAULT, constructor).declaration();
-                             })
-                 .withExpected("public ConstructorExample(String... names) {}\n")
-                 .test();
+                     assertEquals(expected, render(DEFAULT, constructor).declaration("test"));
+                  });
+   }
 
-      varargsTest.withRender(cClass ->
-                             {
-                                C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                return render(DEFAULT, constructor).declaration("test");
-                             })
-                 .withExpected("public ConstructorExample(String... names) {\ntest\n}\n")
-                 .test();
+   @Test
+   void varargsDeclaration()
+   {
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(String... names) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
 
-      RenderingTestBuilder<C_Class> genericTest = renderingTest(C_Class.class).withSource("ConstructorExample.java", """
-                                                                                    public class ConstructorExample {
-                                                                                       public <T> ConstructorExample(T t) {}
-                                                                                    }
-                                                                                    """)
-                                                                              .withToRender("ConstructorExample");
+                     assertEquals("public ConstructorExample(String... names) {}\n", render(DEFAULT, constructor).declaration());
+                  });
+   }
 
-      genericTest.withRender(cClass ->
-                             {
-                                C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                return render(DEFAULT, constructor).declaration();
-                             })
-                 .withExpected("public <T> ConstructorExample(T t) {}\n")
-                 .test();
+   @Test
+   void genericDeclaration()
+   {
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public <T> ConstructorExample(T t) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
 
-      genericTest.withRender(cClass ->
-                             {
-                                C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                return render(DEFAULT, constructor).declaration("test");
-                             })
-                 .withExpected("public <T> ConstructorExample(T t) {\ntest\n}\n")
-                 .test();
+                     assertEquals("public <T> ConstructorExample(T t) {}\n", render(DEFAULT, constructor).declaration());
+                  });
+   }
 
-      renderingTest(C_Class.class).withSource("ReceiverExample.java", """
-                                        public class ReceiverExample {
-                                           public class Inner {
-                                              public Inner(@MyAnnotation ReceiverExample ReceiverExample.this) {}
-                                           }
-                                        }
-                                        """)
-                                  .withSource("MyAnnotation.java",
-                                              """
-                                                    @java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE)
-                                                    @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
-                                                    @interface MyAnnotation {}""")
-                                  .withToRender("ReceiverExample.Inner")
-                                  .withRender(cClass ->
-                                              {
-                                                 C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                                 return render(DEFAULT, constructor).declaration();
-                                              })
-                                  .withExpected("public Inner(ReceiverExample ReceiverExample.this) {}\n")
-                                  .test();
+   @Test
+   void receiverDeclaration()
+   {
+      withSource("ReceiverExample.java", """
+            public class ReceiverExample {
+               public class Inner {
+                  public Inner(@MyAnnotation ReceiverExample ReceiverExample.this) {}
+               }
+            }
+            """)
+            .withSource("MyAnnotation.java",
+                        """
+                              @java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE_USE)
+                              @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
+                              @interface MyAnnotation {}""")
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+
+                     assertEquals("public Inner(ReceiverExample ReceiverExample.this) {}\n", render(DEFAULT, constructor).declaration());
+                  });
+   }
+
+   @Test
+   void emptyInvocation()
+   {
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(Long id) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+                     assertEquals("ConstructorExample()", render(DEFAULT, constructor).invocation());
+                  });
    }
 
    @Test
    void invocation()
    {
-      RenderingTestBuilder<C_Class> renderingTest = renderingTest(C_Class.class).withSource("ConstructorExample.java", """
-                                                                                      public class ConstructorExample {
-                                                                                         public ConstructorExample(Long id) {}
-                                                                                      }
-                                                                                      """)
-                                                                                .withToRender("ConstructorExample");
-
-      renderingTest.withRender(cClass ->
-                               {
-                                  C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                  return render(DEFAULT, constructor).invocation();
-                               })
-                   .withExpected("ConstructorExample()")
-                   .test();
-
-      renderingTest.withRender(cClass ->
-                               {
-                                  C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
-                                  return render(DEFAULT, constructor).invocation("test");
-                               })
-                   .withExpected("ConstructorExample(test)")
-                   .test();
+      withSource("ConstructorExample.java", """
+            public class ConstructorExample {
+               public ConstructorExample(Long id) {}
+            }
+            """)
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
+                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+                     assertEquals("ConstructorExample(test)", render(DEFAULT, constructor).invocation("test"));
+                  });
    }
 }

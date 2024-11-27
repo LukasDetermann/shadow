@@ -4,14 +4,13 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static io.determann.shadow.api.Operations.GET_MODULE;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.tck.Tck.TCK;
+import static io.determann.shadow.tck.internal.TckTest.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ModuleRendererTest
@@ -19,12 +18,12 @@ class ModuleRendererTest
    @Test
    void declaration()
    {
-      TCK.test(Collections.emptyList(), implementation ->
-      {
-         C_Module module = requestOrThrow(implementation, GET_MODULE, "java.desktop");
-         String actual = render(DEFAULT, module).declaration();
-         assertEquals(sort(EXPECTED_RENDERING), sort(actual));
-      });
+      test(implementation ->
+           {
+              C_Module module = requestOrThrow(implementation, GET_MODULE, "java.desktop");
+              String actual = render(DEFAULT, module).declaration();
+              assertEquals(sort(EXPECTED_RENDERING), sort(actual));
+           });
    }
 
    /**
@@ -49,7 +48,7 @@ class ModuleRendererTest
          requires java.prefs;
          requires transitive java.datatransfer;
          requires transitive java.xml;
-
+         
          exports java.applet;
          exports java.awt;
          exports java.awt.color;
@@ -104,10 +103,10 @@ class ModuleRendererTest
          exports sun.awt to jdk.accessibility, jdk.unsupported.desktop;
          exports sun.awt.dnd to jdk.unsupported.desktop;
          exports sun.swing to jdk.unsupported.desktop;
-
+         
          opens com.sun.java.swing.plaf.windows to jdk.jconsole;
          opens javax.swing.plaf.basic to jdk.jconsole;
-
+         
          uses java.awt.im.spi.InputMethodDescriptor;
          uses javax.accessibility.AccessibilityProvider;
          uses javax.imageio.spi.ImageInputStreamSpi;
@@ -126,7 +125,7 @@ class ModuleRendererTest
          uses javax.sound.sampled.spi.FormatConversionProvider;
          uses javax.sound.sampled.spi.MixerProvider;
          uses sun.swing.InteropProvider;
-
+         
          provides java.net.ContentHandlerFactory with sun.awt.www.content.MultimediaContentHandlers;
          provides javax.print.PrintServiceLookup with sun.print.PrintServiceLookupProvider;
          provides javax.print.StreamPrintServiceFactory with sun.print.PSStreamPrinterFactory;
@@ -140,5 +139,5 @@ class ModuleRendererTest
          provides javax.sound.sampled.spi.MixerProvider with com.sun.media.sound.DirectAudioDeviceProvider, com.sun.media.sound.PortMixerProvider;
          provides sun.datatransfer.DesktopDatatransferService with sun.awt.datatransfer.DesktopDatatransferServiceImpl;
           }
-          """;
+         """;
 }
