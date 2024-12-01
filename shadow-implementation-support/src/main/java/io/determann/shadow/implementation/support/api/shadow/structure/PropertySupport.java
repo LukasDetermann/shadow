@@ -2,7 +2,7 @@ package io.determann.shadow.implementation.support.api.shadow.structure;
 
 import io.determann.shadow.api.shadow.structure.C_Property;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.implementation.support.internal.property.PropertyImpl;
+import io.determann.shadow.implementation.support.internal.property.PropertyFactory;
 import io.determann.shadow.implementation.support.internal.shadow.SupportSupport;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class PropertySupport
 {
    public static List<C_Property> propertiesOf(C_Declared declared)
    {
-      return PropertyImpl.of(declared);
+      return PropertyFactory.of(declared);
    }
 
    public static boolean equals(C_Property property, Object other)

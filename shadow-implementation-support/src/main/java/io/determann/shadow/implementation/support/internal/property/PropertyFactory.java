@@ -4,6 +4,7 @@ import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
+import io.determann.shadow.api.shadow.structure.C_Property;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Type;
@@ -13,47 +14,23 @@ import io.determann.shadow.api.shadow.type.primitive.C_boolean;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.GETTER;
-import static io.determann.shadow.implementation.support.internal.property.PropertyTemplateFactory.AccessorType.SETTER;
+import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.GETTER;
+import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
-public class PropertyTemplateFactory
+public class PropertyFactory
 {
-   private static class Accessor
-   {
-      private final C_Method method;
-      private final AccessorType type;
-      private final String prefix;
-      private final String name;
-      private final int position;
-
-      private Accessor(C_Method method, AccessorType type, String prefix, String name, int position)
-      {
-         this.method = method;
-         this.type = type;
-         this.prefix = prefix;
-         this.name = name;
-         this.position = position;
-      }
-
-      public C_Method getMethod() {return method;}
-
-      public AccessorType getType() {return type;}
-
-      public String getPrefix() {return prefix;}
-
-      public String getName() {return name;}
-
-      public int getPosition() {return position;}
-   }
+   private static record Accessor(C_Method method,
+                                  AccessorType type,
+                                  String prefix,
+                                  String name,
+                                  int position) {}
 
    enum AccessorType
    {
@@ -65,12 +42,14 @@ public class PropertyTemplateFactory
    private static final String SET_PREFIX = "set";
    private static final String IS_PREFIX = "is";
 
-   private PropertyTemplateFactory() {}
+   private PropertyFactory() {}
 
-   public static List<PropertyTemplate> templatesFor(C_Declared declared)
+   public static List<C_Property> of(C_Declared declared)
    {
-      Map<String, C_Field> nameField = requestOrThrow(declared, DECLARED_GET_FIELDS).stream().collect(Collectors.toMap(field -> requestOrThrow(field,
-                                                                                                                                               NAMEABLE_GET_NAME), Function.identity()));
+      Map<String, C_Field> nameField =
+            requestOrThrow(declared, DECLARED_GET_FIELDS).stream()
+                                                         .collect(toMap(field -> requestOrThrow(field, NAMEABLE_GET_NAME),
+                                                                        Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -80,8 +59,8 @@ public class PropertyTemplateFactory
                                 .map(method1 -> toAccessor(method1, position.getAndIncrement()))
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
-                                .collect(groupingBy(Accessor::getName,
-                                                    groupingBy(Accessor::getType)));
+                                .collect(groupingBy(Accessor::name,
+                                                    groupingBy(Accessor::type)));
 
       return nameTypeAccessors.entrySet().stream()
                               .filter(entry -> entry.getValue().containsKey(GETTER))
@@ -89,17 +68,18 @@ public class PropertyTemplateFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C_Type type = requestOrThrow(getter.getMethod(), EXECUTABLE_GET_RETURN_TYPE);
+                                      C_Type type = requestOrThrow(getter.method(), EXECUTABLE_GET_RETURN_TYPE);
 
-                                      PropertyTemplate template = new PropertyTemplate(name, type, getter.getMethod());
+                                      C_Method setter = findSetter(entry.getValue(), type).orElse(null);
+                                      C_Field field = findField(nameField, type, name).orElse(null);
 
-                                      findSetter(entry.getValue(), type).ifPresent(template::setSetter);
-                                      findField(nameField, type, name).ifPresent(template::setField);
+                                      PropertyImpl template = new PropertyImpl(name, type, field, getter.method(), setter);
 
-                                      return new AbstractMap.SimpleEntry<>(getter.getPosition(), template);
+                                      return new AbstractMap.SimpleEntry<>(getter.position(), template);
                                    })
                               .sorted((Map.Entry.comparingByKey()))
                               .map(Map.Entry::getValue)
+                              .map(C_Property.class::cast)
                               .toList();
    }
 
@@ -139,12 +119,12 @@ public class PropertyTemplateFactory
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).getMethod(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE),
+          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).method(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE),
                           TYPE_REPRESENTS_SAME_TYPE, type))
       {
          return Optional.empty();
       }
-      return Optional.of(setters.get(0).getMethod());
+      return Optional.of(setters.get(0).method());
    }
 
    private static Accessor findGetter(Map<AccessorType, List<Accessor>> typeAccessors)
@@ -164,7 +144,7 @@ public class PropertyTemplateFactory
          for (Accessor accessor : getters)
          {
             //prefer is getter over get getter
-            if (accessor.getPrefix().equals(IS_PREFIX))
+            if (accessor.prefix().equals(IS_PREFIX))
             {
                return accessor;
             }

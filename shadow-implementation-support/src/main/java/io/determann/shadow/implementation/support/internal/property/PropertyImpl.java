@@ -4,11 +4,9 @@ import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Property;
-import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 
-import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.implementation.support.internal.SupportProvider.IMPLEMENTATION;
@@ -21,23 +19,11 @@ public class PropertyImpl implements C_Property
    private final C_Method getter;
    private final C_Method setter;
 
-   public static List<C_Property> of(C_Declared declared)
-   {
-      return PropertyTemplateFactory.templatesFor(declared).stream()
-                                    .map(template -> new PropertyImpl(template.getName(),
-                                                                      template.getType(),
-                                                                      template.getField(),
-                                                                      template.getGetter(),
-                                                                      template.getSetter()))
-                                    .map(C_Property.class::cast)
-                                    .toList();
-   }
-
-   private PropertyImpl(String name,
-                        C_Type type,
-                        C_Field field,
-                        C_Method getter,
-                        C_Method setter)
+   PropertyImpl(String name,
+                C_Type type,
+                C_Field field,
+                C_Method getter,
+                C_Method setter)
    {
       this.name = name;
       this.type = type;
