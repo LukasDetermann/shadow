@@ -1,5 +1,6 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
+import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Property;
@@ -11,7 +12,8 @@ import java.util.Optional;
  * <p>
  * The search for properties starts with the getter {@link #getGetter()}
  */
-public interface LM_Property extends C_Property
+public interface LM_Property extends C_Property,
+                                     LM_Nameable
 {
    /**
     * based on the name of the getter without the prefix. if one of the first 2 chars is uppercase the

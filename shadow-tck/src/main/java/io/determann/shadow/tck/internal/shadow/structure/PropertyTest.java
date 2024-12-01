@@ -33,9 +33,9 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
 
-                     assertEquals("id", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("id", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
                      assertTrue(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
                      C_Nameable type = ((C_Nameable) requestOrThrow(properties.get(1), PROPERTY_GET_TYPE));
                      assertEquals("Long", requestOrThrow(type, NAMEABLE_GET_NAME));
@@ -62,9 +62,9 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
 
-                     assertEquals("valid", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("valid", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
                      assertFalse(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
                      C_Nameable type = ((C_Nameable) requestOrThrow(properties.get(1), PROPERTY_GET_TYPE));
                      assertEquals("boolean", requestOrThrow(type, NAMEABLE_GET_NAME));
@@ -90,9 +90,9 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
 
-                     assertEquals("values", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("values", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
                      assertTrue(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
                      C_Nameable type = ((C_Nameable) requestOrThrow(properties.get(1), PROPERTY_GET_TYPE));
                      assertEquals("List", requestOrThrow(type, NAMEABLE_GET_NAME));
@@ -120,9 +120,9 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
 
-                     assertEquals("sTrangeCase", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("sTrangeCase", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
                      assertTrue(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
                      C_Nameable type = ((C_Nameable) requestOrThrow(properties.get(1), PROPERTY_GET_TYPE));
                      assertEquals("String", requestOrThrow(type, NAMEABLE_GET_NAME));
@@ -150,9 +150,9 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
 
-                     assertEquals("NOT_A_CONSTANT", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("NOT_A_CONSTANT", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
                      assertTrue(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
                      C_Nameable type = ((C_Nameable) requestOrThrow(properties.get(1), PROPERTY_GET_TYPE));
                      assertEquals("String", requestOrThrow(type, NAMEABLE_GET_NAME));
@@ -179,7 +179,7 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(1, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
                   });
    }
 
@@ -194,8 +194,8 @@ class PropertyTest
                      List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
 
                      assertEquals(2, properties.size());
-                     assertEquals("class", requestOrThrow(properties.get(0), PROPERTY_GET_NAME));
-                     assertEquals("id", requestOrThrow(properties.get(1), PROPERTY_GET_NAME));
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
+                     assertEquals("id", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
 
                      C_Method getter = requestOrThrow(properties.get(1), PROPERTY_GET_GETTER);
                      C_Declared cDeclared = requestOrThrow(getter, EXECUTABLE_GET_SURROUNDING);

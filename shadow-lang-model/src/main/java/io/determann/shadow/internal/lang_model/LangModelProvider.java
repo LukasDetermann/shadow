@@ -162,7 +162,6 @@ public class LangModelProvider extends AbstractProvider
              .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation))
              .with(ANNOTATION_VALUE_IS_DEFAULT, annotationValue -> query(annotationValue).isDefault())
              .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue())
-             .with(PROPERTY_GET_NAME, property -> query(property).getName())
              .with(PROPERTY_GET_TYPE, property -> query(property).getType())
              .withOptional(PROPERTY_GET_FIELD, property -> query(property).getField())
              .with(PROPERTY_GET_GETTER, property -> query(property).getGetter())

@@ -20,7 +20,7 @@ public class SupportProvider extends AbstractProvider
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.with(PROPERTY_GET_NAME, property -> ((PropertyImpl) property).getName())
+      builder.with(NAMEABLE_GET_NAME, property -> ((PropertyImpl) property).getName())
              .with(PROPERTY_GET_TYPE, property -> ((PropertyImpl) property).getType())
              .withOptional(PROPERTY_GET_FIELD, property -> ((PropertyImpl) property).getField())
              .with(PROPERTY_GET_GETTER, property -> ((PropertyImpl) property).getGetter())

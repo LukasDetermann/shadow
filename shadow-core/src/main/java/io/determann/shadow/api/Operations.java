@@ -299,8 +299,6 @@ public interface Operations
 
    public static InstanceOperation0<C_AnnotationValue, Object> ANNOTATION_VALUE_GET_VALUE = new InstanceOperation0<>("annotationValue.getValue");
 
-   public static InstanceOperation0<C_Property, String> PROPERTY_GET_NAME = new InstanceOperation0<>("property.getName");
-
    public static InstanceOperation0<C_Property, C_Type> PROPERTY_GET_TYPE = new InstanceOperation0<>("property.getType");
 
    public static InstanceOperation0<C_Property, C_Field> PROPERTY_GET_FIELD = new InstanceOperation0<>("property.getField");

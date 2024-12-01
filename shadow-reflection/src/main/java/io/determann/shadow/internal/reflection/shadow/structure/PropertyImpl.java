@@ -29,7 +29,7 @@ public class PropertyImpl implements R_Property
    @Override
    public String getName()
    {
-      return requestOrThrow(delegate, PROPERTY_GET_NAME);
+      return requestOrThrow(delegate, NAMEABLE_GET_NAME);
    }
 
    @Override
