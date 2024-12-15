@@ -5,6 +5,8 @@ module io.determann.shadow.annotation.processing.test {
    requires transitive io.determann.shadow.lang.model;
    requires java.compiler;
 
+   requires org.junit.jupiter.api;
+
    requires io.determann.shadow.annotation.processing;
    requires io.determann.shadow.tck;
 

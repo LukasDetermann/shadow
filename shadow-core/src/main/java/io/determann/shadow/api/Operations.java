@@ -36,6 +36,10 @@ public interface Operations
 
    public static StaticOperation1<String, C_Module> GET_MODULE = new StaticOperation1<>("getModule");
 
+   public static StaticOperation0<C_Null> GET_NULL = new StaticOperation0<>("getNull");
+
+   public static StaticOperation0<C_Void> GET_VOID = new StaticOperation0<>("getVoid");
+
    public static StaticOperation0<C_Primitive> GET_BOOLEAN = new StaticOperation0<>("getBoolean");
 
    public static StaticOperation0<C_Primitive> GET_BYTE = new StaticOperation0<>("getByte");
@@ -95,7 +99,7 @@ public interface Operations
 
    public static InstanceOperation0<C_Declared, List<? extends C_Declared>> DECLARED_GET_DIRECT_SUPER_TYPES = new InstanceOperation0<>("declared.getDirectSuperTypes");
 
-   public static InstanceOperation0<C_Declared, List<? extends C_Declared>> DECLARED_GET_SUPER_TYPES = new InstanceOperation0<>("declared.getSuperTypes");
+   public static InstanceOperation0<C_Declared, Set<? extends C_Declared>> DECLARED_GET_SUPER_TYPES = new InstanceOperation0<>("declared.getSuperTypes");
 
    public static InstanceOperation0<C_Declared, List<? extends C_Interface>> DECLARED_GET_INTERFACES = new InstanceOperation0<>("declared.getInterfaces");
 
@@ -106,6 +110,8 @@ public interface Operations
    public static InstanceOperation1<C_Declared, String, C_Interface> DECLARED_GET_DIRECT_INTERFACE = new InstanceOperation1<>("declared.getDirectInterface");
 
    public static InstanceOperation0<C_Declared, C_Package> DECLARED_GET_PACKAGE = new InstanceOperation0<>("declared.getPackage");
+
+   public static InstanceOperation0<C_Declared, String> DECLARED_GET_BINARY_NAME = new InstanceOperation0<>("declared.getBinaryName");
 
    public static InstanceOperation0<C_Declared, C_Array> DECLARED_AS_ARRAY = new InstanceOperation0<>("declared.asArray");
 

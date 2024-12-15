@@ -8,6 +8,8 @@ import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
+import io.determann.shadow.internal.reflection.shadow.type.NullImpl;
+import io.determann.shadow.internal.reflection.shadow.type.VoidImpl;
 
 import java.util.Collections;
 
@@ -34,6 +36,8 @@ public class ReflectionProvider extends AbstractProvider
              .withCast(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Enum.class))
              .withCast(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Interface.class))
              .withCast(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Record.class))
+             .with(GET_VOID, implementation -> new VoidImpl())
+             .with(GET_NULL, implementation -> new NullImpl())
              .with(GET_BOOLEAN, implementation -> R_Adapter.generalize(Boolean.TYPE))
              .with(GET_BYTE, implementation -> R_Adapter.generalize(Byte.TYPE))
              .with(GET_SHORT, implementation -> R_Adapter.generalize(Short.TYPE))
@@ -62,12 +66,13 @@ public class ReflectionProvider extends AbstractProvider
              .with(DECLARED_GET_METHOD, (declared, s) -> query(declared).getMethods(s))
              .with(DECLARED_GET_CONSTRUCTORS, declared -> query(declared).getConstructors())
              .with(DECLARED_GET_DIRECT_SUPER_TYPES, declared -> query(declared).getDirectSuperTypes())
-             .with(DECLARED_GET_SUPER_TYPES, declared -> query(declared).getDirectSuperTypes())
+             .with(DECLARED_GET_SUPER_TYPES, declared -> query(declared).getSuperTypes())
              .with(DECLARED_GET_INTERFACES, declared -> query(declared).getInterfaces())
              .with(DECLARED_GET_INTERFACE, (declared, s) -> query(declared).getInterfaceOrThrow(s))
              .with(DECLARED_GET_DIRECT_INTERFACES, declared -> query(declared).getDirectInterfaces())
              .with(DECLARED_GET_DIRECT_INTERFACE, (declared, s) -> query(declared).getDirectInterfaceOrThrow(s))
              .with(DECLARED_GET_PACKAGE, declared -> query(declared).getPackage())
+             .with(DECLARED_GET_BINARY_NAME, declared -> query(declared).getBinaryName())
              .with(DECLARED_AS_ARRAY, declared -> query(declared).asArray())
              .with(ENUM_GET_ENUM_CONSTANT, (anEnum, s) -> query(anEnum).getEnumConstantOrThrow(s))
              .with(ENUM_GET_EUM_CONSTANTS, anEnum -> query(anEnum).getEumConstants())

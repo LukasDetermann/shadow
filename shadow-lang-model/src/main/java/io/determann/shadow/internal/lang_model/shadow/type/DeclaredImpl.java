@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Operations.MODIFIABLE_GET_MODIFIERS;
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.*;
@@ -120,11 +121,11 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
       return findAllSupertypes(new HashSet<>(), this);
    }
 
-   private Set<LM_Declared> findAllSupertypes(Set<LM_Declared> found, C_Declared declared)
+   private Set<LM_Declared> findAllSupertypes(Set<LM_Declared> found, LM_Declared declared)
    {
-      List<LM_Declared> directSupertypes = (List<LM_Declared>) requestOrThrow(declared, DECLARED_GET_SUPER_TYPES);
+      List<LM_Declared> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (C_Declared directSupertype : directSupertypes)
+      for (LM_Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
