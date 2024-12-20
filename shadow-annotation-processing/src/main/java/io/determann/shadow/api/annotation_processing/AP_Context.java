@@ -395,16 +395,6 @@ public interface AP_Context extends LM_Context
     */
    BiConsumer<AP_Context, String> getSystemOutHandler();
 
-   /**
-    * Some {@link javax.tools.Tool} don't support {@link System#err}. By default, it is proxied and redirected to the logger as error during
-    */
-   void setSystemErrorHandler(BiConsumer<AP_Context, String> systemErrorHandler);
-
-   /**
-    * @see #setSystemErrorHandler(BiConsumer)
-    */
-   BiConsumer<AP_Context, String> getSystemErrorHandler();
-
    void logAndRaiseError(String msg);
 
    void logInfo(String msg);

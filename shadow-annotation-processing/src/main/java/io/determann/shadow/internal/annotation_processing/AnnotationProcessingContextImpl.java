@@ -36,7 +36,6 @@ import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIE
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Adapter.particularElement;
-import static java.lang.System.err;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toSet;
 
@@ -79,8 +78,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
          logWarning(s);
       }
    };
-   private BiConsumer<AP_Context, String> systemErrorHandler = AP_Context::logAndRaiseError;
-
 
    public AnnotationProcessingContextImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
@@ -90,7 +87,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
       this.roundEnv = roundEnv;
 
       proxySystemOut();
-      proxySystemErr();
    }
 
    private void proxySystemOut()
@@ -109,24 +105,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
          }
       };
       System.setOut(printStream);
-   }
-
-   private void proxySystemErr()
-   {
-      //in >= java 18 out.getCharset()
-      PrintStream printStream = new PrintStream(err)
-      {
-         @Override
-         public void println(String x)
-         {
-            super.println(x);
-            if (x != null && systemErrorHandler != null)
-            {
-               systemErrorHandler.accept(AnnotationProcessingContextImpl.this, x);
-            }
-         }
-      };
-      System.setErr(printStream);
    }
 
    private <TYPE> Set<TYPE> getAnnotated(String qualifiedAnnotation, java.lang.Class<TYPE> typeClass)
@@ -441,18 +419,6 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    public BiConsumer<AP_Context, String> getSystemOutHandler()
    {
       return systemOutHandler;
-   }
-
-   @Override
-   public void setSystemErrorHandler(BiConsumer<AP_Context, String> systemErrorHandler)
-   {
-      this.systemErrorHandler = systemErrorHandler;
-   }
-
-   @Override
-   public BiConsumer<AP_Context, String> getSystemErrorHandler()
-   {
-      return systemErrorHandler;
    }
 
    @Override
