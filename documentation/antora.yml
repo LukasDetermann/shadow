@@ -13,9 +13,7 @@ ext:
     run:
       command:
         mvn -B -f documentation/ clean test &&
-        XCOPY documentation\src\test\java\io\determann\shadow documentation\target\antora\io\determann\shadow\ /Y /S &&
-        XCOPY shadow-reflection\src\main\java\io\determann\shadow\api\reflection\R_Adapter.java documentation\target\antora\io\determann\shadow\ /Y &&
-        XCOPY shadow-lang-model\src\main\java\io\determann\shadow\api\lang_model\LM_Adapter.java documentation\target\antora\io\determann\shadow\ /Y
+        XCOPY documentation\src\test\java\io\determann\shadow documentation\target\antora\io\determann\shadow\ /Y /S
     scan:
       dir: ./target/antora/io/determann/shadow
       files: '**/*'

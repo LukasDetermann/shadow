@@ -10,7 +10,6 @@
     <version>0.2.0</version>
     <modules>
         <module>shadow-annotation-processing</module>
-        <module>shadow-consistency-test</module>
         <module>shadow-core</module>
         <module>shadow-lang-model</module>
         <module>shadow-parent</module>

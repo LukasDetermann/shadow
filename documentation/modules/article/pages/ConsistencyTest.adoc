@@ -32,7 +32,7 @@ include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=re
 endif::[]
 ----
 
-Or use a convenience method if `+Optional.empty()+` or throwing an Exception is a fitting default behavior.
+Or use a convenience method if `+Optional.empty()+` or throwing an `+Exception+` is a fitting default behavior.
 
 [%linenums,java]
 ----
@@ -55,11 +55,12 @@ endif::[]
 
 === Consistency Tests
 
+Consistency Tests are written in the Style of a Technology Compatibility Kit (TCK).
 Testing consistency works like this.
 We start with a String representation of some code.
 This code gets compiled using the `+javax.tools.JavaCompiler+` and the Annotation processing part is executed and tested with the consumer supplied to the method "test".
 The compiled code is intercepted and loaded with a custom Classloader into the runtime.
-There the reflection part is executed and tested with the same consumer.
+There the reflection part is executed and tested.
 
 [%linenums,java]
 ----
@@ -76,7 +77,7 @@ This tests:
 * Feature
 ** class rendering
 * Api
-** `+request(NAMEABLE_GET_NAME, class)+` and others used internally by the render
+** `+Provider.request(Operations.NAMEABLE_GET_NAME, aClass)+` and others used internally by the render
 * Adapters
 ** `+ReflectionAdapter#generalize+`
 ** `+LangModelAdapter#generalize+`

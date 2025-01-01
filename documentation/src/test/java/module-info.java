@@ -9,4 +9,5 @@ module documentation {
    requires org.apache.commons.lang3;
 
    requires java.compiler;
+   requires io.determann.shadow.tck;
 }

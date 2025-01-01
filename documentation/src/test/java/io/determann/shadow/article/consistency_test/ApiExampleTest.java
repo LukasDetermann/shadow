@@ -4,16 +4,17 @@ import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.Response;
 import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.consistency.test.ConsistencyTest;
+import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.renderer.Renderer.render;
-import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ApiExampleTest
@@ -78,20 +79,27 @@ void requestOrThrow()
 }
 //end::requestOrThrow[]
 
+@Disabled("Don't run Tck tests for the doc")
 //tag::consistency[]
 @Test
 void classDeclarationRendering()
 {
-   String code =
-         "public class DependentGenerics<A extends Comparable<B>, B extends Comparable<A>> {}";
+   String expected =
+   "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}\n";
 
-   String expectedCode =
-         "public class DependentGenerics<A extends Comparable<B>, B extends Comparable<A>> {}\n";
+   String name = "InterpolateGenericsExample.java";
+   String content =
+   "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}";
+   TckTest.withSource(name, content)
+          .test(implementation ->
+               {
+                  C_Class cClass = Provider.requestOrThrow(implementation,
+                                                           Operations. GET_CLASS,
+                                                           "InterpolateGenericsExample");
 
-   ConsistencyTest.<C_Class>compileTime(c -> c.getClassOrThrow("DependentGenerics"))
-         .runtime(cl -> R_Adapter.generalize(cl.apply("DependentGenerics")))
-         .withCode("DependentGenerics.java", code)
-         .test(aClass -> assertEquals(expectedCode, render(DEFAULT, aClass).declaration()));
+                  assertEquals(expected, Renderer.render(RenderingContext.DEFAULT, cClass)
+                                                 .declaration());
+               });
 }
 //end::consistency[]
 //@formatter:on
