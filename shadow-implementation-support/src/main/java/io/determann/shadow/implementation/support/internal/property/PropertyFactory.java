@@ -68,7 +68,7 @@ public class PropertyFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C_Type type = requestOrThrow(getter.method(), EXECUTABLE_GET_RETURN_TYPE);
+                                      C_Type type = requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE);
 
                                       C_Method setter = findSetter(entry.getValue(), type).orElse(null);
                                       C_Field field = findField(nameField, type, name).orElse(null);
@@ -157,7 +157,7 @@ public class PropertyFactory
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME);
       List<? extends C_Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
-      C_Type returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+      C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
 
       //getter
       if (!(returnType instanceof C_Void))

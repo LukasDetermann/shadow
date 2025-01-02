@@ -1,6 +1,7 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.shadow.modifier.*;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
 public non-sealed interface LM_Method extends C_Method,
@@ -13,6 +14,8 @@ public non-sealed interface LM_Method extends C_Method,
                                               LM_StrictfpModifiable,
                                               LM_NativeModifiable
 {
+   LM_Type getReturnType();
+
    boolean overrides(C_Method method);
 
    boolean overwrittenBy(C_Method method);

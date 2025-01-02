@@ -187,8 +187,6 @@ public interface Operations
 
    public static InstanceOperation0<C_Executable, C_Return> EXECUTABLE_GET_RETURN = new InstanceOperation0<>("executable.getReturn");
 
-   public static InstanceOperation0<C_Executable, C_Type> EXECUTABLE_GET_RETURN_TYPE = new InstanceOperation0<>("executable.getReturnType");
-
    public static InstanceOperation0<C_Executable, List<? extends C_Type>> EXECUTABLE_GET_PARAMETER_TYPES = new InstanceOperation0<>("executable.getParameterTypes");
 
    public static InstanceOperation0<C_Executable, List<? extends C_Class>> EXECUTABLE_GET_THROWS = new InstanceOperation0<>("executable.getThrows");
@@ -202,6 +200,8 @@ public interface Operations
    public static InstanceOperation0<C_Executable, C_Declared> EXECUTABLE_GET_RECEIVER_TYPE = new InstanceOperation0<>("executable.getReceiverType");
 
    public static InstanceOperation0<C_Executable, C_Receiver> EXECUTABLE_GET_RECEIVER = new InstanceOperation0<>("executable.getReceiver");
+
+   public static InstanceOperation0<C_Method, C_Type> METHOD_GET_RETURN_TYPE = new InstanceOperation0<>("method.getReturnType");
 
    public static InstanceOperation1<C_Method, C_Method, Boolean> METHOD_OVERRIDES = new InstanceOperation1<>("method.overrides");
 

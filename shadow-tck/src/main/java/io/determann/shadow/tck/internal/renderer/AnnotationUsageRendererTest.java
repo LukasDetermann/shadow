@@ -101,7 +101,7 @@ class AnnotationUsageRendererTest
                           String actual = render(DEFAULT, usage)
                                 .usage(method ->
                                        {
-                                          C_Type returnType = requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE);
+                                          C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
                                           if (!(returnType instanceof C_Class aClass))
                                           {
                                              return Optional.empty();

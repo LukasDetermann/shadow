@@ -69,7 +69,7 @@ public class MethodRendererImpl implements MethodRenderer
          sb.append('>');
          sb.append(' ');
       }
-      sb.append(TypeRendererImpl.type(context, requestOrThrow(method, EXECUTABLE_GET_RETURN_TYPE)));
+      sb.append(TypeRendererImpl.type(context, requestOrThrow(method, METHOD_GET_RETURN_TYPE)));
       sb.append(' ');
       sb.append(requestOrThrow(method, NAMEABLE_GET_NAME));
       sb.append('(');

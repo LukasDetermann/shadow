@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.shadow.modifier.*;
+import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
 public non-sealed interface R_Method extends C_Method,
@@ -13,6 +14,8 @@ public non-sealed interface R_Method extends C_Method,
                                              R_StrictfpModifiable,
                                              R_NativeModifiable
 {
+   R_Type getReturnType();
+
    boolean overrides(C_Method method);
 
    boolean overwrittenBy(C_Method method);

@@ -61,8 +61,6 @@ public sealed interface LM_Executable
     */
    LM_Return getReturn();
 
-   LM_Type getReturnType();
-
    List<LM_Type> getParameterTypes();
 
    List<LM_Class> getThrows();

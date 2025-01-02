@@ -122,7 +122,7 @@ class MethodTest
               C_Class string = requestOrThrow(implementation, GET_CLASS, "java.lang.String");
               C_Class aLong = requestOrThrow(implementation, GET_CLASS, "java.lang.Long");
               C_Method toString = requestOrThrow(string, DECLARED_GET_METHOD, "toString").get(0);
-              C_Type returnType = requestOrThrow(toString, EXECUTABLE_GET_RETURN_TYPE);
+              C_Type returnType = requestOrThrow(toString, METHOD_GET_RETURN_TYPE);
               assertEquals(string, returnType);
               assertNotEquals(aLong, returnType);
            });

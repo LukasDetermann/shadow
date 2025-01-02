@@ -46,8 +46,6 @@ public sealed interface R_Executable
     */
    R_Return getReturn();
 
-   R_Type getReturnType();
-
    List<R_Type> getParameterTypes();
 
    List<R_Class> getThrows();

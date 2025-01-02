@@ -47,24 +47,6 @@ class ConstructorTest
    }
 
    @Test
-   void getReturnType()
-   {
-      withSource("ConstructorExample.java", """
-            import java.io.IOException;
-            
-            public class ConstructorExample {
-               public ConstructorExample(Long id) {}
-            }
-            """)
-            .test(implementation ->
-                  {
-                     C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
-                     assertEquals(requestOrThrow(implementation, GET_VOID), requestOrThrow(constructor, EXECUTABLE_GET_RETURN_TYPE));
-                  });
-   }
-
-   @Test
    void getParameterTypes()
    {
       withSource("ConstructorExample.java", "public class ConstructorExample {public ConstructorExample(Long id) {}}")
