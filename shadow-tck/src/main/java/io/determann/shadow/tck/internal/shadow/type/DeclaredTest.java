@@ -94,7 +94,7 @@ class DeclaredTest
             .test(implementation ->
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     assertEquals(1, requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).size());
+                     assertEquals(1, requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).size());
                   });
    }
 

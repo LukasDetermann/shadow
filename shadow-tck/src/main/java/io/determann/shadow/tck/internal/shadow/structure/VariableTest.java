@@ -30,7 +30,7 @@ abstract class VariableTest
                   {
                      C_Class string = requestOrThrow(implementation, GET_CLASS, "java.lang.String");
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ParameterExample");
-                     C_Constructor constructor = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      C_Parameter parameter = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS).get(0);
                      assertTrue(requestOrThrow(parameter, VARIABLE_IS_SUBTYPE_OF, string));
                   });

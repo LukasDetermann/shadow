@@ -4,6 +4,7 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_Erasable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_StaticModifiable;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Constructor;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.api.shadow.type.C_Record;
@@ -26,6 +27,8 @@ public interface LM_Record extends C_Record,
    }
 
    List<LM_RecordComponent> getRecordComponents();
+
+   List<LM_Constructor> getConstructors();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}

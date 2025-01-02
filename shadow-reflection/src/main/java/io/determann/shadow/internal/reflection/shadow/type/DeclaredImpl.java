@@ -124,7 +124,6 @@ public abstract class DeclaredImpl implements R_Declared
       return stream(getaClass().getDeclaredMethods()).map(R_Adapter::generalize).toList();
    }
 
-   @Override
    public List<R_Constructor> getConstructors()
    {
       return stream(getaClass().getDeclaredConstructors()).map(R_Adapter::generalize).toList();

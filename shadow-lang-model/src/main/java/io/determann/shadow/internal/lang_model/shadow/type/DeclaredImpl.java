@@ -95,7 +95,6 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
                           .toList();
    }
 
-   @Override
    public List<LM_Constructor> getConstructors()
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())

@@ -6,6 +6,7 @@ import io.determann.shadow.api.lang_model.shadow.modifier.LM_AbstractModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_FinalModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Sealable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_StaticModifiable;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Constructor;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
 import io.determann.shadow.api.shadow.type.C_Class;
@@ -37,6 +38,8 @@ public interface LM_Class extends C_Class,
     * if one is a primitive and the other is not it tries to convert them
     */
    boolean isAssignableFrom(C_Type type);
+
+   List<LM_Constructor> getConstructors();
 
    /**
     * returns the outer type for not static classes

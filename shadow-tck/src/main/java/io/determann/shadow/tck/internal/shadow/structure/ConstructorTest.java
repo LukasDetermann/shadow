@@ -1,6 +1,5 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
@@ -25,7 +24,7 @@ class ConstructorTest
             .test(implementation ->
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "DefaultConstructorExample");
-                     C_Constructor constructor = requestOrThrow(example, Operations.DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
 
                      assertEquals(0, requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS).size());
                   });
@@ -40,7 +39,7 @@ class ConstructorTest
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Class aLong = requestOrThrow(implementation, GET_CLASS, "java.lang.Long");
-                     C_Constructor constructor = requestOrThrow(example, Operations.DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      List<? extends C_Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
 
                      assertEquals(1, parameters.size());
@@ -61,7 +60,7 @@ class ConstructorTest
             .test(implementation ->
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     C_Constructor constructor = requestOrThrow(example, Operations.DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      assertEquals(requestOrThrow(implementation, GET_VOID), requestOrThrow(constructor, EXECUTABLE_GET_RETURN_TYPE));
                   });
    }
@@ -74,7 +73,7 @@ class ConstructorTest
                   {
                      C_Class aLong = requestOrThrow(implementation, GET_CLASS, "java.lang.Long");
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     C_Constructor constructor = requestOrThrow(example, Operations.DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
 
                      assertEquals(List.of(aLong), requestOrThrow(constructor, EXECUTABLE_GET_PARAMETER_TYPES));
                   });
@@ -95,7 +94,7 @@ class ConstructorTest
                   {
                      C_Class ioException = requestOrThrow(implementation, GET_CLASS, "java.io.IOException");
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     List<? extends C_Constructor> constructors = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS);
+                     List<? extends C_Constructor> constructors = requestOrThrow(example, CLASS_GET_CONSTRUCTORS);
 
                      assertEquals(emptyList(), requestOrThrow(constructors.get(0), EXECUTABLE_GET_THROWS));
                      assertEquals(List.of(ioException), requestOrThrow(constructors.get(1), EXECUTABLE_GET_THROWS));
@@ -116,7 +115,7 @@ class ConstructorTest
             .test(implementation ->
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     List<? extends C_Constructor> constructors = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS);
+                     List<? extends C_Constructor> constructors = requestOrThrow(example, CLASS_GET_CONSTRUCTORS);
                      assertFalse(requestOrThrow(constructors.get(0), EXECUTABLE_IS_VAR_ARGS));
                      assertTrue(requestOrThrow(constructors.get(1), EXECUTABLE_IS_VAR_ARGS));
                   });
@@ -137,7 +136,7 @@ class ConstructorTest
             .test(implementation ->
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
-                     C_Constructor constructor = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      assertEquals(example, requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING));
                   });
    }
@@ -162,7 +161,7 @@ class ConstructorTest
                                                       GET_CLASS,
                                                       "io.determann.shadow.example.processed.test.constructor.ConstructorExample");
 
-                     C_Constructor constructor = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      assertEquals(aPackage, requestOrThrow(constructor, EXECUTABLE_GET_PACKAGE));
                   });
    }
@@ -181,12 +180,12 @@ class ConstructorTest
             .test(implementation ->
                   {
                      C_Class defaultConstructorExample = requestOrThrow(implementation, GET_CLASS, "DefaultConstructorExample");
-                     C_Constructor defaultConstructor = requestOrThrow(defaultConstructorExample, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor defaultConstructor = requestOrThrow(defaultConstructorExample, CLASS_GET_CONSTRUCTORS).get(0);
                      assertTrue(requestOrEmpty(defaultConstructor, EXECUTABLE_GET_RECEIVER_TYPE).isEmpty());
 
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
                      C_Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
-                     C_Constructor constructor = requestOrThrow(inner, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
                      assertEquals(example, requestOrThrow(constructor, EXECUTABLE_GET_RECEIVER_TYPE));
                   });
    }

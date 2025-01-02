@@ -30,7 +30,7 @@ class ReceiverTest
                   {
                      C_Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
                      C_Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
-                     C_Constructor cConstructor = requestOrThrow(inner, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
                      C_Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
 
                      assertEquals(outer, requestOrThrow(cReceiver, RECEIVER_GET_TYPE));
@@ -53,7 +53,7 @@ class ReceiverTest
                   {
                      C_Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
                      C_Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
-                     C_Constructor cConstructor = requestOrThrow(inner, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
                      C_Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
 
                      assertEquals(outer, requestOrThrow(cReceiver, RECEIVER_GET_TYPE));

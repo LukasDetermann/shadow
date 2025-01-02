@@ -33,7 +33,7 @@ class ParameterTest
                      C_Parameter foo = requestOrThrow(method, EXECUTABLE_GET_PARAMETER, "foo");
                      assertEquals(method, requestOrThrow(foo, PARAMETER_GET_SURROUNDING));
 
-                     C_Constructor constructor = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      C_Parameter name = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS).get(0);
                      assertEquals(constructor, requestOrThrow(name, PARAMETER_GET_SURROUNDING));
                   });
@@ -51,7 +51,7 @@ class ParameterTest
             .test(implementation ->
                   {
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "VarArgsExample");
-                     C_Constructor constructor = requestOrThrow(example, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      List<? extends C_Parameter> parameters = requestOrThrow(constructor, EXECUTABLE_GET_PARAMETERS);
                      assertFalse(requestOrThrow(parameters.get(0), PARAMETER_IS_VAR_ARGS));
                      assertTrue(requestOrThrow(parameters.get(1), PARAMETER_IS_VAR_ARGS));

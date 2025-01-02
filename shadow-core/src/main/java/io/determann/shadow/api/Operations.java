@@ -95,8 +95,6 @@ public interface Operations
 
    public static InstanceOperation1<C_Declared, String, List<? extends C_Method>> DECLARED_GET_METHOD = new InstanceOperation1<>("declared.getMethod");
 
-   public static InstanceOperation0<C_Declared, List<? extends C_Constructor>> DECLARED_GET_CONSTRUCTORS = new InstanceOperation0<>("declared.getConstructor");
-
    public static InstanceOperation0<C_Declared, List<? extends C_Declared>> DECLARED_GET_DIRECT_SUPER_TYPES = new InstanceOperation0<>("declared.getDirectSuperTypes");
 
    public static InstanceOperation0<C_Declared, Set<? extends C_Declared>> DECLARED_GET_SUPER_TYPES = new InstanceOperation0<>("declared.getSuperTypes");
@@ -115,6 +113,8 @@ public interface Operations
 
    public static InstanceOperation0<C_Declared, C_Array> DECLARED_AS_ARRAY = new InstanceOperation0<>("declared.asArray");
 
+   public static InstanceOperation0<C_Enum, List<? extends C_Constructor>> ENUM_GET_CONSTRUCTORS = new InstanceOperation0<>("enum.getConstructors");
+
    public static InstanceOperation0<C_Enum, List<? extends C_EnumConstant>> ENUM_GET_EUM_CONSTANTS = new InstanceOperation0<>("enum.getEumConstants");
 
    public static InstanceOperation1<C_Enum, String, C_EnumConstant> ENUM_GET_ENUM_CONSTANT = new InstanceOperation1<>("enum.getEnumConstant");
@@ -125,6 +125,8 @@ public interface Operations
 
    public static InstanceOperation0<C_Interface, List<? extends C_Generic>> INTERFACE_GET_GENERICS = new InstanceOperation0<>("interface.getGenerics");
 
+   public static InstanceOperation0<C_Record, List<? extends C_Constructor>> RECORD_GET_CONSTRUCTORS = new InstanceOperation0<>("record.getConstructors");
+
    public static InstanceOperation0<C_Record, List<? extends C_RecordComponent>> RECORD_GET_RECORD_COMPONENTS = new InstanceOperation0<>("record.getRecordComponents");
 
    public static InstanceOperation1<C_Record, String, C_RecordComponent> RECORD_GET_RECORD_COMPONENT = new InstanceOperation1<>("record.getRecordComponent");
@@ -132,6 +134,8 @@ public interface Operations
    public static InstanceOperation0<C_Record, List<? extends C_Type>> RECORD_GET_GENERIC_TYPES = new InstanceOperation0<>("record.getGenericTypes");
 
    public static InstanceOperation0<C_Record, List<? extends C_Generic>> RECORD_GET_GENERICS = new InstanceOperation0<>("record.getGenerics");
+
+   public static InstanceOperation0<C_Class, List<? extends C_Constructor>> CLASS_GET_CONSTRUCTORS = new InstanceOperation0<>("class.getConstructors");
 
    public static InstanceOperation0<C_Class, C_Class> CLASS_GET_SUPER_CLASS = new InstanceOperation0<>("class.getSuperClass");
 

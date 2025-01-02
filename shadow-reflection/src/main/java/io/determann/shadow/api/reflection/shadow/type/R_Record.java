@@ -2,6 +2,7 @@ package io.determann.shadow.api.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.shadow.modifier.R_FinalModifiable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
+import io.determann.shadow.api.reflection.shadow.structure.R_Constructor;
 import io.determann.shadow.api.reflection.shadow.structure.R_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Record;
 
@@ -21,6 +22,8 @@ public interface R_Record extends C_Record,
    }
 
    List<R_RecordComponent> getRecordComponents();
+
+   List<R_Constructor> getConstructors();
 
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}

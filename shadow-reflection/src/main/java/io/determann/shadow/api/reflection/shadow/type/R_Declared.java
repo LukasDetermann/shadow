@@ -5,7 +5,10 @@ import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.R_QualifiedNameable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_AccessModifiable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_StrictfpModifiable;
-import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.structure.R_Field;
+import io.determann.shadow.api.reflection.shadow.structure.R_Method;
+import io.determann.shadow.api.reflection.shadow.structure.R_ModuleEnclosed;
+import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.shadow.C_NestingKind;
 import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Declared;
@@ -63,8 +66,6 @@ public interface R_Declared extends C_Declared,
    }
 
    List<R_Method> getMethods();
-
-   List<R_Constructor> getConstructors();
 
    /**
     * returns the parentClass including interfaces

@@ -25,7 +25,7 @@ class ModifiableTest
             .test(implementation ->
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PUBLIC));
                   });
    }
@@ -40,7 +40,7 @@ class ModifiableTest
             .test(implementation ->
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PROTECTED));
                   });
    }
@@ -55,7 +55,7 @@ class ModifiableTest
             .test(implementation ->
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, DECLARED_GET_CONSTRUCTORS).get(0);
+                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PRIVATE));
                   });
    }

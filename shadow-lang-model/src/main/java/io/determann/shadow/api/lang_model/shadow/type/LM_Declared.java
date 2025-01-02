@@ -3,7 +3,6 @@ package io.determann.shadow.api.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.shadow.*;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_AccessModifiable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_StrictfpModifiable;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Constructor;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
@@ -65,8 +64,6 @@ public interface LM_Declared extends C_Declared,
    }
 
    List<LM_Method> getMethods();
-
-   List<LM_Constructor> getConstructors();
 
    /**
     * returns the parentClass including interfaces

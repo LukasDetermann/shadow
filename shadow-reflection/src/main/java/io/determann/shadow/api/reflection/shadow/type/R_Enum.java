@@ -1,6 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
 import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
+import io.determann.shadow.api.reflection.shadow.structure.R_Constructor;
 import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
 import io.determann.shadow.api.shadow.type.C_Enum;
 
@@ -14,6 +15,8 @@ public interface R_Enum extends C_Enum,
                                 R_StaticModifiable
 {
    List<R_EnumConstant> getEumConstants();
+
+   List<R_Constructor> getConstructors();
 
    default R_EnumConstant getEnumConstantOrThrow(String simpleName)
    {

@@ -4,6 +4,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.R_AbstractModifiable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_FinalModifiable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_Sealable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
+import io.determann.shadow.api.reflection.shadow.structure.R_Constructor;
 import io.determann.shadow.api.reflection.shadow.structure.R_Property;
 import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Class;
@@ -28,6 +29,8 @@ public interface R_Class extends C_Class,
    List<R_Class> getPermittedSubClasses();
 
    List<R_Property> getProperties();
+
+   List<R_Constructor> getConstructors();
 
    /**
     * Equivalent to {@link #isSubtypeOf(C_Type)} except for primitives.
