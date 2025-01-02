@@ -10,15 +10,11 @@ import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Declared;
 
 import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
-
-import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * <ul>
@@ -42,16 +38,8 @@ public sealed interface R_Executable
     *  public MyObject(String param){}//@highlight substring="String param"
     *}
     * Returns the formal parameters, meaning everything but the Receiver.
-    * <p>
-    * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
-    * {@link C_Constructor}s with more than one {@link C_Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
     */
    List<R_Parameter> getParameters();
-
-   default R_Parameter getParameterOrThrow(String name)
-   {
-      return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_GET_NAME).equals(name)).findAny().orElseThrow();
-   }
 
    /**
     * Can be annotated using annotations with {@link ElementType#TYPE_USE}

@@ -108,7 +108,6 @@ public class ReflectionProvider extends AbstractProvider
              .with(VARIABLE_GET_TYPE, variable -> query(variable).getType())
              .with(VARIABLE_GET_SURROUNDING, variable -> query(variable).getSurrounding())
              .with(EXECUTABLE_GET_PARAMETERS, executable -> query(executable).getParameters())
-             .with(EXECUTABLE_GET_PARAMETER, (executable, s) -> query(executable).getParameterOrThrow(s))
              .with(EXECUTABLE_GET_RETURN, executable -> query(executable).getReturn())
              .with(EXECUTABLE_GET_RETURN_TYPE, executable -> query(executable).getReturnType())
              .with(EXECUTABLE_GET_PARAMETER_TYPES, executable -> query(executable).getParameterTypes())
