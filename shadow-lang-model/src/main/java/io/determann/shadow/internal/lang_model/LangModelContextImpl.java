@@ -66,7 +66,7 @@ public class LangModelContextImpl implements LM_Context,
    }
 
    @Override
-   public List<LM_Package> getPackages(String qualifiedName)
+   public List<LM_Package> getPackage(String qualifiedName)
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()

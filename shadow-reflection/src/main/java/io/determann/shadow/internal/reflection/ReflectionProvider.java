@@ -27,8 +27,8 @@ public class ReflectionProvider extends AbstractProvider
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.withOptional(GET_PACKAGE, (implementation, moduleName, packageName) -> R_Adapter.getPackage(moduleName, packageName))
-             .with(GET_PACKAGES, (implementation, name) -> Collections.singletonList(R_Adapter.getPackage(name)))
+      builder.withOptional(GET_PACKAGE_IN_MODULE, (implementation, moduleName, packageName) -> R_Adapter.getPackage(moduleName, packageName))
+             .with(GET_PACKAGE, (implementation, name) -> Collections.singletonList(R_Adapter.getPackage(name)))
              .with(GET_MODULE, (implementation, name) -> R_Adapter.getModuleType(name))
              .withOptional(GET_DECLARED, (implementation, name) -> R_Adapter.getDeclared(name))
              .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))

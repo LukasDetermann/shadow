@@ -3,7 +3,7 @@ package io.determann.shadow.tck.internal.renderer;
 import io.determann.shadow.api.shadow.structure.C_Package;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.Operations.GET_PACKAGE;
+import static io.determann.shadow.api.Operations.GET_PACKAGE_IN_MODULE;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.renderer.Renderer.render;
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
@@ -17,7 +17,7 @@ class PackageRendererTest
    {
       test(implementation ->
            {
-              C_Package cPackage = requestOrThrow(implementation, GET_PACKAGE, "java.base", "java.lang");
+              C_Package cPackage = requestOrThrow(implementation, GET_PACKAGE_IN_MODULE, "java.base", "java.lang");
               String actual = render(DEFAULT, cPackage).declaration();
               assertEquals("package java.lang;\n", actual);
            });

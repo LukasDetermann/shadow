@@ -21,7 +21,7 @@ class ModuleTest
       test(implementation ->
            {
               C_Module module = requestOrThrow(implementation, GET_MODULE, "java.logging");
-              Assertions.assertEquals(requestOrThrow(implementation, GET_PACKAGES, "java.util.logging"),
+              Assertions.assertEquals(requestOrThrow(implementation, GET_PACKAGE, "java.util.logging"),
                                       requestOrThrow(module, MODULE_GET_PACKAGES));
            });
    }

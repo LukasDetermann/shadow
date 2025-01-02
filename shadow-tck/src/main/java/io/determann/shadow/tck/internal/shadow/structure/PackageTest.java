@@ -24,13 +24,13 @@ class PackageTest
                    public class AnyClass {}""")
              .test(implementation ->
                    {
-                      assertTrue(requestOrThrow(implementation, GET_PACKAGES, "asdkfh").isEmpty());
+                      assertTrue(requestOrThrow(implementation, GET_PACKAGE, "asdkfh").isEmpty());
 
                       C_Class anyClass = requestOrThrow(implementation,
                                                         GET_CLASS,
                                                         "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass");
                       C_Package cPackage = requestOrThrow(implementation,
-                                                          GET_PACKAGES,
+                                                          GET_PACKAGE,
                                                           "io.determann.shadow.example.processed.test.packagee.not_empty").get(0);
                       assertEquals(List.of(anyClass), requestOrThrow(cPackage, PACKAGE_GET_DECLARED_LIST));
                    });

@@ -481,9 +481,9 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public List<LM_Package> getPackages(String qualifiedName)
+   public List<LM_Package> getPackage(String qualifiedName)
    {
-      return langModelContext.getPackages(qualifiedName);
+      return langModelContext.getPackage(qualifiedName);
    }
 
    @Override

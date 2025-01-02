@@ -23,8 +23,8 @@ public class LangModelProvider extends AbstractProvider
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.withOptional(GET_PACKAGE, (implementation, moduleName, packageName) -> ((LangModelImplementation) implementation).getContext().getPackage(moduleName, packageName))
-             .with(GET_PACKAGES, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getPackages(name))
+      builder.withOptional(GET_PACKAGE_IN_MODULE, (implementation, moduleName, packageName) -> ((LangModelImplementation) implementation).getContext().getPackage(moduleName, packageName))
+             .with(GET_PACKAGE, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getPackage(name))
              .withOptional(GET_MODULE, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getModule(name))
              .withOptional(GET_DECLARED, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getDeclared(name))
              .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))

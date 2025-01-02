@@ -124,7 +124,7 @@ public interface LM_Context
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
-   List<LM_Package> getPackages(String qualifiedName);
+   List<LM_Package> getPackage(String qualifiedName);
 
    List<LM_Package> getPackages();
 

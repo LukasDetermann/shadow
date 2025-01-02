@@ -18,9 +18,9 @@ public interface Operations
 {
    //static
    ///ModuleName, PackageName
-   public static StaticOperation2<String, String, C_Package> GET_PACKAGE = new StaticOperation2<>("getPackage");
+   public static StaticOperation2<String, String, C_Package> GET_PACKAGE_IN_MODULE = new StaticOperation2<>("getPackageInModule");
 
-   public static StaticOperation1<String, List<? extends C_Package>> GET_PACKAGES = new StaticOperation1<>("getPackages");
+   public static StaticOperation1<String, List<? extends C_Package>> GET_PACKAGE = new StaticOperation1<>("getPackage");
 
    public static StaticOperation1<String, C_Declared> GET_DECLARED = new StaticOperation1<>("getDeclared");
 
