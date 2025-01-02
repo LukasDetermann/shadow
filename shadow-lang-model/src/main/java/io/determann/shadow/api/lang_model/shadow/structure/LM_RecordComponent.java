@@ -34,6 +34,4 @@ public interface LM_RecordComponent extends C_RecordComponent,
    LM_Type getType();
 
    LM_Method getGetter();
-
-   LM_Package getPackage();
 }

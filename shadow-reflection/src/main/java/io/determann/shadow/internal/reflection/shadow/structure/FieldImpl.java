@@ -3,7 +3,6 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.structure.R_Field;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
@@ -82,12 +81,6 @@ public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Fiel
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
       return false;
-   }
-
-   @Override
-   public R_Package getPackage()
-   {
-      return (R_Package) requestOrThrow(getSurrounding(), DECLARED_GET_PACKAGE);
    }
 
    @Override

@@ -45,8 +45,6 @@ public sealed interface R_Variable
 
    R_Type getType();
 
-   R_Package getPackage();
-
    /**
     * The {@link Object} surrounding this {@link R_Variable}
     */

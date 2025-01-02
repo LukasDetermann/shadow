@@ -152,12 +152,6 @@ public class ExecutableImpl implements R_Constructor,
    }
 
    @Override
-   public R_Package getPackage()
-   {
-      return getSurrounding().getPackage();
-   }
-
-   @Override
    public List<R_Generic> getGenerics()
    {
       return Arrays.stream(getExecutable().getTypeParameters()).map(R_Adapter::generalize).map(R_Generic.class::cast).toList();
@@ -216,7 +210,7 @@ public class ExecutableImpl implements R_Constructor,
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC) &&
              !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PROTECTED) &&
-             (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE) || !requestOrThrow(method, EXECUTABLE_GET_PACKAGE).equals(getPackage())))
+             (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE) || !requestOrThrow(otherSurroundingClass, DECLARED_GET_PACKAGE).equals(getSurrounding().getPackage())))
          {
             return false;
          }

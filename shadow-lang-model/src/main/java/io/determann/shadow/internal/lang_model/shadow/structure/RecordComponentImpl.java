@@ -6,7 +6,6 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_RecordComponent;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Record;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -63,12 +62,6 @@ public class RecordComponentImpl implements LM_RecordComponent
    public LM_Method getGetter()
    {
       return (LM_Method) generalize(getApi(), getElement().getAccessor());
-   }
-
-   @Override
-   public LM_Package getPackage()
-   {
-      return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
    }
 
    public RecordComponentElement getElement()

@@ -77,8 +77,6 @@ public sealed interface LM_Executable
     */
    LM_Declared getSurrounding();
 
-   LM_Package getPackage();
-
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */

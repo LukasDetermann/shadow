@@ -179,8 +179,6 @@ public interface Operations
 
    public static InstanceOperation0<C_Variable, C_Type> VARIABLE_GET_TYPE = new InstanceOperation0<>("variable.getType");
 
-   public static InstanceOperation0<C_Variable, C_Package> VARIABLE_GET_PACKAGE = new InstanceOperation0<>("variable.getPackage");
-
    public static InstanceOperation0<C_Variable, Object> VARIABLE_GET_SURROUNDING = new InstanceOperation0<>("variable.getSurrounding");
 
    public static InstanceOperation0<C_Executable, List<? extends C_Parameter>> EXECUTABLE_GET_PARAMETERS = new InstanceOperation0<>("executable.getParameters");
@@ -198,8 +196,6 @@ public interface Operations
    public static InstanceOperation0<C_Executable, Boolean> EXECUTABLE_IS_VAR_ARGS = new InstanceOperation0<>("executable.isVarArgs");
 
    public static InstanceOperation0<C_Executable, C_Declared> EXECUTABLE_GET_SURROUNDING = new InstanceOperation0<>("executable.getSurrounding");
-
-   public static InstanceOperation0<C_Executable, C_Package> EXECUTABLE_GET_PACKAGE = new InstanceOperation0<>("executable.getPackage");
 
    public static InstanceOperation0<C_Executable, List<? extends C_Generic>> EXECUTABLE_GET_GENERICS = new InstanceOperation0<>("executable.getGenerics");
 
@@ -224,8 +220,6 @@ public interface Operations
    public static InstanceOperation0<C_RecordComponent, C_Type> RECORD_COMPONENT_GET_TYPE = new InstanceOperation0<>("recordComponent.getType");
 
    public static InstanceOperation0<C_RecordComponent, C_Method> RECORD_COMPONENT_GET_GETTER = new InstanceOperation0<>("recordComponent.getGetter");
-
-   public static InstanceOperation0<C_RecordComponent, C_Package> RECORD_COMPONENT_GET_PACKAGE = new InstanceOperation0<>("recordComponent.getPackage");
 
    public static InstanceOperation0<C_Return, C_Type> RETURN_GET_TYPE = new InstanceOperation0<>("return.getType");
 

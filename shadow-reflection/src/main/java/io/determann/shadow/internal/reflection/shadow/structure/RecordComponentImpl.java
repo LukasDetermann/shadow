@@ -6,7 +6,6 @@ import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.structure.R_Method;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.reflection.shadow.structure.R_RecordComponent;
 import io.determann.shadow.api.reflection.shadow.type.R_Record;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
@@ -105,12 +104,6 @@ public class RecordComponentImpl implements R_RecordComponent
    public R_Method getGetter()
    {
       return R_Adapter.generalize(getRecordComponent().getAccessor());
-   }
-
-   @Override
-   public R_Package getPackage()
-   {
-      return getRecord().getPackage();
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()

@@ -33,6 +33,4 @@ public interface R_RecordComponent extends C_RecordComponent,
    R_Type getType();
 
    R_Method getGetter();
-
-   R_Package getPackage();
 }

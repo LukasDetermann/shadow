@@ -168,12 +168,6 @@ public class ExecutableImpl implements LM_Constructor,
    }
 
    @Override
-   public LM_Package getPackage()
-   {
-      return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
-   }
-
-   @Override
    public LM_Module getModule()
    {
       return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));

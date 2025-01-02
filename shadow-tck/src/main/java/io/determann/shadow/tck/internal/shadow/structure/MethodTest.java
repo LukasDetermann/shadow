@@ -1,7 +1,6 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
 import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Type;
@@ -184,34 +183,6 @@ class MethodTest
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method toString = requestOrThrow(example, DECLARED_GET_METHOD, "toString").get(0);
                      assertEquals(example, requestOrThrow(toString, EXECUTABLE_GET_SURROUNDING));
-                  });
-   }
-
-   @Test
-   void getPackage()
-   {
-      withSource("MethodExample.java", """
-            package io.determann.shadow.example.processed.test.method;
-            
-            public class MethodExample {
-               @Override
-               public String toString()
-               {
-                  return "MethodExample{}";
-               }
-            }
-            """)
-            .test(implementation ->
-                  {
-                     C_Package aPackage = requestOrThrow(implementation,
-                                                         GET_PACKAGES,
-                                                         "io.determann.shadow.example.processed.test.method").get(0);
-
-                     C_Class example = requestOrThrow(implementation,
-                                                      GET_CLASS,
-                                                      "io.determann.shadow.example.processed.test.method.MethodExample");
-                     C_Method toString = requestOrThrow(example, DECLARED_GET_METHOD, "toString").get(0);
-                     assertEquals(aPackage, requestOrThrow(toString, EXECUTABLE_GET_PACKAGE));
                   });
    }
 

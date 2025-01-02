@@ -2,7 +2,6 @@ package io.determann.shadow.tck.internal.shadow.structure;
 
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Class;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 abstract class VariableTest
@@ -46,30 +44,6 @@ abstract class VariableTest
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "FieldExample");
                      C_Field field = requestOrThrow(example, DECLARED_GET_FIELDS).get(0);
                      assertTrue(requestOrThrow(field, VARIABLE_IS_ASSIGNABLE_FROM, integer));
-                  });
-   }
-
-   @Test
-   void getPackage()
-   {
-      withSource("FieldExample.java", """
-            package io.determann.shadow.example.processed.test.field;
-            
-            public class FieldExample
-            {
-               public static final int ID = 2;
-            }
-            """)
-            .test(implementation ->
-                  {
-                     C_Package aPackage = requestOrThrow(implementation,
-                                                         GET_PACKAGES,
-                                                         "io.determann.shadow.example.processed.test.field").get(0);
-                     C_Class example = requestOrThrow(implementation,
-                                                      GET_CLASS,
-                                                      "io.determann.shadow.example.processed.test.field.FieldExample");
-                     C_Field field = requestOrThrow(example, DECLARED_GET_FIELDS).get(0);
-                     assertEquals(aPackage, requestOrThrow(field, VARIABLE_GET_PACKAGE));
                   });
    }
 }

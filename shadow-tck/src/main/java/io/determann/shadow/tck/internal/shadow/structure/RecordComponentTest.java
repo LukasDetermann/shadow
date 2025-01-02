@@ -1,6 +1,5 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
-import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Record;
@@ -62,27 +61,6 @@ class RecordComponentTest
                      C_Record example = requestOrThrow(implementation, GET_RECORD, "RecordComponentExample");
                      C_RecordComponent id = requestOrThrow(example, RECORD_GET_RECORD_COMPONENT, "id");
                      assertEquals(cLong, requestOrThrow(id, RECORD_COMPONENT_GET_TYPE));
-                  });
-   }
-
-   @Test
-   void getPackage()
-   {
-      withSource("RecordComponentExample.java", """
-            package io.determann.shadow.example.processed.test.recordcomponent;
-            
-            public record RecordComponentExample(Long id) {}""")
-            .test(implementation ->
-                  {
-                     C_Package cPackage = requestOrThrow(implementation,
-                                                         GET_PACKAGES,
-                                                         "io.determann.shadow.example.processed.test.recordcomponent").get(0);
-
-                     C_Record example = requestOrThrow(implementation,
-                                                       GET_RECORD,
-                                                       "io.determann.shadow.example.processed.test.recordcomponent.RecordComponentExample");
-                     C_RecordComponent id = requestOrThrow(example, RECORD_GET_RECORD_COMPONENT, "id");
-                     assertEquals(cPackage, requestOrThrow(id, RECORD_COMPONENT_GET_PACKAGE));
                   });
    }
 }

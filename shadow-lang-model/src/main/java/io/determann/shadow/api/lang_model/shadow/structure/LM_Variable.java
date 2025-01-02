@@ -48,8 +48,6 @@ public sealed interface LM_Variable
 
    LM_Type getType();
 
-   LM_Package getPackage();
-
    /**
     * The {@link Object} surrounding this {@link LM_Variable}
     */

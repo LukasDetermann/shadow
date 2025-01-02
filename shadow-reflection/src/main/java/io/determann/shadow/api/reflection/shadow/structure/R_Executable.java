@@ -74,8 +74,6 @@ public sealed interface R_Executable
     */
    R_Declared getSurrounding();
 
-   R_Package getPackage();
-
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
     */

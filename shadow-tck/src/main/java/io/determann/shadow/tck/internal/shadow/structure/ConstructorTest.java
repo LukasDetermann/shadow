@@ -1,7 +1,6 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
 import io.determann.shadow.api.shadow.structure.C_Constructor;
-import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Class;
 import org.junit.jupiter.api.Test;
@@ -138,31 +137,6 @@ class ConstructorTest
                      C_Class example = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
                      assertEquals(example, requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING));
-                  });
-   }
-
-   @Test
-   void getPackage()
-   {
-      withSource("ConstructorExample.java", """
-            package io.determann.shadow.example.processed.test.constructor;
-            
-            public class ConstructorExample {
-               public ConstructorExample(Long id) {}
-            }
-            """)
-            .test(implementation ->
-                  {
-                     C_Package aPackage = requestOrThrow(implementation,
-                                                         GET_PACKAGES,
-                                                         "io.determann.shadow.example.processed.test.constructor").get(0);
-
-                     C_Class example = requestOrThrow(implementation,
-                                                      GET_CLASS,
-                                                      "io.determann.shadow.example.processed.test.constructor.ConstructorExample");
-
-                     C_Constructor constructor = requestOrThrow(example, CLASS_GET_CONSTRUCTORS).get(0);
-                     assertEquals(aPackage, requestOrThrow(constructor, EXECUTABLE_GET_PACKAGE));
                   });
    }
 
