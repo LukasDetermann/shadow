@@ -1,6 +1,3 @@
-import io.determann.shadow.api.ProviderSpi;
-import io.determann.shadow.internal.lang_model.LangModelProvider;
-
 module io.determann.shadow.lang.model {
 
    requires java.compiler;
@@ -8,6 +5,7 @@ module io.determann.shadow.lang.model {
    requires transitive io.determann.shadow.api;
 
    exports io.determann.shadow.api.lang_model;
+   exports io.determann.shadow.api.lang_model.adapter;
    exports io.determann.shadow.api.lang_model.shadow;
    exports io.determann.shadow.api.lang_model.shadow.structure;
    exports io.determann.shadow.api.lang_model.shadow.type;
@@ -15,5 +13,5 @@ module io.determann.shadow.lang.model {
    exports io.determann.shadow.api.lang_model.shadow.directive;
    exports io.determann.shadow.api.lang_model.shadow.type.primitive;
 
-   provides ProviderSpi with LangModelProvider;
+   provides io.determann.shadow.api.ProviderSpi with io.determann.shadow.internal.lang_model.LangModelProvider;
 }

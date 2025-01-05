@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Uses;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
@@ -22,7 +22,12 @@ public class UsesImpl extends DirectiveImpl implements LM_Uses
    @Override
    public LM_Declared getService()
    {
-      return LM_Adapter.generalize(getApi(), usesDirective.getService());
+      return LM_Adapters.adapt(getApi(), usesDirective.getService());
+   }
+
+   public ModuleElement.UsesDirective getMirror()
+   {
+      return usesDirective;
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
@@ -10,6 +10,7 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -20,7 +21,7 @@ import java.util.Set;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.*;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public abstract class VariableImpl
 {
@@ -35,22 +36,22 @@ public abstract class VariableImpl
 
    public Set<C_Modifier> getModifiers()
    {
-      return LM_Adapter.getModifiers(getElement());
+      return LangModelContextImpl.getModifiers(getElement());
    }
 
    public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(particularType((LM_Declared) type), getMirror());
+      return LM_Adapters.adapt(getApi()).toTypes().isSubtype(adapt((LM_Declared) type).toDeclaredType(), getMirror());
    }
 
    public boolean isAssignableFrom(C_Type type)
    {
-      return getTypes(getApi()).isAssignable(particularType((LM_Declared) type), getMirror());
+      return adapt(getApi()).toTypes().isAssignable(adapt((LM_Declared) type).toDeclaredType(), getMirror());
    }
 
    public LM_Type getType()
    {
-      return generalize(getApi(), getElement().asType());
+      return LM_Adapters.adapt(getApi(), getElement().asType());
    }
 
    public VariableElement getElement()
@@ -60,7 +61,7 @@ public abstract class VariableImpl
 
    public LM_Module getModule()
    {
-      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
+      return LM_Adapters.adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
 
    public String getName()
@@ -70,17 +71,17 @@ public abstract class VariableImpl
 
    public String getJavaDoc()
    {
-      return getElements(getApi()).getDocComment(getElement());
+      return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return LM_Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return LM_Adapters.adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    public LM_Context getApi()

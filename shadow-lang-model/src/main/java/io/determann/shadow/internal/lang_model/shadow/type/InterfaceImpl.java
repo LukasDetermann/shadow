@@ -1,7 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
+import io.determann.shadow.api.lang_model.adapter.LM_TypeAdapter;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -12,8 +13,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
-import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 import static java.util.Arrays.stream;
 
 public class InterfaceImpl extends DeclaredImpl implements LM_Interface
@@ -31,7 +31,7 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
    @Override
    public boolean isFunctional()
    {
-      return LM_Adapter.getElements(getApi()).isFunctionalInterface(getElement());
+      return adapt(getApi()).toElements().isFunctionalInterface(getElement());
    }
 
    @Override
@@ -39,7 +39,7 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapters.adapt(getApi(), typeMirror))
                         .toList();
    }
 
@@ -48,7 +48,7 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
+                         .map(element -> LM_Adapters.adapt(getApi(), element))
                          .toList();
    }
 
@@ -65,10 +65,11 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
                                             " are provided");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(LM_Adapter::particularType)
+            .map(LM_Adapters::adapt)
+            .map(LM_TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getDeclaredType(getElement(), typeMirrors));
+      return (LM_Interface) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
@@ -82,13 +83,13 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
    @Override
    public LM_Interface interpolateGenerics()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).capture(getMirror()));
+      return (LM_Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
    public LM_Interface erasure()
    {
-      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
+      return (LM_Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override

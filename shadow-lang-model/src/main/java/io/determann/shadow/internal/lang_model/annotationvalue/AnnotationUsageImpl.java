@@ -2,8 +2,8 @@ package io.determann.shadow.internal.lang_model.annotationvalue;
 
 import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
@@ -16,6 +16,7 @@ import java.util.*;
 
 import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
 import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 import static io.determann.shadow.internal.lang_model.annotationvalue.AnnotationValueImpl.create;
 
 public class AnnotationUsageImpl implements LM_AnnotationUsage
@@ -48,11 +49,11 @@ public class AnnotationUsageImpl implements LM_AnnotationUsage
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withoutDefaults = annotationMirror.getElementValues();
 
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withDefaults =
-            LM_Adapter.getElements(getApi()).getElementValuesWithDefaults(annotationMirror);
+            adapt(getApi()).toElements().getElementValuesWithDefaults(annotationMirror);
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put((LM_Method) LM_Adapter.generalize(getApi(), entry.getKey()),
+         result.put((LM_Method) adapt(getApi(), entry.getKey()),
                     create(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
@@ -61,7 +62,7 @@ public class AnnotationUsageImpl implements LM_AnnotationUsage
    @Override
    public LM_Annotation getAnnotation()
    {
-      return LM_Adapter.generalize(getApi(), annotationMirror.getAnnotationType());
+      return (LM_Annotation) LM_Adapters.adapt(getApi(), annotationMirror.getAnnotationType());
    }
 
    @Override

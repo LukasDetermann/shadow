@@ -1,8 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Executable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
@@ -41,12 +40,7 @@ public class ParameterImpl extends VariableImpl implements LM_Parameter
    @Override
    public LM_Executable getSurrounding()
    {
-      if (getElement().getEnclosingElement() instanceof ExecutableElement executableElement)
-      {
-         return LM_Adapter.generalize(getApi(), executableElement);
-      }
-
-      return LM_Adapter.generalize(getApi(), getElement().getEnclosingElement());
+      return LM_Adapters.adapt(getApi(), ((ExecutableElement) getElement().getEnclosingElement()));
    }
 
    @Override
@@ -60,7 +54,7 @@ public class ParameterImpl extends VariableImpl implements LM_Parameter
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
              requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
    }

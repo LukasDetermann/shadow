@@ -3,10 +3,10 @@ package io.determann.shadow.internal.annotation_processing;
 import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.annotation_processing.AP_Context;
 import io.determann.shadow.api.annotation_processing.AP_DiagnosticContext;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Constants;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.LM_ContextImplementation;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_Annotationable;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.*;
@@ -34,8 +34,7 @@ import java.util.function.BiConsumer;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
-import static io.determann.shadow.api.lang_model.LM_Adapter.particularElement;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toSet;
 
@@ -81,7 +80,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
 
    public AnnotationProcessingContextImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
-      this.langModelContext = generalize(processingEnv.getTypeUtils(), processingEnv.getElementUtils());
+      this.langModelContext = LM_Adapters.adapt(processingEnv.getTypeUtils(), processingEnv.getElementUtils());
       this.processingRound = processingRound;
       this.processingEnv = processingEnv;
       this.roundEnv = roundEnv;
@@ -124,9 +123,9 @@ public class AnnotationProcessingContextImpl implements AP_Context,
                                {
                                   if (element.getKind().isExecutable())
                                   {
-                                     return (C_Annotationable) generalize(getApi(), ((ExecutableElement) element));
+                                     return (C_Annotationable) LM_Adapters.adapt(getApi(), ((ExecutableElement) element));
                                   }
-                                  return ((C_Annotationable) generalize(getApi(), element));
+                                  return ((C_Annotationable) LM_Adapters.adapt(getApi(), element));
                                })
                           .filter(typeClass::isInstance)
                           .map(typeClass::cast)
@@ -137,7 +136,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    {
       if (input instanceof LM_Annotation annotationLangModel)
       {
-         return getAnnotated(particularElement(annotationLangModel), resultClass);
+         return getAnnotated(adapt(annotationLangModel).toTypeElement(), resultClass);
       }
       return getAnnotated(requestOrThrow(input, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME), resultClass);
    }
@@ -442,19 +441,19 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    @Override
    public void logAndRaiseErrorAt(LM_Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, particularElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, adapt(annotationable).toElement());
    }
 
    @Override
    public void logInfoAt(LM_Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, particularElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, adapt(annotationable).toElement());
    }
 
    @Override
    public void logWarningAt(LM_Annotationable annotationable, String msg)
    {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, particularElement(annotationable));
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, adapt(annotationable).toElement());
    }
 
    public AP_Context getApi()
@@ -537,13 +536,13 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    @Override
    public Types getTypes()
    {
-      return LM_Adapter.getTypes(langModelContext);
+      return adapt(langModelContext).toTypes();
    }
 
    @Override
    public Elements getElements()
    {
-      return LM_Adapter.getElements(langModelContext);
+      return adapt(langModelContext).toElements();
    }
 
    @Override

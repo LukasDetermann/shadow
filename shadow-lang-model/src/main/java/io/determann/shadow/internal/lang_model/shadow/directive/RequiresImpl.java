@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Requires;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
@@ -34,7 +34,12 @@ public class RequiresImpl extends DirectiveImpl implements LM_Requires
    @Override
    public C_Module getDependency()
    {
-      return LM_Adapter.generalize(getApi(), requiresDirective.getDependency());
+      return LM_Adapters.adapt(getApi(), requiresDirective.getDependency());
+   }
+
+   public ModuleElement.RequiresDirective getMirror()
+   {
+      return requiresDirective;
    }
 
    @Override

@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Exports;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
@@ -26,7 +26,7 @@ public class ExportsImpl extends DirectiveImpl implements LM_Exports
    @Override
    public LM_Package getPackage()
    {
-      return LM_Adapter.generalizePackage(getApi(), exportsDirective.getPackage());
+      return LM_Adapters.adapt(getApi(), exportsDirective.getPackage());
    }
 
    @Override
@@ -36,7 +36,7 @@ public class ExportsImpl extends DirectiveImpl implements LM_Exports
              Collections.emptyList() :
              exportsDirective.getTargetModules()
                              .stream()
-                             .map(moduleElement -> LM_Adapter.generalize(getApi(), moduleElement))
+                             .map(moduleElement -> LM_Adapters.adapt(getApi(), moduleElement))
                              .toList();
    }
 
@@ -44,6 +44,11 @@ public class ExportsImpl extends DirectiveImpl implements LM_Exports
    public boolean toAll()
    {
       return getTargetModules().isEmpty();
+   }
+
+   public ModuleElement.ExportsDirective getMirror()
+   {
+      return exportsDirective;
    }
 
    @Override

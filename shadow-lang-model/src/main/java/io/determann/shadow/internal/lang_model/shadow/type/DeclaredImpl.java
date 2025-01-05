@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
@@ -12,6 +12,7 @@ import io.determann.shadow.api.shadow.C_NestingKind;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -27,7 +28,7 @@ import static io.determann.shadow.api.Operations.MODIFIABLE_GET_MODIFIERS;
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.*;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
 {
@@ -48,13 +49,13 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    @Override
    public Set<C_Modifier> getModifiers()
    {
-      return LM_Adapter.getModifiers(getElement());
+      return LangModelContextImpl.getModifiers(getElement());
    }
 
    @Override
    public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(getMirror(), LM_Adapter.particularType((LM_Declared) type));
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((LM_Declared) type).toDeclaredType());
    }
 
    public TypeElement getElement()
@@ -80,7 +81,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> LM_Adapter.generalize(getApi(), variableElement))
+                         .map(variableElement -> adapt(getApi(), variableElement))
                          .map(LM_Field.class::cast)
                          .toList();
    }
@@ -90,7 +91,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LM_Adapter.generalize(getApi(), element))
+                          .map(element -> adapt(getApi(), element))
                           .map(LM_Method.class::cast)
                           .toList();
    }
@@ -99,7 +100,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
-                          .map(element -> LM_Adapter.generalize(getApi(), element))
+                          .map(element -> adapt(getApi(), element))
                           .map(LM_Constructor.class::cast)
                           .toList();
    }
@@ -107,11 +108,11 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    @Override
    public List<LM_Declared> getDirectSuperTypes()
    {
-      return LM_Adapter.getTypes(getApi())
-                       .directSupertypes(getMirror())
-                       .stream()
-                       .map(typeMirror1 -> LM_Adapter.<LM_Declared>generalize(getApi(), typeMirror1))
-                       .toList();
+      return adapt(getApi()).toTypes()
+                        .directSupertypes(getMirror())
+                        .stream()
+                        .map(typeMirror1 -> adapt(getApi(), ((DeclaredType) typeMirror1)))
+                        .toList();
    }
 
    @Override
@@ -140,25 +141,25 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    @Override
    public String getBinaryName()
    {
-      return getElements(getApi()).getBinaryName(getElement()).toString();
+      return adapt(getApi()).toElements().getBinaryName(getElement()).toString();
    }
 
    @Override
    public LM_Array asArray()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
+      return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
    @Override
    public LM_Wildcard asExtendsWildcard()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getWildcardType(getMirror(), null));
+      return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
    }
 
    @Override
    public LM_Wildcard asSuperWildcard()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getWildcardType(null, getMirror()));
+      return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(null, getMirror()));
    }
 
    @Override
@@ -166,7 +167,8 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    {
       return getElement().getInterfaces()
                          .stream()
-                         .map(typeMirror -> LM_Adapter.<LM_Interface>generalize(getApi(), typeMirror))
+                         .map(typeMirror -> LM_Adapters.adapt(getApi(), ((DeclaredType) typeMirror)))
+                         .map(LM_Interface.class::cast)
                          .toList();
    }
 
@@ -182,13 +184,13 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    @Override
    public LM_Package getPackage()
    {
-      return generalizePackage(getApi(), getElements(getApi()).getPackageOf(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getPackageOf(getElement()));
    }
 
    @Override
    public LM_Module getModule()
    {
-      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
 
    @Override
@@ -200,19 +202,19 @@ public class DeclaredImpl extends TypeImpl<DeclaredType> implements LM_Declared
    @Override
    public String getJavaDoc()
    {
-      return getElements(getApi()).getDocComment(getElement());
+      return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
    @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override

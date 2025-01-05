@@ -1,25 +1,30 @@
 package io.determann.shadow.internal.lang_model;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Constants;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.LM_ContextImplementation;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Module;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.PACKAGE_GET_DECLARED_LIST;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalizePackage;
-import static io.determann.shadow.api.lang_model.LM_Adapter.particularElement;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 import static java.util.Optional.ofNullable;
 
 public class LangModelContextImpl implements LM_Context,
@@ -48,7 +53,7 @@ public class LangModelContextImpl implements LM_Context,
    {
       return elements.getAllModuleElements()
                      .stream()
-                     .map(moduleElement -> LM_Adapter.generalize(this, moduleElement))
+                     .map(moduleElement -> LM_Adapters.adapt(this, moduleElement))
                      .toList();
    }
 
@@ -56,7 +61,7 @@ public class LangModelContextImpl implements LM_Context,
    public Optional<LM_Module> getModule(String name)
    {
       return ofNullable(elements.getModuleElement(name))
-            .map(moduleElement -> LM_Adapter.generalize(this, moduleElement));
+            .map(moduleElement -> LM_Adapters.adapt(this, moduleElement));
    }
    
    @Override
@@ -70,7 +75,7 @@ public class LangModelContextImpl implements LM_Context,
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()
-                     .map(packageElement -> generalizePackage(this, packageElement))
+                     .map(packageElement -> LM_Adapters.adapt(this, packageElement))
                      .toList();
    }
 
@@ -81,7 +86,7 @@ public class LangModelContextImpl implements LM_Context,
                      .stream()
                      .flatMap(moduleElement -> moduleElement.getEnclosedElements().stream())
                      .map(PackageElement.class::cast)
-                     .map(packageElement -> generalizePackage(this, packageElement))
+                     .map(packageElement -> LM_Adapters.adapt(this, packageElement))
                      .toList();
    }
 
@@ -100,8 +105,8 @@ public class LangModelContextImpl implements LM_Context,
    @Override
    public Optional<LM_Package> getPackage(C_Module module, String qualifiedPackageName)
    {
-      return ofNullable(elements.getPackageElement(particularElement((LM_Module) module), qualifiedPackageName))
-            .map(packageElement -> generalizePackage(this, packageElement));
+      return ofNullable(elements.getPackageElement(adapt((LM_Module) module).toModuleElement(), qualifiedPackageName))
+            .map(packageElement -> LM_Adapters.adapt(this, packageElement));
    }
 
    @Override
@@ -114,7 +119,7 @@ public class LangModelContextImpl implements LM_Context,
    public Optional<LM_Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(elements.getTypeElement(qualifiedName))
-            .map(typeElement -> LM_Adapter.generalize(this, typeElement));
+            .map(typeElement -> LM_Adapters.adapt(this, typeElement));
    }
 
    @Override
@@ -131,6 +136,40 @@ public class LangModelContextImpl implements LM_Context,
    public LM_Constants getConstants()
    {
       return new LangModelConstantsImpl(this);
+   }
+
+   public static Set<C_Modifier> getModifiers(Element element)
+   {
+      Set<C_Modifier> result = element.getModifiers().stream().map(LangModelContextImpl::mapModifier).collect(Collectors.toSet());
+      if ((element.getKind().isExecutable() || element.getKind().isDeclaredType() || element.getKind().isVariable()) &&
+          !result.contains(C_Modifier.PUBLIC) &&
+          !result.contains(C_Modifier.PROTECTED) &&
+          !result.contains(C_Modifier.PRIVATE))
+      {
+         result.add(C_Modifier.PACKAGE_PRIVATE);
+      }
+      return Collections.unmodifiableSet(result);
+   }
+
+   private static C_Modifier mapModifier(Modifier modifier)
+   {
+      return switch (modifier)
+      {
+         case PUBLIC -> C_Modifier.PUBLIC;
+         case PROTECTED -> C_Modifier.PROTECTED;
+         case PRIVATE -> C_Modifier.PRIVATE;
+         case ABSTRACT -> C_Modifier.ABSTRACT;
+         case STATIC -> C_Modifier.STATIC;
+         case SEALED -> C_Modifier.SEALED;
+         case NON_SEALED -> C_Modifier.NON_SEALED;
+         case FINAL -> C_Modifier.FINAL;
+         case STRICTFP -> C_Modifier.STRICTFP;
+         case DEFAULT -> C_Modifier.DEFAULT;
+         case TRANSIENT -> C_Modifier.TRANSIENT;
+         case VOLATILE -> C_Modifier.VOLATILE;
+         case SYNCHRONIZED -> C_Modifier.SYNCHRONIZED;
+         case NATIVE -> C_Modifier.NATIVE;
+      };
    }
 
    @Override

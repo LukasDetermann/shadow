@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Opens;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
@@ -24,7 +24,7 @@ public class OpensImpl extends DirectiveImpl implements LM_Opens
    @Override
    public LM_Package getPackage()
    {
-      return LM_Adapter.generalizePackage(getApi(), opensDirective.getPackage());
+      return LM_Adapters.adapt(getApi(), opensDirective.getPackage());
    }
 
    @Override
@@ -32,7 +32,7 @@ public class OpensImpl extends DirectiveImpl implements LM_Opens
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LM_Adapter.generalize(getApi(), moduleElement))
+                           .map(moduleElement -> LM_Adapters.adapt(getApi(), moduleElement))
                            .toList();
    }
 
@@ -40,6 +40,11 @@ public class OpensImpl extends DirectiveImpl implements LM_Opens
    public boolean toAll()
    {
       return getTargetModules().isEmpty();
+   }
+
+   public ModuleElement.OpensDirective getMirror()
+   {
+      return opensDirective;
    }
 
    @Override

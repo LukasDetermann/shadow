@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Directive;
 import io.determann.shadow.api.lang_model.shadow.directive.LM_Provides;
@@ -12,7 +12,6 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.shadow.directive.C_Provides;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.internal.lang_model.shadow.directive.*;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
@@ -22,8 +21,8 @@ import java.util.function.Supplier;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
@@ -42,17 +41,6 @@ public class ModuleImpl implements LM_Module
       this.moduleElement = moduleElement;
    }
 
-   public ModuleImpl(LM_Context context, NoType noType)
-   {
-      this.context = context;
-      this.noType = noType;
-      this.moduleElement = LM_Adapter.getElements(getApi()).getModuleElement(noType.toString());
-      if (moduleElement == null)
-      {
-         throw new IllegalStateException(noType + " is not unique");
-      }
-   }
-
    public ModuleElement getElement()
    {
       return moduleElement;
@@ -64,7 +52,7 @@ public class ModuleImpl implements LM_Module
       return getElement().getEnclosedElements()
                          .stream()
                          .map(PackageElement.class::cast)
-                         .map(element -> LM_Adapter.generalizePackage(getApi(), element))
+                         .map(element -> LM_Adapters.adapt(getApi(), element))
                          .toList();
    }
 
@@ -83,8 +71,8 @@ public class ModuleImpl implements LM_Module
    @Override
    public Optional<LM_Declared> getDeclared(String qualifiedName)
    {
-      return ofNullable(LM_Adapter.getElements(getApi()).getTypeElement(getElement(), qualifiedName))
-            .map(typeElement -> LM_Adapter.generalize(getApi(), typeElement));
+      return ofNullable(adapt(getApi()).toElements().getTypeElement(getElement(), qualifiedName))
+            .map(typeElement -> LM_Adapters.adapt(getApi(), typeElement));
    }
 
    @Override
@@ -102,7 +90,7 @@ public class ModuleImpl implements LM_Module
    @Override
    public boolean isAutomatic()
    {
-      return LM_Adapter.getElements(getApi()).isAutomaticModule(getElement());
+      return adapt(getApi()).toElements().isAutomaticModule(getElement());
    }
 
    @Override
@@ -113,11 +101,11 @@ public class ModuleImpl implements LM_Module
                          .map(directive ->
                                     switch (directive.getKind())
                                     {
-                                       case REQUIRES -> new RequiresImpl(getApi(), ((ModuleElement.RequiresDirective) directive));
-                                       case EXPORTS -> new ExportsImpl(getApi(), ((ModuleElement.ExportsDirective) directive));
-                                       case OPENS -> new OpensImpl(getApi(), ((ModuleElement.OpensDirective) directive));
-                                       case USES -> new UsesImpl(getApi(), ((ModuleElement.UsesDirective) directive));
-                                       case PROVIDES -> new ProvidesImpl(getApi(), ((ModuleElement.ProvidesDirective) directive));
+                                       case REQUIRES -> adapt(getApi(), ((ModuleElement.RequiresDirective) directive));
+                                       case EXPORTS -> adapt(getApi(), ((ModuleElement.ExportsDirective) directive));
+                                       case OPENS -> adapt(getApi(), ((ModuleElement.OpensDirective) directive));
+                                       case USES -> adapt(getApi(), ((ModuleElement.UsesDirective) directive));
+                                       case PROVIDES -> adapt(getApi(), ((ModuleElement.ProvidesDirective) directive));
                                     })
                          .map(LM_Directive.class::cast)
                          .collect(of((Supplier<List<LM_Directive>>) ArrayList::new,
@@ -167,19 +155,19 @@ public class ModuleImpl implements LM_Module
    @Override
    public String getJavaDoc()
    {
-      return LM_Adapter.getElements(getApi()).getDocComment(getElement());
+      return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
    @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LM_Adapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return LM_Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return LM_Adapters.adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    public NoType getMirror()

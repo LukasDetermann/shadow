@@ -13,13 +13,14 @@ import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import javax.lang.model.element.RecordComponentElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Operations.RECORD_COMPONENT_GET_TYPE;
-import static io.determann.shadow.api.lang_model.LM_Adapter.*;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public class RecordComponentImpl implements LM_RecordComponent
 {
@@ -37,31 +38,31 @@ public class RecordComponentImpl implements LM_RecordComponent
    @Override
    public boolean isSubtypeOf(C_Type type)
    {
-      return getTypes(getApi()).isSubtype(getMirror(), particularType((LM_Type) type));
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((LM_Type) type).toTypeMirror());
    }
 
    @Override
    public boolean isAssignableFrom(C_Type type)
    {
-      return getTypes(getApi()).isAssignable(getMirror(), particularType((LM_Type) type));
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((LM_Type) type).toTypeMirror());
    }
 
    @Override
    public LM_Record getRecord()
    {
-      return generalize(getApi(), getElement().getEnclosingElement());
+      return (LM_Record) adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
 
    @Override
    public LM_Type getType()
    {
-      return generalize(getApi(), getElement().asType());
+      return adapt(getApi(), getElement().asType());
    }
 
    @Override
    public LM_Method getGetter()
    {
-      return (LM_Method) generalize(getApi(), getElement().getAccessor());
+      return (LM_Method) adapt(getApi(), getElement().getAccessor());
    }
 
    public RecordComponentElement getElement()
@@ -72,7 +73,7 @@ public class RecordComponentImpl implements LM_RecordComponent
    @Override
    public LM_Module getModule()
    {
-      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
 
    @Override
@@ -84,13 +85,13 @@ public class RecordComponentImpl implements LM_RecordComponent
    @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override

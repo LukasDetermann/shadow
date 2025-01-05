@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Intersection;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -10,8 +10,7 @@ import io.determann.shadow.implementation.support.api.shadow.type.IntersectionSu
 import javax.lang.model.type.IntersectionType;
 import java.util.List;
 
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
-import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_Intersection
 {
@@ -25,20 +24,20 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_I
    public List<LM_Type> getBounds()
    {
       return getMirror().getBounds().stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapters.<LM_Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
    public LM_Intersection erasure()
    {
-      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
+      return (LM_Intersection) LM_Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override
    public LM_Array asArray()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
+      return LM_Adapters.adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
    @Override

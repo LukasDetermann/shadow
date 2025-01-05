@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.lang_model.shadow.type.primitive;
 
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
@@ -11,7 +10,10 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.lang_model.shadow.type.TypeImpl;
 
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
+
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 {
@@ -97,22 +99,22 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public boolean isSubtypeOf(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isSubtype(LM_Adapter.particularType((LM_Type) type), getMirror());
+      return adapt(getApi()).toTypes().isSubtype(adapt((LM_Type) type).toTypeMirror(), getMirror());
    }
 
    public boolean isAssignableFrom(C_Type type)
    {
-      return LM_Adapter.getTypes(getApi()).isAssignable(getMirror(), LM_Adapter.particularType((LM_Type) type));
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((LM_Type) type).toTypeMirror());
    }
 
    public LM_Class asBoxed()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).boxedClass(getMirror()).asType());
+      return (LM_Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().boxedClass(getMirror()).asType()));
    }
 
    public LM_Array asArray()
    {
-      return LM_Adapter.generalize(getApi(), LM_Adapter.getTypes(getApi()).getArrayType(getMirror()));
+      return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
    public String getName()

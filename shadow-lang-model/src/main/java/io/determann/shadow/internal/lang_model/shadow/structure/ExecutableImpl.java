@@ -1,9 +1,8 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
@@ -13,10 +12,14 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
@@ -26,8 +29,8 @@ import java.util.Set;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Adapter.*;
 import static io.determann.shadow.api.lang_model.LM_Queries.query;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 
 public class ExecutableImpl implements LM_Constructor,
@@ -46,7 +49,7 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public Set<C_Modifier> getModifiers()
    {
-      return LM_Adapter.getModifiers(getElement());
+      return LangModelContextImpl.getModifiers(getElement());
    }
 
    @Override
@@ -58,7 +61,7 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public LM_Type getReturnType()
    {
-      return generalize(getApi(), getMirror().getReturnType());
+      return adapt(getApi(), getMirror().getReturnType());
    }
 
    @Override
@@ -66,7 +69,7 @@ public class ExecutableImpl implements LM_Constructor,
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Type>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapters.<LM_Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
@@ -74,18 +77,18 @@ public class ExecutableImpl implements LM_Constructor,
    public Optional<LM_Declared> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
-      if (receiverType == null || receiverType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
+      if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
       {
          return Optional.empty();
       }
-      return Optional.of(LM_Adapter.generalize(getApi(), receiverType));
+      return Optional.of(adapt(getApi(), ((DeclaredType) receiverType)));
    }
 
    @Override
    public Optional<LM_Receiver> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
-      if (receiverType == null || receiverType.getKind().equals(javax.lang.model.type.TypeKind.NONE))
+      if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
       {
          return Optional.empty();
       }
@@ -97,7 +100,7 @@ public class ExecutableImpl implements LM_Constructor,
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> LM_Adapter.<LM_Class>generalize(getApi(), typeMirror))
+                        .map(typeMirror -> LM_Adapters.<LM_Class>adapt(getApi(), typeMirror))
                         .map(LM_Class.class::cast)
                         .toList();
    }
@@ -105,7 +108,7 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public boolean isBridge()
    {
-      return getElements(getApi()).isBridge(getElement());
+      return adapt(getApi()).toElements().isBridge(getElement());
    }
 
    @Override
@@ -117,7 +120,7 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public LM_Declared getSurrounding()
    {
-      return generalize(getApi(), getElement().getEnclosingElement());
+      return adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
 
    public ExecutableElement getElement()
@@ -128,23 +131,23 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public boolean overrides(C_Method method)
    {
-      return getElements(getApi()).overrides(getElement(),
-                                             particularElement(((LM_Method) method)),
-                                             particularElement(getSurrounding()));
+      return adapt(getApi()).toElements().overrides(getElement(),
+                                             adapt(((LM_Executable) method)).toExecutableElement(),
+                                             adapt(getSurrounding()).toTypeElement());
    }
 
    @Override
    public boolean overwrittenBy(C_Method method)
    {
-      return getElements(getApi()).overrides(particularElement((LM_Method)method),
+      return adapt(getApi()).toElements().overrides(adapt((LM_Executable) method).toExecutableElement(),
                                              getElement(),
-                                             particularElement(query(method).getSurrounding()));
+                                             adapt(query(method).getSurrounding()).toTypeElement());
    }
 
    @Override
    public boolean sameParameterTypes(C_Method method)
    {
-      return LM_Adapter.getTypes(getApi()).isSubsignature(getMirror(), LM_Adapter.particularType((LM_Method)method));
+      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((LM_Executable) method).toExecutableType());
    }
 
    @Override
@@ -153,7 +156,7 @@ public class ExecutableImpl implements LM_Constructor,
       return getElement().getParameters()
                          .stream()
                          .map(VariableElement.class::cast)
-                         .map(variableElement -> LM_Adapter.generalize(getApi(), variableElement))
+                         .map(variableElement -> adapt(getApi(), variableElement))
                          .map(LM_Parameter.class::cast)
                          .toList();
    }
@@ -163,14 +166,14 @@ public class ExecutableImpl implements LM_Constructor,
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LM_Adapter.<LM_Generic>generalize(getApi(), element))
+                         .map(element -> LM_Adapters.adapt(getApi(), element))
                          .toList();
    }
 
    @Override
    public LM_Module getModule()
    {
-      return generalize(getApi(), getElements(getApi()).getModuleOf(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
 
    @Override
@@ -182,19 +185,19 @@ public class ExecutableImpl implements LM_Constructor,
    @Override
    public String getJavaDoc()
    {
-      return getElements(getApi()).getDocComment(getElement());
+      return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
    @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    public LM_Context getApi()
@@ -233,7 +236,7 @@ public class ExecutableImpl implements LM_Constructor,
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
              requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));

@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -13,8 +13,7 @@ import javax.lang.model.type.TypeVariable;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.lang_model.LM_Adapter.generalize;
-import static io.determann.shadow.api.lang_model.LM_Adapter.getTypes;
+import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
 {
@@ -29,13 +28,13 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
    public GenericImpl(LM_Context context, TypeVariable typeMirror)
    {
       super(context, typeMirror);
-      this.typeParameterElement = (TypeParameterElement) getTypes(getApi()).asElement(typeMirror);
+      this.typeParameterElement = (TypeParameterElement) adapt(getApi()).toTypes().asElement(typeMirror);
    }
 
    @Override
    public LM_Type getExtends()
    {
-      return LM_Adapter.generalize(getApi(), getMirror().getUpperBound());
+      return LM_Adapters.adapt(getApi(), getMirror().getUpperBound());
    }
 
    @Override
@@ -46,13 +45,13 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
       {
          return Optional.empty();
       }
-      return Optional.of(LM_Adapter.generalize(getApi(), lowerBound));
+      return Optional.of(LM_Adapters.adapt(getApi(), lowerBound));
    }
 
    @Override
    public Object getEnclosing()
    {
-      return LM_Adapter.generalize(getApi(), getElement().getGenericElement());
+      return LM_Adapters.adapt(getApi(), getElement().getGenericElement());
    }
 
    public TypeParameterElement getElement()
@@ -69,19 +68,19 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
    @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
-      return generalize(getApi(), LM_Adapter.getElements(getApi()).getAllAnnotationMirrors(getElement()));
+      return LM_Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return generalize(getApi(), getElement().getAnnotationMirrors());
+      return LM_Adapters.adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    @Override
    public LM_Generic erasure()
    {
-      return generalize(getApi(), getTypes(getApi()).erasure(getMirror()));
+      return (LM_Generic) LM_Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override

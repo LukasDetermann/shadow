@@ -3,6 +3,7 @@ package io.determann.shadow.api.lang_model.shadow.type.primitive;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
@@ -10,9 +11,9 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
  * represents primitive types, but not there wrapper classes. for example int, long, short
  */
 public sealed interface LM_Primitive
-
       extends C_Primitive,
-              LM_Nameable
+              LM_Nameable,
+              LM_Type
 
       permits LM_boolean,
               LM_byte,

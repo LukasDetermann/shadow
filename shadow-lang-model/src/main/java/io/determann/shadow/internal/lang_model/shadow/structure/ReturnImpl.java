@@ -2,8 +2,8 @@ package io.determann.shadow.internal.lang_model.shadow.structure;
 
 import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LM_Adapter;
 import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Return;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -35,13 +35,13 @@ public class ReturnImpl implements LM_Return
    @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LM_Adapter.generalize(context, getTypeMirror().getAnnotationMirrors());
+      return LM_Adapters.adapt(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
    public LM_Type getType()
    {
-      return LM_Adapter.generalize(context, getTypeMirror());
+      return LM_Adapters.adapt(context, getTypeMirror());
    }
 
    public TypeMirror getTypeMirror()
