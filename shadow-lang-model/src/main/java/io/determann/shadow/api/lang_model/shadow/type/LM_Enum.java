@@ -10,9 +10,11 @@ import java.util.List;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public interface LM_Enum extends C_Enum,
-                                 LM_Declared,
-                                 LM_StaticModifiable
+public non-sealed interface LM_Enum
+
+      extends C_Enum,
+              LM_Declared,
+              LM_StaticModifiable
 {
    List<LM_Constructor> getConstructors();
 

@@ -6,20 +6,9 @@ import io.determann.shadow.api.lang_model.shadow.LM_ModuleEnclosed;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Modifiable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
 
-/**
- * Can be converted using {@link Converter#convert(LM_Variable)}
- * <ul>
- *    <li>{@link C_EnumConstant}</li>
- *    <li>{@link C_Field}</li>
- *    <li>{@link C_Parameter}</li>
- * </ul>
- */
 public sealed interface LM_Variable
 
       extends C_Variable,

@@ -33,8 +33,7 @@ import static io.determann.shadow.api.lang_model.LM_Queries.query;
 import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
 
-public class ExecutableImpl implements LM_Constructor,
-                                       LM_Method
+public abstract class ExecutableImpl
 {
    private final LM_Context context;
    private final ExecutableElement executableElement;
@@ -46,25 +45,21 @@ public class ExecutableImpl implements LM_Constructor,
       this.executableElement = executableElement;
    }
 
-   @Override
    public Set<C_Modifier> getModifiers()
    {
       return LangModelContextImpl.getModifiers(getElement());
    }
 
-   @Override
    public LM_Return getReturn()
    {
       return new ReturnImpl(getApi(), getMirror().getReturnType());
    }
 
-   @Override
    public LM_Type getReturnType()
    {
       return adapt(getApi(), getMirror().getReturnType());
    }
 
-   @Override
    public List<LM_Type> getParameterTypes()
    {
       return getMirror().getParameterTypes()
@@ -73,7 +68,6 @@ public class ExecutableImpl implements LM_Constructor,
                         .toList();
    }
 
-   @Override
    public Optional<LM_Declared> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
@@ -84,7 +78,6 @@ public class ExecutableImpl implements LM_Constructor,
       return Optional.of(adapt(getApi(), ((DeclaredType) receiverType)));
    }
 
-   @Override
    public Optional<LM_Receiver> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
@@ -95,7 +88,6 @@ public class ExecutableImpl implements LM_Constructor,
       return Optional.of(new ReceiverImpl(getApi(), getMirror().getReceiverType()));
    }
 
-   @Override
    public List<LM_Class> getThrows()
    {
       return getMirror().getThrownTypes()
@@ -105,19 +97,16 @@ public class ExecutableImpl implements LM_Constructor,
                         .toList();
    }
 
-   @Override
    public boolean isBridge()
    {
       return adapt(getApi()).toElements().isBridge(getElement());
    }
 
-   @Override
    public boolean isVarArgs()
    {
       return getElement().isVarArgs();
    }
 
-   @Override
    public LM_Declared getSurrounding()
    {
       return adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
@@ -128,29 +117,25 @@ public class ExecutableImpl implements LM_Constructor,
       return executableElement;
    }
 
-   @Override
    public boolean overrides(C_Method method)
    {
       return adapt(getApi()).toElements().overrides(getElement(),
-                                             adapt(((LM_Executable) method)).toExecutableElement(),
-                                             adapt(getSurrounding()).toTypeElement());
+                                                    adapt(((LM_Executable) method)).toExecutableElement(),
+                                                    adapt(getSurrounding()).toTypeElement());
    }
 
-   @Override
    public boolean overwrittenBy(C_Method method)
    {
       return adapt(getApi()).toElements().overrides(adapt((LM_Executable) method).toExecutableElement(),
-                                             getElement(),
-                                             adapt(query(method).getSurrounding()).toTypeElement());
+                                                    getElement(),
+                                                    adapt(query(method).getSurrounding()).toTypeElement());
    }
 
-   @Override
    public boolean sameParameterTypes(C_Method method)
    {
       return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((LM_Executable) method).toExecutableType());
    }
 
-   @Override
    public List<LM_Parameter> getParameters()
    {
       return getElement().getParameters()
@@ -161,7 +146,6 @@ public class ExecutableImpl implements LM_Constructor,
                          .toList();
    }
 
-   @Override
    public List<LM_Generic> getGenerics()
    {
       return getElement().getTypeParameters()
@@ -170,31 +154,26 @@ public class ExecutableImpl implements LM_Constructor,
                          .toList();
    }
 
-   @Override
    public LM_Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
 
-   @Override
    public String getName()
    {
       return getElement().getSimpleName().toString();
    }
 
-   @Override
    public String getJavaDoc()
    {
       return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
-   @Override
    public List<LM_AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   @Override
    public List<LM_AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
@@ -238,11 +217,11 @@ public class ExecutableImpl implements LM_Constructor,
       }
       return requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
-             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
+             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers()))
+                                                                      .orElse(false) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
-   @Override
    public Implementation getImplementation()
    {
       return getApi().getImplementation();

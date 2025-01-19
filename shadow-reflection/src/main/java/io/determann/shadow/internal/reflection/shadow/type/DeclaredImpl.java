@@ -12,6 +12,7 @@ import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
-public abstract class DeclaredImpl implements R_Declared
+public abstract class DeclaredImpl
 {
    private final Class<?> aClass;
 
@@ -31,19 +32,16 @@ public abstract class DeclaredImpl implements R_Declared
       this.aClass = aClass;
    }
 
-   @Override
    public R_Module getModule()
    {
       return R_Adapter.generalize(getaClass().getModule());
    }
 
-   @Override
    public String getName()
    {
       return getaClass().getSimpleName();
    }
 
-   @Override
    public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())
@@ -51,7 +49,6 @@ public abstract class DeclaredImpl implements R_Declared
             .toList();
    }
 
-   @Override
    public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return stream(getaClass().getDeclaredAnnotations())
@@ -59,29 +56,27 @@ public abstract class DeclaredImpl implements R_Declared
             .toList();
    }
 
-   @Override
    public String getQualifiedName()
    {
       return getaClass().getCanonicalName();
    }
 
-   @Override
    public Set<C_Modifier> getModifiers()
    {
       boolean isSealed = getaClass().isSealed();
       int modifiers = getModifiersAsInt();
       boolean isNonSealed = isNonSealed(modifiers);
 
-      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
-                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
-                                 !java.lang.reflect.Modifier.isProtected(modifiers);
+      boolean isPackagePrivate = !Modifier.isPublic(modifiers) &&
+                                 !Modifier.isPrivate(modifiers) &&
+                                 !Modifier.isProtected(modifiers);
 
       return ReflectionUtil.getModifiers(modifiers, isSealed, isNonSealed, false, isPackagePrivate);
    }
 
    private boolean isNonSealed(int modifiers)
    {
-      return !java.lang.reflect.Modifier.isFinal(modifiers) &&
+      return !Modifier.isFinal(modifiers) &&
              !getReflection().isSealed() &&
              (ofNullable(getReflection().getSuperclass()).map(Class::isSealed).orElse(false) ||
               stream(getReflection().getInterfaces()).anyMatch(Class::isSealed));
@@ -91,18 +86,16 @@ public abstract class DeclaredImpl implements R_Declared
    {
       if (this instanceof C_Interface || this instanceof C_Annotation)
       {
-         return getaClass().getModifiers() & java.lang.reflect.Modifier.interfaceModifiers();
+         return getaClass().getModifiers() & Modifier.interfaceModifiers();
       }
-      return getaClass().getModifiers() & java.lang.reflect.Modifier.classModifiers();
+      return getaClass().getModifiers() & Modifier.classModifiers();
    }
 
-   @Override
    public boolean isSubtypeOf(C_Type type)
    {
       return equals(type) || type instanceof C_Declared declared && getSuperTypes().contains(declared);
    }
 
-   @Override
    public C_NestingKind getNesting()
    {
       if (getaClass().isAnonymousClass() || getaClass().isLocalClass() || getaClass().isMemberClass())
@@ -112,13 +105,11 @@ public abstract class DeclaredImpl implements R_Declared
       return C_NestingKind.OUTER;
    }
 
-   @Override
    public List<R_Field> getFields()
    {
       return stream(getaClass().getDeclaredFields()).map(R_Adapter::generalize).toList();
    }
 
-   @Override
    public List<R_Method> getMethods()
    {
       return stream(getaClass().getDeclaredMethods()).map(R_Adapter::generalize).toList();
@@ -129,7 +120,6 @@ public abstract class DeclaredImpl implements R_Declared
       return stream(getaClass().getDeclaredConstructors()).map(R_Adapter::generalize).toList();
    }
 
-   @Override
    public List<R_Declared> getDirectSuperTypes()
    {
       List<R_Declared> result = stream(getaClass().getGenericInterfaces())
@@ -149,10 +139,9 @@ public abstract class DeclaredImpl implements R_Declared
       return result;
    }
 
-   @Override
    public Set<R_Declared> getSuperTypes()
    {
-      return findAllSupertypes(new HashSet<>(), this);
+      return findAllSupertypes(new HashSet<>(), ((R_Declared) this));
    }
 
    private Set<R_Declared> findAllSupertypes(Set<R_Declared> found, R_Declared declared)
@@ -166,7 +155,6 @@ public abstract class DeclaredImpl implements R_Declared
       return found;
    }
 
-   @Override
    public List<R_Interface> getInterfaces()
    {
       return getSuperTypes().stream()
@@ -175,25 +163,21 @@ public abstract class DeclaredImpl implements R_Declared
                             .toList();
    }
 
-   @Override
    public List<R_Interface> getDirectInterfaces()
    {
       return stream(getaClass().getInterfaces()).map(R_Adapter::generalize).map(R_Interface.class::cast).toList();
    }
 
-   @Override
    public R_Package getPackage()
    {
       return R_Adapter.generalize(getaClass().getPackage());
    }
 
-   @Override
    public String getBinaryName()
    {
       return getaClass().getName();
    }
 
-   @Override
    public R_Array asArray()
    {
       return R_Adapter.generalize(aClass.arrayType());
@@ -250,7 +234,6 @@ public abstract class DeclaredImpl implements R_Declared
       return aClass;
    }
 
-   @Override
    public Implementation getImplementation()
    {
       return IMPLEMENTATION;

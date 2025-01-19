@@ -15,11 +15,13 @@ import java.util.List;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public interface LM_Record extends C_Record,
-                                   LM_Declared,
-                                   LM_StaticModifiable,
-                                   LM_FinalModifiable,
-                                   LM_Erasable
+public non-sealed interface LM_Record
+
+      extends C_Record,
+              LM_Declared,
+              LM_StaticModifiable,
+              LM_FinalModifiable,
+              LM_Erasable
 {
    default LM_RecordComponent getRecordComponentOrThrow(String simpleName)
    {
@@ -54,11 +56,11 @@ public interface LM_Record extends C_Record,
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
-    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * it answers the question: given {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics.code"}
     * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
     * <p>
     * The code for the example
-    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
+    * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
     */
    LM_Record interpolateGenerics();
 

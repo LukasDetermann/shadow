@@ -1,6 +1,7 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
 import io.determann.shadow.api.shadow.C_Nameable;
+import io.determann.shadow.api.shadow.C_QualifiedNameable;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Property;
@@ -200,6 +201,30 @@ class PropertyTest
                      C_Method getter = requestOrThrow(properties.get(1), PROPERTY_GET_GETTER);
                      C_Declared cDeclared = requestOrThrow(getter, EXECUTABLE_GET_SURROUNDING);
                      assertEquals("Child", requestOrThrow(cDeclared, NAMEABLE_GET_NAME));
+                  });
+   }
+
+   @Test
+   void wrappedBoolean()
+   {
+      withSource("Pojo", """
+            class Pojo {
+               private Boolean flag;
+               public Boolean isFlag() {return flag;}
+               public void setFlag(Boolean id) {this.flag = flag;}
+            }""")
+            .test(implementation ->
+                  {
+                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Pojo");
+                     List<? extends C_Property> properties = requestOrThrow(cClass, CLASS_GET_PROPERTIES);
+
+                     assertEquals(2, properties.size());
+                     assertEquals("class", requestOrThrow(properties.get(0), NAMEABLE_GET_NAME));
+                     assertEquals("flag", requestOrThrow(properties.get(1), NAMEABLE_GET_NAME));
+                     C_Field field = requestOrThrow(properties.get(1), PROPERTY_GET_FIELD);
+                     assertEquals("flag", requestOrThrow(field, NAMEABLE_GET_NAME));
+                     C_QualifiedNameable fieldType = ((C_QualifiedNameable) requestOrThrow(field, VARIABLE_GET_TYPE));
+                     assertEquals("java.lang.Boolean", requestOrThrow(fieldType, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
                   });
    }
 }

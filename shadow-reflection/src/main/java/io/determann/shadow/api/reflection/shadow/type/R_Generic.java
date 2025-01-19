@@ -10,10 +10,12 @@ import java.util.Optional;
 /**
  * represents the generic parameter at a class, method, constructor etc.
  */
-public interface R_Generic extends C_Generic,
-                                   R_Annotationable,
-                                   R_Type,
-                                   R_Nameable
+public non-sealed interface R_Generic
+
+      extends C_Generic,
+              R_Annotationable,
+              R_Type,
+              R_Nameable
 {
    /**
     * @see C_Intersection

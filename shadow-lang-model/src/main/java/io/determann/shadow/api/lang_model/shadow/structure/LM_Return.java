@@ -4,8 +4,10 @@ import io.determann.shadow.api.lang_model.shadow.LM_Annotationable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Return;
 
-public interface LM_Return extends C_Return,
-                                   LM_Annotationable
+public interface LM_Return
+
+      extends C_Return,
+              LM_Annotationable
 {
    LM_Type getType();
 }

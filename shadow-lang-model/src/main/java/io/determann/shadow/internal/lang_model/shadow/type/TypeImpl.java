@@ -11,8 +11,7 @@ import javax.lang.model.type.TypeMirror;
 
 import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
 
-public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder,
-                                                                     LM_Type
+public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
 {
    private final LM_Context context;
 
@@ -24,7 +23,6 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder,
       this.typeMirror = typeMirror;
    }
 
-   @Override
    public boolean representsSameType(C_Type type)
    {
       return LM_Adapters.adapt(getApi()).toTypes().isSameType(getMirror(), adapt((LM_Type) type).toTypeMirror());
@@ -47,7 +45,6 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder,
       return getMirror().toString();
    }
 
-   @Override
    public Implementation getImplementation()
    {
       return getApi().getImplementation();

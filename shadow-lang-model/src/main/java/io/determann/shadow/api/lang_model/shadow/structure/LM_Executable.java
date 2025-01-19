@@ -11,7 +11,6 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Executable;
-import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Declared;
 
@@ -22,12 +21,6 @@ import java.util.Optional;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-/**
- * <ul>
- *    <li>{@link C_Constructor}</li>
- *    <li>{@link C_Method}</li>
- * </ul>
- */
 public sealed interface LM_Executable
 
       extends C_Executable,

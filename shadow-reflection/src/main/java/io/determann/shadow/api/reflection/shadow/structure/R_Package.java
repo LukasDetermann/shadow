@@ -9,11 +9,13 @@ import io.determann.shadow.api.shadow.structure.C_Package;
 import java.util.List;
 import java.util.Optional;
 
-public interface R_Package extends C_Package,
-                                   R_Annotationable,
-                                   R_Nameable,
-                                   R_QualifiedNameable,
-                                   R_ModuleEnclosed
+public interface R_Package
+
+      extends C_Package,
+              R_Annotationable,
+              R_Nameable,
+              R_QualifiedNameable,
+              R_ModuleEnclosed
 {
    /**
     * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects

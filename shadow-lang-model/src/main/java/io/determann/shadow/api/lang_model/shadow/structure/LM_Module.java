@@ -11,11 +11,13 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 import java.util.List;
 import java.util.Optional;
 
-public interface LM_Module extends C_Module,
-                                   LM_Annotationable,
-                                   LM_Nameable,
-                                   LM_QualifiedNameable,
-                                   LM_Documented
+public interface LM_Module
+
+      extends C_Module,
+              LM_Annotationable,
+              LM_Nameable,
+              LM_QualifiedNameable,
+              LM_Documented
 {
    List<LM_Package> getPackages();
 

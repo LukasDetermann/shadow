@@ -10,9 +10,11 @@ import java.util.List;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public interface R_Enum extends C_Enum,
-                                R_Declared,
-                                R_StaticModifiable
+public non-sealed interface R_Enum
+
+      extends C_Enum,
+              R_Declared,
+              R_StaticModifiable
 {
    List<R_EnumConstant> getEumConstants();
 

@@ -11,11 +11,13 @@ import java.util.Optional;
 /**
  * represents the generic parameter at a class, method, constructor etc.
  */
-public interface LM_Generic extends C_Generic,
-                                    LM_Annotationable,
-                                    LM_Type,
-                                    LM_Nameable,
-                                    LM_Erasable
+public non-sealed interface LM_Generic
+
+      extends C_Generic,
+              LM_Annotationable,
+              LM_Type,
+              LM_Nameable,
+              LM_Erasable
 {
    /**
     * @see C_Intersection

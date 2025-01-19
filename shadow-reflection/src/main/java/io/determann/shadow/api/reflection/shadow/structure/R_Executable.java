@@ -7,21 +7,13 @@ import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Executable;
-import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.type.C_Declared;
 
 import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * <ul>
- *    <li>{@link C_Constructor}</li>
- *    <li>{@link C_Method}</li>
- * </ul>
- */
 public sealed interface R_Executable
 
       extends C_Executable,

@@ -7,14 +7,10 @@
         <groupId>io.determann</groupId>
         <artifactId>shadow-parent</artifactId>
         <relativePath>../shadow-parent/pom.xml</relativePath>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>shadow-lang-model</artifactId>
-
-    <properties>
-        <javadoc.snippet.path.suffix>lang_model</javadoc.snippet.path.suffix>
-    </properties>
 
     <dependencies>
         <dependency>

@@ -7,12 +7,14 @@ import io.determann.shadow.api.shadow.structure.C_Package;
 import java.util.List;
 import java.util.Optional;
 
-public interface LM_Package extends C_Package,
-                                    LM_Annotationable,
-                                    LM_Nameable,
-                                    LM_QualifiedNameable,
-                                    LM_ModuleEnclosed,
-                                    LM_Documented
+public interface LM_Package
+
+      extends C_Package,
+              LM_Annotationable,
+              LM_Nameable,
+              LM_QualifiedNameable,
+              LM_ModuleEnclosed,
+              LM_Documented
 {
    /**
     * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects

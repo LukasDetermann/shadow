@@ -16,9 +16,7 @@ import io.determann.shadow.internal.reflection.shadow.type.primitive.PrimitiveIm
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
 import java.lang.module.ModuleReference;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -166,12 +164,12 @@ public interface R_Adapter
 
    public static R_Method generalize(java.lang.reflect.Method method)
    {
-      return new ExecutableImpl(method);
+      return new MethodImpl(method);
    }
 
    public static R_Constructor generalize(java.lang.reflect.Constructor<?> constructor)
    {
-      return new ExecutableImpl(constructor);
+      return new ConstructorImpl(constructor);
    }
 
    public static R_RecordComponent generalize(java.lang.reflect.RecordComponent recordComponent)
@@ -229,7 +227,11 @@ public interface R_Adapter
 
    public static R_Executable generalize(java.lang.reflect.Executable executable)
    {
-      return new ExecutableImpl(executable);
+      return switch (executable)
+      {
+         case Constructor<?> constructor -> new ConstructorImpl(executable);
+         case Method method -> new MethodImpl(executable);
+      };
    }
 
    public static Optional<R_Package> getPackage(String moduleName, String packageName)

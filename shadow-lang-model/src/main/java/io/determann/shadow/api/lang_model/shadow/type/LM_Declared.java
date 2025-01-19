@@ -7,9 +7,7 @@ import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
 import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
@@ -21,23 +19,24 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * Anything that can be a file.
- * <ul>
- *    <li>{@link C_Annotation}</li>
- *    <li>{@link Class}</li>
- *    <li>{@link Enum}</li>
- *    <li>{@link C_Interface}</li>
- *    <li>{@link Record}</li>
- * </ul>
  */
-public interface LM_Declared extends C_Declared,
-                                     LM_Annotationable,
-                                     LM_AccessModifiable,
-                                     LM_StrictfpModifiable,
-                                     LM_Type,
-                                     LM_Nameable,
-                                     LM_QualifiedNameable,
-                                     LM_ModuleEnclosed,
-                                     LM_Documented
+public sealed interface LM_Declared
+
+      extends C_Declared,
+              LM_Annotationable,
+              LM_AccessModifiable,
+              LM_StrictfpModifiable,
+              LM_Type,
+              LM_Nameable,
+              LM_QualifiedNameable,
+              LM_ModuleEnclosed,
+              LM_Documented
+
+      permits LM_Annotation,
+              LM_Class,
+              LM_Enum,
+              LM_Interface,
+              LM_Record
 {
    /**
     * returns true if this can be cast to that.

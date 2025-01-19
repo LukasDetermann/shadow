@@ -11,10 +11,12 @@ import java.util.List;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public interface R_Record extends C_Record,
-                                  R_Declared,
-                                  R_StaticModifiable,
-                                  R_FinalModifiable
+public non-sealed interface R_Record
+
+      extends C_Record,
+              R_Declared,
+              R_StaticModifiable,
+              R_FinalModifiable
 {
    default R_RecordComponent getRecordComponentOrThrow(String simpleName)
    {

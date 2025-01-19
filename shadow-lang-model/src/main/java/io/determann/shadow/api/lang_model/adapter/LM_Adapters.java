@@ -136,7 +136,13 @@ public interface LM_Adapters
 
    static LM_Executable adapt(LM_Context context, ExecutableElement element)
    {
-      return new ExecutableImpl(context, element);
+      return switch (element.getKind())
+      {
+         case METHOD -> new MethodImpl(context, element);
+         case CONSTRUCTOR -> new ConstructorImpl(context, element);
+         default -> throw new IllegalStateException(
+               "javax.lang.model.element.ExecutableElement that is nether a METHOD, FIELD or CONSTRUCTOR\n" + element);
+      };
    }
 
    static LM_Variable adapt(LM_Context context, VariableElement element)
@@ -253,7 +259,7 @@ public interface LM_Adapters
       if (!TypeKind.VOID.equals(noType.getKind()))
       {
          throw new IllegalArgumentException(
-               "For javax.lang.model.type.NoType other then Void use LM_Adapters.adapt(LM_Context, javax.lang.model.element.Element)");
+               "For javax.lang.model.type.NoType other then Void use LM_Adapters.adapt(LM_Context, Element/ModuleElement/PackageElement)");
       }
       return new VoidImpl(context, noType);
    }

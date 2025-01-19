@@ -7,9 +7,11 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
 
-public interface LM_Array extends C_Array,
-                                  LM_Erasable,
-                                  LM_Type
+public non-sealed interface LM_Array
+
+      extends C_Array,
+              LM_Erasable,
+              LM_Type
 {
    /**
     * returns true if this can be cast to that.

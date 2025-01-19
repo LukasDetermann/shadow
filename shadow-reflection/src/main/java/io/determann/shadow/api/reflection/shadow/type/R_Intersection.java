@@ -9,8 +9,10 @@ import java.util.List;
  * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
  *}
  */
-public interface R_Intersection extends R_Type,
-                                        C_Intersection
+public non-sealed interface R_Intersection
+
+      extends R_Type,
+              C_Intersection
 {
    /**
     * {@snippet :

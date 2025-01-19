@@ -48,6 +48,7 @@ public class PropertyFactory
    {
       Map<String, C_Field> nameField =
             requestOrThrow(declared, DECLARED_GET_FIELDS).stream()
+                                                         .filter(field -> !requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, C_Modifier.STATIC))
                                                          .collect(toMap(field -> requestOrThrow(field, NAMEABLE_GET_NAME),
                                                                         Function.identity()));
 
@@ -163,7 +164,9 @@ public class PropertyFactory
       if (!(returnType instanceof C_Void))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = returnType instanceof C_boolean &&
+         boolean hasIsPrefix = (returnType instanceof C_boolean ||
+                                returnType instanceof C_Declared declared &&
+                                "java.lang.Boolean".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
 

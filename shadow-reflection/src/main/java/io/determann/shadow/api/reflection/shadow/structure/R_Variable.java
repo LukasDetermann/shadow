@@ -4,20 +4,9 @@ import io.determann.shadow.api.reflection.shadow.R_Annotationable;
 import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_Modifiable;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
 
-/**
- * Can be converted using {@link Converter#convert(R_Variable)}
- * <ul>
- *    <li>{@link C_EnumConstant}</li>
- *    <li>{@link C_Field}</li>
- *    <li>{@link C_Parameter}</li>
- * </ul>
- */
 public sealed interface R_Variable
 
       extends C_Variable,

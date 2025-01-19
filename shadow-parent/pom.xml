@@ -7,7 +7,7 @@
     <groupId>io.determann</groupId>
     <artifactId>shadow-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -37,18 +37,17 @@
     </distributionManagement>
 
     <properties>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>23</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.junit.jupiter.junit-jupiter-api.version>5.10.2</org.junit.jupiter.junit-jupiter-api.version>
-        <org.junit.jupiter.junit-platform-suite.version>1.10.2</org.junit.jupiter.junit-platform-suite.version>
-        <org.apache.maven.plugins.maven-surefire-plugin.version>3.1.0</org.apache.maven.plugins.maven-surefire-plugin.version>
-        <org.apache.maven.plugins.maven-source-plugin.version>2.2.1</org.apache.maven.plugins.maven-source-plugin.version>
-        <org.apache.maven.plugins.maven-javadoc-plugin>3.6.3</org.apache.maven.plugins.maven-javadoc-plugin>
-        <org.apache.maven.plugins.maven-gpg-plugin>1.5</org.apache.maven.plugins.maven-gpg-plugin>
-        <org.sonatype.plugins.nexus-staging-maven-plugin>1.6.13</org.sonatype.plugins.nexus-staging-maven-plugin>
-        <org.apache.commons.commons-lang3.version>3.14.0</org.apache.commons.commons-lang3.version>
-        <javadoc.snippet.path.suffix>default</javadoc.snippet.path.suffix>
-        <javadoc.snippet.path>${project.basedir}/../documentation/src/test/java/io/determann/shadow/javadoc/${javadoc.snippet.path.suffix}</javadoc.snippet.path>
+        <org.junit.jupiter.junit-jupiter-api.version>5.11.4</org.junit.jupiter.junit-jupiter-api.version>
+        <org.junit.jupiter.junit-platform-suite.version>1.11.4</org.junit.jupiter.junit-platform-suite.version>
+        <org.apache.maven.plugins.maven-surefire-plugin.version>3.5.0</org.apache.maven.plugins.maven-surefire-plugin.version>
+        <org.apache.maven.plugins.maven-source-plugin.version>3.3.1</org.apache.maven.plugins.maven-source-plugin.version>
+        <org.apache.maven.plugins.maven-javadoc-plugin>3.11.2</org.apache.maven.plugins.maven-javadoc-plugin>
+        <org.apache.maven.plugins.maven-gpg-plugin>3.2.7</org.apache.maven.plugins.maven-gpg-plugin>
+        <org.sonatype.plugins.nexus-staging-maven-plugin>1.7.0</org.sonatype.plugins.nexus-staging-maven-plugin>
+        <org.apache.commons.commons-lang3.version>3.17.0</org.apache.commons.commons-lang3.version>
+        <javadoc.snippet.path>${project.basedir}/../documentation/src/test/java/io/determann/shadow/javadoc</javadoc.snippet.path>
     </properties>
 
     <dependencyManagement>
@@ -68,37 +67,32 @@
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-core</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-reflection</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-lang-model</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-annotation-processing</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-implementation-support</artifactId>
-                <version>0.2.0</version>
-            </dependency>
-            <dependency>
-                <groupId>io.determann</groupId>
-                <artifactId>shadow-consistency-test</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-tck</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -184,7 +178,7 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                 </plugins>

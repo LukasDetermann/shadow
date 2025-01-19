@@ -23,8 +23,7 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
-public class ArrayImpl implements R_Array,
-                                  R_Type
+public class ArrayImpl implements R_Array
 {
    private static final List<R_Type> PRIMITIVE_SUPERTYPES = List.of(new ClassImpl(Object.class),
                                                                     new InterfaceImpl(Cloneable.class),

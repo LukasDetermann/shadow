@@ -8,10 +8,12 @@ import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Type;
 
-public interface LM_RecordComponent extends C_RecordComponent,
-                                            LM_Annotationable,
-                                            LM_Nameable,
-                                            LM_ModuleEnclosed
+public interface LM_RecordComponent
+
+      extends C_RecordComponent,
+              LM_Annotationable,
+              LM_Nameable,
+              LM_ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.

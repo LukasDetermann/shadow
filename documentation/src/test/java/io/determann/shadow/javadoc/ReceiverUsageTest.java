@@ -1,4 +1,4 @@
-package io.determann.shadow.javadoc.core;
+package io.determann.shadow.javadoc;
 
 import org.junit.jupiter.api.Assertions;
 

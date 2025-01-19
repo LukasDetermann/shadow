@@ -4,15 +4,17 @@ import io.determann.shadow.api.reflection.shadow.modifier.*;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
-public non-sealed interface R_Method extends C_Method,
-                                             R_Executable,
-                                             R_StaticModifiable,
-                                             R_DefaultModifiable,
-                                             R_AccessModifiable,
-                                             R_AbstractModifiable,
-                                             R_FinalModifiable,
-                                             R_StrictfpModifiable,
-                                             R_NativeModifiable
+public non-sealed interface R_Method
+
+      extends C_Method,
+              R_Executable,
+              R_StaticModifiable,
+              R_DefaultModifiable,
+              R_AccessModifiable,
+              R_AbstractModifiable,
+              R_FinalModifiable,
+              R_StrictfpModifiable,
+              R_NativeModifiable
 {
    R_Type getReturnType();
 

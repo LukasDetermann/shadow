@@ -15,9 +15,11 @@ import java.util.Optional;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface LM_Wildcard extends C_Wildcard,
-                                     LM_Type,
-                                     LM_Erasable
+public non-sealed interface LM_Wildcard
+
+      extends C_Wildcard,
+              LM_Type,
+              LM_Erasable
 {
    /**
     * {@snippet :

@@ -7,11 +7,13 @@ import io.determann.shadow.api.shadow.type.C_Interface;
 
 import java.util.List;
 
-public interface R_Interface extends C_Interface,
-                                     R_Declared,
-                                     R_AbstractModifiable,
-                                     R_StaticModifiable,
-                                     R_Sealable
+public non-sealed interface R_Interface
+
+      extends C_Interface,
+              R_Declared,
+              R_AbstractModifiable,
+              R_StaticModifiable,
+              R_Sealable
 {
    boolean isFunctional();
 

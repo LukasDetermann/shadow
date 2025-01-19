@@ -13,12 +13,14 @@ import io.determann.shadow.api.shadow.type.C_Type;
 import java.util.List;
 import java.util.Optional;
 
-public interface R_Class extends C_Class,
-                                 R_Declared,
-                                 R_AbstractModifiable,
-                                 R_StaticModifiable,
-                                 R_Sealable,
-                                 R_FinalModifiable
+public non-sealed interface R_Class
+
+      extends C_Class,
+              R_Declared,
+              R_AbstractModifiable,
+              R_StaticModifiable,
+              R_Sealable,
+              R_FinalModifiable
 {
    /**
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.

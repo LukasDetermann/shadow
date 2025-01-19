@@ -15,13 +15,15 @@ import io.determann.shadow.api.shadow.type.C_Type;
 import java.util.List;
 import java.util.Optional;
 
-public interface LM_Class extends C_Class,
-                                  LM_Declared,
-                                  LM_AbstractModifiable,
-                                  LM_StaticModifiable,
-                                  LM_Sealable,
-                                  LM_FinalModifiable,
-                                  LM_Erasable
+public non-sealed interface LM_Class
+
+      extends C_Class,
+              LM_Declared,
+              LM_AbstractModifiable,
+              LM_StaticModifiable,
+              LM_Sealable,
+              LM_FinalModifiable,
+              LM_Erasable
 {
    /**
     * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
@@ -70,11 +72,11 @@ public interface LM_Class extends C_Class,
    /**
     * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
     * <p>
-    * it answers the question: given {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics.code"}
+    * it answers the question: given {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics.code"}
     * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
     * <p>
     * The code for the example
-    * {@snippet file="InterpolateGenericsExample.java" region="InterpolateGenerics.interpolateGenerics"}
+    * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
     */
    LM_Class interpolateGenerics();
 

@@ -14,7 +14,6 @@ public sealed interface LM_Primitive
       extends C_Primitive,
               LM_Nameable,
               LM_Type
-
       permits LM_boolean,
               LM_byte,
               LM_char,

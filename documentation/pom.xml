@@ -7,7 +7,7 @@
         <groupId>io.determann</groupId>
         <artifactId>shadow-parent</artifactId>
         <relativePath>../shadow-parent/pom.xml</relativePath>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>documentation</artifactId>
@@ -16,7 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
-            <artifactId>shadow-consistency-test</artifactId>
+            <artifactId>shadow-annotation-processing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow-reflection</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

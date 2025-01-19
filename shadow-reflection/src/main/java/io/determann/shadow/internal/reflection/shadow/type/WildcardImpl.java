@@ -18,9 +18,7 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 
-public class WildcardImpl implements C_Wildcard,
-                                     R_Wildcard,
-                                     R_Type
+public class WildcardImpl implements R_Wildcard
 {
    private final WildcardType wildcardType;
 

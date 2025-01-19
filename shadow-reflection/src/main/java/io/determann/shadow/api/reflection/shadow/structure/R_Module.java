@@ -10,10 +10,12 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 import java.util.List;
 import java.util.Optional;
 
-public interface R_Module extends C_Module,
-                                  R_Annotationable,
-                                  R_Nameable,
-                                  R_QualifiedNameable
+public interface R_Module
+
+      extends C_Module,
+              R_Annotationable,
+              R_Nameable,
+              R_QualifiedNameable
 {
    List<R_Package> getPackages();
 

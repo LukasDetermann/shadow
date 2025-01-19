@@ -279,13 +279,13 @@ public class ShadowBuilderProcessor extends AP_Processor
 
 ## Next Goals
 
-- A buch of Api improvements
-
-- Move more of the implementation to the `shadow-implementation-support`
-  module for better consistency and easier support of multiple
-  implementations
-
-- Support the complete Lexical Structure
-
-- Create a maven archetype to reduce the effort of supporting new
-  Metaprogramming Implementations
+- Improve Annotation Processing Support
+  - Add a Java DSL Api for Rendering 
+  - Add support for specific Annotations
+- Improve Support for other Metaprogramming Apis
+  - Move more of the implementation to the `shadow-implementation-support`
+    module for better consistency and easier support of multiple
+    implementations
+  - Support the complete Lexical Structure
+  - Create a maven archetype to reduce the effort of supporting new
+    Metaprogramming Implementations

@@ -7,10 +7,12 @@ import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Type;
 
-public interface R_RecordComponent extends C_RecordComponent,
-                                           R_Annotationable,
-                                           R_Nameable,
-                                           R_ModuleEnclosed
+public interface R_RecordComponent
+
+      extends C_RecordComponent,
+              R_Annotationable,
+              R_Nameable,
+              R_ModuleEnclosed
 {
    /**
     * returns true if this can be cast to that.

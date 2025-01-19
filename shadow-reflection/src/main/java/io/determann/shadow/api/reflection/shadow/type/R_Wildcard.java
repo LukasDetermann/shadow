@@ -14,8 +14,10 @@ import java.util.Optional;
  *  List<? super Number>//@highlight substring="? super Number"
  *}
  */
-public interface R_Wildcard extends C_Wildcard,
-                                    R_Type
+public non-sealed interface R_Wildcard
+
+      extends C_Wildcard,
+              R_Type
 {
    /**
     * {@snippet :

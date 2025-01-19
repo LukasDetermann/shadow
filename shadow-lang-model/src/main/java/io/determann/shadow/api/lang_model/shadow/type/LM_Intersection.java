@@ -10,9 +10,11 @@ import java.util.List;
  * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
  *}
  */
-public interface LM_Intersection extends LM_Type,
-                                         C_Intersection,
-                                         LM_Erasable
+public non-sealed interface LM_Intersection
+
+      extends LM_Type,
+              C_Intersection,
+              LM_Erasable
 {
    /**
     * {@snippet :

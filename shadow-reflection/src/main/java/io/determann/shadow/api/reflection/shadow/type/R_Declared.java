@@ -10,9 +10,7 @@ import io.determann.shadow.api.reflection.shadow.structure.R_Method;
 import io.determann.shadow.api.reflection.shadow.structure.R_ModuleEnclosed;
 import io.determann.shadow.api.reflection.shadow.structure.R_Package;
 import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
@@ -24,22 +22,23 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 /**
  * Anything that can be a file.
- * <ul>
- *    <li>{@link C_Annotation}</li>
- *    <li>{@link Class}</li>
- *    <li>{@link Enum}</li>
- *    <li>{@link C_Interface}</li>
- *    <li>{@link Record}</li>
- * </ul>
  */
-public interface R_Declared extends C_Declared,
-                                    R_Annotationable,
-                                    R_AccessModifiable,
-                                    R_StrictfpModifiable,
-                                    R_Type,
-                                    R_Nameable,
-                                    R_QualifiedNameable,
-                                    R_ModuleEnclosed
+public sealed interface R_Declared
+
+      extends C_Declared,
+              R_Annotationable,
+              R_AccessModifiable,
+              R_StrictfpModifiable,
+              R_Type,
+              R_Nameable,
+              R_QualifiedNameable,
+              R_ModuleEnclosed
+
+      permits R_Annotation,
+              R_Class,
+              R_Enum,
+              R_Interface,
+              R_Record
 {
    /**
     * returns true if this can be cast to that.

@@ -1,10 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.*;
+import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
+import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
+import io.determann.shadow.api.reflection.shadow.structure.R_Receiver;
+import io.determann.shadow.api.reflection.shadow.structure.R_Return;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
@@ -17,7 +20,7 @@ import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
-import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,29 +30,25 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static io.determann.shadow.api.shadow.modifier.C_Modifier.*;
 
-public class ExecutableImpl implements R_Constructor,
-                                       R_Method
+public abstract class ExecutableImpl implements R_StaticModifiable
 {
-   private final java.lang.reflect.Executable executable;
+   private final Executable executable;
 
-   public ExecutableImpl(java.lang.reflect.Executable executable)
+   public ExecutableImpl(Executable executable)
    {
       this.executable = executable;
    }
 
-   @Override
    public R_Module getModule()
    {
       return getSurrounding().getModule();
    }
 
-   @Override
    public String getName()
    {
       return getExecutable().getName();
    }
 
-   @Override
    public List<R_AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getAnnotations())
@@ -57,7 +56,6 @@ public class ExecutableImpl implements R_Constructor,
                    .toList();
    }
 
-   @Override
    public List<R_AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getDeclaredAnnotations())
@@ -68,16 +66,16 @@ public class ExecutableImpl implements R_Constructor,
    @Override
    public Set<C_Modifier> getModifiers()
    {
-      boolean isDefault = getExecutable() instanceof java.lang.reflect.Method method && method.isDefault();
+      boolean isDefault = getExecutable() instanceof Method method && method.isDefault();
 
       int modifiers = getExecutable().getModifiers() &
-                      (getExecutable() instanceof java.lang.reflect.Method
-                       ? java.lang.reflect.Modifier.methodModifiers()
-                       : java.lang.reflect.Modifier.constructorModifiers());
+                      (getExecutable() instanceof Method
+                       ? Modifier.methodModifiers()
+                       : Modifier.constructorModifiers());
 
-      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
-                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
-                                 !java.lang.reflect.Modifier.isProtected(modifiers);
+      boolean isPackagePrivate = !Modifier.isPublic(modifiers) &&
+                                 !Modifier.isPrivate(modifiers) &&
+                                 !Modifier.isProtected(modifiers);
 
       return ReflectionUtil.getModifiers(modifiers,
                                          false,
@@ -86,7 +84,6 @@ public class ExecutableImpl implements R_Constructor,
                                          isPackagePrivate);
    }
 
-   @Override
    public List<R_Parameter> getParameters()
    {
       List<R_Parameter> result = Arrays.stream(getExecutable().getParameters())
@@ -94,7 +91,7 @@ public class ExecutableImpl implements R_Constructor,
                                        .map(R_Parameter.class::cast)
                                        .collect(Collectors.toList());
 
-      if (executable instanceof java.lang.reflect.Constructor<?>)
+      if (executable instanceof Constructor<?>)
       {
          Optional<R_Receiver> receiver = getReceiver();
 
@@ -108,56 +105,47 @@ public class ExecutableImpl implements R_Constructor,
       return Collections.unmodifiableList(result);
    }
 
-   @Override
    public R_Return getReturn()
    {
       return new ReturnImpl(getExecutable().getAnnotatedReturnType());
    }
 
-   @Override
    public R_Type getReturnType()
    {
       return R_Adapter.generalize(getExecutable().getAnnotatedReturnType().getType());
    }
 
-   @Override
    public List<R_Type> getParameterTypes()
    {
       return Arrays.stream(getExecutable().getParameterTypes()).map(R_Adapter::generalize).map(R_Type.class::cast).toList();
    }
 
-   @Override
    public List<R_Class> getThrows()
    {
       return Arrays.stream(getExecutable().getExceptionTypes()).map(R_Adapter::generalize).map(R_Class.class::cast).toList();
    }
 
-   @Override
    public boolean isBridge()
    {
-      java.lang.reflect.Method method = ((java.lang.reflect.Method) getExecutable());
+      Method method = ((Method) getExecutable());
       return method.isBridge();
    }
 
-   @Override
    public boolean isVarArgs()
    {
       return getExecutable().isVarArgs();
    }
 
-   @Override
    public R_Declared getSurrounding()
    {
       return R_Adapter.generalize(getExecutable().getDeclaringClass());
    }
 
-   @Override
    public List<R_Generic> getGenerics()
    {
       return Arrays.stream(getExecutable().getTypeParameters()).map(R_Adapter::generalize).map(R_Generic.class::cast).toList();
    }
 
-   @Override
    public Optional<R_Declared> getReceiverType()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
@@ -174,7 +162,6 @@ public class ExecutableImpl implements R_Constructor,
       return Optional.of(((R_Declared) R_Adapter.generalize(receiverType.getType())));
    }
 
-   @Override
    public Optional<R_Receiver> getReceiver()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
@@ -191,7 +178,6 @@ public class ExecutableImpl implements R_Constructor,
       return Optional.of((new ReceiverImpl(receiverType)));
    }
 
-   @Override
    public boolean overrides(C_Method method)
    {
       if (!isSubSignature(method))
@@ -210,7 +196,8 @@ public class ExecutableImpl implements R_Constructor,
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC) &&
              !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PROTECTED) &&
-             (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE) || !requestOrThrow(otherSurroundingClass, DECLARED_GET_PACKAGE).equals(getSurrounding().getPackage())))
+             (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE) ||
+              !requestOrThrow(otherSurroundingClass, DECLARED_GET_PACKAGE).equals(getSurrounding().getPackage())))
          {
             return false;
          }
@@ -245,23 +232,21 @@ public class ExecutableImpl implements R_Constructor,
 
    private boolean isSubSignature(C_Executable executable)
    {
-      return Provider.requestOrEmpty(executable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return requestOrEmpty(executable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              (getParameterTypes().equals(requestOrThrow(executable, EXECUTABLE_GET_PARAMETER_TYPES)));
    }
 
-   @Override
    public boolean overwrittenBy(C_Method method)
    {
-      return requestOrThrow(method, METHOD_OVERRIDES, this);
+      return requestOrThrow(method, METHOD_OVERRIDES, ((C_Method) this));
    }
 
-   @Override
    public boolean sameParameterTypes(C_Method method)
    {
       return getParameterTypes().equals(requestOrThrow(method, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
-   public java.lang.reflect.Executable getExecutable()
+   public Executable getExecutable()
    {
       return executable;
    }
@@ -286,18 +271,18 @@ public class ExecutableImpl implements R_Constructor,
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
+      return requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
-             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false) &&
+             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers()))
+                                                                      .orElse(false) &&
              Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
    }
 
-   public java.lang.reflect.Executable getReflection()
+   public Executable getReflection()
    {
       return getExecutable();
    }
 
-   @Override
    public Implementation getImplementation()
    {
       return IMPLEMENTATION;

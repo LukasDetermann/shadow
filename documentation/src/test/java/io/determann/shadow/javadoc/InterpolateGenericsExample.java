@@ -1,4 +1,4 @@
-package io.determann.shadow.javadoc.lang_model;
+package io.determann.shadow.javadoc;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import io.determann.shadow.api.lang_model.shadow.type.*;
