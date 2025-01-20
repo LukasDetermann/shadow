@@ -185,8 +185,6 @@ public interface Operations
 
    public static InstanceOperation1<C_Executable, String, C_Parameter> EXECUTABLE_GET_PARAMETER = new InstanceOperation1<>("executable.getParameter");
 
-   public static InstanceOperation0<C_Executable, C_Return> EXECUTABLE_GET_RETURN = new InstanceOperation0<>("executable.getReturn");
-
    public static InstanceOperation0<C_Executable, List<? extends C_Type>> EXECUTABLE_GET_PARAMETER_TYPES = new InstanceOperation0<>("executable.getParameterTypes");
 
    public static InstanceOperation0<C_Executable, List<? extends C_Class>> EXECUTABLE_GET_THROWS = new InstanceOperation0<>("executable.getThrows");
@@ -211,6 +209,8 @@ public interface Operations
 
    public static InstanceOperation0<C_Method, Boolean> METHOD_IS_BRIDGE = new InstanceOperation0<>("method.isBridge");
 
+   public static InstanceOperation0<C_Method, C_Result> METHOD_GET_RETURN = new InstanceOperation0<>("method.getReturn");
+
    public static InstanceOperation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new InstanceOperation1<>("recordComponent.isSubtypeOf");
 
    public static InstanceOperation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_ASSIGNABLE_FROM = new InstanceOperation1<>("recordComponent.isAssignableFrom");
@@ -221,7 +221,7 @@ public interface Operations
 
    public static InstanceOperation0<C_RecordComponent, C_Method> RECORD_COMPONENT_GET_GETTER = new InstanceOperation0<>("recordComponent.getGetter");
 
-   public static InstanceOperation0<C_Return, C_Type> RETURN_GET_TYPE = new InstanceOperation0<>("return.getType");
+   public static InstanceOperation0<C_Result, C_Type> RETURN_GET_TYPE = new InstanceOperation0<>("return.getType");
 
    public static InstanceOperation0<C_Receiver, C_Type> RECEIVER_GET_TYPE = new InstanceOperation0<>("receiver.getType");
 

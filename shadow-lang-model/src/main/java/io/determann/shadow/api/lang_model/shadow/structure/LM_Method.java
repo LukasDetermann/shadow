@@ -4,6 +4,8 @@ import io.determann.shadow.api.lang_model.shadow.modifier.*;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.api.shadow.structure.C_Method;
 
+import java.lang.annotation.ElementType;
+
 public non-sealed interface LM_Method
 
       extends C_Method,
@@ -39,4 +41,9 @@ public non-sealed interface LM_Method
     * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap
     */
    boolean isBridge();
+
+   /**
+    * Can be annotated using annotations with {@link ElementType#TYPE_USE}
+    */
+   LM_Result getReturn();
 }

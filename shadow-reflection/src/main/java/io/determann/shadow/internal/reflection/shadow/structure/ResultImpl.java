@@ -4,9 +4,9 @@ import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.R_Return;
+import io.determann.shadow.api.reflection.shadow.structure.R_Result;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.structure.C_Return;
+import io.determann.shadow.api.shadow.structure.C_Result;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
@@ -16,11 +16,12 @@ import java.util.Objects;
 import static io.determann.shadow.api.Operations.RETURN_GET_TYPE;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
-public class ReturnImpl implements R_Return
+public class ResultImpl
+      implements R_Result
 {
    private final AnnotatedType annotatedType;
 
-   public ReturnImpl(AnnotatedType annotatedType)
+   public ResultImpl(AnnotatedType annotatedType)
    {
       this.annotatedType = annotatedType;
    }
@@ -59,7 +60,7 @@ public class ReturnImpl implements R_Return
       {
          return true;
       }
-      if (!(other instanceof C_Return otherReturn))
+      if (!(other instanceof C_Result otherReturn))
       {
          return false;
       }

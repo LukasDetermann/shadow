@@ -126,9 +126,9 @@ public interface R_Queries
       return (R_RecordComponent) validate(recordComponent);
    }
 
-   public static R_Return query(C_Return aReturn)
+   public static R_Result query(C_Result aReturn)
    {
-      return (R_Return) validate(aReturn);
+      return (R_Result) validate(aReturn);
    }
 
    public static R_Receiver query(C_Receiver receiver)

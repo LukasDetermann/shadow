@@ -131,9 +131,9 @@ public interface LM_Queries
       return (LM_RecordComponent) validate(recordComponent);
    }
 
-   public static LM_Return query(C_Return aReturn)
+   public static LM_Result query(C_Result aReturn)
    {
-      return (LM_Return) validate(aReturn);
+      return (LM_Result) validate(aReturn);
    }
 
    public static LM_Receiver query(C_Receiver receiver)

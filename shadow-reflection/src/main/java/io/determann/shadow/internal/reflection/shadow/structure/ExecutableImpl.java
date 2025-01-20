@@ -7,7 +7,7 @@ import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
 import io.determann.shadow.api.reflection.shadow.structure.R_Receiver;
-import io.determann.shadow.api.reflection.shadow.structure.R_Return;
+import io.determann.shadow.api.reflection.shadow.structure.R_Result;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
 import io.determann.shadow.api.reflection.shadow.type.R_Declared;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
@@ -105,9 +105,9 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return Collections.unmodifiableList(result);
    }
 
-   public R_Return getReturn()
+   public R_Result getReturn()
    {
-      return new ReturnImpl(getExecutable().getAnnotatedReturnType());
+      return new ResultImpl(getExecutable().getAnnotatedReturnType());
    }
 
    public R_Type getReturnType()

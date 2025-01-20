@@ -10,7 +10,6 @@ import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.type.C_Declared;
 
-import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,11 +31,6 @@ public sealed interface R_Executable
     * Returns the formal parameters, meaning everything but the Receiver.
     */
    List<R_Parameter> getParameters();
-
-   /**
-    * Can be annotated using annotations with {@link ElementType#TYPE_USE}
-    */
-   R_Return getReturn();
 
    List<R_Type> getParameterTypes();
 

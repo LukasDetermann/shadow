@@ -14,7 +14,6 @@ import io.determann.shadow.api.shadow.structure.C_Executable;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Declared;
 
-import java.lang.annotation.ElementType;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,11 +47,6 @@ public sealed interface LM_Executable
    {
       return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_GET_NAME).equals(name)).findAny().orElseThrow();
    }
-
-   /**
-    * Can be annotated using annotations with {@link ElementType#TYPE_USE}
-    */
-   LM_Return getReturn();
 
    List<LM_Type> getParameterTypes();
 

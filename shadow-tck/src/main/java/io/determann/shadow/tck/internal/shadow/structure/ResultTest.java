@@ -3,7 +3,7 @@ package io.determann.shadow.tck.internal.shadow.structure;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Return;
+import io.determann.shadow.api.shadow.structure.C_Result;
 import io.determann.shadow.api.shadow.type.C_Class;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ReturnTest
+class ResultTest
 {
    @Test
    void getType()
@@ -29,7 +29,7 @@ class ReturnTest
                      C_Class integer = requestOrThrow(implementation, GET_CLASS, "java.lang.Integer");
                      C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
                      C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Return cReturn = requestOrThrow(method, EXECUTABLE_GET_RETURN);
+                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RETURN);
 
                      assertEquals(integer, requestOrThrow(cReturn, RETURN_GET_TYPE));
                   });
@@ -49,7 +49,7 @@ class ReturnTest
                   {
                      C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
                      C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Return cReturn = requestOrThrow(method, EXECUTABLE_GET_RETURN);
+                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RETURN);
 
                      List<? extends C_AnnotationUsage> usages = requestOrThrow(cReturn, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
                      assertEquals(1, usages.size());

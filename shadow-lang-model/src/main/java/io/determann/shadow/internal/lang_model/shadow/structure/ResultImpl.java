@@ -5,9 +5,9 @@ import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Return;
+import io.determann.shadow.api.lang_model.shadow.structure.LM_Result;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
-import io.determann.shadow.api.shadow.structure.C_Return;
+import io.determann.shadow.api.shadow.structure.C_Result;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -15,12 +15,13 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.Operations.RETURN_GET_TYPE;
 
-public class ReturnImpl implements LM_Return
+public class ResultImpl
+      implements LM_Result
 {
    private final LM_Context context;
    private final TypeMirror typeMirror;
 
-   public ReturnImpl(LM_Context context, TypeMirror typeMirror)
+   public ResultImpl(LM_Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
@@ -62,7 +63,7 @@ public class ReturnImpl implements LM_Return
       {
          return true;
       }
-      if (!(other instanceof C_Return otherReturn))
+      if (!(other instanceof C_Result otherReturn))
       {
          return false;
       }
