@@ -34,5 +34,9 @@
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow-tck</artifactId>
+        </dependency>
     </dependencies>
 </project>

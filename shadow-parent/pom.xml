@@ -93,6 +93,7 @@
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-tck</artifactId>
                 <version>0.3.0-SNAPSHOT</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
