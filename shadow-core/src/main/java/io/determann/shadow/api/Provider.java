@@ -252,7 +252,8 @@ public class Provider
    {
       if (providers == null)
       {
-         providers = ServiceLoader.load(ProviderSpi.class).stream()
+         providers = ServiceLoader.load(ProviderSpi.class, ProviderSpi.class.getClassLoader())
+                                  .stream()
                                   .map(ServiceLoader.Provider::get)
                                   .collect(Collectors.toMap(ProviderSpi::getImplementation, Function.identity()));
       }
