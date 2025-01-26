@@ -26,11 +26,11 @@ import static java.util.stream.Collectors.*;
 
 public class PropertyFactory
 {
-   private static record Accessor(C_Method method,
-                                  AccessorType type,
-                                  String prefix,
-                                  String name,
-                                  int position) {}
+   private record Accessor(C_Method method,
+                           AccessorType type,
+                           String prefix,
+                           String name,
+                           int position) {}
 
    enum AccessorType
    {

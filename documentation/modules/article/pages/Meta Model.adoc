@@ -227,7 +227,7 @@ Here the direction is turned to `For this Object -> get the name`, but the disco
 public interface Query<TO_QUERY, RESULT> extends Function<TO_QUERY, RESULT> {
 
    @Override
-   public RESULT apply(TO_QUERY toQuery);
+   RESULT apply(TO_QUERY toQuery);
 }
 ----
 
@@ -265,7 +265,7 @@ public static ReflectionMethod query(Method method) {
 }
 
 public interface ReflectionNameable {
-   public String getName();
+   String getName();
 }
 
 public interface ReflectionMethod extends ReflectionNameable {
@@ -303,7 +303,7 @@ public interface ExecutableQuery {
 
 public interface MethodQuery extends ExecutableQuery {
 
-   public void getName();
+   void getName();
 }
 ----
 
@@ -341,7 +341,7 @@ For a `Executable<ReflectionExecutableQuery>` `Method<ReflectionMethodQuery>` ca
 ----
 public interface Query<TO_QUERY, RESULT> {
 
-   public static <TO_QUERY extends T, T> Queryable<T> query(TO_QUERY toQuery) {
+   static <TO_QUERY extends T, T> Queryable<T> query(TO_QUERY toQuery) {
    }
 }
 
@@ -402,7 +402,7 @@ public record Operation<TYPE, RESULT>(String name) {}
 
 public interface Operations {
 
-   public static Operation<Nameable, String> NAMEABLE_NAME = new Operation<>("nameable.name");
+   static Operation<Nameable, String> NAMEABLE_NAME = new Operation<>("nameable.name");
 }
 
 public interface ProviderSpi {
@@ -415,11 +415,11 @@ public sealed interface Response<T> {
    /**
     * Equivalent to Optional.empty to prevent to much nesting
     */
-   public final class Empty<T> implements Response<T> {}
+   final class Empty<T> implements Response<T> {}
 
-   public final class Unsupported<T> implements Response<T> {}
+   final class Unsupported<T> implements Response<T> {}
 
-   public record Result<T>(T value) implements Response<T> {}
+   record Result<T>(T value) implements Response<T> {}
 }
 ----
 

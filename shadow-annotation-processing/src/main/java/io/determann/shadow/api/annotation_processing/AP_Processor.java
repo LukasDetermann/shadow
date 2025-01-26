@@ -53,7 +53,7 @@ public abstract class AP_Processor extends AbstractProcessor
       }
       //the compiler can crash when an uncaught exception is thrown. so it is just printed here and will raise an error
       //using the proxied err outputStream in the ShadowApi
-      catch (Throwable t)
+      catch (Exception t)
       {
          if (api.getExceptionHandler() != null)
          {

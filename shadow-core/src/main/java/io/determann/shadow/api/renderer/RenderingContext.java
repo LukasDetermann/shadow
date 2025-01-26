@@ -15,7 +15,7 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public interface RenderingContext
 {
-   public static RenderingContext DEFAULT = builder().withNamesWithoutNeedingImports().build();
+   RenderingContext DEFAULT = builder().withNamesWithoutNeedingImports().build();
 
    static Builder builder()
    {
@@ -39,7 +39,7 @@ public interface RenderingContext
 
    List<Consumer<NameRenderedEvent>> getNameRenderedListeners();
 
-   public static class Builder
+   class Builder
    {
       private List<Consumer<NameRenderedEvent>> nameRenderedListeners = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public interface RenderingContext
          nameRenderer = declared ->
          {
             C_Package aPackage = requestOrThrow(declared, DECLARED_GET_PACKAGE);
-            if (!requestOrThrow(aPackage, PACKAGE_IS_UNNAMED) && requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals("java.lang"))
+            if (!requestOrThrow(aPackage, PACKAGE_IS_UNNAMED) && "java.lang".equals(requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
             {
                return new NameRenderedEvent(declared, requestOrThrow(declared, Operations.NAMEABLE_GET_NAME), false);
             }

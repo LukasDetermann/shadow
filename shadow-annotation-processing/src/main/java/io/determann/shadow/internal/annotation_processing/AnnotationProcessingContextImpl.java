@@ -90,8 +90,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
 
    private void proxySystemOut()
    {
-      //in >= java 18 out.getCharset()
-      PrintStream printStream = new PrintStream(out)
+      PrintStream printStream = new PrintStream(out, false, out.charset())
       {
          @Override
          public void println(String x)

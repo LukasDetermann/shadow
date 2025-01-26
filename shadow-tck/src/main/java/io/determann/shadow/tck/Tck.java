@@ -16,7 +16,7 @@ import static java.util.ServiceLoader.load;
 public interface Tck
 {
    @SuppressWarnings("ConstantExpression")
-   public static Tck TCK = load(Tck.class)
+   Tck TCK = load(Tck.class)
          .findFirst()
          .orElseThrow(() -> new IllegalStateException("No " +
                                                       Tck.class.getName() +

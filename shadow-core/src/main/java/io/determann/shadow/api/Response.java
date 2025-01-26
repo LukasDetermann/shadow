@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public sealed interface Response<T>
 {
-   public record Result<T>(T value) implements Response<T>
+   record Result<T>(T value) implements Response<T>
    {
    }
 
    /**
     * Equivalent to Optional.empty to prevent to much nesting
     */
-   public final class Empty<T> implements Response<T>
+   final class Empty<T> implements Response<T>
    {
       @Override
       public int hashCode()
@@ -32,7 +32,7 @@ public sealed interface Response<T>
       }
    }
 
-   public final class Unsupported<T> implements Response<T>
+   final class Unsupported<T> implements Response<T>
    {
       @Override
       public int hashCode()

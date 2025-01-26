@@ -5,7 +5,7 @@ import io.determann.shadow.api.shadow.type.C_Class;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class Reflection
+class ReflectionTest
 {
    @Test
    void gettingStarted()

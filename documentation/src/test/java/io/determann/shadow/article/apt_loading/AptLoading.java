@@ -96,7 +96,7 @@ private static List<AnnotationProcessor> automaticlyFindAnnotationProcessors()
       return null;
    }
 
-   private static interface AnnotationProcessor {}
+   private interface AnnotationProcessor {}
 
    private static class PrintingProcessor
          implements AnnotationProcessor {}

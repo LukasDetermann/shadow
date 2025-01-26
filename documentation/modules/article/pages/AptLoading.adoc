@@ -112,7 +112,7 @@ https://issues.apache.org/jira/browse/MCOMPILER-412[is not supported]
 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPaths[<annotationProcessorPaths>]
 * `+-proc+` can be set as
 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#proc[<proc>]
-* Per default maven docent use the dependency management section to resolve transitive dependencies in Annotation Processors
+* Per default maven doesn't use the dependency management section to resolve transitive dependencies in Annotation Processors
 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPathsUseDepMgmt[<annotationProcessorPathsUseDepMgmt>]
 
 == Java Version Changes

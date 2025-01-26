@@ -15,12 +15,12 @@ interface Method
 //tag::reflection[]
 interface ReflectionQueries
 {
-   public static Query<Method, String> name()
+   static Query<Method, String> name()
    {
       return null;//to implement
    }
 
-   public static Query<Method, FuncOp> funcOp()
+   static Query<Method, FuncOp> funcOp()
    {
       return null;//to implement
    }
@@ -30,7 +30,7 @@ interface ReflectionQueries
 //tag::annotation_processing[]
 interface AnnotationProcessingQueries
 {
-   public static Query<Method, String> name()
+   static Query<Method, String> name()
    {
       return null;//to implement
    }

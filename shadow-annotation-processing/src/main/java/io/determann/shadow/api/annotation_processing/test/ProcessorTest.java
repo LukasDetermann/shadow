@@ -11,13 +11,13 @@ import java.nio.file.Path;
  */
 public interface ProcessorTest
 {
-   public static ProcessorTest process(ProcessingCallback processingCallback)
+   static ProcessorTest process(ProcessingCallback processingCallback)
    {
       return new ProcessorTestImpl(processingCallback);
    }
 
    @SafeVarargs
-   public static ProcessorTest process(Class<? extends Processor>... processingCallback)
+   static ProcessorTest process(Class<? extends Processor>... processingCallback)
    {
       return new ProcessorTestImpl(processingCallback);
    }

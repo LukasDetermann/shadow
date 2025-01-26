@@ -68,6 +68,12 @@ public class ResultImpl
    }
 
    @Override
+   public int hashCode()
+   {
+      return Objects.hash(getType());
+   }
+
+   @Override
    public Implementation getImplementation()
    {
       return IMPLEMENTATION;

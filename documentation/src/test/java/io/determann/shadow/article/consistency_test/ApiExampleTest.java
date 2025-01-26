@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ApiExampleTest
+class ApiExampleTest
 {
 
 //tag::request[]

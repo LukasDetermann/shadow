@@ -26,7 +26,7 @@ public interface R_Adapter
 {
    Implementation IMPLEMENTATION = new Implementation("io.determann.shadow-reflection");
 
-   public static <TYPE extends R_Type> TYPE generalize(Class<?> aClass)
+   static <TYPE extends R_Type> TYPE generalize(Class<?> aClass)
    {
       return generalize(aClass, Collections.emptyList());
    }
@@ -103,30 +103,30 @@ public interface R_Adapter
       throw new IllegalStateException();
    }
 
-   public static R_Package generalize(java.lang.Package aPackage)
+   static R_Package generalize(java.lang.Package aPackage)
    {
       return new PackageImpl(new NamedSupplier<>(aPackage, java.lang.Package::getName));
    }
 
-   public static R_Module generalize(java.lang.Module module)
+   static R_Module generalize(java.lang.Module module)
    {
       return new ModuleImpl(new NamedSupplier<>(module.getDescriptor(), ModuleDescriptor::name),
                             Arrays.stream(module.getAnnotations()).map(R_Adapter::generalize).toList());
    }
 
-   public static R_Module getModuleType(String name)
+   static R_Module getModuleType(String name)
    {
       return new ModuleImpl(new NamedSupplier<>(name,
                                                 () -> ModuleFinder.ofSystem().find(name).orElseThrow().descriptor(),
                                                 ModuleDescriptor::name));
    }
 
-   public static R_Module generalize(ModuleReference moduleReference)
+   static R_Module generalize(ModuleReference moduleReference)
    {
       return new ModuleImpl(new NamedSupplier<>(moduleReference.descriptor(), ModuleDescriptor::name));
    }
 
-   public static R_Type generalize(java.lang.reflect.Type type)
+   static R_Type generalize(java.lang.reflect.Type type)
    {
       if (type instanceof ParameterizedType parameterizedType)
       {
@@ -152,67 +152,67 @@ public interface R_Adapter
       throw new IllegalStateException();
    }
 
-   public static R_AnnotationUsage generalize(java.lang.annotation.Annotation annotation)
+   static R_AnnotationUsage generalize(java.lang.annotation.Annotation annotation)
    {
       return new AnnotationUsageImpl(annotation);
    }
 
-   public static R_Field generalize(java.lang.reflect.Field field)
+   static R_Field generalize(java.lang.reflect.Field field)
    {
       return new FieldImpl(field);
    }
 
-   public static R_Method generalize(java.lang.reflect.Method method)
+   static R_Method generalize(java.lang.reflect.Method method)
    {
       return new MethodImpl(method);
    }
 
-   public static R_Constructor generalize(java.lang.reflect.Constructor<?> constructor)
+   static R_Constructor generalize(java.lang.reflect.Constructor<?> constructor)
    {
       return new ConstructorImpl(constructor);
    }
 
-   public static R_RecordComponent generalize(java.lang.reflect.RecordComponent recordComponent)
+   static R_RecordComponent generalize(java.lang.reflect.RecordComponent recordComponent)
    {
       return new RecordComponentImpl(recordComponent);
    }
 
-   public static R_Parameter generalize(java.lang.reflect.Parameter parameter)
+   static R_Parameter generalize(java.lang.reflect.Parameter parameter)
    {
       return new ParameterImpl(parameter);
    }
 
-   public static R_Type generalize(TypeVariable<?> typeVariable)
+   static R_Type generalize(TypeVariable<?> typeVariable)
    {
       return new GenericImpl(typeVariable);
    }
 
-   public static R_Requires generalize(ModuleDescriptor.Requires requires)
+   static R_Requires generalize(ModuleDescriptor.Requires requires)
    {
       return new RequiresImpl(requires);
    }
 
-   public static R_Exports generalize(ModuleDescriptor.Exports exports)
+   static R_Exports generalize(ModuleDescriptor.Exports exports)
    {
       return new ExportsImpl(exports);
    }
 
-   public static R_Opens generalize(ModuleDescriptor.Opens opens)
+   static R_Opens generalize(ModuleDescriptor.Opens opens)
    {
       return new OpensImpl(opens);
    }
 
-   public static R_Provides generalize(ModuleDescriptor.Provides provides)
+   static R_Provides generalize(ModuleDescriptor.Provides provides)
    {
       return new ProvidesImpl(provides);
    }
 
-   public static R_Uses getUsesType(String uses)
+   static R_Uses getUsesType(String uses)
    {
       return new UsesImpl(uses);
    }
 
-   public static Optional<R_Declared> getDeclared(String qualifiedName)
+   static Optional<R_Declared> getDeclared(String qualifiedName)
    {
       try
       {
@@ -225,7 +225,7 @@ public interface R_Adapter
       }
    }
 
-   public static R_Executable generalize(java.lang.reflect.Executable executable)
+   static R_Executable generalize(java.lang.reflect.Executable executable)
    {
       return switch (executable)
       {
@@ -234,12 +234,12 @@ public interface R_Adapter
       };
    }
 
-   public static Optional<R_Package> getPackage(String moduleName, String packageName)
+   static Optional<R_Package> getPackage(String moduleName, String packageName)
    {
       return getModuleType(moduleName).getPackages().stream().filter(rPackage -> rPackage.getQualifiedName().equals(packageName)).findAny();
    }
 
-   public static R_Package getPackage(String name)
+   static R_Package getPackage(String name)
    {
       return new PackageImpl(new NamedSupplier<>(name, () ->
       {
@@ -252,7 +252,7 @@ public interface R_Adapter
       }, java.lang.Package::getName));
    }
 
-   public static R_EnumConstant generalize(Enum<?> enumConstant)
+   static R_EnumConstant generalize(Enum<?> enumConstant)
    {
       try
       {
@@ -264,97 +264,97 @@ public interface R_Adapter
       }
    }
 
-   public static ModuleDescriptor.Exports particularize(R_Exports exports)
+   static ModuleDescriptor.Exports particularize(R_Exports exports)
    {
       return ((ExportsImpl) exports).getReflection();
    }
 
-   public static ModuleDescriptor.Opens particularize(R_Opens opens)
+   static ModuleDescriptor.Opens particularize(R_Opens opens)
    {
       return ((OpensImpl) opens).getReflection();
    }
 
-   public static ModuleDescriptor.Provides particularize(R_Provides provides)
+   static ModuleDescriptor.Provides particularize(R_Provides provides)
    {
       return ((ProvidesImpl) provides).getReflection();
    }
 
-   public static ModuleDescriptor.Requires particularize(R_Requires requires)
+   static ModuleDescriptor.Requires particularize(R_Requires requires)
    {
       return ((RequiresImpl) requires).getReflection();
    }
 
-   public static String particularize(R_Uses uses)
+   static String particularize(R_Uses uses)
    {
       return ((UsesImpl) uses).getReflection();
    }
 
-   public static java.lang.annotation.Annotation particularize(R_AnnotationUsage annotationUsage)
+   static java.lang.annotation.Annotation particularize(R_AnnotationUsage annotationUsage)
    {
       return ((AnnotationUsageImpl) annotationUsage).getAnnotationReflection();
    }
 
-   public static Class<?> particularize(R_Array array)
+   static Class<?> particularize(R_Array array)
    {
       return ((ArrayImpl) array).getReflection();
    }
 
-   public static Class<?> particularize(R_Declared declared)
+   static Class<?> particularize(R_Declared declared)
    {
       return ((DeclaredImpl) declared).getReflection();
    }
 
-   public static java.lang.reflect.Field particularize(R_EnumConstant enumConstant)
+   static java.lang.reflect.Field particularize(R_EnumConstant enumConstant)
    {
       return ((ReflectionFieldImpl<?>) enumConstant).getReflection();
    }
 
-   public static java.lang.reflect.Executable particularize(R_Executable executable)
+   static java.lang.reflect.Executable particularize(R_Executable executable)
    {
       return ((ExecutableImpl) executable).getReflection();
    }
 
-   public static java.lang.reflect.Field particularize(R_Field field)
+   static java.lang.reflect.Field particularize(R_Field field)
    {
       return ((ReflectionFieldImpl<?>) field).getReflection();
    }
 
-   public static TypeVariable<?> particularize(R_Generic generic)
+   static TypeVariable<?> particularize(R_Generic generic)
    {
       return ((GenericImpl) generic).getReflection();
    }
 
-   public static java.lang.reflect.Type[] particularize(R_Intersection intersection)
+   static java.lang.reflect.Type[] particularize(R_Intersection intersection)
    {
       return ((IntersectionImpl) intersection).getReflection();
    }
 
-   public static ModuleDescriptor particularize(R_Module module)
+   static ModuleDescriptor particularize(R_Module module)
    {
       return ((ModuleImpl) module).getReflection();
    }
 
-   public static java.lang.Package particularize(R_Package aPackage)
+   static java.lang.Package particularize(R_Package aPackage)
    {
       return ((PackageImpl) aPackage).getReflection();
    }
 
-   public static java.lang.reflect.Parameter particularize(R_Parameter parameter)
+   static java.lang.reflect.Parameter particularize(R_Parameter parameter)
    {
       return ((ParameterImpl) parameter).getReflection();
    }
 
-   public static java.lang.Class<?> particularize(R_Primitive primitive)
+   static java.lang.Class<?> particularize(R_Primitive primitive)
    {
       return ((PrimitiveImpl) primitive).getReflection();
    }
 
-   public static java.lang.reflect.RecordComponent particularize(R_RecordComponent recordComponent)
+   static java.lang.reflect.RecordComponent particularize(R_RecordComponent recordComponent)
    {
       return ((RecordComponentImpl) recordComponent).getReflection();
    }
 
-   public static WildcardType particularize(R_Wildcard wildcard)
+   static WildcardType particularize(R_Wildcard wildcard)
    {
       return ((WildcardImpl) wildcard).getReflection();
    }
