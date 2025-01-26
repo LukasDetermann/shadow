@@ -1,0 +1,174 @@
+= How are Annotation Processors loaded?
+
+If configured explicitly in any way it works as expected.
+How auto-detection works is a longer story.
+
+== Java Compiler
+
+*Pseudocode of the Java Compiler (javac) in Jdk 23*
+
+[%linenums,java]
+----
+ifndef::site-gen-antora[]
+include::../../../src/test/java/io/determann/shadow/article/apt_loading/AptLoading.java[tag=javac]
+endif::[]
+ifdef::site-gen-antora[]
+include::Shadow-Api::example$article/apt_loading/AptLoading.java[tag=javac]
+endif::[]
+----
+
+=== Configurations
+
+<1> `+-Xprint+`
++
+With this command line Option a build in javac Annotation processor is used to print everything it sees about a class.
++
+.`+-Xprint+` input
+[%linenums,java]
+----
+package io.determann.shadow.article.apt_loading;
+
+public class HelloWorld {
+   public static void main(String[] args) {
+      System.out.println("Hello, World!");
+   }
+}
+----
+Annotation processors can not access the content of methods.
+But default Constructors are present.
+It's an easy way to get familiar with the code mode an Annotation processor can use.
++
+.`+-Xprint+` result
+[%linenums,java]
+----
+package io.determann.shadow.article.apt_loading;
+
+public class HelloWorld {
+
+  public HelloWorld();
+
+  public static void main(java.lang.String[] args);
+}
+----
+<2> `+programmaticallySetProcessors+`
+The Java compiler has a programmatic Api where Annotation Processors can be set.
++
+[%linenums,java]
+----
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import javax.tools.JavaFileObject;
+import java.util.List;
+
+public class HelloCompiler {
+
+   public static void main(String[] args) {
+
+      JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+      List<JavaFileObject> javaFileObjects = createJavaFileObjects();
+
+      JavaCompiler.CompilationTask compilationTask =
+         compiler.getTask(null, null, null, null, null, javaFileObjects);
+
+      //Set processors programaticly
+      List<Processor> myProcessors = getProcessors();
+      compilationTask.setProcessors(myProcessors);
+      compilationTask.call();
+   }
+}
+----
+<3> `+-processor+`
+With this command line Option a List of Annotation processors can be set
++
+[,bash]
+----
+javac -processor MyAnnotationProcessor HelloWorld.java
+----
+<4> `+--processor-module-path+`
+The Module path for Annotation Processors should be used if the processor and all dependencies are modules.
+<5> `+--processor-path+` or `+-processorpath+`
+Should be used if an Annotation Processors or one of its dependencies is not a module
+<6> `+--class-path+`
+The path for user class files and Annotation Processors.
+
+== Maven
+== https://stackoverflow.com/a/46571387[Without configuration]
+
+=== Not Modularised
+
+Maven puts everything on the class-path including the source files that are being compiled.
+
+=== Modularised
+
+Maven puts all referenced modules on the module-path and every other dependency on the class-path.
+
+== Configuration
+
+* `+-processor+` can be set as
+https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessors[<annotationProcessors>]
+* `+--processor-module-path+`
+https://issues.apache.org/jira/browse/MCOMPILER-412[is not supported]
+* `+--processor-path+` can be set as
+https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPaths[<annotationProcessorPaths>]
+* `+-proc+` can be set as
+https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#proc[<proc>]
+* Per default maven docent use the dependency management section to resolve transitive dependencies in Annotation Processors
+https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPathsUseDepMgmt[<annotationProcessorPathsUseDepMgmt>]
+
+== Java Version Changes
+
+https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314[Since java 23]
+ Annotation Processing has to be explicitly requested and is no longer on per default.
+The official documentation is not all up to date.
+
+== Common Cases
+
+=== Writing an Annotation Processor
+
+Class-path scanning should be used with caution when writing a processor.
+The sources that are being compiled are on the class-path and
+https://issues.apache.org/jira/projects/MCOMPILER/issues/MCOMPILER-97[javac will try to compile the Processor using the Processor.]
+
+==== Required Modularized Processors
+
+If you want to use Annotation Processors to write your Processor both are modules and one requires the other, then the other processors will be put on the module-path and can not be automatically discovered.
+Some configuration is needed.
+
+==== java >= 23
+
+If you want to use Annotation Processors to write your Processors you have to enable them.
+I would recommend to explicitly configure them.
+Just using `+-proc:full+` may cause problems.
+
+
+==== java < 23
+
+You will need to tell javac that compiling a processor with itself doesn't work.
+
+=== Using Annotation Processors
+
+==== Required Modularized Processors
+
+If a Processor is modularised and required by the module that's being compiled it will be put on the module-path and can not be automatically discovered.
+Some configuration is needed.
+
+==== java >= 23
+
+Since Java 23 Annotation Processing is disabled by default. `+-proc:full+` re-enables it.
+
+==== java < 23
+
+In java versions before 23, Annotation Processors are automatically detected and run without configuration.
+
+== Conclusion
+
+I would recommend to explicitly configure Annotation Processors in any case.
+Its more work, but leads to an easier understanding of the build process.
+It avoids some pitfalls.
+Who would expect an Annotation Processor to stop working, just because its now required?
+
+== Deliberate Simplifications
+
+* Loading Annotation Processors is lazy
+* Before each round, except the last, javac tries to find more
+* There are two class paths. one for javac and one for annotation processors in javac

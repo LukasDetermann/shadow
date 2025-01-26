@@ -1,3 +1,4 @@
 * Articles
 ** xref:ConsistencyTest.adoc[Consistency Testing]
 ** xref:Meta Model.adoc[]
+** xref:AptLoading.adoc[Annotation Processor loading]
