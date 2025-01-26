@@ -24,7 +24,7 @@ public static List<AnnotationProcessor> accumulateAllProcessors(
    List<AnnotationProcessor> annotationProcessors =
          getAnnotationProcessors(args, programmaticallySetProcessors);
 
-   if (annotationProcessors.isEmpty() && !annotationProcessingRequested(args))
+   if (annotationProcessors.isEmpty() || !annotationProcessingRequested(args))
    {
       return Collections.emptyList();
    }
