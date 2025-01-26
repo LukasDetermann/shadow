@@ -18,9 +18,9 @@ It's as simple as calling the ReflectionAdapter
 [%linenums,java]
 ----
 ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/Reflection.java[tag=gettingStarted]
+include::../../../src/test/java/io/determann/shadow/ReflectionTest.java[tag=gettingStarted]
 endif::[]
 ifdef::site-gen-antora[]
-include::example$Reflection.java[tag=gettingStarted]
+include::example$ReflectionTest.java[tag=gettingStarted]
 endif::[]
 ----
