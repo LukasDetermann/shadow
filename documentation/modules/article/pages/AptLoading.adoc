@@ -1,7 +1,7 @@
 = How are Annotation Processors loaded?
 
-If configured explicitly in any way it works as expected.
-How auto-detection works is a longer story.
+If explicitly configured, it works as expected. 
+The process of auto-detection, however, is more complex and requires a detailed explanation.
 
 == Java Compiler
 
@@ -21,9 +21,9 @@ endif::[]
 
 <1> `+-Xprint+`
 +
-With this command line Option a build in javac Annotation processor is used to print everything it sees about a class.
+With this command line Option a build in javac Annotation Processor is used to print everything it sees about a class.
 +
-.`+-Xprint+` input
+.`+javac -Xprint HelloWorld.java+`
 [%linenums,java]
 ----
 package io.determann.shadow.article.apt_loading;
@@ -34,11 +34,11 @@ public class HelloWorld {
    }
 }
 ----
-Annotation processors can not access the content of methods.
+Annotation Processors can not access the content of methods.
 But default Constructors are present.
-It's an easy way to get familiar with the code mode an Annotation processor can use.
+It's an easy way to get familiar with the code mode an Annotation Processor can use.
 +
-.`+-Xprint+` result
+.result
 [%linenums,java]
 ----
 package io.determann.shadow.article.apt_loading;
@@ -78,7 +78,7 @@ public class HelloCompiler {
 }
 ----
 <3> `+-processor+`
-With this command line Option a List of Annotation processors can be set
+With this command line Option a List of Annotation Processors can be set
 +
 [,bash]
 ----
@@ -92,17 +92,17 @@ Should be used if an Annotation Processors or one of its dependencies is not a m
 The path for user class files and Annotation Processors.
 
 == Maven
-== https://stackoverflow.com/a/46571387[Without configuration]
+=== https://stackoverflow.com/a/46571387[Without configuration]
 
-=== Not Modularised
+==== Not Modularised
 
 Maven puts everything on the class-path including the source files that are being compiled.
 
-=== Modularised
+==== Modularised
 
 Maven puts all referenced modules on the module-path and every other dependency on the class-path.
 
-== Configuration
+=== Configuration
 
 * `+-processor+` can be set as
 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessors[<annotationProcessors>]
@@ -127,7 +127,7 @@ The official documentation is not all up to date.
 
 Class-path scanning should be used with caution when writing a processor.
 The sources that are being compiled are on the class-path and
-https://issues.apache.org/jira/projects/MCOMPILER/issues/MCOMPILER-97[javac will try to compile the Processor using the Processor.]
+https://issues.apache.org/jira/browse/MCOMPILER-97[javac will try to compile the Processor using itself.]
 
 ==== Required Modularized Processors
 
@@ -167,8 +167,8 @@ Its more work, but leads to an easier understanding of the build process.
 It avoids some pitfalls.
 Who would expect an Annotation Processor to stop working, just because its now required?
 
-== Deliberate Simplifications
+== Simplifications
 
 * Loading Annotation Processors is lazy
-* Before each round, except the last, javac tries to find more
-* There are two class paths. one for javac and one for annotation processors in javac
+* Before each round, except the last, javac tries to find more Processors
+* There are two class paths. one for javac and one for Annotation Processors in javac
