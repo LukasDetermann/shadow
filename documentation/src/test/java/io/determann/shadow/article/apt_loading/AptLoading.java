@@ -10,30 +10,23 @@ public class AptLoading
 {
 //@formatter:off
 //tag::javac[]
-public static List<AnnotationProcessor> accumulateAllProcessors(
+public static List<AnnotationProcessor> getAnnotationProcessors(
       String[] args,
-      //source: javax.tools.JavaCompiler.CompilationTask#setProcessors(java.lang.Iterable)
-      List<AnnotationProcessor> programmaticallySetProcessors) {
+      List<AnnotationProcessor> programmaticallySetProcessors)
+{     //source: javax.tools.JavaCompiler.CompilationTask#setProcessors(java.lang.Iterable)
 
    //source: com.sun.tools.javac.main.JavaCompiler.initProcessAnnotations()
-   if (isOptionSet(args, "-proc:", "none"))
+   if (isOptionSet(args, "-proc:", "none") || !isRequested(args))
    {
       return Collections.emptyList();
    }
 
-   List<AnnotationProcessor> annotationProcessors =
-         getAnnotationProcessors(args, programmaticallySetProcessors);
-
-   if (annotationProcessors.isEmpty() || !annotationProcessingRequested(args))
-   {
-      return Collections.emptyList();
-   }
-   return annotationProcessors;
+   return chooseProcessors(args, programmaticallySetProcessors);
 }
 
 //source: com.sun.tools.javac.main.JavaCompiler.explicitAnnotationProcessingRequested()
-private static boolean annotationProcessingRequested(String[] args) {
-
+private static boolean isRequested(String[] args)
+{
    return isOptionSet(args, "-processor") ||
           isOptionSet(args, "-processorpath") ||//alias --processor-path
           isOptionSet(args, "--processor-module-path") ||
@@ -45,10 +38,10 @@ private static boolean annotationProcessingRequested(String[] args) {
 }
 
 //source: com.sun.tools.javac.processing.JavacProcessingEnvironment.initProcessorIterator
-private static List<AnnotationProcessor> getAnnotationProcessors(
+private static List<AnnotationProcessor> chooseProcessors(
       String[] args,
-      List<AnnotationProcessor> programmaticallySetProcessors) {
-
+      List<AnnotationProcessor> programmaticallySetProcessors)
+{
    if (isOptionSet(args, "-Xprint"))//<1>
    {
       return List.of(new PrintingProcessor());
@@ -62,11 +55,11 @@ private static List<AnnotationProcessor> getAnnotationProcessors(
    {
       return loadAnnotationProcessorsByNames(processorNames);
    }
-   return automaticlyFindAnnotationProcessors();
+   return automaticDetection();
 }
 
 //source: com.sun.tools.javac.processing.JavacProcessingEnvironment#initProcessorLoader())
-private static List<AnnotationProcessor> automaticlyFindAnnotationProcessors()
+private static List<AnnotationProcessor> automaticDetection()
 {
    if (hasLocation(ANNOTATION_PROCESSOR_MODULE_PATH))
    {
@@ -96,7 +89,7 @@ private static List<AnnotationProcessor> automaticlyFindAnnotationProcessors()
       return null;
    }
 
-   private interface AnnotationProcessor {}
+   public interface AnnotationProcessor {}
 
    private static class PrintingProcessor
          implements AnnotationProcessor {}

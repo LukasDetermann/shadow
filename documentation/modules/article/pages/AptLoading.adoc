@@ -1,11 +1,18 @@
 = How are Annotation Processors loaded?
 
-If explicitly configured, it works as expected. 
-The process of auto-detection, however, is more complex and requires a detailed explanation.
+Annotation Processors can be loaded in many different ways.
+Some straight forward and some more indirect.
+In this article I want to document how the loading of Annotation Processors works and what Pitfalls there are.
+
+
+Tldr: Configure them explicitly as
+https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPaths[<annotationProcessorPaths>]
+or with https://issues.apache.org/jira/browse/MCOMPILER-412[this workaround] for the jpms.
 
 == Java Compiler
 
-*Pseudocode of the Java Compiler (javac) in Jdk 23*
+Annotation Processors are loaded by the Java Compiler (javac).
+This Pseudocode explains how.
 
 [%linenums,java]
 ----
@@ -78,7 +85,8 @@ public class HelloCompiler {
 }
 ----
 <3> `+-processor+`
-With this command line Option a List of Annotation Processors can be set
+With this command line Option a List of Annotation Processors can be set via their name.
+This is basically a filter for one of the other options or the classpath.
 +
 [,bash]
 ----
@@ -92,6 +100,10 @@ Should be used if an Annotation Processors or one of its dependencies is not a m
 The path for user class files and Annotation Processors.
 
 == Maven
+
+During a build the build tool needs to invoke javac.
+This is how maven does it.
+
 === https://stackoverflow.com/a/46571387[Without configuration]
 
 ==== Not Modularised
