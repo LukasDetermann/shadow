@@ -50,16 +50,21 @@ private static List<AnnotationProcessor> chooseProcessors(
    {
       return programmaticallySetProcessors;
    }
+
+   List<AnnotationProcessor> processors = loadProcessors();
+
    List<String> processorNames = getOption(args, "-processor");//<3>
    if (processorNames != null)
    {
-      return loadAnnotationProcessorsByNames(processorNames);
+      return processors.stream()
+                       .filter(p -> processorNames.contains(p.getName()))
+                       .toList();
    }
-   return automaticDetection();
+   return processors;
 }
 
 //source: com.sun.tools.javac.processing.JavacProcessingEnvironment#initProcessorLoader())
-private static List<AnnotationProcessor> automaticDetection()
+private static List<AnnotationProcessor> loadProcessors()
 {
    if (hasLocation(ANNOTATION_PROCESSOR_MODULE_PATH))
    {
@@ -89,10 +94,19 @@ private static List<AnnotationProcessor> automaticDetection()
       return null;
    }
 
-   public interface AnnotationProcessor {}
+   public interface AnnotationProcessor {
+
+      String getName();
+   }
 
    private static class PrintingProcessor
-         implements AnnotationProcessor {}
+         implements AnnotationProcessor {
+      @Override
+      public String getName()
+      {
+         return "";
+      }
+   }
 
    private static boolean isOptionSet(String[] args, String option, String value)
    {
