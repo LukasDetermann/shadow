@@ -7,7 +7,6 @@ asciidoc:
     source-highlighter: rouge
 nav:
   - modules/ROOT/nav.adoc
-  - modules/article/nav.adoc
 ext:
   collector:
     run:

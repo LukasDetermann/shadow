@@ -1,4 +1,7 @@
-* Implementations
-** xref:Annotation Processing.adoc[]
-** xref:Reflection.adoc[]
-** xref:java.lang.model.adoc[]
+* xref:Annotation Processing.adoc[]
+** xref:AptLoading.adoc[Loading]
+* xref:Reflection.adoc[]
+* xref:java.lang.model.adoc[]
+* Articles
+** xref:ConsistencyTest.adoc[Consistency Testing]
+** xref:Meta Model.adoc[]

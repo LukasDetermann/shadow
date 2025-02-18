@@ -28,7 +28,7 @@ public static List<AnnotationProcessor> getAnnotationProcessors(
 private static boolean isRequested(String[] args)
 {
    return isOptionSet(args, "-processor") ||
-          isOptionSet(args, "-processorpath") ||//alias --processor-path
+          isOptionSet(args, "---processor-path") ||
           isOptionSet(args, "--processor-module-path") ||
           isOptionSet(args, "-proc:", "only") ||
           isOptionSet(args, "-proc:", "full") ||

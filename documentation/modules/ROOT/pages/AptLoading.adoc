@@ -7,12 +7,12 @@ In this article I want to document how the loading of Annotation Processors work
 
 Tldr: Configure them explicitly as
 https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPaths[<annotationProcessorPaths>]
-or with https://issues.apache.org/jira/browse/MCOMPILER-412[this workaround] for the jpms.
+or `+processor-module-path+` with https://issues.apache.org/jira/browse/MCOMPILER-412[this workaround] for the missing maven support.
 
 == Java Compiler
 
 Annotation Processors are loaded by the Java Compiler (javac).
-This Pseudocode explains how.
+This Pseudocode demonstrates how.
 
 [%linenums,java]
 ----
