@@ -1,13 +1,10 @@
 = How are Annotation Processors loaded?
 
-Annotation Processors can be loaded in many different ways.
-Some straight forward and some more indirect.
-In this article I want to document how the loading of Annotation Processors works and what Pitfalls there are.
-
-
-Tldr: Configure them explicitly as
-https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessorPaths[<annotationProcessorPaths>]
-or `+processor-module-path+` with https://issues.apache.org/jira/browse/MCOMPILER-412[this workaround] for the missing maven support.
+Large projects can become complicated to build.
+One factor contributing to that is annotation processors.
+They can be loaded in many different ways.
+It can be hard to understand what Processors run and how seemingly unconnected changes affect that.
+I want to explain in this article how Annotation Processors are loaded and the potential pitfalls.
 
 == Java Compiler
 
@@ -29,6 +26,7 @@ endif::[]
 <1> `+-Xprint+`
 +
 With this command line Option a build in javac Annotation Processor is used to print everything it sees about a class.
+This can be very useful to get familiar with the code model of annotation processing.
 +
 .`+javac -Xprint HelloWorld.java+`
 [%linenums,java]
@@ -43,7 +41,6 @@ public class HelloWorld {
 ----
 Annotation Processors can not access the content of methods.
 But default Constructors are present.
-It's an easy way to get familiar with the code mode an Annotation Processor can use.
 +
 .result
 [%linenums,java]
@@ -93,9 +90,9 @@ This is basically a filter for one of the other options or the classpath.
 javac -processor MyAnnotationProcessor HelloWorld.java
 ----
 <4> `+--processor-module-path+`
-The Module path for Annotation Processors should be used if the processor and all dependencies are modules.
+The module path for loading Annotation processors
 <5> `+--processor-path+` or `+-processorpath+`
-Should be used if an Annotation Processors or one of its dependencies is not a module
+The path for loading Annotation processors.
 <6> `+--class-path+`
 The path for user class files and Annotation Processors.
 
@@ -112,7 +109,7 @@ Maven puts everything on the class-path including the source files that are bein
 
 ==== Modularised
 
-Maven puts all referenced modules on the module-path and every other dependency on the class-path.
+Every module that the application requires is placed on the module-path by Maven, while all other dependencies are placed on the class-path.
 
 === Configuration
 
@@ -172,7 +169,7 @@ Since Java 23 Annotation Processing is disabled by default. `+-proc:full+` re-en
 
 In java versions before 23, Annotation Processors are automatically detected and run without configuration.
 
-== Conclusion
+== Opinion
 
 I would recommend to explicitly configure Annotation Processors in any case.
 Its more work, but leads to an easier understanding of the build process.
