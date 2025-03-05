@@ -14,48 +14,48 @@ class PrimitiveRendererTest
    @Test
    void booleanType()
    {
-      test(implementation -> assertEquals("boolean", render(DEFAULT, requestOrThrow(implementation, GET_BOOLEAN)).type()));
+      test(implementation -> assertEquals("boolean", render(requestOrThrow(implementation, GET_BOOLEAN)).type(DEFAULT)));
    }
 
    @Test
    void byteType()
    {
-      test(implementation -> assertEquals("byte", render(DEFAULT, requestOrThrow(implementation, GET_BYTE)).type()));
+      test(implementation -> assertEquals("byte", render(requestOrThrow(implementation, GET_BYTE)).type(DEFAULT)));
    }
 
    @Test
    void shortType()
    {
-      test(implementation -> assertEquals("short", render(DEFAULT, requestOrThrow(implementation, GET_SHORT)).type()));
+      test(implementation -> assertEquals("short", render(requestOrThrow(implementation, GET_SHORT)).type(DEFAULT)));
    }
 
    @Test
    void intType()
    {
-      test(implementation -> assertEquals("int", render(DEFAULT, requestOrThrow(implementation, GET_INT)).type()));
+      test(implementation -> assertEquals("int", render(requestOrThrow(implementation, GET_INT)).type(DEFAULT)));
    }
 
    @Test
    void longType()
    {
-      test(implementation -> assertEquals("long", render(DEFAULT, requestOrThrow(implementation, GET_LONG)).type()));
+      test(implementation -> assertEquals("long", render(requestOrThrow(implementation, GET_LONG)).type(DEFAULT)));
    }
 
    @Test
    void charType()
    {
-      test(implementation -> assertEquals("char", render(DEFAULT, requestOrThrow(implementation, GET_CHAR)).type()));
+      test(implementation -> assertEquals("char", render(requestOrThrow(implementation, GET_CHAR)).type(DEFAULT)));
    }
 
    @Test
    void floatType()
    {
-      test(implementation -> assertEquals("float", render(DEFAULT, requestOrThrow(implementation, GET_FLOAT)).type()));
+      test(implementation -> assertEquals("float", render(requestOrThrow(implementation, GET_FLOAT)).type(DEFAULT)));
    }
 
    @Test
    void doubleType()
    {
-      test(implementation -> assertEquals("double", render(DEFAULT, requestOrThrow(implementation, GET_DOUBLE)).type()));
+      test(implementation -> assertEquals("double", render(requestOrThrow(implementation, GET_DOUBLE)).type(DEFAULT)));
    }
 }

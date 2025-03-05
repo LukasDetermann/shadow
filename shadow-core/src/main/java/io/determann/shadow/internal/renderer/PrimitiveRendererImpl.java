@@ -9,12 +9,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class PrimitiveRendererImpl implements PrimitiveRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Primitive primitive;
 
-   public PrimitiveRendererImpl(RenderingContext renderingContext, C_Primitive primitive)
+   public PrimitiveRendererImpl(C_Primitive primitive)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.primitive = primitive;
    }
 
@@ -24,8 +22,8 @@ public class PrimitiveRendererImpl implements PrimitiveRenderer
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, primitive);
+      return type(new RenderingContextWrapper(renderingContext), primitive);
    }
 }

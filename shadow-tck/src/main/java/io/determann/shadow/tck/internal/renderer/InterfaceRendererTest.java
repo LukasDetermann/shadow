@@ -19,7 +19,7 @@ class InterfaceRendererTest
       test(implementation ->
            {
               C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "java.util.function.Function");
-              assertEquals("@FunctionalInterface\npublic interface Function<T, R> {}\n", render(DEFAULT, cInterface).declaration());
+              assertEquals("@FunctionalInterface\npublic interface Function<T, R> {}\n", render(cInterface).declaration(DEFAULT));
            });
    }
 
@@ -34,7 +34,7 @@ class InterfaceRendererTest
                                  public interface Function<T, R> {
                                  test
                                  }
-                                 """, render(DEFAULT, cInterface).declaration("test"));
+                                 """, render(cInterface).declaration(DEFAULT, "test"));
            });
    }
 
@@ -53,7 +53,7 @@ class InterfaceRendererTest
             .test(implementation ->
                   {
                      C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "InterpolateGenericsExample");
-                     assertEquals(expected, render(DEFAULT, cInterface).declaration());
+                     assertEquals(expected, render(cInterface).declaration(DEFAULT));
                   });
    }
 
@@ -71,7 +71,7 @@ class InterfaceRendererTest
             .test(implementation ->
                   {
                      C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "InterpolateGenericsExample");
-                     assertEquals(expected, render(DEFAULT, cInterface).type());
+                     assertEquals(expected, render(cInterface).type(DEFAULT));
                   });
    }
 }

@@ -18,12 +18,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class GenericRendererImpl implements GenericRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Generic generic;
 
-   public GenericRendererImpl(RenderingContext renderingContext, C_Generic generic)
+   public GenericRendererImpl(C_Generic generic)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.generic = generic;
    }
 
@@ -64,13 +62,13 @@ public class GenericRendererImpl implements GenericRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return type(context, generic);
+      return type(new RenderingContextWrapper(renderingContext), generic);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
       return requestOrThrow(generic, NAMEABLE_GET_NAME);
    }

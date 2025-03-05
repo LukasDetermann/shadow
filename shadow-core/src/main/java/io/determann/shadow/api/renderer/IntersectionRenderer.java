@@ -5,5 +5,5 @@ public interface IntersectionRenderer
    /**
     * {@code T extends} <b> Collection &amp; Serializable</b>{@code >}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 }

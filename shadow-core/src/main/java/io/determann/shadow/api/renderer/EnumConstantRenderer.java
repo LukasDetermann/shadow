@@ -5,12 +5,12 @@ public interface EnumConstantRenderer
    /**
     * {@code MY_CONSTANT}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * {@code MY_CONSTANT(parameters)}
     */
-   String declaration(String parameters);
+   String declaration(RenderingContext renderingContext, String parameters);
 
    /**
     * <pre>{@code
@@ -19,10 +19,10 @@ public interface EnumConstantRenderer
     *    }
     * }</pre>
     */
-   String declaration(String parameters, String content);
+   String declaration(RenderingContext renderingContext, String parameters, String content);
 
    /**
     * {@code MyEnum.MY_CONSTANT}
     */
-   String invocation();
+   String invocation(RenderingContext renderingContext);
 }

@@ -5,5 +5,5 @@ public interface PrimitiveRenderer
    /**
     * {@code int}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

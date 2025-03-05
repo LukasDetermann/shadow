@@ -11,12 +11,10 @@ import static java.util.stream.Collectors.joining;
 
 public class ArrayRendererImpl implements ArrayRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Array array;
 
-   public ArrayRendererImpl(RenderingContext renderingContext, C_Array array)
+   public ArrayRendererImpl(C_Array array)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.array = array;
    }
 
@@ -43,16 +41,16 @@ public class ArrayRendererImpl implements ArrayRenderer
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, array) + renderDimensions(array);
+      return type(new RenderingContextWrapper(renderingContext), array) + renderDimensions(array);
    }
 
    @Override
-   public String initialisation(int... dimensions)
+   public String initialisation(RenderingContext renderingContext, int... dimensions)
    {
       return "new " +
-             type(context, array) +
+             type(new RenderingContextWrapper(renderingContext), array) +
              stream(dimensions).mapToObj(value -> "[" + value + ']').collect(joining());
    }
 }

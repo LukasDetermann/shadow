@@ -22,7 +22,7 @@ class EnumConstantRendererTest
            {
               C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
               C_EnumConstant enumConstant = requestOrThrow(cEnum, ENUM_GET_ENUM_CONSTANT, "SOURCE");
-              assertEquals("SOURCE\n", render(DEFAULT, enumConstant).declaration());
+              assertEquals("SOURCE\n", render(enumConstant).declaration(DEFAULT));
            });
    }
 
@@ -33,7 +33,7 @@ class EnumConstantRendererTest
            {
               C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
               C_EnumConstant enumConstant = requestOrThrow(cEnum, ENUM_GET_ENUM_CONSTANT, "SOURCE");
-              assertEquals("SOURCE(test)\n", render(DEFAULT, enumConstant).declaration("test"));
+              assertEquals("SOURCE(test)\n", render(enumConstant).declaration(DEFAULT,"test"));
            });
    }
 
@@ -44,7 +44,7 @@ class EnumConstantRendererTest
            {
               C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
               C_EnumConstant enumConstant = requestOrThrow(cEnum, ENUM_GET_ENUM_CONSTANT, "SOURCE");
-              assertEquals("SOURCE(test) {\ntest2\n}\n", render(DEFAULT, enumConstant).declaration("test", "test2"));
+              assertEquals("SOURCE(test) {\ntest2\n}\n", render(enumConstant).declaration(DEFAULT,"test", "test2"));
            });
    }
 
@@ -62,7 +62,7 @@ class EnumConstantRendererTest
                   {
                      C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "AnnotatedEnumConstant");
                      C_EnumConstant enumConstant = requestOrThrow(cEnum, ENUM_GET_ENUM_CONSTANT, "TEST");
-                     assertEquals("@TestAnnotation\nTEST\n", render(DEFAULT, enumConstant).declaration());
+                     assertEquals("@TestAnnotation\nTEST\n", render(enumConstant).declaration(DEFAULT));
                   });
    }
 
@@ -73,7 +73,7 @@ class EnumConstantRendererTest
            {
               C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
               C_EnumConstant enumConstant = requestOrThrow(cEnum, ENUM_GET_ENUM_CONSTANT, "SOURCE");
-              assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(DEFAULT, enumConstant).invocation());
+              assertEquals("java.lang.annotation.RetentionPolicy.SOURCE", render(enumConstant).invocation(DEFAULT));
            });
    }
 }

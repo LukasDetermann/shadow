@@ -20,7 +20,7 @@ class ClassRendererTest
            {
               C_Class cClass = requestOrThrow(implementation, GET_CLASS, "java.lang.Object");
 
-              assertEquals("public class Object {}\n", render(DEFAULT, cClass).declaration());
+              assertEquals("public class Object {}\n", render(cClass).declaration(DEFAULT));
            });
    }
 
@@ -31,7 +31,7 @@ class ClassRendererTest
            {
               C_Class cClass = requestOrThrow(implementation, GET_CLASS, "java.lang.Object");
 
-              assertEquals("public class Object {\ntest\n}\n", render(DEFAULT, cClass).declaration("test"));
+              assertEquals("public class Object {\ntest\n}\n", render(cClass).declaration(DEFAULT,"test"));
            });
    }
 
@@ -46,7 +46,7 @@ class ClassRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "InterpolateGenericsExample");
 
-                     assertEquals(expected, render(DEFAULT, cClass).declaration());
+                     assertEquals(expected, render(cClass).declaration(DEFAULT));
                   });
    }
 
@@ -63,7 +63,7 @@ class ClassRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ClassParent");
 
-                     assertEquals(expected, render(DEFAULT, cClass).declaration());
+                     assertEquals(expected, render(cClass).declaration(DEFAULT));
                   });
    }
 
@@ -81,7 +81,7 @@ class ClassRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ClassMixedParent");
 
-                     assertEquals(expected, render(DEFAULT, cClass).declaration());
+                     assertEquals(expected, render(cClass).declaration(DEFAULT));
                   });
    }
 
@@ -91,7 +91,7 @@ class ClassRendererTest
       test(implementation ->
            {
               C_Class cClass = requestOrThrow(implementation, GET_CLASS, "java.lang.Object");
-              String actual = render(DEFAULT, cClass).type();
+              String actual = render(cClass).type(DEFAULT);
 
               assertEquals("Object", actual);
            });
@@ -109,7 +109,7 @@ class ClassRendererTest
             .test(implementation ->
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "InterpolateGenericsExample");
-                     String actual = render(DEFAULT, cClass).type();
+                     String actual = render(cClass).type(DEFAULT);
 
                      assertEquals("InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>>", actual);
                   });

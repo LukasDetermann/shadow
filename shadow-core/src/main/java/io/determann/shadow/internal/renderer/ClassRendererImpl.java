@@ -22,12 +22,10 @@ import static java.util.stream.Collectors.joining;
 
 public class ClassRendererImpl implements ClassRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Class aClass;
 
-   public ClassRendererImpl(RenderingContext renderingContext, C_Class aClass)
+   public ClassRendererImpl(C_Class aClass)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.aClass = aClass;
    }
 
@@ -113,20 +111,20 @@ public class ClassRendererImpl implements ClassRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, aClass, "");
+      return declaration(new RenderingContextWrapper(renderingContext), aClass, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, aClass, content);
+      return declaration(new RenderingContextWrapper(renderingContext), aClass, content);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, aClass);
+      return type(new RenderingContextWrapper(renderingContext), aClass);
    }
 }

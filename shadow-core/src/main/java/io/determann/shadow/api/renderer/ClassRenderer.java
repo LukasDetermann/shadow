@@ -5,7 +5,7 @@ public interface ClassRenderer
    /**
     * {@code public class MyClass {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,10 +14,10 @@ public interface ClassRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code private final} <b>MyClass</b> {@code myClass;}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

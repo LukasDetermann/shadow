@@ -22,7 +22,7 @@ class RecordComponentRendererTest
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "RecordComponentExample");
                      C_RecordComponent recordComponent = requestOrThrow(record, RECORD_GET_RECORD_COMPONENT, "id");
-                     assertEquals("Long id", render(DEFAULT, recordComponent).declaration());
+                     assertEquals("Long id", render(recordComponent).declaration(DEFAULT));
                   });
    }
 
@@ -34,7 +34,7 @@ class RecordComponentRendererTest
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "RecordComponentExample");
                      C_RecordComponent recordComponent = requestOrThrow(record, RECORD_GET_RECORD_COMPONENT, "id");
-                     assertEquals("id()", render(DEFAULT, recordComponent).invocation());
+                     assertEquals("id()", render(recordComponent).invocation(DEFAULT));
                   });
    }
 }

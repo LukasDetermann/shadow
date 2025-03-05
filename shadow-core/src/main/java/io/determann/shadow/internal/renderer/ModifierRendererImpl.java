@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.renderer;
 
+import io.determann.shadow.api.renderer.ModifierRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.LinkedHashMap;
@@ -9,7 +11,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.joining;
 
-public class ModifierRendererImpl
+public class ModifierRendererImpl implements ModifierRenderer
 {
    private static final Map<C_Modifier, String> MODIFIERS_IN_ORDER = new LinkedHashMap<>();
 
@@ -32,6 +34,11 @@ public class ModifierRendererImpl
       MODIFIERS_IN_ORDER.put(C_Modifier.STRICTFP, "strictfp");
    }
 
+   public static String render(C_Modifier modifier)
+   {
+      return MODIFIERS_IN_ORDER.getOrDefault(modifier, "");
+   }
+
    public static String render(Set<C_Modifier> modifiers)
    {
       return MODIFIERS_IN_ORDER.entrySet()
@@ -40,5 +47,18 @@ public class ModifierRendererImpl
                                .filter(Optional::isPresent)
                                .map(Optional::get)
                                .collect(joining(" "));
+   }
+
+   private final C_Modifier[] modifiers;
+
+   public ModifierRendererImpl(C_Modifier... modifiers)
+   {
+      this.modifiers = modifiers;
+   }
+
+   @Override
+   public String declaration(RenderingContext renderingContext)
+   {
+      return render(Set.of(modifiers));
    }
 }

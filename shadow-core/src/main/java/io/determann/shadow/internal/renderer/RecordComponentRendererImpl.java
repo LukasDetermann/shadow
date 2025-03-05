@@ -16,12 +16,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class RecordComponentRendererImpl implements RecordComponentRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_RecordComponent recordComponent;
 
-   public RecordComponentRendererImpl(RenderingContext renderingContext, C_RecordComponent recordComponent)
+   public RecordComponentRendererImpl(C_RecordComponent recordComponent)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.recordComponent = recordComponent;
    }
 
@@ -51,14 +49,14 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, recordComponent);
+      return declaration(new RenderingContextWrapper(renderingContext), recordComponent);
    }
 
    @Override
-   public String invocation()
+   public String invocation(RenderingContext renderingContext)
    {
-      return invocation(context, recordComponent);
+      return invocation(new RenderingContextWrapper(renderingContext), recordComponent);
    }
 }

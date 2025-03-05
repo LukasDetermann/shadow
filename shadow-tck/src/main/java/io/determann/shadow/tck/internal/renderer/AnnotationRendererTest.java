@@ -27,7 +27,7 @@ class AnnotationRendererTest
            {
               C_Annotation retention = requestOrThrow(implementation, GET_ANNOTATION, "java.lang.annotation.Retention");
 
-              String actual = render(DEFAULT, retention).declaration("test");
+              String actual = render(retention).declaration(DEFAULT,"test");
 
               assertEquals(expected, actual);
            });
@@ -46,7 +46,7 @@ class AnnotationRendererTest
            {
               C_Annotation retention = requestOrThrow(implementation, GET_ANNOTATION, "java.lang.annotation.Retention");
 
-              String actual = render(DEFAULT, retention).declaration();
+              String actual = render(retention).declaration(DEFAULT);
 
               assertEquals(expected, actual);
            });
@@ -59,7 +59,7 @@ class AnnotationRendererTest
            {
               C_Annotation retention = requestOrThrow(implementation, GET_ANNOTATION, "java.lang.annotation.Retention");
 
-              String actual = render(DEFAULT, retention).type();
+              String actual = render(retention).type(DEFAULT);
 
               assertEquals("java.lang.annotation.Retention", actual);
            });

@@ -17,12 +17,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class PackageRendererImpl implements PackageRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Package aPackage;
 
-   public PackageRendererImpl(RenderingContext renderingContext, C_Package aPackage)
+   public PackageRendererImpl(C_Package aPackage)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.aPackage = aPackage;
    }
 
@@ -51,8 +49,8 @@ public class PackageRendererImpl implements PackageRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, aPackage);
+      return declaration(new RenderingContextWrapper(renderingContext), aPackage);
    }
 }

@@ -5,7 +5,7 @@ public interface EnumRenderer
    /**
     * {@code public enum MyEnum {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,10 +14,10 @@ public interface EnumRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code private final} <b>MyEnum</b> {@code myEnum;}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

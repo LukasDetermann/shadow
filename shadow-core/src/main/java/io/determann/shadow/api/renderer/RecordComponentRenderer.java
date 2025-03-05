@@ -2,7 +2,7 @@ package io.determann.shadow.api.renderer;
 
 public interface RecordComponentRenderer
 {
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
-   String invocation();
+   String invocation(RenderingContext renderingContext);
 }

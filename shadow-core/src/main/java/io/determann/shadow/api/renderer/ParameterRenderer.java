@@ -5,5 +5,5 @@ public interface ParameterRenderer
    /**
     * {@code public static void main( }<b>String[] args</b> {@code ) {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 }

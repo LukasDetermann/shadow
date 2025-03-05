@@ -5,7 +5,7 @@ public interface AnnotationRenderer
    /**
     * {@code public @interface MyAnnotation {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,10 +14,10 @@ public interface AnnotationRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code private final} <b>MyAnnotation</b> {@code myAnnotation;}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

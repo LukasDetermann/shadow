@@ -20,12 +20,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_AnnotationUsage usage;
 
-   public AnnotationUsageRendererImpl(RenderingContext renderingContext, C_AnnotationUsage usage)
+   public AnnotationUsageRendererImpl(C_AnnotationUsage usage)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.usage = usage;
    }
 
@@ -62,15 +60,15 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
    }
 
    @Override
-   public String usage()
+   public String usage(RenderingContext renderingContext)
    {
-      return usage(method -> Optional.empty());
+      return usage(new RenderingContextWrapper(renderingContext),method -> Optional.empty());
    }
 
    @Override
-   public String usage(Function<C_Method, Optional<String>> valueRenderer)
+   public String usage(RenderingContext renderingContext, Function<C_Method, Optional<String>> valueRenderer)
    {
-      return usage(valueRenderer, context, usage);
+      return usage(valueRenderer, new RenderingContextWrapper(renderingContext), usage);
    }
 
    private static String renderValue(RenderingContextWrapper context, C_AnnotationValue annotationValue)

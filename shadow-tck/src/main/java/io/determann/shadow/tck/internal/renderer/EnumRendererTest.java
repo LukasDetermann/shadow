@@ -36,7 +36,7 @@ class EnumRendererTest
                   {
 
                      C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "EnumMultiParent");
-                     assertEquals(expected, render(DEFAULT, cEnum).declaration("test"));
+                     assertEquals(expected, render(cEnum).declaration(DEFAULT,"test"));
                   });
    }
 
@@ -63,7 +63,7 @@ class EnumRendererTest
                   {
 
                      C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "EnumMultiParent");
-                     assertEquals(expected, render(DEFAULT, cEnum).declaration());
+                     assertEquals(expected, render(cEnum).declaration(DEFAULT));
                   });
    }
 
@@ -73,7 +73,7 @@ class EnumRendererTest
       test(implementation ->
            {
               C_Enum cEnum = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
-              assertEquals("java.lang.annotation.RetentionPolicy", render(DEFAULT, cEnum).type());
+              assertEquals("java.lang.annotation.RetentionPolicy", render(cEnum).type(DEFAULT));
            });
    }
 }

@@ -31,7 +31,7 @@ class ParameterRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHODS).get(0);
-                     assertEquals(expected, render(DEFAULT, method).declaration());
+                     assertEquals(expected, render(method).declaration(DEFAULT));
                   });
    }
 
@@ -50,7 +50,7 @@ class ParameterRendererTest
                      C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "ParameterExample");
                      C_Method method = requestOrThrow(cInterface, DECLARED_GET_METHODS).get(0);
                      C_Parameter parameter = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS).get(0);
-                     assertEquals("@MyAnnotation Long foo", render(DEFAULT, parameter).declaration());
+                     assertEquals("@MyAnnotation Long foo", render(parameter).declaration(DEFAULT));
                   });
    }
 
@@ -69,7 +69,7 @@ class ParameterRendererTest
                      C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "ParameterExample");
                      C_Method method = requestOrThrow(cInterface, DECLARED_GET_METHODS).get(0);
                      C_Parameter parameter = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS).get(0);
-                     assertEquals("Long... foo", render(DEFAULT, parameter).declaration());
+                     assertEquals("Long... foo", render(parameter).declaration(DEFAULT));
                   });
    }
 }

@@ -5,5 +5,5 @@ public interface WildcardRenderer
    /**
     * {@code List<}<b>? extends Number</b>{@code >}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

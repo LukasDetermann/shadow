@@ -31,7 +31,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "varArgsMethod").get(0);
-                     assertEquals(expected, render(DEFAULT, method).declaration());
+                     assertEquals(expected, render(method).declaration(DEFAULT));
                   });
    }
 
@@ -45,7 +45,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "six").get(0);
-                     assertEquals("public void six(java.util.List list) {}\n", render(DEFAULT, method).declaration());
+                     assertEquals("public void six(java.util.List list) {}\n", render(method).declaration(DEFAULT));
                   });
    }
 
@@ -61,7 +61,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "seven").get(0);
-                     assertEquals(expected, render(DEFAULT, method).declaration("test"));
+                     assertEquals(expected, render(method).declaration(DEFAULT,"test"));
                   });
    }
 
@@ -81,7 +81,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "receiver").get(0);
-                     assertEquals(expected, render(DEFAULT, method).declaration());
+                     assertEquals(expected, render(method).declaration(DEFAULT));
                   });
    }
 
@@ -93,7 +93,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "varArgsMethod").get(0);
-                     assertEquals("varArgsMethod()", render(DEFAULT, method).invocation());
+                     assertEquals("varArgsMethod()", render(method).invocation(DEFAULT));
                   });
    }
 
@@ -105,7 +105,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "six").get(0);
-                     assertEquals("six()", render(DEFAULT, method).invocation());
+                     assertEquals("six()", render(method).invocation(DEFAULT));
                   });
    }
 
@@ -117,7 +117,7 @@ class MethodRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "MethodExample");
                      C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "seven").get(0);
-                     assertEquals("seven(test)", render(DEFAULT, method).invocation("test"));
+                     assertEquals("seven(test)", render(method).invocation(DEFAULT,"test"));
                   });
    }
 }

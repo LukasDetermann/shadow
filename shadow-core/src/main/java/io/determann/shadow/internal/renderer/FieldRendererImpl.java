@@ -18,12 +18,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class FieldRendererImpl implements FieldRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Field field;
 
-   public FieldRendererImpl(RenderingContext renderingContext, C_Field field)
+   public FieldRendererImpl(C_Field field)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.field = field;
    }
 
@@ -56,8 +54,8 @@ public class FieldRendererImpl implements FieldRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, field);
+      return declaration(new RenderingContextWrapper(renderingContext), field);
    }
 }

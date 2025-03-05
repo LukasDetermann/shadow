@@ -5,7 +5,7 @@ public interface ConstructorRenderer
    /**
     * {@code public MyClass() {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,15 +14,15 @@ public interface ConstructorRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code new MyClass()}
     */
-   String invocation();
+   String invocation(RenderingContext renderingContext);
 
    /**
     * {@code new MyClass(parameters)}
     */
-   String invocation(String parameters);
+   String invocation(RenderingContext renderingContext, String parameters);
 }

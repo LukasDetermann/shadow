@@ -13,5 +13,5 @@ public interface ModuleRenderer
     * }
     * }</pre>
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 }

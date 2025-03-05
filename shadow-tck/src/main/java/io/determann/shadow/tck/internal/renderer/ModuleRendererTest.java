@@ -21,7 +21,7 @@ class ModuleRendererTest
       test(implementation ->
            {
               C_Module module = requestOrThrow(implementation, GET_MODULE, "java.desktop");
-              String actual = render(DEFAULT, module).declaration();
+              String actual = render(module).declaration(DEFAULT);
               assertEquals(sort(EXPECTED_RENDERING), sort(actual));
            });
    }

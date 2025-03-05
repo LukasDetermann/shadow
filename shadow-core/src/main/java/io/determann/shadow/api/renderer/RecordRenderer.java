@@ -5,7 +5,7 @@ public interface RecordRenderer
    /**
     * {@code public record MyRecord() {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,10 +14,10 @@ public interface RecordRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code private final} <b>MyRecord</b> {@code myCRecord;}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

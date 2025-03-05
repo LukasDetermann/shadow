@@ -5,7 +5,7 @@ public interface MethodRenderer
    /**
     * {@code   public static void main(String[] args) {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -15,15 +15,15 @@ public interface MethodRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code main()}
     */
-   String invocation();
+   String invocation(RenderingContext renderingContext);
 
    /**
     * {@code main(parameters)}
     */
-   String invocation(String parameters);
+   String invocation(RenderingContext renderingContext, String parameters);
 }

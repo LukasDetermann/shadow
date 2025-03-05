@@ -5,5 +5,5 @@ public interface FieldRenderer
    /**
     * {@code private final String myField;}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 }

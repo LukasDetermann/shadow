@@ -5,10 +5,10 @@ public interface ArrayRenderer
    /**
     * {@code int[]}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 
    /**
     * {@code new int[5][2]}
     */
-   String initialisation(int... dimensions);
+   String initialisation(RenderingContext renderingContext, int... dimensions);
 }

@@ -27,7 +27,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals("public ConstructorExample(Long id) {}\n", render(DEFAULT, constructor).declaration());
+                     assertEquals("public ConstructorExample(Long id) {}\n", render(constructor).declaration(DEFAULT));
                   });
    }
 
@@ -44,7 +44,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals("public ConstructorExample(Long id) {\ntest\n}\n", render(DEFAULT, constructor).declaration("test"));
+                     assertEquals("public ConstructorExample(Long id) {\ntest\n}\n", render(constructor).declaration(DEFAULT, "test"));
                   });
    }
 
@@ -63,7 +63,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals(expected, render(DEFAULT, constructor).declaration());
+                     assertEquals(expected, render(constructor).declaration(DEFAULT));
                   });
    }
 
@@ -93,7 +93,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals(expected, render(DEFAULT, constructor).declaration("test"));
+                     assertEquals(expected, render(constructor).declaration(DEFAULT,"test"));
                   });
    }
 
@@ -110,7 +110,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals("public ConstructorExample(String... names) {}\n", render(DEFAULT, constructor).declaration());
+                     assertEquals("public ConstructorExample(String... names) {}\n", render(constructor).declaration(DEFAULT));
                   });
    }
 
@@ -127,7 +127,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals("public <T> ConstructorExample(T t) {}\n", render(DEFAULT, constructor).declaration());
+                     assertEquals("public <T> ConstructorExample(T t) {}\n", render(constructor).declaration(DEFAULT));
                   });
    }
 
@@ -151,7 +151,7 @@ class ConstructorRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
 
-                     assertEquals("public Inner(ReceiverExample ReceiverExample.this) {}\n", render(DEFAULT, constructor).declaration());
+                     assertEquals("public Inner(ReceiverExample ReceiverExample.this) {}\n", render(constructor).declaration(DEFAULT));
                   });
    }
 
@@ -167,7 +167,7 @@ class ConstructorRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
-                     assertEquals("ConstructorExample()", render(DEFAULT, constructor).invocation());
+                     assertEquals("ConstructorExample()", render(constructor).invocation(DEFAULT));
                   });
    }
 
@@ -183,7 +183,7 @@ class ConstructorRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "ConstructorExample");
                      C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
-                     assertEquals("ConstructorExample(test)", render(DEFAULT, constructor).invocation("test"));
+                     assertEquals("ConstructorExample(test)", render(constructor).invocation(DEFAULT,"test"));
                   });
    }
 }

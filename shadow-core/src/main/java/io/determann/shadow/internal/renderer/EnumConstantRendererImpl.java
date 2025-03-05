@@ -17,12 +17,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_EnumConstant enumConstant;
 
-   public EnumConstantRendererImpl(RenderingContext renderingContext, C_EnumConstant enumConstant)
+   public EnumConstantRendererImpl(C_EnumConstant enumConstant)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.enumConstant = enumConstant;
    }
 
@@ -67,26 +65,26 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration("");
+      return declaration(new RenderingContextWrapper(renderingContext),"");
    }
 
    @Override
-   public String declaration(String parameters)
+   public String declaration(RenderingContext renderingContext, String parameters)
    {
-      return declaration(parameters, "");
+      return declaration(new RenderingContextWrapper(renderingContext), parameters, "");
    }
 
    @Override
-   public String declaration(String parameters, String content)
+   public String declaration(RenderingContext renderingContext, String parameters, String content)
    {
-      return declaration(context, enumConstant, parameters, content);
+      return declaration(new RenderingContextWrapper(renderingContext), enumConstant, parameters, content);
    }
 
    @Override
-   public String invocation()
+   public String invocation(RenderingContext renderingContext)
    {
-      return type(context, enumConstant);
+      return type(new RenderingContextWrapper(renderingContext), enumConstant);
    }
 }

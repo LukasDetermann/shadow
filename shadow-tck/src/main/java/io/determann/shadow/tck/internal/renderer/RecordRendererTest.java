@@ -22,7 +22,7 @@ class RecordRendererTest
             .test(implementation ->
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "InterpolateGenericsExample");
-                     assertEquals(expected, render(DEFAULT, record).declaration());
+                     assertEquals(expected, render(record).declaration(DEFAULT));
                   });
    }
 
@@ -36,7 +36,7 @@ class RecordRendererTest
             .test(implementation ->
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "InterpolateGenericsExample");
-                     assertEquals(expected, render(DEFAULT, record).declaration("test"));
+                     assertEquals(expected, render(record).declaration(DEFAULT,"test"));
                   });
    }
 
@@ -51,7 +51,7 @@ class RecordRendererTest
             .test(implementation ->
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "Parameters");
-                     assertEquals(expected, render(DEFAULT, record).declaration());
+                     assertEquals(expected, render(record).declaration(DEFAULT));
                   });
    }
 
@@ -65,7 +65,7 @@ class RecordRendererTest
             .test(implementation ->
                   {
                      C_Record record = requestOrThrow(implementation, GET_RECORD, "InterpolateGenericsExample");
-                     assertEquals(expected, render(DEFAULT, record).type());
+                     assertEquals(expected, render(record).type(DEFAULT));
                   });
    }
 }

@@ -18,7 +18,7 @@ class PackageRendererTest
       test(implementation ->
            {
               C_Package cPackage = requestOrThrow(implementation, GET_PACKAGE_IN_MODULE, "java.base", "java.lang");
-              String actual = render(DEFAULT, cPackage).declaration();
+              String actual = render(cPackage).declaration(DEFAULT);
               assertEquals("package java.lang;\n", actual);
            });
    }

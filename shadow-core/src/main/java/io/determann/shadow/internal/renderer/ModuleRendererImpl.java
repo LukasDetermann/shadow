@@ -21,17 +21,15 @@ import static java.util.stream.Collectors.joining;
 
 public class ModuleRendererImpl implements ModuleRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Module module;
 
-   public ModuleRendererImpl(RenderingContext renderingContext, C_Module module)
+   public ModuleRendererImpl(C_Module module)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.module = module;
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
       if (requestOrThrow(module, MODULE_IS_UNNAMED))
       {
@@ -46,7 +44,7 @@ public class ModuleRendererImpl implements ModuleRenderer
       {
          sb.append(annotationUsages.get()
                          .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
+                         .map(usage -> AnnotationUsageRendererImpl.usage(new RenderingContextWrapper(renderingContext), usage) + "\n")
                          .collect(joining()));
       }
 

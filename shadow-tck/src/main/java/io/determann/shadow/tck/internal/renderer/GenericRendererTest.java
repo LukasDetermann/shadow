@@ -24,7 +24,7 @@ class GenericRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Annotated");
                      C_Generic generic = requestOrThrow(cClass, CLASS_GET_GENERICS).get(0);
-                     assertEquals("@MyAnnotation T", render(DEFAULT, generic).declaration());
+                     assertEquals("@MyAnnotation T", render(generic).declaration(DEFAULT));
                   });
    }
 
@@ -36,7 +36,7 @@ class GenericRendererTest
                   {
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Annotated");
                      C_Generic generic = requestOrThrow(cClass, CLASS_GET_GENERICS).get(0);
-                     assertEquals("T", render(DEFAULT, generic).declaration());
+                     assertEquals("T", render(generic).declaration(DEFAULT));
                   });
    }
 }

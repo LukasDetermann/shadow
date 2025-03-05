@@ -1,38 +1,30 @@
 package io.determann.shadow.api.dsl;
 
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
+import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.internal.dsl.ConstructorDsl;
 
-//todo convert to interface with static methods
-public abstract class Dsl
-      implements PackageStep
+public interface Dsl
 {
-   static
+   static ConstructorJavaDocStep constructor()
    {
-      Dsl dsl = null;
+      return new ConstructorDsl();
+   }
 
-      C_Class body = dsl.class_("myClass")
-                        .body("asldkjf");
-
-      C_Field aField = null;
-
-      C_Class anotherClass = dsl.package_("org.example")
-                                .import_("org.example.MyClass")
-                                .public_()
-                                .final_()
-                                .static_()
-                                .class_("MyClass")
-                                .generic("<T>")
-                                .extends_("ExtendsClass")
-                                .implements_("AnInterface")
-                                .permits("PermitsClass")
-                                .field("first field")
-                                .field("second field", "third field")
-                                .field(aField)
-                                .method("my first method")
-                                .inner("an inner class")
-                                .instanceInitializer("a instance initializer")
-                                .staticInitializer("a static initializer")
-                                .constructor("an constructor");
+   class ExampleWrapper
+   {
+      static
+      {
+         constructor().javadoc("my doku")
+                      .annotate("@AnAnnotation")
+                      .public_()
+                      .generic("<T>")
+                      .constructor("MyType")
+                      .parameter("String s")
+                      .parameter("int i")
+                      .throws_("IllegalStateException")
+                      .body("throw null")
+                      .render(RenderingContext.DEFAULT);
+      }
    }
 }

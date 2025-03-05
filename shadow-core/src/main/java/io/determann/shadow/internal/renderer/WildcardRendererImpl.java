@@ -13,13 +13,10 @@ import static io.determann.shadow.api.Operations.WILDCARD_GET_SUPER;
 
 public class WildcardRendererImpl implements WildcardRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Wildcard wildcard;
 
-   public WildcardRendererImpl(RenderingContext renderingContext, C_Wildcard wildcard)
+   public WildcardRendererImpl(C_Wildcard wildcard)
    {
-
-      this.context = new RenderingContextWrapper(renderingContext);
       this.wildcard = wildcard;
    }
 
@@ -40,8 +37,8 @@ public class WildcardRendererImpl implements WildcardRenderer
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, wildcard);
+      return type(new RenderingContextWrapper(renderingContext), wildcard);
    }
 }

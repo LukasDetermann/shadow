@@ -22,12 +22,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Constructor constructor;
 
-   public ConstructorRendererImpl(RenderingContext renderingContext, C_Constructor constructor)
+   public ConstructorRendererImpl(C_Constructor constructor)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.constructor = constructor;
    }
 
@@ -111,27 +109,27 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, constructor, "");
+      return declaration(new RenderingContextWrapper(renderingContext), constructor, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, constructor, content);
+      return declaration(new RenderingContextWrapper(renderingContext), constructor, content);
    }
 
    @Override
-   public String invocation()
+   public String invocation(RenderingContext renderingContext)
    {
-      return invocation("");
+      return invocation(new RenderingContextWrapper(renderingContext),"");
    }
 
    @Override
-   public String invocation(String parameters)
+   public String invocation(RenderingContext renderingContext, String parameters)
    {
-      return TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(context).withSimpleNames().build()),
+      return TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(new RenderingContextWrapper(renderingContext)).withSimpleNames().build()),
                                    requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)) +
              '(' +
              parameters +

@@ -31,7 +31,7 @@ class WildcardRendererTest
                      C_Parameter parameter = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS).get(0);
                      C_Interface type = (C_Interface) requestOrThrow(parameter, VARIABLE_GET_TYPE);
                      C_Wildcard wildcard = ((C_Wildcard) requestOrThrow(type, INTERFACE_GET_GENERIC_TYPES).get(0));
-                     Assertions.assertEquals("? extends Number", render(DEFAULT, wildcard).type());
+                     Assertions.assertEquals("? extends Number", render(wildcard).type(DEFAULT));
                   });
    }
 
@@ -50,7 +50,7 @@ class WildcardRendererTest
                      C_Parameter parameter = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS).get(0);
                      C_Interface type = (C_Interface) requestOrThrow(parameter, VARIABLE_GET_TYPE);
                      C_Wildcard wildcard = ((C_Wildcard) requestOrThrow(type, INTERFACE_GET_GENERIC_TYPES).get(0));
-                     Assertions.assertEquals("? super Number", render(DEFAULT, wildcard).type());
+                     Assertions.assertEquals("? super Number", render(wildcard).type(DEFAULT));
                   });
    }
 
@@ -69,7 +69,7 @@ class WildcardRendererTest
                      C_Parameter parameter = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS).get(0);
                      C_Interface type = (C_Interface) requestOrThrow(parameter, VARIABLE_GET_TYPE);
                      C_Wildcard wildcard = ((C_Wildcard) requestOrThrow(type, INTERFACE_GET_GENERIC_TYPES).get(0));
-                     Assertions.assertEquals("?", render(DEFAULT, wildcard).type());
+                     Assertions.assertEquals("?", render(wildcard).type(DEFAULT));
                   });
    }
 }

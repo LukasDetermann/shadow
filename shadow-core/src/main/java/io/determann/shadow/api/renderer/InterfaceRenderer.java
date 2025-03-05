@@ -5,7 +5,7 @@ public interface InterfaceRenderer
    /**
     * {@code public interface MyInterface {}}
     */
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 
    /**
     * <pre>{@code
@@ -14,10 +14,10 @@ public interface InterfaceRenderer
     *    }
     * }</pre>
     */
-   String declaration(String content);
+   String declaration(RenderingContext renderingContext, String content);
 
    /**
     * {@code private final} <b>MyInterface</b> {@code myClass;}
     */
-   String type();
+   String type(RenderingContext renderingContext);
 }

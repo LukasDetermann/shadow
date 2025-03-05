@@ -20,13 +20,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class AnnotationRendererImpl implements AnnotationRenderer
 {
-
-   private final RenderingContextWrapper context;
    private final C_Annotation annotation;
 
-   public AnnotationRendererImpl(RenderingContext renderingContext, C_Annotation annotation)
+   public AnnotationRendererImpl(C_Annotation annotation)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.annotation = annotation;
    }
 
@@ -79,20 +76,20 @@ public class AnnotationRendererImpl implements AnnotationRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration("");
+      return declaration(renderingContext, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, annotation, content);
+      return declaration(new RenderingContextWrapper(renderingContext), annotation, content);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, annotation);
+      return type(new RenderingContextWrapper(renderingContext), annotation);
    }
 }

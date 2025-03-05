@@ -21,7 +21,7 @@ class FieldRendererTest
            {
               C_Class cClass = requestOrThrow(implementation, GET_CLASS, "java.lang.String");
               C_Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "value");
-              assertEquals("@jdk.internal.vm.annotation.Stable\nprivate final byte value;\n", render(DEFAULT, field).declaration());
+              assertEquals("@jdk.internal.vm.annotation.Stable\nprivate final byte value;\n", render(field).declaration(DEFAULT));
            });
    }
 }

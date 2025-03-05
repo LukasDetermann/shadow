@@ -4,5 +4,5 @@ public interface PackageRenderer
 {
    /// `package my.example;`
    /// @throws IllegalArgumentException when the package `isUnnamed`
-   String declaration();
+   String declaration(RenderingContext renderingContext);
 }

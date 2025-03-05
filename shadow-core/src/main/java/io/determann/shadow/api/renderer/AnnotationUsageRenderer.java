@@ -10,12 +10,12 @@ public interface AnnotationUsageRenderer
    /**
     * {@code @MyAnnotation(name = "myName")}
     */
-   String usage();
+   String usage(RenderingContext renderingContext);
 
    /**
     * {@code @MyAnnotation(name = "myName")}
     * <p>
     * if an empty optional is supplied the value of the original AnnotationUsage will be used
     */
-   String usage(Function<C_Method, Optional<String>> valueRenderer);
+   String usage(RenderingContext renderingContext, Function<C_Method, Optional<String>> valueRenderer);
 }

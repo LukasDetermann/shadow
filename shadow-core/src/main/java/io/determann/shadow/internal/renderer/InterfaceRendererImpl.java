@@ -22,12 +22,10 @@ import static java.util.stream.Collectors.joining;
 
 public class InterfaceRendererImpl implements InterfaceRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Interface anInterface;
 
-   public InterfaceRendererImpl(RenderingContext renderingContext, C_Interface anInterface)
+   public InterfaceRendererImpl(C_Interface anInterface)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.anInterface = anInterface;
    }
 
@@ -108,20 +106,20 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, anInterface, "");
+      return declaration(new RenderingContextWrapper(renderingContext), anInterface, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, anInterface, content);
+      return declaration(new RenderingContextWrapper(renderingContext), anInterface, content);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, anInterface);
+      return type(new RenderingContextWrapper(renderingContext), anInterface);
    }
 }

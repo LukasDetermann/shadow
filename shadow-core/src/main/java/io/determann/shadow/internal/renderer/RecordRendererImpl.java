@@ -24,12 +24,10 @@ import static java.util.stream.Collectors.joining;
 
 public class RecordRendererImpl implements RecordRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Record aRecord;
 
-   public RecordRendererImpl(RenderingContext renderingContext, C_Record aRecord)
+   public RecordRendererImpl(C_Record aRecord)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.aRecord = aRecord;
    }
 
@@ -122,20 +120,20 @@ public class RecordRendererImpl implements RecordRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, aRecord, "");
+      return declaration(new RenderingContextWrapper(renderingContext), aRecord, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, aRecord, content);
+      return declaration(new RenderingContextWrapper(renderingContext), aRecord, content);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, aRecord);
+      return type(new RenderingContextWrapper(renderingContext), aRecord);
    }
 }

@@ -23,13 +23,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class MethodRendererImpl implements MethodRenderer
 {
-
-   private final RenderingContextWrapper context;
    private final C_Method method;
 
-   public MethodRendererImpl(RenderingContext renderingContext, C_Method method)
+   public MethodRendererImpl(C_Method method)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.method = method;
    }
 
@@ -129,25 +126,25 @@ public class MethodRendererImpl implements MethodRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, method, "");
+      return declaration(new RenderingContextWrapper(renderingContext), method, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, method, content);
+      return declaration(new RenderingContextWrapper(renderingContext), method, content);
    }
 
    @Override
-   public String invocation()
+   public String invocation(RenderingContext renderingContext)
    {
-      return invocation("");
+      return invocation(new RenderingContextWrapper(renderingContext), "");
    }
 
    @Override
-   public String invocation(String parameters)
+   public String invocation(RenderingContext renderingContext, String parameters)
    {
       return requestOrThrow(method, NAMEABLE_GET_NAME) +
              '(' +

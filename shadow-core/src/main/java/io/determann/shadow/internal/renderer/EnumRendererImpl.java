@@ -21,12 +21,10 @@ import static java.util.stream.Collectors.joining;
 
 public class EnumRendererImpl implements EnumRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Enum anEnum;
 
-   public EnumRendererImpl(RenderingContext renderingContext, C_Enum anEnum)
+   public EnumRendererImpl(C_Enum anEnum)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.anEnum = anEnum;
    }
 
@@ -90,20 +88,20 @@ public class EnumRendererImpl implements EnumRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, anEnum, "");
+      return declaration(new RenderingContextWrapper(renderingContext), anEnum, "");
    }
 
    @Override
-   public String declaration(String content)
+   public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(context, anEnum, content);
+      return declaration(new RenderingContextWrapper(renderingContext), anEnum, content);
    }
 
    @Override
-   public String type()
+   public String type(RenderingContext renderingContext)
    {
-      return type(context, anEnum);
+      return type(new RenderingContextWrapper(renderingContext), anEnum);
    }
 }

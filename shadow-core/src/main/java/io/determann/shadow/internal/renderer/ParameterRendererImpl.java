@@ -16,12 +16,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class ParameterRendererImpl implements ParameterRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Parameter parameter;
 
-   public ParameterRendererImpl(RenderingContext renderingContext, C_Parameter parameter)
+   public ParameterRendererImpl(C_Parameter parameter)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.parameter = parameter;
    }
 
@@ -55,8 +53,8 @@ public class ParameterRendererImpl implements ParameterRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return declaration(context, parameter);
+      return declaration(new RenderingContextWrapper(renderingContext), parameter);
    }
 }

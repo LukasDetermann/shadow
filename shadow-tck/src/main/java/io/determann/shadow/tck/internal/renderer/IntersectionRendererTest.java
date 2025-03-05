@@ -24,7 +24,7 @@ class IntersectionRendererTest
                      C_Class cClass = requestOrThrow(implementation, GET_CLASS, "IntersectionExample");
                      C_Generic generic = requestOrThrow(cClass, CLASS_GET_GENERICS).get(0);
                      C_Intersection intersection = (C_Intersection) requestOrThrow(generic, GENERIC_GET_EXTENDS);
-                     assertEquals("java.util.Collection & java.io.Serializable", render(DEFAULT, intersection).declaration());
+                     assertEquals("java.util.Collection & java.io.Serializable", render(intersection).declaration(DEFAULT));
                   });
    }
 }

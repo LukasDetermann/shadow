@@ -13,12 +13,10 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class IntersectionRendererImpl implements IntersectionRenderer
 {
-   private final RenderingContextWrapper context;
    private final C_Intersection intersection;
 
-   public IntersectionRendererImpl(RenderingContext renderingContext, C_Intersection intersection)
+   public IntersectionRendererImpl(C_Intersection intersection)
    {
-      this.context = new RenderingContextWrapper(renderingContext);
       this.intersection = intersection;
    }
 
@@ -33,8 +31,8 @@ public class IntersectionRendererImpl implements IntersectionRenderer
    }
 
    @Override
-   public String declaration()
+   public String declaration(RenderingContext renderingContext)
    {
-      return type(context, intersection);
+      return type(new RenderingContextWrapper(renderingContext), intersection);
    }
 }

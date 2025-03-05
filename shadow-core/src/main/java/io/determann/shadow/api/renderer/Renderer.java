@@ -1,105 +1,123 @@
 package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.renderer.*;
 
+import java.util.Set;
+
 public interface Renderer
 {
-   static AnnotationRenderer render(RenderingContext renderingContext, C_Annotation annotation)
+   static AnnotationRenderer render(C_Annotation annotation)
    {
-      return new AnnotationRendererImpl(renderingContext, annotation);
+      return new AnnotationRendererImpl(annotation);
    }
 
-   static AnnotationUsageRenderer render(RenderingContext renderingContext, C_AnnotationUsage annotationUsage)
+   static AnnotationUsageRenderer render(C_AnnotationUsage annotationUsage)
    {
-      return new AnnotationUsageRendererImpl(renderingContext, annotationUsage);
+      return new AnnotationUsageRendererImpl(annotationUsage);
    }
 
-   static ArrayRenderer render(RenderingContext renderingContext, C_Array array)
+   static ArrayRenderer render(C_Array array)
    {
-      return new ArrayRendererImpl(renderingContext, array);
+      return new ArrayRendererImpl(array);
    }
 
-   static ClassRenderer render(RenderingContext renderingContext, C_Class clazz)
+   static ClassRenderer render(C_Class clazz)
    {
-      return new ClassRendererImpl(renderingContext, clazz);
+      return new ClassRendererImpl(clazz);
    }
 
-   static ConstructorRenderer render(RenderingContext renderingContext, C_Constructor constructor)
+   static ConstructorRenderer render(C_Constructor constructor)
    {
-      return new ConstructorRendererImpl(renderingContext, constructor);
+      return new ConstructorRendererImpl(constructor);
    }
 
-   static EnumRenderer render(RenderingContext renderingContext, C_Enum enumType)
+   static EnumRenderer render(C_Enum enumType)
    {
-      return new EnumRendererImpl(renderingContext, enumType);
+      return new EnumRendererImpl(enumType);
    }
 
-   static EnumConstantRenderer render(RenderingContext renderingContext, C_EnumConstant enumConstant)
+   static EnumConstantRenderer render(C_EnumConstant enumConstant)
    {
-      return new EnumConstantRendererImpl(renderingContext, enumConstant);
+      return new EnumConstantRendererImpl(enumConstant);
    }
 
-   static FieldRenderer render(RenderingContext renderingContext, C_Field field)
+   static FieldRenderer render(C_Field field)
    {
-      return new FieldRendererImpl(renderingContext, field);
+      return new FieldRendererImpl(field);
    }
 
-   static GenericRenderer render(RenderingContext renderingContext, C_Generic generic)
+   static GenericRenderer render(C_Generic generic)
    {
-      return new GenericRendererImpl(renderingContext, generic);
+      return new GenericRendererImpl(generic);
    }
 
-   static InterfaceRenderer render(RenderingContext renderingContext, C_Interface interfaceType)
+   static InterfaceRenderer render(C_Interface interfaceType)
    {
-      return new InterfaceRendererImpl(renderingContext, interfaceType);
+      return new InterfaceRendererImpl(interfaceType);
    }
 
-   static IntersectionRenderer render(RenderingContext renderingContext, C_Intersection intersection)
+   static IntersectionRenderer render(C_Intersection intersection)
    {
-      return new IntersectionRendererImpl(renderingContext, intersection);
+      return new IntersectionRendererImpl(intersection);
    }
 
-   static MethodRenderer render(RenderingContext renderingContext, C_Method method)
+   static MethodRenderer render(C_Method method)
    {
-      return new MethodRendererImpl(renderingContext, method);
+      return new MethodRendererImpl(method);
    }
 
-   static ModuleRenderer render(RenderingContext renderingContext, C_Module module)
+   static ModuleRenderer render(C_Module module)
    {
-      return new ModuleRendererImpl(renderingContext, module);
+      return new ModuleRendererImpl(module);
    }
 
-   static PackageRenderer render(RenderingContext renderingContext, C_Package packageType)
+   static PackageRenderer render(C_Package packageType)
    {
-      return new PackageRendererImpl(renderingContext, packageType);
+      return new PackageRendererImpl(packageType);
    }
 
-   static ParameterRenderer render(RenderingContext renderingContext, C_Parameter parameter)
+   static ParameterRenderer render(C_Parameter parameter)
    {
-      return new ParameterRendererImpl(renderingContext, parameter);
+      return new ParameterRendererImpl(parameter);
    }
 
-   static PrimitiveRenderer render(RenderingContext renderingContext, C_Primitive primitive)
+   static PrimitiveRenderer render(C_Primitive primitive)
    {
-      return new PrimitiveRendererImpl(renderingContext, primitive);
+      return new PrimitiveRendererImpl(primitive);
    }
 
-   static RecordRenderer render(RenderingContext renderingContext, C_Record recordType)
+   static RecordRenderer render(C_Record recordType)
    {
-      return new RecordRendererImpl(renderingContext, recordType);
+      return new RecordRendererImpl(recordType);
    }
 
-   static RecordComponentRenderer render(RenderingContext renderingContext, C_RecordComponent recordComponent)
+   static RecordComponentRenderer render(C_RecordComponent recordComponent)
    {
-      return new RecordComponentRendererImpl(renderingContext, recordComponent);
+      return new RecordComponentRendererImpl(recordComponent);
    }
 
-   static WildcardRenderer render(RenderingContext renderingContext, C_Wildcard wildcard)
+   static WildcardRenderer render(C_Wildcard wildcard)
    {
-      return new WildcardRendererImpl(renderingContext, wildcard);
+      return new WildcardRendererImpl(wildcard);
+   }
+
+   static ModifierRenderer render(C_Modifier... modifiers)
+   {
+      return new ModifierRendererImpl(modifiers);
+   }
+
+   static ModifierRenderer render(Set<C_Modifier> modifiers)
+   {
+      return new ModifierRendererImpl(modifiers.toArray(C_Modifier[]::new));
+   }
+
+   static ReceiverRenderer render(C_Receiver receiver)
+   {
+      return new ReceiverRendererImpl(receiver);
    }
 }
