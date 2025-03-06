@@ -209,7 +209,7 @@ public interface Operations
 
    InstanceOperation0<C_Method, Boolean> METHOD_IS_BRIDGE = new InstanceOperation0<>("method.isBridge");
 
-   InstanceOperation0<C_Method, C_Result> METHOD_GET_RETURN = new InstanceOperation0<>("method.getReturn");
+   InstanceOperation0<C_Method, C_Result> METHOD_GET_RETURN = new InstanceOperation0<>("method.getResult");
 
    InstanceOperation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new InstanceOperation1<>("recordComponent.isSubtypeOf");
 
@@ -221,7 +221,7 @@ public interface Operations
 
    InstanceOperation0<C_RecordComponent, C_Method> RECORD_COMPONENT_GET_GETTER = new InstanceOperation0<>("recordComponent.getGetter");
 
-   InstanceOperation0<C_Result, C_Type> RETURN_GET_TYPE = new InstanceOperation0<>("return.getType");
+   InstanceOperation0<C_Result, C_Type> RESULT_GET_TYPE = new InstanceOperation0<>("result.getType");
 
    InstanceOperation0<C_Receiver, C_Type> RECEIVER_GET_TYPE = new InstanceOperation0<>("receiver.getType");
 

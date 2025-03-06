@@ -126,7 +126,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(RECORD_COMPONENT_GET_RECORD, recordComponent -> query(recordComponent).getRecord())
              .with(RECORD_COMPONENT_GET_TYPE, recordComponent -> query(recordComponent).getType())
              .with(RECORD_COMPONENT_GET_GETTER, recordComponent -> query(recordComponent).getGetter())
-             .with(RETURN_GET_TYPE, aReturn -> query(aReturn).getType())
+             .with(RESULT_GET_TYPE, aReturn -> query(aReturn).getType())
              .with(RECEIVER_GET_TYPE, receiver -> query(receiver).getType())
              .with(INTERSECTION_GET_BOUNDS, intersection -> query(intersection).getBounds())
              .with(GENERIC_GET_EXTENDS, generic -> query(generic).getExtends())

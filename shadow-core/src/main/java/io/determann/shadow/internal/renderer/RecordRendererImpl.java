@@ -1,9 +1,7 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.RecordRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 import io.determann.shadow.api.shadow.type.C_Generic;
@@ -13,12 +11,9 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
@@ -35,15 +30,7 @@ public class RecordRendererImpl implements RecordRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      //noinspection OptionalContainsCollection
-      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(aRecord, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
-      if (!annotationUsages.map(List::isEmpty).orElse(true))
-      {
-         sb.append(annotationUsages.get()
-                          .stream()
-                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                          .collect(Collectors.joining()));
-      }
+      sb.append(RenderingSupport.annotations(context, aRecord));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(aRecord, MODIFIABLE_GET_MODIFIERS));
       modifiers.remove(C_Modifier.FINAL);

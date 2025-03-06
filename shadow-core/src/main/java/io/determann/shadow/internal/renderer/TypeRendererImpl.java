@@ -1,11 +1,19 @@
 package io.determann.shadow.internal.renderer;
 
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.renderer.TypeRenderer;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
-public class TypeRendererImpl
+public class TypeRendererImpl implements TypeRenderer
 {
+   private final C_Type type;
+
+   public TypeRendererImpl(C_Type type)
+   {
+      this.type = type;
+   }
+
    public static String type(RenderingContextWrapper context, C_Type type)
    {
       return switch (type)
@@ -29,5 +37,11 @@ public class TypeRendererImpl
    public static String classDeclaration(RenderingContext context, C_Declared declared)
    {
       return context.renderName(declared) + ".class";
+   }
+
+   @Override
+   public String type(RenderingContext renderingContext)
+   {
+      return type(new RenderingContextWrapper(renderingContext), type);
    }
 }

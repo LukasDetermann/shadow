@@ -1,20 +1,16 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.ModuleRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.structure.C_Module;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
@@ -38,15 +34,7 @@ public class ModuleRendererImpl implements ModuleRenderer
 
       StringBuilder sb = new StringBuilder();
 
-      //noinspection OptionalContainsCollection
-      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(module, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
-      if (!annotationUsages.map(List::isEmpty).orElse(true))
-      {
-         sb.append(annotationUsages.get()
-                         .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(new RenderingContextWrapper(renderingContext), usage) + "\n")
-                         .collect(joining()));
-      }
+      sb.append(RenderingSupport.annotations(new RenderingContextWrapper(renderingContext), module));
 
       if (requestOrThrow(module, MODULE_IS_OPEN))
       {

@@ -1,19 +1,12 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.GenericRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Type;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class GenericRendererImpl implements GenericRenderer
@@ -29,15 +22,7 @@ public class GenericRendererImpl implements GenericRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      //noinspection OptionalContainsCollection
-      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(generic, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
-      if (!annotationUsages.map(List::isEmpty).orElse(true))
-      {
-         sb.append(annotationUsages.get()
-                          .stream()
-                          .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
-                          .collect(Collectors.joining()));
-      }
+      sb.append(RenderingSupport.annotations(context, generic));
 
       if (context.isRenderNestedGenerics())
       {

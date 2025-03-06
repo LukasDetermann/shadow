@@ -1,17 +1,10 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.renderer.ParameterRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class ParameterRendererImpl implements ParameterRenderer
@@ -27,15 +20,7 @@ public class ParameterRendererImpl implements ParameterRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      //noinspection OptionalContainsCollection
-      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(parameter, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
-      if (!annotationUsages.map(List::isEmpty).orElse(true))
-      {
-         sb.append(annotationUsages.get()
-                            .stream()
-                            .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + " ")
-                            .collect(Collectors.joining()));
-      }
+      sb.append(RenderingSupport.annotations(context, parameter));
 
       if (requestOrThrow(parameter, PARAMETER_IS_VAR_ARGS))
       {

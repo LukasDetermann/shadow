@@ -11,6 +11,11 @@ import java.util.Set;
 
 public interface Renderer
 {
+   static TypeRenderer render(C_Type type)
+   {
+      return new TypeRendererImpl(type);
+   }
+
    static AnnotationRenderer render(C_Annotation annotation)
    {
       return new AnnotationRendererImpl(annotation);
@@ -119,5 +124,10 @@ public interface Renderer
    static ReceiverRenderer render(C_Receiver receiver)
    {
       return new ReceiverRendererImpl(receiver);
+   }
+
+   static ResultRenderer render(C_Result result)
+   {
+      return new ResultRendererImpl(result);
    }
 }

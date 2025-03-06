@@ -1,10 +1,8 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.renderer.MethodRenderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
@@ -13,12 +11,10 @@ import io.determann.shadow.api.shadow.type.C_Generic;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public class MethodRendererImpl implements MethodRenderer
@@ -34,15 +30,8 @@ public class MethodRendererImpl implements MethodRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      //noinspection OptionalContainsCollection
-      Optional<List<? extends C_AnnotationUsage>> annotationUsages = requestOrEmpty(method, Operations.ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES);
-      if (!annotationUsages.map(List::isEmpty).orElse(true))
-      {
-         sb.append(annotationUsages.get()
-                         .stream()
-                         .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + "\n")
-                         .collect(Collectors.joining()));
-      }
+      sb.append(RenderingSupport.annotations(context, method));
+
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(method, MODIFIABLE_GET_MODIFIERS));
       if (!content.isEmpty())
       {

@@ -31,7 +31,7 @@ class ResultTest
                      C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
                      C_Result cReturn = requestOrThrow(method, METHOD_GET_RETURN);
 
-                     assertEquals(integer, requestOrThrow(cReturn, RETURN_GET_TYPE));
+                     assertEquals(integer, requestOrThrow(cReturn, RESULT_GET_TYPE));
                   });
    }
 
