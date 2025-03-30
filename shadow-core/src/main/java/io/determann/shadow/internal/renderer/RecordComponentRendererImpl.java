@@ -18,7 +18,7 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
 
    public static String declaration(RenderingContextWrapper context, C_RecordComponent recordComponent)
    {
-      return RenderingSupport.annotations(context, recordComponent) +
+      return RenderingSupport.annotations(context, recordComponent, '\n') +
              TypeRendererImpl.type(context, requestOrThrow(recordComponent, RECORD_COMPONENT_GET_TYPE)) +
              ' ' +
              requestOrThrow(recordComponent, NAMEABLE_GET_NAME);

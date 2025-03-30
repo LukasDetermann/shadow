@@ -6,11 +6,11 @@ import io.determann.shadow.api.shadow.type.C_Record;
 
 public interface ConstructorTypeStep
 {
-   ConstructorReceiverStep constructor(String type);
+   ConstructorReceiverStep type(String type);
 
-   ConstructorReceiverStep constructor(C_Class type);
+   ConstructorReceiverStep type(C_Class type);
 
-   ConstructorReceiverStep constructor(C_Enum type);
+   ConstructorReceiverStep type(C_Enum type);
 
-   ConstructorReceiverStep constructor(C_Record type);
+   ConstructorReceiverStep type(C_Record type);
 }

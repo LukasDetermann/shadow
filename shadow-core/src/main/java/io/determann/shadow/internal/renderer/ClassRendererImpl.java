@@ -28,7 +28,7 @@ public class ClassRendererImpl implements ClassRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, aClass));
+      sb.append(RenderingSupport.annotations(context, aClass, '\n'));
 
       Set<C_Modifier> modifiers = requestOrThrow(aClass, MODIFIABLE_GET_MODIFIERS);
       if (!modifiers.isEmpty())

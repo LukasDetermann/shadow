@@ -28,7 +28,7 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, anInterface));
+      sb.append(RenderingSupport.annotations(context, anInterface, '\n'));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(anInterface, MODIFIABLE_GET_MODIFIERS));
       modifiers.remove(C_Modifier.ABSTRACT);

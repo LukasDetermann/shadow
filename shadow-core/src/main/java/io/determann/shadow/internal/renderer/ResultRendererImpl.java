@@ -22,7 +22,7 @@ public class ResultRendererImpl
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, result));
+      sb.append(RenderingSupport.annotations(context, result, '\n'));
 
       C_Type type = requestOrThrow(result, Operations.RESULT_GET_TYPE);
       String renderedType = TypeRendererImpl.type(context, type);

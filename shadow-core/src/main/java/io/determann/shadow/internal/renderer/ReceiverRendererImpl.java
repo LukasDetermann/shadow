@@ -21,7 +21,7 @@ public class ReceiverRendererImpl implements ReceiverRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, receiver));
+      sb.append(RenderingSupport.annotations(context, receiver, '\n'));
 
       C_Type type = requestOrThrow(receiver, Operations.RECEIVER_GET_TYPE);
       String renderedType = TypeRendererImpl.type(context, type);

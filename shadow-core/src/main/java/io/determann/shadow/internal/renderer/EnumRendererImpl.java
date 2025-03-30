@@ -27,7 +27,7 @@ public class EnumRendererImpl implements EnumRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, anEnum));
+      sb.append(RenderingSupport.annotations(context, anEnum, '\n'));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(anEnum, MODIFIABLE_GET_MODIFIERS));
       modifiers.remove(C_Modifier.FINAL);

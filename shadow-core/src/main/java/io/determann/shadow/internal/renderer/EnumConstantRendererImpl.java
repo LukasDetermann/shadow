@@ -21,7 +21,7 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, enumConstant));
+      sb.append(RenderingSupport.annotations(context, enumConstant, '\n'));
 
       sb.append(requestOrThrow(enumConstant, NAMEABLE_GET_NAME));
       if (!parameters.isEmpty())

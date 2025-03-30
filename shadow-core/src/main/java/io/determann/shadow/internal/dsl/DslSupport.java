@@ -2,40 +2,69 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.renderer.RenderingContext;
 
-import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 
+/// implementation note: a bit overkill, but minimises bug potential
 interface DslSupport
 {
-
-   static void add(List<Function<RenderingContext, String>> toAddTo, String[] strings)
+   static <INSTANCE> INSTANCE add(INSTANCE instance,
+                                  Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier,
+                                  String... strings)
    {
-      requireNonNull(strings);
-      for (String string : strings)
-      {
-         requireNonNull(string);
-         toAddTo.add(renderingContext -> string);
-      }
+      return add(instance, toAddToSupplier, (renderingContext, s) -> s, strings);
    }
 
-   static <TYPE> void add(List<Function<RenderingContext, String>> toAddTo,
-                          TYPE[] types,
-                          BiFunction<RenderingContext, TYPE, String> renderer)
+   @SafeVarargs
+   static <INSTANCE, TYPE> INSTANCE add(INSTANCE instance,
+                                        Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier,
+                                        BiFunction<RenderingContext, TYPE, String> renderer,
+                                        TYPE... types)
    {
       requireNonNull(types);
+
+      Consumer<Function<RenderingContext, String>> renderingConsumer = toAddToSupplier.apply(instance);
+
       for (TYPE type : types)
       {
          requireNonNull(type);
-         toAddTo.add(renderingContext -> renderer.apply(renderingContext, type));
+         renderingConsumer.accept(renderingContext -> renderer.apply(renderingContext, type));
       }
+
+      return instance;
    }
 
-   static void add(List<Function<RenderingContext, String>> toAddTo,
-                   Function<RenderingContext, String> renderer)
+   static <INSTANCE> INSTANCE set(INSTANCE instance,
+                                  BiConsumer<INSTANCE, Function<RenderingContext, String>> toAddToSupplier,
+                                  String s)
    {
-      toAddTo.add(renderer);
+      return set(instance, toAddToSupplier, (renderingContext, s1) -> s1, s);
+   }
+
+   static <INSTANCE, TYPE> INSTANCE set(INSTANCE instance,
+                                        BiConsumer<INSTANCE, Function<RenderingContext, String>> toAddToSupplier,
+                                        BiFunction<RenderingContext, TYPE, String> renderer,
+                                        TYPE type)
+   {
+      requireNonNull(type);
+
+      toAddToSupplier.accept(instance, renderingContext -> renderer.apply(renderingContext, type));
+
+      return instance;
+   }
+
+   static <INSTANCE, TYPE> INSTANCE setString(INSTANCE instance,
+                                              BiConsumer<INSTANCE, String> toAddToSupplier,
+                                              String s)
+   {
+      requireNonNull(s);
+
+      toAddToSupplier.accept(instance, s);
+
+      return instance;
    }
 }

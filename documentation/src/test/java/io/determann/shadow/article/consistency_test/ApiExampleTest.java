@@ -97,8 +97,8 @@ void classDeclarationRendering()
                                                            Operations. GET_CLASS,
                                                            "InterpolateGenericsExample");
 
-                  assertEquals(expected, Renderer.render(RenderingContext.DEFAULT, cClass)
-                                                 .declaration());
+                  assertEquals(expected, Renderer.render(cClass)
+                                                 .declaration(RenderingContext.DEFAULT));
                });
 }
 //end::consistency[]

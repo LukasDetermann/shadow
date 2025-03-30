@@ -20,7 +20,7 @@ public class ParameterRendererImpl implements ParameterRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, parameter));
+      sb.append(RenderingSupport.annotations(context, parameter, ' '));
 
       if (requestOrThrow(parameter, PARAMETER_IS_VAR_ARGS))
       {

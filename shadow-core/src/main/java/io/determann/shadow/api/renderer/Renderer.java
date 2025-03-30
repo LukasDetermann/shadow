@@ -16,6 +16,11 @@ public interface Renderer
       return new TypeRendererImpl(type);
    }
 
+   static DeclaredRenderer render(C_Declared declared)
+   {
+      return new DeclaredRendererImpl(declared );
+   }
+
    static AnnotationRenderer render(C_Annotation annotation)
    {
       return new AnnotationRendererImpl(annotation);

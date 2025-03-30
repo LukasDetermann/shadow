@@ -26,7 +26,7 @@ public class AnnotationRendererImpl implements AnnotationRenderer
       StringBuilder sb = new StringBuilder();
 
 
-      sb.append(RenderingSupport.annotations(context, annotation));
+      sb.append(RenderingSupport.annotations(context, annotation, '\n'));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(annotation, MODIFIABLE_GET_MODIFIERS));
       modifiers.remove(C_Modifier.ABSTRACT);

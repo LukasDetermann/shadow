@@ -29,7 +29,7 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, constructor));
+      sb.append(RenderingSupport.annotations(context, constructor, '\n'));
 
       Set<C_Modifier> modifiers = requestOrThrow(constructor, MODIFIABLE_GET_MODIFIERS);
       if (!modifiers.isEmpty())

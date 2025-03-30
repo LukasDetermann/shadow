@@ -24,7 +24,7 @@ public class PackageRendererImpl implements PackageRenderer
          throw new IllegalArgumentException("unnamed package");
       }
 
-      return RenderingSupport.annotations(context, aPackage) +
+      return RenderingSupport.annotations(context, aPackage, '\n') +
              "package " +
              requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) +
              ';' +

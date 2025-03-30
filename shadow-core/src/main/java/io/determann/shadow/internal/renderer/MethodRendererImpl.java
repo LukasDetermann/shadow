@@ -30,7 +30,7 @@ public class MethodRendererImpl implements MethodRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, method));
+      sb.append(RenderingSupport.annotations(context, method, '\n'));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(method, MODIFIABLE_GET_MODIFIERS));
       if (!content.isEmpty())

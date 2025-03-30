@@ -30,7 +30,7 @@ public class RecordRendererImpl implements RecordRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, aRecord));
+      sb.append(RenderingSupport.annotations(context, aRecord, '\n'));
 
       Set<C_Modifier> modifiers = new HashSet<>(requestOrThrow(aRecord, MODIFIABLE_GET_MODIFIERS));
       modifiers.remove(C_Modifier.FINAL);

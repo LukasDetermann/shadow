@@ -23,7 +23,7 @@ public class FieldRendererImpl implements FieldRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, field));
+      sb.append(RenderingSupport.annotations(context, field, '\n'));
 
       Set<C_Modifier> modifiers = requestOrThrow(field, MODIFIABLE_GET_MODIFIERS);
       if (!modifiers.isEmpty())

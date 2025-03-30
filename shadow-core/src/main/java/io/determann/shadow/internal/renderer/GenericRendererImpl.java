@@ -22,7 +22,7 @@ public class GenericRendererImpl implements GenericRenderer
    {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(context, generic));
+      sb.append(RenderingSupport.annotations(context, generic, ' '));
 
       if (context.isRenderNestedGenerics())
       {
