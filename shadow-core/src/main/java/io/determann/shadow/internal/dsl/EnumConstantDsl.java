@@ -100,7 +100,7 @@ public class EnumConstantDsl
       if (javadoc != null)
       {
          sb.append(javadoc.apply(renderingContext));
-         sb.append("\s");
+         sb.append("\n");
       }
       if (!annotations.isEmpty())
       {

@@ -96,7 +96,7 @@ public class MethodDsl
    public MethodParameterStep parameter(C_Parameter... parameter)
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.parameters::add,
+                 methodDsl -> methodDsl.parameters::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  parameter);
    }
@@ -111,7 +111,7 @@ public class MethodDsl
    public MethodThrowsStep throws_(C_Class... exception)
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.exceptions::add,
+                 methodDsl -> methodDsl.exceptions::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  exception);
    }
@@ -134,7 +134,7 @@ public class MethodDsl
    public MethodAnnotateStep annotate(C_Annotation... annotation)
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.annotations::add,
+                 methodDsl -> methodDsl.annotations::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  annotation);
    }
@@ -149,7 +149,7 @@ public class MethodDsl
    public MethodModifierStep modifier(C_Modifier... modifiers)
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  modifiers);
    }
@@ -158,7 +158,7 @@ public class MethodDsl
    public MethodModifierStep abstract_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.ABSTRACT);
    }
@@ -167,7 +167,7 @@ public class MethodDsl
    public MethodModifierStep public_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.PUBLIC);
    }
@@ -176,7 +176,7 @@ public class MethodDsl
    public MethodModifierStep protected_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.PROTECTED);
    }
@@ -185,7 +185,7 @@ public class MethodDsl
    public MethodModifierStep private_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.PRIVATE);
    }
@@ -194,7 +194,7 @@ public class MethodDsl
    public MethodModifierStep default_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.DEFAULT);
    }
@@ -203,7 +203,7 @@ public class MethodDsl
    public MethodModifierStep final_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.FINAL);
    }
@@ -212,7 +212,7 @@ public class MethodDsl
    public MethodModifierStep native_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.NATIVE);
    }
@@ -221,7 +221,7 @@ public class MethodDsl
    public MethodModifierStep static_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.STATIC);
    }
@@ -230,7 +230,7 @@ public class MethodDsl
    public MethodModifierStep strictfp_()
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.modifiers::add,
+                 methodDsl -> methodDsl.modifiers::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  C_Modifier.STRICTFP);
    }
@@ -245,7 +245,7 @@ public class MethodDsl
    public MethodGenericStep generic(C_Generic... generic)
    {
       return add(new MethodDsl(this),
-                 constructorDsl -> constructorDsl.generics::add,
+                 methodDsl -> methodDsl.generics::add,
                  (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                  generic);
    }
@@ -289,7 +289,7 @@ public class MethodDsl
       if (javadoc != null)
       {
          sb.append(javadoc.apply(renderingContext));
-         sb.append("\s");
+         sb.append("\n");
       }
       if (!annotations.isEmpty())
       {

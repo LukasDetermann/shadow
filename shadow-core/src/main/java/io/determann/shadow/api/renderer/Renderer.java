@@ -1,6 +1,7 @@
 package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.*;
 import io.determann.shadow.api.shadow.type.*;
@@ -134,5 +135,30 @@ public interface Renderer
    static ResultRenderer render(C_Result result)
    {
       return new ResultRendererImpl(result);
+   }
+
+   static RequiresRenderer render(C_Requires requires)
+   {
+      return new RequiresRendererImpl(requires);
+   }
+
+   static ExportsRenderer render(C_Exports exports)
+   {
+      return new ExportsRendererImpl(exports);
+   }
+
+   static OpensRenderer render(C_Opens opens)
+   {
+      return new OpensRendererImpl(opens);
+   }
+
+   static UsesRenderer render(C_Uses uses)
+   {
+      return new UsesRendererImpl(uses);
+   }
+
+   static ProvidesRenderer render(C_Provides provides)
+   {
+      return new ProvidesRendererImpl(provides);
    }
 }

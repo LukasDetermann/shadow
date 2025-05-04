@@ -38,6 +38,32 @@ interface DslSupport
       return instance;
    }
 
+   static <INSTANCE> INSTANCE addStrings(INSTANCE instance,
+                                         Function<INSTANCE, Consumer<String>> toAddToSupplier,
+                                         String... strings)
+   {
+      return addStrings(instance, toAddToSupplier, s -> s, strings);
+   }
+
+   @SafeVarargs
+   static <INSTANCE, TYPE> INSTANCE addStrings(INSTANCE instance,
+                                               Function<INSTANCE, Consumer<String>> toAddToSupplier,
+                                               Function<TYPE, String> renderer,
+                                               TYPE... types)
+   {
+      requireNonNull(types);
+
+      Consumer<String> renderingConsumer = toAddToSupplier.apply(instance);
+
+      for (TYPE type : types)
+      {
+         requireNonNull(type);
+         renderingConsumer.accept(renderer.apply(type));
+      }
+
+      return instance;
+   }
+
    static <INSTANCE> INSTANCE set(INSTANCE instance,
                                   BiConsumer<INSTANCE, Function<RenderingContext, String>> toAddToSupplier,
                                   String s)
@@ -57,13 +83,25 @@ interface DslSupport
       return instance;
    }
 
-   static <INSTANCE, TYPE> INSTANCE setString(INSTANCE instance,
-                                              BiConsumer<INSTANCE, String> toAddToSupplier,
-                                              String s)
+   static <INSTANCE> INSTANCE setString(INSTANCE instance,
+                                        BiConsumer<INSTANCE, String> toAddToSupplier,
+                                        String s)
    {
       requireNonNull(s);
 
       toAddToSupplier.accept(instance, s);
+
+      return instance;
+   }
+
+   static <INSTANCE, TYPE> INSTANCE setString(INSTANCE instance,
+                                              BiConsumer<INSTANCE, String> toAddToSupplier,
+                                              Function<TYPE, String> renderer,
+                                              TYPE type)
+   {
+      requireNonNull(type);
+
+      toAddToSupplier.accept(instance, renderer.apply(type));
 
       return instance;
    }
