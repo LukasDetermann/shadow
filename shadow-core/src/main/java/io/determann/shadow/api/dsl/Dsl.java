@@ -8,6 +8,7 @@ import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
+import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.uses.UsesServiceStep;
@@ -69,6 +70,11 @@ public interface Dsl
    static UsesServiceStep uses()
    {
       return new UsesDsl();
+   }
+
+   static PackageJavaDocStep packageInfo()
+   {
+      return new PackageDsl();
    }
 
    class ExampleWrapper
