@@ -14,7 +14,9 @@ import java.util.function.Function;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
 
-public class PackageDsl implements PackageJavaDocStep, PackageRenderable
+public class PackageDsl
+      implements PackageJavaDocStep,
+                 PackageRenderable
 {
    private Function<RenderingContext, String> javadoc;
    private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
@@ -34,35 +36,28 @@ public class PackageDsl implements PackageJavaDocStep, PackageRenderable
    @Override
    public PackageAnnotateStep javadoc(String javadoc)
    {
-      return set(new PackageDsl(this),
-                 (packageDsl, function) -> packageDsl.javadoc = function,
-                 javadoc);
-
+      return setTypeRenderer(new PackageDsl(this), javadoc, (packageDsl, function) -> packageDsl.javadoc = function);
    }
 
    @Override
    public PackageAnnotateStep annotate(String... annotation)
    {
-      return add(new PackageDsl(this), packageDsl -> packageDsl.annotations::add, annotation);
+      return addArrayRenderer(new PackageDsl(this), annotation, packageDsl -> packageDsl.annotations::add);
    }
 
    @Override
    public PackageAnnotateStep annotate(C_Annotation... annotation)
    {
-      return add(new PackageDsl(this),
-                 packageDsl -> packageDsl.annotations::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 annotation);
-
+      return addArrayRenderer(new PackageDsl(this),
+                              annotation,
+                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              packageDsl -> packageDsl.annotations::add);
    }
 
    @Override
    public PackageRenderable name(String name)
    {
-      return setString(new PackageDsl(this),
-                       (packageDsl, s) -> packageDsl.name = s,
-                       name);
-
+      return setType(new PackageDsl(this), name, (packageDsl, s) -> packageDsl.name = s);
    }
 
    @Override

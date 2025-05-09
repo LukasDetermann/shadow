@@ -42,55 +42,51 @@ public class EnumConstantDsl
    @Override
    public EnumConstantAnnotateStep javadoc(String javadoc)
    {
-      return set(new EnumConstantDsl(this),
-                 (classDsl, function) -> classDsl.javadoc = function,
-                 javadoc);
+      return setTypeRenderer(new EnumConstantDsl(this),
+                             javadoc,
+                             (classDsl, function) -> classDsl.javadoc = function);
    }
 
    @Override
    public EnumConstantAnnotateStep annotate(String... annotation)
    {
-      return add(new EnumConstantDsl(this), classDsl -> classDsl.annotations::add, annotation);
+      return addArrayRenderer(new EnumConstantDsl(this), annotation, classDsl -> classDsl.annotations::add);
    }
 
    @Override
    public EnumConstantAnnotateStep annotate(C_Annotation... annotation)
    {
-      return add(new EnumConstantDsl(this),
-                 classDsl -> classDsl.annotations::add,
-                 (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
-                 annotation);
+      return addArrayRenderer(new EnumConstantDsl(this),
+                              annotation,
+                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              classDsl -> classDsl.annotations::add);
    }
 
    @Override
    public EnumConstantRenderable body(String body)
    {
-      return setString(new EnumConstantDsl(this),
-                       (classDsl, function) -> classDsl.body = function,
-                       body);
+      return setType(new EnumConstantDsl(this), body, (classDsl, function) -> classDsl.body = function);
    }
 
    @Override
    public EnumConstantParameterStep name(String name)
    {
-      return setString(new EnumConstantDsl(this),
-                       (classDsl, s) -> classDsl.name = s,
-                       name);
+      return setType(new EnumConstantDsl(this), name, (classDsl, s) -> classDsl.name = s);
    }
 
    @Override
    public EnumConstantParameterStep parameter(String... parameter)
    {
-      return add(new EnumConstantDsl(this), methodDsl -> methodDsl.parameters::add, parameter);
+      return addArrayRenderer(new EnumConstantDsl(this), parameter, methodDsl -> methodDsl.parameters::add);
    }
 
    @Override
    public EnumConstantParameterStep parameter(C_Parameter... parameter)
    {
-      return add(new EnumConstantDsl(this),
-                 constructorDsl -> constructorDsl.parameters::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 parameter);
+      return addArrayRenderer(new EnumConstantDsl(this),
+                              parameter,
+                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              constructorDsl -> constructorDsl.parameters::add);
    }
 
    @Override

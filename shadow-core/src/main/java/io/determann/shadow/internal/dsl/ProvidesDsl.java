@@ -11,8 +11,8 @@ import java.util.List;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.addStrings;
-import static io.determann.shadow.internal.dsl.DslSupport.setString;
+import static io.determann.shadow.internal.dsl.DslSupport.addArray;
+import static io.determann.shadow.internal.dsl.DslSupport.setType;
 
 public class ProvidesDsl
       implements ProvidesServiceStep,
@@ -35,35 +35,31 @@ public class ProvidesDsl
    @Override
    public ProvidesImplementationStep service(String serviceName)
    {
-      return setString(new ProvidesDsl(this),
-                       (providesDsl, s) -> providesDsl.serviceName = s,
-                       serviceName);
+      return setType(new ProvidesDsl(this), serviceName, (providesDsl, s) -> providesDsl.serviceName = s);
    }
 
    @Override
    public ProvidesImplementationStep service(C_Declared service)
    {
-      return setString(new ProvidesDsl(this),
-                       (providesDsl, s) -> providesDsl.serviceName = s,
-                       (cInterface) -> requestOrThrow(cInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                       service);
+      return setType(new ProvidesDsl(this),
+                     service,
+                     (cInterface) -> requestOrThrow(cInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                     (providesDsl, s) -> providesDsl.serviceName = s);
    }
 
    @Override
    public ProvidesAdditionalImplementationStep with(String... implementationName)
    {
-      return addStrings(new ProvidesDsl(this),
-                        providesDsl -> providesDsl.implementations::add,
-                        implementationName);
+      return addArray(new ProvidesDsl(this), implementationName, providesDsl -> providesDsl.implementations::add);
    }
 
    @Override
    public ProvidesAdditionalImplementationStep with(C_Declared... implementation)
    {
-      return addStrings(new ProvidesDsl(this),
-                        providesDsl -> providesDsl.implementations::add,
-                        cClass -> requestOrThrow(cClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                        implementation);
+      return addArray(new ProvidesDsl(this),
+                      implementation,
+                      cClass -> requestOrThrow(cClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                      providesDsl -> providesDsl.implementations::add);
    }
 
    @Override

@@ -9,6 +9,7 @@ import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
+import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.uses.UsesServiceStep;
@@ -75,6 +76,11 @@ public interface Dsl
    static PackageJavaDocStep packageInfo()
    {
       return new PackageDsl();
+   }
+
+   static ParameterAnnotateStep parameter()
+   {
+      return new ParameterDsl();
    }
 
    class ExampleWrapper

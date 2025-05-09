@@ -11,8 +11,8 @@ import java.util.List;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.addStrings;
-import static io.determann.shadow.internal.dsl.DslSupport.setString;
+import static io.determann.shadow.internal.dsl.DslSupport.addArray;
+import static io.determann.shadow.internal.dsl.DslSupport.setType;
 
 public class ExportsDsl
       implements ExportsPackageStep,
@@ -34,35 +34,31 @@ public class ExportsDsl
    @Override
    public ExportsTargetStep package_(String packageName)
    {
-      return setString(new ExportsDsl(this),
-                       (exportsDsl, s) -> exportsDsl.packageName = s,
-                       packageName);
+      return setType(new ExportsDsl(this), packageName, (exportsDsl, s) -> exportsDsl.packageName = s);
    }
 
    @Override
    public ExportsTargetStep package_(C_Package aPackage)
    {
-      return setString(new ExportsDsl(this),
-                       (exportsDsl, s) -> exportsDsl.packageName = s,
-                       (cPackage) -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                       aPackage);
+      return setType(new ExportsDsl(this),
+                     aPackage,
+                     (cPackage) -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                     (exportsDsl, s) -> exportsDsl.packageName = s);
    }
 
    @Override
    public ExportsTargetStep to(String... moduleNames)
    {
-      return addStrings(new ExportsDsl(this),
-                 exportsDsl -> exportsDsl.to::add,
-                 moduleNames);
+      return addArray(new ExportsDsl(this), moduleNames, exportsDsl -> exportsDsl.to::add);
    }
 
    @Override
    public ExportsTargetStep to(C_Module... modules)
    {
-      return addStrings(new ExportsDsl(this),
-                 exportsDsl -> exportsDsl.to::add,
-                 ( module) -> requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                 modules);
+      return addArray(new ExportsDsl(this),
+                      modules,
+                      (module) -> requestOrThrow(module, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                      exportsDsl -> exportsDsl.to::add);
    }
 
    @Override

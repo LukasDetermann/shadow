@@ -7,7 +7,7 @@ import io.determann.shadow.api.shadow.type.C_Declared;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.setString;
+import static io.determann.shadow.internal.dsl.DslSupport.setType;
 
 public class UsesDsl
       implements UsesServiceStep,
@@ -24,19 +24,16 @@ public class UsesDsl
    @Override
    public UsesRenderable service(String serviceName)
    {
-      return setString(new UsesDsl(this),
-                       (usesDsl, s) -> usesDsl.serviceName = s,
-                       serviceName);
-
+      return setType(new UsesDsl(this), serviceName, (usesDsl, s) -> usesDsl.serviceName = s);
    }
 
    @Override
    public UsesRenderable service(C_Declared service)
    {
-      return setString(new UsesDsl(this),
-                       (exportsDsl, s) -> exportsDsl.serviceName = s,
-                       (cPackage) -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                       service);
+      return setType(new UsesDsl(this),
+                     service,
+                     (cPackage) -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                     (exportsDsl, s) -> exportsDsl.serviceName = s);
    }
 
    @Override

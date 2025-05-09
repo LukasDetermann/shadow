@@ -12,24 +12,46 @@ import static java.util.Objects.requireNonNull;
 /// implementation note: a bit overkill, but minimises bug potential
 interface DslSupport
 {
-   static <INSTANCE> INSTANCE add(INSTANCE instance,
-                                  Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier,
-                                  String... strings)
+   static <INSTANCE, TYPE> INSTANCE addTypeRenderer(INSTANCE instance,
+                                                    TYPE string,
+                                                    Function<INSTANCE, Consumer<Function<RenderingContext, TYPE>>> toAddToSupplier)
    {
-      return add(instance, toAddToSupplier, (renderingContext, s) -> s, strings);
+      return addTypeRenderer(instance, string, (renderingContext, s) -> s, toAddToSupplier);
    }
 
-   @SafeVarargs
-   static <INSTANCE, TYPE> INSTANCE add(INSTANCE instance,
-                                        Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier,
-                                        BiFunction<RenderingContext, TYPE, String> renderer,
-                                        TYPE... types)
+
+   static <INSTANCE, FROM, TO> INSTANCE addTypeRenderer(INSTANCE instance,
+                                                        FROM type,
+                                                        BiFunction<RenderingContext, FROM, TO> renderer,
+                                                        Function<INSTANCE, Consumer<Function<RenderingContext, TO>>> toAddToSupplier)
+   {
+      requireNonNull(type);
+
+      Consumer<Function<RenderingContext, TO>> renderingConsumer = toAddToSupplier.apply(instance);
+
+      requireNonNull(type);
+      renderingConsumer.accept(renderingContext -> renderer.apply(renderingContext, type));
+
+      return instance;
+   }
+
+   static <INSTANCE> INSTANCE addArrayRenderer(INSTANCE instance,
+                                               String[] strings,
+                                               Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier)
+   {
+      return addArrayRenderer(instance, strings, (renderingContext, s) -> s, toAddToSupplier);
+   }
+
+   static <INSTANCE, FROM, TO> INSTANCE addArrayRenderer(INSTANCE instance,
+                                                         FROM[] types,
+                                                         BiFunction<RenderingContext, FROM, TO> renderer,
+                                                         Function<INSTANCE, Consumer<Function<RenderingContext, TO>>> toAddToSupplier)
    {
       requireNonNull(types);
 
-      Consumer<Function<RenderingContext, String>> renderingConsumer = toAddToSupplier.apply(instance);
+      Consumer<Function<RenderingContext, TO>> renderingConsumer = toAddToSupplier.apply(instance);
 
-      for (TYPE type : types)
+      for (FROM type : types)
       {
          requireNonNull(type);
          renderingConsumer.accept(renderingContext -> renderer.apply(renderingContext, type));
@@ -38,24 +60,23 @@ interface DslSupport
       return instance;
    }
 
-   static <INSTANCE> INSTANCE addStrings(INSTANCE instance,
-                                         Function<INSTANCE, Consumer<String>> toAddToSupplier,
-                                         String... strings)
+   static <INSTANCE, TYPE> INSTANCE addArray(INSTANCE instance,
+                                             TYPE[] types,
+                                             Function<INSTANCE, Consumer<TYPE>> toAddToSupplier)
    {
-      return addStrings(instance, toAddToSupplier, s -> s, strings);
+      return addArray(instance, types, s -> s, toAddToSupplier);
    }
 
-   @SafeVarargs
-   static <INSTANCE, TYPE> INSTANCE addStrings(INSTANCE instance,
-                                               Function<INSTANCE, Consumer<String>> toAddToSupplier,
-                                               Function<TYPE, String> renderer,
-                                               TYPE... types)
+   static <INSTANCE, FROM, TO> INSTANCE addArray(INSTANCE instance,
+                                                 FROM[] types,
+                                                 Function<FROM, TO> renderer,
+                                                 Function<INSTANCE, Consumer<TO>> toAddToSupplier)
    {
       requireNonNull(types);
 
-      Consumer<String> renderingConsumer = toAddToSupplier.apply(instance);
+      Consumer<TO> renderingConsumer = toAddToSupplier.apply(instance);
 
-      for (TYPE type : types)
+      for (FROM type : types)
       {
          requireNonNull(type);
          renderingConsumer.accept(renderer.apply(type));
@@ -64,17 +85,17 @@ interface DslSupport
       return instance;
    }
 
-   static <INSTANCE> INSTANCE set(INSTANCE instance,
-                                  BiConsumer<INSTANCE, Function<RenderingContext, String>> toAddToSupplier,
-                                  String s)
+   static <INSTANCE, TYPE> INSTANCE setTypeRenderer(INSTANCE instance,
+                                                    TYPE type,
+                                                    BiConsumer<INSTANCE, Function<RenderingContext, TYPE>> toAddToSupplier)
    {
-      return set(instance, toAddToSupplier, (renderingContext, s1) -> s1, s);
+      return setTypeRenderer(instance, type, (renderingContext, o) -> o, toAddToSupplier);
    }
 
-   static <INSTANCE, TYPE> INSTANCE set(INSTANCE instance,
-                                        BiConsumer<INSTANCE, Function<RenderingContext, String>> toAddToSupplier,
-                                        BiFunction<RenderingContext, TYPE, String> renderer,
-                                        TYPE type)
+   static <INSTANCE, FROM, TO> INSTANCE setTypeRenderer(INSTANCE instance,
+                                                        FROM type,
+                                                        BiFunction<RenderingContext, FROM, TO> renderer,
+                                                        BiConsumer<INSTANCE, Function<RenderingContext, TO>> toAddToSupplier)
    {
       requireNonNull(type);
 
@@ -83,21 +104,21 @@ interface DslSupport
       return instance;
    }
 
-   static <INSTANCE> INSTANCE setString(INSTANCE instance,
-                                        BiConsumer<INSTANCE, String> toAddToSupplier,
-                                        String s)
+   static <INSTANCE, TYPE> INSTANCE setType(INSTANCE instance,
+                                            TYPE type,
+                                            BiConsumer<INSTANCE, TYPE> toAddToSupplier)
    {
-      requireNonNull(s);
+      requireNonNull(type);
 
-      toAddToSupplier.accept(instance, s);
+      toAddToSupplier.accept(instance, type);
 
       return instance;
    }
 
-   static <INSTANCE, TYPE> INSTANCE setString(INSTANCE instance,
-                                              BiConsumer<INSTANCE, String> toAddToSupplier,
-                                              Function<TYPE, String> renderer,
-                                              TYPE type)
+   static <INSTANCE, FROM, TO> INSTANCE setType(INSTANCE instance,
+                                                FROM type,
+                                                Function<FROM, TO> renderer,
+                                                BiConsumer<INSTANCE, TO> toAddToSupplier)
    {
       requireNonNull(type);
 

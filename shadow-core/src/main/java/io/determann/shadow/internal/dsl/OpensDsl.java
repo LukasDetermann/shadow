@@ -11,8 +11,8 @@ import java.util.List;
 
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.addStrings;
-import static io.determann.shadow.internal.dsl.DslSupport.setString;
+import static io.determann.shadow.internal.dsl.DslSupport.addArray;
+import static io.determann.shadow.internal.dsl.DslSupport.setType;
 
 public class OpensDsl
       implements OpensPackageStep,
@@ -34,35 +34,28 @@ public class OpensDsl
    @Override
    public OpensTargetStep package_(String packageName)
    {
-      return setString(new OpensDsl(this),
-                       (opensDsl, s) -> opensDsl.packageName = s,
-                       packageName);
+      return setType(new OpensDsl(this), packageName, (opensDsl, s) -> opensDsl.packageName = s);
    }
 
    @Override
    public OpensTargetStep package_(C_Package aPackage)
    {
-      return setString(new OpensDsl(this),
-                       (opensDsl, s) -> opensDsl.packageName = s,
-                       (cPackage) -> requestOrThrow(cPackage, NAMEABLE_GET_NAME),
-                       aPackage);
+      return setType(new OpensDsl(this),
+                     aPackage,
+                     (cPackage) -> requestOrThrow(cPackage, NAMEABLE_GET_NAME),
+                     (opensDsl, s) -> opensDsl.packageName = s);
    }
 
    @Override
    public OpensTargetStep to(String... moduleNames)
    {
-      return addStrings(new OpensDsl(this),
-                 exportsDsl -> exportsDsl.to::add,
-                 moduleNames);
+      return addArray(new OpensDsl(this), moduleNames, exportsDsl -> exportsDsl.to::add);
    }
 
    @Override
    public OpensTargetStep to(C_Module... modules)
    {
-      return addStrings(new OpensDsl(this),
-                        opensDsl -> opensDsl.to::add,
-                        module -> requestOrThrow(module, NAMEABLE_GET_NAME),
-                        modules);
+      return addArray(new OpensDsl(this), modules, module -> requestOrThrow(module, NAMEABLE_GET_NAME), opensDsl -> opensDsl.to::add);
    }
 
    @Override

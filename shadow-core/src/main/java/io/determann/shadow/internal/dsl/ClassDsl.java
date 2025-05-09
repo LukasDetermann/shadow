@@ -62,268 +62,265 @@ public class ClassDsl
    @Override
    public ClassAnnotateStep javadoc(String javadoc)
    {
-      return set(new ClassDsl(this),
-                 (classDsl, function) -> classDsl.javadoc = function,
-                 javadoc);
+      return setTypeRenderer(new ClassDsl(this),
+                             javadoc,
+                             (classDsl, function) -> classDsl.javadoc = function);
    }
 
    @Override
    public ClassAnnotateStep annotate(String... annotation)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.annotations::add, annotation);
+      return addArrayRenderer(new ClassDsl(this), annotation, classDsl -> classDsl.annotations::add);
    }
 
    @Override
    public ClassAnnotateStep annotate(C_Annotation... annotation)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.annotations::add,
-                 (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
-                 annotation);
+      return addArrayRenderer(new ClassDsl(this),
+                              annotation,
+                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              classDsl -> classDsl.annotations::add);
    }
 
    @Override
    public ClassModifierStep modifier(String... modifiers)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.modifiers::add, modifiers);
+      return addArrayRenderer(new ClassDsl(this), modifiers, classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep modifier(C_Modifier... modifiers)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (context, modifier) -> Renderer.render(modifier).declaration(context),
-                 modifiers);
+      return addArrayRenderer(new ClassDsl(this),
+                              modifiers,
+                              (context, modifier) -> Renderer.render(modifier).declaration(context),
+                              classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep abstract_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.ABSTRACT);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.ABSTRACT,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep public_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PUBLIC);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.PUBLIC,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep protected_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PROTECTED);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.PROTECTED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep private_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PRIVATE);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.PRIVATE,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep final_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.FINAL);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.FINAL,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep sealed()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.SEALED);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.SEALED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep nonSealed()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.NON_SEALED);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.NON_SEALED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep static_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.STATIC);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.STATIC,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassModifierStep strictfp_()
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.STRICTFP);
+      return addTypeRenderer(new ClassDsl(this),
+                             C_Modifier.STRICTFP,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassGenericStep name(String name)
    {
-      return setString(new ClassDsl(this),
-                       (classDsl, s) -> classDsl.name = s,
-                       name);
+      return setType(new ClassDsl(this), name, (classDsl, s) -> classDsl.name = s);
    }
 
    @Override
    public ClassGenericStep generic(String... generic)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.generics::add, generic);
+      return addArrayRenderer(new ClassDsl(this), generic, classDsl -> classDsl.generics::add);
    }
 
    @Override
    public ClassGenericStep generic(C_Generic... generic)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.generics::add,
-                 (context, generic1) -> Renderer.render(generic1).declaration(context),
-                 generic);
+      return addArrayRenderer(new ClassDsl(this),
+                              generic,
+                              (context, generic1) -> Renderer.render(generic1).declaration(context),
+                              classDsl -> classDsl.generics::add);
    }
 
    @Override
    public ClassImplementsStep extends_(String aClass)
    {
-      return set(new ClassDsl(this), (classDsl, function) -> classDsl.extends_ = function, aClass);
+      return setTypeRenderer(new ClassDsl(this), aClass, (classDsl, function) -> classDsl.extends_ = function);
    }
 
    @Override
    public ClassImplementsStep extends_(C_Class aClass)
    {
-      return set(new ClassDsl(this),
-                 (classDsl, function) -> classDsl.extends_ = function,
-                 ((renderingContext, cClass) -> Renderer.render(cClass).type(renderingContext)),
-                 aClass);
+      return setTypeRenderer(new ClassDsl(this),
+                             aClass,
+                             (renderingContext, cClass) -> Renderer.render(cClass).type(renderingContext),
+                             (classDsl, function) -> classDsl.extends_ = function);
    }
 
    @Override
    public ClassImplementsStep implements_(String... interfaces)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.implements_::add, interfaces);
+      return addArrayRenderer(new ClassDsl(this), interfaces, classDsl -> classDsl.implements_::add);
    }
 
    @Override
    public ClassImplementsStep implements_(C_Interface... interfaces)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.implements_::add,
-                 (context, cInterface) -> Renderer.render(cInterface).declaration(context),
-                 interfaces);
+      return addArrayRenderer(new ClassDsl(this),
+                              interfaces,
+                              (context, cInterface) -> Renderer.render(cInterface).declaration(context),
+                              classDsl -> classDsl.implements_::add);
    }
 
    @Override
    public ClassPermitsStep permits(String... declared)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.permits::add, declared);
+      return addArrayRenderer(new ClassDsl(this), declared, classDsl -> classDsl.permits::add);
    }
 
    @Override
    public ClassPermitsStep permits(C_Declared... declared)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.permits::add,
-                 (context, declared1) -> Renderer.render(declared1).declaration(context),
-                 declared);
+      return addArrayRenderer(new ClassDsl(this),
+                              declared,
+                              (context, declared1) -> Renderer.render(declared1).declaration(context),
+                              classDsl -> classDsl.permits::add);
    }
 
    @Override
    public ClassRenderable body(String body)
    {
-      return setString(new ClassDsl(this),
-                       (classDsl, function) -> classDsl.body = function,
-                       body);
+      return setType(new ClassDsl(this),
+                     body, (classDsl, function) -> classDsl.body = function);
    }
 
    @Override
    public ClassBodyStep field(String... fields)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.fields::add, fields);
+      return addArrayRenderer(new ClassDsl(this), fields, classDsl -> classDsl.fields::add);
    }
 
    @Override
    public ClassBodyStep field(C_Field... fields)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.fields::add,
-                 (context, field) -> Renderer.render(field).declaration(context),
-                 fields);
+      return addArrayRenderer(new ClassDsl(this),
+                              fields,
+                              (context, field) -> Renderer.render(field).declaration(context),
+                              classDsl -> classDsl.fields::add);
    }
 
    @Override
    public ClassBodyStep method(String... methods)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.methods::add, methods);
+      return addArrayRenderer(new ClassDsl(this), methods, classDsl -> classDsl.methods::add);
    }
 
    @Override
    public ClassBodyStep method(C_Method... methods)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.modifiers::add,
-                 (context, method) -> Renderer.render(method).declaration(context),
-                 methods);
+      return addArrayRenderer(new ClassDsl(this),
+                              methods,
+                              (context, method) -> Renderer.render(method).declaration(context),
+                              classDsl -> classDsl.modifiers::add);
    }
 
    @Override
    public ClassBodyStep inner(String... inner)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.inner::add, inner);
+      return addArrayRenderer(new ClassDsl(this), inner, classDsl -> classDsl.inner::add);
    }
 
    @Override
    public ClassBodyStep inner(C_Declared... inner)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.inner::add,
-                 (context, declared) -> Renderer.render(declared).declaration(context),
-                 inner);
+      return addArrayRenderer(new ClassDsl(this),
+                              inner,
+                              (context, declared) -> Renderer.render(declared).declaration(context),
+                              classDsl -> classDsl.inner::add);
    }
 
    @Override
    public ClassBodyStep instanceInitializer(String... instanceInitializers)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.instanceInitializers::add, instanceInitializers);
+      return addArrayRenderer(new ClassDsl(this), instanceInitializers, classDsl -> classDsl.instanceInitializers::add);
    }
 
    @Override
    public ClassBodyStep staticInitializer(String... staticInitializer)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.staticInitializers::add, staticInitializer);
+      return addArrayRenderer(new ClassDsl(this), staticInitializer, classDsl -> classDsl.staticInitializers::add);
    }
 
    @Override
    public ClassBodyStep constructor(String... constructors)
    {
-      return add(new ClassDsl(this), classDsl -> classDsl.constructors::add, constructors);
+      return addArrayRenderer(new ClassDsl(this), constructors, classDsl -> classDsl.constructors::add);
    }
 
    @Override
    public ClassBodyStep constructor(C_Constructor... constructors)
    {
-      return add(new ClassDsl(this),
-                 classDsl -> classDsl.constructors::add,
-                 (context, constructor) -> Renderer.render(constructor).declaration(context),
-                 constructors);
+      return addArrayRenderer(new ClassDsl(this),
+                              constructors,
+                              (context, constructor) -> Renderer.render(constructor).declaration(context),
+                              classDsl -> classDsl.constructors::add);
    }
 
    @Override

@@ -8,7 +8,7 @@ import io.determann.shadow.api.shadow.structure.C_Module;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.setString;
+import static io.determann.shadow.internal.dsl.DslSupport.setType;
 
 public class RequiresDsl
       implements RequiresModifierStep,
@@ -30,34 +30,28 @@ public class RequiresDsl
    @Override
    public RequiresNameStep transitive()
    {
-      return setString(new RequiresDsl(this),
-                       (requiresDsl, s) -> requiresDsl.modifier = s,
-                       "transitive");
+      return setType(new RequiresDsl(this), "transitive", (requiresDsl, s) -> requiresDsl.modifier = s);
    }
 
    @Override
    public RequiresNameStep static_()
    {
-      return setString(new RequiresDsl(this),
-                       (requiresDsl, s) -> requiresDsl.modifier = s,
-                       "static");
+      return setType(new RequiresDsl(this), "static", (requiresDsl, s) -> requiresDsl.modifier = s);
    }
 
    @Override
    public RequiresRenderable dependency(String dependency)
    {
-      return setString(new RequiresDsl(this),
-                       (requiresDsl, s) -> requiresDsl.dependency = s,
-                       dependency);
+      return setType(new RequiresDsl(this), dependency, (requiresDsl, s) -> requiresDsl.dependency = s);
    }
 
    @Override
    public RequiresRenderable dependency(C_Module dependency)
    {
-      return setString(new RequiresDsl(this),
-                       (requiresDsl, s) -> requiresDsl.dependency = s,
-                       module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                       dependency);
+      return setType(new RequiresDsl(this),
+                     dependency,
+                     module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                     (requiresDsl, s) -> requiresDsl.dependency = s);
    }
 
    @Override

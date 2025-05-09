@@ -43,162 +43,156 @@ public class FieldDsl
    @Override
    public FieldAnnotateStep javadoc(String javadoc)
    {
-      return set(new FieldDsl(this),
-                 (fieldDsl, function) -> fieldDsl.javadoc = function,
-                 javadoc);
+      return setTypeRenderer(new FieldDsl(this),
+                             javadoc,
+                             (fieldDsl, function) -> fieldDsl.javadoc = function);
    }
 
    @Override
    public FieldModifierStep annotate(String... annotation)
    {
-      return add(new FieldDsl(this), fieldDsl -> fieldDsl.annotations::add, annotation);
+      return addArrayRenderer(new FieldDsl(this), annotation, fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
    public FieldModifierStep annotate(C_Annotation... annotation)
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.annotations::add,
-                 (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
-                 annotation);
+      return addArrayRenderer(new FieldDsl(this),
+                              annotation,
+                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
    public FieldAdditionalNameStep initializer(String initializer)
    {
-      return setString(new Additional(this),
-                       (additional, s) -> additional.initializers.add(s),
-                       initializer);
+      return setType(new Additional(this), initializer, (additional, s) -> additional.initializers.add(s));
    }
 
    @Override
    public FieldModifierStep modifier(String... modifiers)
    {
-      return add(new FieldDsl(this), fieldDsl -> fieldDsl.modifiers::add, modifiers);
+      return addArrayRenderer(new FieldDsl(this), modifiers, fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep modifier(C_Modifier... modifiers)
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (context, modifier) -> Renderer.render(modifier).declaration(context),
-                 modifiers);
+      return addArrayRenderer(new FieldDsl(this),
+                              modifiers,
+                              (context, modifier) -> Renderer.render(modifier).declaration(context),
+                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep public_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PUBLIC);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.PUBLIC,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep protected_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PROTECTED);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.PROTECTED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep private_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.PRIVATE);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.PRIVATE,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep final_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.FINAL);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.FINAL,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep static_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.STATIC);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.STATIC,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep strictfp_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.STRICTFP);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.STRICTFP,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep transient_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.TRANSIENT);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.TRANSIENT,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldModifierStep volatile_()
    {
-      return add(new FieldDsl(this),
-                 fieldDsl -> fieldDsl.modifiers::add,
-                 (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                 C_Modifier.VOLATILE);
+      return addTypeRenderer(new FieldDsl(this),
+                             C_Modifier.VOLATILE,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
    public FieldInitializationStep name(String name)
    {
-      return setString(new FieldDsl(this),
-                       (fieldDsl, s) -> fieldDsl.name = s,
-                       name);
+      return setType(new FieldDsl(this), name, (fieldDsl, s) -> fieldDsl.name = s);
    }
 
    @Override
    public FieldNameStep type(String type)
    {
-      return set(new FieldDsl(this),
-                 (fieldDsl, function) -> this.type = function,
-                 type);
+      return setTypeRenderer(new FieldDsl(this), type, (fieldDsl, function) -> this.type = function);
    }
 
    @Override
    public FieldNameStep type(C_Primitive primitive)
    {
-      return set(new FieldDsl(this),
-                 (fieldDsl, function) -> this.type = function,
-                 (renderingContext, primitive1) -> Renderer.render(primitive1).type(renderingContext),
-                 primitive);
+      return setTypeRenderer(new FieldDsl(this),
+                             primitive,
+                             (renderingContext, primitive1) -> Renderer.render(primitive1).type(renderingContext),
+                             (fieldDsl, function) -> this.type = function);
    }
 
    @Override
    public FieldNameStep type(C_Array array)
    {
-      return set(new FieldDsl(this),
-                 (fieldDsl, function) -> this.type = function,
-                 (renderingContext, array1) -> Renderer.render(array1).type(renderingContext),
-                 array);
+      return setTypeRenderer(new FieldDsl(this),
+                             array,
+                             (renderingContext, array1) -> Renderer.render(array1).type(renderingContext),
+                             (fieldDsl, function) -> this.type = function);
    }
 
    @Override
    public FieldNameStep type(C_Declared declared)
    {
-      return set(new FieldDsl(this),
-                 (fieldDsl, function) -> this.type = function,
-                 (renderingContext, declared1) -> Renderer.render(declared1).type(renderingContext),
-                 declared);
+      return setTypeRenderer(new FieldDsl(this),
+                             declared,
+                             (renderingContext, declared1) -> Renderer.render(declared1).type(renderingContext),
+                             (fieldDsl, function) -> this.type = function);
    }
 
    @Override
@@ -262,13 +256,13 @@ public class FieldDsl
       @Override
       public FieldAdditionalNameStep initializer(String initializer)
       {
-         return setString(new Additional(this), (additional, s) -> additional.initializers.add(s), initializer);
+         return setType(new Additional(this), initializer, (additional, s) -> additional.initializers.add(s));
       }
 
       @Override
       public FieldAdditionalInitializationStep name(String name)
       {
-         return setString(new Additional(this), (additional, s) -> additional.names.add(s), name);
+         return setType(new Additional(this), name, (additional, s) -> additional.names.add(s));
       }
 
       @Override
