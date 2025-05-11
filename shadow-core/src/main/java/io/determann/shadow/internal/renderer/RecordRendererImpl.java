@@ -15,6 +15,7 @@ import java.util.Set;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
 public class RecordRendererImpl implements RecordRenderer
@@ -109,18 +110,18 @@ public class RecordRendererImpl implements RecordRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), aRecord, "");
+      return declaration(wrap(renderingContext), aRecord, "");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), aRecord, content);
+      return declaration(wrap(renderingContext), aRecord, content);
    }
 
    @Override
    public String type(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), aRecord);
+      return type(wrap(renderingContext), aRecord);
    }
 }

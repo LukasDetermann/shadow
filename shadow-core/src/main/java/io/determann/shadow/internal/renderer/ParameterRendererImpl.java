@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.structure.C_Parameter;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ParameterRendererImpl implements ParameterRenderer
 {
@@ -40,6 +41,6 @@ public class ParameterRendererImpl implements ParameterRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), parameter);
+      return declaration(wrap(renderingContext), parameter);
    }
 }

@@ -8,10 +8,17 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class RenderingContextWrapper implements RenderingContext
+public class RenderingContextWrapper
+      implements RenderingContext
 {
    private final RenderingContext renderingContext;
    private boolean renderNestedGenerics = true;
+   private String receiverType;
+
+   public static RenderingContextWrapper wrap(RenderingContext renderingContext)
+   {
+      return new RenderingContextWrapper(renderingContext);
+   }
 
    public RenderingContextWrapper(RenderingContext renderingContext) {this.renderingContext = renderingContext;}
 
@@ -47,5 +54,15 @@ public class RenderingContextWrapper implements RenderingContext
    public void setRenderNestedGenerics(boolean renderNestedGenerics)
    {
       this.renderNestedGenerics = renderNestedGenerics;
+   }
+
+   public String getReceiverType()
+   {
+      return receiverType;
+   }
+
+   public void setReceiverType(String receiverType)
+   {
+      this.receiverType = receiverType;
    }
 }

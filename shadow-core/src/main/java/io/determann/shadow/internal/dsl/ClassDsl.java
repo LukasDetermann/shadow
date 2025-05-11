@@ -8,13 +8,14 @@ import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ClassDsl
       implements ClassJavaDocStep,
@@ -332,49 +333,42 @@ public class ClassDsl
          sb.append(javadoc.apply(renderingContext));
          sb.append("\n");
       }
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining("\n")));
-         sb.append('\n');
-      }
-      if (!modifiers.isEmpty())
-      {
-         sb.append(modifiers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(" ")));
-         sb.append(' ');
-      }
+
+      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      renderElement(sb, generics, " ", renderingContext, " ");
+
       sb.append("class ");
       sb.append(name);
       sb.append(' ');
 
-      if (!generics.isEmpty())
-      {
-         sb.append('<');
-         sb.append(generics.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-         sb.append('>');
-         sb.append(' ');
-      }
+      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+
       if (extends_ != null)
       {
          sb.append(extends_.apply(renderingContext));
       }
-      if (!implements_.isEmpty())
-      {
-         sb.append("implements ");
-         sb.append(implements_.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-         sb.append(' ');
-      }
-      if (!permits.isEmpty())
-      {
-         sb.append("permits ");
-         sb.append(permits.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-         sb.append(' ');
-      }
-      sb.append('{');
+
+      renderElement(sb, "implements ", implements_, " ", renderingContext, ", ");
+      renderElement(sb, "permits ", permits, " ", renderingContext, ", ");
+
+      sb.append("{\n");
       if (body != null)
       {
          sb.append(body);
       }
-      sb.append('{');
+      else
+      {
+         RenderingContextWrapper forReceiver = wrap(renderingContext);
+         forReceiver.setReceiverType(name);
+
+         renderElement(sb, fields, "\n", renderingContext, "\n");
+         renderElement(sb, staticInitializers, "\n\n", renderingContext, "\n");
+         renderElement(sb, constructors, "\n\n", renderingContext, "\n");
+         renderElement(sb, instanceInitializers, "\n\n", renderingContext, "\n");
+         renderElement(sb, methods, "\n\n", forReceiver, "\n");
+         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+      }
+      sb.append('}');
 
       return sb.toString();
    }

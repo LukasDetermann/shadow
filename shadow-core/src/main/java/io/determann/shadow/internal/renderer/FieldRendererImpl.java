@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class FieldRendererImpl implements FieldRenderer
 {
@@ -43,6 +44,6 @@ public class FieldRendererImpl implements FieldRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), field);
+      return declaration(wrap(renderingContext), field);
    }
 }

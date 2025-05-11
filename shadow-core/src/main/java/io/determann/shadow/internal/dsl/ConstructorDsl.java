@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class ConstructorDsl
       implements ConstructorJavaDocStep,
@@ -223,23 +222,11 @@ public class ConstructorDsl
          sb.append(javadoc.apply(renderingContext));
          sb.append("\n");
       }
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining("\n")));
-         sb.append('\n');
-      }
-      if (!modifiers.isEmpty())
-      {
-         sb.append(modifiers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(" ")));
-         sb.append(' ');
-      }
-      if (!generics.isEmpty())
-      {
-         sb.append('<');
-         sb.append(generics.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-         sb.append('>');
-         sb.append(' ');
-      }
+
+      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      renderElement(sb, modifiers, " ", renderingContext, " ");
+      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+
       if (result != null)
       {
          sb.append(result.apply(renderingContext));
@@ -249,22 +236,15 @@ public class ConstructorDsl
       if (receiver != null)
       {
          sb.append(receiver.apply(renderingContext));
-         sb.append(' ');
          if (!parameters.isEmpty())
          {
             sb.append(", ");
          }
       }
-      if (!parameters.isEmpty())
-      {
-         sb.append(parameters.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-      }
-      sb.append(')');
 
-      if (!exceptions.isEmpty())
-      {
-         sb.append(exceptions.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
-      }
+      renderElement(sb, parameters, ")", renderingContext, ", ");
+      renderElement(sb, " throws ", exceptions, renderingContext, ", ");
+
       sb.append(" {");
       if (body != null)
       {

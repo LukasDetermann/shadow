@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ConstructorRendererImpl implements ConstructorRenderer
 {
@@ -113,13 +114,13 @@ public class ConstructorRendererImpl implements ConstructorRenderer
    @Override
    public String invocation(RenderingContext renderingContext)
    {
-      return invocation(new RenderingContextWrapper(renderingContext),"");
+      return invocation(wrap(renderingContext),"");
    }
 
    @Override
    public String invocation(RenderingContext renderingContext, String parameters)
    {
-      return TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(new RenderingContextWrapper(renderingContext)).withSimpleNames().build()),
+      return TypeRendererImpl.type(new RenderingContextWrapper(RenderingContext.builder(wrap(renderingContext)).withSimpleNames().build()),
                                    requestOrThrow(constructor, EXECUTABLE_GET_SURROUNDING)) +
              '(' +
              parameters +

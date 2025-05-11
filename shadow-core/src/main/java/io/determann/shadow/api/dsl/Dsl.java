@@ -87,6 +87,29 @@ public interface Dsl
    {
       static
       {
+         moduleInfo().javadoc("asdfasdf")
+                     .name("my.module")
+                     .requires("Asdfasdf")
+                     .exports("asedfasdf")
+                     .opens("sadfasefd")
+                     .uses("a service")
+                     .provides("asdfasdf");
+
+                 field().javadoc("some java doc")
+                 .annotate("@Anno1701")
+                 .public_()
+                 .final_()
+                 .static_()
+                 .volatile_()
+                 .type("String")
+                 .name("MY_FIELD")
+                 .initializer("\"\"")
+                 .name("no init")
+                 .initializer("asdf")
+                 .name("asdf")
+                 .initializer("asdf")
+                 .render(RenderingContext.DEFAULT);
+
          constructor().javadoc("my doku")
                       .annotate("@AnAnnotation")
                       .public_()

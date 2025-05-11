@@ -2,12 +2,14 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.renderer.RenderingContext;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 /// implementation note: a bit overkill, but minimises bug potential
 interface DslSupport
@@ -125,5 +127,57 @@ interface DslSupport
       toAddToSupplier.accept(instance, renderer.apply(type));
 
       return instance;
+   }
+
+   static void renderElement(StringBuilder sb,
+                             List<Function<RenderingContext, String>> renderers,
+                             String after,
+                             RenderingContext renderingContext,
+                             String delimiter)
+   {
+      if (!renderers.isEmpty())
+      {
+         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(after);
+      }
+   }
+
+   static void renderElement(StringBuilder sb,
+                             List<Function<RenderingContext, String>> renderers,
+                             RenderingContext renderingContext,
+                             String delimiter)
+   {
+      if (!renderers.isEmpty())
+      {
+         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+      }
+   }
+
+   static void renderElement(StringBuilder sb,
+                             String before,
+                             List<Function<RenderingContext, String>> renderers,
+                             String after,
+                             RenderingContext renderingContext,
+                             String delimiter)
+   {
+      if (!renderers.isEmpty())
+      {
+         sb.append(before);
+         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(after);
+      }
+   }
+
+   static void renderElement(StringBuilder sb,
+                             String before,
+                             List<Function<RenderingContext, String>> renderers,
+                             RenderingContext renderingContext,
+                             String delimiter)
+   {
+      if (!renderers.isEmpty())
+      {
+         sb.append(before);
+         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+      }
    }
 }

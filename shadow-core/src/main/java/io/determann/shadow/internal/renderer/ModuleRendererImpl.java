@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
@@ -34,7 +35,7 @@ public class ModuleRendererImpl implements ModuleRenderer
 
       StringBuilder sb = new StringBuilder();
 
-      sb.append(RenderingSupport.annotations(new RenderingContextWrapper(renderingContext), module, '\n'));
+      sb.append(RenderingSupport.annotations(wrap(renderingContext), module, '\n'));
 
       if (requestOrThrow(module, MODULE_IS_OPEN))
       {

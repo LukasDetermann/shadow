@@ -7,6 +7,7 @@ import io.determann.shadow.api.shadow.structure.C_Package;
 import static io.determann.shadow.api.Operations.PACKAGE_IS_UNNAMED;
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class PackageRendererImpl implements PackageRenderer
 {
@@ -34,6 +35,6 @@ public class PackageRendererImpl implements PackageRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), aPackage);
+      return declaration(wrap(renderingContext), aPackage);
    }
 }

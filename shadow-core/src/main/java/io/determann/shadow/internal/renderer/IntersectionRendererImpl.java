@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class IntersectionRendererImpl implements IntersectionRenderer
 {
@@ -33,6 +34,6 @@ public class IntersectionRendererImpl implements IntersectionRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), intersection);
+      return type(wrap(renderingContext), intersection);
    }
 }

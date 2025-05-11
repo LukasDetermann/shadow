@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class MethodRendererImpl implements MethodRenderer
 {
@@ -117,19 +118,19 @@ public class MethodRendererImpl implements MethodRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), method, "");
+      return declaration(wrap(renderingContext), method, "");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), method, content);
+      return declaration(wrap(renderingContext), method, content);
    }
 
    @Override
    public String invocation(RenderingContext renderingContext)
    {
-      return invocation(new RenderingContextWrapper(renderingContext), "");
+      return invocation(wrap(renderingContext), "");
    }
 
    @Override

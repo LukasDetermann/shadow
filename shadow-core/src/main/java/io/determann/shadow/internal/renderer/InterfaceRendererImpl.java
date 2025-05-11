@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
 public class InterfaceRendererImpl implements InterfaceRenderer
@@ -95,18 +96,18 @@ public class InterfaceRendererImpl implements InterfaceRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), anInterface, "");
+      return declaration(wrap(renderingContext), anInterface, "");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), anInterface, content);
+      return declaration(wrap(renderingContext), anInterface, content);
    }
 
    @Override
    public String type(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), anInterface);
+      return type(wrap(renderingContext), anInterface);
    }
 }

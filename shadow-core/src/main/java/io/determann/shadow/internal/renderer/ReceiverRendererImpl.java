@@ -7,6 +7,7 @@ import io.determann.shadow.api.shadow.structure.C_Receiver;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ReceiverRendererImpl implements ReceiverRenderer
 {
@@ -36,6 +37,6 @@ public class ReceiverRendererImpl implements ReceiverRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), receiver);
+      return declaration(wrap(renderingContext), receiver);
    }
 }

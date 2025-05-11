@@ -6,6 +6,7 @@ import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class RecordComponentRendererImpl implements RecordComponentRenderer
 {
@@ -32,12 +33,12 @@ public class RecordComponentRendererImpl implements RecordComponentRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), recordComponent);
+      return declaration(wrap(renderingContext), recordComponent);
    }
 
    @Override
    public String invocation(RenderingContext renderingContext)
    {
-      return invocation(new RenderingContextWrapper(renderingContext), recordComponent);
+      return invocation(wrap(renderingContext), recordComponent);
    }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class ParameterDsl
       implements ParameterAnnotateStep,
@@ -119,10 +118,9 @@ public class ParameterDsl
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext) + " ").collect(joining()));
-      }
+
+      renderElement(sb, annotations, " ", renderingContext, " ");
+
       if (isFinal)
       {
          sb.append("final ");

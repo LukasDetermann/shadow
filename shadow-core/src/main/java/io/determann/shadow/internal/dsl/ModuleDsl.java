@@ -152,11 +152,9 @@ public class ModuleDsl
          sb.append(javadoc.apply(renderingContext));
          sb.append("\n");
       }
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining("\n")));
-         sb.append('\n');
-      }
+
+      renderElement(sb, annotations, "\n", renderingContext, "\n");
+
       sb.append("module ");
       sb.append(name);
       sb.append(" {\n");

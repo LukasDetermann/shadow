@@ -7,6 +7,7 @@ import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import static io.determann.shadow.api.Operations.ENUM_CONSTANT_GET_SURROUNDING;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class EnumConstantRendererImpl implements EnumConstantRenderer
 {
@@ -53,24 +54,24 @@ public class EnumConstantRendererImpl implements EnumConstantRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext),"");
+      return declaration(wrap(renderingContext),"");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String parameters)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), parameters, "");
+      return declaration(wrap(renderingContext), parameters, "");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String parameters, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), enumConstant, parameters, content);
+      return declaration(wrap(renderingContext), enumConstant, parameters, content);
    }
 
    @Override
    public String invocation(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), enumConstant);
+      return type(wrap(renderingContext), enumConstant);
    }
 }

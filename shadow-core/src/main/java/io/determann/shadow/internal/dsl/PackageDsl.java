@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class PackageDsl
       implements PackageJavaDocStep,
@@ -69,11 +68,9 @@ public class PackageDsl
          sb.append(javadoc.apply(renderingContext));
          sb.append("\n");
       }
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining("\n")));
-         sb.append('\n');
-      }
+
+      renderElement(sb, annotations, "n", renderingContext, "\n");
+
       sb.append("package ");
       sb.append(name);
       sb.append(';');

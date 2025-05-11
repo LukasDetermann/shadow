@@ -12,6 +12,7 @@ import java.util.Set;
 
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
 public class EnumRendererImpl implements EnumRenderer
@@ -77,18 +78,18 @@ public class EnumRendererImpl implements EnumRenderer
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), anEnum, "");
+      return declaration(wrap(renderingContext), anEnum, "");
    }
 
    @Override
    public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), anEnum, content);
+      return declaration(wrap(renderingContext), anEnum, content);
    }
 
    @Override
    public String type(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), anEnum);
+      return type(wrap(renderingContext), anEnum);
    }
 }

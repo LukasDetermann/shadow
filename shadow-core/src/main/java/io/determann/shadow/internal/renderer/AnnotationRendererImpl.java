@@ -11,6 +11,7 @@ import java.util.Set;
 import static io.determann.shadow.api.Operations.MODIFIABLE_GET_MODIFIERS;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class AnnotationRendererImpl implements AnnotationRenderer
 {
@@ -70,12 +71,12 @@ public class AnnotationRendererImpl implements AnnotationRenderer
    @Override
    public String declaration(RenderingContext renderingContext, String content)
    {
-      return declaration(new RenderingContextWrapper(renderingContext), annotation, content);
+      return declaration(wrap(renderingContext), annotation, content);
    }
 
    @Override
    public String type(RenderingContext renderingContext)
    {
-      return type(new RenderingContextWrapper(renderingContext), annotation);
+      return type(wrap(renderingContext), annotation);
    }
 }
