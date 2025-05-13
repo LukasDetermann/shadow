@@ -11,6 +11,8 @@ import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
+import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
+import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.uses.UsesServiceStep;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -81,6 +83,16 @@ public interface Dsl
    static ParameterAnnotateStep parameter()
    {
       return new ParameterDsl();
+   }
+
+   static ReceiverAnnotateStep receiver()
+   {
+      return new ReceiverDsl();
+   }
+
+   static RecordComponentAnnotateStep recordComponent()
+   {
+      return new RecordComponentDsl();
    }
 
    class ExampleWrapper
