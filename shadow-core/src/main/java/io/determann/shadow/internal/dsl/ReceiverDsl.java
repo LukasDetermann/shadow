@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.receiver.ReceiverAdditionalAnnotateStep;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -15,8 +14,7 @@ import static io.determann.shadow.internal.dsl.DslSupport.addArrayRenderer;
 import static io.determann.shadow.internal.dsl.DslSupport.renderElement;
 
 public class ReceiverDsl
-      implements ReceiverAnnotateStep,
-                 ReceiverAdditionalAnnotateStep
+      implements ReceiverAnnotateStep
 {
    private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
 
@@ -30,13 +28,13 @@ public class ReceiverDsl
    }
 
    @Override
-   public ReceiverAdditionalAnnotateStep annotate(String... annotation)
+   public ReceiverAnnotateStep annotate(String... annotation)
    {
       return addArrayRenderer(new ReceiverDsl(this), annotation, receiverDsl -> receiverDsl.annotations::add);
    }
 
    @Override
-   public ReceiverAdditionalAnnotateStep annotate(C_Annotation... annotation)
+   public ReceiverAnnotateStep annotate(C_Annotation... annotation)
    {
       return addArrayRenderer(new ReceiverDsl(this),
                               annotation,

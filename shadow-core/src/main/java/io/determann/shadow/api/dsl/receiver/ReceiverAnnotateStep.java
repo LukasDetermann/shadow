@@ -2,9 +2,9 @@ package io.determann.shadow.api.dsl.receiver;
 
 import io.determann.shadow.api.shadow.type.C_Annotation;
 
-public interface ReceiverAnnotateStep
+public interface ReceiverAnnotateStep extends ReceiverRenderable
 {
-   ReceiverAdditionalAnnotateStep annotate(String... annotation);
+   ReceiverAnnotateStep annotate(String... annotation);
 
-   ReceiverAdditionalAnnotateStep annotate(C_Annotation... annotation);
+   ReceiverAnnotateStep annotate(C_Annotation... annotation);
 }

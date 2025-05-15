@@ -14,8 +14,8 @@ import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
+import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.uses.UsesServiceStep;
-import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.internal.dsl.*;
 
 public interface Dsl
@@ -95,43 +95,8 @@ public interface Dsl
       return new RecordComponentDsl();
    }
 
-   class ExampleWrapper
+   static ResultAnnotateStep result()
    {
-      static
-      {
-         moduleInfo().javadoc("asdfasdf")
-                     .name("my.module")
-                     .requires("Asdfasdf")
-                     .exports("asedfasdf")
-                     .opens("sadfasefd")
-                     .uses("a service")
-                     .provides("asdfasdf");
-
-                 field().javadoc("some java doc")
-                 .annotate("@Anno1701")
-                 .public_()
-                 .final_()
-                 .static_()
-                 .volatile_()
-                 .type("String")
-                 .name("MY_FIELD")
-                 .initializer("\"\"")
-                 .name("no init")
-                 .initializer("asdf")
-                 .name("asdf")
-                 .initializer("asdf")
-                 .render(RenderingContext.DEFAULT);
-
-         constructor().javadoc("my doku")
-                      .annotate("@AnAnnotation")
-                      .public_()
-                      .generic("T")
-                      .type("MyType")
-                      .parameter("String s")
-                      .parameter("int i")
-                      .throws_("IllegalStateException")
-                      .body("throw null")
-                      .render(RenderingContext.DEFAULT);
-      }
+      return new ResultDsl();
    }
 }
