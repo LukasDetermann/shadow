@@ -1,6 +1,7 @@
 package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.directive.*;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.*;
@@ -30,6 +31,11 @@ public interface Renderer
    static AnnotationUsageRenderer render(C_AnnotationUsage annotationUsage)
    {
       return new AnnotationUsageRendererImpl(annotationUsage);
+   }
+
+   static AnnotationValueRenderer render(C_AnnotationValue annotationValue)
+   {
+      return new AnnotationValueRendererImpl(annotationValue);
    }
 
    static ArrayRenderer render(C_Array array)

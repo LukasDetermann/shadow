@@ -1,0 +1,282 @@
+package io.determann.shadow.internal.dsl;
+
+import io.determann.shadow.api.dsl.annotation.*;
+import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.C_AnnotationValue;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.shadow.structure.C_Field;
+import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.internal.renderer.RenderingContextWrapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import static io.determann.shadow.api.Operations.METHOD_GET_RETURN_TYPE;
+import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.internal.dsl.DslSupport.*;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
+
+public class AnnotationDsl implements AnnotationJavaDocStep,
+                                      AnnotationBodyStep
+{
+   private Function<RenderingContext, String> javadoc;
+   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
+   private String name;
+   private final List<Function<RenderingContext, String>> fields = new ArrayList<>();
+   private final List<Function<RenderingContext, String>> methods = new ArrayList<>();
+   private final List<Function<RenderingContext, String>> inner = new ArrayList<>();
+   private String body;
+
+   public AnnotationDsl()
+   {
+   }
+
+   private AnnotationDsl(AnnotationDsl other)
+   {
+      this.javadoc = other.javadoc;
+      this.annotations.addAll(other.annotations);
+      this.modifiers.addAll(other.modifiers);
+      this.name = other.name;
+      this.fields.addAll(other.fields);
+      this.methods.addAll(other.methods);
+      this.inner.addAll(other.inner);
+      this.body = other.body;
+   }
+
+   @Override
+   public AnnotationAnnotateStep javadoc(String javadoc)
+   {
+      return setTypeRenderer(new AnnotationDsl(this),
+                             javadoc,
+                             (annotationDsl, function) -> annotationDsl.javadoc = function);
+
+   }
+
+   @Override
+   public AnnotationAnnotateStep annotate(String... annotation)
+   {
+      return addArrayRenderer(new AnnotationDsl(this), annotation, annotationDsl -> annotationDsl.annotations::add);
+   }
+
+   @Override
+   public AnnotationAnnotateStep annotate(C_Annotation... annotation)
+   {
+      return addArrayRenderer(new AnnotationDsl(this),
+                              annotation,
+                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              annotationDsl -> annotationDsl.annotations::add);
+
+   }
+
+   @Override
+   public AnnotationRenderable body(String body)
+   {
+      return setType(new AnnotationDsl(this),
+                     body, (annotationDsl, function) -> annotationDsl.body = function);
+
+   }
+
+   @Override
+   public AnnotationBodyStep field(String... fields)
+   {
+      return addArrayRenderer(new AnnotationDsl(this), fields, annotationDsl -> annotationDsl.fields::add);
+   }
+
+   @Override
+   public AnnotationBodyStep field(C_Field... fields)
+   {
+      return addArrayRenderer(new AnnotationDsl(this),
+                              fields,
+                              (context, field) -> Renderer.render(field).declaration(context),
+                              annotationDsl -> annotationDsl.fields::add);
+
+   }
+
+   @Override
+   public AnnotationBodyStep method(String... methods)
+   {
+      return addArrayRenderer(new AnnotationDsl(this), methods, annotationDsl -> annotationDsl.methods::add);
+   }
+
+   @Override
+   public AnnotationBodyStep method(C_Method... methods)
+   {
+      return addArrayRenderer(new AnnotationDsl(this),
+                              methods,
+                              (context, method) -> renderMethod(method, context) + ';',
+                              annotationDsl -> annotationDsl.modifiers::add);
+
+   }
+
+   @Override
+   public AnnotationBodyStep method(C_Method method, C_AnnotationValue defaultValue)
+   {
+      record Pair(C_Method method,
+                  C_AnnotationValue defaultValue) {}
+
+      return setTypeRenderer(new AnnotationDsl(this),
+                             new Pair(method, defaultValue),
+                             (renderingContext, pair) ->
+                                   renderMethod(pair.method(), renderingContext)
+                                   + " default " +
+                                   Renderer.render(pair.defaultValue()).declaration(renderingContext) + ';',
+                             (annotationDsl, renderer) -> annotationDsl.methods.add(renderer));
+   }
+
+   /// without ';'
+   private static String renderMethod(C_Method method, RenderingContext renderingContext)
+   {
+      C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
+      String name = requestOrThrow(method, NAMEABLE_GET_NAME);
+
+      return Renderer.render(returnType).type(renderingContext) +
+             ' ' +
+             name +
+             "()";
+   }
+
+   @Override
+   public AnnotationBodyStep inner(String... inner)
+   {
+      return addArrayRenderer(new AnnotationDsl(this), inner, annotationDsl -> annotationDsl.inner::add);
+   }
+
+   @Override
+   public AnnotationBodyStep inner(C_Declared... inner)
+   {
+      return addArrayRenderer(new AnnotationDsl(this),
+                              inner,
+                              (context, declared) -> Renderer.render(declared).declaration(context),
+                              annotationDsl -> annotationDsl.inner::add);
+
+   }
+
+   @Override
+   public AnnotationModifierStep modifier(String... modifiers)
+   {
+      return addArrayRenderer(new AnnotationDsl(this), modifiers, annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationModifierStep modifier(C_Modifier... modifiers)
+   {
+      return addArrayRenderer(new AnnotationDsl(this),
+                              modifiers,
+                              (context, modifier) -> Renderer.render(modifier).declaration(context),
+                              annotationDsl -> annotationDsl.modifiers::add);
+
+   }
+
+   @Override
+   public AnnotationModifierStep public_()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.PUBLIC,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+
+   }
+
+   @Override
+   public AnnotationModifierStep protected_()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.PROTECTED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+
+   }
+
+   @Override
+   public AnnotationModifierStep private_()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.PRIVATE,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationModifierStep abstract_()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.ABSTRACT,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationModifierStep sealed()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.SEALED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationModifierStep nonSealed()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.NON_SEALED,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationModifierStep strictfp_()
+   {
+      return addTypeRenderer(new AnnotationDsl(this),
+                             C_Modifier.STRICTFP,
+                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                             annotationDsl -> annotationDsl.modifiers::add);
+   }
+
+   @Override
+   public AnnotationBodyStep name(String name)
+   {
+      return setType(new AnnotationDsl(this), name, (annotationDsl, s) -> annotationDsl.name = s);
+   }
+
+   @Override
+   public String render(RenderingContext renderingContext)
+   {
+      StringBuilder sb = new StringBuilder();
+      if (javadoc != null)
+      {
+         sb.append(javadoc.apply(renderingContext));
+         sb.append("\n");
+      }
+
+      renderElement(sb, annotations, "\n", renderingContext, "\n");
+
+      sb.append("@interface ");
+      sb.append(name);
+      sb.append(' ');
+
+      sb.append("{\n");
+      if (body != null)
+      {
+         sb.append(body);
+      }
+      else
+      {
+         RenderingContextWrapper forReceiver = wrap(renderingContext);
+         forReceiver.setReceiverType(name);
+
+         renderElement(sb, fields, "\n", renderingContext, "\n");
+         renderElement(sb, methods, "\n\n", forReceiver, "\n");
+         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+      }
+      sb.append('}');
+
+      return sb.toString();
+   }
+}

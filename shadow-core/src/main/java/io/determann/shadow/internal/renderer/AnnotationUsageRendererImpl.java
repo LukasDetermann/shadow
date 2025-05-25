@@ -27,12 +27,12 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       this.usage = usage;
    }
 
-   public static String usage(RenderingContextWrapper context, C_AnnotationUsage usage)
+   public static String declaration(RenderingContextWrapper context, C_AnnotationUsage usage)
    {
-      return usage(method -> Optional.empty(), context, usage);
+      return declaration(method -> Optional.empty(), context, usage);
    }
 
-   private static String usage(Function<C_Method, Optional<String>> valueRenderer, RenderingContextWrapper context, C_AnnotationUsage usage)
+   private static String declaration(Function<C_Method, Optional<String>> valueRenderer, RenderingContextWrapper context, C_AnnotationUsage usage)
    {
       StringBuilder sb = new StringBuilder();
       sb.append('@');
@@ -60,15 +60,15 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
    }
 
    @Override
-   public String usage(RenderingContext renderingContext)
+   public String declaration(RenderingContext renderingContext)
    {
-      return usage(new RenderingContextWrapper(renderingContext),method -> Optional.empty());
+      return declaration(new RenderingContextWrapper(renderingContext), method -> Optional.empty());
    }
 
    @Override
-   public String usage(RenderingContext renderingContext, Function<C_Method, Optional<String>> valueRenderer)
+   public String declaration(RenderingContext renderingContext, Function<C_Method, Optional<String>> valueRenderer)
    {
-      return usage(valueRenderer, new RenderingContextWrapper(renderingContext), usage);
+      return declaration(valueRenderer, new RenderingContextWrapper(renderingContext), usage);
    }
 
    private static String renderValue(RenderingContextWrapper context, C_AnnotationValue annotationValue)
@@ -121,7 +121,7 @@ public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
       }
       if (value instanceof C_AnnotationUsage annotationUsage)
       {
-         return usage(context, annotationUsage);
+         return declaration(context, annotationUsage);
       }
       if (value instanceof List<?> values)
       {

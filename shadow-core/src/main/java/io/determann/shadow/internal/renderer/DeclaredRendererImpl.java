@@ -20,18 +20,12 @@ public class DeclaredRendererImpl
    {
       return switch (declared)
       {
-         case C_Annotation cAnnotation:
-            yield Renderer.render(cAnnotation).declaration(renderingContext);
-         case C_Class cClass:
-            yield Renderer.render(cClass).declaration(renderingContext);
-         case C_Enum cEnum:
-            yield Renderer.render(cEnum).declaration(renderingContext);
-         case C_Interface cInterface:
-            yield Renderer.render(cInterface).declaration(renderingContext);
-         case C_Record record:
-            yield Renderer.render(record).declaration(renderingContext);
-         default:
-            throw new IllegalStateException("Unexpected value: " + declared);
+         case C_Annotation cAnnotation -> Renderer.render(cAnnotation).declaration(renderingContext);
+         case C_Class cClass -> Renderer.render(cClass).declaration(renderingContext);
+         case C_Enum cEnum -> Renderer.render(cEnum).declaration(renderingContext);
+         case C_Interface cInterface -> Renderer.render(cInterface).declaration(renderingContext);
+         case C_Record record -> Renderer.render(record).declaration(renderingContext);
+         default -> throw new IllegalStateException("Unexpected value: " + declared);
       };
    }
 
@@ -40,18 +34,12 @@ public class DeclaredRendererImpl
    {
       return switch (declared)
       {
-         case C_Annotation cAnnotation:
-            yield Renderer.render(cAnnotation).declaration(renderingContext, content);
-         case C_Class cClass:
-            yield Renderer.render(cClass).declaration(renderingContext, content);
-         case C_Enum cEnum:
-            yield Renderer.render(cEnum).declaration(renderingContext, content);
-         case C_Interface cInterface:
-            yield Renderer.render(cInterface).declaration(renderingContext, content);
-         case C_Record record:
-            yield Renderer.render(record).declaration(renderingContext, content);
-         default:
-            throw new IllegalStateException("Unexpected value: " + declared);
+         case C_Annotation cAnnotation -> Renderer.render(cAnnotation).declaration(renderingContext, content);
+         case C_Class cClass -> Renderer.render(cClass).declaration(renderingContext, content);
+         case C_Enum cEnum -> Renderer.render(cEnum).declaration(renderingContext, content);
+         case C_Interface cInterface -> Renderer.render(cInterface).declaration(renderingContext, content);
+         case C_Record record -> Renderer.render(record).declaration(renderingContext, content);
+         default -> throw new IllegalStateException("Unexpected value: " + declared);
       };
    }
 
@@ -60,18 +48,12 @@ public class DeclaredRendererImpl
    {
       return switch (declared)
       {
-         case C_Annotation cAnnotation:
-            yield Renderer.render(cAnnotation).type(renderingContext);
-         case C_Class cClass:
-            yield Renderer.render(cClass).type(renderingContext);
-         case C_Enum cEnum:
-            yield Renderer.render(cEnum).type(renderingContext);
-         case C_Interface cInterface:
-            yield Renderer.render(cInterface).type(renderingContext);
-         case C_Record record:
-            yield Renderer.render(record).type(renderingContext);
-         default:
-            throw new IllegalStateException("Unexpected value: " + declared);
+         case C_Annotation cAnnotation -> Renderer.render(cAnnotation).type(renderingContext);
+         case C_Class cClass -> Renderer.render(cClass).type(renderingContext);
+         case C_Enum cEnum -> Renderer.render(cEnum).type(renderingContext);
+         case C_Interface cInterface -> Renderer.render(cInterface).type(renderingContext);
+         case C_Record record -> Renderer.render(record).type(renderingContext);
+         default -> throw new IllegalStateException("Unexpected value: " + declared);
       };
    }
 }

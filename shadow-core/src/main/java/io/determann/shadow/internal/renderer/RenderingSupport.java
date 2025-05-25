@@ -14,7 +14,7 @@ public class RenderingSupport
       return requestOrEmpty(annotationable, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES)
             .map(annotationUsages ->
                        annotationUsages.stream()
-                                       .map(usage -> AnnotationUsageRendererImpl.usage(context, usage) + separator)
+                                       .map(usage -> AnnotationUsageRendererImpl.declaration(context, usage) + separator)
                                        .collect(Collectors.joining()))
             .orElse("");
    }

@@ -66,7 +66,7 @@ class AnnotationUsageRendererTest
                        {
                           C_Class annotationUsageExample = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
                           C_AnnotationUsage usage = requestOrThrow(annotationUsageExample, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
-                          String actual = render(usage).usage(DEFAULT);
+                          String actual = render(usage).declaration(DEFAULT);
                           assertEquals(expected, actual);
                        });
    }
@@ -82,7 +82,7 @@ class AnnotationUsageRendererTest
                        {
                           C_Class annotationUsageExample = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
                           C_AnnotationUsage usage = requestOrThrow(annotationUsageExample, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
-                          String actual = render(usage).usage(DEFAULT,method -> Optional.of("test"));
+                          String actual = render(usage).declaration(DEFAULT, method -> Optional.of("test"));
                           assertEquals(expected, actual);
                        });
    }
@@ -99,7 +99,7 @@ class AnnotationUsageRendererTest
                           C_Class annotationUsageExample = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
                           C_AnnotationUsage usage = requestOrThrow(annotationUsageExample, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
                           String actual = render(usage)
-                                .usage(DEFAULT,
+                                .declaration(DEFAULT,
                                        method ->
                                        {
                                           C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
