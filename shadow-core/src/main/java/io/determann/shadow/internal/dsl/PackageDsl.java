@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class PackageDsl
    }
 
    @Override
-   public PackageAnnotateStep annotate(C_Annotation... annotation)
+   public PackageAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new PackageDsl(this),
                               annotation,

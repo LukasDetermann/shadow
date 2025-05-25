@@ -3,7 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ReceiverDsl
    }
 
    @Override
-   public ReceiverAnnotateStep annotate(C_Annotation... annotation)
+   public ReceiverAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new ReceiverDsl(this),
                               annotation,

@@ -3,11 +3,11 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.method.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Receiver;
 import io.determann.shadow.api.shadow.structure.C_Result;
-import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Type;
@@ -122,7 +122,7 @@ public class MethodDsl
    }
 
    @Override
-   public MethodAnnotateStep annotate(C_Annotation... annotation)
+   public MethodAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new MethodDsl(this),
                               annotation,

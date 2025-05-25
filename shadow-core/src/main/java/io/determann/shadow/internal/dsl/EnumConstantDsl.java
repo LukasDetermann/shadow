@@ -6,8 +6,8 @@ import io.determann.shadow.api.dsl.enum_constant.EnumConstantParameterStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.type.C_Annotation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class EnumConstantDsl
    }
 
    @Override
-   public EnumConstantAnnotateStep annotate(C_Annotation... annotation)
+   public EnumConstantAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new EnumConstantDsl(this),
                               annotation,

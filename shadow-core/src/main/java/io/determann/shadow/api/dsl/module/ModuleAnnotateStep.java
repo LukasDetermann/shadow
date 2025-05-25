@@ -1,11 +1,11 @@
 package io.determann.shadow.api.dsl.module;
 
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 public interface ModuleAnnotateStep
       extends ModuleNameStep
 {
    ModuleAnnotateStep annotate(String... annotation);
 
-   ModuleAnnotateStep annotate(C_Annotation... annotation);
+   ModuleAnnotateStep annotate(C_AnnotationUsage... annotation);
 }

@@ -3,7 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.parameter.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Generic;
@@ -46,7 +46,7 @@ public class ParameterDsl
    }
 
    @Override
-   public ParameterAnnotateStep annotate(C_Annotation... annotation)
+   public ParameterAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new ParameterDsl(this),
                               annotation,

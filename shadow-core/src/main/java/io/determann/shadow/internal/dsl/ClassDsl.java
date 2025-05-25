@@ -3,11 +3,15 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.class_.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_Generic;
+import io.determann.shadow.api.shadow.type.C_Interface;
 import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
@@ -75,7 +79,7 @@ public class ClassDsl
    }
 
    @Override
-   public ClassAnnotateStep annotate(C_Annotation... annotation)
+   public ClassAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new ClassDsl(this),
                               annotation,

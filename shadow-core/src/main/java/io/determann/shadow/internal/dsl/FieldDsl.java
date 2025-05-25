@@ -3,8 +3,8 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.field.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Annotation;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
@@ -55,7 +55,7 @@ public class FieldDsl
    }
 
    @Override
-   public FieldModifierStep annotate(C_Annotation... annotation)
+   public FieldModifierStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new FieldDsl(this),
                               annotation,

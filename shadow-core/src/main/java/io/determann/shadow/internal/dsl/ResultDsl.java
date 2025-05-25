@@ -4,7 +4,7 @@ import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.result.ResultRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ResultDsl
    }
 
    @Override
-   public ResultAnnotateStep annotate(C_Annotation... annotation)
+   public ResultAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new ResultDsl(this),
                               annotation,

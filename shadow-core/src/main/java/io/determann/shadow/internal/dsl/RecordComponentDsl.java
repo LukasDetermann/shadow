@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentTypeStep;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class RecordComponentDsl
    }
 
    @Override
-   public RecordComponentAnnotateStep annotate(C_Annotation... annotation)
+   public RecordComponentAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new RecordComponentDsl(this),
                               annotation,
