@@ -11,15 +11,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class FieldRendererImpl implements FieldRenderer
+public record FieldRendererImpl(C_Field field) implements FieldRenderer
 {
-   private final C_Field field;
-
-   public FieldRendererImpl(C_Field field)
-   {
-      this.field = field;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Field field)
    {
       StringBuilder sb = new StringBuilder();

@@ -17,15 +17,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class ConstructorRendererImpl implements ConstructorRenderer
+public record ConstructorRendererImpl(C_Constructor constructor) implements ConstructorRenderer
 {
-   private final C_Constructor constructor;
-
-   public ConstructorRendererImpl(C_Constructor constructor)
-   {
-      this.constructor = constructor;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Constructor constructor, String content)
    {
       StringBuilder sb = new StringBuilder();

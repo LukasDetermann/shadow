@@ -8,15 +8,8 @@ import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class PrimitiveRendererImpl implements PrimitiveRenderer
+public record PrimitiveRendererImpl(C_Primitive primitive) implements PrimitiveRenderer
 {
-   private final C_Primitive primitive;
-
-   public PrimitiveRendererImpl(C_Primitive primitive)
-   {
-      this.primitive = primitive;
-   }
-
    public static String type(RenderingContextWrapper context, C_Primitive primitive)
    {
       return requestOrThrow(primitive, NAMEABLE_GET_NAME);

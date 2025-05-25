@@ -8,15 +8,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class ParameterRendererImpl implements ParameterRenderer
+public record ParameterRendererImpl(C_Parameter parameter) implements ParameterRenderer
 {
-   private final C_Parameter parameter;
-
-   public ParameterRendererImpl(C_Parameter parameter)
-   {
-      this.parameter = parameter;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Parameter parameter)
    {
       StringBuilder sb = new StringBuilder();

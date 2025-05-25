@@ -9,15 +9,8 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
-public class ArrayRendererImpl implements ArrayRenderer
+public record ArrayRendererImpl(C_Array array) implements ArrayRenderer
 {
-   private final C_Array array;
-
-   public ArrayRendererImpl(C_Array array)
-   {
-      this.array = array;
-   }
-
    public static String type(RenderingContextWrapper context, C_Array array)
    {
       return TypeRendererImpl.type(context, requestOrThrow(array, ARRAY_GET_COMPONENT_TYPE));

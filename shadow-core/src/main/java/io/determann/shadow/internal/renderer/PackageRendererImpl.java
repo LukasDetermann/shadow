@@ -9,15 +9,8 @@ import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIE
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class PackageRendererImpl implements PackageRenderer
+public record PackageRendererImpl(C_Package aPackage) implements PackageRenderer
 {
-   private final C_Package aPackage;
-
-   public PackageRendererImpl(C_Package aPackage)
-   {
-      this.aPackage = aPackage;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Package aPackage)
    {
       if (requestOrThrow(aPackage, PACKAGE_IS_UNNAMED))

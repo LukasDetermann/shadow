@@ -7,16 +7,9 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.renderer.UsesRenderer;
 import io.determann.shadow.api.shadow.directive.C_Uses;
 
-public class UsesRendererImpl
+public record UsesRendererImpl(C_Uses uses)
       implements UsesRenderer
 {
-   private final C_Uses uses;
-
-   public UsesRendererImpl(C_Uses uses)
-   {
-      this.uses = uses;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

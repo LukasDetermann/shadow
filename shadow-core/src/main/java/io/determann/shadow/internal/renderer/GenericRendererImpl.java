@@ -9,15 +9,8 @@ import io.determann.shadow.api.shadow.type.C_Type;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class GenericRendererImpl implements GenericRenderer
+public record GenericRendererImpl(C_Generic generic) implements GenericRenderer
 {
-   private final C_Generic generic;
-
-   public GenericRendererImpl(C_Generic generic)
-   {
-      this.generic = generic;
-   }
-
    public static String type(RenderingContextWrapper context, C_Generic generic)
    {
       StringBuilder sb = new StringBuilder();

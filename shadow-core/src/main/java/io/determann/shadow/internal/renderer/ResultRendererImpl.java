@@ -8,16 +8,9 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class ResultRendererImpl
+public record ResultRendererImpl(C_Result result)
       implements ResultRenderer
 {
-   private final C_Result result;
-
-   public ResultRendererImpl(C_Result result)
-   {
-      this.result = result;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Result result)
    {
       StringBuilder sb = new StringBuilder();

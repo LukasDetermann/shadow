@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.joining;
 
-public class ModifierRendererImpl implements ModifierRenderer
+public record ModifierRendererImpl(C_Modifier[] modifiers) implements ModifierRenderer
 {
    private static final Map<C_Modifier, String> MODIFIERS_IN_ORDER = new LinkedHashMap<>();
 
@@ -47,13 +47,6 @@ public class ModifierRendererImpl implements ModifierRenderer
                                .filter(Optional::isPresent)
                                .map(Optional::get)
                                .collect(joining(" "));
-   }
-
-   private final C_Modifier[] modifiers;
-
-   public ModifierRendererImpl(C_Modifier... modifiers)
-   {
-      this.modifiers = modifiers;
    }
 
    @Override

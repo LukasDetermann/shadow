@@ -15,15 +15,8 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
-public class EnumRendererImpl implements EnumRenderer
+public record EnumRendererImpl(C_Enum anEnum) implements EnumRenderer
 {
-   private final C_Enum anEnum;
-
-   public EnumRendererImpl(C_Enum anEnum)
-   {
-      this.anEnum = anEnum;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Enum anEnum, String content)
    {
       StringBuilder sb = new StringBuilder();

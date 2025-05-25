@@ -10,15 +10,8 @@ import static io.determann.shadow.api.Operations.OPENS_GET_PACKAGE;
 import static io.determann.shadow.api.Operations.OPENS_GET_TARGET_MODULES;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class OpensRendererImpl implements OpensRenderer
+public record OpensRendererImpl(C_Opens opens) implements OpensRenderer
 {
-   private final C_Opens opens;
-
-   public OpensRendererImpl(C_Opens opens)
-   {
-      this.opens = opens;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

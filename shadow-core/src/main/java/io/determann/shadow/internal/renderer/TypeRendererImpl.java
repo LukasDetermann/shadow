@@ -5,15 +5,8 @@ import io.determann.shadow.api.renderer.TypeRenderer;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
-public class TypeRendererImpl implements TypeRenderer
+public record TypeRendererImpl(C_Type type) implements TypeRenderer
 {
-   private final C_Type type;
-
-   public TypeRendererImpl(C_Type type)
-   {
-      this.type = type;
-   }
-
    public static String type(RenderingContextWrapper context, C_Type type)
    {
       return switch (type)

@@ -12,15 +12,8 @@ import static io.determann.shadow.api.Operations.INTERSECTION_GET_BOUNDS;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class IntersectionRendererImpl implements IntersectionRenderer
+public record IntersectionRendererImpl(C_Intersection intersection) implements IntersectionRenderer
 {
-   private final C_Intersection intersection;
-
-   public IntersectionRendererImpl(C_Intersection intersection)
-   {
-      this.intersection = intersection;
-   }
-
    public static String type(RenderingContextWrapper context, C_Intersection intersection)
    {
       List<? extends C_Type> bounds = requestOrThrow(intersection, INTERSECTION_GET_BOUNDS);

@@ -11,16 +11,9 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrEmpty;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class RequiresRendererImpl
+public record RequiresRendererImpl(C_Requires requires)
       implements RequiresRenderer
 {
-   private final C_Requires requires;
-
-   public RequiresRendererImpl(C_Requires requires)
-   {
-      this.requires = requires;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

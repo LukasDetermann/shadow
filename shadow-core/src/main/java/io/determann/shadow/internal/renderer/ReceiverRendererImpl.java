@@ -9,15 +9,8 @@ import io.determann.shadow.api.shadow.type.C_Type;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class ReceiverRendererImpl implements ReceiverRenderer
+public record ReceiverRendererImpl(C_Receiver receiver) implements ReceiverRenderer
 {
-   private final C_Receiver receiver;
-
-   public ReceiverRendererImpl(C_Receiver receiver)
-   {
-      this.receiver = receiver;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Receiver receiver)
    {
       StringBuilder sb = new StringBuilder();

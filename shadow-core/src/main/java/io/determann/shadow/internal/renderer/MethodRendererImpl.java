@@ -18,15 +18,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class MethodRendererImpl implements MethodRenderer
+public record MethodRendererImpl(C_Method method) implements MethodRenderer
 {
-   private final C_Method method;
-
-   public MethodRendererImpl(C_Method method)
-   {
-      this.method = method;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Method method, String content)
    {
       StringBuilder sb = new StringBuilder();

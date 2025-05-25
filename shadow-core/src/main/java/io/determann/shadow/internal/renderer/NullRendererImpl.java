@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.renderer;
 
-public class NullRendererImpl
+public interface NullRendererImpl
 {
-   public static String type()
+   static String type()
    {
       return "null";
    }

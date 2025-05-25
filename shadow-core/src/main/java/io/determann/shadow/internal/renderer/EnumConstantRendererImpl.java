@@ -9,15 +9,8 @@ import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class EnumConstantRendererImpl implements EnumConstantRenderer
+public record EnumConstantRendererImpl(C_EnumConstant enumConstant) implements EnumConstantRenderer
 {
-   private final C_EnumConstant enumConstant;
-
-   public EnumConstantRendererImpl(C_EnumConstant enumConstant)
-   {
-      this.enumConstant = enumConstant;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_EnumConstant enumConstant, String parameters, String content)
    {
       StringBuilder sb = new StringBuilder();

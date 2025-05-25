@@ -18,15 +18,8 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
-public class RecordRendererImpl implements RecordRenderer
+public record RecordRendererImpl(C_Record aRecord) implements RecordRenderer
 {
-   private final C_Record aRecord;
-
-   public RecordRendererImpl(C_Record aRecord)
-   {
-      this.aRecord = aRecord;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Record aRecord, String content)
    {
       StringBuilder sb = new StringBuilder();

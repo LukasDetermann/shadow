@@ -12,16 +12,9 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.List;
 
-public class AnnotationValueRendererImpl
+public record AnnotationValueRendererImpl(C_AnnotationValue annotationValue)
       implements AnnotationValueRenderer
 {
-   private final C_AnnotationValue annotationValue;
-
-   public AnnotationValueRendererImpl(C_AnnotationValue annotationValue)
-   {
-      this.annotationValue = annotationValue;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

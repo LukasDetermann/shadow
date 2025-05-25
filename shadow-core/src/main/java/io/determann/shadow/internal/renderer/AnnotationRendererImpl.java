@@ -13,19 +13,12 @@ import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class AnnotationRendererImpl implements AnnotationRenderer
+public record AnnotationRendererImpl(C_Annotation annotation)
+      implements AnnotationRenderer
 {
-   private final C_Annotation annotation;
-
-   public AnnotationRendererImpl(C_Annotation annotation)
-   {
-      this.annotation = annotation;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Annotation annotation, String content)
    {
       StringBuilder sb = new StringBuilder();
-
 
       sb.append(RenderingSupport.annotations(context, annotation, '\n'));
 

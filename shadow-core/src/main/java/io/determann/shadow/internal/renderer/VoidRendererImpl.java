@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.renderer;
 
-public class VoidRendererImpl
+public interface VoidRendererImpl
 {
-   public static String type()
+   static String type()
    {
       return "void";
    }

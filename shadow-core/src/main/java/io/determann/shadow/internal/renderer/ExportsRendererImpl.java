@@ -10,16 +10,9 @@ import static io.determann.shadow.api.Operations.EXPORTS_GET_PACKAGE;
 import static io.determann.shadow.api.Operations.EXPORTS_GET_TARGET_MODULES;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class ExportsRendererImpl
+public record ExportsRendererImpl(C_Exports exports)
       implements ExportsRenderer
 {
-   private final C_Exports exports;
-
-   public ExportsRendererImpl(C_Exports exports)
-   {
-      this.exports = exports;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

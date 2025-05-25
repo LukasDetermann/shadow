@@ -16,15 +16,8 @@ import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
-public class ModuleRendererImpl implements ModuleRenderer
+public record ModuleRendererImpl(C_Module module) implements ModuleRenderer
 {
-   private final C_Module module;
-
-   public ModuleRendererImpl(C_Module module)
-   {
-      this.module = module;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

@@ -5,16 +5,9 @@ import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.type.*;
 
-public class DeclaredRendererImpl
+public record DeclaredRendererImpl(C_Declared declared)
       implements DeclaredRenderer
 {
-   private final C_Declared declared;
-
-   public DeclaredRendererImpl(C_Declared declared)
-   {
-      this.declared = declared;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

@@ -10,15 +10,8 @@ import static io.determann.shadow.api.Operations.PROVIDES_GET_IMPLEMENTATIONS;
 import static io.determann.shadow.api.Operations.PROVIDES_GET_SERVICE;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class ProvidesRendererImpl implements ProvidesRenderer
+public record ProvidesRendererImpl(C_Provides provides) implements ProvidesRenderer
 {
-   private final C_Provides provides;
-
-   public ProvidesRendererImpl(C_Provides provides)
-   {
-      this.provides = provides;
-   }
-
    @Override
    public String declaration(RenderingContext renderingContext)
    {

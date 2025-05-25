@@ -8,15 +8,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
-public class RecordComponentRendererImpl implements RecordComponentRenderer
+public record RecordComponentRendererImpl(C_RecordComponent recordComponent) implements RecordComponentRenderer
 {
-   private final C_RecordComponent recordComponent;
-
-   public RecordComponentRendererImpl(C_RecordComponent recordComponent)
-   {
-      this.recordComponent = recordComponent;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_RecordComponent recordComponent)
    {
       return RenderingSupport.annotations(context, recordComponent, '\n') +

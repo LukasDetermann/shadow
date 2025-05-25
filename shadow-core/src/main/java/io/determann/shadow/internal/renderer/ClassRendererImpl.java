@@ -15,15 +15,8 @@ import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static java.util.stream.Collectors.joining;
 
-public class ClassRendererImpl implements ClassRenderer
+public record ClassRendererImpl(C_Class aClass) implements ClassRenderer
 {
-   private final C_Class aClass;
-
-   public ClassRendererImpl(C_Class aClass)
-   {
-      this.aClass = aClass;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Class aClass, String content)
    {
       StringBuilder sb = new StringBuilder();

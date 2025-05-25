@@ -11,15 +11,8 @@ import java.util.Optional;
 import static io.determann.shadow.api.Operations.WILDCARD_GET_EXTENDS;
 import static io.determann.shadow.api.Operations.WILDCARD_GET_SUPER;
 
-public class WildcardRendererImpl implements WildcardRenderer
+public record WildcardRendererImpl(C_Wildcard wildcard) implements WildcardRenderer
 {
-   private final C_Wildcard wildcard;
-
-   public WildcardRendererImpl(C_Wildcard wildcard)
-   {
-      this.wildcard = wildcard;
-   }
-
    static String type(RenderingContextWrapper context, C_Wildcard wildcard)
    {
       Optional<C_Type> wildcardExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
@@ -29,11 +22,7 @@ public class WildcardRendererImpl implements WildcardRenderer
       }
 
       Optional<C_Type> wildcardSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
-      if (wildcardSuper.isPresent())
-      {
-         return "? super " + TypeRendererImpl.type(context, wildcardSuper.get());
-      }
-      return "?";
+      return wildcardSuper.map(type -> "? super " + TypeRendererImpl.type(context, type)).orElse("?");
    }
 
    @Override

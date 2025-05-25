@@ -18,15 +18,8 @@ import java.util.stream.Collectors;
 import static io.determann.shadow.api.Operations.*;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
-public class AnnotationUsageRendererImpl implements AnnotationUsageRenderer
+public record AnnotationUsageRendererImpl(C_AnnotationUsage usage) implements AnnotationUsageRenderer
 {
-   private final C_AnnotationUsage usage;
-
-   public AnnotationUsageRendererImpl(C_AnnotationUsage usage)
-   {
-      this.usage = usage;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_AnnotationUsage usage)
    {
       return declaration(method -> Optional.empty(), context, usage);

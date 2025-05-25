@@ -16,15 +16,8 @@ import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
-public class InterfaceRendererImpl implements InterfaceRenderer
+public record InterfaceRendererImpl(C_Interface anInterface) implements InterfaceRenderer
 {
-   private final C_Interface anInterface;
-
-   public InterfaceRendererImpl(C_Interface anInterface)
-   {
-      this.anInterface = anInterface;
-   }
-
    public static String declaration(RenderingContextWrapper context, C_Interface anInterface, String content)
    {
       StringBuilder sb = new StringBuilder();
