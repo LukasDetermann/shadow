@@ -1,5 +1,7 @@
 package io.determann.shadow.api.dsl.annotation;
 
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
@@ -14,6 +16,8 @@ public interface AnnotationBodyStep
 
    AnnotationBodyStep field(C_Field... fields);
 
+   AnnotationBodyStep field(FieldRenderable... fields);
+
    AnnotationBodyStep method(String... methods);
 
    AnnotationBodyStep method(C_Method... methods);
@@ -23,4 +27,6 @@ public interface AnnotationBodyStep
    AnnotationBodyStep inner(String... inner);
 
    AnnotationBodyStep inner(C_Declared... inner);
+
+   AnnotationBodyStep inner(DeclaredRenderable... inner);
 }

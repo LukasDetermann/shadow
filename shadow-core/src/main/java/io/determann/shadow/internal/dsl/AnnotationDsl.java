@@ -1,6 +1,10 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation.*;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -14,7 +18,6 @@ import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.api.Operations.METHOD_GET_RETURN_TYPE;
 import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
@@ -25,13 +28,13 @@ import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap
 public class AnnotationDsl implements AnnotationJavaDocStep,
                                       AnnotationBodyStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
-   private final List<Function<RenderingContext, String>> fields = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> methods = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> inner = new ArrayList<>();
+   private final List<Renderable> fields = new ArrayList<>();
+   private final List<Renderable> methods = new ArrayList<>();
+   private final List<Renderable> inner = new ArrayList<>();
    private String body;
 
    public AnnotationDsl()
@@ -76,6 +79,14 @@ public class AnnotationDsl implements AnnotationJavaDocStep,
    }
 
    @Override
+   public AnnotationAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new AnnotationDsl(this),
+                      annotation,
+                      annotationDsl -> annotationDsl.annotations::add);
+   }
+
+   @Override
    public AnnotationRenderable body(String body)
    {
       return setType(new AnnotationDsl(this),
@@ -97,6 +108,14 @@ public class AnnotationDsl implements AnnotationJavaDocStep,
                               (context, field) -> Renderer.render(field).declaration(context),
                               annotationDsl -> annotationDsl.fields::add);
 
+   }
+
+   @Override
+   public AnnotationBodyStep field(FieldRenderable... fields)
+   {
+      return addArray(new AnnotationDsl(this),
+                      fields,
+                      annotationDsl -> annotationDsl.fields::add);
    }
 
    @Override
@@ -156,6 +175,14 @@ public class AnnotationDsl implements AnnotationJavaDocStep,
                               (context, declared) -> Renderer.render(declared).declaration(context),
                               annotationDsl -> annotationDsl.inner::add);
 
+   }
+
+   @Override
+   public AnnotationBodyStep inner(DeclaredRenderable... inner)
+   {
+      return addArray(new AnnotationDsl(this),
+                      inner,
+                      annotationDsl -> annotationDsl.inner::add);
    }
 
    @Override
@@ -251,7 +278,7 @@ public class AnnotationDsl implements AnnotationJavaDocStep,
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 

@@ -1,5 +1,6 @@
 package io.determann.shadow.api.dsl.annotation;
 
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 public interface AnnotationAnnotateStep
@@ -8,4 +9,6 @@ public interface AnnotationAnnotateStep
    AnnotationAnnotateStep annotate(String... annotation);
 
    AnnotationAnnotateStep annotate(C_AnnotationUsage... annotation);
+
+   AnnotationAnnotateStep annotate(AnnotationUsageRenderable... annotation);
 }

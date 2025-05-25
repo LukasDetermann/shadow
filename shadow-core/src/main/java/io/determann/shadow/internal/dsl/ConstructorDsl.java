@@ -1,5 +1,8 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -14,7 +17,6 @@ import io.determann.shadow.api.shadow.type.C_Record;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -22,14 +24,14 @@ public class ConstructorDsl
       implements ConstructorJavaDocStep,
                  ConstructorReceiverStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> generics = new ArrayList<>();
-   private Function<RenderingContext, String> result;
-   private Function<RenderingContext, String> receiver;
-   private final List<Function<RenderingContext, String>> parameters = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> exceptions = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
+   private final List<Renderable> generics = new ArrayList<>();
+   private Renderable result;
+   private Renderable receiver;
+   private final List<Renderable> parameters = new ArrayList<>();
+   private final List<Renderable> exceptions = new ArrayList<>();
    private String body;
 
    public ConstructorDsl()
@@ -126,6 +128,14 @@ public class ConstructorDsl
    }
 
    @Override
+   public ConstructorAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new ConstructorDsl(this),
+                      annotation,
+                      constructorDsl -> constructorDsl.annotations::add);
+   }
+
+   @Override
    public ConstructorModifierStep modifier(String... modifiers)
    {
       return addArrayRenderer(new ConstructorDsl(this), modifiers, constructorDsl -> constructorDsl.modifiers::add);
@@ -200,6 +210,14 @@ public class ConstructorDsl
    }
 
    @Override
+   public ConstructorReceiverStep type(ClassRenderable type)
+   {
+      return setType(new ConstructorDsl(this),
+                     type,
+                     (constructorDsl, classRenderable) -> constructorDsl.result = classRenderable);
+   }
+
+   @Override
    public ConstructorReceiverStep type(C_Enum type)
    {
       return setTypeRenderer(new ConstructorDsl(this),
@@ -223,7 +241,7 @@ public class ConstructorDsl
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
@@ -233,13 +251,13 @@ public class ConstructorDsl
 
       if (result != null)
       {
-         sb.append(result.apply(renderingContext));
+         sb.append(result.render(renderingContext));
          sb.append(' ');
       }
       sb.append('(');
       if (receiver != null)
       {
-         sb.append(receiver.apply(renderingContext));
+         sb.append(receiver.render(renderingContext));
          if (!parameters.isEmpty())
          {
             sb.append(", ");

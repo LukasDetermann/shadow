@@ -1,9 +1,12 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantAnnotateStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantParameterStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantRenderable;
+import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -11,7 +14,6 @@ import io.determann.shadow.api.shadow.structure.C_Parameter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
@@ -20,11 +22,11 @@ public class EnumConstantDsl
       implements EnumConstantJavaDocStep,
                  EnumConstantParameterStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
    private String body;
    private String name;
-   private final List<Function<RenderingContext, String>> parameters = new ArrayList<>();
+   private final List<Renderable> parameters = new ArrayList<>();
 
    public EnumConstantDsl()
    {
@@ -63,6 +65,14 @@ public class EnumConstantDsl
    }
 
    @Override
+   public EnumConstantAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new EnumConstantDsl(this),
+                      annotation,
+                      enumConstantDsl -> enumConstantDsl.annotations::add);
+   }
+
+   @Override
    public EnumConstantRenderable body(String body)
    {
       return setType(new EnumConstantDsl(this), body, (classDsl, function) -> classDsl.body = function);
@@ -90,12 +100,20 @@ public class EnumConstantDsl
    }
 
    @Override
+   public EnumConstantParameterStep parameter(ParameterRenderable... parameter)
+   {
+      return addArray(new EnumConstantDsl(this),
+                      parameter,
+                      enumConstantDsl -> enumConstantDsl.parameters::add);
+   }
+
+   @Override
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
@@ -105,7 +123,7 @@ public class EnumConstantDsl
       if (!parameters.isEmpty())
       {
          sb.append('(');
-         sb.append(parameters.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(parameters.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
          sb.append(')');
       }
 

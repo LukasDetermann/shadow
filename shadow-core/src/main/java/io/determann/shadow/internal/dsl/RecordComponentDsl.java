@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentTypeStep;
@@ -10,7 +12,6 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -19,9 +20,9 @@ public class RecordComponentDsl
                  RecordComponentTypeStep,
                  RecordComponentRenderable
 {
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private final List<Renderable> annotations = new ArrayList<>();
    private String name;
-   private Function<RenderingContext, String> type;
+   private Renderable type;
 
    public RecordComponentDsl() {}
 
@@ -48,6 +49,14 @@ public class RecordComponentDsl
    }
 
    @Override
+   public RecordComponentAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new RecordComponentDsl(this),
+                      annotation,
+                      recordComponentDsl -> recordComponentDsl.annotations::add);
+   }
+
+   @Override
    public RecordComponentTypeStep name(String name)
    {
       return setType(new RecordComponentDsl(this), name, (recordComponentDsl, s) -> recordComponentDsl.name = s);
@@ -69,7 +78,7 @@ public class RecordComponentDsl
 
       renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(type.apply(renderingContext));
+      sb.append(type.render(renderingContext));
       sb.append(" ");
       sb.append(name);
 

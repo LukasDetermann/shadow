@@ -1,6 +1,12 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.*;
+import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -16,7 +22,6 @@ import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
@@ -25,20 +30,20 @@ public class ClassDsl
       implements ClassJavaDocStep,
                  ClassGenericStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
-   private final List<Function<RenderingContext, String>> generics = new ArrayList<>();
-   private Function<RenderingContext, String> extends_;
-   private final List<Function<RenderingContext, String>> implements_ = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> permits = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> fields = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> methods = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> inner = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> instanceInitializers = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> staticInitializers = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> constructors = new ArrayList<>();
+   private final List<Renderable> generics = new ArrayList<>();
+   private Renderable extends_;
+   private final List<Renderable> implements_ = new ArrayList<>();
+   private final List<Renderable> permits = new ArrayList<>();
+   private final List<Renderable> fields = new ArrayList<>();
+   private final List<Renderable> methods = new ArrayList<>();
+   private final List<Renderable> inner = new ArrayList<>();
+   private final List<Renderable> instanceInitializers = new ArrayList<>();
+   private final List<Renderable> staticInitializers = new ArrayList<>();
+   private final List<Renderable> constructors = new ArrayList<>();
    private String body;
 
    public ClassDsl()
@@ -85,6 +90,14 @@ public class ClassDsl
                               annotation,
                               (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
                               classDsl -> classDsl.annotations::add);
+   }
+
+   @Override
+   public ClassAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new ClassDsl(this),
+                      annotation,
+                      classDsl -> classDsl.annotations::add);
    }
 
    @Override
@@ -272,6 +285,14 @@ public class ClassDsl
    }
 
    @Override
+   public ClassBodyStep field(FieldRenderable... fields)
+   {
+      return addArray(new ClassDsl(this),
+                      fields,
+                      classDsl -> classDsl.fields::add);
+   }
+
+   @Override
    public ClassBodyStep method(String... methods)
    {
       return addArrayRenderer(new ClassDsl(this), methods, classDsl -> classDsl.methods::add);
@@ -287,6 +308,14 @@ public class ClassDsl
    }
 
    @Override
+   public ClassBodyStep method(MethodRenderable... methods)
+   {
+      return addArray(new ClassDsl(this),
+                      methods,
+                      classDsl -> classDsl.methods::add);
+   }
+
+   @Override
    public ClassBodyStep inner(String... inner)
    {
       return addArrayRenderer(new ClassDsl(this), inner, classDsl -> classDsl.inner::add);
@@ -299,6 +328,14 @@ public class ClassDsl
                               inner,
                               (context, declared) -> Renderer.render(declared).declaration(context),
                               classDsl -> classDsl.inner::add);
+   }
+
+   @Override
+   public ClassBodyStep inner(DeclaredRenderable... inner)
+   {
+      return addArray(new ClassDsl(this),
+                      inner,
+                      classDsl -> classDsl.inner::add);
    }
 
    @Override
@@ -329,12 +366,20 @@ public class ClassDsl
    }
 
    @Override
+   public ClassBodyStep constructor(ConstructorRenderable... constructors)
+   {
+      return addArray(new ClassDsl(this),
+                      constructors,
+                      classDsl -> classDsl.constructors::add);
+   }
+
+   @Override
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
@@ -349,7 +394,7 @@ public class ClassDsl
 
       if (extends_ != null)
       {
-         sb.append(extends_.apply(renderingContext));
+         sb.append(extends_.render(renderingContext));
       }
 
       renderElement(sb, "implements ", implements_, " ", renderingContext, ", ");

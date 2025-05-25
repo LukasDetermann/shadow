@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.field.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -11,7 +13,6 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
@@ -21,10 +22,10 @@ public class FieldDsl
                  FieldNameStep,
                  FieldInitializationStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
-   private Function<RenderingContext, String> type;
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
+   private Renderable type;
    private String name;
    private String initializer;
 
@@ -61,6 +62,14 @@ public class FieldDsl
                               annotation,
                               (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
                               fieldDsl -> fieldDsl.annotations::add);
+   }
+
+   @Override
+   public FieldModifierStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new FieldDsl(this),
+                      annotation,
+                      fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
@@ -206,20 +215,20 @@ public class FieldDsl
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext))
+         sb.append(javadoc.render(renderingContext))
            .append("\n");
       }
       if (!annotations.isEmpty())
       {
-         sb.append(this.annotations.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining("\n")))
+         sb.append(this.annotations.stream().map(renderer -> renderer.render(renderingContext)).collect(joining("\n")))
            .append('\n');
       }
       if (!modifiers.isEmpty())
       {
-         sb.append(modifiers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(" ")))
+         sb.append(modifiers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(" ")))
            .append(' ');
       }
-      sb.append(type.apply(renderingContext))
+      sb.append(type.render(renderingContext))
         .append(' ');
 
       sb.append(name);

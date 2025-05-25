@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.List;
@@ -15,43 +16,48 @@ import static java.util.stream.Collectors.joining;
 interface DslSupport
 {
    static <INSTANCE, TYPE> INSTANCE addTypeRenderer(INSTANCE instance,
-                                                    TYPE string,
-                                                    Function<INSTANCE, Consumer<Function<RenderingContext, TYPE>>> toAddToSupplier)
+                                                    String string,
+                                                    Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
-      return addTypeRenderer(instance, string, (renderingContext, s) -> s, toAddToSupplier);
+      return addTypeRenderer(instance, renderingContext -> string, toAddToSupplier);
    }
 
-
-   static <INSTANCE, FROM, TO> INSTANCE addTypeRenderer(INSTANCE instance,
+   static <INSTANCE, FROM> INSTANCE addTypeRenderer(INSTANCE instance,
                                                         FROM type,
-                                                        BiFunction<RenderingContext, FROM, TO> renderer,
-                                                        Function<INSTANCE, Consumer<Function<RenderingContext, TO>>> toAddToSupplier)
+                                                        BiFunction<RenderingContext, FROM, String> renderer,
+                                                        Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
-      requireNonNull(type);
+      return addTypeRenderer(instance, renderingContext -> renderer.apply(renderingContext, type), toAddToSupplier);
+   }
 
-      Consumer<Function<RenderingContext, TO>> renderingConsumer = toAddToSupplier.apply(instance);
+   static <INSTANCE, TYPE> INSTANCE addTypeRenderer(INSTANCE instance,
+                                                    Renderable renderable,
+                                                    Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
+   {
+      requireNonNull(renderable);
 
-      requireNonNull(type);
-      renderingConsumer.accept(renderingContext -> renderer.apply(renderingContext, type));
+      Consumer<Renderable> renderingConsumer = toAddToSupplier.apply(instance);
+
+      renderingConsumer.accept(renderable);
 
       return instance;
    }
 
    static <INSTANCE> INSTANCE addArrayRenderer(INSTANCE instance,
                                                String[] strings,
-                                               Function<INSTANCE, Consumer<Function<RenderingContext, String>>> toAddToSupplier)
+                                               Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
       return addArrayRenderer(instance, strings, (renderingContext, s) -> s, toAddToSupplier);
    }
 
-   static <INSTANCE, FROM, TO> INSTANCE addArrayRenderer(INSTANCE instance,
+   static <INSTANCE, FROM> INSTANCE addArrayRenderer(INSTANCE instance,
                                                          FROM[] types,
-                                                         BiFunction<RenderingContext, FROM, TO> renderer,
-                                                         Function<INSTANCE, Consumer<Function<RenderingContext, TO>>> toAddToSupplier)
+                                                         BiFunction<RenderingContext, FROM, String> renderer,
+                                                         Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
       requireNonNull(types);
 
-      Consumer<Function<RenderingContext, TO>> renderingConsumer = toAddToSupplier.apply(instance);
+      Consumer<Renderable> renderingConsumer = toAddToSupplier.apply(instance);
 
       for (FROM type : types)
       {
@@ -88,16 +94,16 @@ interface DslSupport
    }
 
    static <INSTANCE, TYPE> INSTANCE setTypeRenderer(INSTANCE instance,
-                                                    TYPE type,
-                                                    BiConsumer<INSTANCE, Function<RenderingContext, TYPE>> toAddToSupplier)
+                                                    String string,
+                                                    BiConsumer<INSTANCE, Renderable> toAddToSupplier)
    {
-      return setTypeRenderer(instance, type, (renderingContext, o) -> o, toAddToSupplier);
+      return setTypeRenderer(instance, string, (renderingContext, o) -> o, toAddToSupplier);
    }
 
-   static <INSTANCE, FROM, TO> INSTANCE setTypeRenderer(INSTANCE instance,
+   static <INSTANCE, FROM> INSTANCE setTypeRenderer(INSTANCE instance,
                                                         FROM type,
-                                                        BiFunction<RenderingContext, FROM, TO> renderer,
-                                                        BiConsumer<INSTANCE, Function<RenderingContext, TO>> toAddToSupplier)
+                                                        BiFunction<RenderingContext, FROM, String> renderer,
+                                                        BiConsumer<INSTANCE, Renderable> toAddToSupplier)
    {
       requireNonNull(type);
 
@@ -130,32 +136,32 @@ interface DslSupport
    }
 
    static void renderElement(StringBuilder sb,
-                             List<Function<RenderingContext, String>> renderers,
+                             List<Renderable> renderers,
                              String after,
                              RenderingContext renderingContext,
                              String delimiter)
    {
       if (!renderers.isEmpty())
       {
-         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
          sb.append(after);
       }
    }
 
    static void renderElement(StringBuilder sb,
-                             List<Function<RenderingContext, String>> renderers,
+                             List<Renderable> renderers,
                              RenderingContext renderingContext,
                              String delimiter)
    {
       if (!renderers.isEmpty())
       {
-         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
       }
    }
 
    static void renderElement(StringBuilder sb,
                              String before,
-                             List<Function<RenderingContext, String>> renderers,
+                             List<Renderable> renderers,
                              String after,
                              RenderingContext renderingContext,
                              String delimiter)
@@ -163,21 +169,21 @@ interface DslSupport
       if (!renderers.isEmpty())
       {
          sb.append(before);
-         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
          sb.append(after);
       }
    }
 
    static void renderElement(StringBuilder sb,
                              String before,
-                             List<Function<RenderingContext, String>> renderers,
+                             List<Renderable> renderers,
                              RenderingContext renderingContext,
                              String delimiter)
    {
       if (!renderers.isEmpty())
       {
          sb.append(before);
-         sb.append(renderers.stream().map(renderer -> renderer.apply(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
       }
    }
 }

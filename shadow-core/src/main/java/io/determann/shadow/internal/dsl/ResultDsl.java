@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.result.ResultRenderable;
 import io.determann.shadow.api.renderer.Renderer;
@@ -9,7 +11,6 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -17,8 +18,8 @@ public class ResultDsl
       implements ResultAnnotateStep,
                  ResultRenderable
 {
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private Function<RenderingContext, String> type;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private Renderable type;
 
    public ResultDsl()
    {
@@ -47,6 +48,14 @@ public class ResultDsl
    }
 
    @Override
+   public ResultAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new ResultDsl(this),
+                      annotation,
+                      resultDsl -> resultDsl.annotations::add);
+   }
+
+   @Override
    public ResultRenderable type(String type)
    {
       return setTypeRenderer(new ResultDsl(this),
@@ -70,7 +79,7 @@ public class ResultDsl
 
       renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(type.apply(renderingContext));
+      sb.append(type.render(renderingContext));
 
       return sb.toString();
    }

@@ -1,5 +1,6 @@
 package io.determann.shadow.api.dsl.parameter;
 
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 public interface ParameterAnnotateStep
@@ -8,4 +9,6 @@ public interface ParameterAnnotateStep
    ParameterAnnotateStep annotate(String... annotation);
 
    ParameterAnnotateStep annotate(C_AnnotationUsage... annotation);
+
+   ParameterAnnotateStep annotate(AnnotationUsageRenderable... annotation);
 }

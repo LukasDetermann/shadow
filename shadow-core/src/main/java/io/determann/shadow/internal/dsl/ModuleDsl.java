@@ -1,6 +1,13 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.module.*;
+import io.determann.shadow.api.dsl.opens.OpensRenderable;
+import io.determann.shadow.api.dsl.provides.ProvidesRenderable;
+import io.determann.shadow.api.dsl.requires.RequiresRenderable;
+import io.determann.shadow.api.dsl.uses.UsesRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -8,7 +15,6 @@ import io.determann.shadow.api.shadow.directive.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
@@ -17,14 +23,14 @@ public class ModuleDsl
       implements ModuleJavaDocStep,
                  ModuleRequiresStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
    private String name;
-   private final List<Function<RenderingContext, String>> requires = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> exports = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> opens = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> uses = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> provides = new ArrayList<>();
+   private final List<Renderable> requires = new ArrayList<>();
+   private final List<Renderable> exports = new ArrayList<>();
+   private final List<Renderable> opens = new ArrayList<>();
+   private final List<Renderable> uses = new ArrayList<>();
+   private final List<Renderable> provides = new ArrayList<>();
 
    public ModuleDsl()
    {
@@ -63,6 +69,14 @@ public class ModuleDsl
    }
 
    @Override
+   public ModuleAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new ModuleDsl(this),
+                      annotation,
+                      moduleDsl -> moduleDsl.annotations::add);
+   }
+
+   @Override
    public ModuleRequiresStep name(String name)
    {
       return setType(new ModuleDsl(this), name, (moduleDsl, s) -> moduleDsl.name = s);
@@ -84,6 +98,14 @@ public class ModuleDsl
    }
 
    @Override
+   public ModuleRequiresStep requires(RequiresRenderable requires)
+   {
+      return addTypeRenderer(new ModuleDsl(this),
+                             requires,
+                             moduleDsl -> moduleDsl.requires::add);
+   }
+
+   @Override
    public ModuleExportsStep exports(String exports)
    {
       return addTypeRenderer(new ModuleDsl(this), exports, moduleDsl -> moduleDsl.exports::add);
@@ -95,6 +117,14 @@ public class ModuleDsl
       return addTypeRenderer(new ModuleDsl(this),
                              exports,
                              (renderingContext, exports1) -> Renderer.render(exports1).declaration(renderingContext),
+                             moduleDsl -> moduleDsl.exports::add);
+   }
+
+   @Override
+   public ModuleExportsStep exports(ExportsRenderable exports)
+   {
+      return addTypeRenderer(new ModuleDsl(this),
+                             exports,
                              moduleDsl -> moduleDsl.exports::add);
    }
 
@@ -114,6 +144,14 @@ public class ModuleDsl
    }
 
    @Override
+   public ModuleOpensStep opens(OpensRenderable opens)
+   {
+      return addTypeRenderer(new ModuleDsl(this),
+                             opens,
+                             moduleDsl -> moduleDsl.opens::add);
+   }
+
+   @Override
    public ModuleUsesStep uses(String uses)
    {
       return addTypeRenderer(new ModuleDsl(this), uses, moduleDsl -> moduleDsl.uses::add);
@@ -125,6 +163,14 @@ public class ModuleDsl
       return addTypeRenderer(new ModuleDsl(this),
                              uses,
                              (renderingContext, uses1) -> Renderer.render(uses1).declaration(renderingContext),
+                             moduleDsl -> moduleDsl.uses::add);
+   }
+
+   @Override
+   public ModuleUsesStep uses(UsesRenderable uses)
+   {
+      return addTypeRenderer(new ModuleDsl(this),
+                             uses,
                              moduleDsl -> moduleDsl.uses::add);
    }
 
@@ -144,12 +190,20 @@ public class ModuleDsl
    }
 
    @Override
+   public ModuleProvidesStep provides(ProvidesRenderable provides)
+   {
+      return addTypeRenderer(new ModuleDsl(this),
+                             provides,
+                             moduleDsl -> moduleDsl.provides::add);
+   }
+
+   @Override
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
@@ -159,11 +213,11 @@ public class ModuleDsl
       sb.append(name);
       sb.append(" {\n");
 
-      sb.append(requires.stream().map(renderer -> renderer.apply(renderingContext) + "\n").collect(joining()));
-      sb.append(exports.stream().map(renderer -> renderer.apply(renderingContext) + "\n").collect(joining()));
-      sb.append(opens.stream().map(renderer -> renderer.apply(renderingContext) + "\n").collect(joining()));
-      sb.append(uses.stream().map(renderer -> renderer.apply(renderingContext) + "\n").collect(joining()));
-      sb.append(provides.stream().map(renderer -> renderer.apply(renderingContext) + "\n").collect(joining()));
+      sb.append(requires.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
+      sb.append(exports.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
+      sb.append(opens.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
+      sb.append(uses.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
+      sb.append(provides.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
 
       sb.append('}');
 

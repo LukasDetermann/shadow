@@ -1,7 +1,7 @@
 package io.determann.shadow.api.dsl.annotation;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 
-public interface AnnotationRenderable extends Renderable
+public interface AnnotationRenderable extends DeclaredRenderable
 {
 }

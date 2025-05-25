@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.parameter.*;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -11,7 +13,6 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -20,9 +21,9 @@ public class ParameterDsl
                  ParameterNameStep,
                  ParameterVarargsStep
 {
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private final List<Renderable> annotations = new ArrayList<>();
    private boolean isFinal = false;
-   private Function<RenderingContext, String> type;
+   private Renderable type;
    private String name;
    private boolean isVarArgs = false;
 
@@ -52,6 +53,14 @@ public class ParameterDsl
                               annotation,
                               (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                               parameterDsl -> parameterDsl.annotations::add);
+   }
+
+   @Override
+   public ParameterAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new ParameterDsl(this),
+                      annotation,
+                      parameterDsl -> parameterDsl.annotations::add);
    }
 
    @Override
@@ -125,7 +134,7 @@ public class ParameterDsl
       {
          sb.append("final ");
       }
-      sb.append(type.apply(renderingContext));
+      sb.append(type.render(renderingContext));
       if (isVarArgs)
       {
          sb.append("...");

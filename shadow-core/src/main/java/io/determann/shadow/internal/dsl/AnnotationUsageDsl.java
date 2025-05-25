@@ -1,8 +1,10 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageNameStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageValueStep;
+import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
@@ -10,19 +12,17 @@ import io.determann.shadow.api.shadow.type.C_Annotation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
-import static io.determann.shadow.internal.dsl.DslSupport.setType;
-import static io.determann.shadow.internal.dsl.DslSupport.setTypeRenderer;
+import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class AnnotationUsageDsl
       implements AnnotationUsageTypeStep,
                  AnnotationUsageNameStep,
                  AnnotationUsageValueStep
 {
-   private Function<RenderingContext, String> type;
-   private final List<Function<RenderingContext, String>> names = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> values = new ArrayList<>();
+   private Renderable type;
+   private final List<Renderable> names = new ArrayList<>();
+   private final List<Renderable> values = new ArrayList<>();
 
    public AnnotationUsageDsl()
    {
@@ -56,7 +56,7 @@ public class AnnotationUsageDsl
    public AnnotationUsageValueStep noName()
    {
       return setType(new AnnotationUsageDsl(this),
-                     (Function<RenderingContext, String>) renderingContext -> "",
+                     (Renderable) renderingContext -> "",
                      (annotationUsageDsl, renderer) -> annotationUsageDsl.names.add(renderer));
    }
 
@@ -79,6 +79,14 @@ public class AnnotationUsageDsl
    }
 
    @Override
+   public AnnotationUsageNameStep value(AnnotationValueRenderable annotationValue)
+   {
+      return addTypeRenderer(new AnnotationUsageDsl(this),
+                             annotationValue,
+                             annotationUsageDsl -> annotationUsageDsl.values::add);
+   }
+
+   @Override
    public AnnotationUsageNameStep value(String annotationValue)
    {
       return setTypeRenderer(new AnnotationUsageDsl(this),
@@ -90,12 +98,12 @@ public class AnnotationUsageDsl
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
-      sb.append(type.apply(renderingContext));
+      sb.append(type.render(renderingContext));
 
       for (int i = 0; i < names.size(); i++)
       {
-         sb.append(names.get(i).apply(renderingContext));
-         sb.append(values.get(i).apply(renderingContext));
+         sb.append(names.get(i).render(renderingContext));
+         sb.append(values.get(i).render(renderingContext));
       }
 
       return sb.toString();

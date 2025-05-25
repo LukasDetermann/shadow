@@ -1,6 +1,11 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.method.*;
+import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
+import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
+import io.determann.shadow.api.dsl.result.ResultRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -14,7 +19,6 @@ import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -23,15 +27,15 @@ public class MethodDsl
                  MethodNameStep,
                  MethodReceiverStep
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> modifiers = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> generics = new ArrayList<>();
-   private Function<RenderingContext, String> result;
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
+   private final List<Renderable> generics = new ArrayList<>();
+   private Renderable result;
    private String name;
-   private Function<RenderingContext, String> receiver;
-   private final List<Function<RenderingContext, String>> parameters = new ArrayList<>();
-   private final List<Function<RenderingContext, String>> exceptions = new ArrayList<>();
+   private Renderable receiver;
+   private final List<Renderable> parameters = new ArrayList<>();
+   private final List<Renderable> exceptions = new ArrayList<>();
    private String body;
 
    public MethodDsl()
@@ -80,6 +84,14 @@ public class MethodDsl
    }
 
    @Override
+   public MethodParameterStep receiver(ReceiverRenderable receiver)
+   {
+      return setType(new MethodDsl(this),
+                     receiver,
+                     (methodDsl, receiverRenderable) -> methodDsl.receiver = receiverRenderable);
+   }
+
+   @Override
    public MethodParameterStep parameter(String... parameter)
    {
       return addArrayRenderer(new MethodDsl(this), parameter, methodDsl -> methodDsl.parameters::add);
@@ -92,6 +104,14 @@ public class MethodDsl
                               parameter,
                               (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                               methodDsl -> methodDsl.parameters::add);
+   }
+
+   @Override
+   public MethodParameterStep parameter(ParameterRenderable... parameter)
+   {
+      return addArray(new MethodDsl(this),
+                      parameter,
+                      methodDsl -> methodDsl.parameters::add);
    }
 
    @Override
@@ -128,6 +148,14 @@ public class MethodDsl
                               annotation,
                               (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                               methodDsl -> methodDsl.annotations::add);
+   }
+
+   @Override
+   public MethodAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new MethodDsl(this),
+                      annotation,
+                      methodDsl -> methodDsl.annotations::add);
    }
 
    @Override
@@ -257,6 +285,14 @@ public class MethodDsl
    }
 
    @Override
+   public MethodNameStep result(ResultRenderable result)
+   {
+      return setType(new MethodDsl(this),
+                     result,
+                     (methodDsl, resultRenderable) -> methodDsl.result = result);
+   }
+
+   @Override
    public MethodNameStep resultType(String resultType)
    {
       return setTypeRenderer(new MethodDsl(this), resultType, (methodDsl, function) -> methodDsl.result = function);
@@ -277,7 +313,7 @@ public class MethodDsl
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
@@ -287,14 +323,14 @@ public class MethodDsl
 
       if (result != null)
       {
-         sb.append(result.apply(renderingContext));
+         sb.append(result.render(renderingContext));
          sb.append(' ');
       }
       sb.append(name);
       sb.append('(');
       if (receiver != null)
       {
-         sb.append(receiver.apply(renderingContext));
+         sb.append(receiver.render(renderingContext));
          sb.append(' ');
          if (!parameters.isEmpty())
          {

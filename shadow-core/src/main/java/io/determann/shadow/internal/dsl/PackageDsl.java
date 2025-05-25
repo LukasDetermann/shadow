@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.package_.PackageAnnotateStep;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
@@ -9,7 +11,6 @@ import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -17,8 +18,8 @@ public class PackageDsl
       implements PackageJavaDocStep,
                  PackageRenderable
 {
-   private Function<RenderingContext, String> javadoc;
-   private final List<Function<RenderingContext, String>> annotations = new ArrayList<>();
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
    private String name;
 
    public PackageDsl()
@@ -54,6 +55,14 @@ public class PackageDsl
    }
 
    @Override
+   public PackageAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return addArray(new PackageDsl(this),
+                      annotation,
+                      packageDsl -> packageDsl.annotations::add);
+   }
+
+   @Override
    public PackageRenderable name(String name)
    {
       return setType(new PackageDsl(this), name, (packageDsl, s) -> packageDsl.name = s);
@@ -65,7 +74,7 @@ public class PackageDsl
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.apply(renderingContext));
+         sb.append(javadoc.render(renderingContext));
          sb.append("\n");
       }
 
