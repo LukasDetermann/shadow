@@ -14,6 +14,7 @@ import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Constructor;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Generic;
@@ -23,13 +24,22 @@ import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ClassDsl
-      implements ClassJavaDocStep,
+      implements ClassCopyrightHeaderStep,
+                 ClassImportStep,
                  ClassGenericStep
 {
+   /// optional and only for files
+   private String copyright;
+   private String package_;
+   private final List<Renderable> imports = new ArrayList<>();
+
+   /// for all
    private Renderable javadoc;
    private final List<Renderable> annotations = new ArrayList<>();
    private final List<Renderable> modifiers = new ArrayList<>();
@@ -52,6 +62,10 @@ public class ClassDsl
 
    private ClassDsl(ClassDsl other)
    {
+      this.copyright = other.copyright;
+      this.package_ = other.package_;
+      this.imports.addAll(other.imports);
+
       this.javadoc = other.javadoc;
       this.annotations.addAll(other.annotations);
       this.modifiers.addAll(other.modifiers);
@@ -374,9 +388,106 @@ public class ClassDsl
    }
 
    @Override
+   public ClassPackageStep copyright(String copyrightHeader)
+   {
+      return setType(new ClassDsl(this),
+                     copyrightHeader,
+                     (classDsl, string) -> classDsl.copyright = string);
+   }
+
+   @Override
+   public ClassImportStep package_(String packageName)
+   {
+      return setType(new ClassDsl(this),
+                     packageName,
+                     (classDsl, string) -> classDsl.package_ = string);
+   }
+
+   @Override
+   public ClassImportStep package_(C_Package aPackage)
+   {
+      return setType(new ClassDsl(this),
+                     aPackage,
+                     cPackage -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                     (classDsl, string) -> classDsl.package_ = string);
+   }
+
+   @Override
+   public ClassImportStep import_(String... name)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              name,
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
+   public ClassImportStep import_(C_Declared... declared)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              declared,
+                              (renderingContext, declared1) -> requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
+   public ClassImportStep import_(C_Package... cPackages)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              cPackages,
+                              (renderingContext, aPackage) -> requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
+   public ClassImportStep staticImport(String... name)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              name,
+                              (renderingContext, string) -> "static " + string,
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
+   public ClassImportStep staticImport(C_Declared... declared)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              declared,
+                              (renderingContext, declared1) -> "static " + requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
+   public ClassImportStep staticImport(C_Package... cPackages)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              cPackages,
+                              (renderingContext, aPackage) -> "static " + requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              classDsl -> classDsl.imports::add);
+   }
+
+   @Override
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
+      if (copyright != null)
+      {
+         sb.append(copyright);
+         sb.append('\n');
+      }
+
+      if (package_ != null)
+      {
+         sb.append("package ");
+         sb.append(package_);
+         sb.append(';');
+      }
+
+      renderElement(sb, "import ", imports, ";", renderingContext, "\n");
+      if (!imports.isEmpty())
+      {
+         sb.append("\n\n");
+      }
+
       if (javadoc != null)
       {
          sb.append(javadoc.render(renderingContext));

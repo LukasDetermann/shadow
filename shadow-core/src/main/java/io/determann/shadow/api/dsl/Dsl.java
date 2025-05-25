@@ -1,8 +1,10 @@
 package io.determann.shadow.api.dsl;
 
+import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.annotation.AnnotationJavaDocStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
+import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.class_.ClassJavaDocStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
@@ -13,6 +15,7 @@ import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
+import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
@@ -46,7 +49,12 @@ public interface Dsl
       return new MethodDsl();
    }
 
-   static ClassJavaDocStep class_()
+   static ClassCopyrightHeaderStep class_()
+   {
+      return new ClassDsl();
+   }
+
+   static ClassJavaDocStep innerClass()
    {
       return new ClassDsl();
    }
@@ -101,6 +109,13 @@ public interface Dsl
       return new ParameterDsl();
    }
 
+   static ParameterRenderable parameter(String type, String name)
+   {
+      return new ParameterDsl()
+            .type(type)
+            .name(name);
+   }
+
    static ReceiverAnnotateStep receiver()
    {
       return new ReceiverDsl();
@@ -116,7 +131,12 @@ public interface Dsl
       return new ResultDsl();
    }
 
-   static AnnotationJavaDocStep annotation()
+   static AnnotationCopyrightHeaderStep annotation()
+   {
+      return new AnnotationDsl();
+   }
+
+   static AnnotationJavaDocStep innerAnnotation()
    {
       return new AnnotationDsl();
    }
