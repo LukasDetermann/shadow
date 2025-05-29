@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
-public class Provider
+public final class Provider
 {
    private Provider()
    {

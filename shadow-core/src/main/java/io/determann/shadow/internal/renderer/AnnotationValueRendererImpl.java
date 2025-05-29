@@ -35,8 +35,8 @@ public record AnnotationValueRendererImpl(C_AnnotationValue annotationValue)
                  case C_Type v -> Dsl.annotationValue(v);
                  case C_AnnotationUsage v -> Dsl.annotationValue(v);
                  case List<?> v ->
-                    //noinspection unchecked
-                       Dsl.annotationValue(((List<C_AnnotationValue>) v));
+                    //noinspection SuspiciousToArrayCall
+                       Dsl.annotationValue(v.toArray(C_AnnotationValue[]::new));
                  default -> throw new IllegalStateException("Unexpected value: " + value);
               }).render(renderingContext);
    }

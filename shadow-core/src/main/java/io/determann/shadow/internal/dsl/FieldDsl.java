@@ -174,7 +174,7 @@ public class FieldDsl
    @Override
    public FieldNameStep type(String type)
    {
-      return setTypeRenderer(new FieldDsl(this), type, (fieldDsl, function) -> this.type = function);
+      return setTypeRenderer(new FieldDsl(this), type, (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
@@ -183,7 +183,7 @@ public class FieldDsl
       return setTypeRenderer(new FieldDsl(this),
                              primitive,
                              (renderingContext, primitive1) -> Renderer.render(primitive1).type(renderingContext),
-                             (fieldDsl, function) -> this.type = function);
+                             (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
@@ -192,7 +192,7 @@ public class FieldDsl
       return setTypeRenderer(new FieldDsl(this),
                              array,
                              (renderingContext, array1) -> Renderer.render(array1).type(renderingContext),
-                             (fieldDsl, function) -> this.type = function);
+                             (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
@@ -201,7 +201,7 @@ public class FieldDsl
       return setTypeRenderer(new FieldDsl(this),
                              declared,
                              (renderingContext, declared1) -> Renderer.render(declared1).type(renderingContext),
-                             (fieldDsl, function) -> this.type = function);
+                             (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override

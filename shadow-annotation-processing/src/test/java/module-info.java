@@ -11,4 +11,7 @@ module io.determann.shadow.annotation.processing.test {
    requires io.determann.shadow.tck;
 
    provides Tck with io.determann.shadow.annotation_processing.TckTest;
+
+   opens io.determann.shadow.annotation_processing to  org.junit.platform.commons;
+   opens io.determann.shadow.annotation_processing.shadow.type to  org.junit.platform.commons;
 }

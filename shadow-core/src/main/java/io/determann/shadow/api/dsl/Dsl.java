@@ -30,11 +30,11 @@ import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.dsl.*;
 
-import java.util.List;
+import java.util.Arrays;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
-import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
 public interface Dsl
@@ -146,69 +146,86 @@ public interface Dsl
       return new AnnotationUsageDsl();
    }
 
+   /// {@code Dsl.annotationValue("value").render(DEFAULT)} -> {@code "value"}
    static AnnotationValueRenderable annotationValue(String value)
    {
+      requireNonNull(value);
       return renderingContext -> '\"' + value + '\"';
    }
 
+   /// {@code Dsl.annotationValue(true).render(DEFAULT)} -> {@code true}
    static AnnotationValueRenderable annotationValue(boolean value)
    {
       return renderingContext -> String.valueOf(value);
    }
 
+   /// {@code Dsl.annotationValue((byte) 1).render(DEFAULT)} -> {@code 1}
    static AnnotationValueRenderable annotationValue(byte value)
    {
       return renderingContext -> Byte.toString(value);
    }
 
+   /// {@code Dsl.annotationValue((short) 2).render(DEFAULT)} -> {@code 2}
    static AnnotationValueRenderable annotationValue(short value)
    {
       return renderingContext -> Short.toString(value);
    }
 
+   /// {@code Dsl.annotationValue(3).render(DEFAULT)} -> {@code 3}
    static AnnotationValueRenderable annotationValue(int value)
    {
       return renderingContext -> Integer.toString(value);
    }
 
+   /// {@code Dsl.annotationValue(3L).render(DEFAULT)} -> {@code 3L}
    static AnnotationValueRenderable annotationValue(long value)
    {
       return renderingContext -> Long.toString(value) + 'L';
    }
 
+   /// {@code Dsl.annotationValue('c').render(DEFAULT)} -> {@code 'c'}
    static AnnotationValueRenderable annotationValue(char value)
    {
       return renderingContext -> '\'' + Character.toString(value) + '\'';
    }
 
+   /// {@code Dsl.annotationValue(4F).render(DEFAULT)} -> {@code 4.0F}
    static AnnotationValueRenderable annotationValue(float value)
    {
       return renderingContext -> Float.toString(value) + 'F';
    }
 
+   /// {@code Dsl.annotationValue(5D).render(DEFAULT)} -> {@code 5.0D}
    static AnnotationValueRenderable annotationValue(double value)
    {
       return renderingContext -> Double.toString(value) + 'D';
    }
 
+   /// {@code Dsl.annotationValue(cEnumConstant).render(DEFAULT)} -> {@code org.example.Enum.CONSTANT}
    static AnnotationValueRenderable annotationValue(C_EnumConstant value)
    {
+      requireNonNull(value);
       return renderingContext -> Renderer.render(value).invocation(renderingContext);
    }
 
+   /// {@code Dsl.annotationValue(Enum.CONSTANT).render(DEFAULT)} -> {@code org.example.Enum.CONSTANT}
    static AnnotationValueRenderable annotationValue(Enum<?> value)
    {
+      requireNonNull(value);
       return renderingContext -> value.getClass().getName() + '.' + value.name();
    }
 
+   /// {@code Dsl.annotationValue(String.class).render(DEFAULT)} -> {@code java.lang.String.class}
    static AnnotationValueRenderable annotationValue(Class<?> value)
    {
+      requireNonNull(value);
       return renderingContext -> value.getName() + ".class";
    }
 
-   /// @see #annotationValue(Class)
+   /// {@code Dsl.annotationValue(cArray).render(DEFAULT)} -> {@code boolean[].class}
    static AnnotationValueRenderable annotationValue(C_Type value)
    {
+      requireNonNull(value);
       return renderingContext ->
             switch (value)
             {
@@ -225,23 +242,32 @@ public interface Dsl
             + ".class";
    }
 
+   /// {@code Dsl.annotationValue(cAnnotationUsage).render(DEFAULT)} -> {@code @org.example.MyAnnotation}
    static AnnotationValueRenderable annotationValue(C_AnnotationUsage value)
    {
+      requireNonNull(value);
       return renderingContext -> Renderer.render(value).declaration(renderingContext);
    }
 
+   /// {@code Dsl.annotationValue(cInt, cFloat).render(DEFAULT)} -> {@code {1, 1.0F}}
    static AnnotationValueRenderable annotationValue(C_AnnotationValue... value)
    {
-      return annotationValue(asList(value));
+      requireNonNull(value);
+      return renderingContext -> '{' +
+                                 Arrays.stream(value)
+                                       .map(annotationValue -> Renderer.render(annotationValue).declaration(renderingContext))
+                                       .collect(joining(", ")) +
+                                 '}';
    }
 
-   static AnnotationValueRenderable annotationValue(List<? extends C_AnnotationValue> value)
+   /// {@code Dsl.annotationValue(Dsl.annotationValue(1), Dsl.annotationValue(1F)).render(DEFAULT)} -> {@code {1, 1.0F}}
+   static AnnotationValueRenderable annotationValue(AnnotationValueRenderable... value)
    {
+      requireNonNull(value);
       return renderingContext -> '{' +
-                                 value.stream()
-                                      .map(C_AnnotationValue.class::cast)
-                                      .map(annotationValue -> Renderer.render(annotationValue).declaration(renderingContext))
-                                      .collect(joining(", ")) +
+                                 Arrays.stream(value)
+                                       .map(annotationValue -> annotationValue.render(renderingContext))
+                                       .collect(joining(", ")) +
                                  '}';
    }
 }
