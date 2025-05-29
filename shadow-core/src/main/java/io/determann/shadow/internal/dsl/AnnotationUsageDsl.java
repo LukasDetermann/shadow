@@ -24,9 +24,7 @@ public class AnnotationUsageDsl
    private final List<Renderable> names = new ArrayList<>();
    private final List<Renderable> values = new ArrayList<>();
 
-   public AnnotationUsageDsl()
-   {
-   }
+   public AnnotationUsageDsl() {}
 
    private AnnotationUsageDsl(AnnotationUsageDsl other)
    {
@@ -98,12 +96,28 @@ public class AnnotationUsageDsl
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
+      sb.append('@');
       sb.append(type.render(renderingContext));
+
+      if (!names.isEmpty())
+      {
+         sb.append('(');
+      }
 
       for (int i = 0; i < names.size(); i++)
       {
          sb.append(names.get(i).render(renderingContext));
          sb.append(values.get(i).render(renderingContext));
+
+         if (names.size() > i + 1)
+         {
+            sb.append(", ");
+         }
+      }
+
+      if (!names.isEmpty())
+      {
+         sb.append(')');
       }
 
       return sb.toString();

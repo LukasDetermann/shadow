@@ -141,6 +141,7 @@ public interface Dsl
       return new AnnotationDsl();
    }
 
+   /// {@snippet file = "AnnotationUsageDslTest.java" region = "api"}
    static AnnotationUsageTypeStep annotationUsage()
    {
       return new AnnotationUsageDsl();

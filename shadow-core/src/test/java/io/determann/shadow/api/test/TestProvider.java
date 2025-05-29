@@ -33,13 +33,11 @@ public class TestProvider
 
    public static ProviderSpi provider()
    {
-      System.out.println("factory");
       return INSTANCE;
    }
 
    public TestProvider()
    {
-      System.out.println("constructor");
    }
 
    @Override
