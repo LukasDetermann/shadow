@@ -78,7 +78,10 @@ public class AnnotationDsl
    @Override
    public AnnotationAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new AnnotationDsl(this), annotation, annotationDsl -> annotationDsl.annotations::add);
+      return addArrayRenderer(new AnnotationDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              annotationDsl -> annotationDsl.annotations::add);
    }
 
    @Override

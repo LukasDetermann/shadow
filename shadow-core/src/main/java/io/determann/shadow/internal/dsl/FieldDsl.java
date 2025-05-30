@@ -52,7 +52,7 @@ public class FieldDsl
    @Override
    public FieldModifierStep annotate(String... annotation)
    {
-      return addArrayRenderer(new FieldDsl(this), annotation, fieldDsl -> fieldDsl.annotations::add);
+      return addArrayRenderer(new FieldDsl(this), annotation, (renderingContext, string) -> '@' + string, fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override

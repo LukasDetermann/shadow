@@ -128,6 +128,7 @@ public interface Dsl
       return new RecordComponentDsl();
    }
 
+   /// {@snippet file = "ResultDslTest.java" region = "api"}
    static ResultAnnotateStep result()
    {
       return new ResultDsl();

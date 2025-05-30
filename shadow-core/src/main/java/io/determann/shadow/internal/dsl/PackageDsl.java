@@ -42,7 +42,10 @@ public class PackageDsl
    @Override
    public PackageAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new PackageDsl(this), annotation, packageDsl -> packageDsl.annotations::add);
+      return addArrayRenderer(new PackageDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              packageDsl -> packageDsl.annotations::add);
    }
 
    @Override

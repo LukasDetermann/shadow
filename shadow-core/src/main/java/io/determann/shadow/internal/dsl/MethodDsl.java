@@ -138,7 +138,10 @@ public class MethodDsl
    @Override
    public MethodAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new MethodDsl(this), annotation, methodDsl -> methodDsl.annotations::add);
+      return addArrayRenderer(new MethodDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              methodDsl -> methodDsl.annotations::add);
    }
 
    @Override
@@ -319,7 +322,7 @@ public class MethodDsl
 
       renderElement(sb, annotations, "\n", renderingContext, "\n");
       renderElement(sb, modifiers, " ", renderingContext, " ");
-      renderElement(sb,"<", generics, "> ", renderingContext, ", ");
+      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
 
       if (result != null)
       {
@@ -341,7 +344,7 @@ public class MethodDsl
       renderElement(sb, parameters, renderingContext, ", ");
       sb.append(')');
 
-      renderElement(sb, " throws " ,exceptions, renderingContext, ", ");
+      renderElement(sb, " throws ", exceptions, renderingContext, ", ");
 
       sb.append(" {");
       if (body != null)

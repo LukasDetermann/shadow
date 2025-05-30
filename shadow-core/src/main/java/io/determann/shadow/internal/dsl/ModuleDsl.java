@@ -56,7 +56,10 @@ public class ModuleDsl
    @Override
    public ModuleAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ModuleDsl(this), annotation, moduleDsl -> moduleDsl.annotations::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              moduleDsl -> moduleDsl.annotations::add);
    }
 
    @Override

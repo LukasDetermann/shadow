@@ -1,0 +1,28 @@
+package io.determann.shadow.api.test.dsl;
+
+import io.determann.shadow.api.dsl.Dsl;
+import org.junit.jupiter.api.Test;
+
+import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class ResultDslTest
+{
+   @Test
+   void raw()
+   {
+      assertEquals("MyType", Dsl.result().type("MyType").render(DEFAULT));
+   }
+
+   @Test
+   void annotated()
+   {
+      //@start region="api"
+      assertEquals("@Annotation1 @Annotation2 MyType", Dsl.result()
+                          .annotate("Annotation1")
+                          .annotate("Annotation2")
+                          .type("MyType")
+                          .render(DEFAULT));
+      //@end
+   }
+}

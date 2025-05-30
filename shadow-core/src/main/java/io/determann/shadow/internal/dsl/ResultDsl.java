@@ -34,7 +34,10 @@ public class ResultDsl
    @Override
    public ResultAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ResultDsl(this), annotation, resultDsl -> resultDsl.annotations::add);
+      return addArrayRenderer(new ResultDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              resultDsl -> resultDsl.annotations::add);
    }
 
    @Override

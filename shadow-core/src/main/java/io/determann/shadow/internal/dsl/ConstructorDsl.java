@@ -115,7 +115,7 @@ public class ConstructorDsl
    @Override
    public ConstructorAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ConstructorDsl(this), annotation, constructorDsl -> constructorDsl.annotations::add);
+      return addArrayRenderer(new ConstructorDsl(this), annotation, (renderingContext, string) -> '@' + string,constructorDsl -> constructorDsl.annotations::add);
    }
 
    @Override

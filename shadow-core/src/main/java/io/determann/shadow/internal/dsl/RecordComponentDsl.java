@@ -36,7 +36,10 @@ public class RecordComponentDsl
    @Override
    public RecordComponentAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new RecordComponentDsl(this), annotation, recordComponentDsl -> recordComponentDsl.annotations::add);
+      return addArrayRenderer(new RecordComponentDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              recordComponentDsl -> recordComponentDsl.annotations::add);
    }
 
    @Override

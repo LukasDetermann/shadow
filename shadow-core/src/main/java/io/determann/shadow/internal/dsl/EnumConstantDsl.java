@@ -52,7 +52,7 @@ public class EnumConstantDsl
    @Override
    public EnumConstantAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new EnumConstantDsl(this), annotation, classDsl -> classDsl.annotations::add);
+      return addArrayRenderer(new EnumConstantDsl(this), annotation, (renderingContext, string) -> '@' + string,classDsl -> classDsl.annotations::add);
    }
 
    @Override

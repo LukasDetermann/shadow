@@ -30,7 +30,10 @@ public class ReceiverDsl
    @Override
    public ReceiverAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ReceiverDsl(this), annotation, receiverDsl -> receiverDsl.annotations::add);
+      return addArrayRenderer(new ReceiverDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              receiverDsl -> receiverDsl.annotations::add);
    }
 
    @Override

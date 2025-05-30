@@ -43,7 +43,10 @@ public class ParameterDsl
    @Override
    public ParameterAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ParameterDsl(this), annotation, parameterDsl -> parameterDsl.annotations::add);
+      return addArrayRenderer(new ParameterDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              parameterDsl -> parameterDsl.annotations::add);
    }
 
    @Override
