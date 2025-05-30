@@ -143,7 +143,7 @@ interface DslSupport
    {
       if (!renderers.isEmpty())
       {
-         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(delimiter)));
          sb.append(after);
       }
    }
@@ -155,7 +155,7 @@ interface DslSupport
    {
       if (!renderers.isEmpty())
       {
-         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(delimiter)));
       }
    }
 
@@ -169,7 +169,7 @@ interface DslSupport
       if (!renderers.isEmpty())
       {
          sb.append(before);
-         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(delimiter)));
          sb.append(after);
       }
    }
@@ -183,7 +183,7 @@ interface DslSupport
       if (!renderers.isEmpty())
       {
          sb.append(before);
-         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
+         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(delimiter)));
       }
    }
 }

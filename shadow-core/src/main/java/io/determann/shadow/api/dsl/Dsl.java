@@ -104,11 +104,13 @@ public interface Dsl
       return new PackageDsl();
    }
 
+   /// {@snippet file = "ParameterDslTest.java" region = "api"}
    static ParameterAnnotateStep parameter()
    {
       return new ParameterDsl();
    }
 
+   /// {@snippet file = "ParameterDslTest.java" region = "short-api"}
    static ParameterRenderable parameter(String type, String name)
    {
       return new ParameterDsl()
