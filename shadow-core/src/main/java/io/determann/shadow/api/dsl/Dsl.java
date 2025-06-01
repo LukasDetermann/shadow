@@ -10,6 +10,7 @@ import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
+import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
@@ -25,6 +26,7 @@ import io.determann.shadow.api.dsl.uses.UsesServiceStep;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
@@ -62,6 +64,78 @@ public interface Dsl
    static EnumConstantJavaDocStep enumConstant()
    {
       return new EnumConstantDsl();
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "constantStringStringString"}
+   static FieldRenderable constant(String type, String name, String initializer)
+   {
+      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
+   static FieldRenderable constant(C_FieldType type, String name, String initializer)
+   {
+      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "constantModifierStringStringString"}
+   static FieldRenderable constant(C_Modifier modifier, String type, String name, String initializer)
+   {
+      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
+   static FieldRenderable constant(C_Modifier modifier, C_FieldType type, String name, String initializer)
+   {
+      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldStringString"}
+   static FieldRenderable field(String type, String name)
+   {
+      return field().private_().type(type).name(name);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
+   static FieldRenderable field(C_FieldType type, String name)
+   {
+      return field().private_().type(type).name(name);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldStringStringString"}
+   static FieldRenderable field(String type, String name, String initializer)
+   {
+      return field().private_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
+   static FieldRenderable field(C_FieldType type, String name, String initializer)
+   {
+      return field().private_().type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringString"}
+   static FieldRenderable field(C_Modifier modifier, String type, String name)
+   {
+      return field().modifier(modifier).type(type).name(name);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
+   static FieldRenderable field(C_Modifier modifier, C_FieldType type, String name)
+   {
+      return field().modifier(modifier).type(type).name(name);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringStringString"}
+   static FieldRenderable field(C_Modifier modifier, String type, String name, String initializer)
+   {
+      return field().modifier(modifier).type(type).name(name).initializer(initializer);
+   }
+
+   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
+   static FieldRenderable field(C_Modifier modifier, C_FieldType type, String name, String initializer)
+   {
+      return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
    static FieldJavaDocStep field()

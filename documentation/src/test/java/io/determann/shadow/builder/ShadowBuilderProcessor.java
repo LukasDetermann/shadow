@@ -72,14 +72,13 @@ public class ShadowBuilderProcessor
                 .field(builderElements.stream().map(BuilderElement::field).toArray(FieldRenderable[]::new))
                 .method(builderElements.stream().map(BuilderElement::mutator).toArray(MethodRenderable[]::new))
                 .method("""
-                              public %1$s build() {
-                              %1$s %2$s = new %1$s();
-                              %3$s
-                              return %2$s;
-                           }
-                        """.formatted(toBuildQualifiedName,
-                                            builderVariableName,
-                                            setterInvocations))
+                           public %1$s build() {
+                           %1$s %2$s = new %1$s();
+                           %3$s
+                           return %2$s;
+                        }""".formatted(toBuildQualifiedName,
+                                       builderVariableName,
+                                       setterInvocations))
                 .render(RenderingContext.DEFAULT);
    }
 
@@ -91,7 +90,7 @@ public class ShadowBuilderProcessor
       String propertyName = property.getName();
       String type = Renderer.render(property.getType()).type(RenderingContext.DEFAULT);
 
-      FieldRenderable field = Dsl.field().private_().type(type).name(propertyName);
+      FieldRenderable field = Dsl.field(type, propertyName);
 
       ParameterRenderable propertyParam = Dsl.parameter(type, propertyName);
 
@@ -101,9 +100,8 @@ public class ShadowBuilderProcessor
                                     .name("with" + capitalize(propertyName))
                                     .parameter(propertyParam)
                                     .body("""
-                                             this.%1$s = %1$s;
-                                             return this;
-                                          """.formatted(propertyName));
+                                          this.%1$s = %1$s;
+                                          return this;""".formatted(propertyName));
 
       String toBuildSetterInvocation = builderVariableName + "." +
                                        property.getSetterOrThrow().getName() +

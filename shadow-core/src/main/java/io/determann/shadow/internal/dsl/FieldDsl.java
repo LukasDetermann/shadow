@@ -9,6 +9,8 @@ import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.shadow.type.C_FieldType;
+import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
 import java.util.ArrayList;
@@ -50,13 +52,13 @@ public class FieldDsl
    }
 
    @Override
-   public FieldModifierStep annotate(String... annotation)
+   public FieldAnnotateStep annotate(String... annotation)
    {
       return addArrayRenderer(new FieldDsl(this), annotation, (renderingContext, string) -> '@' + string, fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
-   public FieldModifierStep annotate(C_AnnotationUsage... annotation)
+   public FieldAnnotateStep annotate(C_AnnotationUsage... annotation)
    {
       return addArrayRenderer(new FieldDsl(this),
                               annotation,
@@ -65,7 +67,7 @@ public class FieldDsl
    }
 
    @Override
-   public FieldModifierStep annotate(AnnotationUsageRenderable... annotation)
+   public FieldAnnotateStep annotate(AnnotationUsageRenderable... annotation)
    {
       return addArray(new FieldDsl(this),
                       annotation,
@@ -75,7 +77,8 @@ public class FieldDsl
    @Override
    public FieldAdditionalNameStep initializer(String initializer)
    {
-      return setType(new Additional(this), initializer, (additional, s) -> additional.initializers.add(s));
+      // in this special the initializer needs to be added to the base field dsl to mach the count of names and initializers
+      return setType(new Additional(this), initializer, (additional, s) -> this.initializer = s);
    }
 
    @Override
@@ -178,30 +181,27 @@ public class FieldDsl
    }
 
    @Override
-   public FieldNameStep type(C_Primitive primitive)
+   public FieldNameStep type(C_FieldType type)
    {
       return setTypeRenderer(new FieldDsl(this),
-                             primitive,
-                             (renderingContext, primitive1) -> Renderer.render(primitive1).type(renderingContext),
+                             type,
+                             (renderingContext, type1) ->
+                                   switch (type1)
+                                   {
+                                      case C_Array cArray -> Renderer.render(cArray).type(renderingContext);
+                                      case C_Declared cDeclared -> Renderer.render(cDeclared).type(renderingContext);
+                                      case C_Generic cGeneric -> Renderer.render(cGeneric).type(renderingContext);
+                                      case C_Primitive cPrimitive -> Renderer.render(cPrimitive).type(renderingContext);
+                                   },
                              (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
-   public FieldNameStep type(C_Array array)
+   public FieldNameStep type(FieldTypeRenderable type)
    {
-      return setTypeRenderer(new FieldDsl(this),
-                             array,
-                             (renderingContext, array1) -> Renderer.render(array1).type(renderingContext),
-                             (fieldDsl, function) -> fieldDsl.type = function);
-   }
-
-   @Override
-   public FieldNameStep type(C_Declared declared)
-   {
-      return setTypeRenderer(new FieldDsl(this),
-                             declared,
-                             (renderingContext, declared1) -> Renderer.render(declared1).type(renderingContext),
-                             (fieldDsl, function) -> fieldDsl.type = function);
+      return setType(new FieldDsl(this),
+                     type,
+                     (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
@@ -278,6 +278,8 @@ public class FieldDsl
       public String render(RenderingContext renderingContext)
       {
          StringBuilder sb = new StringBuilder();
+
+         sb.append(fieldDsl.partialRender(renderingContext));
 
          for (int i = 0; i < initializers.size(); i++)
          {

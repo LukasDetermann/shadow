@@ -5,9 +5,9 @@ import io.determann.shadow.api.shadow.C_AnnotationUsage;
 
 public interface FieldAnnotateStep extends FieldModifierStep
 {
-   FieldModifierStep annotate(String... annotation);
+   FieldAnnotateStep annotate(String... annotation);
 
-   FieldModifierStep annotate(C_AnnotationUsage... annotation);
+   FieldAnnotateStep annotate(C_AnnotationUsage... annotation);
 
-   FieldModifierStep annotate(AnnotationUsageRenderable... annotation);
+   FieldAnnotateStep annotate(AnnotationUsageRenderable... annotation);
 }
