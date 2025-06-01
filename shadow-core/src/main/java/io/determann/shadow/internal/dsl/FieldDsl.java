@@ -9,7 +9,6 @@ import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_FieldType;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.renderer.RenderingContextWrapper;
@@ -183,7 +182,7 @@ public class FieldDsl
    }
 
    @Override
-   public FieldNameStep type(C_FieldType type)
+   public FieldNameStep type(FieldType type)
    {
       return setTypeRenderer(new FieldDsl(this),
                              type,

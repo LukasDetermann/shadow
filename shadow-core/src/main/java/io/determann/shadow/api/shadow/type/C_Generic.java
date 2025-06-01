@@ -1,5 +1,6 @@
 package io.determann.shadow.api.shadow.type;
 
+import io.determann.shadow.api.dsl.field.FieldType;
 import io.determann.shadow.api.shadow.C_Annotationable;
 import io.determann.shadow.api.shadow.C_Erasable;
 import io.determann.shadow.api.shadow.C_Nameable;
@@ -12,6 +13,6 @@ public non-sealed interface C_Generic
               C_Nameable,
               C_Annotationable,
               C_Erasable,
-              C_FieldType
+              FieldType
 {
 }

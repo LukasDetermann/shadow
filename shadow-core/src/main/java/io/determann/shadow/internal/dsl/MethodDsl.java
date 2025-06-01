@@ -126,7 +126,7 @@ public class MethodDsl
    {
       return addArrayRenderer(new MethodDsl(this),
                               exception,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, modifier) -> Renderer.render(modifier).type(renderingContext),
                               methodDsl -> methodDsl.exceptions::add);
    }
 

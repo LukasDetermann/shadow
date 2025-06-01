@@ -1,5 +1,6 @@
 package io.determann.shadow.api.shadow.type;
 
+import io.determann.shadow.api.dsl.field.FieldType;
 import io.determann.shadow.api.shadow.*;
 import io.determann.shadow.api.shadow.modifier.C_AccessModifiable;
 import io.determann.shadow.api.shadow.modifier.C_StrictfpModifiable;
@@ -16,6 +17,6 @@ public non-sealed interface C_Declared
               C_QualifiedNameable,
               C_ModuleEnclosed,
               C_Documented,
-              C_FieldType
+              FieldType
 {
 }
