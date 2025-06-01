@@ -4,6 +4,7 @@ import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
+import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
@@ -92,6 +93,14 @@ public class ConstructorDsl
    }
 
    @Override
+   public ConstructorParameterStep parameter(ParameterRenderable... parameter)
+   {
+      return addArray(new ConstructorDsl(this),
+                      parameter,
+                      constructorDsl -> constructorDsl.parameters::add);
+   }
+
+   @Override
    public ConstructorThrowsStep throws_(String... exception)
    {
       return addArrayRenderer(new ConstructorDsl(this), exception, constructorDsl -> constructorDsl.exceptions::add);
@@ -102,7 +111,7 @@ public class ConstructorDsl
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               exception,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, exception1) -> Renderer.render(exception1).type(renderingContext),
                               constructorDsl -> constructorDsl.exceptions::add);
    }
 
@@ -252,7 +261,6 @@ public class ConstructorDsl
       if (result != null)
       {
          sb.append(result.render(renderingContext));
-         sb.append(' ');
       }
       sb.append('(');
       if (receiver != null)
@@ -263,8 +271,9 @@ public class ConstructorDsl
             sb.append(", ");
          }
       }
+      renderElement(sb, parameters, renderingContext, ", ");
+      sb.append(')');
 
-      renderElement(sb, parameters, ")", renderingContext, ", ");
       renderElement(sb, " throws ", exceptions, renderingContext, ", ");
 
       sb.append(" {");

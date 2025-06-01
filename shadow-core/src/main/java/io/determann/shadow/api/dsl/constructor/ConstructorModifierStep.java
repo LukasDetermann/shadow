@@ -4,13 +4,13 @@ import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 public interface ConstructorModifierStep extends ConstructorGenericStep
 {
-   ConstructorGenericStep modifier(String... modifiers);
+   ConstructorModifierStep modifier(String... modifiers);
 
-   ConstructorGenericStep modifier(C_Modifier... modifiers);
+   ConstructorModifierStep modifier(C_Modifier... modifiers);
 
-   ConstructorGenericStep public_();
+   ConstructorModifierStep public_();
 
-   ConstructorGenericStep protected_();
+   ConstructorModifierStep protected_();
 
-   ConstructorGenericStep private_();
+   ConstructorModifierStep private_();
 }

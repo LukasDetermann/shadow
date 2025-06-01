@@ -41,6 +41,7 @@ import static java.util.stream.Collectors.joining;
 
 public interface Dsl
 {
+   /// {@snippet file = "ConstructorDslTest.java" region = "api"}
    static ConstructorJavaDocStep constructor()
    {
       return new ConstructorDsl();
@@ -138,6 +139,7 @@ public interface Dsl
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
+   /// {@snippet file = "FieldDslTest.java" region = "api"}
    static FieldJavaDocStep field()
    {
       return new FieldDsl();

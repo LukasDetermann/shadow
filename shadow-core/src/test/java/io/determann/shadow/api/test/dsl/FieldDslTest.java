@@ -82,6 +82,25 @@ class FieldDslTest
    }
 
    @Test
+   void api()
+   {
+      //@start region="api"
+      assertEquals("""
+                   @MyAnnotation
+                   private final static int I1 = 5;""",
+                   Dsl.field()
+                      .annotate("MyAnnotation")
+                      .private_()
+                      .final_()
+                      .static_()
+                      .type("int")
+                      .name("I1")
+                      .initializer("5")
+                      .render(DEFAULT));
+      //@end
+   }
+
+   @Test
    void constantStringStringString()
    {
       //@start region="constantStringStringString"
