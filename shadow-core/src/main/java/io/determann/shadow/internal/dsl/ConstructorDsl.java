@@ -4,6 +4,7 @@ import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -199,6 +200,14 @@ public class ConstructorDsl
                               generic,
                               (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                               constructorDsl -> constructorDsl.generics::add);
+   }
+
+   @Override
+   public ConstructorGenericStep generic(GenericRenderable... generic)
+   {
+      return addArray(new ConstructorDsl(this),
+                      generic,
+                      constructorDsl -> constructorDsl.generics::add);
    }
 
    @Override

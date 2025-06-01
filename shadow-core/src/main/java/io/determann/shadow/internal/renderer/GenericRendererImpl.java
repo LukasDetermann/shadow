@@ -17,9 +17,13 @@ public record GenericRendererImpl(C_Generic generic) implements GenericRenderer
 
       sb.append(RenderingSupport.annotations(context, generic, ' '));
 
-      if (context.isRenderNestedGenerics())
+      if (context.isGenericUsage())
       {
-         context.setRenderNestedGenerics(false);
+         sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME));
+      }
+      else
+      {
+         context.setGenericUsage(true);
 
          C_Type aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
          if (aExtends instanceof C_Declared declared && "java.lang.Object".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)))
@@ -30,11 +34,7 @@ public record GenericRendererImpl(C_Generic generic) implements GenericRenderer
          {
             sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME)).append(" extends ").append(TypeRendererImpl.type(context, aExtends));
          }
-         context.setRenderNestedGenerics(true);
-      }
-      else
-      {
-         sb.append(requestOrThrow(generic, NAMEABLE_GET_NAME));
+         context.setGenericUsage(true);
       }
       return sb.toString();
    }

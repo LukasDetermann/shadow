@@ -1,7 +1,7 @@
 package io.determann.shadow.api.dsl.declared;
 
-import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.field.FieldTypeRenderable;
 
-public interface DeclaredRenderable extends FieldRenderable
+public interface DeclaredRenderable extends FieldTypeRenderable
 {
 }

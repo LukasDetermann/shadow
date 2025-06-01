@@ -1,5 +1,7 @@
 package io.determann.shadow.api.dsl.parameter;
 
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.shadow.type.C_Array;
 import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_Generic;
@@ -15,5 +17,9 @@ public interface ParameterTypeStep
 
    ParameterNameStep type(C_Declared declared);
 
+   ParameterNameStep type(DeclaredRenderable declared);
+
    ParameterNameStep type(C_Generic generic);
+
+   ParameterNameStep type(GenericRenderable generic);
 }

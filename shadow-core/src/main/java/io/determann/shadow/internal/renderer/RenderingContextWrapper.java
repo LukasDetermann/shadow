@@ -12,7 +12,8 @@ public class RenderingContextWrapper
       implements RenderingContext
 {
    private final RenderingContext renderingContext;
-   private boolean renderNestedGenerics = true;
+   /// flag that indicates if generic type is used or declared
+   private boolean genricUsage = false;
    private String receiverType;
 
    public static RenderingContextWrapper wrap(RenderingContext renderingContext)
@@ -46,14 +47,14 @@ public class RenderingContextWrapper
       return renderingContext.getNameRenderedListeners();
    }
 
-   public boolean isRenderNestedGenerics()
+   public boolean isGenericUsage()
    {
-      return renderNestedGenerics;
+      return genricUsage;
    }
 
-   public void setRenderNestedGenerics(boolean renderNestedGenerics)
+   public void setGenericUsage(boolean renderNestedGenerics)
    {
-      this.renderNestedGenerics = renderNestedGenerics;
+      this.genricUsage = renderNestedGenerics;
    }
 
    public String getReceiverType()

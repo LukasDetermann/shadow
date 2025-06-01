@@ -11,6 +11,8 @@ import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
@@ -349,5 +351,21 @@ public interface Dsl
                                        .map(annotationValue -> annotationValue.render(renderingContext))
                                        .collect(joining(", ")) +
                                  '}';
+   }
+
+   /// {@code Dsl.generic("T").render(DEFAULT)} -> {@code T}
+   static GenericRenderable generic(String name)
+   {
+      return generic().name(name);
+   }
+
+   /// {@snippet file = "GenericDslTest.java" region = "api"}
+   ///
+   /// Recursive generics are only possible to declare with a workaround
+   ///
+   /// {@snippet file = "GenericDslTest.java" region = "recursive"}
+   static GenericAnnotateStep generic()
+   {
+      return new GenericDsl();
    }
 }

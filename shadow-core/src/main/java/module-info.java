@@ -21,6 +21,8 @@ module io.determann.shadow.api {
    exports io.determann.shadow.api.dsl.enum_constant;
    exports io.determann.shadow.api.dsl.exports;
    exports io.determann.shadow.api.dsl.field;
+   exports io.determann.shadow.api.dsl.generic;
+   exports io.determann.shadow.api.dsl.interface_;
    exports io.determann.shadow.api.dsl.method;
    exports io.determann.shadow.api.dsl.module;
    exports io.determann.shadow.api.dsl.opens;

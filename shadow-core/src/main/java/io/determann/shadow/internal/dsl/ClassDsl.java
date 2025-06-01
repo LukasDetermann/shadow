@@ -6,6 +6,7 @@ import io.determann.shadow.api.dsl.class_.*;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -229,6 +230,14 @@ public class ClassDsl
                               generic,
                               (context, generic1) -> Renderer.render(generic1).declaration(context),
                               classDsl -> classDsl.generics::add);
+   }
+
+   @Override
+   public ClassGenericStep generic(GenericRenderable... generics)
+   {
+      return addArray(new ClassDsl(this),
+                      generics,
+                      classDsl -> classDsl.generics::add);
    }
 
    @Override

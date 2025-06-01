@@ -12,11 +12,13 @@ import io.determann.shadow.api.shadow.type.C_Declared;
 import io.determann.shadow.api.shadow.type.C_FieldType;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
+import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
+import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
 public class FieldDsl
@@ -228,7 +230,11 @@ public class FieldDsl
          sb.append(modifiers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(" ")))
            .append(' ');
       }
-      sb.append(type.render(renderingContext))
+
+      RenderingContextWrapper wrapped = wrap(renderingContext);
+      wrapped.setGenericUsage(true);
+
+      sb.append(type.render(wrapped))
         .append(' ');
 
       sb.append(name);

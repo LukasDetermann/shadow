@@ -2,6 +2,7 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.method.*;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
@@ -270,6 +271,14 @@ public class MethodDsl
                               generic,
                               (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                               methodDsl -> methodDsl.generics::add);
+   }
+
+   @Override
+   public MethodGenericStep generic(GenericRenderable... generic)
+   {
+      return addArray(new MethodDsl(this),
+                      generic,
+                      methodDsl -> methodDsl.generics::add);
    }
 
    @Override
