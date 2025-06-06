@@ -182,18 +182,38 @@ public class FieldDsl
    }
 
    @Override
-   public FieldNameStep type(FieldType type)
+   public FieldNameStep type(C_Array type)
    {
       return setTypeRenderer(new FieldDsl(this),
                              type,
-                             (renderingContext, type1) ->
-                                   switch (type1)
-                                   {
-                                      case C_Array cArray -> Renderer.render(cArray).type(renderingContext);
-                                      case C_Declared cDeclared -> Renderer.render(cDeclared).type(renderingContext);
-                                      case C_Generic cGeneric -> Renderer.render(cGeneric).type(renderingContext);
-                                      case C_Primitive cPrimitive -> Renderer.render(cPrimitive).type(renderingContext);
-                                   },
+                             (renderingContext, cArray) -> Renderer.render(cArray).type(renderingContext),
+                             (fieldDsl, function) -> fieldDsl.type = function);
+   }
+
+   @Override
+   public FieldNameStep type(C_Declared type)
+   {
+      return setTypeRenderer(new FieldDsl(this),
+                             type,
+                             (renderingContext, cDeclared) -> Renderer.render(cDeclared).type(renderingContext),
+                             (fieldDsl, function) -> fieldDsl.type = function);
+   }
+
+   @Override
+   public FieldNameStep type(C_Generic type)
+   {
+      return setTypeRenderer(new FieldDsl(this),
+                             type,
+                             (renderingContext, cGeneric) -> Renderer.render(cGeneric).type(renderingContext),
+                             (fieldDsl, function) -> fieldDsl.type = function);
+   }
+
+   @Override
+   public FieldNameStep type(C_Primitive type)
+   {
+      return setTypeRenderer(new FieldDsl(this),
+                             type,
+                             (renderingContext, cPrimitive) -> Renderer.render(cPrimitive).type(renderingContext),
                              (fieldDsl, function) -> fieldDsl.type = function);
    }
 
