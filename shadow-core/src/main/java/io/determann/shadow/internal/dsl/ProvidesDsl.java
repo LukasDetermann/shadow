@@ -77,7 +77,7 @@ public class ProvidesDsl
          return sb.toString();
       }
       sb.append(" with\n");
-      sb.append(String.join("\n", implementations));
+      sb.append(String.join(",\n", implementations));
       sb.append(';');
       return sb.toString();
    }

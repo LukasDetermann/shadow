@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class ModuleDsl
-      implements ModuleJavaDocStep,
+      implements ModuleCopyrightHeaderStep,
                  ModuleRequiresStep
 {
+   private String copyright;
    private Renderable javadoc;
    private final List<Renderable> annotations = new ArrayList<>();
    private String name;
@@ -38,6 +38,7 @@ public class ModuleDsl
 
    private ModuleDsl(ModuleDsl other)
    {
+      this.copyright = other.copyright;
       this.javadoc = other.javadoc;
       this.name = other.name;
       this.requires.addAll(other.requires);
@@ -45,6 +46,14 @@ public class ModuleDsl
       this.opens.addAll(other.opens);
       this.uses.addAll(other.uses);
       this.provides.addAll(other.provides);
+   }
+
+   @Override
+   public ModuleJavaDocStep copyright(String copyrightHeader)
+   {
+      return setType(new ModuleDsl(this),
+                     copyrightHeader,
+                     (moduleDsl, string) -> moduleDsl.copyright = string);
    }
 
    @Override
@@ -204,26 +213,30 @@ public class ModuleDsl
    public String render(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
+      if (copyright != null)
+      {
+         sb.append(copyright)
+           .append("\n\n");
+      }
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
-         sb.append("\n");
+         sb.append(javadoc.render(renderingContext))
+           .append("\n");
       }
 
       renderElement(sb, annotations, "\n", renderingContext, "\n");
 
-      sb.append("module ");
-      sb.append(name);
-      sb.append(" {\n");
+      sb.append("module ")
+        .append(name)
+        .append(" {\n");
 
-      sb.append(requires.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
-      sb.append(exports.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
-      sb.append(opens.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
-      sb.append(uses.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
-      sb.append(provides.stream().map(renderer -> renderer.render(renderingContext) + "\n").collect(joining()));
+      renderElement(sb, "\n", requires, "\n", renderingContext, "\n");
+      renderElement(sb, "\n", exports, "\n", renderingContext, "\n");
+      renderElement(sb, "\n", opens, "\n", renderingContext, "\n");
+      renderElement(sb, "\n", uses, "\n", renderingContext, "\n");
+      renderElement(sb, "\n", provides, "\n", renderingContext, "\n");
 
-      sb.append('}');
-
-      return sb.toString();
+      return sb.append('}')
+               .toString();
    }
 }

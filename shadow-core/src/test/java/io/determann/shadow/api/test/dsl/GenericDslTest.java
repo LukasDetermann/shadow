@@ -64,7 +64,7 @@ class GenericDslTest
    @Test
    void recursive()
    {
-      //@start region="api"
+      //@start region="recursive"
       GenericRenderable a = Dsl.generic().name("A");
 
       GenericRenderable b = Dsl.generic().name("B").extends_(a);

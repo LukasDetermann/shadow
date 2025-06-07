@@ -13,8 +13,7 @@ public record UsesRendererImpl(C_Uses uses)
    @Override
    public String declaration(RenderingContext renderingContext)
    {
-      return Dsl.uses()
-                .service(Provider.requestOrThrow(uses, Operations.USES_GET_SERVICE))
+      return Dsl.uses(Provider.requestOrThrow(uses, Operations.USES_GET_SERVICE))
                 .render(renderingContext);
    }
 }

@@ -9,14 +9,15 @@ import io.determann.shadow.api.dsl.class_.ClassJavaDocStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
+import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
-import io.determann.shadow.api.dsl.field.FieldType;
 import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
-import io.determann.shadow.api.dsl.module.ModuleJavaDocStep;
+import io.determann.shadow.api.dsl.module.ModuleCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
+import io.determann.shadow.api.dsl.opens.OpensRenderable;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
@@ -25,12 +26,13 @@ import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
-import io.determann.shadow.api.dsl.uses.UsesServiceStep;
+import io.determann.shadow.api.dsl.uses.UsesRenderable;
 import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_EnumConstant;
+import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.dsl.*;
@@ -71,34 +73,70 @@ public interface Dsl
       return new EnumConstantDsl();
    }
 
-   static ModuleJavaDocStep moduleInfo()
+   /// {@snippet file = "ModuleDslTest.java" region = api}
+   static ModuleCopyrightHeaderStep moduleInfo()
    {
       return new ModuleDsl();
    }
 
+   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-string"}
+   static ExportsRenderable exports(String packageName)
+   {
+      return exports().package_(packageName);
+   }
+
+   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-type"}
+   static ExportsRenderable exports(C_Package aPackage)
+   {
+      return exports().package_(aPackage);
+   }
+
+   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api"}
    static ExportsPackageStep exports()
    {
       return new ExportsDsl();
    }
 
+   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-type"}
+   static OpensRenderable opens(C_Package aPackage)
+   {
+      return opens().package_(aPackage);
+   }
+
+   // {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-string"}
+   static OpensRenderable opens(String packageName)
+   {
+      return opens().package_(packageName);
+   }
+
+   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api"}
    static OpensPackageStep opens()
    {
       return new OpensDsl();
    }
 
+   /// {@snippet file = "DirectiveDslTest.java" region = "requires-api"}
    static RequiresModifierStep requires()
    {
       return new RequiresDsl();
    }
 
+   /// {@snippet file = "DirectiveDslTest.java" region = provides-api}
    static ProvidesServiceStep provides()
    {
       return new ProvidesDsl();
    }
 
-   static UsesServiceStep uses()
+   /// {@snippet file = "DirectiveDslTest.java" region = "uses-api-string"}
+   static UsesRenderable uses(String serviceName)
    {
-      return new UsesDsl();
+      return renderingContext -> "uses " + serviceName + ';';
+   }
+
+   /// {@snippet file = "DirectiveDslTest.java" region = "uses-api-type"}
+   static UsesRenderable uses(C_Declared service)
+   {
+      return uses(requestOrThrow(service, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
    }
 
    static PackageJavaDocStep packageInfo()

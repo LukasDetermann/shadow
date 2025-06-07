@@ -81,7 +81,7 @@ public class ExportsDsl
          return sb.toString();
       }
       sb.append(" to\n");
-      sb.append(String.join("\n", to));
+      sb.append(String.join(",\n", to));
       sb.append(';');
       return sb.toString();
    }
