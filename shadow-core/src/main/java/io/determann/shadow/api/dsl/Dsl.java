@@ -80,12 +80,16 @@ public interface Dsl
    }
 
    /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-string"}
+   ///
+   /// @see #exports()
    static ExportsRenderable exports(String packageName)
    {
       return exports().package_(packageName);
    }
 
    /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-type"}
+   ///
+   /// @see #exports()
    static ExportsRenderable exports(C_Package aPackage)
    {
       return exports().package_(aPackage);
@@ -98,12 +102,16 @@ public interface Dsl
    }
 
    /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-type"}
+   ///
+   /// @see #opens()
    static OpensRenderable opens(C_Package aPackage)
    {
       return opens().package_(aPackage);
    }
 
-   // {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-string"}
+   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-string"}
+   ///
+   /// @see #opens()
    static OpensRenderable opens(String packageName)
    {
       return opens().package_(packageName);
@@ -151,6 +159,8 @@ public interface Dsl
    }
 
    /// {@snippet file = "ParameterDslTest.java" region = "short-api"}
+   ///
+   /// @see #parameter()
    static ParameterRenderable parameter(String type, String name)
    {
       return new ParameterDsl()
@@ -316,6 +326,8 @@ public interface Dsl
    }
 
    /// {@code Dsl.generic("T").render(DEFAULT)} -> {@code T}
+   ///
+   /// @see #generic()
    static GenericRenderable generic(String name)
    {
       return generic().name(name);
@@ -338,180 +350,240 @@ public interface Dsl
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantStringStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(String type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Array type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Declared type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Generic type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Primitive type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierStringStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Modifier modifier, String type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Modifier modifier, C_Array type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Modifier modifier, C_Declared type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Modifier modifier, C_Generic type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable constant(C_Modifier modifier, C_Primitive type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(String type, String name)
    {
       return field().private_().type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Array type, String name)
    {
       return field().private_().type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Declared type, String name)
    {
       return field().private_().type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Generic type, String name)
    {
       return field().private_().type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Primitive type, String name)
    {
       return field().private_().type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldStringStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(String type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Array type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Declared type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Generic type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Primitive type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, String type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Array type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Declared type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Generic type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Primitive type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, String type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Array type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Declared type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Generic type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
 
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
+   ///
+   /// @see #field()
    static FieldRenderable field(C_Modifier modifier, C_Primitive type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
