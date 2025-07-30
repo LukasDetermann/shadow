@@ -1,14 +1,13 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Void;
+import io.determann.shadow.api.lang_model.LM;
 import io.determann.shadow.implementation.support.api.shadow.type.VoidSupport;
 
 import javax.lang.model.type.NoType;
 
-public class VoidImpl extends TypeImpl<NoType> implements LM_Void
+public class VoidImpl extends TypeImpl<NoType> implements LM.Void
 {
-   public VoidImpl(LM_Context context, NoType typeMirror)
+   public VoidImpl(LM.Context context, NoType typeMirror)
    {
       super(context, typeMirror);
    }

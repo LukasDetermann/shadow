@@ -1,4 +1,4 @@
-import io.determann.shadow.api.ProviderSpi;
+import io.determann.shadow.api.query.ProviderSpi;
 import io.determann.shadow.api.test.TestProvider;
 
 module io.determann.shadow.api.test {

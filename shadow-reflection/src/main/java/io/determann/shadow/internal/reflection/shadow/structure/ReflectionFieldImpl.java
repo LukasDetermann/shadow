@@ -1,11 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
 import java.lang.reflect.Field;
@@ -13,9 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
+public abstract class ReflectionFieldImpl<SURROUNDING extends C.Type>
 {
    private final Field field;
 
@@ -24,7 +23,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
       this.field = field;
    }
 
-   public Set<C_Modifier> getModifiers()
+   public Set<Modifier> getModifiers()
    {
       int modifiers = getField().getModifiers() & java.lang.reflect.Modifier.fieldModifiers();
 
@@ -35,9 +34,9 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
       return ReflectionUtil.getModifiers(modifiers, false, false, false, isPackagePrivate);
    }
 
-   public R_VariableType getType()
+   public R.VariableType getType()
    {
-      return R_Adapter.generalize(field.getType());
+      return Adapter.generalize(field.getType());
    }
 
    public String getName()
@@ -45,17 +44,17 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
       return field.getName();
    }
 
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getField().getAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getField().getDeclaredAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 

@@ -1,9 +1,7 @@
 package io.determann.shadow.api.test.dsl;
 
+import io.determann.shadow.api.C;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -29,8 +27,8 @@ class DirectiveDslTest
 
       assertEquals("exports org.example to module;", Dsl.exports().package_("org.example").to("module").renderDeclaration(DEFAULT));
 
-      C_Package aPackage = TestFactory.create(C_Package.class, "renderQualifiedName", "org.example");
-      C_Module module = TestFactory.create(C_Module.class, "renderQualifiedName", "andAnotherOne");
+      C.Package aPackage = TestFactory.create(C.Package.class, "renderQualifiedName", "org.example");
+      C.Module module = TestFactory.create(C.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="exports-api-simple-type"
       assertEquals("exports org.example;", Dsl.exports(aPackage).renderDeclaration(DEFAULT));
@@ -55,7 +53,7 @@ class DirectiveDslTest
       assertEquals("uses org.example.MySpi;", Dsl.uses("org.example.MySpi").renderDeclaration(DEFAULT));
       //@end
 
-      C_Class service = TestFactory.create(C_Class.class);
+      C.Class service = TestFactory.create(C.Class.class);
       TestProvider.addValue("org.example.MySpi");
 
       //@start region="uses-api-type"
@@ -72,8 +70,8 @@ class DirectiveDslTest
 
       assertEquals("opens org.example to module;", Dsl.opens().package_("org.example").to("module").renderDeclaration(DEFAULT));
 
-      C_Package aPackage = TestFactory.create(C_Package.class, "renderQualifiedName", "org.example");
-      C_Module module = TestFactory.create(C_Module.class, "renderQualifiedName", "andAnotherOne");
+      C.Package aPackage = TestFactory.create(C.Package.class, "renderQualifiedName", "org.example");
+      C.Module module = TestFactory.create(C.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="opens-api-simple-type"
       assertEquals("opens org.example;", Dsl.opens(aPackage).renderDeclaration(DEFAULT));

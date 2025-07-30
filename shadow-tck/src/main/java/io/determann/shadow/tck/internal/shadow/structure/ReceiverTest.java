@@ -1,16 +1,12 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.structure.C_Constructor;
-import io.determann.shadow.api.shadow.structure.C_Receiver;
-import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,10 +24,10 @@ class ReceiverTest
             """)
             .test(implementation ->
                   {
-                     C_Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
-                     C_Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
-                     C_Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
-                     C_Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
+                     C.Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
+                     C.Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
+                     C.Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
+                     C.Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
 
                      assertEquals(outer, requestOrThrow(cReceiver, RECEIVER_GET_TYPE));
                   });
@@ -51,16 +47,16 @@ class ReceiverTest
                   """)
             .test(implementation ->
                   {
-                     C_Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
-                     C_Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
-                     C_Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
-                     C_Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
+                     C.Class outer = requestOrThrow(implementation, GET_CLASS, "ReceiverExample");
+                     C.Class inner = requestOrThrow(implementation, GET_CLASS, "ReceiverExample.Inner");
+                     C.Constructor cConstructor = requestOrThrow(inner, CLASS_GET_CONSTRUCTORS).get(0);
+                     C.Receiver cReceiver = requestOrThrow(cConstructor, EXECUTABLE_GET_RECEIVER);
 
                      assertEquals(outer, requestOrThrow(cReceiver, RECEIVER_GET_TYPE));
 
-                     List<? extends C_AnnotationUsage> usages = requestOrThrow(cReceiver, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
+                     List<? extends C.AnnotationUsage> usages = requestOrThrow(cReceiver, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
                      assertEquals(1, usages.size());
-                     C_AnnotationValue annotationValue = requestOrThrow(usages.get(0), ANNOTATION_USAGE_GET_VALUE, "value");
+                     C.AnnotationValue annotationValue = requestOrThrow(usages.get(0), ANNOTATION_USAGE_GET_VALUE, "value");
                      assertEquals(2, requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE));
                   });
    }

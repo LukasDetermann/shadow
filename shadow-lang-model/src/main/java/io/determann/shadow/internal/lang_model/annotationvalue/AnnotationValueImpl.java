@@ -1,13 +1,9 @@
 package io.determann.shadow.internal.lang_model.annotationvalue;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationValue;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_EnumConstant;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -20,11 +16,11 @@ import java.util.List;
 
 public abstract class AnnotationValueImpl
 {
-   protected final LM_Context context;
+   protected final LM.Context context;
    private final boolean defaultValue;
    private final AnnotationValue annotationValue;
 
-   public static LM_AnnotationValue create(LM_Context context,
+   public static LM.AnnotationValue create(LM.Context context,
                                            AnnotationValue annotationValue,
                                            boolean defaultValue)
    {
@@ -85,11 +81,11 @@ public abstract class AnnotationValueImpl
       throw new IllegalStateException();
    }
 
-   private static class StringValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.StringValue
+   private static class StringValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.StringValue
    {
       private final AnnotationValue annotationValue;
 
-      StringValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      StringValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -102,11 +98,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class BooleanValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.BooleanValue
+   private static class BooleanValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.BooleanValue
    {
       private final AnnotationValue annotationValue;
 
-      BooleanValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      BooleanValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -119,11 +115,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ByteValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.ByteValue
+   private static class ByteValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.ByteValue
    {
       private final AnnotationValue annotationValue;
 
-      ByteValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ByteValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -136,11 +132,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ShortValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.ShortValue
+   private static class ShortValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.ShortValue
    {
       private final AnnotationValue annotationValue;
 
-      ShortValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ShortValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -153,11 +149,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class IntegerValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.IntegerValue
+   private static class IntegerValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.IntegerValue
    {
       private final AnnotationValue annotationValue;
 
-      IntegerValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      IntegerValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -170,11 +166,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class LongValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.LongValue
+   private static class LongValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.LongValue
    {
       private final AnnotationValue annotationValue;
 
-      LongValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      LongValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -187,11 +183,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class CharacterValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.CharacterValue
+   private static class CharacterValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.CharacterValue
    {
       private final AnnotationValue annotationValue;
 
-      CharacterValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      CharacterValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -204,11 +200,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class FloatValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.FloatValue
+   private static class FloatValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.FloatValue
    {
       private final AnnotationValue annotationValue;
 
-      FloatValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      FloatValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -221,11 +217,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class DoubleValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.DoubleValue
+   private static class DoubleValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.DoubleValue
    {
       private final AnnotationValue annotationValue;
 
-      DoubleValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      DoubleValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -238,69 +234,69 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class TypeValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.TypeValue
+   private static class TypeValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.TypeValue
    {
       private final AnnotationValue annotationValue;
 
-      TypeValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      TypeValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public LM_Type getValue()
+      public LM.Type getValue()
       {
-         return LM_Adapters.adapt(context, (TypeMirror) annotationValue.getValue());
+         return Adapters.adapt(context, (TypeMirror) annotationValue.getValue());
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.EnumConstantValue
+   private static class EnumConstantValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.EnumConstantValue
    {
       private final AnnotationValue annotationValue;
 
-      EnumConstantValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      EnumConstantValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public LM_EnumConstant getValue()
+      public LM.EnumConstant getValue()
       {
-         return ((LM_EnumConstant) LM_Adapters.adapt(context, (VariableElement) annotationValue.getValue()));
+         return ((LM.EnumConstant) Adapters.adapt(context, (VariableElement) annotationValue.getValue()));
       }
    }
 
-   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements LM_AnnotationValue.AnnotationUsageValue
+   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements LM.AnnotationValue.AnnotationUsageValue
    {
       private final AnnotationValue annotationValue;
 
-      AnnotationUsageValueImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      AnnotationUsageValueImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public LM_AnnotationUsage getValue()
+      public LM.AnnotationUsage getValue()
       {
          return AnnotationUsageImpl.from(context, (AnnotationMirror) annotationValue.getValue());
       }
    }
 
-   private static class ValuesImpl extends AnnotationValueImpl implements LM_AnnotationValue.Values
+   private static class ValuesImpl extends AnnotationValueImpl implements LM.AnnotationValue.Values
    {
       private final AnnotationValue annotationValue;
 
-      ValuesImpl(LM_Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ValuesImpl(LM.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public List<LM_AnnotationValue> getValue()
+      public List<LM.AnnotationValue> getValue()
       {
          //noinspection unchecked
          return ((Collection<AnnotationValue>) annotationValue.getValue())
@@ -309,12 +305,12 @@ public abstract class AnnotationValueImpl
                      context,
                      annotationValue1,
                      isDefault()))
-               .map(LM_AnnotationValue.class::cast)
+               .map(LM.AnnotationValue.class::cast)
                .toList();
       }
    }
 
-   private AnnotationValueImpl(LM_Context context, boolean defaultValue, AnnotationValue annotationValue)
+   private AnnotationValueImpl(LM.Context context, boolean defaultValue, AnnotationValue annotationValue)
    {
       this.context = context;
       this.defaultValue = defaultValue;
@@ -333,7 +329,7 @@ public abstract class AnnotationValueImpl
 
    public abstract Object getValue();
 
-   private <VALUE extends C_AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
+   private <VALUE extends C.AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
    {
       if (valueClass.isInstance(this))
       {
@@ -346,19 +342,19 @@ public abstract class AnnotationValueImpl
    @Override
    public boolean equals(Object other)
    {
-      return AnnotationValueSupport.equals((C_AnnotationValue) this, other);
+      return AnnotationValueSupport.equals((C.AnnotationValue) this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return AnnotationValueSupport.hashCode(((C_AnnotationValue) this));
+      return AnnotationValueSupport.hashCode(((C.AnnotationValue) this));
    }
 
    @Override
    public String toString()
    {
-      return AnnotationValueSupport.toString((C_AnnotationValue) this);
+      return AnnotationValueSupport.toString((C.AnnotationValue) this);
    }
 
    public Implementation getImplementation()

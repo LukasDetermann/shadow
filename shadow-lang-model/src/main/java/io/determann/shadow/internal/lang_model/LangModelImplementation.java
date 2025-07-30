@@ -1,19 +1,19 @@
 package io.determann.shadow.internal.lang_model;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.query.Implementation;
 
 public class LangModelImplementation extends Implementation
 {
-   private final LM_Context context;
+   private final LM.Context context;
 
-   public LangModelImplementation(String name, LM_Context context)
+   public LangModelImplementation(String name, LM.Context context)
    {
       super(name);
       this.context = context;
    }
 
-   public LM_Context getContext()
+   public LM.Context getContext()
    {
       return context;
    }

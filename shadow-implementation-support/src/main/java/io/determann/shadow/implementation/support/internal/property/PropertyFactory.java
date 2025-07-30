@@ -1,20 +1,15 @@
 package io.determann.shadow.implementation.support.internal.property;
 
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.structure.C_Property;
-import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.api.shadow.type.primitive.C_boolean;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.GETTER;
 import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;
@@ -23,7 +18,7 @@ import static java.util.stream.Collectors.*;
 
 public class PropertyFactory
 {
-   private record Accessor(C_Method method,
+   private record Accessor(C.Method method,
                            AccessorType type,
                            String prefix,
                            String name,
@@ -41,11 +36,11 @@ public class PropertyFactory
 
    private PropertyFactory() {}
 
-   public static List<C_Property> of(C_Declared declared)
+   public static List<C.Property> of(C.Declared declared)
    {
-      Map<String, C_Field> nameField =
+      Map<String, C.Field> nameField =
             requestOrThrow(declared, DECLARED_GET_FIELDS).stream()
-                                                         .filter(field -> !requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, C_Modifier.STATIC))
+                                                         .filter(field -> !requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
                                                          .collect(toMap(field -> requestOrThrow(field, NAMEABLE_GET_NAME),
                                                                         Function.identity()));
 
@@ -53,7 +48,7 @@ public class PropertyFactory
       AtomicInteger position = new AtomicInteger();
       Map<String, Map<AccessorType, List<Accessor>>> nameTypeAccessors =
             getMethods(declared).stream()
-                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, C_Modifier.STATIC))
+                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
                                 .map(method1 -> toAccessor(method1, position.getAndIncrement()))
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
@@ -66,10 +61,10 @@ public class PropertyFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C_VariableType type = ((C_VariableType) requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE));
+                                      C.VariableType type = ((C.VariableType) requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE));
 
-                                      C_Method setter = findSetter(entry.getValue(), type).orElse(null);
-                                      C_Field field = findField(nameField, type, name).orElse(null);
+                                      C.Method setter = findSetter(entry.getValue(), type).orElse(null);
+                                      C.Field field = findField(nameField, type, name).orElse(null);
 
                                       PropertyImpl template = new PropertyImpl(name, type, field, getter.method(), setter);
 
@@ -77,23 +72,23 @@ public class PropertyFactory
                                    })
                               .sorted((Map.Entry.comparingByKey()))
                               .map(Map.Entry::getValue)
-                              .map(C_Property.class::cast)
+                              .map(C.Property.class::cast)
                               .toList();
    }
 
-   private static List<? extends C_Method> getMethods(C_Declared declared)
+   private static List<? extends C.Method> getMethods(C.Declared declared)
    {
-      if (!(declared instanceof C_Class aClass))
+      if (!(declared instanceof C.Class aClass))
       {
          return requestOrThrow(declared, DECLARED_GET_METHODS);
       }
-      List<C_Class> superClasses = Stream.iterate((aClass),
+      List<C.Class> superClasses = Stream.iterate((aClass),
                                                   Objects::nonNull,
                                                   aClass1 -> requestOrThrow(aClass1, CLASS_GET_SUPER_CLASS)).collect(toList());
 
       Collections.reverse(superClasses);
 
-      List<? extends C_Method> methods = superClasses.stream()
+      List<? extends C.Method> methods = superClasses.stream()
                                                      .flatMap(aClass1 -> requestOrThrow(aClass1, DECLARED_GET_METHODS).stream())
                                                      .toList();
 
@@ -102,9 +97,9 @@ public class PropertyFactory
                     .toList();
    }
 
-   private static Optional<C_Field> findField(Map<String, C_Field> nameField, C_Type type, String name)
+   private static Optional<C.Field> findField(Map<String, C.Field> nameField, C.Type type, String name)
    {
-      C_Field field = nameField.get(name);
+      C.Field field = nameField.get(name);
       if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), TYPE_REPRESENTS_SAME_TYPE, type))
       {
          return Optional.empty();
@@ -112,7 +107,7 @@ public class PropertyFactory
       return Optional.of(field);
    }
 
-   private static Optional<C_Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C_Type type)
+   private static Optional<C.Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C.Type type)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
@@ -151,18 +146,18 @@ public class PropertyFactory
       throw new IllegalStateException();
    }
 
-   private static Optional<Accessor> toAccessor(C_Method method, int position)
+   private static Optional<Accessor> toAccessor(C.Method method, int position)
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME);
-      List<? extends C_Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
-      C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
+      List<? extends C.Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
+      C.Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
 
       //getter
-      if (!(returnType instanceof C_Void))
+      if (!(returnType instanceof C.Void))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = (returnType instanceof C_boolean ||
-                                returnType instanceof C_Declared declared &&
+         boolean hasIsPrefix = (returnType instanceof C.boolean_ ||
+                                returnType instanceof C.Declared declared &&
                                 "java.lang.Boolean".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
@@ -190,7 +185,7 @@ public class PropertyFactory
       return Optional.empty();
    }
 
-   private static String toPropertyName(C_Method method, String prefix)
+   private static String toPropertyName(C.Method method, String prefix)
    {
       String name = requestOrThrow(method, NAMEABLE_GET_NAME).substring(prefix.length());
 

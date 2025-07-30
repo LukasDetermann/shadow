@@ -1,12 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationValue;
-import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import java.lang.annotation.Annotation;
@@ -14,14 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 import static java.util.Arrays.stream;
 
 public abstract class AnnotationValueImpl
 {
    private final boolean isDefault;
 
-   public static R_AnnotationValue create(Object value, boolean isDefault)
+   public static R.AnnotationValue create(Object value, boolean isDefault)
    {
       if (value instanceof String)
       {
@@ -78,7 +75,7 @@ public abstract class AnnotationValueImpl
       throw new IllegalStateException();
    }
 
-   private static class StringValueImpl extends AnnotationValueImpl implements R_AnnotationValue.StringValue
+   private static class StringValueImpl extends AnnotationValueImpl implements R.AnnotationValue.StringValue
    {
       private final Object annotationValue;
 
@@ -95,7 +92,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class BooleanValueImpl extends AnnotationValueImpl implements R_AnnotationValue.BooleanValue
+   private static class BooleanValueImpl extends AnnotationValueImpl implements R.AnnotationValue.BooleanValue
    {
       private final Object annotationValue;
 
@@ -112,7 +109,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ByteValueImpl extends AnnotationValueImpl implements R_AnnotationValue.ByteValue
+   private static class ByteValueImpl extends AnnotationValueImpl implements R.AnnotationValue.ByteValue
    {
       private final Object annotationValue;
 
@@ -129,7 +126,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ShortValueImpl extends AnnotationValueImpl implements R_AnnotationValue.ShortValue
+   private static class ShortValueImpl extends AnnotationValueImpl implements R.AnnotationValue.ShortValue
    {
       private final Object annotationValue;
 
@@ -146,7 +143,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class IntegerValueImpl extends AnnotationValueImpl implements R_AnnotationValue.IntegerValue
+   private static class IntegerValueImpl extends AnnotationValueImpl implements R.AnnotationValue.IntegerValue
    {
       private final Object annotationValue;
 
@@ -163,7 +160,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class LongValueImpl extends AnnotationValueImpl implements R_AnnotationValue.LongValue
+   private static class LongValueImpl extends AnnotationValueImpl implements R.AnnotationValue.LongValue
    {
       private final Object annotationValue;
 
@@ -180,7 +177,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class CharacterValueImpl extends AnnotationValueImpl implements R_AnnotationValue.CharacterValue
+   private static class CharacterValueImpl extends AnnotationValueImpl implements R.AnnotationValue.CharacterValue
    {
       private final Object annotationValue;
 
@@ -197,7 +194,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class FloatValueImpl extends AnnotationValueImpl implements R_AnnotationValue.FloatValue
+   private static class FloatValueImpl extends AnnotationValueImpl implements R.AnnotationValue.FloatValue
    {
       private final Object annotationValue;
 
@@ -214,7 +211,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class DoubleValueImpl extends AnnotationValueImpl implements R_AnnotationValue.DoubleValue
+   private static class DoubleValueImpl extends AnnotationValueImpl implements R.AnnotationValue.DoubleValue
    {
       private final Object annotationValue;
 
@@ -231,7 +228,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class TypeValueImpl extends AnnotationValueImpl implements R_AnnotationValue.TypeValue
+   private static class TypeValueImpl extends AnnotationValueImpl implements R.AnnotationValue.TypeValue
    {
       private final Object annotationValue;
 
@@ -242,13 +239,13 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public R_Type getValue()
+      public R.Type getValue()
       {
-         return R_Adapter.generalize(((Class<?>) annotationValue));
+         return Adapter.generalize(((Class<?>) annotationValue));
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements R_AnnotationValue.EnumConstantValue
+   private static class EnumConstantValueImpl extends AnnotationValueImpl implements R.AnnotationValue.EnumConstantValue
    {
       private final Object annotationValue;
 
@@ -259,13 +256,13 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public R_EnumConstant getValue()
+      public R.EnumConstant getValue()
       {
-         return R_Adapter.generalize((Enum<?>) annotationValue);
+         return Adapter.generalize((Enum<?>) annotationValue);
       }
    }
 
-   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements R_AnnotationValue.AnnotationUsageValue
+   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements R.AnnotationValue.AnnotationUsageValue
    {
       private final Object annotationValue;
 
@@ -276,13 +273,13 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public R_AnnotationUsage getValue()
+      public R.AnnotationUsage getValue()
       {
          return new AnnotationUsageImpl(((Annotation) annotationValue));
       }
    }
 
-   private static class ValuesImpl extends AnnotationValueImpl implements R_AnnotationValue.Values
+   private static class ValuesImpl extends AnnotationValueImpl implements R.AnnotationValue.Values
    {
       private final Object annotationValue;
 
@@ -293,18 +290,18 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public List<R_AnnotationValue> getValue()
+      public List<R.AnnotationValue> getValue()
       {
          Class<?> componentType = annotationValue.getClass().getComponentType();
          if (!componentType.isPrimitive())
          {
             return stream((Object[]) annotationValue).map(o -> create(o, isDefault()))
-                                                     .map(R_AnnotationValue.class::cast)
+                                                     .map(R.AnnotationValue.class::cast)
                                                      .toList();
          }
          if (componentType.equals(boolean.class))
          {
-            List<R_AnnotationValue> list = new ArrayList<>();
+            List<R.AnnotationValue> list = new ArrayList<>();
             for (Boolean o : (boolean[]) annotationValue)
             {
                list.add(create(o, isDefault()));
@@ -313,7 +310,7 @@ public abstract class AnnotationValueImpl
          }
          if (componentType.equals(byte.class))
          {
-            List<R_AnnotationValue> list = new ArrayList<>();
+            List<R.AnnotationValue> list = new ArrayList<>();
             for (Byte o : (byte[]) annotationValue)
             {
                list.add(create(o, isDefault()));
@@ -322,7 +319,7 @@ public abstract class AnnotationValueImpl
          }
          if (componentType.equals(short.class))
          {
-            List<R_AnnotationValue> list = new ArrayList<>();
+            List<R.AnnotationValue> list = new ArrayList<>();
             for (Short o : (short[]) annotationValue)
             {
                list.add(create(o, isDefault()));
@@ -333,19 +330,19 @@ public abstract class AnnotationValueImpl
          {
             return stream((int[]) annotationValue).boxed()
                                         .map(o -> create(o, isDefault()))
-                                        .map(R_AnnotationValue.class::cast)
+                                        .map(R.AnnotationValue.class::cast)
                                         .toList();
          }
          if (componentType.equals(long.class))
          {
             return stream((long[]) annotationValue).boxed()
                                          .map(o -> create(o, isDefault()))
-                                         .map(R_AnnotationValue.class::cast)
+                                         .map(R.AnnotationValue.class::cast)
                                          .toList();
          }
          if (componentType.equals(char.class))
          {
-            List<R_AnnotationValue> list = new ArrayList<>();
+            List<R.AnnotationValue> list = new ArrayList<>();
             for (Character o : (char[]) annotationValue)
             {
                list.add(create(o, isDefault()));
@@ -354,7 +351,7 @@ public abstract class AnnotationValueImpl
          }
          if (componentType.equals(float.class))
          {
-            List<R_AnnotationValue> list = new ArrayList<>();
+            List<R.AnnotationValue> list = new ArrayList<>();
             for (Float o : (float[]) annotationValue)
             {
                list.add(create(o, isDefault()));
@@ -365,7 +362,7 @@ public abstract class AnnotationValueImpl
          {
             return stream((double[]) annotationValue).boxed()
                                            .map(o -> create(o, isDefault()))
-                                           .map(R_AnnotationValue.class::cast)
+                                           .map(R.AnnotationValue.class::cast)
                                            .toList();
          }
          throw new IllegalStateException();
@@ -384,7 +381,7 @@ public abstract class AnnotationValueImpl
 
    public abstract Object getValue();
 
-   private <VALUE extends C_AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
+   private <VALUE extends C.AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
    {
       if (valueClass.isInstance(this))
       {
@@ -397,19 +394,19 @@ public abstract class AnnotationValueImpl
    @Override
    public boolean equals(Object other)
    {
-      return AnnotationValueSupport.equals((C_AnnotationValue) this, other);
+      return AnnotationValueSupport.equals((C.AnnotationValue) this, other);
    }
 
    @Override
    public int hashCode()
    {
-      return AnnotationValueSupport.hashCode(((C_AnnotationValue) this));
+      return AnnotationValueSupport.hashCode(((C.AnnotationValue) this));
    }
 
    @Override
    public String toString()
    {
-      return AnnotationValueSupport.toString((C_AnnotationValue) this);
+      return AnnotationValueSupport.toString((C.AnnotationValue) this);
    }
 
    public Implementation getImplementation()

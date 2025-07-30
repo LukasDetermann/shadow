@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
@@ -9,7 +10,6 @@ import io.determann.shadow.api.dsl.interface_.*;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +96,7 @@ public class InterfaceDsl
    }
 
    @Override
-   public InterfaceModifierStep modifier(Set<C_Modifier> modifiers)
+   public InterfaceModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new InterfaceDsl(this),
                       modifiers,
@@ -107,7 +107,7 @@ public class InterfaceDsl
    public InterfaceModifierStep abstract_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.ABSTRACT,
+                             Modifier.ABSTRACT,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -115,7 +115,7 @@ public class InterfaceDsl
    public InterfaceModifierStep public_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -123,7 +123,7 @@ public class InterfaceDsl
    public InterfaceModifierStep protected_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -131,7 +131,7 @@ public class InterfaceDsl
    public InterfaceModifierStep private_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -139,7 +139,7 @@ public class InterfaceDsl
    public InterfaceModifierStep sealed()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.SEALED,
+                             Modifier.SEALED,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -147,7 +147,7 @@ public class InterfaceDsl
    public InterfaceModifierStep nonSealed()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.NON_SEALED,
+                             Modifier.NON_SEALED,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -155,7 +155,7 @@ public class InterfaceDsl
    public InterfaceModifierStep static_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.STATIC,
+                             Modifier.STATIC,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 
@@ -163,7 +163,7 @@ public class InterfaceDsl
    public InterfaceModifierStep strictfp_()
    {
       return addTypeRenderer(new InterfaceDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              interfaceDsl -> interfaceDsl.modifiers::add);
    }
 

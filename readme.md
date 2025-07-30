@@ -116,13 +116,13 @@ This Annotation Processor generates Builder
 ``` highlightjs
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.AP_Context;
-import io.determann.shadow.api.annotation_processing.AP_Processor;
-import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
-import io.determann.shadow.api.lang_model.shadow.LM_QualifiedNameable;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.annotation_processing.AP.Context;
+import io.determann.shadow.api.annotation_processing.AP.Processor;
+import io.determann.shadow.api.lang_model.LM.Nameable;
+import io.determann.shadow.api.lang_model.LM.QualifiedNameable;
+import io.determann.shadow.api.lang_model.LM.Property;
+import io.determann.shadow.api.lang_model.LM.Class;
+import io.determann.shadow.api.lang_model.LM.Type;
 
 import java.util.List;
 import java.util.stream.Collectors;

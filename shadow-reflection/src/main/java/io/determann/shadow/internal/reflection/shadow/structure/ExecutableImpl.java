@@ -1,36 +1,26 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.modifier.R_StaticModifiable;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
-import io.determann.shadow.api.reflection.shadow.structure.R_Receiver;
-import io.determann.shadow.api.reflection.shadow.structure.R_Result;
-import io.determann.shadow.api.reflection.shadow.type.R_Class;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Executable;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Interface;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
-import java.lang.reflect.*;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
-import static io.determann.shadow.api.shadow.modifier.C_Modifier.*;
+import static io.determann.shadow.api.Modifier.*;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public abstract class ExecutableImpl implements R_StaticModifiable
+public abstract class ExecutableImpl implements R.StaticModifiable
 {
    private final Executable executable;
 
@@ -39,7 +29,7 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       this.executable = executable;
    }
 
-   public R_Module getModule()
+   public R.Module getModule()
    {
       return getSurrounding().getModule();
    }
@@ -49,33 +39,33 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return getExecutable().getName();
    }
 
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getExecutable().getDeclaredAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public Set<C_Modifier> getModifiers()
+   public Set<Modifier> getModifiers()
    {
       boolean isDefault = getExecutable() instanceof Method method && method.isDefault();
 
       int modifiers = getExecutable().getModifiers() &
                       (getExecutable() instanceof Method
-                       ? Modifier.methodModifiers()
-                       : Modifier.constructorModifiers());
+                       ? java.lang.reflect.Modifier.methodModifiers()
+                       : java.lang.reflect.Modifier.constructorModifiers());
 
-      boolean isPackagePrivate = !Modifier.isPublic(modifiers) &&
-                                 !Modifier.isPrivate(modifiers) &&
-                                 !Modifier.isProtected(modifiers);
+      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
+                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
+                                 !java.lang.reflect.Modifier.isProtected(modifiers);
 
       return ReflectionUtil.getModifiers(modifiers,
                                          false,
@@ -84,16 +74,16 @@ public abstract class ExecutableImpl implements R_StaticModifiable
                                          isPackagePrivate);
    }
 
-   public List<R_Parameter> getParameters()
+   public List<R.Parameter> getParameters()
    {
-      List<R_Parameter> result = Arrays.stream(getExecutable().getParameters())
-                                       .map(R_Adapter::generalize)
-                                       .map(R_Parameter.class::cast)
+      List<R.Parameter> result = Arrays.stream(getExecutable().getParameters())
+                                       .map(Adapter::generalize)
+                                       .map(R.Parameter.class::cast)
                                        .collect(Collectors.toList());
 
       if (executable instanceof Constructor<?>)
       {
-         Optional<R_Receiver> receiver = getReceiver();
+         Optional<R.Receiver> receiver = getReceiver();
 
          if (receiver.isPresent() &&
              !result.isEmpty() &&
@@ -105,24 +95,24 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return Collections.unmodifiableList(result);
    }
 
-   public R_Result getResult()
+   public R.Result getResult()
    {
       return new ResultImpl(getExecutable().getAnnotatedReturnType());
    }
 
-   public R_Type getReturnType()
+   public R.Type getReturnType()
    {
-      return R_Adapter.generalize(getExecutable().getAnnotatedReturnType().getType());
+      return Adapter.generalize(getExecutable().getAnnotatedReturnType().getType());
    }
 
-   public List<R_Type> getParameterTypes()
+   public List<R.Type> getParameterTypes()
    {
-      return Arrays.stream(getExecutable().getParameterTypes()).map(R_Adapter::generalize).map(R_Type.class::cast).toList();
+      return Arrays.stream(getExecutable().getParameterTypes()).map(Adapter::generalize).map(R.Type.class::cast).toList();
    }
 
-   public List<R_Class> getThrows()
+   public List<R.Class> getThrows()
    {
-      return Arrays.stream(getExecutable().getExceptionTypes()).map(R_Adapter::generalize).map(R_Class.class::cast).toList();
+      return Arrays.stream(getExecutable().getExceptionTypes()).map(Adapter::generalize).map(R.Class.class::cast).toList();
    }
 
    public boolean isBridge()
@@ -136,17 +126,17 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return getExecutable().isVarArgs();
    }
 
-   public R_Declared getSurrounding()
+   public R.Declared getSurrounding()
    {
-      return R_Adapter.generalize(getExecutable().getDeclaringClass());
+      return Adapter.generalize(getExecutable().getDeclaringClass());
    }
 
-   public List<R_Generic> getGenerics()
+   public List<R.Generic> getGenerics()
    {
-      return Arrays.stream(getExecutable().getTypeParameters()).map(R_Adapter::generalize).map(R_Generic.class::cast).toList();
+      return Arrays.stream(getExecutable().getTypeParameters()).map(Adapter::generalize).map(R.Generic.class::cast).toList();
    }
 
-   public Optional<R_Declared> getReceiverType()
+   public Optional<R.Declared> getReceiverType()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
       if (receiverType == null)
@@ -159,10 +149,10 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       {
          return Optional.empty();
       }
-      return Optional.of(((R_Declared) R_Adapter.generalize(receiverType.getType())));
+      return Optional.of(((R.Declared) Adapter.generalize(receiverType.getType())));
    }
 
-   public Optional<R_Receiver> getReceiver()
+   public Optional<R.Receiver> getReceiver()
    {
       AnnotatedType receiverType = getExecutable().getAnnotatedReceiverType();
       if (receiverType == null)
@@ -178,7 +168,7 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return Optional.of((new ReceiverImpl(receiverType)));
    }
 
-   public boolean overrides(C_Method method)
+   public boolean overrides(C.Method method)
    {
       if (!isSubSignature(method))
       {
@@ -190,9 +180,9 @@ public abstract class ExecutableImpl implements R_StaticModifiable
          return false;
       }
 
-      C_Declared otherSurrounding = requestOrThrow(method, EXECUTABLE_GET_SURROUNDING);
+      C.Declared otherSurrounding = requestOrThrow(method, EXECUTABLE_GET_SURROUNDING);
 
-      if (otherSurrounding instanceof C_Class otherSurroundingClass)
+      if (otherSurrounding instanceof C.Class otherSurroundingClass)
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC) &&
              !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PROTECTED) &&
@@ -202,7 +192,7 @@ public abstract class ExecutableImpl implements R_StaticModifiable
             return false;
          }
 
-         if (!(getSurrounding() instanceof C_Class surroundingClass))
+         if (!(getSurrounding() instanceof C.Class surroundingClass))
          {
             return false;
          }
@@ -211,14 +201,14 @@ public abstract class ExecutableImpl implements R_StaticModifiable
             return false;
          }
       }
-      if (otherSurrounding instanceof C_Interface otherSurroundingInterface)
+      if (otherSurrounding instanceof C.Interface otherSurroundingInterface)
       {
          if (!requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, PUBLIC))
          {
             return false;
          }
 
-         if (!(getSurrounding() instanceof C_Class surroundingClass))
+         if (!(getSurrounding() instanceof C.Class surroundingClass))
          {
             return false;
          }
@@ -230,18 +220,18 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return true;
    }
 
-   private boolean isSubSignature(C_Executable executable)
+   private boolean isSubSignature(C.Executable executable)
    {
       return requestOrEmpty(executable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
              (getParameterTypes().equals(requestOrThrow(executable, EXECUTABLE_GET_PARAMETER_TYPES)));
    }
 
-   public boolean overwrittenBy(C_Method method)
+   public boolean overwrittenBy(C.Method method)
    {
-      return requestOrThrow(method, METHOD_OVERRIDES, ((C_Method) this));
+      return requestOrThrow(method, METHOD_OVERRIDES, ((C.Method) this));
    }
 
-   public boolean sameParameterTypes(C_Method method)
+   public boolean sameParameterTypes(C.Method method)
    {
       return getParameterTypes().equals(requestOrThrow(method, EXECUTABLE_GET_PARAMETER_TYPES));
    }
@@ -267,7 +257,7 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       {
          return true;
       }
-      if (!(other instanceof C_Executable otherExecutable))
+      if (!(other instanceof C.Executable otherExecutable))
       {
          return false;
       }

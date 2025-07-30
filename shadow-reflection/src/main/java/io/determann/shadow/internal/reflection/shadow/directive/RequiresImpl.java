@@ -1,16 +1,15 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.directive.R_Requires;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import java.lang.module.ModuleDescriptor;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class RequiresImpl implements R_Requires
+public class RequiresImpl implements R.Requires
 {
 
    private final ModuleDescriptor.Requires requiresDirective;
@@ -33,9 +32,9 @@ public class RequiresImpl implements R_Requires
    }
 
    @Override
-   public R_Module getDependency()
+   public R.Module getDependency()
    {
-      return R_Adapter.getModuleType(requiresDirective.name());
+      return Adapter.getModuleType(requiresDirective.name());
    }
 
    @Override

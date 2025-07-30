@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.method;
 
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.Modifier;
 
 import java.util.Set;
 
@@ -9,12 +9,12 @@ public interface MethodModifierStep
 {
    MethodModifierStep modifier(String... modifiers);
 
-   default MethodModifierStep modifier(C_Modifier... modifiers)
+   default MethodModifierStep modifier(Modifier... modifiers)
    {
       return modifier(Set.of(modifiers));
    }
 
-   MethodModifierStep modifier(Set<C_Modifier> modifiers);
+   MethodModifierStep modifier(Set<Modifier> modifiers);
 
    MethodModifierStep abstract_();
 

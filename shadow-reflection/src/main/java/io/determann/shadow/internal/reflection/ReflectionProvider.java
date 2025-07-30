@@ -1,11 +1,9 @@
 package io.determann.shadow.internal.reflection;
 
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 import io.determann.shadow.internal.reflection.shadow.type.NullImpl;
@@ -13,39 +11,39 @@ import io.determann.shadow.internal.reflection.shadow.type.VoidImpl;
 
 import java.util.Collections;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.reflection.R_Queries.query;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.reflection.Queries.query;
 
 public class ReflectionProvider extends AbstractProvider
 {
    @Override
    public Implementation getImplementation()
    {
-      return R_Adapter.IMPLEMENTATION;
+      return Adapter.IMPLEMENTATION;
    }
 
    @Override
    protected void addMappings(MappingBuilder builder)
    {
-      builder.withOptional(GET_PACKAGE_IN_MODULE, (implementation, moduleName, packageName) -> R_Adapter.getPackage(moduleName, packageName))
-             .with(GET_PACKAGE, (implementation, name) -> Collections.singletonList(R_Adapter.getPackage(name)))
-             .with(GET_MODULE, (implementation, name) -> R_Adapter.getModuleType(name))
-             .withOptional(GET_DECLARED, (implementation, name) -> R_Adapter.getDeclared(name))
-             .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))
-             .withCast(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Class.class))
-             .withCast(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Enum.class))
-             .withCast(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Interface.class))
-             .withCast(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Record.class))
+      builder.withOptional(GET_PACKAGE_IN_MODULE, (implementation, moduleName, packageName) -> Adapter.getPackage(moduleName, packageName))
+             .with(GET_PACKAGE, (implementation, name) -> Collections.singletonList(Adapter.getPackage(name)))
+             .with(GET_MODULE, (implementation, name) -> Adapter.getModuleType(name))
+             .withOptional(GET_DECLARED, (implementation, name) -> Adapter.getDeclared(name))
+             .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Annotation.class))
+             .withCast(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Class.class))
+             .withCast(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Enum.class))
+             .withCast(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Interface.class))
+             .withCast(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Record.class))
              .with(GET_VOID, implementation -> new VoidImpl())
              .with(GET_NULL, implementation -> new NullImpl())
-             .with(GET_BOOLEAN, implementation -> R_Adapter.generalize(Boolean.TYPE))
-             .with(GET_BYTE, implementation -> R_Adapter.generalize(Byte.TYPE))
-             .with(GET_SHORT, implementation -> R_Adapter.generalize(Short.TYPE))
-             .with(GET_INT, implementation -> R_Adapter.generalize(Integer.TYPE))
-             .with(GET_LONG, implementation -> R_Adapter.generalize(Long.TYPE))
-             .with(GET_CHAR, implementation -> R_Adapter.generalize(Character.TYPE))
-             .with(GET_FLOAT, implementation -> R_Adapter.generalize(Float.TYPE))
-             .with(GET_DOUBLE, implementation -> R_Adapter.generalize(Double.TYPE))
+             .with(GET_BOOLEAN, implementation -> Adapter.generalize(Boolean.TYPE))
+             .with(GET_BYTE, implementation -> Adapter.generalize(Byte.TYPE))
+             .with(GET_SHORT, implementation -> Adapter.generalize(Short.TYPE))
+             .with(GET_INT, implementation -> Adapter.generalize(Integer.TYPE))
+             .with(GET_LONG, implementation -> Adapter.generalize(Long.TYPE))
+             .with(GET_CHAR, implementation -> Adapter.generalize(Character.TYPE))
+             .with(GET_FLOAT, implementation -> Adapter.generalize(Float.TYPE))
+             .with(GET_DOUBLE, implementation -> Adapter.generalize(Double.TYPE))
              .with(NAMEABLE_GET_NAME, nameable -> query(nameable).getName())
              .with(QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME, qualifiedNameable -> query(qualifiedNameable).getQualifiedName())
              .with(TYPE_REPRESENTS_SAME_TYPE, (type, type1) -> query(type).representsSameType(type1))
@@ -133,7 +131,7 @@ public class ReflectionProvider extends AbstractProvider
              .with(GENERIC_GET_ADDITIONAL_BOUNDS, cGeneric -> query(cGeneric).getAdditionalBounds())
              .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing())
              .with(ANNOTATION_USAGE_GET_VALUES, annotationUsage -> query(annotationUsage).getValues())
-             .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s).map(C_AnnotationValue.class::cast))
+             .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s).map(C.AnnotationValue.class::cast))
              .with(ANNOTATION_USAGE_GET_ANNOTATION, annotationUsage -> query(annotationUsage).getAnnotation())
              .with(MODULE_GET_PACKAGES, module -> query(module).getPackages())
              .with(MODULE_IS_OPEN, module -> query(module).isOpen())
@@ -157,12 +155,12 @@ public class ReflectionProvider extends AbstractProvider
              .with(ANNOTATIONABLE_GET_ANNOTATION_USAGES, annotationable -> query(annotationable).getAnnotationUsages())
              .with(ANNOTATIONABLE_GET_USAGES_OF, (annotationable, annotation) -> query(annotationable).getUsagesOf(annotation))
              .withOptional(ANNOTATIONABLE_GET_USAGE_OF, (annotationable, annotation) -> query(annotationable).getUsageOf(annotation).map(
-                   C_AnnotationUsage.class::cast))
+                   C.AnnotationUsage.class::cast))
              .with(ANNOTATIONABLE_IS_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isAnnotatedWith(annotation))
              .with(ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES, annotationable -> query(annotationable).getDirectAnnotationUsages())
              .with(ANNOTATIONABLE_GET_DIRECT_USAGES_OF, (annotationable, annotation) -> query(annotationable).getDirectUsagesOf(annotation))
              .withOptional(ANNOTATIONABLE_GET_DIRECT_USAGE_OF, (annotationable, annotation) -> query(annotationable).getDirectUsageOf(annotation).map(
-                   C_AnnotationUsage.class::cast))
+                   C.AnnotationUsage.class::cast))
              .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation))
              .with(ANNOTATION_VALUE_IS_DEFAULT, annotationValue -> query(annotationValue).isDefault())
              .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue())
@@ -171,9 +169,9 @@ public class ReflectionProvider extends AbstractProvider
              .with(PROPERTY_GET_GETTER, property -> query(property).getGetter())
              .withOptional(PROPERTY_GET_SETTER, property -> query(property).getSetter())
              .with(PROPERTY_IS_MUTABLE, property -> query(property).isMutable())
-             .withOptional(MODULE_GET_DECLARED, (module, s) -> query(module).getDeclared(s).map(C_Declared.class::cast))
+             .withOptional(MODULE_GET_DECLARED, (module, s) -> query(module).getDeclared(s).map(C.Declared.class::cast))
              .with(MODULE_GET_DECLARED_LIST, module -> query(module).getDeclared())
-             .withOptional(PACKAGE_GET_DECLARED, (aPackage, s) -> query(aPackage).getDeclared(s).map(C_Declared.class::cast))
+             .withOptional(PACKAGE_GET_DECLARED, (aPackage, s) -> query(aPackage).getDeclared(s).map(C.Declared.class::cast))
              .with(PACKAGE_GET_DECLARED_LIST, aPackage -> query(aPackage).getDeclared());
    }
 }

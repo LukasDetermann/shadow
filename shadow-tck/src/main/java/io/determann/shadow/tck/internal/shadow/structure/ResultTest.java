@@ -1,16 +1,12 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Result;
-import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,10 +22,10 @@ class ResultTest
             """)
             .test(implementation ->
                   {
-                     C_Class integer = requestOrThrow(implementation, GET_CLASS, "java.lang.Integer");
-                     C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
-                     C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
+                     C.Class integer = requestOrThrow(implementation, GET_CLASS, "java.lang.Integer");
+                     C.Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
+                     C.Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
+                     C.Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
 
                      assertEquals(integer, requestOrThrow(cReturn, RESULT_GET_TYPE));
                   });
@@ -47,13 +43,13 @@ class ResultTest
                   """)
             .test(implementation ->
                   {
-                     C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
-                     C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
+                     C.Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
+                     C.Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
+                     C.Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
 
-                     List<? extends C_AnnotationUsage> usages = requestOrThrow(cReturn, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
+                     List<? extends C.AnnotationUsage> usages = requestOrThrow(cReturn, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
                      assertEquals(1, usages.size());
-                     C_AnnotationValue annotationValue = requestOrThrow(usages.get(0), ANNOTATION_USAGE_GET_VALUE, "value");
+                     C.AnnotationValue annotationValue = requestOrThrow(usages.get(0), ANNOTATION_USAGE_GET_VALUE, "value");
                      assertEquals(2, requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE));
                   });
    }

@@ -1,28 +1,24 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Method;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.LM_VariableType;
-import io.determann.shadow.api.shadow.structure.C_Property;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.query.Implementation;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
 /**
  * implementation note: the casts to LangModel types are safe
  */
-public class PropertyImpl implements LM_Property
+public class PropertyImpl implements LM.Property
 {
-   private final C_Property delegate;
-   private final LM_Context context;
+   private final C.Property delegate;
+   private final LM.Context context;
 
-   public PropertyImpl(LM_Context api, C_Property delegate)
+   public PropertyImpl(LM.Context api, C.Property delegate)
    {
       this.delegate = delegate;
       this.context = api;
@@ -35,37 +31,37 @@ public class PropertyImpl implements LM_Property
    }
 
    @Override
-   public LM_VariableType getType()
+   public LM.VariableType getType()
    {
-      return (LM_VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (LM.VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override
-   public Optional<LM_Field> getField()
+   public Optional<LM.Field> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(LM_Field.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(LM.Field.class::cast);
    }
 
    @Override
-   public LM_Field getFieldOrThrow()
+   public LM.Field getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public LM_Method getGetter()
+   public LM.Method getGetter()
    {
-      return (LM_Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return (LM.Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
    }
 
    @Override
-   public Optional<LM_Method> getSetter()
+   public Optional<LM.Method> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(LM_Method.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(LM.Method.class::cast);
    }
 
    @Override
-   public LM_Method getSetterOrThrow()
+   public LM.Method getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }

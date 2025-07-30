@@ -1,18 +1,17 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.directive.R_Provides;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class ProvidesImpl implements R_Provides
+public class ProvidesImpl implements R.Provides
 {
    private final ModuleDescriptor.Provides providesDirective;
 
@@ -22,17 +21,17 @@ public class ProvidesImpl implements R_Provides
    }
 
    @Override
-   public R_Declared getService()
+   public R.Declared getService()
    {
-      return R_Adapter.getDeclared(providesDirective.service()).orElseThrow();
+      return Adapter.getDeclared(providesDirective.service()).orElseThrow();
    }
 
    @Override
-   public List<R_Declared> getImplementations()
+   public List<R.Declared> getImplementations()
    {
       return providesDirective.providers()
                               .stream()
-                              .map(R_Adapter::getDeclared)
+                              .map(Adapter::getDeclared)
                               .map(Optional::orElseThrow)
                               .toList();
    }

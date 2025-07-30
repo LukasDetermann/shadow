@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.shadow.type.R_Annotation;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.AnnotationSupport;
 
-public class AnnotationImpl extends DeclaredImpl implements R_Annotation
+public class AnnotationImpl extends DeclaredImpl implements R.Annotation
 {
    public AnnotationImpl(Class<?> aClass)
    {
@@ -12,7 +12,7 @@ public class AnnotationImpl extends DeclaredImpl implements R_Annotation
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
       return AnnotationSupport.representsSameType(this, type);
    }

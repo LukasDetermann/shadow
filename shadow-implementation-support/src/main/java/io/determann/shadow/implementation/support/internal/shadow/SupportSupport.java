@@ -1,16 +1,16 @@
 package io.determann.shadow.implementation.support.internal.shadow;
 
-import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.Response;
-import io.determann.shadow.api.operation.InstanceOperation;
-import io.determann.shadow.api.operation.InstanceOperation0;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.ImplementationDefined;
+import io.determann.shadow.api.query.Response;
+import io.determann.shadow.api.query.operation.InstanceOperation;
+import io.determann.shadow.api.query.operation.InstanceOperation0;
 
 import java.util.*;
 
-import static io.determann.shadow.api.Operations.TYPE_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.api.Provider.request;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Operations.TYPE_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.query.Provider.request;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
@@ -101,7 +101,7 @@ public class SupportSupport
 
 
    @SafeVarargs
-   public static <TYPE extends C_Type> boolean representsSameType(TYPE type,
+   public static <TYPE extends C.Type> boolean representsSameType(TYPE type,
                                                                   Class<TYPE> tClass,
                                                                   Object other,
                                                                   InstanceOperation0<? super TYPE, ?>... operations)
@@ -127,9 +127,9 @@ public class SupportSupport
                                 second instanceof Response.Unsupported<?> ||
 
                                 (first instanceof Response.Result<?>(Object firstValue) &&
-                                 firstValue instanceof C_Type firstType &&
+                                 firstValue instanceof C.Type firstType &&
                                  second instanceof Response.Result<?>(Object secondValue) &&
-                                 secondValue instanceof C_Type secondType &&
+                                 secondValue instanceof C.Type secondType &&
                                  requestOrEmpty(firstType, TYPE_REPRESENTS_SAME_TYPE, secondType).orElse(false)) ||
 
                                 Objects.equals(first, second);

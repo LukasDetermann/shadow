@@ -1,9 +1,8 @@
 package io.determann.shadow.api.test.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Enum;
 import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -47,7 +46,7 @@ class MethodDslTest
    {
       assertEquals("myModifier private abstract public protected private default final native static strictfp MyType foo() {}",
                    Dsl.method().modifier("myModifier")
-                      .modifier(C_Modifier.PRIVATE)
+                      .modifier(Modifier.PRIVATE)
                       .abstract_()
                       .public_()
                       .protected_()
@@ -77,7 +76,7 @@ class MethodDslTest
    @Test
    void type()
    {
-      C_Enum cEnum = TestFactory.create(C_Enum.class, "renderName", "MyEnum");
+      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderName", "MyEnum");
 
       assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").renderDeclaration(DEFAULT));
    }
@@ -107,7 +106,7 @@ class MethodDslTest
    @Test
    void throws_()
    {
-      C_Class cClass = TestFactory.create(C_Class.class, "renderName", "MyException3");
+      C.Class cClass = TestFactory.create(C.Class.class, "renderName", "MyException3");
 
       assertEquals("MyType foo() throws MyException1, MyException2, MyException3 {}",
                    Dsl.method()

@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.*;
@@ -11,7 +12,6 @@ import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +106,7 @@ public class ClassDsl
    }
 
    @Override
-   public ClassModifierStep modifier(Set<C_Modifier> modifiers)
+   public ClassModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new ClassDsl(this),
                       modifiers,
@@ -117,7 +117,7 @@ public class ClassDsl
    public ClassModifierStep abstract_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.ABSTRACT,
+                             Modifier.ABSTRACT,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -125,7 +125,7 @@ public class ClassDsl
    public ClassModifierStep public_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -133,7 +133,7 @@ public class ClassDsl
    public ClassModifierStep protected_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -141,7 +141,7 @@ public class ClassDsl
    public ClassModifierStep private_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -149,7 +149,7 @@ public class ClassDsl
    public ClassModifierStep final_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.FINAL,
+                             Modifier.FINAL,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -157,7 +157,7 @@ public class ClassDsl
    public ClassModifierStep sealed()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.SEALED,
+                             Modifier.SEALED,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -165,7 +165,7 @@ public class ClassDsl
    public ClassModifierStep nonSealed()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.NON_SEALED,
+                             Modifier.NON_SEALED,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -173,7 +173,7 @@ public class ClassDsl
    public ClassModifierStep static_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.STATIC,
+                             Modifier.STATIC,
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -181,7 +181,7 @@ public class ClassDsl
    public ClassModifierStep strictfp_()
    {
       return addTypeRenderer(new ClassDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              classDsl -> classDsl.modifiers::add);
    }
 

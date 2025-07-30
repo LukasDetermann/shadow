@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.LM;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +16,7 @@ class DocumentedTest
                             {
                                assertNull(context.getInterfaceOrThrow("java.util.Collection").getJavaDoc());
 
-                               LM_Class aClass = context.getClassOrThrow("JavaDocExample");
+                               LM.Class aClass = context.getClassOrThrow("JavaDocExample");
                                assertEquals(" Class level doc\n", aClass.getJavaDoc());
                                assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
                                assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());

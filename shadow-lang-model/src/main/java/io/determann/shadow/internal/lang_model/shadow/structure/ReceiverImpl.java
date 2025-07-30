@@ -1,47 +1,44 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Receiver;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
-import io.determann.shadow.api.shadow.structure.C_Receiver;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.Provider;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.Operations.RECEIVER_GET_TYPE;
+import static io.determann.shadow.api.query.Operations.RECEIVER_GET_TYPE;
 
-public class ReceiverImpl implements LM_Receiver
+public class ReceiverImpl implements LM.Receiver
 {
-   private final LM_Context context;
+   private final LM.Context context;
    private final TypeMirror typeMirror;
 
-   public ReceiverImpl(LM_Context context, TypeMirror typeMirror)
+   public ReceiverImpl(LM.Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
    }
 
    @Override
-   public List<LM_AnnotationUsage> getAnnotationUsages()
+   public List<LM.AnnotationUsage> getAnnotationUsages()
    {
       return getDirectAnnotationUsages();
    }
 
    @Override
-   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
+   public List<LM.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LM_Adapters.adapt(context, getTypeMirror().getAnnotationMirrors());
+      return Adapters.adapt(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
-   public LM_Type getType()
+   public LM.Type getType()
    {
-      return LM_Adapters.adapt(context, getTypeMirror());
+      return Adapters.adapt(context, getTypeMirror());
    }
 
    public TypeMirror getTypeMirror()
@@ -62,7 +59,7 @@ public class ReceiverImpl implements LM_Receiver
       {
          return true;
       }
-      if (!(other instanceof C_Receiver otherReceiver))
+      if (!(other instanceof C.Receiver otherReceiver))
       {
          return false;
       }

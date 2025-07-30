@@ -1,37 +1,35 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.directive.LM_Provides;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
 
-public class ProvidesImpl extends DirectiveImpl implements LM_Provides
+public class ProvidesImpl extends DirectiveImpl implements LM.Provides
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
-   public ProvidesImpl(LM_Context context, ModuleElement.ProvidesDirective providesDirective)
+   public ProvidesImpl(LM.Context context, ModuleElement.ProvidesDirective providesDirective)
    {
       super(context);
       this.providesDirective = providesDirective;
    }
 
    @Override
-   public LM_Declared getService()
+   public LM.Declared getService()
    {
-      return LM_Adapters.adapt(getApi(), providesDirective.getService());
+      return Adapters.adapt(getApi(), providesDirective.getService());
    }
 
    @Override
-   public List<LM_Declared> getImplementations()
+   public List<LM.Declared> getImplementations()
    {
       return providesDirective.getImplementations()
                               .stream()
-                              .map(typeElement -> LM_Adapters.<LM_Declared>adapt(getApi(), typeElement))
+                              .map(typeElement -> Adapters.<LM.Declared>adapt(getApi(), typeElement))
                               .toList();
    }
 

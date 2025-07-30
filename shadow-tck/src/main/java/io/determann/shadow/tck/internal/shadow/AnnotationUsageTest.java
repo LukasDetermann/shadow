@@ -1,18 +1,13 @@
 package io.determann.shadow.tck.internal.shadow;
 
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Enum;
+import io.determann.shadow.api.C;
 import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +21,9 @@ class AnnotationUsageTest
             """);
    }
 
-   private Object get(C_AnnotationUsage annotationUsage, String valueName)
+   private Object get(C.AnnotationUsage annotationUsage, String valueName)
    {
-      C_AnnotationValue annotationValue = requestOrThrow(annotationUsage, ANNOTATION_USAGE_GET_VALUE, valueName);
+      C.AnnotationValue annotationValue = requestOrThrow(annotationUsage, ANNOTATION_USAGE_GET_VALUE, valueName);
       return requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE);
    }
 
@@ -42,8 +37,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals("string Value", get(defaultValues, "stingValue"));
                       });
@@ -59,8 +54,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(false, get(defaultValues, "booleanValue"));
                       });
@@ -76,8 +71,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals((byte)1, get(defaultValues, "byteValue"));
                       });
@@ -93,8 +88,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals((short) 2, get(defaultValues, "shortValue"));
                       });
@@ -110,8 +105,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(3, get(defaultValues, "intValue"));
                       });
@@ -127,8 +122,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(4L, get(defaultValues, "longValue"));
                       });
@@ -144,8 +139,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals('a', get(defaultValues, "charValue"));
                       });
@@ -161,8 +156,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(5f, get(defaultValues, "floatValue"));
                       });
@@ -178,8 +173,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(6D, get(defaultValues, "doubleValue"));
                       });
@@ -195,8 +190,8 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertEquals(requestOrThrow(implementation, GET_CLASS, "java.lang.String"), get(defaultValues, "typeValue"));
                       });
@@ -214,11 +209,11 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
-                         C_Enum elementType = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.ElementType");
-                         C_EnumConstant annotationType = requestOrThrow(elementType, ENUM_GET_ENUM_CONSTANT, "ANNOTATION_TYPE");
+                         C.Enum elementType = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.ElementType");
+                         C.EnumConstant annotationType = requestOrThrow(elementType, ENUM_GET_ENUM_CONSTANT, "ANNOTATION_TYPE");
                          assertEquals(annotationType, get(defaultValues, "enumConstantValue"));
                       });
    }
@@ -236,14 +231,14 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
-                         C_Enum retentionPolicy = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
-                         C_EnumConstant classPolicy = requestOrThrow(retentionPolicy, ENUM_GET_ENUM_CONSTANT, "CLASS");
+                         C.Enum retentionPolicy = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.RetentionPolicy");
+                         C.EnumConstant classPolicy = requestOrThrow(retentionPolicy, ENUM_GET_ENUM_CONSTANT, "CLASS");
 
-                         C_AnnotationUsage defaultUsage = (C_AnnotationUsage) get(defaultValues, "annotationUsageValue");
-                         C_AnnotationValue defaultRetentionValue = requestOrThrow(defaultUsage, ANNOTATION_USAGE_GET_VALUE, "value");
+                         C.AnnotationUsage defaultUsage = (C.AnnotationUsage) get(defaultValues, "annotationUsageValue");
+                         C.AnnotationValue defaultRetentionValue = requestOrThrow(defaultUsage, ANNOTATION_USAGE_GET_VALUE, "value");
                          assertEquals(classPolicy, requestOrThrow(defaultRetentionValue, ANNOTATION_VALUE_GET_VALUE));
                       });
    }
@@ -258,11 +253,11 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          //noinspection unchecked
-                         List<C_AnnotationValue> values = (List<C_AnnotationValue>) get(defaultValues, "asListOfValues");
+                         List<C.AnnotationValue> values = (List<C.AnnotationValue>) get(defaultValues, "asListOfValues");
                          List<Object> list = values.stream().map(value -> requestOrThrow(value, ANNOTATION_VALUE_GET_VALUE)).toList();
                          assertEquals(List.of('b', 'c'), list);
                       });
@@ -297,8 +292,8 @@ class AnnotationUsageTest
             public class AnnotationUsageExample {}
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.AnnotationUsage defaultValues = requestOrThrow(cClass, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
 
                          assertTrue(requestOrThrow(defaultValues, ANNOTATION_USAGE_GET_VALUES).values()
                                                                                               .stream()
@@ -323,10 +318,10 @@ class AnnotationUsageTest
             }
             """).test(implementation ->
                       {
-                         C_Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
-                         C_Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "testField");
-                         C_AnnotationUsage overwrittenStringValue = requestOrThrow(field, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
-                         C_AnnotationValue annotationValue = requestOrThrow(overwrittenStringValue, ANNOTATION_USAGE_GET_VALUE, "stingValue");
+                         C.Class cClass = requestOrThrow(implementation, GET_CLASS, "AnnotationUsageExample");
+                         C.Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "testField");
+                         C.AnnotationUsage overwrittenStringValue = requestOrThrow(field, ANNOTATIONABLE_GET_ANNOTATION_USAGES).get(0);
+                         C.AnnotationValue annotationValue = requestOrThrow(overwrittenStringValue, ANNOTATION_USAGE_GET_VALUE, "stingValue");
                          assertFalse(requestOrThrow(annotationValue, ANNOTATION_VALUE_IS_DEFAULT));
                          assertEquals("custom Value", requestOrThrow(annotationValue, ANNOTATION_VALUE_GET_VALUE));
                       });

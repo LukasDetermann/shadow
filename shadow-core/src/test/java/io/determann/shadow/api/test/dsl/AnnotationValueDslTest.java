@@ -1,15 +1,8 @@
 package io.determann.shadow.api.test.dsl;
 
+import io.determann.shadow.api.C;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.type.C_Array;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.C_Void;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -95,7 +88,7 @@ class AnnotationValueDslTest
    void c_enum_constant()
    {
       assertEquals("java.lang.annotation.ElementType.ANNOTATION_TYPE",
-                   Dsl.annotationValue(TestFactory.create(C_EnumConstant.class,
+                   Dsl.annotationValue(TestFactory.create(C.EnumConstant.class,
                                                           "renderDeclaration",
                                                           "java.lang.annotation.ElementType.ANNOTATION_TYPE"))
                       .render(DEFAULT));
@@ -104,7 +97,7 @@ class AnnotationValueDslTest
    @Test
    void c_enum_constant_null()
    {
-      assertThrows(NullPointerException.class, () -> Dsl.annotationValue((C_EnumConstant) null).render(DEFAULT));
+      assertThrows(NullPointerException.class, () -> Dsl.annotationValue((C.EnumConstant) null).render(DEFAULT));
    }
 
    @Test
@@ -135,7 +128,7 @@ class AnnotationValueDslTest
    @Test
    void c_typeArray()
    {
-      assertEquals("boolean[].class", Dsl.annotationValue((TestFactory.create(C_Array.class, "renderType", "boolean[]"))).render(DEFAULT));
+      assertEquals("boolean[].class", Dsl.annotationValue((TestFactory.create(C.Array.class, "renderType", "boolean[]"))).render(DEFAULT));
    }
 
    @Test
@@ -143,51 +136,51 @@ class AnnotationValueDslTest
    {
       TestProvider.addValue("org.example.MyType");
 
-      assertEquals("org.example.MyType.class", Dsl.annotationValue((TestFactory.create(C_Class.class))).render(DEFAULT));
+      assertEquals("org.example.MyType.class", Dsl.annotationValue((TestFactory.create(C.Class.class))).render(DEFAULT));
    }
 
    @Test
    void c_typeVoid()
    {
-      assertEquals("void.class", Dsl.annotationValue((TestFactory.create(C_Void.class))).render(DEFAULT));
+      assertEquals("void.class", Dsl.annotationValue((TestFactory.create(C.Void.class))).render(DEFAULT));
    }
 
    @Test
    void c_typePrimitive()
    {
-      assertEquals("boolean.class", Dsl.annotationValue(TestFactory.create(C_Primitive.class, "renderType", "boolean")).render(DEFAULT));
+      assertEquals("boolean.class", Dsl.annotationValue(TestFactory.create(C.Primitive.class, "renderType", "boolean")).render(DEFAULT));
    }
 
    @Test
    void c_typeNull()
    {
-      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C_Type) null)).render(DEFAULT));
+      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C.Type) null)).render(DEFAULT));
    }
 
    @Test
    void c_annotationUsage()
    {
       assertEquals("@org.example.MyAnnotation",
-                   Dsl.annotationValue((TestFactory.create(C_AnnotationUsage.class, "renderDeclaration", "@org.example.MyAnnotation")))
+                   Dsl.annotationValue((TestFactory.create(C.AnnotationUsage.class, "renderDeclaration", "@org.example.MyAnnotation")))
                       .render(DEFAULT));
    }
 
    @Test
    void c_annotationUsageNull()
    {
-      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C_AnnotationUsage) null)).render(DEFAULT));
+      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C.AnnotationUsage) null)).render(DEFAULT));
    }
 
    @Test
    void c_annotationValues()
    {
-      assertEquals("{\"test\"}", Dsl.annotationValue((TestFactory.create(C_AnnotationValue.class, "\"test\""))).render(DEFAULT));
+      assertEquals("{\"test\"}", Dsl.annotationValue((TestFactory.create(C.AnnotationValue.class, "\"test\""))).render(DEFAULT));
    }
 
    @Test
    void c_annotationValuesNull()
    {
-      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C_AnnotationValue) null)).render(DEFAULT));
+      assertThrows(NullPointerException.class, () -> Dsl.annotationValue(((C.AnnotationValue) null)).render(DEFAULT));
    }
 
    @Test

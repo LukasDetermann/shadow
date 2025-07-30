@@ -1,17 +1,17 @@
 package io.determann.shadow.internal.reflection;
 
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.Modifier;
 
 import java.util.*;
 import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.shadow.modifier.C_Modifier.*;
+import static io.determann.shadow.api.Modifier.*;
 
 public class ReflectionUtil
 {
-   private static final Set<IntFunction<Optional<C_Modifier>>> MODIFIER_MAPPERS = new HashSet<>();
+   private static final Set<IntFunction<Optional<Modifier>>> MODIFIER_MAPPERS = new HashSet<>();
 
    static
    {
@@ -28,18 +28,18 @@ public class ReflectionUtil
       addModifierMapper(java.lang.reflect.Modifier::isStatic, STATIC);
    }
 
-   private static void addModifierMapper(IntPredicate hasModifier, C_Modifier modifier)
+   private static void addModifierMapper(IntPredicate hasModifier, Modifier modifier)
    {
       MODIFIER_MAPPERS.add(value -> hasModifier.test(value) ? Optional.of(modifier) : Optional.empty());
    }
 
-   public static Set<C_Modifier> getModifiers(int modifiers, boolean isSealed, boolean isNonSealed, boolean isDefault, boolean isPackagePrivate)
+   public static Set<Modifier> getModifiers(int modifiers, boolean isSealed, boolean isNonSealed, boolean isDefault, boolean isPackagePrivate)
    {
-      Set<C_Modifier> result = MODIFIER_MAPPERS.stream()
-                                               .map(mapper -> mapper.apply(modifiers))
-                                               .filter(Optional::isPresent)
-                                               .map(Optional::get)
-                                               .collect(Collectors.toCollection(() -> EnumSet.noneOf(C_Modifier.class)));
+      Set<Modifier> result = MODIFIER_MAPPERS.stream()
+                                             .map(mapper -> mapper.apply(modifiers))
+                                             .filter(Optional::isPresent)
+                                             .map(Optional::get)
+                                             .collect(Collectors.toCollection(() -> EnumSet.noneOf(Modifier.class)));
 
       if (isPackagePrivate)
       {

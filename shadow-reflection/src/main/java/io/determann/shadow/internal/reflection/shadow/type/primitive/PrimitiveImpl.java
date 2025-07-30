@@ -1,17 +1,14 @@
 package io.determann.shadow.internal.reflection.shadow.type.primitive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.ImplementationDefined;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.type.R_Array;
-import io.determann.shadow.api.reflection.shadow.type.R_Class;
-import io.determann.shadow.api.reflection.shadow.type.primitive.*;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.primitive.*;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.ImplementationDefined;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.reflection.shadow.type.ClassImpl;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
 public abstract class PrimitiveImpl implements ImplementationDefined
 {
@@ -20,65 +17,65 @@ public abstract class PrimitiveImpl implements ImplementationDefined
    private final Class<?> primitiveType;
    private final String name;
 
-   public static class R_booleanImpl extends PrimitiveImpl implements R_boolean
+   public static class R_booleanImpl extends PrimitiveImpl implements R.boolean_
    {
       public R_booleanImpl()
       {
-         super(Boolean.TYPE, Boolean.class, C_boolean.class, "boolean");
+         super(Boolean.TYPE, Boolean.class, C.boolean_.class, "boolean");
       }
    }
 
-   public static class R_byteImpl extends PrimitiveImpl implements R_byte
+   public static class R_byteImpl extends PrimitiveImpl implements R.byte_
    {
       public R_byteImpl()
       {
-         super(Byte.TYPE, Byte.class, C_boolean.class, "byte");
+         super(Byte.TYPE, Byte.class, C.boolean_.class, "byte");
       }
    }
-   public static class R_charImpl extends PrimitiveImpl implements R_char
+   public static class R_charImpl extends PrimitiveImpl implements R.char_
    {
       public R_charImpl()
       {
-         super(Character.TYPE, Character.class, C_char.class, "char");
+         super(Character.TYPE, Character.class, C.char_.class, "char");
       }
    }
 
-   public static class R_doubleImpl extends PrimitiveImpl implements R_double
+   public static class R_doubleImpl extends PrimitiveImpl implements R.double_
    {
       public R_doubleImpl()
       {
-         super(Double.TYPE, Double.class, C_double.class, "double");
+         super(Double.TYPE, Double.class, C.double_.class, "double");
       }
    }
 
-   public static class R_floatImpl extends PrimitiveImpl implements R_float
+   public static class R_floatImpl extends PrimitiveImpl implements R.float_
    {
       public R_floatImpl()
       {
-         super(Float.TYPE, Float.class, C_float.class, "float");
+         super(Float.TYPE, Float.class, C.float_.class, "float");
       }
    }
 
-   public static class R_intImpl extends PrimitiveImpl implements R_int
+   public static class R_intImpl extends PrimitiveImpl implements R.int_
    {
       public R_intImpl()
       {
-         super(Integer.TYPE, Integer.class, C_int.class, "int");
+         super(Integer.TYPE, Integer.class, C.int_.class, "int");
       }
    }
 
-   public static class R_longImpl extends PrimitiveImpl implements R_long
+   public static class R_longImpl extends PrimitiveImpl implements R.long_
    {
       public R_longImpl()
       {
-         super(Long.TYPE, Long.class, C_long.class, "long");
+         super(Long.TYPE, Long.class, C.long_.class, "long");
       }
    }
-   public static class R_shortImpl extends PrimitiveImpl implements R_short
+   public static class R_shortImpl extends PrimitiveImpl implements R.short_
    {
       public R_shortImpl()
       {
-         super(Short.TYPE, Short.class, C_short.class, "short");
+         super(Short.TYPE, Short.class, C.short_.class, "short");
       }
    }
 
@@ -90,22 +87,22 @@ public abstract class PrimitiveImpl implements ImplementationDefined
       this.aClass = aClass;
    }
 
-   public boolean isSubtypeOf(C_Type type)
+   public boolean isSubtypeOf(C.Type type)
    {
       return false;
    }
 
-   public boolean isAssignableFrom(C_Type type)
+   public boolean isAssignableFrom(C.Type type)
    {
-      return type instanceof C_Primitive primitive && getaClass().isAssignableFrom(R_Adapter.particularize((R_Primitive) primitive));
+      return type instanceof C.Primitive primitive && getaClass().isAssignableFrom(Adapter.particularize((R.Primitive) primitive));
    }
 
-   public R_Class asBoxed()
+   public R.Class asBoxed()
    {
       return new ClassImpl(boxedClass);
    }
 
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
       return primitiveType.isInstance(type);
    }
@@ -120,27 +117,27 @@ public abstract class PrimitiveImpl implements ImplementationDefined
       return name;
    }
 
-   public R_Array asArray()
+   public R.Array asArray()
    {
-      return R_Adapter.generalize(aClass.arrayType());
+      return Adapter.generalize(aClass.arrayType());
    }
 
    @Override
    public int hashCode()
    {
-      return PrimitiveSupport.hashCode((C_Primitive) this);
+      return PrimitiveSupport.hashCode((C.Primitive) this);
    }
 
    @Override
    public boolean equals(Object other)
    {
-      return PrimitiveSupport.equals((C_Primitive) this, other);
+      return PrimitiveSupport.equals((C.Primitive) this, other);
    }
 
    @Override
    public String toString()
    {
-      return PrimitiveSupport.toString((C_Primitive) this);
+      return PrimitiveSupport.toString((C.Primitive) this);
    }
 
    public Class<?> getReflection()

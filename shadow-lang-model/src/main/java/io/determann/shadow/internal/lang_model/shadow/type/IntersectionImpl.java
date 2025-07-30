@@ -1,11 +1,7 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.type.IntersectionType;
@@ -13,23 +9,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
 
-public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_Generic
+public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM.Generic
 {
-   public IntersectionImpl(LM_Context context, IntersectionType intersectionType)
+   public IntersectionImpl(LM.Context context, IntersectionType intersectionType)
    {
       super(context, intersectionType);
    }
 
    @Override
-   public LM_Type getBound()
+   public LM.Type getBound()
    {
       return getBounds().getFirst();
    }
 
    @Override
-   public List<LM_Type> getBounds()
+   public List<LM.Type> getBounds()
    {
       return getMirror().getBounds().stream()
                         .map(typeMirror -> adapt(getApi(), typeMirror))
@@ -37,20 +33,20 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_G
    }
 
    @Override
-   public List<LM_Interface> getAdditionalBounds()
+   public List<LM.Interface> getAdditionalBounds()
    {
-      List<LM_Type> bounds = getBounds();
+      List<LM.Type> bounds = getBounds();
       if (bounds.size() <= 1)
       {
          return Collections.emptyList();
       }
       return bounds.stream().skip(1)
-                   .map(LM_Interface.class::cast)
+                   .map(LM.Interface.class::cast)
                    .toList();
    }
 
    @Override
-   public Optional<LM_Type> getSuper()
+   public Optional<LM.Type> getSuper()
    {
       return Optional.empty();
    }
@@ -62,19 +58,19 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements LM_G
    }
 
    @Override
-   public LM_Generic erasure()
+   public LM.Generic erasure()
    {
-      return (LM_Generic) LM_Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+      return (LM.Generic) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override
-   public List<LM_AnnotationUsage> getAnnotationUsages()
+   public List<LM.AnnotationUsage> getAnnotationUsages()
    {
       return Collections.emptyList();
    }
 
    @Override
-   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
+   public List<LM.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Collections.emptyList();
    }

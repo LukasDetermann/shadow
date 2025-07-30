@@ -1,29 +1,20 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.R_Method;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_RecordComponent;
-import io.determann.shadow.api.reflection.shadow.type.R_Record;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.structure.C_RecordComponent;
-import io.determann.shadow.api.shadow.type.C_Array;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class RecordComponentImpl implements R_RecordComponent
+public class RecordComponentImpl implements R.RecordComponent
 {
    private final java.lang.reflect.RecordComponent recordComponent;
 
@@ -33,7 +24,7 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public R_Module getModule()
+   public R.Module getModule()
    {
       return getRecord().getModule();
    }
@@ -45,29 +36,29 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
-      return Arrays.stream(getRecordComponent().getAnnotations()).map(R_Adapter::generalize).toList();
+      return Arrays.stream(getRecordComponent().getAnnotations()).map(Adapter::generalize).toList();
    }
 
    @Override
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Arrays.stream(getRecordComponent().getDeclaredAnnotations()).map(R_Adapter::generalize).toList();
+      return Arrays.stream(getRecordComponent().getDeclaredAnnotations()).map(Adapter::generalize).toList();
    }
 
    @Override
-   public boolean isSubtypeOf(C_Type type)
+   public boolean isSubtypeOf(C.Type type)
    {
-      if (getType() instanceof C_Primitive primitive)
+      if (getType() instanceof C.Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, type);
       }
-      if (getType() instanceof C_Class aClass)
+      if (getType() instanceof C.Class aClass)
       {
          return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, type);
       }
-      if (getType() instanceof C_Array array)
+      if (getType() instanceof C.Array array)
       {
          return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, type);
       }
@@ -75,13 +66,13 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public boolean isAssignableFrom(C_Type type)
+   public boolean isAssignableFrom(C.Type type)
    {
-      if (getType() instanceof C_Primitive primitive)
+      if (getType() instanceof C.Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, type);
       }
-      if (getType() instanceof C_Class aClass)
+      if (getType() instanceof C.Class aClass)
       {
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
@@ -89,21 +80,21 @@ public class RecordComponentImpl implements R_RecordComponent
    }
 
    @Override
-   public R_Record getRecord()
+   public R.Record getRecord()
    {
-      return R_Adapter.generalize(getRecordComponent().getDeclaringRecord());
+      return Adapter.generalize(getRecordComponent().getDeclaringRecord());
    }
 
    @Override
-   public R_Type getType()
+   public R.Type getType()
    {
-      return R_Adapter.generalize(getRecordComponent().getType());
+      return Adapter.generalize(getRecordComponent().getType());
    }
 
    @Override
-   public R_Method getGetter()
+   public R.Method getGetter()
    {
-      return R_Adapter.generalize(getRecordComponent().getAccessor());
+      return Adapter.generalize(getRecordComponent().getAccessor());
    }
 
    public java.lang.reflect.RecordComponent getRecordComponent()
@@ -124,7 +115,7 @@ public class RecordComponentImpl implements R_RecordComponent
       {
          return true;
       }
-      if (!(other instanceof C_RecordComponent otherRecordComponent))
+      if (!(other instanceof C.RecordComponent otherRecordComponent))
       {
          return false;
       }

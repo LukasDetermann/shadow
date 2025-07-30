@@ -1,12 +1,9 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.adapter.LM_TypeAdapter;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.lang_model.adapter.TypeAdapter;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
 import io.determann.shadow.internal.lang_model.shadow.structure.PropertyImpl;
@@ -18,60 +15,60 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Optional;
 
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
 import static java.util.Arrays.stream;
 
-public class ClassImpl extends DeclaredImpl implements LM_Class
+public class ClassImpl extends DeclaredImpl implements LM.Class
 {
-   public ClassImpl(LM_Context context, DeclaredType declaredTypeMirror)
+   public ClassImpl(LM.Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public ClassImpl(LM_Context context, TypeElement typeElement)
+   public ClassImpl(LM.Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
 
    @Override
-   public boolean isAssignableFrom(C_Type type)
+   public boolean isAssignableFrom(C.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((LM_Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((LM.Type) type).toTypeMirror());
    }
 
    @Override
-   public LM_Class getSuperClass()
+   public LM.Class getSuperClass()
    {
       TypeMirror superclass = getElement().getSuperclass();
       if (TypeKind.NONE.equals(superclass.getKind()))
       {
          return null;
       }
-      return (LM_Class) adapt(getApi(), ((DeclaredType) superclass));
+      return (LM.Class) adapt(getApi(), ((DeclaredType) superclass));
    }
 
    @Override
-   public List<LM_Class> getPermittedSubClasses()
+   public List<LM.Class> getPermittedSubClasses()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
                          .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
-                         .map(LM_Class.class::cast)
+                         .map(LM.Class.class::cast)
                          .toList();
    }
 
    @Override
-   public List<LM_Property> getProperties()
+   public List<LM.Property> getProperties()
    {
       return PropertySupport.propertiesOf(this)
                             .stream()
                             .map(delegate -> new PropertyImpl(getApi(), delegate))
-                            .map(LM_Property.class::cast)
+                            .map(LM.Property.class::cast)
                             .toList();
    }
 
    @Override
-   public Optional<LM_Declared> getOuterType()
+   public Optional<LM.Declared> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
       if (enclosingType.getKind().equals(TypeKind.NONE))
@@ -82,25 +79,25 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
    }
 
    @Override
-   public List<LM_Type> getGenericTypes()
+   public List<LM.Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> LM_Adapters.<LM_Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<LM.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<LM_Generic> getGenerics()
+   public List<LM.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LM_Adapters.adapt(getApi(), element))
+                         .map(element -> Adapters.adapt(getApi(), element))
                          .toList();
    }
 
    @Override
-   public LM_Class withGenerics(LM_Type... generics)
+   public LM.Class withGenerics(LM.Type... generics)
    {
       if (generics.length == 0 || getGenerics().size() != generics.length)
       {
@@ -111,48 +108,48 @@ public class ClassImpl extends DeclaredImpl implements LM_Class
                                             generics.length +
                                             " are provided");
       }
-      Optional<LM_Declared> outerType = getOuterType();
+      Optional<LM.Declared> outerType = getOuterType();
       if (outerType.isPresent() &&
-          (outerType.get() instanceof LM_Interface anInterface &&
+          (outerType.get() instanceof LM.Interface anInterface &&
            !anInterface.getGenerics().isEmpty() ||
-           outerType.get() instanceof LM_Class aClass1 && !aClass1.getGenerics().isEmpty()))
+           outerType.get() instanceof LM.Class aClass1 && !aClass1.getGenerics().isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +
                                             " when the class is not static and the outer class has generics");
       }
       TypeMirror[] typeMirrors = stream(generics)
-            .map(LM_Adapters::adapt)
-            .map(LM_TypeAdapter::toTypeMirror)
+            .map(Adapters::adapt)
+            .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (LM_Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (LM.Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public LM_Class withGenerics(String... qualifiedGenerics)
+   public LM.Class withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(LM_Type[]::new));
+                                .toArray(LM.Type[]::new));
    }
 
    @Override
-   public LM_Class interpolateGenerics()
+   public LM.Class interpolateGenerics()
    {
-      return (LM_Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (LM.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public LM_Primitive asUnboxed()
+   public LM.Primitive asUnboxed()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().unboxedType(getMirror()));
    }
 
    @Override
-   public LM_Class erasure()
+   public LM.Class erasure()
    {
-      return (LM_Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (LM.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override

@@ -1,6 +1,6 @@
 package io.determann.shadow.tck;
 
-import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.query.Implementation;
 import org.junit.platform.suite.api.IncludePackages;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;

@@ -1,13 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationValue;
-import io.determann.shadow.api.reflection.shadow.structure.R_Method;
-import io.determann.shadow.api.reflection.shadow.type.R_Annotation;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -16,12 +13,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
-import static io.determann.shadow.api.Operations.ANNOTATION_USAGE_GET_VALUES;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.ANNOTATION_USAGE_GET_ANNOTATION;
+import static io.determann.shadow.api.query.Operations.ANNOTATION_USAGE_GET_VALUES;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 import static io.determann.shadow.internal.reflection.shadow.AnnotationValueImpl.create;
 
-public class AnnotationUsageImpl implements R_AnnotationUsage
+public class AnnotationUsageImpl implements R.AnnotationUsage
 {
    private final java.lang.annotation.Annotation annotation;
 
@@ -31,12 +28,12 @@ public class AnnotationUsageImpl implements R_AnnotationUsage
    }
 
    @Override
-   public Map<R_Method, R_AnnotationValue> getValues()
+   public Map<R.Method, R.AnnotationValue> getValues()
    {
       return Arrays.stream(annotation.annotationType().getDeclaredMethods())
                    .filter(method -> method.getParameterCount() == 0)
                    .filter(method -> !Modifier.isStatic(method.getModifiers() & Modifier.methodModifiers()))
-                   .collect(Collectors.toMap(R_Adapter::generalize,
+                   .collect(Collectors.toMap(Adapter::generalize,
                                              method ->
                                              {
                                                 Object defaultValue = method.getDefaultValue();
@@ -56,9 +53,9 @@ public class AnnotationUsageImpl implements R_AnnotationUsage
    }
 
    @Override
-   public R_Annotation getAnnotation()
+   public R.Annotation getAnnotation()
    {
-      return R_Adapter.generalize(annotation.annotationType());
+      return Adapter.generalize(annotation.annotationType());
    }
 
 
@@ -76,7 +73,7 @@ public class AnnotationUsageImpl implements R_AnnotationUsage
       {
          return true;
       }
-      if (!(other instanceof C_AnnotationUsage otherAnnotationUsage))
+      if (!(other instanceof C.AnnotationUsage otherAnnotationUsage))
       {
          return false;
       }

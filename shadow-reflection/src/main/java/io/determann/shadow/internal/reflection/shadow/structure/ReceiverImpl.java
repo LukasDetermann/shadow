@@ -1,22 +1,20 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.R_Receiver;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.structure.C_Receiver;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.Operations.RECEIVER_GET_TYPE;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.RECEIVER_GET_TYPE;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class ReceiverImpl implements R_Receiver
+public class ReceiverImpl implements R.Receiver
 {
    private final AnnotatedType annotatedType;
 
@@ -27,25 +25,25 @@ public class ReceiverImpl implements R_Receiver
    }
 
    @Override
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(getAnnotatedType().getDeclaredAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public R_Type getType()
+   public R.Type getType()
    {
-      return R_Adapter.generalize(annotatedType.getType());
+      return Adapter.generalize(annotatedType.getType());
    }
 
    public AnnotatedType getAnnotatedType()
@@ -73,7 +71,7 @@ public class ReceiverImpl implements R_Receiver
       {
          return true;
       }
-      if (!(other instanceof C_Receiver otherReceiver))
+      if (!(other instanceof C.Receiver otherReceiver))
       {
          return false;
       }

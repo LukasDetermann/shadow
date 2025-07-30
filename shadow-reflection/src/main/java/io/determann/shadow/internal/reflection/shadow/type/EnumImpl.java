@@ -1,16 +1,15 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.structure.R_EnumConstant;
-import io.determann.shadow.api.reflection.shadow.type.R_Enum;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import java.util.List;
 
 import static java.util.Arrays.stream;
 
-public class EnumImpl extends DeclaredImpl implements R_Enum
+public class EnumImpl extends DeclaredImpl implements R.Enum
 {
    public EnumImpl(Class<?> aClass)
    {
@@ -18,16 +17,16 @@ public class EnumImpl extends DeclaredImpl implements R_Enum
    }
 
    @Override
-   public List<R_EnumConstant> getEumConstants()
+   public List<R.EnumConstant> getEumConstants()
    {
       return stream(getaClass().getEnumConstants())
             .map(java.lang.Enum.class::cast)
-            .map(R_Adapter::generalize)
+            .map(Adapter::generalize)
             .toList();
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
       return EnumSupport.representsSameType(this, type);
    }

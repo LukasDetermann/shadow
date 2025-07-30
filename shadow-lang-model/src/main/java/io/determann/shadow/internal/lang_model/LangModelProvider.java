@@ -1,15 +1,13 @@
 package io.determann.shadow.internal.lang_model;
 
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.lang_model.LM_Queries.query;
+import static io.determann.shadow.api.lang_model.Queries.query;
+import static io.determann.shadow.api.query.Operations.*;
 import static io.determann.shadow.internal.lang_model.LangModelContextImpl.IMPLEMENTATION_NAME;
 
 public class LangModelProvider extends AbstractProvider
@@ -27,11 +25,11 @@ public class LangModelProvider extends AbstractProvider
              .with(GET_PACKAGE, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getPackage(name))
              .withOptional(GET_MODULE, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getModule(name))
              .withOptional(GET_DECLARED, (implementation, name) -> ((LangModelImplementation) implementation).getContext().getDeclared(name))
-             .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Annotation.class))
-             .withCast(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Class.class))
-             .withCast(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Enum.class))
-             .withCast(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Interface.class))
-             .withCast(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C_Record.class))
+             .withCast(GET_ANNOTATION, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Annotation.class))
+             .withCast(GET_CLASS, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Class.class))
+             .withCast(GET_ENUM, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Enum.class))
+             .withCast(GET_INTERFACE, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Interface.class))
+             .withCast(GET_RECORD, (implementation, name) -> cast(request(implementation, GET_DECLARED, name), C.Record.class))
              .with(GET_VOID, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getVoid())
              .with(GET_NULL, implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getNull())
              .with(GET_BOOLEAN,implementation -> ((LangModelImplementation) implementation).getContext().getConstants().getPrimitiveBoolean())
@@ -131,7 +129,7 @@ public class LangModelProvider extends AbstractProvider
              .with(GENERIC_GET_ADDITIONAL_BOUNDS, cGeneric -> query(cGeneric).getAdditionalBounds())
              .with(GENERIC_GET_ENCLOSING, generic -> query(generic).getEnclosing())
              .with(ANNOTATION_USAGE_GET_VALUES, annotationUsage -> query(annotationUsage).getValues())
-             .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s).map(C_AnnotationValue.class::cast))
+             .withOptional(ANNOTATION_USAGE_GET_VALUE, (annotationUsage, s) -> query(annotationUsage).getValue(s).map(C.AnnotationValue.class::cast))
              .with(ANNOTATION_USAGE_GET_ANNOTATION, annotationUsage -> query(annotationUsage).getAnnotation())
              .with(MODULE_GET_PACKAGES, module -> query(module).getPackages())
              .with(MODULE_IS_OPEN, module -> query(module).isOpen())
@@ -155,12 +153,12 @@ public class LangModelProvider extends AbstractProvider
              .with(ANNOTATIONABLE_GET_ANNOTATION_USAGES, annotationable -> query(annotationable).getAnnotationUsages())
              .with(ANNOTATIONABLE_GET_USAGES_OF, (annotationable, annotation) -> query(annotationable).getUsagesOf(annotation))
              .withOptional(ANNOTATIONABLE_GET_USAGE_OF, (annotationable, annotation) -> query(annotationable).getUsageOf(annotation).map(
-                   C_AnnotationUsage.class::cast))
+                   C.AnnotationUsage.class::cast))
              .with(ANNOTATIONABLE_IS_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isAnnotatedWith(annotation))
              .with(ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES, annotationable -> query(annotationable).getDirectAnnotationUsages())
              .with(ANNOTATIONABLE_GET_DIRECT_USAGES_OF, (annotationable, annotation) -> query(annotationable).getDirectUsagesOf(annotation))
              .withOptional(ANNOTATIONABLE_GET_DIRECT_USAGE_OF, (annotationable, annotation) -> query(annotationable).getDirectUsageOf(annotation).map(
-                   C_AnnotationUsage.class::cast))
+                   C.AnnotationUsage.class::cast))
              .with(ANNOTATIONABLE_IS_DIRECTLY_ANNOTATED_WITH, (annotationable, annotation) -> query(annotationable).isDirectlyAnnotatedWith(annotation))
              .with(ANNOTATION_VALUE_IS_DEFAULT, annotationValue -> query(annotationValue).isDefault())
              .with(ANNOTATION_VALUE_GET_VALUE, annotationValue -> query(annotationValue).getValue())
@@ -169,9 +167,9 @@ public class LangModelProvider extends AbstractProvider
              .with(PROPERTY_GET_GETTER, property -> query(property).getGetter())
              .withOptional(PROPERTY_GET_SETTER, property -> query(property).getSetter())
              .with(PROPERTY_IS_MUTABLE, property -> query(property).isMutable())
-             .withOptional(MODULE_GET_DECLARED, (module, s) -> query(module).getDeclared(s).map(C_Declared.class::cast))
+             .withOptional(MODULE_GET_DECLARED, (module, s) -> query(module).getDeclared(s).map(C.Declared.class::cast))
              .with(MODULE_GET_DECLARED_LIST, module -> query(module).getDeclared())
-             .withOptional(PACKAGE_GET_DECLARED, (aPackage, s) -> query(aPackage).getDeclared(s).map(C_Declared.class::cast))
+             .withOptional(PACKAGE_GET_DECLARED, (aPackage, s) -> query(aPackage).getDeclared(s).map(C.Declared.class::cast))
              .with(PACKAGE_GET_DECLARED_LIST, aPackage -> query(aPackage).getDeclared());
    }
 }

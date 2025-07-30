@@ -1,14 +1,13 @@
 package io.determann.shadow.tck.internal.shadow.structure;
 
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.C;
 import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,10 +25,10 @@ class PackageTest
                    {
                       assertTrue(requestOrThrow(implementation, GET_PACKAGE, "asdkfh").isEmpty());
 
-                      C_Class anyClass = requestOrThrow(implementation,
+                      C.Class anyClass = requestOrThrow(implementation,
                                                         GET_CLASS,
                                                         "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass");
-                      C_Package cPackage = requestOrThrow(implementation,
+                      C.Package cPackage = requestOrThrow(implementation,
                                                           GET_PACKAGE,
                                                           "io.determann.shadow.example.processed.test.packagee.not_empty").get(0);
                       assertEquals(List.of(anyClass), requestOrThrow(cPackage, PACKAGE_GET_DECLARED_LIST));

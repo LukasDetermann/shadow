@@ -1,24 +1,21 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.reflection.shadow.type.R_Wildcard;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.C_Wildcard;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
 
 import java.lang.reflect.WildcardType;
 import java.util.Optional;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
 
-public class WildcardImpl implements R_Wildcard
+public class WildcardImpl implements R.Wildcard
 {
    private final WildcardType wildcardType;
 
@@ -28,14 +25,14 @@ public class WildcardImpl implements R_Wildcard
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
-      if (!(type instanceof C_Wildcard wildcard))
+      if (!(type instanceof C.Wildcard wildcard))
       {
          return false;
       }
-      Optional<C_Type> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
-      Optional<C_Type> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
+      Optional<C.Type> otherExtends = Provider.requestOrEmpty(wildcard, WILDCARD_GET_EXTENDS);
+      Optional<C.Type> otherSuper = Provider.requestOrEmpty(wildcard, WILDCARD_GET_SUPER);
 
 
       if ((getExtends().isEmpty() && getSuper().isEmpty()) || (otherExtends.isEmpty() && otherSuper.isEmpty()))
@@ -48,7 +45,7 @@ public class WildcardImpl implements R_Wildcard
    }
 
    @Override
-   public Optional<R_Type> getExtends()
+   public Optional<R.Type> getExtends()
    {
       java.lang.reflect.Type[] upperBounds = wildcardType.getUpperBounds();
       //? extends Object -> ? : drop the extends Object
@@ -60,34 +57,34 @@ public class WildcardImpl implements R_Wildcard
       return switch (upperBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(R_Adapter.generalize(upperBounds[0]));
+         case 1 -> Optional.of(Adapter.generalize(upperBounds[0]));
          default -> Optional.of(new IntersectionImpl(upperBounds));
       };
    }
 
    @Override
-   public Optional<R_Type> getSuper()
+   public Optional<R.Type> getSuper()
    {
       java.lang.reflect.Type[] lowerBounds = wildcardType.getLowerBounds();
       return switch (lowerBounds.length)
       {
          case 0 -> Optional.empty();
-         case 1 -> Optional.of(R_Adapter.generalize(lowerBounds[0]));
+         case 1 -> Optional.of(Adapter.generalize(lowerBounds[0]));
          default -> Optional.of(new IntersectionImpl(lowerBounds));
       };
    }
 
    @Override
-   public boolean contains(C_Type type)
+   public boolean contains(C.Type type)
    {
       return equals(type) ||
              (getExtends().isPresent() && (getExtends().get().equals(type) || isSubType(getExtends().get(), type))) ||
              (getSuper().isPresent() && (getSuper().get().equals(type) || isSubType(type, getSuper().get())));
    }
 
-   private boolean isSubType(C_Type type, C_Type other)
+   private boolean isSubType(C.Type type, C.Type other)
    {
-      return type instanceof C_Declared declared && requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other);
+      return type instanceof C.Declared declared && requestOrThrow(declared, DECLARED_IS_SUBTYPE_OF, other);
    }
 
    public WildcardType getWildcardType()

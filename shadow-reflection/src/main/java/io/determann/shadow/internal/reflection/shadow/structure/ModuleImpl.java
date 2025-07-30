@@ -1,28 +1,24 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.directive.R_Directive;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Package;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.structure.C_Module;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 import static java.util.Collections.unmodifiableList;
 
 
-public class ModuleImpl implements R_Module
+public class ModuleImpl implements R.Module
 {
-   private final List<R_AnnotationUsage> annotationUsages;
+   private final List<R.AnnotationUsage> annotationUsages;
    private final NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier;
 
    public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier)
@@ -30,7 +26,7 @@ public class ModuleImpl implements R_Module
       this(moduleDescriptorSupplier, Collections.emptyList());
    }
 
-   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<R_AnnotationUsage> annotationUsages)
+   public ModuleImpl(NamedSupplier<ModuleDescriptor> moduleDescriptorSupplier, List<R.AnnotationUsage> annotationUsages)
    {
       this.moduleDescriptorSupplier = moduleDescriptorSupplier;
       this.annotationUsages = annotationUsages;
@@ -49,25 +45,25 @@ public class ModuleImpl implements R_Module
    }
 
    @Override
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return annotationUsages;
    }
 
    @Override
-   public List<R_Declared> getDeclared()
+   public List<R.Declared> getDeclared()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
-   public Optional<R_Declared> getDeclared(String qualifiedName)
+   public Optional<R.Declared> getDeclared(String qualifiedName)
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -79,9 +75,9 @@ public class ModuleImpl implements R_Module
    }
 
    @Override
-   public List<R_Package> getPackages()
+   public List<R.Package> getPackages()
    {
-      return getModuleDescriptor().packages().stream().map(R_Adapter::getPackage).map(R_Package.class::cast).toList();
+      return getModuleDescriptor().packages().stream().map(Adapter::getPackage).map(R.Package.class::cast).toList();
    }
 
    @Override
@@ -103,28 +99,28 @@ public class ModuleImpl implements R_Module
    }
 
    @Override
-   public List<R_Directive> getDirectives()
+   public List<R.Directive> getDirectives()
    {
       ModuleDescriptor descriptor = getModuleDescriptor();
-      List<R_Directive> result = descriptor.requires()
+      List<R.Directive> result = descriptor.requires()
                                            .stream()
-                                           .map(R_Adapter::generalize)
+                                           .map(Adapter::generalize)
                                            .collect(Collectors.toCollection(ArrayList::new));
       result.addAll(descriptor.exports()
                               .stream()
-                              .map(R_Adapter::generalize)
+                              .map(Adapter::generalize)
                               .toList());
       result.addAll(descriptor.opens()
                               .stream()
-                              .map(R_Adapter::generalize)
+                              .map(Adapter::generalize)
                               .toList());
       result.addAll(descriptor.uses()
                               .stream()
-                              .map(R_Adapter::getUsesType)
+                              .map(Adapter::getUsesType)
                               .toList());
       result.addAll(descriptor.provides()
                               .stream()
-                              .map(R_Adapter::generalize)
+                              .map(Adapter::generalize)
                               .toList());
       return unmodifiableList(result);
    }
@@ -147,7 +143,7 @@ public class ModuleImpl implements R_Module
       {
          return true;
       }
-      if (!(other instanceof C_Module otherModule))
+      if (!(other instanceof C.Module otherModule))
       {
          return false;
       }

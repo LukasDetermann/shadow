@@ -1,27 +1,24 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.shadow.structure.R_Field;
-import io.determann.shadow.api.reflection.shadow.structure.R_Method;
-import io.determann.shadow.api.reflection.shadow.structure.R_Property;
-import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
-import io.determann.shadow.api.shadow.structure.C_Property;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.R;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
 /**
  * implementation note: the casts to LangModel types are safe
  */
-public class PropertyImpl implements R_Property
+public class PropertyImpl implements R.Property
 {
-   private final C_Property delegate;
+   private final C.Property delegate;
 
-   public PropertyImpl(C_Property delegate)
+   public PropertyImpl(C.Property delegate)
    {
       this.delegate = delegate;
    }
@@ -33,37 +30,37 @@ public class PropertyImpl implements R_Property
    }
 
    @Override
-   public R_VariableType getType()
+   public R.VariableType getType()
    {
-      return (R_VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (R.VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override
-   public Optional<R_Field> getField()
+   public Optional<R.Field> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(R_Field.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(R.Field.class::cast);
    }
 
    @Override
-   public R_Field getFieldOrThrow()
+   public R.Field getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public R_Method getGetter()
+   public R.Method getGetter()
    {
-      return (R_Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return (R.Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
    }
 
    @Override
-   public Optional<R_Method> getSetter()
+   public Optional<R.Method> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(R_Method.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(R.Method.class::cast);
    }
 
    @Override
-   public R_Method getSetterOrThrow()
+   public R.Method getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }

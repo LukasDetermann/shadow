@@ -1,88 +1,84 @@
 package io.determann.shadow.internal.lang_model;
 
-import io.determann.shadow.api.lang_model.LM_Constants;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
-import io.determann.shadow.api.lang_model.shadow.type.primitive.LM_Primitive;
-import io.determann.shadow.api.shadow.type.C_Null;
-import io.determann.shadow.api.shadow.type.C_Void;
+import io.determann.shadow.api.lang_model.Constants;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
 
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
 import static javax.lang.model.type.TypeKind.*;
 
-public class LangModelConstantsImpl implements LM_Constants
+public class LangModelConstantsImpl implements Constants
 {
-   private final LM_Context context;
+   private final LM.Context context;
 
-   LangModelConstantsImpl(LM_Context context)
+   LangModelConstantsImpl(LM.Context context)
    {
       this.context = context;
    }
 
    @Override
-   public LM_Wildcard getUnboundWildcard()
+   public LM.Wildcard getUnboundWildcard()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getWildcardType(null, null));
+      return Adapters.adapt(context, adapt(context).toTypes().getWildcardType(null, null));
    }
 
    @Override
-   public C_Null getNull()
+   public LM.Null getNull()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getNullType());
+      return Adapters.adapt(context, adapt(context).toTypes().getNullType());
    }
 
    @Override
-   public C_Void getVoid()
+   public LM.Void getVoid()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getNoType(VOID));
+      return Adapters.adapt(context, adapt(context).toTypes().getNoType(VOID));
    }
 
    @Override
-   public LM_Primitive getPrimitiveBoolean()
+   public LM.boolean_ getPrimitiveBoolean()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
+      return (LM.boolean_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
    }
 
    @Override
-   public LM_Primitive getPrimitiveByte()
+   public LM.byte_ getPrimitiveByte()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
+      return (LM.byte_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
    }
 
    @Override
-   public LM_Primitive getPrimitiveShort()
+   public LM.short_ getPrimitiveShort()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
+      return (LM.short_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
    }
 
    @Override
-   public LM_Primitive getPrimitiveInt()
+   public LM.int_ getPrimitiveInt()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
+      return (LM.int_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
    }
 
    @Override
-   public LM_Primitive getPrimitiveLong()
+   public LM.long_ getPrimitiveLong()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
+      return (LM.long_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
    }
 
    @Override
-   public LM_Primitive getPrimitiveChar()
+   public LM.char_ getPrimitiveChar()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
+      return (LM.char_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
    }
 
    @Override
-   public LM_Primitive getPrimitiveFloat()
+   public LM.float_ getPrimitiveFloat()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
+      return (LM.float_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
    }
 
    @Override
-   public LM_Primitive getPrimitiveDouble()
+   public LM.double_ getPrimitiveDouble()
    {
-      return LM_Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
+      return (LM.double_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
    }
 }

@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing;
 
-import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.tck.Source;
 import io.determann.shadow.tck.Tck;
 

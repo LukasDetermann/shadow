@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
@@ -10,7 +11,6 @@ import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
 import io.determann.shadow.api.dsl.record.RecordRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +139,7 @@ public class ConstructorDsl
    }
 
    @Override
-   public ConstructorModifierStep modifier(Set<C_Modifier> modifiers)
+   public ConstructorModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new ConstructorDsl(this),
                       modifiers,
@@ -150,7 +150,7 @@ public class ConstructorDsl
    public ConstructorModifierStep public_()
    {
       return addTypeRenderer(new ConstructorDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 
@@ -158,7 +158,7 @@ public class ConstructorDsl
    public ConstructorModifierStep protected_()
    {
       return addTypeRenderer(new ConstructorDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 
@@ -166,7 +166,7 @@ public class ConstructorDsl
    public ConstructorModifierStep private_()
    {
       return addTypeRenderer(new ConstructorDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 

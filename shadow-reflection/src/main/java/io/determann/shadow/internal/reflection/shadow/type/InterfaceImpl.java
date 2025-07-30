@@ -1,32 +1,28 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Interface;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import java.util.*;
 import java.util.stream.Collector;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
-public class InterfaceImpl extends DeclaredImpl implements R_Interface
+public class InterfaceImpl extends DeclaredImpl implements R.Interface
 {
-   private final List<R_Type> genericTypes;
+   private final List<R.Type> genericTypes;
 
    public InterfaceImpl(Class<?> aClass)
    {
       this(aClass, Collections.emptyList());
    }
 
-   public InterfaceImpl(Class<?> aClass, List<R_Type> genericTypes)
+   public InterfaceImpl(Class<?> aClass, List<R.Type> genericTypes)
    {
       super(aClass);
       this.genericTypes = genericTypes;
@@ -37,9 +33,9 @@ public class InterfaceImpl extends DeclaredImpl implements R_Interface
    {
       return getMethods()
             .stream()
-            .filter(method -> requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, C_Modifier.ABSTRACT) || isObjectMethod(method))
+            .filter(method -> requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.ABSTRACT) || isObjectMethod(method))
             .collect(Collector.
-                           <C_Method, Set<C_Method>, Boolean>
+                           <C.Method, Set<C.Method>, Boolean>
                            of(HashSet::new, (methods, method) -> methods.stream()
                                                                         .anyMatch(method1 -> requestOrThrow(method1, METHOD_OVERRIDES, method) ||
                                                                                              requestOrThrow(method, METHOD_OVERRIDES, method1)),
@@ -52,7 +48,7 @@ public class InterfaceImpl extends DeclaredImpl implements R_Interface
                               UNORDERED));
    }
 
-   private boolean isObjectMethod(C_Method method)
+   private boolean isObjectMethod(C.Method method)
    {
       return new ClassImpl(Object.class)
             .getMethods()
@@ -61,21 +57,21 @@ public class InterfaceImpl extends DeclaredImpl implements R_Interface
    }
 
    @Override
-   public List<R_Type> getGenericTypes()
+   public List<R.Type> getGenericTypes()
    {
       return genericTypes;
    }
 
    @Override
-   public List<R_Generic> getGenerics()
+   public List<R.Generic> getGenerics()
    {
-      return Arrays.stream(getaClass().getTypeParameters()).map(R_Adapter::generalize).map(R_Generic.class::cast).toList();
+      return Arrays.stream(getaClass().getTypeParameters()).map(Adapter::generalize).map(R.Generic.class::cast).toList();
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
-      return type instanceof C_Interface anInterface &&
+      return type instanceof C.Interface anInterface &&
              requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
                    .stream()
                    .allMatch(type1 -> getGenericTypes().stream()

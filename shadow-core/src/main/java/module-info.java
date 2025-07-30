@@ -2,19 +2,14 @@ module io.determann.shadow.api {
 
    exports io.determann.shadow.api;
    exports io.determann.shadow.api.renderer;
-   exports io.determann.shadow.api.operation;
-
-   exports io.determann.shadow.api.shadow;
-   exports io.determann.shadow.api.shadow.modifier;
-   exports io.determann.shadow.api.shadow.directive;
-   exports io.determann.shadow.api.shadow.structure;
-   exports io.determann.shadow.api.shadow.type;
-   exports io.determann.shadow.api.shadow.type.primitive;
+   exports io.determann.shadow.api.query;
+   exports io.determann.shadow.api.query.operation;
 
    exports io.determann.shadow.api.dsl;
    exports io.determann.shadow.api.dsl.annotation;
    exports io.determann.shadow.api.dsl.annotation_usage;
    exports io.determann.shadow.api.dsl.annotation_value;
+   exports io.determann.shadow.api.dsl.array;
    exports io.determann.shadow.api.dsl.class_;
    exports io.determann.shadow.api.dsl.constructor;
    exports io.determann.shadow.api.dsl.declared;
@@ -37,5 +32,5 @@ module io.determann.shadow.api {
    exports io.determann.shadow.api.dsl.result;
    exports io.determann.shadow.api.dsl.uses;
 
-   uses io.determann.shadow.api.ProviderSpi;
+   uses io.determann.shadow.api.query.ProviderSpi;
 }

@@ -1,13 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.type.R_Generic;
-import io.determann.shadow.api.reflection.shadow.type.R_Interface;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import java.lang.reflect.TypeVariable;
@@ -15,13 +11,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.GENERIC_GET_BOUND;
-import static io.determann.shadow.api.Operations.TYPE_REPRESENTS_SAME_TYPE;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
-import static io.determann.shadow.api.reflection.R_Adapter.generalize;
+import static io.determann.shadow.api.query.Operations.GENERIC_GET_BOUND;
+import static io.determann.shadow.api.query.Operations.TYPE_REPRESENTS_SAME_TYPE;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.generalize;
 
-public class GenericImpl implements R_Generic
+public class GenericImpl implements R.Generic
 {
    private final TypeVariable<?> typeVariable;
 
@@ -37,41 +33,41 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getAnnotations()).map(R_Adapter::generalize).toList();
+      return Arrays.stream(getTypeVariable().getAnnotations()).map(Adapter::generalize).toList();
    }
 
    @Override
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(R_Adapter::generalize).toList();
+      return Arrays.stream(getTypeVariable().getDeclaredAnnotations()).map(Adapter::generalize).toList();
    }
 
    @Override
-   public R_Type getBound()
+   public R.Type getBound()
    {
       return getBounds().getFirst();
    }
 
    @Override
-   public List<R_Type> getBounds()
+   public List<R.Type> getBounds()
    {
       return Arrays.stream(getTypeVariable().getBounds())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<R_Interface> getAdditionalBounds()
+   public List<R.Interface> getAdditionalBounds()
    {
-      List<R_Type> bounds = getBounds();
+      List<R.Type> bounds = getBounds();
       if (bounds.size() <= 1)
       {
          return Collections.emptyList();
       }
       return bounds.stream().skip(1)
-                   .map(R_Interface.class::cast)
+                   .map(R.Interface.class::cast)
                    .toList();
    }
 
@@ -90,9 +86,9 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
-      if (!(type instanceof C_Generic generic))
+      if (!(type instanceof C.Generic generic))
       {
          return false;
       }

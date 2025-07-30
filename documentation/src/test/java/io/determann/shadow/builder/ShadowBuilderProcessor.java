@@ -1,13 +1,11 @@
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.AP_Context;
-import io.determann.shadow.api.annotation_processing.AP_Processor;
+import io.determann.shadow.api.annotation_processing.AP;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
+import io.determann.shadow.api.lang_model.LM;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.List;
@@ -18,13 +16,13 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /// Builds a companion Builder class for each annotated class
 public class ShadowBuilderProcessor
-      extends AP_Processor
+      extends AP.Processor
 {
    @Override
-   public void process(final AP_Context context)
+   public void process(final AP.Context context)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (LM_Class aClass : context
+      for (LM.Class aClass : context
             .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
@@ -38,7 +36,7 @@ public class ShadowBuilderProcessor
          List<BuilderElement> builderElements =
                aClass.getProperties()
                      .stream()
-                     .filter(LM_Property::isMutable)
+                     .filter(LM.Property::isMutable)
                      .map(property -> renderProperty(builderSimpleName,
                                                      builderVariableName,
                                                      property))
@@ -84,7 +82,7 @@ public class ShadowBuilderProcessor
    /// Creates a {@link BuilderElement} for each property of the annotated pojo
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final LM_Property property)
+                                         final LM.Property property)
    {
       String propertyName = property.getName();
 

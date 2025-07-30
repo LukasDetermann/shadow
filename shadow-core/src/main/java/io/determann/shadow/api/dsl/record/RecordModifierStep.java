@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.record;
 
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
+import io.determann.shadow.api.Modifier;
 
 import java.util.Set;
 
@@ -9,12 +9,12 @@ public interface RecordModifierStep
 {
    RecordModifierStep modifier(String... modifiers);
 
-   default RecordModifierStep modifier(C_Modifier... modifiers)
+   default RecordModifierStep modifier(Modifier... modifiers)
    {
       return modifier(Set.of(modifiers));
    }
 
-   RecordModifierStep modifier(Set<C_Modifier> modifiers);
+   RecordModifierStep modifier(Set<Modifier> modifiers);
 
    RecordModifierStep public_();
 

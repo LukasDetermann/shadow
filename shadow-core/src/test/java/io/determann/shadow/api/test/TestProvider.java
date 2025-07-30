@@ -1,9 +1,9 @@
 package io.determann.shadow.api.test;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.ProviderSpi;
-import io.determann.shadow.api.Response;
-import io.determann.shadow.api.operation.Operation;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.query.ProviderSpi;
+import io.determann.shadow.api.query.Response;
+import io.determann.shadow.api.query.operation.Operation;
 
 import java.util.ArrayList;
 import java.util.List;

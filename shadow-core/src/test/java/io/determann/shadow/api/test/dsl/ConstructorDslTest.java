@@ -1,9 +1,8 @@
 package io.determann.shadow.api.test.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Enum;
 import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -46,7 +45,7 @@ class ConstructorDslTest
    {
       assertEquals("myModifier private public protected private MyType() {}",
                    Dsl.constructor().modifier("myModifier")
-                      .modifier(C_Modifier.PRIVATE)
+                      .modifier(Modifier.PRIVATE)
                       .public_()
                       .protected_()
                       .private_()
@@ -68,7 +67,7 @@ class ConstructorDslTest
    @Test
    void type()
    {
-      C_Enum cEnum = TestFactory.create(C_Enum.class, "renderQualifiedName", "MyEnum");
+      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderQualifiedName", "MyEnum");
 
       assertEquals("MyEnum() {}", Dsl.constructor().type(cEnum).renderDeclaration(DEFAULT));
    }
@@ -96,7 +95,7 @@ class ConstructorDslTest
    @Test
    void throws_()
    {
-      C_Class cClass = TestFactory.create(C_Class.class, "renderName", "MyException3");
+      C.Class cClass = TestFactory.create(C.Class.class, "renderName", "MyException3");
 
       assertEquals("MyType() throws MyException1, MyException2, MyException3 {}",
                    Dsl.constructor()

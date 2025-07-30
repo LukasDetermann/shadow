@@ -1,3 +1,4 @@
+import io.determann.shadow.api.query.ProviderSpi;
 import io.determann.shadow.implementation.support.internal.SupportProvider;
 
 module io.determann.shadow.implementation.support {
@@ -10,5 +11,5 @@ module io.determann.shadow.implementation.support {
 
    requires transitive io.determann.shadow.api;
 
-   provides io.determann.shadow.api.ProviderSpi with SupportProvider;
+   provides ProviderSpi with SupportProvider;
 }

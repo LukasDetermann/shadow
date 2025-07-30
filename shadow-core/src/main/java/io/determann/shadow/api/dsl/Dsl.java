@@ -1,5 +1,7 @@
 package io.determann.shadow.api.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.annotation.AnnotationJavaDocStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
@@ -33,18 +35,12 @@ import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.uses.UsesRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.*;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.dsl.*;
 
 import java.util.List;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
@@ -124,7 +120,7 @@ public interface Dsl
    /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-type"}
    ///
    /// @see #exports()
-   static ExportsRenderable exports(C_Package aPackage)
+   static ExportsRenderable exports(C.Package aPackage)
    {
       return exports().package_(aPackage);
    }
@@ -138,7 +134,7 @@ public interface Dsl
    /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-type"}
    ///
    /// @see #opens()
-   static OpensRenderable opens(C_Package aPackage)
+   static OpensRenderable opens(C.Package aPackage)
    {
       return opens().package_(aPackage);
    }
@@ -176,7 +172,7 @@ public interface Dsl
    }
 
    /// {@snippet file = "DirectiveDslTest.java" region = "uses-api-type"}
-   static UsesRenderable uses(C_Declared service)
+   static UsesRenderable uses(C.Declared service)
    {
       return uses(requestOrThrow(service, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
    }
@@ -300,7 +296,7 @@ public interface Dsl
    }
 
    /// {@code Dsl.annotationValue(cEnumConstant).render(DEFAULT)} -> {@code org.example.Enum.CONSTANT}
-   static AnnotationValueRenderable annotationValue(C_EnumConstant value)
+   static AnnotationValueRenderable annotationValue(C.EnumConstant value)
    {
       requireNonNull(value);
       return value::renderDeclaration;
@@ -321,26 +317,26 @@ public interface Dsl
    }
 
    /// {@code Dsl.annotationValue(cArray).render(DEFAULT)} -> {@code boolean[].class}
-   static AnnotationValueRenderable annotationValue(C_Type value)
+   static AnnotationValueRenderable annotationValue(C.Type value)
    {
       requireNonNull(value);
       return renderingContext ->
             switch (value)
             {
-               case C_Array array -> array.renderType(renderingContext);
-               case C_Declared declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
-               case C_Generic _ -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
-               case C_Null _ -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
-               case C_Void _ -> "void";
-               case C_Wildcard _ -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
-               case C_Primitive primitive -> primitive.renderType(renderingContext);
+               case C.Array array -> array.renderType(renderingContext);
+               case C.Declared declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
+               case C.Generic _ -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
+               case C.Null _ -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
+               case C.Void _ -> "void";
+               case C.Wildcard _ -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
+               case C.Primitive primitive -> primitive.renderType(renderingContext);
                default -> throw new IllegalArgumentException("Can not be used as an Annotation Value " + value);
             }
             + ".class";
    }
 
    /// {@code Dsl.annotationValue(cAnnotationUsage).render(DEFAULT)} -> {@code @org.example.MyAnnotation}
-   static AnnotationValueRenderable annotationValue(C_AnnotationUsage value)
+   static AnnotationValueRenderable annotationValue(C.AnnotationUsage value)
    {
       requireNonNull(value);
       return value::renderDeclaration;
@@ -407,7 +403,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierStringStringString"}
    ///
    /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, String type, String name, String initializer)
+   static FieldRenderable constant(Modifier modifier, String type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
@@ -415,7 +411,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, VariableTypeRenderable type, String name, String initializer)
+   static FieldRenderable constant(Modifier modifier, VariableTypeRenderable type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
@@ -455,7 +451,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, String type, String name)
+   static FieldRenderable field(Modifier modifier, String type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
@@ -463,7 +459,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, VariableTypeRenderable type, String name)
+   static FieldRenderable field(Modifier modifier, VariableTypeRenderable type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
@@ -471,7 +467,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringStringString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, String type, String name, String initializer)
+   static FieldRenderable field(Modifier modifier, String type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }
@@ -479,7 +475,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, VariableTypeRenderable type, String name, String initializer)
+   static FieldRenderable field(Modifier modifier, VariableTypeRenderable type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }

@@ -15,7 +15,7 @@ They also can create new Files, including source files, and raise errors or warn
 
 It's normal annotation processing with a better API.
 The setup is the same.
-The differences only start when extending`io.determann.shadow.api.annotation_processing.AP_Processor` instead of `javax.annotation.processing.AbstractProcessor`.
+The differences only start when extending`io.determann.shadow.api.annotation_processing.AP.Processor` instead of `javax.annotation.processing.AbstractProcessor`.
 A good starting point for your own processor is `AnnotationProcessingContext.getAnnotatedWith(java.lang.String)`.
 
 == Setup
@@ -128,8 +128,7 @@ One having the code to process and one containing the annotation processor.
 .Extend `ShadowProcessor` for your own processor and override `process()`
 [%linenums,java]
 ----
-import io.determann.shadow.api.annotation_processing.AP_Context;
-import io.determann.shadow.api.annotation_processing.AP_Processor;
+
 
 public class MyProcessor extends ShadowProcessor
 {
@@ -160,8 +159,7 @@ public @interface MyAnnotation {}
 .And finally process anything annotated with that annotation
 [%linenums,java]
 ----
-import io.determann.shadow.api.annotation_processing.AP_Context;
-import io.determann.shadow.api.annotation_processing.AP_Processor;
+
 
 public class MyProcessor extends ShadowProcessor
 {

@@ -1,16 +1,9 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.structure.*;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Wildcard;
-import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.NestingKind;
+import io.determann.shadow.api.lang_model.LM;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.lang.model.element.ElementKind;
@@ -23,36 +16,36 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.determann.shadow.api.Operations.MODIFIABLE_GET_MODIFIERS;
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
+import static io.determann.shadow.api.query.Operations.MODIFIABLE_GET_MODIFIERS;
+import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
 public class DeclaredImpl extends TypeImpl<DeclaredType>
 {
    private final TypeElement typeElement;
 
-   DeclaredImpl(LM_Context context, DeclaredType declaredTypeMirror)
+   DeclaredImpl(LM.Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
       this.typeElement = (TypeElement) declaredTypeMirror.asElement();
    }
 
-   DeclaredImpl(LM_Context context, TypeElement typeElement)
+   DeclaredImpl(LM.Context context, TypeElement typeElement)
    {
       super(context, (DeclaredType) typeElement.asType());
       this.typeElement = typeElement;
    }
 
-   public Set<C_Modifier> getModifiers()
+   public Set<Modifier> getModifiers()
    {
       return LangModelContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(C_Type type)
+   public boolean isSubtypeOf(C.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((LM_Declared) type).toDeclaredType());
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((LM.Declared) type).toDeclaredType());
    }
 
    public TypeElement getElement()
@@ -60,46 +53,46 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return typeElement;
    }
 
-   public C_NestingKind getNesting()
+   public NestingKind getNesting()
    {
       return switch (getElement().getNestingKind())
       {
-         case MEMBER -> C_NestingKind.INNER;
-         case TOP_LEVEL -> C_NestingKind.OUTER;
+         case MEMBER -> NestingKind.INNER;
+         case TOP_LEVEL -> NestingKind.OUTER;
          default -> throw new IllegalStateException();
       };
    }
 
-   public List<LM_Field> getFields()
+   public List<LM.Field> getFields()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
                          .map(VariableElement.class::cast)
                          .map(variableElement -> adapt(getApi(), variableElement))
-                         .map(LM_Field.class::cast)
+                         .map(LM.Field.class::cast)
                          .toList();
    }
 
-   public List<LM_Method> getMethods()
+   public List<LM.Method> getMethods()
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> adapt(getApi(), element))
-                          .map(LM_Method.class::cast)
+                          .map(LM.Method.class::cast)
                           .toList();
    }
 
-   public List<LM_Constructor> getConstructors()
+   public List<LM.Constructor> getConstructors()
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> adapt(getApi(), element))
-                          .map(LM_Constructor.class::cast)
+                          .map(LM.Constructor.class::cast)
                           .toList();
    }
 
-   public List<LM_Declared> getDirectSuperTypes()
+   public List<LM.Declared> getDirectSuperTypes()
    {
       return adapt(getApi()).toTypes()
                         .directSupertypes(getMirror())
@@ -108,16 +101,16 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
                         .toList();
    }
 
-   public Set<LM_Declared> getSuperTypes()
+   public Set<LM.Declared> getSuperTypes()
    {
-      return findAllSupertypes(new HashSet<>(), ((LM_Declared) this));
+      return findAllSupertypes(new HashSet<>(), ((LM.Declared) this));
    }
 
-   private Set<LM_Declared> findAllSupertypes(Set<LM_Declared> found, LM_Declared declared)
+   private Set<LM.Declared> findAllSupertypes(Set<LM.Declared> found, LM.Declared declared)
    {
-      List<LM_Declared> directSupertypes = declared.getDirectSuperTypes();
+      List<LM.Declared> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (LM_Declared directSupertype : directSupertypes)
+      for (LM.Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
@@ -134,44 +127,44 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return adapt(getApi()).toElements().getBinaryName(getElement()).toString();
    }
 
-   public LM_Array asArray()
+   public LM.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
-   public LM_Wildcard asExtendsWildcard()
+   public LM.Wildcard asExtendsWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
    }
 
-   public LM_Wildcard asSuperWildcard()
+   public LM.Wildcard asSuperWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(null, getMirror()));
    }
 
-   public List<LM_Interface> getDirectInterfaces()
+   public List<LM.Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()
                          .stream()
                          .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
-                         .map(LM_Interface.class::cast)
+                         .map(LM.Interface.class::cast)
                          .toList();
    }
 
-   public List<LM_Interface> getInterfaces()
+   public List<LM.Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared instanceof LM_Interface)
-                            .map(LM_Interface.class::cast)
+                            .filter(declared -> declared instanceof LM.Interface)
+                            .map(LM.Interface.class::cast)
                             .toList();
    }
 
-   public LM_Package getPackage()
+   public LM.Package getPackage()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getPackageOf(getElement()));
    }
 
-   public LM_Module getModule()
+   public LM.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -186,12 +179,12 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
-   public List<LM_AnnotationUsage> getAnnotationUsages()
+   public List<LM.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
+   public List<LM.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
@@ -216,7 +209,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       {
          return true;
       }
-      if (!(other instanceof C_Declared otherDeclared))
+      if (!(other instanceof C.Declared otherDeclared))
       {
          return false;
       }

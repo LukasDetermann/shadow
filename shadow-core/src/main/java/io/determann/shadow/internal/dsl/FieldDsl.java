@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.VariableTypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.field.*;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class FieldDsl
    }
 
    @Override
-   public FieldModifierStep modifier(Set<C_Modifier> modifiers)
+   public FieldModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new FieldDsl(this),
                       modifiers,
@@ -86,7 +86,7 @@ public class FieldDsl
    public FieldModifierStep public_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -94,7 +94,7 @@ public class FieldDsl
    public FieldModifierStep protected_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -102,7 +102,7 @@ public class FieldDsl
    public FieldModifierStep private_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -110,7 +110,7 @@ public class FieldDsl
    public FieldModifierStep final_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.FINAL,
+                             Modifier.FINAL,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -118,7 +118,7 @@ public class FieldDsl
    public FieldModifierStep static_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.STATIC,
+                             Modifier.STATIC,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -126,7 +126,7 @@ public class FieldDsl
    public FieldModifierStep strictfp_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -134,7 +134,7 @@ public class FieldDsl
    public FieldModifierStep transient_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.TRANSIENT,
+                             Modifier.TRANSIENT,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -142,7 +142,7 @@ public class FieldDsl
    public FieldModifierStep volatile_()
    {
       return addTypeRenderer(new FieldDsl(this),
-                             C_Modifier.VOLATILE,
+                             Modifier.VOLATILE,
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 

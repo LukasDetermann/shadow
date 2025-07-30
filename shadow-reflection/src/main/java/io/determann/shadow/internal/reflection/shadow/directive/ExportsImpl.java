@@ -1,19 +1,17 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.directive.R_Exports;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Package;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
 
 import java.lang.module.ModuleDescriptor;
 import java.util.Collections;
 import java.util.List;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class ExportsImpl implements R_Exports
+public class ExportsImpl implements R.Exports
 {
    private final ModuleDescriptor.Exports exportsDirective;
 
@@ -23,19 +21,19 @@ public class ExportsImpl implements R_Exports
    }
 
    @Override
-   public R_Package getPackage()
+   public R.Package getPackage()
    {
-      return R_Adapter.getPackage(exportsDirective.source());
+      return Adapter.getPackage(exportsDirective.source());
    }
 
    @Override
-   public List<R_Module> getTargetModules()
+   public List<R.Module> getTargetModules()
    {
       return exportsDirective.targets() == null ?
              Collections.emptyList() :
              exportsDirective.targets()
                              .stream()
-                             .map(R_Adapter::getModuleType)
+                             .map(Adapter::getModuleType)
                              .toList();
    }
 

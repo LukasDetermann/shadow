@@ -1,6 +1,6 @@
 package io.determann.shadow.tck.internal;
 
-import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.tck.Source;
 
 import java.util.ArrayList;

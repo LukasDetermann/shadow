@@ -1,16 +1,12 @@
 package io.determann.shadow.tck.internal.shadow;
 
-import io.determann.shadow.api.shadow.structure.C_Constructor;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Interface;
+import io.determann.shadow.api.C;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.shadow.modifier.C_Modifier.*;
+import static io.determann.shadow.api.Modifier.*;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
 
 class ModifiableTest
@@ -24,8 +20,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PUBLIC));
                   });
    }
@@ -39,8 +35,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PROTECTED));
                   });
    }
@@ -54,8 +50,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Constructor constructor = requestOrThrow(cClass, CLASS_GET_CONSTRUCTORS).get(0);
                      Assertions.assertTrue(requestOrThrow(constructor, MODIFIABLE_HAS_MODIFIER, PRIVATE));
                   });
    }
@@ -66,7 +62,7 @@ class ModifiableTest
       withSource("Test.java", "abstract class Test{}")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
                      Assertions.assertTrue(requestOrThrow(cClass, MODIFIABLE_HAS_MODIFIER, ABSTRACT));
                   });
    }
@@ -77,7 +73,7 @@ class ModifiableTest
       withSource("Test.java", "interface Test{}")
             .test(implementation ->
                   {
-                     C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Test");
+                     C.Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Test");
                      Assertions.assertTrue(requestOrThrow(cInterface, MODIFIABLE_HAS_MODIFIER, PACKAGE_PRIVATE));
                   });
    }
@@ -91,8 +87,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Test");
-                     C_Method method = requestOrThrow(cInterface, DECLARED_GET_METHOD, "test").get(0);
+                     C.Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Test");
+                     C.Method method = requestOrThrow(cInterface, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, DEFAULT));
                   });
    }
@@ -106,8 +102,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, STATIC));
                   });
    }
@@ -119,7 +115,7 @@ class ModifiableTest
             .withSource("Child.java", "non-sealed interface Child extends Parent {}")
             .test(implementation ->
                   {
-                     C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Parent");
+                     C.Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Parent");
                      Assertions.assertTrue(requestOrThrow(cInterface, MODIFIABLE_HAS_MODIFIER, SEALED));
                   });
    }
@@ -131,7 +127,7 @@ class ModifiableTest
             .withSource("Child.java", "non-sealed interface Child extends Parent {}")
             .test(implementation ->
                   {
-                     C_Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Child");
+                     C.Interface cInterface = requestOrThrow(implementation, GET_INTERFACE, "Child");
                      Assertions.assertTrue(requestOrThrow(cInterface, MODIFIABLE_HAS_MODIFIER, NON_SEALED));
                   });
    }
@@ -145,8 +141,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, FINAL));
                   });
    }
@@ -160,8 +156,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "foo");
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "foo");
                      Assertions.assertTrue(requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, TRANSIENT));
                   });
    }
@@ -175,8 +171,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "foo");
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Field field = requestOrThrow(cClass, DECLARED_GET_FIELD, "foo");
                      Assertions.assertTrue(requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, VOLATILE));
                   });
    }
@@ -190,8 +186,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, SYNCHRONIZED));
                   });
    }
@@ -205,8 +201,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, NATIVE));
                   });
    }
@@ -220,8 +216,8 @@ class ModifiableTest
             }""")
             .test(implementation ->
                   {
-                     C_Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
-                     C_Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
+                     C.Class cClass = requestOrThrow(implementation, GET_CLASS, "Test");
+                     C.Method method = requestOrThrow(cClass, DECLARED_GET_METHOD, "test").get(0);
                      Assertions.assertTrue(requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, STRICTFP));
                   });
    }

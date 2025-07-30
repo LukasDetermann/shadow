@@ -1,38 +1,35 @@
 package io.determann.shadow.internal.lang_model.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.directive.LM_Opens;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
 
-public class OpensImpl extends DirectiveImpl implements LM_Opens
+public class OpensImpl extends DirectiveImpl implements LM.Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(LM_Context langModelContext, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(LM.Context langModelContext, ModuleElement.OpensDirective opensDirective)
    {
       super(langModelContext);
       this.opensDirective = opensDirective;
    }
 
    @Override
-   public LM_Package getPackage()
+   public LM.Package getPackage()
    {
-      return LM_Adapters.adapt(getApi(), opensDirective.getPackage());
+      return Adapters.adapt(getApi(), opensDirective.getPackage());
    }
 
    @Override
-   public List<LM_Module> getTargetModules()
+   public List<LM.Module> getTargetModules()
    {
       return opensDirective.getTargetModules()
                            .stream()
-                           .map(moduleElement -> LM_Adapters.adapt(getApi(), moduleElement))
+                           .map(moduleElement -> Adapters.adapt(getApi(), moduleElement))
                            .toList();
    }
 

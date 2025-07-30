@@ -1,8 +1,8 @@
 package io.determann.shadow.implementation.support.api.provider;
 
-import io.determann.shadow.api.ProviderSpi;
-import io.determann.shadow.api.Response;
-import io.determann.shadow.api.operation.Operation;
+import io.determann.shadow.api.query.ProviderSpi;
+import io.determann.shadow.api.query.Response;
+import io.determann.shadow.api.query.operation.Operation;
 
 import java.util.Map;
 import java.util.function.BiFunction;

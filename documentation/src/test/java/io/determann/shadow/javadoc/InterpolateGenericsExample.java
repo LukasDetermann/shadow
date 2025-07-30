@@ -1,7 +1,7 @@
 package io.determann.shadow.javadoc;
 
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.shadow.type.*;
+import io.determann.shadow.api.lang_model.LM;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,20 +15,20 @@ public class InterpolateGenericsExample
       ProcessorTest.process(context ->
                             {
                                //@start region="InterpolateGenerics.interpolateGenerics"
-                               LM_Class myClass = context.getClassOrThrow("MyClass");
-                               LM_Declared string = context.getDeclaredOrThrow("java.lang.String");
+                               LM.Class myClass = context.getClassOrThrow("MyClass");
+                               LM.Declared string = context.getDeclaredOrThrow("java.lang.String");
 
-                               LM_Class withGenerics = myClass.withGenerics(string,
+                               LM.Class withGenerics = myClass.withGenerics(string,
                                                                             //the unboundWildcard will be replaced with the result
                                                                             context.getConstants().getUnboundWildcard());
 
-                               LM_Class capture = withGenerics.interpolateGenerics();
+                               LM.Class capture = withGenerics.interpolateGenerics();
 
-                               LM_Type stringRep = Optional.of(capture.getGenericTypes().get(1))
-                                                           .map(LM_Generic.class::cast)
-                                                           .map(LM_Generic::getBound)
-                                                           .map(LM_Interface.class::cast)
-                                                           .map(LM_Interface::getGenericTypes)
+                               LM.Type stringRep = Optional.of(capture.getGenericTypes().get(1))
+                                                           .map(LM.Generic.class::cast)
+                                                           .map(LM.Generic::getBound)
+                                                           .map(LM.Interface.class::cast)
+                                                           .map(LM.Interface::getGenericTypes)
                                                            .map(types -> types.get(0))
                                                            .orElseThrow();
 

@@ -1,17 +1,10 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.structure.*;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Executable;
-import io.determann.shadow.api.shadow.structure.C_Method;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.lang_model.LangModelContextImpl;
 
 import javax.lang.model.element.ExecutableElement;
@@ -26,49 +19,49 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Queries.query;
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.Queries.query;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
 
 public abstract class ExecutableImpl
 {
-   private final LM_Context context;
+   private final LM.Context context;
    private final ExecutableElement executableElement;
 
 
-   public ExecutableImpl(LM_Context context, ExecutableElement executableElement)
+   public ExecutableImpl(LM.Context context, ExecutableElement executableElement)
    {
       this.context = context;
       this.executableElement = executableElement;
    }
 
-   public Set<C_Modifier> getModifiers()
+   public Set<Modifier> getModifiers()
    {
       return LangModelContextImpl.getModifiers(getElement());
    }
 
-   public LM_Result getResult()
+   public LM.Result getResult()
    {
       return new ResultImpl(getApi(), getMirror().getReturnType());
    }
 
-   public LM_Type getReturnType()
+   public LM.Type getReturnType()
    {
       return adapt(getApi(), getMirror().getReturnType());
    }
 
-   public List<LM_Type> getParameterTypes()
+   public List<LM.Type> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> LM_Adapters.<LM_Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<LM.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
-   public Optional<LM_Declared> getReceiverType()
+   public Optional<LM.Declared> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -78,7 +71,7 @@ public abstract class ExecutableImpl
       return Optional.of(adapt(getApi(), ((DeclaredType) receiverType)));
    }
 
-   public Optional<LM_Receiver> getReceiver()
+   public Optional<LM.Receiver> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -88,12 +81,12 @@ public abstract class ExecutableImpl
       return Optional.of(new ReceiverImpl(getApi(), getMirror().getReceiverType()));
    }
 
-   public List<LM_Class> getThrows()
+   public List<LM.Class> getThrows()
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> LM_Adapters.<LM_Class>adapt(getApi(), typeMirror))
-                        .map(LM_Class.class::cast)
+                        .map(typeMirror -> Adapters.<LM.Class>adapt(getApi(), typeMirror))
+                        .map(LM.Class.class::cast)
                         .toList();
    }
 
@@ -107,7 +100,7 @@ public abstract class ExecutableImpl
       return getElement().isVarArgs();
    }
 
-   public LM_Declared getSurrounding()
+   public LM.Declared getSurrounding()
    {
       return adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
@@ -117,44 +110,44 @@ public abstract class ExecutableImpl
       return executableElement;
    }
 
-   public boolean overrides(C_Method method)
+   public boolean overrides(C.Method method)
    {
       return adapt(getApi()).toElements().overrides(getElement(),
-                                                    adapt(((LM_Executable) method)).toExecutableElement(),
+                                                    adapt(((LM.Executable) method)).toExecutableElement(),
                                                     adapt(getSurrounding()).toTypeElement());
    }
 
-   public boolean overwrittenBy(C_Method method)
+   public boolean overwrittenBy(C.Method method)
    {
-      return adapt(getApi()).toElements().overrides(adapt((LM_Executable) method).toExecutableElement(),
+      return adapt(getApi()).toElements().overrides(adapt((LM.Executable) method).toExecutableElement(),
                                                     getElement(),
                                                     adapt(query(method).getSurrounding()).toTypeElement());
    }
 
-   public boolean sameParameterTypes(C_Method method)
+   public boolean sameParameterTypes(C.Method method)
    {
-      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((LM_Executable) method).toExecutableType());
+      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((LM.Executable) method).toExecutableType());
    }
 
-   public List<LM_Parameter> getParameters()
+   public List<LM.Parameter> getParameters()
    {
       return getElement().getParameters()
                          .stream()
                          .map(VariableElement.class::cast)
                          .map(variableElement -> adapt(getApi(), variableElement))
-                         .map(LM_Parameter.class::cast)
+                         .map(LM.Parameter.class::cast)
                          .toList();
    }
 
-   public List<LM_Generic> getGenerics()
+   public List<LM.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
-                         .map(element -> LM_Adapters.adapt(getApi(), element))
+                         .map(element -> Adapters.adapt(getApi(), element))
                          .toList();
    }
 
-   public LM_Module getModule()
+   public LM.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -169,17 +162,17 @@ public abstract class ExecutableImpl
       return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
-   public List<LM_AnnotationUsage> getAnnotationUsages()
+   public List<LM.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
+   public List<LM.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
-   public LM_Context getApi()
+   public LM.Context getApi()
    {
       return context;
    }
@@ -211,7 +204,7 @@ public abstract class ExecutableImpl
       {
          return true;
       }
-      if (!(other instanceof C_Executable otherExecutable))
+      if (!(other instanceof C.Executable otherExecutable))
       {
          return false;
       }

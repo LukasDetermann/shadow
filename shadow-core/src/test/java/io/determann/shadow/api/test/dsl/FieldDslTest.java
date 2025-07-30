@@ -1,8 +1,8 @@
 package io.determann.shadow.api.test.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -54,7 +54,7 @@ class FieldDslTest
       assertEquals("myModifier abstract public protected private final static strictfp transient volatile MyType modified;",
                    Dsl.field()
                       .modifier("myModifier")
-                      .modifier(C_Modifier.ABSTRACT)
+                      .modifier(Modifier.ABSTRACT)
                       .public_()
                       .protected_()
                       .private_()
@@ -111,7 +111,7 @@ class FieldDslTest
    @Test
    void constantTypeStringString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="constantTypeStringString"
       assertEquals("private static final int I1 = 5;", Dsl.constant(cPrimitive, "I1", "5").renderDeclaration(DEFAULT));
@@ -122,17 +122,17 @@ class FieldDslTest
    void constantModifierStringStringString()
    {
       //@start region="constantModifierStringStringString"
-      assertEquals("public final static int I1 = 5;", Dsl.constant(C_Modifier.PUBLIC, "int", "I1", "5").renderDeclaration(DEFAULT));
+      assertEquals("public final static int I1 = 5;", Dsl.constant(Modifier.PUBLIC, "int", "I1", "5").renderDeclaration(DEFAULT));
       //@end
    }
 
    @Test
    void constantModifierTypeStringString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="constantModifierTypeStringString"
-      assertEquals("public final static int I1 = 5;", Dsl.constant(C_Modifier.PUBLIC, cPrimitive, "I1", "5").renderDeclaration(DEFAULT));
+      assertEquals("public final static int I1 = 5;", Dsl.constant(Modifier.PUBLIC, cPrimitive, "I1", "5").renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -147,7 +147,7 @@ class FieldDslTest
    @Test
    void fieldTypeString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="fieldTypeString"
       assertEquals("private int i1;", Dsl.field(cPrimitive, "i1").renderDeclaration(DEFAULT));
@@ -165,7 +165,7 @@ class FieldDslTest
    @Test
    void fieldTypeStringString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="fieldTypeStringString"
       assertEquals("private int i1 = 5;", Dsl.field(cPrimitive, "i1", "5").renderDeclaration(DEFAULT));
@@ -176,17 +176,17 @@ class FieldDslTest
    void fieldModifierStringString()
    {
       //@start region="fieldModifierStringString"
-      assertEquals("public int i1;", Dsl.field(C_Modifier.PUBLIC, "int", "i1").renderDeclaration(DEFAULT));
+      assertEquals("public int i1;", Dsl.field(Modifier.PUBLIC, "int", "i1").renderDeclaration(DEFAULT));
       //@end
    }
 
    @Test
    void fieldModifierTypeString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="fieldModifierTypeString"
-      assertEquals("public int i1;", Dsl.field(C_Modifier.PUBLIC, cPrimitive, "i1").renderDeclaration(DEFAULT));
+      assertEquals("public int i1;", Dsl.field(Modifier.PUBLIC, cPrimitive, "i1").renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -194,17 +194,17 @@ class FieldDslTest
    void fieldModifierStringStringString()
    {
       //@start region="fieldModifierStringStringString"
-      assertEquals("public int i1 = 5;", Dsl.field(C_Modifier.PUBLIC, "int", "i1", "5").renderDeclaration(DEFAULT));
+      assertEquals("public int i1 = 5;", Dsl.field(Modifier.PUBLIC, "int", "i1", "5").renderDeclaration(DEFAULT));
       //@end
    }
 
    @Test
    void fieldModifierTypeStringString()
    {
-      C_Primitive cPrimitive = TestFactory.create(C_Primitive.class, "renderType", "int");
+      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
 
       //@start region="fieldModifierTypeStringString"
-      assertEquals("public int i1 = 5;", Dsl.field(C_Modifier.PUBLIC, cPrimitive, "i1", "5").renderDeclaration(DEFAULT));
+      assertEquals("public int i1 = 5;", Dsl.field(Modifier.PUBLIC, cPrimitive, "i1", "5").renderDeclaration(DEFAULT));
       //@end
    }
 }

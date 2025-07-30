@@ -1,12 +1,9 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.structure.R_Package;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.structure.C_Package;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.internal.reflection.NamedSupplier;
 
 import java.util.Arrays;
@@ -14,12 +11,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.determann.shadow.api.Operations.MODULE_ENCLOSED_GET_MODULE;
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.MODULE_ENCLOSED_GET_MODULE;
+import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class PackageImpl implements R_Package
+public class PackageImpl implements R.Package
 {
    private final NamedSupplier<java.lang.Package> packageSupplier;
 
@@ -29,7 +26,7 @@ public class PackageImpl implements R_Package
    }
 
    @Override
-   public R_Module getModule()
+   public R.Module getModule()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -47,29 +44,29 @@ public class PackageImpl implements R_Package
    }
 
    @Override
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Arrays.stream(packageSupplier.getInstance().getDeclaredAnnotations())
-                   .map(R_Adapter::generalize)
+                   .map(Adapter::generalize)
                    .toList();
    }
 
    @Override
-   public List<R_Declared> getDeclared()
+   public List<R.Declared> getDeclared()
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
 
    @Override
-   public Optional<R_Declared> getDeclared(String qualifiedName)
+   public Optional<R.Declared> getDeclared(String qualifiedName)
    {
       throw new UnsupportedOperationException("not implemented for reflection");
    }
@@ -99,7 +96,7 @@ public class PackageImpl implements R_Package
       {
          return true;
       }
-      if (!(other instanceof C_Package otherPackage))
+      if (!(other instanceof C.Package otherPackage))
       {
          return false;
       }

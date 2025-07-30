@@ -1,24 +1,22 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Field;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-public class FieldImpl extends VariableImpl implements LM_Field
+public class FieldImpl extends VariableImpl implements LM.Field
 {
-   public FieldImpl(LM_Context context, VariableElement variableElement)
+   public FieldImpl(LM.Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }
 
    @Override
-   public LM_Declared getSurrounding()
+   public LM.Declared getSurrounding()
    {
-      return LM_Adapters.adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
+      return Adapters.adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
 
    @Override

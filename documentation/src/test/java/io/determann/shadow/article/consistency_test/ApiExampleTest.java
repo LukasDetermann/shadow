@@ -1,12 +1,11 @@
 package io.determann.shadow.article.consistency_test;
 
-import io.determann.shadow.api.Operations;
-import io.determann.shadow.api.Provider;
-import io.determann.shadow.api.Response;
-import io.determann.shadow.api.reflection.R_Adapter;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Operations;
+import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.query.Response;
+import io.determann.shadow.api.reflection.Adapter;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -24,9 +23,9 @@ class ApiExampleTest
 void request()
 {
    //adapter for the reflection api
-   C_Class systemClass = R_Adapter.generalize(System.class);
+   C.Class systemClass = Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System
-   Response<C_Field> out = Provider.request(systemClass,
+   Response<C.Field> out = Provider.request(systemClass,
                                             Operations.DECLARED_GET_FIELD,
                                             "out");
 
@@ -34,14 +33,14 @@ void request()
    {
       //the implementation may not support this operation
       //e.g. it's impossible to access fields with reflection
-      case Response.Unsupported<C_Field> unsupported -> Assertions.fail();
+      case Response.Unsupported<C.Field> unsupported -> Assertions.fail();
       //the implementation may support this operation, but there is no
       //result for this instance
       //e.g. the class java.lang.System does not have a field called "out"
-      case Response.Empty<C_Field> empty -> Assertions.fail();
+      case Response.Empty<C.Field> empty -> Assertions.fail();
       //accessing fields via reflection is possible and java.lang.System
       //does have a field called "out" therefore a result is expected
-      case Response.Result<C_Field> result -> assertNotNull(result.value());
+      case Response.Result<C.Field> result -> assertNotNull(result.value());
    }
 }
 //end::request[]
@@ -51,10 +50,10 @@ void request()
 void requestOrEmpty()
 {
    //adapter for the reflection api
-   C_Class systemClass = R_Adapter.generalize(System.class);
+   C.Class systemClass = Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System.
    //If its unsupported an Empty Optional is returned
-   Optional<C_Field> out = Provider.requestOrEmpty(systemClass,
+   Optional<C.Field> out = Provider.requestOrEmpty(systemClass,
                                                    Operations.DECLARED_GET_FIELD,
                                                    "out");
 
@@ -67,10 +66,10 @@ void requestOrEmpty()
 void requestOrThrow()
 {
    //adapter for the reflection api
-   C_Class systemClass = R_Adapter.generalize(System.class);
+   C.Class systemClass = Adapter.generalize(System.class);
    //request the field "out" for the class java.lang.System.
    //If its unsupported an Exception is thrown
-   C_Field out = Provider.requestOrThrow(systemClass,
+   C.Field out = Provider.requestOrThrow(systemClass,
                                          Operations.DECLARED_GET_FIELD,
                                          "out");
 
@@ -92,7 +91,7 @@ void classDeclarationRendering()
    TckTest.withSource(name, content)
           .test(implementation ->
                {
-                  C_Class cClass = Provider.requestOrThrow(implementation,
+                  C.Class cClass = Provider.requestOrThrow(implementation,
                                                            Operations. GET_CLASS,
                                                            "InterpolateGenericsExample");
 

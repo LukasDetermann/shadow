@@ -1,19 +1,13 @@
 package io.determann.shadow.internal.annotation_processing;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.annotation_processing.AP_Context;
-import io.determann.shadow.api.annotation_processing.AP_DiagnosticContext;
-import io.determann.shadow.api.lang_model.LM_Constants;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.LM_ContextImplementation;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_Annotationable;
-import io.determann.shadow.api.lang_model.shadow.structure.*;
-import io.determann.shadow.api.lang_model.shadow.type.*;
-import io.determann.shadow.api.shadow.C_Annotationable;
-import io.determann.shadow.api.shadow.C_QualifiedNameable;
-import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.C_Annotation;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.DiagnosticContext;
+import io.determann.shadow.api.lang_model.Constants;
+import io.determann.shadow.api.lang_model.ContextImplementation;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -32,20 +26,20 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
+import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toSet;
 
-public class AnnotationProcessingContextImpl implements AP_Context,
-                                                        LM_ContextImplementation
+public class AnnotationProcessingContextImpl implements AP.Context,
+                                                        ContextImplementation
 {
    private final ProcessingEnvironment processingEnv;
    private final RoundEnvironment roundEnv;
    private final int processingRound;
-   private final LM_Context langModelContext;
-   private BiConsumer<AP_Context, Throwable> exceptionHandler = (context, throwable) ->
+   private final LM.Context langModelContext;
+   private BiConsumer<AP.Context, Throwable> exceptionHandler = (context, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -53,7 +47,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
       logAndRaiseError(stringWriter.toString());
       throw new RuntimeException(throwable);
    };
-   private BiConsumer<AP_Context, AP_DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
+   private BiConsumer<AP.Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
    {
       if (!context.isProcessingOver())
       {
@@ -70,7 +64,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
                  "\n");
       }
    };
-   private BiConsumer<AP_Context, String> systemOutHandler = (context, s) ->
+   private BiConsumer<AP.Context, String> systemOutHandler = (context, s) ->
    {
       if (!getProcessingEnv().toString().startsWith("javac"))
       {
@@ -80,7 +74,7 @@ public class AnnotationProcessingContextImpl implements AP_Context,
 
    public AnnotationProcessingContextImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
    {
-      this.langModelContext = LM_Adapters.adapt(processingEnv.getTypeUtils(), processingEnv.getElementUtils());
+      this.langModelContext = Adapters.adapt(processingEnv.getTypeUtils(), processingEnv.getElementUtils());
       this.processingRound = processingRound;
       this.processingEnv = processingEnv;
       this.roundEnv = roundEnv;
@@ -122,18 +116,18 @@ public class AnnotationProcessingContextImpl implements AP_Context,
                                {
                                   if (element.getKind().isExecutable())
                                   {
-                                     return (C_Annotationable) LM_Adapters.adapt(getApi(), ((ExecutableElement) element));
+                                     return (C.Annotationable) Adapters.adapt(getApi(), ((ExecutableElement) element));
                                   }
-                                  return ((C_Annotationable) LM_Adapters.adapt(getApi(), element));
+                                  return ((C.Annotationable) Adapters.adapt(getApi(), element));
                                })
                           .filter(typeClass::isInstance)
                           .map(typeClass::cast)
                           .collect(toSet());
    }
 
-   private <RESULT> Set<RESULT> getAnnotated(C_QualifiedNameable input, java.lang.Class<RESULT> resultClass)
+   private <RESULT> Set<RESULT> getAnnotated(C.QualifiedNameable input, java.lang.Class<RESULT> resultClass)
    {
-      if (input instanceof LM_Annotation annotationLangModel)
+      if (input instanceof LM.Annotation annotationLangModel)
       {
          return getAnnotated(adapt(annotationLangModel).toTypeElement(), resultClass);
       }
@@ -141,183 +135,183 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public Set<LM_Annotationable> getAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Annotationable> getAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Annotationable.class);
+      return getAnnotated(qualifiedAnnotation, LM.Annotationable.class);
    }
 
    @Override
-   public Set<LM_Annotationable> getAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Annotationable> getAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Annotationable.class);
+      return getAnnotated(annotation, LM.Annotationable.class);
    }
 
    @Override
-   public Set<LM_Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Declared.class);
+      return getAnnotated(qualifiedAnnotation, LM.Declared.class);
    }
 
    @Override
-   public Set<LM_Declared> getDeclaredAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Declared> getDeclaredAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Declared.class);
+      return getAnnotated(annotation, LM.Declared.class);
    }
 
    @Override
-   public Set<LM_Class> getClassesAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Class> getClassesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Class.class);
+      return getAnnotated(qualifiedAnnotation, LM.Class.class);
    }
 
    @Override
-   public Set<LM_Class> getClassesAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Class> getClassesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Class.class);
+      return getAnnotated(annotation, LM.Class.class);
    }
 
    @Override
-   public Set<LM_Enum> getEnumsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Enum> getEnumsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Enum.class);
+      return getAnnotated(qualifiedAnnotation, LM.Enum.class);
    }
 
    @Override
-   public Set<LM_Enum> getEnumsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Enum> getEnumsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Enum.class);
+      return getAnnotated(annotation, LM.Enum.class);
    }
 
    @Override
-   public Set<LM_Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Interface.class);
+      return getAnnotated(qualifiedAnnotation, LM.Interface.class);
    }
 
    @Override
-   public Set<LM_Interface> getInterfacesAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Interface> getInterfacesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Interface.class);
+      return getAnnotated(annotation, LM.Interface.class);
    }
 
    @Override
-   public Set<LM_Record> getRecordsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Record> getRecordsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Record.class);
+      return getAnnotated(qualifiedAnnotation, LM.Record.class);
    }
 
    @Override
-   public Set<LM_Record> getRecordsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Record> getRecordsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Record.class);
+      return getAnnotated(annotation, LM.Record.class);
    }
 
    @Override
-   public Set<LM_Field> getFieldsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Field> getFieldsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Field.class);
+      return getAnnotated(qualifiedAnnotation, LM.Field.class);
    }
 
    @Override
-   public Set<LM_Field> getFieldsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Field> getFieldsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Field.class);
+      return getAnnotated(annotation, LM.Field.class);
    }
 
    @Override
-   public Set<LM_Parameter> getParametersAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Parameter> getParametersAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Parameter.class);
+      return getAnnotated(qualifiedAnnotation, LM.Parameter.class);
    }
 
    @Override
-   public Set<LM_Parameter> getParametersAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Parameter> getParametersAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Parameter.class);
+      return getAnnotated(annotation, LM.Parameter.class);
    }
 
    @Override
-   public Set<LM_Method> getMethodsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Method> getMethodsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Method.class);
+      return getAnnotated(qualifiedAnnotation, LM.Method.class);
    }
 
    @Override
-   public Set<LM_Method> getMethodsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Method> getMethodsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Method.class);
+      return getAnnotated(annotation, LM.Method.class);
    }
 
    @Override
-   public Set<LM_Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Constructor.class);
+      return getAnnotated(qualifiedAnnotation, LM.Constructor.class);
    }
 
    @Override
-   public Set<LM_Constructor> getConstructorsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Constructor> getConstructorsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Constructor.class);
+      return getAnnotated(annotation, LM.Constructor.class);
    }
 
    @Override
-   public Set<LM_Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Annotation.class);
+      return getAnnotated(qualifiedAnnotation, LM.Annotation.class);
    }
 
    @Override
-   public Set<LM_Annotation> getAnnotationsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Annotation> getAnnotationsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Annotation.class);
+      return getAnnotated(annotation, LM.Annotation.class);
    }
 
    @Override
-   public Set<LM_Package> getPackagesAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Package> getPackagesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Package.class);
+      return getAnnotated(qualifiedAnnotation, LM.Package.class);
    }
 
    @Override
-   public Set<LM_Package> gePackagesAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Package> gePackagesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Package.class);
+      return getAnnotated(annotation, LM.Package.class);
    }
 
    @Override
-   public Set<LM_Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Generic.class);
+      return getAnnotated(qualifiedAnnotation, LM.Generic.class);
    }
 
    @Override
-   public Set<LM_Generic> geGenericsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Generic> geGenericsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Generic.class);
+      return getAnnotated(annotation, LM.Generic.class);
    }
 
    @Override
-   public Set<LM_Module> getModulesAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.Module> getModulesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_Module.class);
+      return getAnnotated(qualifiedAnnotation, LM.Module.class);
    }
 
    @Override
-   public Set<LM_Module> geModulesAnnotatedWith(C_Annotation annotation)
+   public Set<LM.Module> geModulesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_Module.class);
+      return getAnnotated(annotation, LM.Module.class);
    }
 
    @Override
-   public Set<LM_RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation)
+   public Set<LM.RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, LM_RecordComponent.class);
+      return getAnnotated(qualifiedAnnotation, LM.RecordComponent.class);
    }
 
    @Override
-   public Set<LM_RecordComponent> geRecordComponentsAnnotatedWith(C_Annotation annotation)
+   public Set<LM.RecordComponent> geRecordComponentsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, LM_RecordComponent.class);
+      return getAnnotated(annotation, LM.RecordComponent.class);
    }
 
    @Override
@@ -384,37 +378,37 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public void setExceptionHandler(BiConsumer<AP_Context, Throwable> exceptionHandler)
+   public void setExceptionHandler(BiConsumer<AP.Context, Throwable> exceptionHandler)
    {
       this.exceptionHandler = exceptionHandler;
    }
 
    @Override
-   public BiConsumer<AP_Context, Throwable> getExceptionHandler()
+   public BiConsumer<AP.Context, Throwable> getExceptionHandler()
    {
       return exceptionHandler;
    }
 
    @Override
-   public void setDiagnosticHandler(BiConsumer<AP_Context, AP_DiagnosticContext> diagnosticHandler)
+   public void setDiagnosticHandler(BiConsumer<AP.Context, DiagnosticContext> diagnosticHandler)
    {
       this.diagnosticHandler = diagnosticHandler;
    }
 
    @Override
-   public BiConsumer<AP_Context, AP_DiagnosticContext> getDiagnosticHandler()
+   public BiConsumer<AP.Context, DiagnosticContext> getDiagnosticHandler()
    {
       return diagnosticHandler;
    }
 
    @Override
-   public void setSystemOutHandler(BiConsumer<AP_Context, String> systemOutHandler)
+   public void setSystemOutHandler(BiConsumer<AP.Context, String> systemOutHandler)
    {
       this.systemOutHandler = systemOutHandler;
    }
 
    @Override
-   public BiConsumer<AP_Context, String> getSystemOutHandler()
+   public BiConsumer<AP.Context, String> getSystemOutHandler()
    {
       return systemOutHandler;
    }
@@ -438,96 +432,96 @@ public class AnnotationProcessingContextImpl implements AP_Context,
    }
 
    @Override
-   public void logAndRaiseErrorAt(LM_Annotationable annotationable, String msg)
+   public void logAndRaiseErrorAt(LM.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, adapt(annotationable).toElement());
    }
 
    @Override
-   public void logInfoAt(LM_Annotationable annotationable, String msg)
+   public void logInfoAt(LM.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, adapt(annotationable).toElement());
    }
 
    @Override
-   public void logWarningAt(LM_Annotationable annotationable, String msg)
+   public void logWarningAt(LM.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, adapt(annotationable).toElement());
    }
 
-   public AP_Context getApi()
+   public AP.Context getApi()
    {
       return this;
    }
 
    @Override
-   public List<LM_Module> getModules()
+   public List<LM.Module> getModules()
    {
       return langModelContext.getModules();
    }
 
    @Override
-   public Optional<LM_Module> getModule(String name)
+   public Optional<LM.Module> getModule(String name)
    {
       return langModelContext.getModule(name);
    }
 
    @Override
-   public LM_Module getModuleOrThrow(String name)
+   public LM.Module getModuleOrThrow(String name)
    {
       return langModelContext.getModuleOrThrow(name);
    }
 
    @Override
-   public List<LM_Package> getPackage(String qualifiedName)
+   public List<LM.Package> getPackage(String qualifiedName)
    {
       return langModelContext.getPackage(qualifiedName);
    }
 
    @Override
-   public List<LM_Package> getPackages()
+   public List<LM.Package> getPackages()
    {
       return langModelContext.getPackages();
    }
 
    @Override
-   public Optional<LM_Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
+   public Optional<LM.Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
    {
       return langModelContext.getPackage(qualifiedModuleName, qualifiedPackageName);
    }
 
    @Override
-   public LM_Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
+   public LM.Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
       return langModelContext.getPackageOrThrow(qualifiedModuleName, qualifiedPackageName);
    }
 
    @Override
-   public Optional<LM_Package> getPackage(C_Module module, String qualifiedPackageName)
+   public Optional<LM.Package> getPackage(C.Module module, String qualifiedPackageName)
    {
       return langModelContext.getPackage(module, qualifiedPackageName);
    }
 
    @Override
-   public LM_Package getPackageOrThrow(C_Module module, String qualifiedPackageName)
+   public LM.Package getPackageOrThrow(C.Module module, String qualifiedPackageName)
    {
       return langModelContext.getPackageOrThrow(module, qualifiedPackageName);
    }
 
    @Override
-   public LM_Constants getConstants()
+   public Constants getConstants()
    {
       return langModelContext.getConstants();
    }
 
    @Override
-   public List<LM_Declared> getDeclared()
+   public List<LM.Declared> getDeclared()
    {
       return langModelContext.getDeclared();
    }
 
    @Override
-   public Optional<LM_Declared> getDeclared(String qualifiedName)
+   public Optional<LM.Declared> getDeclared(String qualifiedName)
    {
       return langModelContext.getDeclared(qualifiedName);
    }

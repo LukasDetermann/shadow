@@ -1,21 +1,20 @@
 package io.determann.shadow.internal.lang_model.shadow.type;
 
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Null;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
 import io.determann.shadow.implementation.support.api.shadow.type.NullSupport;
 
 import javax.lang.model.type.NullType;
 
-public class NullImpl extends TypeImpl<NullType> implements LM_Null
+public class NullImpl extends TypeImpl<NullType> implements LM.Null
 {
-   public NullImpl(LM_Context LangModelContext, NullType nullType)
+   public NullImpl(LM.Context LangModelContext, NullType nullType)
    {
       super(LangModelContext, nullType);
    }
 
    @Override
-   public boolean representsSameType(C_Type type)
+   public boolean representsSameType(C.Type type)
    {
       return NullSupport.representsSameType(this, type);
    }

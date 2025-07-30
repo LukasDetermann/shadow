@@ -1,11 +1,11 @@
 package io.determann.shadow.implementation.support.internal;
 
-import io.determann.shadow.api.Implementation;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.provider.AbstractProvider;
 import io.determann.shadow.implementation.support.api.provider.MappingBuilder;
 import io.determann.shadow.implementation.support.internal.property.PropertyImpl;
 
-import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.query.Operations.*;
 
 public class SupportProvider extends AbstractProvider
 {

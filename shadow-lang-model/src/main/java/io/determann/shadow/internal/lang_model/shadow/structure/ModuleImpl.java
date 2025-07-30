@@ -1,17 +1,9 @@
 package io.determann.shadow.internal.lang_model.shadow.structure;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.lang_model.LM_Context;
-import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
-import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
-import io.determann.shadow.api.lang_model.shadow.directive.LM_Directive;
-import io.determann.shadow.api.lang_model.shadow.directive.LM_Provides;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
-import io.determann.shadow.api.lang_model.shadow.structure.LM_Package;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.shadow.directive.C_Provides;
-import io.determann.shadow.api.shadow.structure.C_Module;
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.lang_model.LM;
+import io.determann.shadow.api.lang_model.adapter.Adapters;
+import io.determann.shadow.api.query.Implementation;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
@@ -19,22 +11,22 @@ import javax.lang.model.type.NoType;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.lang_model.LM_Queries.query;
-import static io.determann.shadow.api.lang_model.adapter.LM_Adapters.adapt;
+import static io.determann.shadow.api.lang_model.Queries.query;
+import static io.determann.shadow.api.lang_model.adapter.Adapters.adapt;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl implements LM_Module
+public class ModuleImpl implements LM.Module
 {
    private final ModuleElement moduleElement;
    private final NoType noType;
-   private final LM_Context context;
+   private final LM.Context context;
 
 
-   public ModuleImpl(LM_Context context, ModuleElement moduleElement)
+   public ModuleImpl(LM.Context context, ModuleElement moduleElement)
    {
       this.context = context;
       noType = (NoType) moduleElement.asType();
@@ -47,12 +39,12 @@ public class ModuleImpl implements LM_Module
    }
 
    @Override
-   public List<LM_Package> getPackages()
+   public List<LM.Package> getPackages()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .map(PackageElement.class::cast)
-                         .map(element -> LM_Adapters.adapt(getApi(), element))
+                         .map(element -> Adapters.adapt(getApi(), element))
                          .toList();
    }
 
@@ -63,16 +55,16 @@ public class ModuleImpl implements LM_Module
    }
 
    @Override
-   public List<LM_Declared> getDeclared()
+   public List<LM.Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> query(aPackage).getDeclared().stream()).toList();
    }
 
    @Override
-   public Optional<LM_Declared> getDeclared(String qualifiedName)
+   public Optional<LM.Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(adapt(getApi()).toElements().getTypeElement(getElement(), qualifiedName))
-            .map(typeElement -> LM_Adapters.adapt(getApi(), typeElement));
+            .map(typeElement -> Adapters.adapt(getApi(), typeElement));
    }
 
    @Override
@@ -94,7 +86,7 @@ public class ModuleImpl implements LM_Module
    }
 
    @Override
-   public List<LM_Directive> getDirectives()
+   public List<LM.Directive> getDirectives()
    {
       return getElement().getDirectives()
                          .stream()
@@ -107,21 +99,21 @@ public class ModuleImpl implements LM_Module
                                        case USES -> adapt(getApi(), ((ModuleElement.UsesDirective) directive));
                                        case PROVIDES -> adapt(getApi(), ((ModuleElement.ProvidesDirective) directive));
                                     })
-                         .map(LM_Directive.class::cast)
-                         .collect(of((Supplier<List<LM_Directive>>) ArrayList::new,
+                         .map(LM.Directive.class::cast)
+                         .collect(of((Supplier<List<LM.Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!(directive instanceof LM_Provides provides))
+                                        if (!(directive instanceof LM.Provides provides))
                                         {
                                            directives.add(directive);
                                            return;
                                         }
 
-                                        Optional<C_Provides> existing =
+                                        Optional<C.Provides> existing =
                                               directives.stream()
-                                                        .filter(C_Provides.class::isInstance)
-                                                        .map(C_Provides.class::cast)
-                                                        .filter(collected -> query((C_Type) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
+                                                        .filter(C.Provides.class::isInstance)
+                                                        .map(C.Provides.class::cast)
+                                                        .filter(collected -> query((C.Type) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
                                                         .findAny();
 
                                         if (existing.isEmpty())
@@ -159,15 +151,15 @@ public class ModuleImpl implements LM_Module
    }
 
    @Override
-   public List<LM_AnnotationUsage> getAnnotationUsages()
+   public List<LM.AnnotationUsage> getAnnotationUsages()
    {
-      return LM_Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<LM_AnnotationUsage> getDirectAnnotationUsages()
+   public List<LM.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return LM_Adapters.adapt(getApi(), getElement().getAnnotationMirrors());
+      return Adapters.adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
    public NoType getMirror()
@@ -175,7 +167,7 @@ public class ModuleImpl implements LM_Module
       return noType;
    }
 
-   public LM_Context getApi()
+   public LM.Context getApi()
    {
       return context;
    }
@@ -199,7 +191,7 @@ public class ModuleImpl implements LM_Module
       {
          return true;
       }
-      if (!(other instanceof C_Module otherModule))
+      if (!(other instanceof C.Module otherModule))
       {
          return false;
       }

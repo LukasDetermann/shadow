@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
@@ -12,8 +14,6 @@ import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.dsl.record.*;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_RecordComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public class RecordDsl
    }
 
    @Override
-   public RecordModifierStep modifier(Set<C_Modifier> modifiers)
+   public RecordModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new RecordDsl(this),
                       modifiers,
@@ -114,7 +114,7 @@ public class RecordDsl
    public RecordModifierStep public_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -122,7 +122,7 @@ public class RecordDsl
    public RecordModifierStep protected_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -130,7 +130,7 @@ public class RecordDsl
    public RecordModifierStep private_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -138,7 +138,7 @@ public class RecordDsl
    public RecordModifierStep final_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.FINAL,
+                             Modifier.FINAL,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -146,7 +146,7 @@ public class RecordDsl
    public RecordModifierStep static_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.STATIC,
+                             Modifier.STATIC,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -154,7 +154,7 @@ public class RecordDsl
    public RecordModifierStep strictfp_()
    {
       return addTypeRenderer(new RecordDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              recordDsl -> recordDsl.modifiers::add);
    }
 
@@ -171,7 +171,7 @@ public class RecordDsl
    }
 
    @Override
-   public RecordRecordComponentStep component(List<? extends C_RecordComponent> recordComponent)
+   public RecordRecordComponentStep component(List<? extends C.RecordComponent> recordComponent)
    {
       return addArrayRenderer(new RecordDsl(this),
                               recordComponent,

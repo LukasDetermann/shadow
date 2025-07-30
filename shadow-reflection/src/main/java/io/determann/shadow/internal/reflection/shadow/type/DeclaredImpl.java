@@ -1,25 +1,20 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.structure.*;
-import io.determann.shadow.api.reflection.shadow.type.R_Array;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.reflection.shadow.type.R_Interface;
-import io.determann.shadow.api.shadow.C_NestingKind;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.NestingKind;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
 
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrEmpty;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrEmpty;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 
@@ -32,9 +27,9 @@ public abstract class DeclaredImpl
       this.aClass = aClass;
    }
 
-   public R_Module getModule()
+   public R.Module getModule()
    {
-      return R_Adapter.generalize(getaClass().getModule());
+      return Adapter.generalize(getaClass().getModule());
    }
 
    public String getName()
@@ -42,17 +37,17 @@ public abstract class DeclaredImpl
       return getaClass().getSimpleName();
    }
 
-   public List<R_AnnotationUsage> getAnnotationUsages()
+   public List<R.AnnotationUsage> getAnnotationUsages()
    {
       return stream(getaClass().getAnnotations())
-            .map(R_Adapter::generalize)
+            .map(Adapter::generalize)
             .toList();
    }
 
-   public List<R_AnnotationUsage> getDirectAnnotationUsages()
+   public List<R.AnnotationUsage> getDirectAnnotationUsages()
    {
       return stream(getaClass().getDeclaredAnnotations())
-            .map(R_Adapter::generalize)
+            .map(Adapter::generalize)
             .toList();
    }
 
@@ -61,22 +56,22 @@ public abstract class DeclaredImpl
       return getaClass().getCanonicalName();
    }
 
-   public Set<C_Modifier> getModifiers()
+   public Set<Modifier> getModifiers()
    {
       boolean isSealed = getaClass().isSealed();
       int modifiers = getModifiersAsInt();
       boolean isNonSealed = isNonSealed(modifiers);
 
-      boolean isPackagePrivate = !Modifier.isPublic(modifiers) &&
-                                 !Modifier.isPrivate(modifiers) &&
-                                 !Modifier.isProtected(modifiers);
+      boolean isPackagePrivate = !java.lang.reflect.Modifier.isPublic(modifiers) &&
+                                 !java.lang.reflect.Modifier.isPrivate(modifiers) &&
+                                 !java.lang.reflect.Modifier.isProtected(modifiers);
 
       return ReflectionUtil.getModifiers(modifiers, isSealed, isNonSealed, false, isPackagePrivate);
    }
 
    private boolean isNonSealed(int modifiers)
    {
-      return !Modifier.isFinal(modifiers) &&
+      return !java.lang.reflect.Modifier.isFinal(modifiers) &&
              !getReflection().isSealed() &&
              (ofNullable(getReflection().getSuperclass()).map(Class::isSealed).orElse(false) ||
               stream(getReflection().getInterfaces()).anyMatch(Class::isSealed));
@@ -84,93 +79,93 @@ public abstract class DeclaredImpl
 
    private int getModifiersAsInt()
    {
-      if (this instanceof C_Interface || this instanceof C_Annotation)
+      if (this instanceof C.Interface || this instanceof C.Annotation)
       {
-         return getaClass().getModifiers() & Modifier.interfaceModifiers();
+         return getaClass().getModifiers() & java.lang.reflect.Modifier.interfaceModifiers();
       }
-      return getaClass().getModifiers() & Modifier.classModifiers();
+      return getaClass().getModifiers() & java.lang.reflect.Modifier.classModifiers();
    }
 
-   public boolean isSubtypeOf(C_Type type)
+   public boolean isSubtypeOf(C.Type type)
    {
-      return equals(type) || type instanceof C_Declared declared && getSuperTypes().contains(declared);
+      return equals(type) || type instanceof C.Declared declared && getSuperTypes().contains(declared);
    }
 
-   public C_NestingKind getNesting()
+   public NestingKind getNesting()
    {
       if (getaClass().isAnonymousClass() || getaClass().isLocalClass() || getaClass().isMemberClass())
       {
-         return C_NestingKind.INNER;
+         return NestingKind.INNER;
       }
-      return C_NestingKind.OUTER;
+      return NestingKind.OUTER;
    }
 
-   public List<R_Field> getFields()
+   public List<R.Field> getFields()
    {
-      return stream(getaClass().getDeclaredFields()).map(R_Adapter::generalize).toList();
+      return stream(getaClass().getDeclaredFields()).map(Adapter::generalize).toList();
    }
 
-   public List<R_Method> getMethods()
+   public List<R.Method> getMethods()
    {
-      return stream(getaClass().getDeclaredMethods()).map(R_Adapter::generalize).toList();
+      return stream(getaClass().getDeclaredMethods()).map(Adapter::generalize).toList();
    }
 
-   public List<R_Constructor> getConstructors()
+   public List<R.Constructor> getConstructors()
    {
-      return stream(getaClass().getDeclaredConstructors()).map(R_Adapter::generalize).toList();
+      return stream(getaClass().getDeclaredConstructors()).map(Adapter::generalize).toList();
    }
 
-   public List<R_Declared> getDirectSuperTypes()
+   public List<R.Declared> getDirectSuperTypes()
    {
-      List<R_Declared> result = stream(getaClass().getGenericInterfaces())
-            .map(R_Adapter::generalize)
-            .map(R_Declared.class::cast)
+      List<R.Declared> result = stream(getaClass().getGenericInterfaces())
+            .map(Adapter::generalize)
+            .map(R.Declared.class::cast)
             .collect(Collectors.toList());
 
       ofNullable(getaClass().getGenericSuperclass())
-            .map(R_Adapter::generalize)
-            .map(R_Declared.class::cast)
+            .map(Adapter::generalize)
+            .map(R.Declared.class::cast)
             .ifPresent(result::add);
 
-      if (result.isEmpty() && this instanceof R_Interface)
+      if (result.isEmpty() && this instanceof R.Interface)
       {
          result.add(new ClassImpl(Object.class));
       }
       return result;
    }
 
-   public Set<R_Declared> getSuperTypes()
+   public Set<R.Declared> getSuperTypes()
    {
-      return findAllSupertypes(new HashSet<>(), ((R_Declared) this));
+      return findAllSupertypes(new HashSet<>(), ((R.Declared) this));
    }
 
-   private Set<R_Declared> findAllSupertypes(Set<R_Declared> found, R_Declared declared)
+   private Set<R.Declared> findAllSupertypes(Set<R.Declared> found, R.Declared declared)
    {
-      List<R_Declared> directSupertypes = declared.getDirectSuperTypes();
+      List<R.Declared> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (R_Declared directSupertype : directSupertypes)
+      for (R.Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
       return found;
    }
 
-   public List<R_Interface> getInterfaces()
+   public List<R.Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared instanceof R_Interface)
-                            .map(R_Interface.class::cast)
+                            .filter(declared -> declared instanceof R.Interface)
+                            .map(R.Interface.class::cast)
                             .toList();
    }
 
-   public List<R_Interface> getDirectInterfaces()
+   public List<R.Interface> getDirectInterfaces()
    {
-      return stream(getaClass().getInterfaces()).map(R_Adapter::generalize).map(R_Interface.class::cast).toList();
+      return stream(getaClass().getInterfaces()).map(Adapter::generalize).map(R.Interface.class::cast).toList();
    }
 
-   public R_Package getPackage()
+   public R.Package getPackage()
    {
-      return R_Adapter.generalize(getaClass().getPackage());
+      return Adapter.generalize(getaClass().getPackage());
    }
 
    public String getBinaryName()
@@ -178,20 +173,20 @@ public abstract class DeclaredImpl
       return getaClass().getName();
    }
 
-   public R_Array asArray()
+   public R.Array asArray()
    {
-      return R_Adapter.generalize(aClass.arrayType());
+      return Adapter.generalize(aClass.arrayType());
    }
 
-   private boolean sameGenerics(List<C_Generic> generics, List<C_Generic> generics1)
+   private boolean sameGenerics(List<C.Generic> generics, List<C.Generic> generics1)
    {
       if (generics.size() != generics1.size())
       {
          return false;
       }
 
-      Iterator<C_Generic> iterator = generics.iterator();
-      Iterator<C_Generic> iterator1 = generics1.iterator();
+      Iterator<C.Generic> iterator = generics.iterator();
+      Iterator<C.Generic> iterator1 = generics1.iterator();
       while (iterator.hasNext() && iterator1.hasNext())
       {
          if (!requestOrThrow(iterator.next(), TYPE_REPRESENTS_SAME_TYPE, iterator1.next()))
@@ -221,7 +216,7 @@ public abstract class DeclaredImpl
       {
          return true;
       }
-      if (!(other instanceof C_Declared otherDeclared))
+      if (!(other instanceof C.Declared otherDeclared))
       {
          return false;
       }

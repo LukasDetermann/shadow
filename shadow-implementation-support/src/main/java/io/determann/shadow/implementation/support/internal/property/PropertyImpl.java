@@ -1,29 +1,26 @@
 package io.determann.shadow.implementation.support.internal.property;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Property;
-import io.determann.shadow.api.shadow.type.C_VariableType;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
 
 import java.util.Optional;
 
 import static io.determann.shadow.implementation.support.internal.SupportProvider.IMPLEMENTATION;
 
-public class PropertyImpl implements C_Property
+public class PropertyImpl implements C.Property
 {
    private final String name;
-   private final C_VariableType type;
-   private final C_Field field;
-   private final C_Method getter;
-   private final C_Method setter;
+   private final C.VariableType type;
+   private final C.Field field;
+   private final C.Method getter;
+   private final C.Method setter;
 
    PropertyImpl(String name,
-                C_VariableType type,
-                C_Field field,
-                C_Method getter,
-                C_Method setter)
+                C.VariableType type,
+                C.Field field,
+                C.Method getter,
+                C.Method setter)
    {
       this.name = name;
       this.type = type;
@@ -37,22 +34,22 @@ public class PropertyImpl implements C_Property
       return name;
    }
 
-   public C_VariableType getType()
+   public C.VariableType getType()
    {
       return type;
    }
 
-   public Optional<C_Field> getField()
+   public Optional<C.Field> getField()
    {
       return Optional.ofNullable(field);
    }
 
-   public C_Method getGetter()
+   public C.Method getGetter()
    {
       return getter;
    }
 
-   public Optional<C_Method> getSetter()
+   public Optional<C.Method> getSetter()
    {
       return Optional.ofNullable(setter);
    }

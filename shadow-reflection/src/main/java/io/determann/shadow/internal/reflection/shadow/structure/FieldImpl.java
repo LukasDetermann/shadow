@@ -1,19 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.structure;
 
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.structure.R_Field;
-import io.determann.shadow.api.reflection.shadow.structure.R_Module;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
-import io.determann.shadow.api.shadow.type.C_Array;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.query.Operations.*;
+import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
-public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Field
+public class FieldImpl extends ReflectionFieldImpl<C.Declared> implements R.Field
 {
    public FieldImpl(java.lang.reflect.Field field)
    {
@@ -52,17 +46,17 @@ public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Fiel
    }
 
    @Override
-   public boolean isSubtypeOf(C_Type type)
+   public boolean isSubtypeOf(C.Type type)
    {
-      if (getType() instanceof C_Primitive primitive)
+      if (getType() instanceof C.Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_SUBTYPE_OF, type);
       }
-      if (getType() instanceof C_Class aClass)
+      if (getType() instanceof C.Class aClass)
       {
          return requestOrThrow(aClass, DECLARED_IS_SUBTYPE_OF, type);
       }
-      if (getType() instanceof C_Array array)
+      if (getType() instanceof C.Array array)
       {
          return requestOrThrow(array, ARRAY_IS_SUBTYPE_OF, type);
       }
@@ -70,13 +64,13 @@ public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Fiel
    }
 
    @Override
-   public boolean isAssignableFrom(C_Type type)
+   public boolean isAssignableFrom(C.Type type)
    {
-      if (getType() instanceof C_Primitive primitive)
+      if (getType() instanceof C.Primitive primitive)
       {
          return requestOrThrow(primitive, PRIMITIVE_IS_ASSIGNABLE_FROM, type);
       }
-      if (getType() instanceof C_Class aClass)
+      if (getType() instanceof C.Class aClass)
       {
          return requestOrThrow(aClass, CLASS_IS_ASSIGNABLE_FROM, type);
       }
@@ -84,14 +78,14 @@ public class FieldImpl extends ReflectionFieldImpl<C_Declared> implements R_Fiel
    }
 
    @Override
-   public R_Declared getSurrounding()
+   public R.Declared getSurrounding()
    {
-      return R_Adapter.generalize(getField().getDeclaringClass());
+      return Adapter.generalize(getField().getDeclaringClass());
    }
 
    @Override
-   public R_Module getModule()
+   public R.Module getModule()
    {
-      return (R_Module) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
+      return (R.Module) requestOrThrow(getSurrounding(), MODULE_ENCLOSED_GET_MODULE);
    }
 }

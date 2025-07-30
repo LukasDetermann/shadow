@@ -1,5 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.C;
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
@@ -10,8 +12,6 @@ import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class EnumDsl
    }
 
    @Override
-   public EnumModifierStep modifier(Set<C_Modifier> modifiers)
+   public EnumModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new EnumDsl(this),
                       modifiers,
@@ -112,7 +112,7 @@ public class EnumDsl
    public EnumModifierStep public_()
    {
       return addTypeRenderer(new EnumDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              enumDsl -> enumDsl.modifiers::add);
    }
 
@@ -120,7 +120,7 @@ public class EnumDsl
    public EnumModifierStep protected_()
    {
       return addTypeRenderer(new EnumDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              enumDsl -> enumDsl.modifiers::add);
    }
 
@@ -128,7 +128,7 @@ public class EnumDsl
    public EnumModifierStep private_()
    {
       return addTypeRenderer(new EnumDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              enumDsl -> enumDsl.modifiers::add);
    }
 
@@ -136,7 +136,7 @@ public class EnumDsl
    public EnumModifierStep static_()
    {
       return addTypeRenderer(new EnumDsl(this),
-                             C_Modifier.STATIC,
+                             Modifier.STATIC,
                              enumDsl -> enumDsl.modifiers::add);
    }
 
@@ -144,7 +144,7 @@ public class EnumDsl
    public EnumModifierStep strictfp_()
    {
       return addTypeRenderer(new EnumDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              enumDsl -> enumDsl.modifiers::add);
    }
 
@@ -336,7 +336,7 @@ public class EnumDsl
    }
 
    @Override
-   public EnumEnumConstantStep enumConstant(List<? extends C_EnumConstant> enumConstant)
+   public EnumEnumConstantStep enumConstant(List<? extends C.EnumConstant> enumConstant)
    {
       return addArrayRenderer(new EnumDsl(this),
                               enumConstant,

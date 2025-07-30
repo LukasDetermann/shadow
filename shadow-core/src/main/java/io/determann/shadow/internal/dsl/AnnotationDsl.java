@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation.*;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
@@ -9,7 +10,6 @@ import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +161,7 @@ public class AnnotationDsl
    }
 
    @Override
-   public AnnotationModifierStep modifier(Set<C_Modifier> modifiers)
+   public AnnotationModifierStep modifier(Set<Modifier> modifiers)
    {
       return addArray(new AnnotationDsl(this),
                       modifiers,
@@ -172,7 +172,7 @@ public class AnnotationDsl
    public AnnotationModifierStep public_()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.PUBLIC,
+                             Modifier.PUBLIC,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -180,7 +180,7 @@ public class AnnotationDsl
    public AnnotationModifierStep protected_()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.PROTECTED,
+                             Modifier.PROTECTED,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -188,7 +188,7 @@ public class AnnotationDsl
    public AnnotationModifierStep private_()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.PRIVATE,
+                             Modifier.PRIVATE,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -196,7 +196,7 @@ public class AnnotationDsl
    public AnnotationModifierStep abstract_()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.ABSTRACT,
+                             Modifier.ABSTRACT,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -204,7 +204,7 @@ public class AnnotationDsl
    public AnnotationModifierStep sealed()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.SEALED,
+                             Modifier.SEALED,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -212,7 +212,7 @@ public class AnnotationDsl
    public AnnotationModifierStep nonSealed()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.NON_SEALED,
+                             Modifier.NON_SEALED,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -220,7 +220,7 @@ public class AnnotationDsl
    public AnnotationModifierStep strictfp_()
    {
       return addTypeRenderer(new AnnotationDsl(this),
-                             C_Modifier.STRICTFP,
+                             Modifier.STRICTFP,
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 

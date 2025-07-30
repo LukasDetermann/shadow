@@ -1,14 +1,13 @@
 package io.determann.shadow.internal.reflection.shadow.directive;
 
-import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.reflection.shadow.directive.R_Uses;
-import io.determann.shadow.api.reflection.shadow.type.R_Declared;
+import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.reflection.Adapter;
+import io.determann.shadow.api.reflection.R;
 import io.determann.shadow.implementation.support.api.shadow.directive.UsesSupport;
 
-import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
+import static io.determann.shadow.api.reflection.Adapter.IMPLEMENTATION;
 
-public class UsesImpl implements R_Uses
+public class UsesImpl implements R.Uses
 {
    private final String usesDirective;
 
@@ -18,9 +17,9 @@ public class UsesImpl implements R_Uses
    }
 
    @Override
-   public R_Declared getService()
+   public R.Declared getService()
    {
-      return R_Adapter.getDeclared(usesDirective).orElseThrow();
+      return Adapter.getDeclared(usesDirective).orElseThrow();
    }
 
    @Override
