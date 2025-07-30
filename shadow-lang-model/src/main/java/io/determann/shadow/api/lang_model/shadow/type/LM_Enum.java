@@ -11,7 +11,6 @@ import static io.determann.shadow.api.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 
 public non-sealed interface LM_Enum
-
       extends C_Enum,
               LM_Declared,
               LM_StaticModifiable

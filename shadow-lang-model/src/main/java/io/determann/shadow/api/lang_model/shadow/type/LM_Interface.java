@@ -20,6 +20,8 @@ public non-sealed interface LM_Interface
 {
    boolean isFunctional();
 
+   List<LM_Declared> getPermittedSubTypes();
+
    /**
     * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
     */

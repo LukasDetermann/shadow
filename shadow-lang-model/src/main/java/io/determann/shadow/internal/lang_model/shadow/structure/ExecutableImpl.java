@@ -50,7 +50,7 @@ public abstract class ExecutableImpl
       return LangModelContextImpl.getModifiers(getElement());
    }
 
-   public LM_Result getReturn()
+   public LM_Result getResult()
    {
       return new ResultImpl(getApi(), getMirror().getReturnType());
    }

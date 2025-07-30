@@ -3,6 +3,7 @@ package io.determann.shadow.internal.lang_model.shadow.type;
 import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.adapter.LM_TypeAdapter;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
@@ -28,10 +29,21 @@ public class InterfaceImpl extends DeclaredImpl implements LM_Interface
       super(context, typeElement);
    }
 
+
+
    @Override
    public boolean isFunctional()
    {
       return adapt(getApi()).toElements().isFunctionalInterface(getElement());
+   }
+
+   @Override
+   public List<LM_Declared> getPermittedSubTypes()
+   {
+      return getElement().getPermittedSubclasses()
+                         .stream()
+                         .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
+                         .toList();
    }
 
    @Override

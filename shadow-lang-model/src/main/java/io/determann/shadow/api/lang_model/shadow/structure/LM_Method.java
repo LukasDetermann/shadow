@@ -45,5 +45,5 @@ public non-sealed interface LM_Method
    /**
     * Can be annotated using annotations with {@link ElementType#TYPE_USE}
     */
-   LM_Result getReturn();
+   LM_Result getResult();
 }

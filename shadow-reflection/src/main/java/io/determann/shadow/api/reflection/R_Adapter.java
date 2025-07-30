@@ -324,11 +324,6 @@ public interface R_Adapter
       return ((GenericImpl) generic).getReflection();
    }
 
-   static java.lang.reflect.Type[] particularize(R_Intersection intersection)
-   {
-      return ((IntersectionImpl) intersection).getReflection();
-   }
-
    static ModuleDescriptor particularize(R_Module module)
    {
       return ((ModuleImpl) module).getReflection();

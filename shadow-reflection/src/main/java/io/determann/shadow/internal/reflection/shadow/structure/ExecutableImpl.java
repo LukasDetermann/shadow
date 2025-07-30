@@ -105,7 +105,7 @@ public abstract class ExecutableImpl implements R_StaticModifiable
       return Collections.unmodifiableList(result);
    }
 
-   public R_Result getReturn()
+   public R_Result getResult()
    {
       return new ResultImpl(getExecutable().getAnnotatedReturnType());
    }

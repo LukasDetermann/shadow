@@ -1,5 +1,3 @@
 package io.determann.shadow.api.shadow;
 
-public interface C_Erasable
-{
-}
+public interface C_Erasable {}

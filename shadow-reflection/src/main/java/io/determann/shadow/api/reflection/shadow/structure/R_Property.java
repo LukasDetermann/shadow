@@ -1,7 +1,7 @@
 package io.determann.shadow.api.reflection.shadow.structure;
 
 import io.determann.shadow.api.reflection.shadow.R_Nameable;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Property;
 
@@ -47,7 +47,7 @@ public interface R_Property
     *
     * @see #getGetter()
     */
-   R_Type getType();
+   R_VariableType getType();
 
    /**
     * a {@link C_Field} with the name and tye of this property

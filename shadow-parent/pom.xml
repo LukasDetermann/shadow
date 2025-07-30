@@ -40,8 +40,9 @@
         <maven.compiler.release>23</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.junit.jupiter.junit-jupiter-api.version>5.11.4</org.junit.jupiter.junit-jupiter-api.version>
+        <org.junit.jupiter.junit-jupiter-engine>5.11.4</org.junit.jupiter.junit-jupiter-engine>
         <org.junit.jupiter.junit-platform-suite.version>1.11.4</org.junit.jupiter.junit-platform-suite.version>
-        <org.apache.maven.plugins.maven-surefire-plugin.version>3.5.0</org.apache.maven.plugins.maven-surefire-plugin.version>
+        <org.apache.maven.plugins.maven-surefire-plugin.version>3.5.3</org.apache.maven.plugins.maven-surefire-plugin.version>
         <org.apache.maven.plugins.maven-source-plugin.version>3.3.1</org.apache.maven.plugins.maven-source-plugin.version>
         <org.apache.maven.plugins.maven-javadoc-plugin>3.11.2</org.apache.maven.plugins.maven-javadoc-plugin>
         <org.apache.maven.plugins.maven-gpg-plugin>3.2.7</org.apache.maven.plugins.maven-gpg-plugin>
@@ -56,6 +57,12 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${org.junit.jupiter.junit-jupiter-api.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.11.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

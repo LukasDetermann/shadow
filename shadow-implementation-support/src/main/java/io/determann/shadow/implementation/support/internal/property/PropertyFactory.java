@@ -5,10 +5,7 @@ import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Method;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.structure.C_Property;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.api.shadow.type.C_Void;
+import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_boolean;
 
 import java.util.*;
@@ -69,7 +66,7 @@ public class PropertyFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C_Type type = requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE);
+                                      C_VariableType type = ((C_VariableType) requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE));
 
                                       C_Method setter = findSetter(entry.getValue(), type).orElse(null);
                                       C_Field field = findField(nameField, type, name).orElse(null);

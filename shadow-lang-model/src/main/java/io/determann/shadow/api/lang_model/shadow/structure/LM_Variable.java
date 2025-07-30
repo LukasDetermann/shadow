@@ -5,7 +5,7 @@ import io.determann.shadow.api.lang_model.shadow.LM_Documented;
 import io.determann.shadow.api.lang_model.shadow.LM_ModuleEnclosed;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.modifier.LM_Modifiable;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.shadow.type.LM_VariableType;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
 
@@ -35,7 +35,7 @@ public sealed interface LM_Variable
     */
    boolean isAssignableFrom(C_Type type);
 
-   LM_Type getType();
+   LM_VariableType getType();
 
    /**
     * The {@link Object} surrounding this {@link LM_Variable}

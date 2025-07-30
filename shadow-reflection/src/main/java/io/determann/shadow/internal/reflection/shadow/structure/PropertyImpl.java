@@ -4,7 +4,7 @@ import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.shadow.structure.R_Field;
 import io.determann.shadow.api.reflection.shadow.structure.R_Method;
 import io.determann.shadow.api.reflection.shadow.structure.R_Property;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.structure.C_Property;
 
 import java.util.Optional;
@@ -33,9 +33,9 @@ public class PropertyImpl implements R_Property
    }
 
    @Override
-   public R_Type getType()
+   public R_VariableType getType()
    {
-      return (R_Type) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (R_VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override

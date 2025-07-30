@@ -141,11 +141,6 @@ public interface LM_Queries
       return (LM_Receiver) validate(receiver);
    }
 
-   static LM_Intersection query(C_Intersection intersection)
-   {
-      return (LM_Intersection) validate(intersection);
-   }
-
    static LM_Generic query(C_Generic generic)
    {
       return (LM_Generic) validate(generic);

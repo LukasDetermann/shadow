@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.Operations.RETURN_GET_TYPE;
+import static io.determann.shadow.api.Operations.RESULT_GET_TYPE;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 
 public class ResultImpl
@@ -64,7 +64,7 @@ public class ResultImpl
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherReturn, RETURN_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
+      return Provider.requestOrEmpty(otherReturn, RESULT_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
    }
 
    @Override

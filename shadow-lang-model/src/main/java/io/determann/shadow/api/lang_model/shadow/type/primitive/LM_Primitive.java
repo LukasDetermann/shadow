@@ -3,7 +3,7 @@ package io.determann.shadow.api.lang_model.shadow.type.primitive;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Array;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.shadow.type.LM_VariableType;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
@@ -13,7 +13,7 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 public sealed interface LM_Primitive
       extends C_Primitive,
               LM_Nameable,
-              LM_Type
+              LM_VariableType
       permits LM_boolean,
               LM_byte,
               LM_char,

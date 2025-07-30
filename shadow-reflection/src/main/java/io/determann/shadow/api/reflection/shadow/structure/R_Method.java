@@ -45,5 +45,5 @@ public non-sealed interface R_Method
    /**
     * Can be annotated using annotations with {@link ElementType#TYPE_USE}
     */
-   R_Result getReturn();
+   R_Result getResult();
 }

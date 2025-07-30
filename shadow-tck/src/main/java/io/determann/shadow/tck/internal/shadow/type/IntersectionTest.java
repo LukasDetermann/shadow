@@ -3,7 +3,6 @@ package io.determann.shadow.tck.internal.shadow.type;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.api.shadow.type.C_Intersection;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,9 +27,8 @@ class IntersectionTest
 
                      C_Class intersectionExample = requestOrThrow(implementation, GET_CLASS, "IntersectionExample");
                      C_Generic generic = requestOrThrow(intersectionExample, CLASS_GET_GENERICS).get(0);
-                     C_Intersection intersection = (C_Intersection) requestOrThrow(generic, GENERIC_GET_EXTENDS);
 
-                     assertEquals(expected, requestOrThrow(intersection, INTERSECTION_GET_BOUNDS));
+                     assertEquals(expected, requestOrThrow(generic, GENERIC_GET_BOUNDS));
                   });
    }
 }

@@ -3,7 +3,7 @@ package io.determann.shadow.internal.reflection.shadow.structure;
 import io.determann.shadow.api.Implementation;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.internal.reflection.ReflectionUtil;
@@ -35,7 +35,7 @@ public abstract class ReflectionFieldImpl<SURROUNDING extends C_Type>
       return ReflectionUtil.getModifiers(modifiers, false, false, false, isPackagePrivate);
    }
 
-   public R_Type getType()
+   public R_VariableType getType()
    {
       return R_Adapter.generalize(field.getType());
    }

@@ -4,26 +4,32 @@ import io.determann.shadow.api.lang_model.shadow.LM_Annotationable;
 import io.determann.shadow.api.lang_model.shadow.LM_Erasable;
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
 import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Intersection;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * represents the generic parameter at a class, method, constructor etc.
  */
 public non-sealed interface LM_Generic
-
       extends C_Generic,
               LM_Annotationable,
-              LM_Type,
+              LM_ReferenceType,
               LM_Nameable,
               LM_Erasable
 {
-   /**
-    * @see C_Intersection
-    */
-   LM_Type getExtends();
+   LM_Type getBound();
 
+   /**
+    * {@snippet :
+    * T extends Collection & Serializable//@highlight substring="Collection & Serializable"
+    *}
+    */
+   List<LM_Type> getBounds();
+
+   List<LM_Interface> getAdditionalBounds();
+
+   /// Can not be declared in java normal java code. some results of [LM_Class#interpolateGenerics()] can create a [C_Generic] with a super type
    Optional<LM_Type> getSuper();
 
    /**

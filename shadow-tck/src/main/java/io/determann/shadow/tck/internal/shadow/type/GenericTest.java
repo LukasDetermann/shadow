@@ -21,7 +21,7 @@ class GenericTest
                      C_Class number = requestOrThrow(implementation, GET_CLASS, "java.lang.Number");
                      C_Class genericsExample = requestOrThrow(implementation, GET_CLASS, "GenericsExample");
                      C_Generic generic = (C_Generic) requestOrThrow(genericsExample, CLASS_GET_GENERIC_TYPES).get(0);
-                     assertEquals(number, requestOrThrow(generic, GENERIC_GET_EXTENDS));
+                     assertEquals(number, requestOrThrow(generic, GENERIC_GET_BOUND));
                   });
    }
 

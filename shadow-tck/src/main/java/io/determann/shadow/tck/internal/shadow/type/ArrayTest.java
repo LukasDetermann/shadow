@@ -64,7 +64,7 @@ class ArrayTest
 
               List<? extends C_Type> intArraySuperTypes = requestOrThrow(intArray, ARRAY_GET_DIRECT_SUPER_TYPES);
               assertEquals(1, intArraySuperTypes.size());
-              List<? extends C_Type> bounds = requestOrThrow(((C_Intersection) intArraySuperTypes.get(0)), INTERSECTION_GET_BOUNDS);
+              List<? extends C_Type> bounds = requestOrThrow(((C_Generic) intArraySuperTypes.get(0)), GENERIC_GET_BOUNDS);
               assertEquals(List.of(serializable, cloneable), bounds);
            });
    }

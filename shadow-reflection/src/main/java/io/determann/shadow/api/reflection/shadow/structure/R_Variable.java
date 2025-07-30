@@ -3,7 +3,7 @@ package io.determann.shadow.api.reflection.shadow.structure;
 import io.determann.shadow.api.reflection.shadow.R_Annotationable;
 import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.modifier.R_Modifiable;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
 
@@ -32,7 +32,7 @@ public sealed interface R_Variable
     */
    boolean isAssignableFrom(C_Type type);
 
-   R_Type getType();
+   R_VariableType getType();
 
    /**
     * The {@link Object} surrounding this {@link R_Variable}

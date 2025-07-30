@@ -1,0 +1,312 @@
+package io.determann.shadow.internal.dsl;
+
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.TypeRenderable;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.class_.ClassRenderable;
+import io.determann.shadow.api.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.dsl.method.*;
+import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
+import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
+import io.determann.shadow.api.dsl.result.ResultRenderable;
+import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.shadow.modifier.C_Modifier;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static io.determann.shadow.internal.dsl.DslSupport.*;
+
+public class MethodDsl
+      implements MethodJavaDocStep,
+                 MethodNameStep,
+                 MethodReceiverStep
+{
+   private Renderable javadoc;
+   private final List<Renderable> annotations = new ArrayList<>();
+   private final List<Renderable> modifiers = new ArrayList<>();
+   private final List<Renderable> generics = new ArrayList<>();
+   private Renderable result;
+   private String name;
+   private Renderable receiver;
+   private final List<Renderable> parameters = new ArrayList<>();
+   private final List<Renderable> exceptions = new ArrayList<>();
+   private String body;
+
+   public MethodDsl()
+   {
+   }
+
+   private MethodDsl(MethodDsl other)
+   {
+      this.javadoc = other.javadoc;
+      this.annotations.addAll(other.annotations);
+      this.modifiers.addAll(other.modifiers);
+      this.generics.addAll(other.generics);
+      this.result = other.result;
+      this.name = other.name;
+      this.receiver = other.receiver;
+      this.parameters.addAll(other.parameters);
+      this.exceptions.addAll(other.exceptions);
+      this.body = other.body;
+   }
+
+   @Override
+   public MethodAnnotateStep javadoc(String javadoc)
+   {
+      return setTypeRenderer(new MethodDsl(this), javadoc, (methodDsl, function) -> methodDsl.javadoc = function);
+   }
+
+   @Override
+   public MethodReceiverStep name(String name)
+   {
+      return setType(new MethodDsl(this), name, (methodDsl, s) -> methodDsl.name = s);
+   }
+
+   @Override
+   public MethodParameterStep receiver(String receiver)
+   {
+      return setType(new MethodDsl(this), receiver, (methodDsl, string) -> methodDsl.receiver = renderingContext -> string);
+   }
+
+   @Override
+   public MethodParameterStep receiver(ReceiverRenderable receiver)
+   {
+      return setTypeRenderer(new MethodDsl(this),
+                             receiver,
+                             (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                             (methodDsl, receiverRenderable) -> methodDsl.receiver = receiverRenderable);
+   }
+
+   @Override
+   public MethodParameterStep parameter(String... parameter)
+   {
+      return addArray2(new MethodDsl(this), parameter, (methodDsl, string) -> methodDsl.parameters.add(renderingContext -> string));
+   }
+
+   @Override
+   public MethodParameterStep parameter(List<? extends ParameterRenderable> parameter)
+   {
+      return addArrayRenderer(new MethodDsl(this),
+                              parameter,
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              methodDsl -> methodDsl.parameters::add);
+   }
+
+   @Override
+   public MethodThrowsStep throws_(String... exception)
+   {
+      return addArray2(new MethodDsl(this), exception, (methodDsl, string) -> methodDsl.exceptions.add(renderingContext -> string));
+   }
+
+   @Override
+   public MethodThrowsStep throws_(List<? extends ClassRenderable> exception)
+   {
+      return addArrayRenderer(new MethodDsl(this),
+                              exception,
+                              (renderingContext, classRenderable) -> classRenderable.renderName(renderingContext),
+                              methodDsl -> methodDsl.exceptions::add);
+   }
+
+   @Override
+   public MethodRenderable body(String body)
+   {
+      return setType(new MethodDsl(this), body, (methodDsl, s) -> methodDsl.body = s);
+   }
+
+   @Override
+   public MethodAnnotateStep annotate(String... annotation)
+   {
+      return addArrayRenderer(new MethodDsl(this),
+                              annotation,
+                              (renderingContext, string) -> '@' + string,
+                              methodDsl -> methodDsl.annotations::add);
+   }
+
+   @Override
+   public MethodAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
+   {
+      return addArrayRenderer(new MethodDsl(this),
+                              annotation,
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              methodDsl -> methodDsl.annotations::add);
+   }
+
+   @Override
+   public MethodModifierStep modifier(String... modifiers)
+   {
+      return addArrayRenderer(new MethodDsl(this), modifiers, methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep modifier(Set<C_Modifier> modifiers)
+   {
+      return addArray(new MethodDsl(this),
+                      modifiers,
+                      methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep abstract_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.ABSTRACT,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep public_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.PUBLIC,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep protected_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.PROTECTED,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep private_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.PRIVATE,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep default_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.DEFAULT,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep final_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.FINAL,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep native_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.NATIVE,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep static_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.STATIC,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodModifierStep strictfp_()
+   {
+      return addTypeRenderer(new MethodDsl(this),
+                             C_Modifier.STRICTFP,
+                             methodDsl -> methodDsl.modifiers::add);
+   }
+
+   @Override
+   public MethodGenericStep generic(String... generic)
+   {
+      return addArray2(new MethodDsl(this), generic, (methodDsl, string) -> methodDsl.generics.add(renderingContext -> string));
+   }
+
+   @Override
+   public MethodGenericStep generic(List<? extends GenericRenderable> generic)
+   {
+      return addArrayRenderer(new MethodDsl(this),
+                              generic,
+                              (renderingContext, genericRenderable) -> genericRenderable.renderDeclaration(renderingContext),
+                              methodDsl -> methodDsl.generics::add);
+   }
+
+   @Override
+   public MethodNameStep result(String result)
+   {
+      return setType(new MethodDsl(this), result, (methodDsl, string) -> methodDsl.result = renderingContext -> result);
+   }
+
+   @Override
+   public MethodNameStep result(ResultRenderable result)
+   {
+      return setTypeRenderer(new MethodDsl(this),
+                             result,
+                             (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                             (methodDsl, resultRenderable) -> methodDsl.result = resultRenderable);
+   }
+
+   @Override
+   public MethodNameStep resultType(String resultType)
+   {
+      return setType(new MethodDsl(this), resultType, (methodDsl, string) -> methodDsl.result = renderingContext -> string);
+   }
+
+   @Override
+   public MethodNameStep resultType(TypeRenderable resultType)
+   {
+      return setType(new MethodDsl(this),
+                     resultType,
+                     (methodDsl, typeNameRenderable) -> methodDsl.result = typeNameRenderable::renderName);
+   }
+
+   @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      StringBuilder sb = new StringBuilder();
+      if (javadoc != null)
+      {
+         sb.append(javadoc.render(renderingContext));
+         sb.append("\n");
+      }
+
+      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      renderElement(sb, modifiers, " ", renderingContext, " ");
+      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+
+      if (result != null)
+      {
+         sb.append(result.render(renderingContext));
+         sb.append(' ');
+      }
+      sb.append(name);
+      sb.append('(');
+      if (receiver != null)
+      {
+         sb.append(receiver.render(renderingContext));
+         sb.append(' ');
+         if (!parameters.isEmpty())
+         {
+            sb.append(", ");
+         }
+      }
+
+      renderElement(sb, parameters, renderingContext, ", ");
+      sb.append(')');
+
+      renderElement(sb, " throws ", exceptions, renderingContext, ", ");
+
+      sb.append(" {");
+      if (body != null)
+      {
+         sb.append('\n');
+         sb.append(body);
+         sb.append('\n');
+      }
+      sb.append("}");
+      return sb.toString();
+   }
+}

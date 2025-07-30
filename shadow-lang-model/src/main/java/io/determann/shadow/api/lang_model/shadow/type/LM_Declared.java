@@ -26,7 +26,7 @@ public sealed interface LM_Declared
               LM_Annotationable,
               LM_AccessModifiable,
               LM_StrictfpModifiable,
-              LM_Type,
+              LM_ReferenceType,
               LM_Nameable,
               LM_QualifiedNameable,
               LM_ModuleEnclosed,
