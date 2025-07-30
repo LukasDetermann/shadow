@@ -29,7 +29,7 @@ public sealed interface R_Declared
               R_Annotationable,
               R_AccessModifiable,
               R_StrictfpModifiable,
-              R_Type,
+              R_ReferenceType,
               R_Nameable,
               R_QualifiedNameable,
               R_ModuleEnclosed

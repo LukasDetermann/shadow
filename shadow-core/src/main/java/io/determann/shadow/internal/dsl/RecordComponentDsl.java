@@ -1,14 +1,12 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentTypeStep;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,20 +41,12 @@ public class RecordComponentDsl
    }
 
    @Override
-   public RecordComponentAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public RecordComponentAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new RecordComponentDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               recordComponentDsl -> recordComponentDsl.annotations::add);
-   }
-
-   @Override
-   public RecordComponentAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new RecordComponentDsl(this),
-                      annotation,
-                      recordComponentDsl -> recordComponentDsl.annotations::add);
    }
 
    @Override
@@ -66,16 +56,24 @@ public class RecordComponentDsl
    }
 
    @Override
-   public RecordComponentRenderable type(C_Type type)
+   public RecordComponentRenderable type(String type)
+   {
+      return setType(new RecordComponentDsl(this),
+                     type,
+                     (recordComponentDsl, string) -> recordComponentDsl.type = renderingContext -> string);
+   }
+
+   @Override
+   public RecordComponentRenderable type(TypeRenderable type)
    {
       return setTypeRenderer(new RecordComponentDsl(this),
                              type,
-                             (renderingContext, type1) -> Renderer.render(type1).type(renderingContext),
+                             (renderingContext, typeRenderable) -> typeRenderable.renderName(renderingContext),
                              (recordComponentDsl, function) -> recordComponentDsl.type = function);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
 

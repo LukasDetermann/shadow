@@ -4,32 +4,41 @@ import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
-import io.determann.shadow.api.shadow.structure.C_Constructor;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.type.C_Declared;
 
-public interface ClassBodyStep extends ClassRenderable
+import java.util.Arrays;
+import java.util.List;
+
+public interface ClassBodyStep
+      extends ClassRenderable
 {
    ClassRenderable body(String body);
 
    ClassBodyStep field(String... fields);
 
-   ClassBodyStep field(C_Field... fields);
-   
-   ClassBodyStep field(FieldRenderable... fields);
+   default ClassBodyStep field(FieldRenderable... fields)
+   {
+      return field(Arrays.asList(fields));
+   }
+
+   ClassBodyStep field(List<? extends FieldRenderable> fields);
 
    ClassBodyStep method(String... methods);
 
-   ClassBodyStep method(C_Method... methods);
+   default ClassBodyStep method(MethodRenderable... methods)
+   {
+      return method(Arrays.asList(methods));
+   }
 
-   ClassBodyStep method(MethodRenderable... methods);
+   ClassBodyStep method(List<? extends MethodRenderable> methods);
 
    ClassBodyStep inner(String... inner);
 
-   ClassBodyStep inner(C_Declared... inner);
+   default ClassBodyStep inner(DeclaredRenderable... inner)
+   {
+      return inner(Arrays.asList(inner));
+   }
 
-   ClassBodyStep inner(DeclaredRenderable... inner);
+   ClassBodyStep inner(List<? extends DeclaredRenderable> inner);
 
    ClassBodyStep instanceInitializer(String... instanceInitializers);
 
@@ -37,7 +46,10 @@ public interface ClassBodyStep extends ClassRenderable
 
    ClassBodyStep constructor(String... constructors);
 
-   ClassBodyStep constructor(C_Constructor... constructors);
+   default ClassBodyStep constructor(ConstructorRenderable... constructors)
+   {
+      return constructor(Arrays.asList(constructors));
+   }
 
-   ClassBodyStep constructor(ConstructorRenderable... constructors);
+   ClassBodyStep constructor(List<? extends ConstructorRenderable> constructors);
 }

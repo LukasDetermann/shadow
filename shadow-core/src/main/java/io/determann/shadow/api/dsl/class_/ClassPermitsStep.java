@@ -1,10 +1,19 @@
 package io.determann.shadow.api.dsl.class_;
 
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 
-public interface ClassPermitsStep extends ClassBodyStep
+import java.util.Arrays;
+import java.util.List;
+
+public interface ClassPermitsStep
+      extends ClassBodyStep
 {
    ClassPermitsStep permits(String... declared);
 
-   ClassPermitsStep permits(C_Declared... declared);
+   default ClassPermitsStep permits(DeclaredRenderable... declared)
+   {
+      return permits(Arrays.asList(declared));
+   }
+
+   ClassPermitsStep permits(List<? extends DeclaredRenderable> declared);
 }

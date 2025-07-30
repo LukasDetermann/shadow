@@ -39,7 +39,7 @@ class ModuleDslTest
                       .uses(Dsl.uses("org.example.Spi"))
                       .provides(Dsl.provides().service("org.example.Spi")
                                    .with("org.example.SpiImplementation"))
-                      .render(DEFAULT));
+                      .renderModuleInfo(DEFAULT));
       //@end
    }
 }

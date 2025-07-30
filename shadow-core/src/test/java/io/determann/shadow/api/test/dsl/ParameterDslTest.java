@@ -13,7 +13,7 @@ class ParameterDslTest
    {
       //@start region="short-api"
       assertEquals("ParamType two",
-                   Dsl.parameter("ParamType", "two").render(DEFAULT));
+                   Dsl.parameter("ParamType", "two").renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -29,7 +29,7 @@ class ParameterDslTest
                       .type("ParamType")
                       .name("one")
                       .varArgs()
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -42,7 +42,7 @@ class ParameterDslTest
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .type("ParamType")
                       .name("one")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -53,7 +53,7 @@ class ParameterDslTest
                       .final_()
                       .type("ParamType")
                       .name("one")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -64,6 +64,6 @@ class ParameterDslTest
                       .type("ParamType")
                       .name("one")
                       .varArgs()
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 }

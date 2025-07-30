@@ -1,10 +1,10 @@
 package io.determann.shadow.api.dsl.class_;
 
-import io.determann.shadow.api.shadow.structure.C_Package;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 
 public interface ClassPackageStep
 {
    ClassImportStep package_(String packageName);
 
-   ClassImportStep package_(C_Package aPackage);
+   ClassImportStep package_(PackageRenderable aPackage);
 }

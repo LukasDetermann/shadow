@@ -1,7 +1,7 @@
 package io.determann.shadow.api.lang_model.shadow.structure;
 
 import io.determann.shadow.api.lang_model.shadow.LM_Nameable;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.shadow.type.LM_VariableType;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.structure.C_Property;
 
@@ -47,7 +47,7 @@ public interface LM_Property
     *
     * @see #getGetter()
     */
-   LM_Type getType();
+   LM_VariableType getType();
 
    /**
     * a {@link C_Field} with the name and tye of this property

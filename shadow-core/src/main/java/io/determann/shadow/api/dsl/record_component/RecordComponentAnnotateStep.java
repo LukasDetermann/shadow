@@ -1,13 +1,18 @@
 package io.determann.shadow.api.dsl.record_component;
 
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface RecordComponentAnnotateStep extends RecordComponentNameStep
 {
    RecordComponentAnnotateStep annotate(String... annotation);
 
-   RecordComponentAnnotateStep annotate(C_AnnotationUsage... annotation);
+   default RecordComponentAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return annotate(Arrays.asList(annotation));
+   }
 
-   RecordComponentAnnotateStep annotate(AnnotationUsageRenderable... annotation);
+   RecordComponentAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation);
 }

@@ -58,7 +58,7 @@ class InterfaceTest
 
                                LM_Interface capture = declared.interpolateGenerics();
                                LM_Type interpolated = Optional.of(((LM_Generic) capture.getGenericTypes().get(1)))
-                                                              .map(LM_Generic::getExtends)
+                                                              .map(LM_Generic::getBound)
                                                               .map(LM_Interface.class::cast)
                                                               .map(LM_Interface::getGenericTypes)
                                                               .map(types -> types.get(0))
@@ -70,7 +70,7 @@ class InterfaceTest
 
                                LM_Interface independentCapture = independentExample.interpolateGenerics();
                                LM_Type interpolatedIndependent = Optional.of(((LM_Generic) independentCapture.getGenericTypes().get(0)))
-                                                                         .map(LM_Generic::getExtends)
+                                                                         .map(LM_Generic::getBound)
                                                                          .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
@@ -80,7 +80,7 @@ class InterfaceTest
 
                                LM_Interface dependentCapture = dependentExample.interpolateGenerics();
                                LM_Type interpolatedDependent = Optional.of((LM_Generic) dependentCapture.getGenericTypes().get(0))
-                                                                       .map(LM_Generic::getExtends)
+                                                                       .map(LM_Generic::getBound)
                                                                        .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })

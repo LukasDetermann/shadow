@@ -1,8 +1,8 @@
 package io.determann.shadow.api.dsl.annotation_usage;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
 public interface AnnotationUsageRenderable
-      extends Renderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

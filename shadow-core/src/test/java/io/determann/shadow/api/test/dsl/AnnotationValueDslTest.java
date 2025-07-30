@@ -5,18 +5,19 @@ import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.structure.C_EnumConstant;
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.*;
+import io.determann.shadow.api.shadow.type.C_Array;
+import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.shadow.type.C_Void;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
+import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.ElementType;
-import java.util.Collections;
 
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.test.TestProvider.IMPLEMENTATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -93,15 +94,11 @@ class AnnotationValueDslTest
    @Test
    void c_enum_constant()
    {
-      TestProvider.addValue((C_Enum) () -> IMPLEMENTATION);
-      TestProvider.addValue((C_Package) () -> IMPLEMENTATION);
-      TestProvider.addValue(false);
-      TestProvider.addValue(false);
-      TestProvider.addValue("java.lang.annotation.ElementType");
-      TestProvider.addValue("ANNOTATION_TYPE");
-
       assertEquals("java.lang.annotation.ElementType.ANNOTATION_TYPE",
-                   Dsl.annotationValue((C_EnumConstant) () -> IMPLEMENTATION).render(DEFAULT));
+                   Dsl.annotationValue(TestFactory.create(C_EnumConstant.class,
+                                                          "renderDeclaration",
+                                                          "java.lang.annotation.ElementType.ANNOTATION_TYPE"))
+                      .render(DEFAULT));
    }
 
    @Test
@@ -138,12 +135,7 @@ class AnnotationValueDslTest
    @Test
    void c_typeArray()
    {
-      TestProvider.addValue((C_Primitive) () -> IMPLEMENTATION);
-      TestProvider.addValue("boolean");
-      TestProvider.addValue((C_Primitive) () -> IMPLEMENTATION);
-
-      //noinspection OverlyStrongTypeCast
-      assertEquals("boolean[].class", Dsl.annotationValue(((C_Array) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("boolean[].class", Dsl.annotationValue((TestFactory.create(C_Array.class, "renderType", "boolean[]"))).render(DEFAULT));
    }
 
    @Test
@@ -151,23 +143,19 @@ class AnnotationValueDslTest
    {
       TestProvider.addValue("org.example.MyType");
 
-      //noinspection OverlyStrongTypeCast
-      assertEquals("org.example.MyType.class", Dsl.annotationValue(((C_Declared) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("org.example.MyType.class", Dsl.annotationValue((TestFactory.create(C_Class.class))).render(DEFAULT));
    }
 
    @Test
    void c_typeVoid()
    {
-      //noinspection OverlyStrongTypeCast
-      assertEquals("void.class", Dsl.annotationValue(((C_Void) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("void.class", Dsl.annotationValue((TestFactory.create(C_Void.class))).render(DEFAULT));
    }
 
    @Test
    void c_typePrimitive()
    {
-      TestProvider.addValue("boolean");
-      //noinspection OverlyStrongTypeCast
-      assertEquals("boolean.class", Dsl.annotationValue(((C_Primitive) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("boolean.class", Dsl.annotationValue(TestFactory.create(C_Primitive.class, "renderType", "boolean")).render(DEFAULT));
    }
 
    @Test
@@ -179,14 +167,9 @@ class AnnotationValueDslTest
    @Test
    void c_annotationUsage()
    {
-      TestProvider.addValue((C_Annotation) () -> IMPLEMENTATION);
-      TestProvider.addValue((C_Package) () -> IMPLEMENTATION);
-      TestProvider.addValue(false);
-      TestProvider.addValue(false);
-      TestProvider.addValue("org.example.MyAnnotation");
-      TestProvider.addValue(Collections.emptyList());
-
-      assertEquals("@org.example.MyAnnotation", Dsl.annotationValue(((C_AnnotationUsage) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("@org.example.MyAnnotation",
+                   Dsl.annotationValue((TestFactory.create(C_AnnotationUsage.class, "renderDeclaration", "@org.example.MyAnnotation")))
+                      .render(DEFAULT));
    }
 
    @Test
@@ -198,9 +181,7 @@ class AnnotationValueDslTest
    @Test
    void c_annotationValues()
    {
-      TestProvider.addValue("test");
-
-      assertEquals("{\"test\"}", Dsl.annotationValue(((C_AnnotationValue) () -> IMPLEMENTATION)).render(DEFAULT));
+      assertEquals("{\"test\"}", Dsl.annotationValue((TestFactory.create(C_AnnotationValue.class, "\"test\""))).render(DEFAULT));
    }
 
    @Test

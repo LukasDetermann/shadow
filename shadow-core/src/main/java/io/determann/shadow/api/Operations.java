@@ -115,7 +115,7 @@ public interface Operations
 
    InstanceOperation0<C_Enum, List<? extends C_Constructor>> ENUM_GET_CONSTRUCTORS = new InstanceOperation0<>("enum.getConstructors");
 
-   InstanceOperation0<C_Enum, List<? extends C_EnumConstant>> ENUM_GET_EUM_CONSTANTS = new InstanceOperation0<>("enum.getEumConstants");
+   InstanceOperation0<C_Enum, List<? extends C_EnumConstant>> ENUM_GET_ENUM_CONSTANTS = new InstanceOperation0<>("enum.getEumConstants");
 
    InstanceOperation1<C_Enum, String, C_EnumConstant> ENUM_GET_ENUM_CONSTANT = new InstanceOperation1<>("enum.getEnumConstant");
 
@@ -124,6 +124,8 @@ public interface Operations
    InstanceOperation0<C_Interface, List<? extends C_Type>> INTERFACE_GET_GENERIC_TYPES = new InstanceOperation0<>("interface.getGenericTypes");
 
    InstanceOperation0<C_Interface, List<? extends C_Generic>> INTERFACE_GET_GENERICS = new InstanceOperation0<>("interface.getGenerics");
+
+   InstanceOperation0<C_Interface, List<? extends C_Declared>> INTERFACE_GET_PERMITTED_SUB_TYPES = new InstanceOperation0<>("interface.getPermittedSubTypes");
 
    InstanceOperation0<C_Record, List<? extends C_Constructor>> RECORD_GET_CONSTRUCTORS = new InstanceOperation0<>("record.getConstructors");
 
@@ -177,7 +179,7 @@ public interface Operations
 
    InstanceOperation1<C_Variable, C_Type, Boolean> VARIABLE_IS_ASSIGNABLE_FROM = new InstanceOperation1<>("variable.isAssignableFrom");
 
-   InstanceOperation0<C_Variable, C_Type> VARIABLE_GET_TYPE = new InstanceOperation0<>("variable.getType");
+   InstanceOperation0<C_Variable, C_VariableType> VARIABLE_GET_TYPE = new InstanceOperation0<>("variable.getType");
 
    InstanceOperation0<C_Variable, Object> VARIABLE_GET_SURROUNDING = new InstanceOperation0<>("variable.getSurrounding");
 
@@ -209,7 +211,7 @@ public interface Operations
 
    InstanceOperation0<C_Method, Boolean> METHOD_IS_BRIDGE = new InstanceOperation0<>("method.isBridge");
 
-   InstanceOperation0<C_Method, C_Result> METHOD_GET_RETURN = new InstanceOperation0<>("method.getResult");
+   InstanceOperation0<C_Method, C_Result> METHOD_GET_RESULT = new InstanceOperation0<>("method.getResult");
 
    InstanceOperation1<C_RecordComponent, C_Type, Boolean> RECORD_COMPONENT_IS_SUBTYPE_OF = new InstanceOperation1<>("recordComponent.isSubtypeOf");
 
@@ -225,13 +227,11 @@ public interface Operations
 
    InstanceOperation0<C_Receiver, C_Type> RECEIVER_GET_TYPE = new InstanceOperation0<>("receiver.getType");
 
-   InstanceOperation0<C_Intersection, List<? extends C_Type>> INTERSECTION_GET_BOUNDS = new InstanceOperation0<>("intersection.getBounds");
+   InstanceOperation0<C_Generic, C_Type> GENERIC_GET_BOUND = new InstanceOperation0<>("generic.getBound");
 
-   InstanceOperation0<C_Intersection, C_Array> INTERSECTION_AS_ARRAY = new InstanceOperation0<>("intersection.asArray");
+   InstanceOperation0<C_Generic, List<? extends C_Type>> GENERIC_GET_BOUNDS = new InstanceOperation0<>("generic.getBounds");
 
-   InstanceOperation0<C_Generic, C_Type> GENERIC_GET_EXTENDS = new InstanceOperation0<>("generic.getExtends");
-
-   InstanceOperation0<C_Generic, C_Type> GENERIC_GET_SUPER = new InstanceOperation0<>("generic.getSuper");
+   InstanceOperation0<C_Generic, List<? extends C_Interface>> GENERIC_GET_ADDITIONAL_BOUNDS = new InstanceOperation0<>("generic.getAdditionalBounds");
 
    InstanceOperation0<C_Generic, Object> GENERIC_GET_ENCLOSING = new InstanceOperation0<>("generic.getEnclosing");
 
@@ -303,7 +303,7 @@ public interface Operations
 
    InstanceOperation0<C_AnnotationValue, Object> ANNOTATION_VALUE_GET_VALUE = new InstanceOperation0<>("annotationValue.getValue");
 
-   InstanceOperation0<C_Property, C_Type> PROPERTY_GET_TYPE = new InstanceOperation0<>("property.getType");
+   InstanceOperation0<C_Property, C_VariableType> PROPERTY_GET_TYPE = new InstanceOperation0<>("property.getType");
 
    InstanceOperation0<C_Property, C_Field> PROPERTY_GET_FIELD = new InstanceOperation0<>("property.getField");
 

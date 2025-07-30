@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.enum_constant;
 
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface EnumConstantParameterStep
       extends EnumConstantBodyStep
 {
    EnumConstantParameterStep parameter(String... parameter);
 
-   EnumConstantParameterStep parameter(C_Parameter... parameter);
+   default EnumConstantParameterStep parameter(ParameterRenderable... parameter)
+   {
+      return parameter(Arrays.asList(parameter));
+   }
 
-   EnumConstantParameterStep parameter(ParameterRenderable... parameter);
+   EnumConstantParameterStep parameter(List<? extends ParameterRenderable> parameter);
 }

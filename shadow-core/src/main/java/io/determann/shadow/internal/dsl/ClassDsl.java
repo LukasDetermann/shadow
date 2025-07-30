@@ -7,28 +7,20 @@ import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
-import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Constructor;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ClassDsl
       implements ClassCopyrightHeaderStep,
@@ -37,7 +29,7 @@ public class ClassDsl
 {
    /// optional and only for files
    private String copyright;
-   private String package_;
+   private PackageRenderable package_;
    private final List<Renderable> imports = new ArrayList<>();
 
    /// for all
@@ -95,24 +87,16 @@ public class ClassDsl
    @Override
    public ClassAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ClassDsl(this), annotation, (renderingContext, string) -> '@' + string, classDsl -> classDsl.annotations::add);
+      return addArray2(new ClassDsl(this), annotation, (classDsl, string) -> classDsl.annotations.add(renderingContext -> '@' + string));
    }
 
    @Override
-   public ClassAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public ClassAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new ClassDsl(this),
                               annotation,
-                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               classDsl -> classDsl.annotations::add);
-   }
-
-   @Override
-   public ClassAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new ClassDsl(this),
-                      annotation,
-                      classDsl -> classDsl.annotations::add);
    }
 
    @Override
@@ -122,12 +106,11 @@ public class ClassDsl
    }
 
    @Override
-   public ClassModifierStep modifier(C_Modifier... modifiers)
+   public ClassModifierStep modifier(Set<C_Modifier> modifiers)
    {
-      return addArrayRenderer(new ClassDsl(this),
-                              modifiers,
-                              (context, modifier) -> Renderer.render(modifier).declaration(context),
-                              classDsl -> classDsl.modifiers::add);
+      return addArray(new ClassDsl(this),
+                      modifiers,
+                      classDsl -> classDsl.modifiers::add);
    }
 
    @Override
@@ -135,7 +118,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.ABSTRACT,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -144,7 +126,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.PUBLIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -153,7 +134,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.PROTECTED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -162,7 +142,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.PRIVATE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -171,7 +150,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.FINAL,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -180,7 +158,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.SEALED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -189,7 +166,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.NON_SEALED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -198,7 +174,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.STATIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -207,7 +182,6 @@ public class ClassDsl
    {
       return addTypeRenderer(new ClassDsl(this),
                              C_Modifier.STRICTFP,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              classDsl -> classDsl.modifiers::add);
    }
 
@@ -220,68 +194,60 @@ public class ClassDsl
    @Override
    public ClassGenericStep generic(String... generic)
    {
-      return addArrayRenderer(new ClassDsl(this), generic, classDsl -> classDsl.generics::add);
+      return addArray2(new ClassDsl(this), generic, (classDsl, string) -> classDsl.generics.add(renderingContext -> string));
    }
 
    @Override
-   public ClassGenericStep generic(C_Generic... generic)
+   public ClassGenericStep generic(List<? extends GenericRenderable> generics)
    {
       return addArrayRenderer(new ClassDsl(this),
-                              generic,
-                              (context, generic1) -> Renderer.render(generic1).declaration(context),
+                              generics,
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               classDsl -> classDsl.generics::add);
-   }
-
-   @Override
-   public ClassGenericStep generic(GenericRenderable... generics)
-   {
-      return addArray(new ClassDsl(this),
-                      generics,
-                      classDsl -> classDsl.generics::add);
    }
 
    @Override
    public ClassImplementsStep extends_(String aClass)
    {
-      return setTypeRenderer(new ClassDsl(this), aClass, (classDsl, function) -> classDsl.extends_ = function);
+      return setType(new ClassDsl(this), aClass, (classDsl, string) -> classDsl.extends_ = renderingContext -> string);
    }
 
    @Override
-   public ClassImplementsStep extends_(C_Class aClass)
+   public ClassImplementsStep extends_(ClassRenderable aClass)
    {
       return setTypeRenderer(new ClassDsl(this),
                              aClass,
-                             (renderingContext, cClass) -> Renderer.render(cClass).type(renderingContext),
+                             (renderingContext, renderable) -> renderable.renderType(renderingContext),
                              (classDsl, function) -> classDsl.extends_ = function);
    }
 
    @Override
    public ClassImplementsStep implements_(String... interfaces)
    {
-      return addArrayRenderer(new ClassDsl(this), interfaces, classDsl -> classDsl.implements_::add);
+      return addArray2(new ClassDsl(this), interfaces, (classDsl, string) -> classDsl.implements_.add(renderingContext -> string));
    }
 
    @Override
-   public ClassImplementsStep implements_(C_Interface... interfaces)
+   public ClassImplementsStep implements_(List<? extends InterfaceRenderable> interfaces)
    {
       return addArrayRenderer(new ClassDsl(this),
                               interfaces,
-                              (context, cInterface) -> Renderer.render(cInterface).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderType(renderingContext),
                               classDsl -> classDsl.implements_::add);
    }
 
    @Override
    public ClassPermitsStep permits(String... declared)
    {
-      return addArrayRenderer(new ClassDsl(this), declared, classDsl -> classDsl.permits::add);
+      return addArray2(new ClassDsl(this), declared, (classDsl, string) -> classDsl.permits.add(renderingContext -> string));
    }
 
    @Override
-   public ClassPermitsStep permits(C_Declared... declared)
+   public ClassPermitsStep permits(List<? extends DeclaredRenderable> declared)
    {
       return addArrayRenderer(new ClassDsl(this),
                               declared,
-                              (context, declared1) -> Renderer.render(declared1).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
                               classDsl -> classDsl.permits::add);
    }
 
@@ -295,70 +261,46 @@ public class ClassDsl
    @Override
    public ClassBodyStep field(String... fields)
    {
-      return addArrayRenderer(new ClassDsl(this), fields, classDsl -> classDsl.fields::add);
+      return addArray2(new ClassDsl(this), fields, (classDsl, string) -> classDsl.fields.add(renderingContext -> string));
    }
 
    @Override
-   public ClassBodyStep field(C_Field... fields)
+   public ClassBodyStep field(List<? extends FieldRenderable> fields)
    {
       return addArrayRenderer(new ClassDsl(this),
                               fields,
-                              (context, field) -> Renderer.render(field).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               classDsl -> classDsl.fields::add);
-   }
-
-   @Override
-   public ClassBodyStep field(FieldRenderable... fields)
-   {
-      return addArray(new ClassDsl(this),
-                      fields,
-                      classDsl -> classDsl.fields::add);
    }
 
    @Override
    public ClassBodyStep method(String... methods)
    {
-      return addArrayRenderer(new ClassDsl(this), methods, classDsl -> classDsl.methods::add);
+      return addArray2(new ClassDsl(this), methods, (classDsl, string) -> classDsl.methods.add(renderingContext -> string));
    }
 
    @Override
-   public ClassBodyStep method(C_Method... methods)
+   public ClassBodyStep method(List<? extends MethodRenderable> methods)
    {
       return addArrayRenderer(new ClassDsl(this),
                               methods,
-                              (context, method) -> Renderer.render(method).declaration(context),
-                              classDsl -> classDsl.modifiers::add);
-   }
-
-   @Override
-   public ClassBodyStep method(MethodRenderable... methods)
-   {
-      return addArray(new ClassDsl(this),
-                      methods,
-                      classDsl -> classDsl.methods::add);
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              classDsl -> classDsl.methods::add);
    }
 
    @Override
    public ClassBodyStep inner(String... inner)
    {
-      return addArrayRenderer(new ClassDsl(this), inner, classDsl -> classDsl.inner::add);
+      return addArray2(new ClassDsl(this), inner, (classDsl, string) -> classDsl.inner.add(renderingContext -> string));
    }
 
    @Override
-   public ClassBodyStep inner(C_Declared... inner)
+   public ClassBodyStep inner(List<? extends DeclaredRenderable> inner)
    {
       return addArrayRenderer(new ClassDsl(this),
                               inner,
-                              (context, declared) -> Renderer.render(declared).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               classDsl -> classDsl.inner::add);
-   }
-
-   @Override
-   public ClassBodyStep inner(DeclaredRenderable... inner)
-   {
-      return addArray(new ClassDsl(this),
-                      inner,
-                      classDsl -> classDsl.inner::add);
    }
 
    @Override
@@ -376,24 +318,16 @@ public class ClassDsl
    @Override
    public ClassBodyStep constructor(String... constructors)
    {
-      return addArrayRenderer(new ClassDsl(this), constructors, classDsl -> classDsl.constructors::add);
+      return addArray2(new ClassDsl(this), constructors, (classDsl, string) -> classDsl.constructors.add(renderingContext -> string));
    }
 
    @Override
-   public ClassBodyStep constructor(C_Constructor... constructors)
+   public ClassBodyStep constructor(List<? extends ConstructorRenderable> constructors)
    {
       return addArrayRenderer(new ClassDsl(this),
                               constructors,
-                              (context, constructor) -> Renderer.render(constructor).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               classDsl -> classDsl.constructors::add);
-   }
-
-   @Override
-   public ClassBodyStep constructor(ConstructorRenderable... constructors)
-   {
-      return addArray(new ClassDsl(this),
-                      constructors,
-                      classDsl -> classDsl.constructors::add);
    }
 
    @Override
@@ -409,15 +343,14 @@ public class ClassDsl
    {
       return setType(new ClassDsl(this),
                      packageName,
-                     (classDsl, string) -> classDsl.package_ = string);
+                     (classDsl, string) -> classDsl.package_ = renderingContext -> string);
    }
 
    @Override
-   public ClassImportStep package_(C_Package aPackage)
+   public ClassImportStep package_(PackageRenderable aPackage)
    {
       return setType(new ClassDsl(this),
                      aPackage,
-                     cPackage -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
                      (classDsl, string) -> classDsl.package_ = string);
    }
 
@@ -430,20 +363,20 @@ public class ClassDsl
    }
 
    @Override
-   public ClassImportStep import_(C_Declared... declared)
+   public ClassImportStep import_(List<? extends DeclaredRenderable> declared)
    {
       return addArrayRenderer(new ClassDsl(this),
                               declared,
-                              (renderingContext, declared1) -> requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
                               classDsl -> classDsl.imports::add);
    }
 
    @Override
-   public ClassImportStep import_(C_Package... cPackages)
+   public ClassImportStep importPackage(List<? extends PackageRenderable> cPackages)
    {
       return addArrayRenderer(new ClassDsl(this),
                               cPackages,
-                              (renderingContext, aPackage) -> requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
                               classDsl -> classDsl.imports::add);
    }
 
@@ -457,25 +390,27 @@ public class ClassDsl
    }
 
    @Override
-   public ClassImportStep staticImport(C_Declared... declared)
+   public ClassImportStep staticImport(List<? extends DeclaredRenderable> declared)
    {
       return addArrayRenderer(new ClassDsl(this),
                               declared,
-                              (renderingContext, declared1) -> "static " + requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
                               classDsl -> classDsl.imports::add);
    }
 
    @Override
-   public ClassImportStep staticImport(C_Package... cPackages)
+   public ClassImportStep staticImportPackage(List<? extends PackageRenderable> cPackages)
    {
       return addArrayRenderer(new ClassDsl(this),
                               cPackages,
-                              (renderingContext, aPackage) -> "static " + requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              (renderingContext, packageRenderable) -> "static " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               classDsl -> classDsl.imports::add);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
@@ -486,9 +421,7 @@ public class ClassDsl
 
       if (package_ != null)
       {
-         sb.append("package ");
-         sb.append(package_);
-         sb.append(';');
+         sb.append(package_.renderDeclaration(renderingContext));
       }
 
       renderElement(sb, "import ", imports, ";", renderingContext, "\n");
@@ -504,7 +437,7 @@ public class ClassDsl
       }
 
       renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, generics, " ", renderingContext, " ");
+      renderElement(sb, modifiers, " ", renderingContext, " ");
 
       sb.append("class ");
       sb.append(name);
@@ -527,8 +460,9 @@ public class ClassDsl
       }
       else
       {
-         RenderingContextWrapper forReceiver = wrap(renderingContext);
-         forReceiver.setReceiverType(name);
+         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
+               .withOption(RECEIVER_TYPE, name)
+               .build();
 
          renderElement(sb, fields, "\n", renderingContext, "\n");
          renderElement(sb, staticInitializers, "\n\n", renderingContext, "\n");
@@ -540,5 +474,35 @@ public class ClassDsl
       sb.append('}');
 
       return sb.toString();
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      if (package_ == null)
+      {
+         return name;
+      }
+      return package_.renderQualifiedName(renderingContext) + '.' + name;
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      String qualifiedName = renderQualifiedName(renderingContext);
+      if (generics.isEmpty())
+      {
+         return qualifiedName;
+      }
+      return qualifiedName +
+             '<' +
+             generics.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining(", ")) +
+             '>';
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
    }
 }

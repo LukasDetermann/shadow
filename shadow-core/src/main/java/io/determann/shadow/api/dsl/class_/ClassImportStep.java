@@ -1,19 +1,43 @@
 package io.determann.shadow.api.dsl.class_;
 
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 
-public interface ClassImportStep extends ClassJavaDocStep
+import java.util.Arrays;
+import java.util.List;
+
+public interface ClassImportStep
+      extends ClassJavaDocStep
 {
    ClassImportStep import_(String... name);
 
-   ClassImportStep import_(C_Declared... declared);
+   default ClassImportStep import_(DeclaredRenderable... declared)
+   {
+      return import_(Arrays.asList(declared));
+   }
 
-   ClassImportStep import_(C_Package... cPackages);
+   ClassImportStep import_(List<? extends DeclaredRenderable> declared);
+
+   default ClassImportStep importPackage(PackageRenderable... cPackages)
+   {
+      return importPackage(Arrays.asList(cPackages));
+   }
+
+   ClassImportStep importPackage(List<? extends PackageRenderable> cPackages);
 
    ClassImportStep staticImport(String... name);
 
-   ClassImportStep staticImport(C_Declared... declared);
+   default ClassImportStep staticImport(DeclaredRenderable... declared)
+   {
+      return staticImport(Arrays.asList(declared));
+   }
 
-   ClassImportStep staticImport(C_Package... cPackages);
+   ClassImportStep staticImport(List<? extends DeclaredRenderable> declared);
+
+   default ClassImportStep staticImportPackage(PackageRenderable... cPackages)
+   {
+      return staticImportPackage(Arrays.asList(cPackages));
+   }
+
+   ClassImportStep staticImportPackage(List<? extends PackageRenderable> cPackages);
 }

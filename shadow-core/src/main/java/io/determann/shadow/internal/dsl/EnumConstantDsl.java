@@ -7,16 +7,12 @@ import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantParameterStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class EnumConstantDsl
       implements EnumConstantJavaDocStep,
@@ -52,24 +48,19 @@ public class EnumConstantDsl
    @Override
    public EnumConstantAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new EnumConstantDsl(this), annotation, (renderingContext, string) -> '@' + string,classDsl -> classDsl.annotations::add);
-   }
-
-   @Override
-   public EnumConstantAnnotateStep annotate(C_AnnotationUsage... annotation)
-   {
       return addArrayRenderer(new EnumConstantDsl(this),
                               annotation,
-                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              (renderingContext, string) -> '@' + string,
                               classDsl -> classDsl.annotations::add);
    }
 
    @Override
-   public EnumConstantAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   public EnumConstantAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
-      return addArray(new EnumConstantDsl(this),
-                      annotation,
-                      enumConstantDsl -> enumConstantDsl.annotations::add);
+      return addArrayRenderer(new EnumConstantDsl(this),
+                              annotation,
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              enumConstantDsl -> enumConstantDsl.annotations::add);
    }
 
    @Override
@@ -87,28 +78,20 @@ public class EnumConstantDsl
    @Override
    public EnumConstantParameterStep parameter(String... parameter)
    {
-      return addArrayRenderer(new EnumConstantDsl(this), parameter, methodDsl -> methodDsl.parameters::add);
+      return addArrayRenderer(new EnumConstantDsl(this), parameter, enumConstantDsl -> enumConstantDsl.parameters::add);
    }
 
    @Override
-   public EnumConstantParameterStep parameter(C_Parameter... parameter)
+   public EnumConstantParameterStep parameter(List<? extends ParameterRenderable> parameter)
    {
       return addArrayRenderer(new EnumConstantDsl(this),
                               parameter,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                              constructorDsl -> constructorDsl.parameters::add);
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              enumConstantDsl -> enumConstantDsl.parameters::add);
    }
 
    @Override
-   public EnumConstantParameterStep parameter(ParameterRenderable... parameter)
-   {
-      return addArray(new EnumConstantDsl(this),
-                      parameter,
-                      enumConstantDsl -> enumConstantDsl.parameters::add);
-   }
-
-   @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -120,12 +103,7 @@ public class EnumConstantDsl
       renderElement(sb, annotations, "\n", renderingContext, "\n");
 
       sb.append(name);
-      if (!parameters.isEmpty())
-      {
-         sb.append('(');
-         sb.append(parameters.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(", ")));
-         sb.append(')');
-      }
+      renderElement(sb, "<", parameters, ">", renderingContext, ", ");
 
       if (body != null)
       {

@@ -7,6 +7,8 @@ import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.class_.ClassJavaDocStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
+import io.determann.shadow.api.dsl.enum_.EnumCopyrightHeaderStep;
+import io.determann.shadow.api.dsl.enum_.EnumJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
@@ -14,6 +16,8 @@ import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.dsl.interface_.InterfaceCopyrightHeaderStep;
+import io.determann.shadow.api.dsl.interface_.InterfaceJavaDocStep;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.module.ModuleCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
@@ -23,13 +27,13 @@ import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
+import io.determann.shadow.api.dsl.record.RecordCopyrightHeaderStep;
+import io.determann.shadow.api.dsl.record.RecordJavaDocStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.uses.UsesRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_EnumConstant;
 import io.determann.shadow.api.shadow.structure.C_Package;
@@ -37,7 +41,7 @@ import io.determann.shadow.api.shadow.type.*;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 import io.determann.shadow.internal.dsl.*;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.Provider.requestOrThrow;
@@ -66,6 +70,36 @@ public interface Dsl
    static ClassJavaDocStep innerClass()
    {
       return new ClassDsl();
+   }
+
+   static RecordCopyrightHeaderStep record()
+   {
+      return new RecordDsl();
+   }
+
+   static RecordJavaDocStep innerRecord()
+   {
+      return new RecordDsl();
+   }
+
+   static InterfaceCopyrightHeaderStep interface_()
+   {
+      return new InterfaceDsl();
+   }
+
+   static InterfaceJavaDocStep innerInterface()
+   {
+      return new InterfaceDsl();
+   }
+
+   static EnumCopyrightHeaderStep enum_()
+   {
+      return new EnumDsl();
+   }
+
+   static EnumJavaDocStep innerEnum()
+   {
+      return new EnumDsl();
    }
 
    static EnumConstantJavaDocStep enumConstant()
@@ -168,6 +202,16 @@ public interface Dsl
             .name(name);
    }
 
+   /// {@snippet file = "ParameterDslTest.java" region = "short-api"}
+   ///
+   /// @see #parameter()
+   static ParameterRenderable parameter(VariableTypeRenderable type, String name)
+   {
+      return new ParameterDsl()
+            .type(type)
+            .name(name);
+   }
+
    static ReceiverAnnotateStep receiver()
    {
       return new ReceiverDsl();
@@ -259,7 +303,7 @@ public interface Dsl
    static AnnotationValueRenderable annotationValue(C_EnumConstant value)
    {
       requireNonNull(value);
-      return renderingContext -> Renderer.render(value).invocation(renderingContext);
+      return value::renderDeclaration;
    }
 
    /// {@code Dsl.annotationValue(Enum.CONSTANT).render(DEFAULT)} -> {@code org.example.Enum.CONSTANT}
@@ -283,14 +327,13 @@ public interface Dsl
       return renderingContext ->
             switch (value)
             {
-               case C_Array array -> Renderer.render(array).type(renderingContext);
+               case C_Array array -> array.renderType(renderingContext);
                case C_Declared declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
                case C_Generic _ -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
-               case C_Intersection _ -> throw new IllegalArgumentException("Intersection can not be used as an Annotation Value " + value);
                case C_Null _ -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
                case C_Void _ -> "void";
                case C_Wildcard _ -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
-               case C_Primitive primitive -> Renderer.render(primitive).type(renderingContext);
+               case C_Primitive primitive -> primitive.renderType(renderingContext);
                default -> throw new IllegalArgumentException("Can not be used as an Annotation Value " + value);
             }
             + ".class";
@@ -300,26 +343,22 @@ public interface Dsl
    static AnnotationValueRenderable annotationValue(C_AnnotationUsage value)
    {
       requireNonNull(value);
-      return renderingContext -> Renderer.render(value).declaration(renderingContext);
-   }
-
-   /// {@code Dsl.annotationValue(cInt, cFloat).render(DEFAULT)} -> {@code {1, 1.0F}}
-   static AnnotationValueRenderable annotationValue(C_AnnotationValue... value)
-   {
-      requireNonNull(value);
-      return renderingContext -> '{' +
-                                 Arrays.stream(value)
-                                       .map(annotationValue -> Renderer.render(annotationValue).declaration(renderingContext))
-                                       .collect(joining(", ")) +
-                                 '}';
+      return value::renderDeclaration;
    }
 
    /// {@code Dsl.annotationValue(Dsl.annotationValue(1), Dsl.annotationValue(1F)).render(DEFAULT)} -> {@code {1, 1.0F}}
    static AnnotationValueRenderable annotationValue(AnnotationValueRenderable... value)
    {
       requireNonNull(value);
+      return annotationValue(List.of(value));
+   }
+
+   /// {@code Dsl.annotationValue(List.of(Dsl.annotationValue(1), Dsl.annotationValue(1F))).render(DEFAULT)} -> {@code {1, 1.0F}}
+   static AnnotationValueRenderable annotationValue(List<AnnotationValueRenderable> values)
+   {
+      requireNonNull(values);
       return renderingContext -> '{' +
-                                 Arrays.stream(value)
+                                 values.stream()
                                        .map(annotationValue -> annotationValue.render(renderingContext))
                                        .collect(joining(", ")) +
                                  '}';
@@ -360,31 +399,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable constant(C_Array type, String name, String initializer)
-   {
-      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Declared type, String name, String initializer)
-   {
-      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Generic type, String name, String initializer)
-   {
-      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Primitive type, String name, String initializer)
+   static FieldRenderable constant(VariableTypeRenderable type, String name, String initializer)
    {
       return field().private_().static_().final_().type(type).name(name).initializer(initializer);
    }
@@ -400,31 +415,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, C_Array type, String name, String initializer)
-   {
-      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, C_Declared type, String name, String initializer)
-   {
-      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, C_Generic type, String name, String initializer)
-   {
-      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable constant(C_Modifier modifier, C_Primitive type, String name, String initializer)
+   static FieldRenderable constant(C_Modifier modifier, VariableTypeRenderable type, String name, String initializer)
    {
       return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
    }
@@ -440,31 +431,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Array type, String name)
-   {
-      return field().private_().type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Declared type, String name)
-   {
-      return field().private_().type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Generic type, String name)
-   {
-      return field().private_().type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Primitive type, String name)
+   static FieldRenderable field(VariableTypeRenderable type, String name)
    {
       return field().private_().type(type).name(name);
    }
@@ -480,31 +447,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Array type, String name, String initializer)
-   {
-      return field().private_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Declared type, String name, String initializer)
-   {
-      return field().private_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Generic type, String name, String initializer)
-   {
-      return field().private_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Primitive type, String name, String initializer)
+   static FieldRenderable field(VariableTypeRenderable type, String name, String initializer)
    {
       return field().private_().type(type).name(name).initializer(initializer);
    }
@@ -520,31 +463,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Array type, String name)
-   {
-      return field().modifier(modifier).type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Declared type, String name)
-   {
-      return field().modifier(modifier).type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Generic type, String name)
-   {
-      return field().modifier(modifier).type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Primitive type, String name)
+   static FieldRenderable field(C_Modifier modifier, VariableTypeRenderable type, String name)
    {
       return field().modifier(modifier).type(type).name(name);
    }
@@ -560,31 +479,7 @@ public interface Dsl
    /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
    ///
    /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Array type, String name, String initializer)
-   {
-      return field().modifier(modifier).type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Declared type, String name, String initializer)
-   {
-      return field().modifier(modifier).type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Generic type, String name, String initializer)
-   {
-      return field().modifier(modifier).type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
-   ///
-   /// @see #field()
-   static FieldRenderable field(C_Modifier modifier, C_Primitive type, String name, String initializer)
+   static FieldRenderable field(C_Modifier modifier, VariableTypeRenderable type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
    }

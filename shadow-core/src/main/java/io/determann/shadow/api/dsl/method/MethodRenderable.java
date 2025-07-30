@@ -1,7 +1,8 @@
 package io.determann.shadow.api.dsl.method;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
-public interface MethodRenderable extends Renderable
+public interface MethodRenderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

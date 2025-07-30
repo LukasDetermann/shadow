@@ -2,17 +2,14 @@ package io.determann.shadow.api.test.dsl;
 
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.type.C_Class;
 import io.determann.shadow.api.shadow.type.C_Enum;
+import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.test.TestProvider.IMPLEMENTATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodDslTest
@@ -29,7 +26,7 @@ class MethodDslTest
       assertEquals("""
                    /// some javadoc
                    MyType foo() {}""",
-                   Dsl.method().javadoc("/// some javadoc").result("MyType").name("foo").render(DEFAULT));
+                   Dsl.method().javadoc("/// some javadoc").result("MyType").name("foo").renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -42,7 +39,7 @@ class MethodDslTest
                       .annotate("MyAnnotation")
                       .result("MyType")
                       .name("foo")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -62,7 +59,7 @@ class MethodDslTest
                       .strictfp_()
                       .result("MyType")
                       .name("foo")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -74,19 +71,15 @@ class MethodDslTest
                       .generic("S")
                       .result("MyType")
                       .name("foo")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
    void type()
    {
-      TestProvider.addValue((C_Package) () -> IMPLEMENTATION);
-      TestProvider.addValue(false);
-      TestProvider.addValue(false);
-      TestProvider.addValue("MyEnum");
-      C_Enum cEnum = () -> IMPLEMENTATION;
+      C_Enum cEnum = TestFactory.create(C_Enum.class, "renderName", "MyEnum");
 
-      assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").render(DEFAULT));
+      assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -97,7 +90,7 @@ class MethodDslTest
                       .name("foo")
                       .parameter("int i1", "int i2")
                       .parameter("int i3")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -108,18 +101,13 @@ class MethodDslTest
                       .name("foo")
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .parameter(Dsl.parameter("int", "i3"))
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
    void throws_()
    {
-      TestProvider.addValue((C_Package) () -> IMPLEMENTATION);
-      TestProvider.addValue(false);
-      TestProvider.addValue(false);
-      TestProvider.addValue("MyException3");
-      TestProvider.addValue(Collections.emptyList());
-      C_Class cClass = () -> IMPLEMENTATION;
+      C_Class cClass = TestFactory.create(C_Class.class, "renderName", "MyException3");
 
       assertEquals("MyType foo() throws MyException1, MyException2, MyException3 {}",
                    Dsl.method()
@@ -127,7 +115,7 @@ class MethodDslTest
                       .name("foo")
                       .throws_("MyException1", "MyException2")
                       .throws_(cClass)
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -141,7 +129,7 @@ class MethodDslTest
                       .resultType("MyType")
                       .name("foo")
                       .body("//some content")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -162,7 +150,7 @@ class MethodDslTest
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .throws_("AnException")
                       .body("// some content")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 }

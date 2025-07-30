@@ -8,7 +8,6 @@ import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Property;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Class;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.List;
@@ -79,7 +78,7 @@ public class ShadowBuilderProcessor
                         }""".formatted(toBuildQualifiedName,
                                        builderVariableName,
                                        setterInvocations))
-                .render(RenderingContext.DEFAULT);
+                .renderDeclaration(RenderingContext.DEFAULT);
    }
 
    /// Creates a {@link BuilderElement} for each property of the annotated pojo
@@ -88,11 +87,10 @@ public class ShadowBuilderProcessor
                                          final LM_Property property)
    {
       String propertyName = property.getName();
-      String type = Renderer.render(property.getType()).type(RenderingContext.DEFAULT);
 
-      FieldRenderable field = Dsl.field(type, propertyName);
+      FieldRenderable field = property.getField().map(FieldRenderable.class::cast).orElseGet(() -> Dsl.field(property.getType(), propertyName));
 
-      ParameterRenderable propertyParam = Dsl.parameter(type, propertyName);
+      ParameterRenderable propertyParam = Dsl.parameter(property.getType(), propertyName);
 
       MethodRenderable mutator = Dsl.method()
                                     .public_()

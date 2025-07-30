@@ -3,15 +3,14 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.internal.dsl.DslSupport.*;
+import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
+import static io.determann.shadow.internal.dsl.DslSupport.addArrayRenderer;
+import static io.determann.shadow.internal.dsl.DslSupport.renderElement;
 
 public class ReceiverDsl
       implements ReceiverAnnotateStep
@@ -37,37 +36,31 @@ public class ReceiverDsl
    }
 
    @Override
-   public ReceiverAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public ReceiverAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new ReceiverDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               receiverDsl -> receiverDsl.annotations::add);
    }
 
    @Override
-   public ReceiverAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
-      return addArray(new ReceiverDsl(this),
-                      annotation,
-                      receiverDsl -> receiverDsl.annotations::add);
-   }
-
-   @Override
-   public String render(RenderingContext renderingContext)
-   {
-      if (!(renderingContext instanceof RenderingContextWrapper wrapper) || wrapper.getReceiverType() == null)
+      String receiverType = renderingContext.getOption(RECEIVER_TYPE);
+      if (receiverType == null)
       {
-         throw new IllegalStateException("A Receiver is dependent on its context. it can only be rendered as part of a instance method or inner class constructor");
+         throw new IllegalStateException(
+               "A Receiver is dependent on its context. it can only be rendered as part of a instance method or inner class constructor");
       }
 
       StringBuilder sb = new StringBuilder();
 
       renderElement(sb, annotations, " ", renderingContext, ", ");
 
-      sb.append(wrapper.getReceiverType());
+      sb.append(receiverType);
       sb.append(' ');
-      sb.append(wrapper.getReceiverType());
+      sb.append(receiverType);
       sb.append(".this");
       return sb.toString();
    }

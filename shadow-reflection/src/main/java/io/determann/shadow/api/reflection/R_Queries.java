@@ -136,11 +136,6 @@ public interface R_Queries
       return (R_Receiver) validate(receiver);
    }
 
-   static R_Intersection query(C_Intersection intersection)
-   {
-      return (R_Intersection) validate(intersection);
-   }
-
    static R_Generic query(C_Generic generic)
    {
       return (R_Generic) validate(generic);

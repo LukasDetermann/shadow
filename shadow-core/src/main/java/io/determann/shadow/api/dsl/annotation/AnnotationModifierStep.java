@@ -2,12 +2,19 @@ package io.determann.shadow.api.dsl.annotation;
 
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
+import java.util.Set;
+
 public interface AnnotationModifierStep
       extends AnnotationNameStep
 {
    AnnotationModifierStep modifier(String... modifiers);
 
-   AnnotationModifierStep modifier(C_Modifier... modifiers);
+   default AnnotationModifierStep modifier(C_Modifier... modifiers)
+   {
+      return modifier(Set.of(modifiers));
+   }
+
+   AnnotationModifierStep modifier(Set<C_Modifier> modifiers);
 
    AnnotationModifierStep public_();
 

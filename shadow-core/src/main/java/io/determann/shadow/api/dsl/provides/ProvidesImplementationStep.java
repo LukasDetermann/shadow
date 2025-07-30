@@ -1,10 +1,14 @@
 package io.determann.shadow.api.dsl.provides;
 
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+
+import java.util.List;
 
 public interface ProvidesImplementationStep
 {
    ProvidesAdditionalImplementationStep with(String... implementationName);
 
-   ProvidesAdditionalImplementationStep with(C_Declared... implementation);
+   ProvidesAdditionalImplementationStep with(DeclaredRenderable... implementation);
+
+   ProvidesAdditionalImplementationStep with(List<? extends DeclaredRenderable> implementation);
 }

@@ -26,7 +26,7 @@ public class InterpolateGenericsExample
 
                                LM_Type stringRep = Optional.of(capture.getGenericTypes().get(1))
                                                            .map(LM_Generic.class::cast)
-                                                           .map(LM_Generic::getExtends)
+                                                           .map(LM_Generic::getBound)
                                                            .map(LM_Interface.class::cast)
                                                            .map(LM_Interface::getGenericTypes)
                                                            .map(types -> types.get(0))

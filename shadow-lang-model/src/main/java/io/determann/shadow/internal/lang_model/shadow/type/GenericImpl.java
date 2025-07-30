@@ -4,12 +4,15 @@ import io.determann.shadow.api.lang_model.LM_Context;
 import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Generic;
+import io.determann.shadow.api.lang_model.shadow.type.LM_Interface;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +35,35 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements LM_Generic
    }
 
    @Override
-   public LM_Type getExtends()
+   public LM_Type getBound()
    {
-      return LM_Adapters.adapt(getApi(), getMirror().getUpperBound());
+      return getBounds().getFirst();
+   }
+
+   @Override
+   public List<LM_Type> getBounds()
+   {
+      TypeMirror upperBound = getMirror().getUpperBound();
+      if (upperBound instanceof IntersectionType intersectionType)
+      {
+         return intersectionType.getBounds().stream()
+                                .map(typeMirror -> adapt(getApi(), typeMirror))
+                                .toList();
+      }
+      return Collections.singletonList(adapt(getApi(), upperBound));
+   }
+
+   @Override
+   public List<LM_Interface> getAdditionalBounds()
+   {
+      List<LM_Type> bounds = getBounds();
+      if (bounds.size() <= 1)
+      {
+         return Collections.emptyList();
+      }
+      return bounds.stream().skip(1)
+                   .map(LM_Interface.class::cast)
+                   .toList();
    }
 
    @Override

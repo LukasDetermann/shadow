@@ -1,25 +1,20 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.method.*;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
 import io.determann.shadow.api.dsl.result.ResultRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.structure.C_Receiver;
-import io.determann.shadow.api.shadow.structure.C_Result;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -72,61 +67,45 @@ public class MethodDsl
    @Override
    public MethodParameterStep receiver(String receiver)
    {
-      return setTypeRenderer(new MethodDsl(this), receiver, (methodDsl, function) -> methodDsl.receiver = function);
-   }
-
-   @Override
-   public MethodParameterStep receiver(C_Receiver receiver)
-   {
-      return setTypeRenderer(new MethodDsl(this),
-                             receiver,
-                             (renderingContext, receiver1) -> Renderer.render(receiver1).declaration(renderingContext),
-                             (methodDsl, function) -> methodDsl.receiver = function);
+      return setType(new MethodDsl(this), receiver, (methodDsl, string) -> methodDsl.receiver = renderingContext -> string);
    }
 
    @Override
    public MethodParameterStep receiver(ReceiverRenderable receiver)
    {
-      return setType(new MethodDsl(this),
-                     receiver,
-                     (methodDsl, receiverRenderable) -> methodDsl.receiver = receiverRenderable);
+      return setTypeRenderer(new MethodDsl(this),
+                             receiver,
+                             (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                             (methodDsl, receiverRenderable) -> methodDsl.receiver = receiverRenderable);
    }
 
    @Override
    public MethodParameterStep parameter(String... parameter)
    {
-      return addArrayRenderer(new MethodDsl(this), parameter, methodDsl -> methodDsl.parameters::add);
+      return addArray2(new MethodDsl(this), parameter, (methodDsl, string) -> methodDsl.parameters.add(renderingContext -> string));
    }
 
    @Override
-   public MethodParameterStep parameter(C_Parameter... parameter)
+   public MethodParameterStep parameter(List<? extends ParameterRenderable> parameter)
    {
       return addArrayRenderer(new MethodDsl(this),
                               parameter,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               methodDsl -> methodDsl.parameters::add);
-   }
-
-   @Override
-   public MethodParameterStep parameter(ParameterRenderable... parameter)
-   {
-      return addArray(new MethodDsl(this),
-                      parameter,
-                      methodDsl -> methodDsl.parameters::add);
    }
 
    @Override
    public MethodThrowsStep throws_(String... exception)
    {
-      return addArrayRenderer(new MethodDsl(this), exception, methodDsl -> methodDsl.exceptions::add);
+      return addArray2(new MethodDsl(this), exception, (methodDsl, string) -> methodDsl.exceptions.add(renderingContext -> string));
    }
 
    @Override
-   public MethodThrowsStep throws_(C_Class... exception)
+   public MethodThrowsStep throws_(List<? extends ClassRenderable> exception)
    {
       return addArrayRenderer(new MethodDsl(this),
                               exception,
-                              (renderingContext, modifier) -> Renderer.render(modifier).type(renderingContext),
+                              (renderingContext, classRenderable) -> classRenderable.renderName(renderingContext),
                               methodDsl -> methodDsl.exceptions::add);
    }
 
@@ -146,20 +125,12 @@ public class MethodDsl
    }
 
    @Override
-   public MethodAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public MethodAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new MethodDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               methodDsl -> methodDsl.annotations::add);
-   }
-
-   @Override
-   public MethodAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new MethodDsl(this),
-                      annotation,
-                      methodDsl -> methodDsl.annotations::add);
    }
 
    @Override
@@ -169,12 +140,11 @@ public class MethodDsl
    }
 
    @Override
-   public MethodModifierStep modifier(C_Modifier... modifiers)
+   public MethodModifierStep modifier(Set<C_Modifier> modifiers)
    {
-      return addArrayRenderer(new MethodDsl(this),
-                              modifiers,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                              methodDsl -> methodDsl.modifiers::add);
+      return addArray(new MethodDsl(this),
+                      modifiers,
+                      methodDsl -> methodDsl.modifiers::add);
    }
 
    @Override
@@ -182,7 +152,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.ABSTRACT,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -191,7 +160,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.PUBLIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -200,7 +168,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.PROTECTED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -209,7 +176,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.PRIVATE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -218,7 +184,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.DEFAULT,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -227,7 +192,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.FINAL,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -236,7 +200,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.NATIVE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -245,7 +208,6 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.STATIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
@@ -254,73 +216,55 @@ public class MethodDsl
    {
       return addTypeRenderer(new MethodDsl(this),
                              C_Modifier.STRICTFP,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              methodDsl -> methodDsl.modifiers::add);
    }
 
    @Override
    public MethodGenericStep generic(String... generic)
    {
-      return addArrayRenderer(new MethodDsl(this), generic, methodDsl -> methodDsl.generics::add);
+      return addArray2(new MethodDsl(this), generic, (methodDsl, string) -> methodDsl.generics.add(renderingContext -> string));
    }
 
    @Override
-   public MethodGenericStep generic(C_Generic... generic)
+   public MethodGenericStep generic(List<? extends GenericRenderable> generic)
    {
       return addArrayRenderer(new MethodDsl(this),
                               generic,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, genericRenderable) -> genericRenderable.renderDeclaration(renderingContext),
                               methodDsl -> methodDsl.generics::add);
-   }
-
-   @Override
-   public MethodGenericStep generic(GenericRenderable... generic)
-   {
-      return addArray(new MethodDsl(this),
-                      generic,
-                      methodDsl -> methodDsl.generics::add);
    }
 
    @Override
    public MethodNameStep result(String result)
    {
-      return setTypeRenderer(new MethodDsl(this), result, (methodDsl, function) -> methodDsl.result = function);
-   }
-
-   @Override
-   public MethodNameStep result(C_Result result)
-   {
-      return setTypeRenderer(new MethodDsl(this),
-                             result,
-                             (renderingContext, result1) -> Renderer.render(result1).declaration(renderingContext),
-                             (methodDsl, function) -> methodDsl.result = function);
+      return setType(new MethodDsl(this), result, (methodDsl, string) -> methodDsl.result = renderingContext -> result);
    }
 
    @Override
    public MethodNameStep result(ResultRenderable result)
    {
-      return setType(new MethodDsl(this),
-                     result,
-                     (methodDsl, resultRenderable) -> methodDsl.result = result);
+      return setTypeRenderer(new MethodDsl(this),
+                             result,
+                             (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                             (methodDsl, resultRenderable) -> methodDsl.result = resultRenderable);
    }
 
    @Override
    public MethodNameStep resultType(String resultType)
    {
-      return setTypeRenderer(new MethodDsl(this), resultType, (methodDsl, function) -> methodDsl.result = function);
+      return setType(new MethodDsl(this), resultType, (methodDsl, string) -> methodDsl.result = renderingContext -> string);
    }
 
    @Override
-   public MethodNameStep resultType(C_Type resultType)
+   public MethodNameStep resultType(TypeRenderable resultType)
    {
-      return setTypeRenderer(new MethodDsl(this),
-                             resultType,
-                             (renderingContext, result1) -> Renderer.render(result1).type(renderingContext),
-                             (methodDsl, function) -> methodDsl.result = function);
+      return setType(new MethodDsl(this),
+                     resultType,
+                     (methodDsl, typeNameRenderable) -> methodDsl.result = typeNameRenderable::renderName);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)

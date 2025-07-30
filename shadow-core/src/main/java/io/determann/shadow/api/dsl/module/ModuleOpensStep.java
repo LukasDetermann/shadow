@@ -1,13 +1,18 @@
 package io.determann.shadow.api.dsl.module;
 
 import io.determann.shadow.api.dsl.opens.OpensRenderable;
-import io.determann.shadow.api.shadow.directive.C_Opens;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface ModuleOpensStep extends ModuleUsesStep
 {
-   ModuleOpensStep opens(String opens);
+   ModuleOpensStep opens(String... opens);
 
-   ModuleOpensStep opens(C_Opens opens);
+   default ModuleOpensStep opens(OpensRenderable... opens)
+   {
+      return opens(Arrays.asList(opens));
+   }
 
-   ModuleOpensStep opens(OpensRenderable opens);
+   ModuleOpensStep opens(List<? extends OpensRenderable> opens);
 }

@@ -1,26 +1,24 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesAdditionalImplementationStep;
 import io.determann.shadow.api.dsl.provides.ProvidesImplementationStep;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Declared;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
-import static io.determann.shadow.internal.dsl.DslSupport.addArray;
-import static io.determann.shadow.internal.dsl.DslSupport.setType;
+import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class ProvidesDsl
       implements ProvidesServiceStep,
-                 ProvidesImplementationStep,
                  ProvidesAdditionalImplementationStep
 {
-   private String serviceName;
-   private final List<String> implementations = new ArrayList<>();
+   private Renderable serviceName;
+   private final List<Renderable> implementations = new ArrayList<>();
 
    public ProvidesDsl()
    {
@@ -35,50 +33,53 @@ public class ProvidesDsl
    @Override
    public ProvidesImplementationStep service(String serviceName)
    {
-      return setType(new ProvidesDsl(this), serviceName, (providesDsl, s) -> providesDsl.serviceName = s);
+      return setType(new ProvidesDsl(this), serviceName, (providesDsl, string) -> providesDsl.serviceName = renderingContext -> string);
    }
 
    @Override
-   public ProvidesImplementationStep service(C_Declared service)
+   public ProvidesImplementationStep service(DeclaredRenderable service)
    {
-      return setType(new ProvidesDsl(this),
-                     service,
-                     (cInterface) -> requestOrThrow(cInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                     (providesDsl, s) -> providesDsl.serviceName = s);
+      return setTypeRenderer(new ProvidesDsl(this),
+                             service,
+                             (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                             (providesDsl, s) -> providesDsl.serviceName = s);
    }
 
    @Override
    public ProvidesAdditionalImplementationStep with(String... implementationName)
    {
-      return addArray(new ProvidesDsl(this), implementationName, providesDsl -> providesDsl.implementations::add);
+      return addArray2(new ProvidesDsl(this),
+                       implementationName,
+                       (providesDsl, string) -> providesDsl.implementations.add(renderingContext -> string));
    }
 
    @Override
-   public ProvidesAdditionalImplementationStep with(C_Declared... implementation)
+   public ProvidesAdditionalImplementationStep with(List<? extends DeclaredRenderable> implementation)
    {
-      return addArray(new ProvidesDsl(this),
-                      implementation,
-                      cClass -> requestOrThrow(cClass, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                      providesDsl -> providesDsl.implementations::add);
+      return addArrayRenderer(new ProvidesDsl(this),
+                              implementation,
+                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              providesDsl -> providesDsl.implementations::add);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("provides ");
-      sb.append(serviceName);
+      sb.append(serviceName.render(renderingContext));
 
       if (implementations.size() == 1)
       {
          sb.append(" with ");
-         sb.append(implementations.get(0));
+         sb.append(implementations.get(0).render(renderingContext));
          sb.append(';');
          return sb.toString();
       }
       sb.append(" with\n");
-      sb.append(String.join(",\n", implementations));
+      sb.append(implementations.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining(",\n")));
       sb.append(';');
+
       return sb.toString();
    }
 }

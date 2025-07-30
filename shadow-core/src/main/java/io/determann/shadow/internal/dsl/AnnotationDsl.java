@@ -3,27 +3,22 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation.*;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
-import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.dsl.method.MethodRenderable;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.C_AnnotationValue;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Field;
-import io.determann.shadow.api.shadow.structure.C_Method;
-import io.determann.shadow.api.shadow.structure.C_Package;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Type;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.Operations.*;
-import static io.determann.shadow.api.Provider.requestOrThrow;
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class AnnotationDsl
       implements
@@ -34,7 +29,7 @@ public class AnnotationDsl
 {
    /// optional and only for files
    private String copyright;
-   private String package_;
+   private PackageRenderable package_;
    private final List<Renderable> imports = new ArrayList<>();
 
    /// for all
@@ -56,7 +51,7 @@ public class AnnotationDsl
       this.copyright = other.copyright;
       this.package_ = other.package_;
       this.imports.addAll(other.imports);
-      
+
       this.javadoc = other.javadoc;
       this.annotations.addAll(other.annotations);
       this.modifiers.addAll(other.modifiers);
@@ -78,27 +73,19 @@ public class AnnotationDsl
    @Override
    public AnnotationAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              annotation,
-                              (renderingContext, string) -> '@' + string,
-                              annotationDsl -> annotationDsl.annotations::add);
+      return addArray2(new AnnotationDsl(this),
+                       annotation,
+                       (annotationDsl, string) -> annotationDsl.annotations.add(renderingContext -> '@' + string));
    }
 
+
    @Override
-   public AnnotationAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public AnnotationAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               annotation,
-                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               annotationDsl -> annotationDsl.annotations::add);
-   }
-
-   @Override
-   public AnnotationAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new AnnotationDsl(this),
-                      annotation,
-                      annotationDsl -> annotationDsl.annotations::add);
    }
 
    @Override
@@ -111,89 +98,60 @@ public class AnnotationDsl
    @Override
    public AnnotationBodyStep field(String... fields)
    {
-      return addArrayRenderer(new AnnotationDsl(this), fields, annotationDsl -> annotationDsl.fields::add);
+      return addArray2(new AnnotationDsl(this), fields, (annotationDsl, s) -> annotationDsl.fields.add(renderingContext -> s));
    }
 
    @Override
-   public AnnotationBodyStep field(C_Field... fields)
+   public AnnotationBodyStep field(List<? extends FieldRenderable> fields)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               fields,
-                              (context, field) -> Renderer.render(field).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               annotationDsl -> annotationDsl.fields::add);
-   }
-
-   @Override
-   public AnnotationBodyStep field(FieldRenderable... fields)
-   {
-      return addArray(new AnnotationDsl(this),
-                      fields,
-                      annotationDsl -> annotationDsl.fields::add);
    }
 
    @Override
    public AnnotationBodyStep method(String... methods)
    {
-      return addArrayRenderer(new AnnotationDsl(this), methods, annotationDsl -> annotationDsl.methods::add);
+      return addArray2(new AnnotationDsl(this), methods, (annotationDsl, string) -> annotationDsl.methods.add(renderingContext -> string));
    }
 
    @Override
-   public AnnotationBodyStep method(C_Method... methods)
+   public AnnotationBodyStep method(List<? extends MethodRenderable> methods)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               methods,
-                              (context, method) -> renderMethod(method, context) + ';',
-                              annotationDsl -> annotationDsl.modifiers::add);
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              annotationDsl -> annotationDsl.methods::add);
    }
 
    @Override
-   public AnnotationBodyStep method(C_Method method, C_AnnotationValue defaultValue)
+   public AnnotationBodyStep method(MethodRenderable method, AnnotationValueRenderable defaultValue)
    {
-      record Pair(C_Method method,
-                  C_AnnotationValue defaultValue) {}
+      record Pair(MethodRenderable method,
+                  AnnotationValueRenderable defaultValue) {}
 
-      return setTypeRenderer(new AnnotationDsl(this),
-                             new Pair(method, defaultValue),
-                             (renderingContext, pair) ->
-                                   renderMethod(pair.method(), renderingContext)
-                                   + " default " +
-                                   Renderer.render(pair.defaultValue()).declaration(renderingContext) + ';',
-                             (annotationDsl, renderer) -> annotationDsl.methods.add(renderer));
-   }
-
-   /// without ';'
-   private static String renderMethod(C_Method method, RenderingContext renderingContext)
-   {
-      C_Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
-      String name = requestOrThrow(method, NAMEABLE_GET_NAME);
-
-      return Renderer.render(returnType).type(renderingContext) +
-             ' ' +
-             name +
-             "()";
+      return setType(new AnnotationDsl(this),
+                     new Pair(method, defaultValue),
+                     (annotationDsl, pair) ->
+                           annotationDsl.methods.add(renderingContext -> pair.method().renderDeclaration(renderingContext)
+                                                                         + " default " +
+                                                                         pair.defaultValue().render(renderingContext) + ';'));
    }
 
    @Override
    public AnnotationBodyStep inner(String... inner)
    {
-      return addArrayRenderer(new AnnotationDsl(this), inner, annotationDsl -> annotationDsl.inner::add);
+      return addArray2(new AnnotationDsl(this), inner, (annotationDsl, string) -> annotationDsl.inner.add(renderingContext -> string));
    }
 
    @Override
-   public AnnotationBodyStep inner(C_Declared... inner)
+   public AnnotationBodyStep inner(List<? extends DeclaredRenderable> inner)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               inner,
-                              (context, declared) -> Renderer.render(declared).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               annotationDsl -> annotationDsl.inner::add);
-   }
-
-   @Override
-   public AnnotationBodyStep inner(DeclaredRenderable... inner)
-   {
-      return addArray(new AnnotationDsl(this),
-                      inner,
-                      annotationDsl -> annotationDsl.inner::add);
    }
 
    @Override
@@ -203,12 +161,11 @@ public class AnnotationDsl
    }
 
    @Override
-   public AnnotationModifierStep modifier(C_Modifier... modifiers)
+   public AnnotationModifierStep modifier(Set<C_Modifier> modifiers)
    {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              modifiers,
-                              (context, modifier) -> Renderer.render(modifier).declaration(context),
-                              annotationDsl -> annotationDsl.modifiers::add);
+      return addArray(new AnnotationDsl(this),
+                      modifiers,
+                      annotationDsl -> annotationDsl.modifiers::add);
    }
 
    @Override
@@ -216,7 +173,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.PUBLIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -225,7 +181,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.PROTECTED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -234,7 +189,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.PRIVATE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -243,7 +197,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.ABSTRACT,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -252,7 +205,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.SEALED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -261,7 +213,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.NON_SEALED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -270,7 +221,6 @@ public class AnnotationDsl
    {
       return addTypeRenderer(new AnnotationDsl(this),
                              C_Modifier.STRICTFP,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              annotationDsl -> annotationDsl.modifiers::add);
    }
 
@@ -292,17 +242,16 @@ public class AnnotationDsl
    public AnnotationImportStep package_(String packageName)
    {
       return setType(new AnnotationDsl(this),
-                     packageName,
-                     (annotationDsl, string) -> annotationDsl.package_ = string);
+                     "package " + packageName + ';',
+                     (annotationDsl, string) -> annotationDsl.package_ = renderingContext -> packageName);
    }
 
    @Override
-   public AnnotationImportStep package_(C_Package aPackage)
+   public AnnotationImportStep package_(PackageRenderable aPackage)
    {
       return setType(new AnnotationDsl(this),
                      aPackage,
-                     cPackage -> requestOrThrow(cPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                     (annotationDsl, string) -> annotationDsl.package_ = string);
+                     (annotationDsl, packageRenderable) -> annotationDsl.package_ = packageRenderable);
    }
 
    @Override
@@ -314,20 +263,20 @@ public class AnnotationDsl
    }
 
    @Override
-   public AnnotationImportStep import_(C_Declared... declared)
+   public AnnotationImportStep import_(List<? extends DeclaredRenderable> declared)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               declared,
-                              (renderingContext, declared1) -> requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
                               annotationDsl -> annotationDsl.imports::add);
    }
 
    @Override
-   public AnnotationImportStep import_(C_Package... cPackages)
+   public AnnotationImportStep importPackage(List<? extends PackageRenderable> cPackages)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               cPackages,
-                              (renderingContext, aPackage) -> requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -341,25 +290,27 @@ public class AnnotationDsl
    }
 
    @Override
-   public AnnotationImportStep staticImport(C_Declared... declared)
+   public AnnotationImportStep staticImport(List<? extends DeclaredRenderable> declared)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               declared,
-                              (renderingContext, declared1) -> "static " + requestOrThrow(declared1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
+                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
                               annotationDsl -> annotationDsl.imports::add);
    }
 
    @Override
-   public AnnotationImportStep staticImport(C_Package... cPackages)
+   public AnnotationImportStep staticImportPackage(List<? extends PackageRenderable> cPackages)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               cPackages,
-                              (renderingContext, aPackage) -> "static " + requestOrThrow(aPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME) + ".*",
+                              (renderingContext, packageRenderable) -> "static " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               annotationDsl -> annotationDsl.imports::add);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
@@ -370,9 +321,7 @@ public class AnnotationDsl
 
       if (package_ != null)
       {
-         sb.append("package ");
-         sb.append(package_);
-         sb.append(';');
+         sb.append(package_.renderDeclaration(renderingContext));
       }
 
       renderElement(sb, "import ", imports, ";", renderingContext, "\n");
@@ -387,7 +336,11 @@ public class AnnotationDsl
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      if (!annotations.isEmpty())
+      {
+         sb.append(annotations.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining("\n")));
+         sb.append('\n');
+      }
 
       sb.append("@interface ");
       sb.append(name);
@@ -400,8 +353,9 @@ public class AnnotationDsl
       }
       else
       {
-         RenderingContextWrapper forReceiver = wrap(renderingContext);
-         forReceiver.setReceiverType(name);
+         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
+               .withOption(RECEIVER_TYPE, name)
+               .build();
 
          renderElement(sb, fields, "\n", renderingContext, "\n");
          renderElement(sb, methods, "\n\n", forReceiver, "\n");
@@ -410,5 +364,27 @@ public class AnnotationDsl
       sb.append('}');
 
       return sb.toString();
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      if (package_ == null)
+      {
+         return name;
+      }
+      return package_.renderQualifiedName(renderingContext) + '.' + name;
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return renderQualifiedName(renderingContext);
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
    }
 }

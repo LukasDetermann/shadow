@@ -1,13 +1,11 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.result.ResultRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.type.C_Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class ResultDsl
                  ResultRenderable
 {
    private final List<Renderable> annotations = new ArrayList<>();
-   private Renderable type;
+   private TypeRenderable type;
 
    public ResultDsl()
    {
@@ -41,48 +39,38 @@ public class ResultDsl
    }
 
    @Override
-   public ResultAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public ResultAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new ResultDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               resultDsl -> resultDsl.annotations::add);
-
-   }
-
-   @Override
-   public ResultAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new ResultDsl(this),
-                      annotation,
-                      resultDsl -> resultDsl.annotations::add);
    }
 
    @Override
    public ResultRenderable type(String type)
    {
-      return setTypeRenderer(new ResultDsl(this),
-                             type,
-                             (resultDsl, function) -> resultDsl.type = function);
+      return setType(new ResultDsl(this),
+                     type,
+                     (resultDsl, string) -> resultDsl.type = renderingContext -> string);
    }
 
    @Override
-   public ResultRenderable type(C_Type type)
+   public ResultRenderable type(TypeRenderable type)
    {
-      return addTypeRenderer(new ResultDsl(this),
-                             type,
-                             (renderingContext, type1) -> Renderer.render(type1).type(renderingContext),
-                             resultDsl -> resultDsl.annotations::add);
+      return setType(new ResultDsl(this),
+                     type,
+                     (resultDsl, typeNameRenderable) -> resultDsl.type = typeNameRenderable);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
 
       renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(type.render(renderingContext));
+      sb.append(type.renderName(renderingContext));
 
       return sb.toString();
    }

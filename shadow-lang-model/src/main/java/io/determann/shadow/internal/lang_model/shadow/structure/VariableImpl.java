@@ -6,7 +6,7 @@ import io.determann.shadow.api.lang_model.adapter.LM_Adapters;
 import io.determann.shadow.api.lang_model.shadow.LM_AnnotationUsage;
 import io.determann.shadow.api.lang_model.shadow.structure.LM_Module;
 import io.determann.shadow.api.lang_model.shadow.type.LM_Declared;
-import io.determann.shadow.api.lang_model.shadow.type.LM_Type;
+import io.determann.shadow.api.lang_model.shadow.type.LM_VariableType;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Variable;
 import io.determann.shadow.api.shadow.type.C_Type;
@@ -49,9 +49,9 @@ public abstract class VariableImpl
       return adapt(getApi()).toTypes().isAssignable(adapt((LM_Declared) type).toDeclaredType(), getMirror());
    }
 
-   public LM_Type getType()
+   public LM_VariableType getType()
    {
-      return LM_Adapters.adapt(getApi(), getElement().asType());
+      return (LM_VariableType) LM_Adapters.adapt(getApi(), getElement().asType());
    }
 
    public VariableElement getElement()

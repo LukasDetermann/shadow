@@ -1,20 +1,13 @@
 package io.determann.shadow.api.reflection.shadow.type;
 
-import io.determann.shadow.api.reflection.shadow.type.primitive.R_Primitive;
 import io.determann.shadow.api.shadow.type.C_Type;
 
 public sealed interface R_Type
-
       extends C_Type
-
-      permits R_Array,
-              R_Declared,
-              R_Generic,
-              R_Intersection,
-              R_Null,
+      permits R_Null,
+              R_VariableType,
               R_Void,
-              R_Wildcard,
-              R_Primitive
+              R_Wildcard
 {
    /**
     * type equals from the compiler perspective. for example ? does not equal ? for the compiler

@@ -24,6 +24,5 @@ import io.determann.shadow.api.shadow.C_Nameable;
 /// at index 0 or 1 the field name has to match exactly
 /// or the name matches with the first Character converted to lowercase
 ///    - [Java Beans 8.8](https://www.oracle.com/java/technologies/javase/javabeans-spec.html)
-public interface C_Property extends C_Nameable
-{
-}
+public interface C_Property
+      extends C_Nameable {}

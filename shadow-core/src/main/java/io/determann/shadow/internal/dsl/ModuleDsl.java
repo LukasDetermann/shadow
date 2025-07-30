@@ -8,10 +8,7 @@ import io.determann.shadow.api.dsl.opens.OpensRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesRenderable;
 import io.determann.shadow.api.dsl.requires.RequiresRenderable;
 import io.determann.shadow.api.dsl.uses.UsesRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.directive.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +29,7 @@ public class ModuleDsl
    private final List<Renderable> uses = new ArrayList<>();
    private final List<Renderable> provides = new ArrayList<>();
 
-   public ModuleDsl()
-   {
-   }
+   public ModuleDsl() {}
 
    private ModuleDsl(ModuleDsl other)
    {
@@ -72,20 +67,12 @@ public class ModuleDsl
    }
 
    @Override
-   public ModuleAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public ModuleAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new ModuleDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               moduleDsl -> moduleDsl.annotations::add);
-   }
-
-   @Override
-   public ModuleAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new ModuleDsl(this),
-                      annotation,
-                      moduleDsl -> moduleDsl.annotations::add);
    }
 
    @Override
@@ -95,122 +82,82 @@ public class ModuleDsl
    }
 
    @Override
-   public ModuleRequiresStep requires(String requires)
+   public ModuleRequiresStep requires(String... requires)
    {
-      return addTypeRenderer(new ModuleDsl(this), requires, moduleDsl -> moduleDsl.requires::add);
+      return addArrayRenderer(new ModuleDsl(this), requires, moduleDsl -> moduleDsl.requires::add);
    }
 
    @Override
-   public ModuleRequiresStep requires(C_Requires requires)
+   public ModuleRequiresStep requires(List<? extends RequiresRenderable> requires)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             requires,
-                             (renderingContext, requires1) -> Renderer.render(requires1).declaration(renderingContext),
-                             moduleDsl -> moduleDsl.requires::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              requires,
+                              (renderingContext, requiresRenderable) -> requiresRenderable.renderDeclaration(renderingContext),
+                              moduleDsl -> moduleDsl.requires::add);
    }
 
    @Override
-   public ModuleRequiresStep requires(RequiresRenderable requires)
+   public ModuleExportsStep exports(String... exports)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             requires,
-                             moduleDsl -> moduleDsl.requires::add);
+      return addArrayRenderer(new ModuleDsl(this), exports, moduleDsl -> moduleDsl.exports::add);
    }
 
    @Override
-   public ModuleExportsStep exports(String exports)
+   public ModuleExportsStep exports(List<? extends ExportsRenderable> exports)
    {
-      return addTypeRenderer(new ModuleDsl(this), exports, moduleDsl -> moduleDsl.exports::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              exports,
+                              (renderingContext, exportsRenderable) -> exportsRenderable.renderDeclaration(renderingContext),
+                              moduleDsl -> moduleDsl.exports::add);
    }
 
    @Override
-   public ModuleExportsStep exports(C_Exports exports)
+   public ModuleOpensStep opens(String... opens)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             exports,
-                             (renderingContext, exports1) -> Renderer.render(exports1).declaration(renderingContext),
-                             moduleDsl -> moduleDsl.exports::add);
+      return addArrayRenderer(new ModuleDsl(this), opens, moduleDsl -> moduleDsl.opens::add);
    }
 
    @Override
-   public ModuleExportsStep exports(ExportsRenderable exports)
+   public ModuleOpensStep opens(List<? extends OpensRenderable> opens)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             exports,
-                             moduleDsl -> moduleDsl.exports::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              opens,
+                              (renderingContext, opensRenderable) -> opensRenderable.renderDeclaration(renderingContext),
+                              moduleDsl -> moduleDsl.opens::add);
    }
 
    @Override
-   public ModuleOpensStep opens(String opens)
+   public ModuleUsesStep uses(String... uses)
    {
-      return addTypeRenderer(new ModuleDsl(this), opens, moduleDsl -> moduleDsl.opens::add);
+      return addArrayRenderer(new ModuleDsl(this), uses, moduleDsl -> moduleDsl.uses::add);
    }
 
    @Override
-   public ModuleOpensStep opens(C_Opens opens)
+   public ModuleUsesStep uses(List<? extends UsesRenderable> uses)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             opens,
-                             (renderingContext, opens1) -> Renderer.render(opens1).declaration(renderingContext),
-                             moduleDsl -> moduleDsl.opens::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              uses,
+                              (renderingContext, usesRenderable) -> usesRenderable.renderDeclaration(renderingContext),
+                              moduleDsl -> moduleDsl.uses::add);
    }
 
    @Override
-   public ModuleOpensStep opens(OpensRenderable opens)
+   public ModuleProvidesStep provides(String... provides)
    {
-      return addTypeRenderer(new ModuleDsl(this),
-                             opens,
-                             moduleDsl -> moduleDsl.opens::add);
+      return addArrayRenderer(new ModuleDsl(this), provides, moduleDsl -> moduleDsl.provides::add);
    }
 
    @Override
-   public ModuleUsesStep uses(String uses)
+   public ModuleProvidesStep provides(List<? extends ProvidesRenderable> provides)
    {
-      return addTypeRenderer(new ModuleDsl(this), uses, moduleDsl -> moduleDsl.uses::add);
+      return addArrayRenderer(new ModuleDsl(this),
+                              provides,
+                              (renderingContext, providesRenderable) -> providesRenderable.renderDeclaration(renderingContext),
+                              moduleDsl -> moduleDsl.provides::add);
    }
 
    @Override
-   public ModuleUsesStep uses(C_Uses uses)
-   {
-      return addTypeRenderer(new ModuleDsl(this),
-                             uses,
-                             (renderingContext, uses1) -> Renderer.render(uses1).declaration(renderingContext),
-                             moduleDsl -> moduleDsl.uses::add);
-   }
-
-   @Override
-   public ModuleUsesStep uses(UsesRenderable uses)
-   {
-      return addTypeRenderer(new ModuleDsl(this),
-                             uses,
-                             moduleDsl -> moduleDsl.uses::add);
-   }
-
-   @Override
-   public ModuleProvidesStep provides(String provides)
-   {
-      return addTypeRenderer(new ModuleDsl(this), provides, moduleDsl -> moduleDsl.provides::add);
-   }
-
-   @Override
-   public ModuleProvidesStep provides(C_Provides provides)
-   {
-      return addTypeRenderer(new ModuleDsl(this),
-                             provides,
-                             (renderingContext, provides1) -> Renderer.render(provides1).declaration(renderingContext),
-                             moduleDsl -> moduleDsl.provides::add);
-   }
-
-   @Override
-   public ModuleProvidesStep provides(ProvidesRenderable provides)
-   {
-      return addTypeRenderer(new ModuleDsl(this),
-                             provides,
-                             moduleDsl -> moduleDsl.provides::add);
-   }
-
-   @Override
-   public String render(RenderingContext renderingContext)
+   public String renderModuleInfo(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (copyright != null)

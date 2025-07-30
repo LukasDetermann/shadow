@@ -14,5 +14,4 @@ module io.determann.shadow.tck {
    opens io.determann.shadow.tck.internal.shadow to org.junit.platform.commons;
    opens io.determann.shadow.tck.internal.shadow.type to org.junit.platform.commons;
    opens io.determann.shadow.tck.internal.shadow.structure to org.junit.platform.commons;
-   opens io.determann.shadow.tck.internal.renderer to org.junit.platform.commons;
 }

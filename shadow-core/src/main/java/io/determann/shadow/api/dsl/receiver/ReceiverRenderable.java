@@ -1,7 +1,8 @@
 package io.determann.shadow.api.dsl.receiver;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
-public interface ReceiverRenderable extends Renderable
+public interface ReceiverRenderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

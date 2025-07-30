@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.constructor;
 
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
-import io.determann.shadow.api.shadow.type.C_Generic;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface ConstructorGenericStep
       extends ConstructorTypeStep
 {
    ConstructorGenericStep generic(String... generic);
 
-   ConstructorGenericStep generic(C_Generic... generic);
+   default ConstructorGenericStep generic(GenericRenderable... generic)
+   {
+      return generic(Arrays.asList(generic));
+   }
 
-   ConstructorGenericStep generic(GenericRenderable... generic);
+   ConstructorGenericStep generic(List<? extends GenericRenderable> generic);
 }

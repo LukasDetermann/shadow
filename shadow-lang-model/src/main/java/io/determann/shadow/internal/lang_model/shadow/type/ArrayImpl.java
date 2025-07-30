@@ -39,7 +39,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements LM_Array
       return adapt(getApi()).toTypes()
                        .directSupertypes(getMirror())
                        .stream()
-                       .map(typeMirror1 -> LM_Adapters.<LM_Type>adapt(getApi(), typeMirror1))
+                       .map(typeMirror1 -> LM_Adapters.adapt(getApi(), typeMirror1))
                        .toList();
    }
 

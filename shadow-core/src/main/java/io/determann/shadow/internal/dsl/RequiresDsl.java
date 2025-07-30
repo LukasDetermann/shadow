@@ -1,21 +1,21 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.requires.RequiresNameStep;
 import io.determann.shadow.api.dsl.requires.RequiresRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.structure.C_Module;
 
-import static io.determann.shadow.api.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.internal.dsl.DslSupport.setType;
+import static io.determann.shadow.internal.dsl.DslSupport.setTypeRenderer;
 
 public class RequiresDsl
       implements RequiresModifierStep,
                  RequiresRenderable
 {
    private String modifier;
-   private String dependency;
+   private Renderable dependency;
 
    public RequiresDsl()
    {
@@ -42,20 +42,20 @@ public class RequiresDsl
    @Override
    public RequiresRenderable dependency(String dependency)
    {
-      return setType(new RequiresDsl(this), dependency, (requiresDsl, s) -> requiresDsl.dependency = s);
+      return setType(new RequiresDsl(this), dependency, (requiresDsl, s) -> requiresDsl.dependency = renderingContext -> s);
    }
 
    @Override
-   public RequiresRenderable dependency(C_Module dependency)
+   public RequiresRenderable dependency(ModuleNameRenderable dependency)
    {
-      return setType(new RequiresDsl(this),
-                     dependency,
-                     module1 -> requestOrThrow(module1, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME),
-                     (requiresDsl, s) -> requiresDsl.dependency = s);
+      return setTypeRenderer(new RequiresDsl(this),
+                             dependency,
+                             (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                             (requiresDsl, s) -> requiresDsl.dependency = s);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       sb.append("requires ");
@@ -64,7 +64,7 @@ public class RequiresDsl
          sb.append(modifier);
          sb.append(' ');
       }
-      sb.append(dependency);
+      sb.append(dependency.render(renderingContext));
       sb.append(';');
 
       return sb.toString();

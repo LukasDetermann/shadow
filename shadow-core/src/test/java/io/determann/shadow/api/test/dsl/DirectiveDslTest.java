@@ -4,12 +4,12 @@ import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.shadow.structure.C_Module;
 import io.determann.shadow.api.shadow.structure.C_Package;
 import io.determann.shadow.api.shadow.type.C_Class;
+import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
-import static io.determann.shadow.api.test.TestProvider.IMPLEMENTATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DirectiveDslTest
@@ -24,22 +24,17 @@ class DirectiveDslTest
    void exports()
    {
       //@start region="exports-api-simple-string"
-      assertEquals("exports org.example;", Dsl.exports("org.example").render(DEFAULT));
+      assertEquals("exports org.example;", Dsl.exports("org.example").renderDeclaration(DEFAULT));
       //@end
 
-      assertEquals("exports org.example to module;", Dsl.exports().package_("org.example").to("module").render(DEFAULT));
+      assertEquals("exports org.example to module;", Dsl.exports().package_("org.example").to("module").renderDeclaration(DEFAULT));
 
-      C_Package aPackage = () -> IMPLEMENTATION;
-      C_Module module = () -> IMPLEMENTATION;
-
-      TestProvider.addValue("org.example");
+      C_Package aPackage = TestFactory.create(C_Package.class, "renderQualifiedName", "org.example");
+      C_Module module = TestFactory.create(C_Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="exports-api-simple-type"
-      assertEquals("exports org.example;", Dsl.exports(aPackage).render(DEFAULT));
+      assertEquals("exports org.example;", Dsl.exports(aPackage).renderDeclaration(DEFAULT));
       //@end
-
-      TestProvider.addValue("org.example");
-      TestProvider.addValue("andAnotherOne");
 
       //@start region="exports-api"
       assertEquals("""
@@ -49,7 +44,7 @@ class DirectiveDslTest
                    Dsl.exports().package_(aPackage)
                       .to("anotherOne")
                       .to(module)
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -57,14 +52,14 @@ class DirectiveDslTest
    void uses()
    {
       //@start region="uses-api-string"
-      assertEquals("uses org.example.MySpi;", Dsl.uses("org.example.MySpi").render(DEFAULT));
+      assertEquals("uses org.example.MySpi;", Dsl.uses("org.example.MySpi").renderDeclaration(DEFAULT));
       //@end
 
-      C_Class service = () -> IMPLEMENTATION;
+      C_Class service = TestFactory.create(C_Class.class);
       TestProvider.addValue("org.example.MySpi");
 
       //@start region="uses-api-type"
-      assertEquals("uses org.example.MySpi;", Dsl.uses(service).render(DEFAULT));
+      assertEquals("uses org.example.MySpi;", Dsl.uses(service).renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -72,22 +67,17 @@ class DirectiveDslTest
    void opens()
    {
       //@start region="opens-api-simple-string"
-      assertEquals("opens org.example;", Dsl.opens("org.example").render(DEFAULT));
+      assertEquals("opens org.example;", Dsl.opens("org.example").renderDeclaration(DEFAULT));
       //@end
 
-      assertEquals("opens org.example to module;", Dsl.opens().package_("org.example").to("module").render(DEFAULT));
+      assertEquals("opens org.example to module;", Dsl.opens().package_("org.example").to("module").renderDeclaration(DEFAULT));
 
-      C_Package aPackage = () -> IMPLEMENTATION;
-      C_Module module = () -> IMPLEMENTATION;
-
-      TestProvider.addValue("org.example");
+      C_Package aPackage = TestFactory.create(C_Package.class, "renderQualifiedName", "org.example");
+      C_Module module = TestFactory.create(C_Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="opens-api-simple-type"
-      assertEquals("opens org.example;", Dsl.opens(aPackage).render(DEFAULT));
+      assertEquals("opens org.example;", Dsl.opens(aPackage).renderDeclaration(DEFAULT));
       //@end
-
-      TestProvider.addValue("org.example");
-      TestProvider.addValue("andAnotherOne");
 
       //@start region="opens-api"
       assertEquals("""
@@ -97,7 +87,7 @@ class DirectiveDslTest
                    Dsl.opens().package_(aPackage)
                       .to("anotherOne")
                       .to(module)
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -109,7 +99,7 @@ class DirectiveDslTest
                    Dsl.requires()
                       .transitive()
                       .dependency("org.example")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 
@@ -125,7 +115,7 @@ class DirectiveDslTest
                       .service("org.example.Spi")
                       .with("org.example.Implementation1")
                       .with("org.example.Implementation2")
-                      .render(DEFAULT));
+                      .renderDeclaration(DEFAULT));
       //@end
    }
 }

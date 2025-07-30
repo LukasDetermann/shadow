@@ -7,7 +7,7 @@ import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.structure.R_Executable;
 import io.determann.shadow.api.reflection.shadow.structure.R_Module;
 import io.determann.shadow.api.reflection.shadow.structure.R_Parameter;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 import io.determann.shadow.api.shadow.structure.C_Parameter;
 import io.determann.shadow.api.shadow.type.C_Array;
@@ -109,9 +109,9 @@ public class ParameterImpl implements R_Parameter
    }
 
    @Override
-   public R_Type getType()
+   public R_VariableType getType()
    {
-      return R_Adapter.generalize(getParameter().getParameterizedType());
+      return (R_VariableType) R_Adapter.generalize(getParameter().getParameterizedType());
    }
 
    @Override

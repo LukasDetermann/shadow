@@ -1,13 +1,19 @@
 package io.determann.shadow.api.dsl.module;
 
 import io.determann.shadow.api.dsl.provides.ProvidesRenderable;
-import io.determann.shadow.api.shadow.directive.C_Provides;
 
-public interface ModuleProvidesStep extends ModuleRenderable
+import java.util.Arrays;
+import java.util.List;
+
+public interface ModuleProvidesStep
+      extends ModuleInfoRenderable
 {
-   ModuleProvidesStep provides(String provides);
+   ModuleProvidesStep provides(String... provides);
 
-   ModuleProvidesStep provides(C_Provides provides);
+   default ModuleProvidesStep provides(ProvidesRenderable... provides)
+   {
+      return provides(Arrays.asList(provides));
+   }
 
-   ModuleProvidesStep provides(ProvidesRenderable provides);
+   ModuleProvidesStep provides(List<? extends ProvidesRenderable> provides);
 }

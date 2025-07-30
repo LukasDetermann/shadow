@@ -4,7 +4,6 @@ import io.determann.shadow.api.Operations;
 import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.Response;
 import io.determann.shadow.api.reflection.R_Adapter;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.api.shadow.structure.C_Field;
 import io.determann.shadow.api.shadow.type.C_Class;
@@ -97,8 +96,7 @@ void classDeclarationRendering()
                                                            Operations. GET_CLASS,
                                                            "InterpolateGenericsExample");
 
-                  assertEquals(expected, Renderer.render(cClass)
-                                                 .declaration(RenderingContext.DEFAULT));
+                  assertEquals(expected, cClass.renderDeclaration(RenderingContext.DEFAULT));
                });
 }
 //end::consistency[]

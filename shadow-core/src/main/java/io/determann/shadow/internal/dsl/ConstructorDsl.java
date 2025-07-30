@@ -4,21 +4,17 @@ import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
+import io.determann.shadow.api.dsl.enum_.EnumRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
-import io.determann.shadow.api.renderer.Renderer;
+import io.determann.shadow.api.dsl.receiver.ReceiverRenderable;
+import io.determann.shadow.api.dsl.record.RecordRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
-import io.determann.shadow.api.shadow.structure.C_Receiver;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Enum;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Record;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
@@ -64,55 +60,51 @@ public class ConstructorDsl
    @Override
    public ConstructorParameterStep receiver(String receiver)
    {
-      return setTypeRenderer(new ConstructorDsl(this),
-                             receiver,
-                             (constructorDsl, function) -> constructorDsl.receiver = function);
+      return setType(new ConstructorDsl(this),
+                     receiver,
+                     (constructorDsl, string) -> constructorDsl.receiver = renderingContext -> receiver);
    }
 
    @Override
-   public ConstructorParameterStep receiver(C_Receiver receiver)
+   public ConstructorParameterStep receiver(ReceiverRenderable receiver)
    {
       return setTypeRenderer(new ConstructorDsl(this),
                              receiver,
-                             (renderingContext, receiver1) -> Renderer.render(receiver1).declaration(renderingContext),
+                             (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                              (constructorDsl, function) -> constructorDsl.receiver = function);
    }
 
    @Override
    public ConstructorParameterStep parameter(String... parameter)
    {
-      return addArrayRenderer(new ConstructorDsl(this), parameter, constructorDsl -> constructorDsl.parameters::add);
+      return addArray2(new ConstructorDsl(this),
+                       parameter,
+                       (constructorDsl, string) -> constructorDsl.parameters.add(renderingContext -> string));
    }
 
    @Override
-   public ConstructorParameterStep parameter(C_Parameter... parameter)
+   public ConstructorParameterStep parameter(List<? extends ParameterRenderable> parameter)
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               parameter,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               constructorDsl -> constructorDsl.parameters::add);
-   }
-
-   @Override
-   public ConstructorParameterStep parameter(ParameterRenderable... parameter)
-   {
-      return addArray(new ConstructorDsl(this),
-                      parameter,
-                      constructorDsl -> constructorDsl.parameters::add);
    }
 
    @Override
    public ConstructorThrowsStep throws_(String... exception)
    {
-      return addArrayRenderer(new ConstructorDsl(this), exception, constructorDsl -> constructorDsl.exceptions::add);
+      return addArray2(new ConstructorDsl(this),
+                       exception,
+                       (constructorDsl, string) -> constructorDsl.exceptions.add(renderingContext -> string));
    }
 
    @Override
-   public ConstructorThrowsStep throws_(C_Class... exception)
+   public ConstructorThrowsStep throws_(List<? extends ClassRenderable> exception)
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               exception,
-                              (renderingContext, exception1) -> Renderer.render(exception1).type(renderingContext),
+                              (renderingContext, classRenderable) -> classRenderable.renderName(renderingContext),
                               constructorDsl -> constructorDsl.exceptions::add);
    }
 
@@ -125,24 +117,19 @@ public class ConstructorDsl
    @Override
    public ConstructorAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new ConstructorDsl(this), annotation, (renderingContext, string) -> '@' + string,constructorDsl -> constructorDsl.annotations::add);
-   }
-
-   @Override
-   public ConstructorAnnotateStep annotate(C_AnnotationUsage... annotation)
-   {
       return addArrayRenderer(new ConstructorDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, string) -> '@' + string,
                               constructorDsl -> constructorDsl.annotations::add);
    }
 
    @Override
-   public ConstructorAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   public ConstructorAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
-      return addArray(new ConstructorDsl(this),
-                      annotation,
-                      constructorDsl -> constructorDsl.annotations::add);
+      return addArrayRenderer(new ConstructorDsl(this),
+                              annotation,
+                              (renderingContext, annotationUsageRenderable) -> annotationUsageRenderable.renderDeclaration(renderingContext),
+                              constructorDsl -> constructorDsl.annotations::add);
    }
 
    @Override
@@ -152,12 +139,11 @@ public class ConstructorDsl
    }
 
    @Override
-   public ConstructorModifierStep modifier(C_Modifier... modifiers)
+   public ConstructorModifierStep modifier(Set<C_Modifier> modifiers)
    {
-      return addArrayRenderer(new ConstructorDsl(this),
-                              modifiers,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
-                              constructorDsl -> constructorDsl.modifiers::add);
+      return addArray(new ConstructorDsl(this),
+                      modifiers,
+                      constructorDsl -> constructorDsl.modifiers::add);
    }
 
    @Override
@@ -165,7 +151,6 @@ public class ConstructorDsl
    {
       return addTypeRenderer(new ConstructorDsl(this),
                              C_Modifier.PUBLIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 
@@ -174,7 +159,6 @@ public class ConstructorDsl
    {
       return addTypeRenderer(new ConstructorDsl(this),
                              C_Modifier.PROTECTED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 
@@ -183,48 +167,30 @@ public class ConstructorDsl
    {
       return addTypeRenderer(new ConstructorDsl(this),
                              C_Modifier.PRIVATE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              constructorDsl -> constructorDsl.modifiers::add);
    }
 
    @Override
    public ConstructorGenericStep generic(String... generic)
    {
-      return addArrayRenderer(new ConstructorDsl(this), generic, constructorDsl -> constructorDsl.generics::add);
+      return addArray2(new ConstructorDsl(this), generic, (constructorDsl, string) -> constructorDsl.generics.add(renderingContext -> string));
    }
 
    @Override
-   public ConstructorGenericStep generic(C_Generic... generic)
+   public ConstructorGenericStep generic(List<? extends GenericRenderable> generic)
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               generic,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, genericRenderable) -> genericRenderable.renderDeclaration(renderingContext),
                               constructorDsl -> constructorDsl.generics::add);
-   }
-
-   @Override
-   public ConstructorGenericStep generic(GenericRenderable... generic)
-   {
-      return addArray(new ConstructorDsl(this),
-                      generic,
-                      constructorDsl -> constructorDsl.generics::add);
    }
 
    @Override
    public ConstructorReceiverStep type(String type)
    {
-      return setTypeRenderer(new ConstructorDsl(this),
-                             type,
-                             (constructorDsl, function) -> constructorDsl.result = function);
-   }
-
-   @Override
-   public ConstructorReceiverStep type(C_Class type)
-   {
-      return setTypeRenderer(new ConstructorDsl(this),
-                             type,
-                             (renderingContext, cClass) -> Renderer.render(type).type(renderingContext),
-                             (constructorDsl, function) -> constructorDsl.result = function);
+      return setType(new ConstructorDsl(this),
+                     type,
+                     (constructorDsl, string) -> constructorDsl.result = renderingContext -> string);
    }
 
    @Override
@@ -232,29 +198,27 @@ public class ConstructorDsl
    {
       return setType(new ConstructorDsl(this),
                      type,
-                     (constructorDsl, classRenderable) -> constructorDsl.result = classRenderable);
+                     (constructorDsl, classRenderable) -> constructorDsl.result = classRenderable::renderQualifiedName);
    }
 
    @Override
-   public ConstructorReceiverStep type(C_Enum type)
+   public ConstructorReceiverStep type(EnumRenderable type)
    {
-      return setTypeRenderer(new ConstructorDsl(this),
-                             type,
-                             (renderingContext, cClass) -> Renderer.render(type).type(renderingContext),
-                             (constructorDsl, function) -> constructorDsl.result = function);
+      return setType(new ConstructorDsl(this),
+                     type,
+                     (constructorDsl, function) -> constructorDsl.result = function::renderQualifiedName);
    }
 
    @Override
-   public ConstructorReceiverStep type(C_Record type)
+   public ConstructorReceiverStep type(RecordRenderable type)
    {
-      return setTypeRenderer(new ConstructorDsl(this),
-                             type,
-                             (renderingContext, cClass) -> Renderer.render(type).type(renderingContext),
-                             (constructorDsl, function) -> constructorDsl.result = function);
+      return setType(new ConstructorDsl(this),
+                     type,
+                     (constructorDsl, function) -> constructorDsl.result = function::renderQualifiedName);
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)

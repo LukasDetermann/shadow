@@ -1,7 +1,8 @@
 package io.determann.shadow.api.dsl.field;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
-public interface FieldRenderable extends Renderable
+public interface FieldRenderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

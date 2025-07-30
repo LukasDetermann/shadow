@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 public non-sealed interface LM_Class
-
       extends C_Class,
               LM_Declared,
               LM_AbstractModifiable,

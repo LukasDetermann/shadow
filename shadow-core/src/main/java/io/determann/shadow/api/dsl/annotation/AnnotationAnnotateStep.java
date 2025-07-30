@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.annotation;
 
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface AnnotationAnnotateStep
       extends AnnotationModifierStep
 {
    AnnotationAnnotateStep annotate(String... annotation);
 
-   AnnotationAnnotateStep annotate(C_AnnotationUsage... annotation);
+   default AnnotationAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return annotate(Arrays.asList(annotation));
+   }
 
-   AnnotationAnnotateStep annotate(AnnotationUsageRenderable... annotation);
+   AnnotationAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation);
 }

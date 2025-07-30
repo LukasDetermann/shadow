@@ -57,11 +57,6 @@ public interface LM_Adapters
       return new LM_GenericAdapter(generic);
    }
 
-   static LM_IntersectionAdapter adapt(LM_Intersection intersection)
-   {
-      return new LM_IntersectionAdapter(intersection);
-   }
-
    static LM_ModuleAdapter adapt(LM_Module module)
    {
       return new LM_ModuleAdapter(module);
@@ -264,7 +259,7 @@ public interface LM_Adapters
       return new VoidImpl(context, noType);
    }
 
-   static LM_Intersection adapt(LM_Context context, IntersectionType intersectionType)
+   static LM_Generic adapt(LM_Context context, IntersectionType intersectionType)
    {
       return new IntersectionImpl(context, intersectionType);
    }

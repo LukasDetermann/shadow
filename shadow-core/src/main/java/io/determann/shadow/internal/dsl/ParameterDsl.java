@@ -1,24 +1,15 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.VariableTypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
-import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.parameter.*;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.type.C_Array;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class ParameterDsl
       implements ParameterAnnotateStep,
@@ -54,20 +45,12 @@ public class ParameterDsl
    }
 
    @Override
-   public ParameterAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public ParameterAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new ParameterDsl(this),
                               annotation,
-                              (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               parameterDsl -> parameterDsl.annotations::add);
-   }
-
-   @Override
-   public ParameterAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new ParameterDsl(this),
-                      annotation,
-                      parameterDsl -> parameterDsl.annotations::add);
    }
 
    @Override
@@ -79,59 +62,16 @@ public class ParameterDsl
    @Override
    public ParameterNameStep type(String type)
    {
-      return setTypeRenderer(new ParameterDsl(this), type, (parameterDsl, renderer) -> parameterDsl.type = renderer);
+      return setType(new ParameterDsl(this), type, (parameterDsl, string) -> parameterDsl.type = renderingContext -> string);
    }
 
    @Override
-   public ParameterNameStep type(C_Array array)
+   public ParameterNameStep type(VariableTypeRenderable variableType)
    {
       return setTypeRenderer(new ParameterDsl(this),
-                             array,
-                             (renderingContext, cArray) -> Renderer.render(cArray).type(renderingContext),
+                             variableType,
+                             (renderingContext, renderable) -> renderable.renderName(renderingContext),
                              (parameterDsl, renderer) -> parameterDsl.type = renderer);
-   }
-
-   @Override
-   public ParameterNameStep type(C_Primitive primitive)
-   {
-      return setTypeRenderer(new ParameterDsl(this),
-                             primitive,
-                             (renderingContext, cPrimitive) -> Renderer.render(cPrimitive).type(renderingContext),
-                             (parameterDsl, renderer) -> parameterDsl.type = renderer);
-   }
-
-   @Override
-   public ParameterNameStep type(C_Declared declared)
-   {
-      return setTypeRenderer(new ParameterDsl(this),
-                             declared,
-                             (renderingContext, cDeclared) -> Renderer.render(cDeclared).type(renderingContext),
-                             (parameterDsl, renderer) -> parameterDsl.type = renderer);
-   }
-
-   @Override
-   public ParameterNameStep type(DeclaredRenderable declared)
-   {
-      return setType(new ParameterDsl(this),
-                     declared,
-                     (parameterDsl, declaredRenderable) -> parameterDsl.type = declaredRenderable);
-   }
-
-   @Override
-   public ParameterNameStep type(C_Generic generic)
-   {
-      return setTypeRenderer(new ParameterDsl(this),
-                             generic,
-                             (renderingContext, cGeneric) -> Renderer.render(cGeneric).type(renderingContext),
-                             (parameterDsl, renderer) -> parameterDsl.type = renderer);
-   }
-
-   @Override
-   public ParameterNameStep type(GenericRenderable generic)
-   {
-      return setType(new ParameterDsl(this),
-                     generic,
-                     (parameterDsl, genericRenderable) -> parameterDsl.type = genericRenderable);
    }
 
    @Override
@@ -147,7 +87,7 @@ public class ParameterDsl
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
 
@@ -157,10 +97,8 @@ public class ParameterDsl
       {
          sb.append("final ");
       }
-      RenderingContextWrapper wrapped = wrap(renderingContext);
-      wrapped.setGenericUsage(true);
 
-      sb.append(type.render(wrapped));
+      sb.append(type.render(renderingContext));
 
       if (isVarArgs)
       {

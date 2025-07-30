@@ -1,7 +1,8 @@
 package io.determann.shadow.api.dsl.requires;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
-public interface RequiresRenderable extends Renderable
+public interface RequiresRenderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

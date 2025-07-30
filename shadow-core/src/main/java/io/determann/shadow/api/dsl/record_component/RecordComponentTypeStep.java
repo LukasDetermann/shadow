@@ -1,8 +1,10 @@
 package io.determann.shadow.api.dsl.record_component;
 
-import io.determann.shadow.api.shadow.type.C_Type;
+import io.determann.shadow.api.dsl.TypeRenderable;
 
 public interface RecordComponentTypeStep
 {
-   RecordComponentRenderable type(C_Type type);
+   RecordComponentRenderable type(String type);
+
+   RecordComponentRenderable type(TypeRenderable type);
 }

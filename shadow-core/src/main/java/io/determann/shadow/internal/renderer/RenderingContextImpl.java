@@ -1,31 +1,46 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.renderer.NameRenderedEvent;
-import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.type.C_Declared;
+import io.determann.shadow.api.renderer.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-public class RenderingContextImpl implements RenderingContext
+public class RenderingContextImpl
+      implements RenderingContext
 {
-   private final Function<C_Declared, NameRenderedEvent> nameRenderer;
+   private final NameRenderer nameRenderer;
    private final List<Consumer<NameRenderedEvent>> nameRenderedListeners;
+   private final Map<RenderingContextOption<?>, Object> options = new HashMap<>();
 
-   public RenderingContextImpl(Function<C_Declared, NameRenderedEvent> nameRenderer, List<Consumer<NameRenderedEvent>> nameRenderedListeners)
+   RenderingContextImpl(NameRenderer nameRenderer,
+                        List<Consumer<NameRenderedEvent>> nameRenderedListeners,
+                        Map<RenderingContextOption<?>, Object> options)
    {
       this.nameRenderer = nameRenderer;
       this.nameRenderedListeners = nameRenderedListeners;
+      this.options.putAll(options);
    }
 
    @Override
-   public String renderName(C_Declared declared)
+   public RenderingContextBuilder builder()
    {
-      NameRenderedEvent event = nameRenderer.apply(declared);
-      nameRenderedListeners.forEach(listener -> listener.accept(event));
+      return RenderingContext.renderingContextBuilder(this);
+   }
 
-      return event.getName();
+   @Override
+   public boolean hasOption(RenderingContextOption<?> option)
+   {
+      return options.containsKey(option);
+   }
+
+   @Override
+   public <T> T getOption(RenderingContextOption<T> option)
+   {
+      //noinspection unchecked
+      return (T) options.get(option);
    }
 
    @Override
@@ -34,13 +49,18 @@ public class RenderingContextImpl implements RenderingContext
       nameRenderedListeners.add(onNameRendered);
    }
 
-   public Function<C_Declared, NameRenderedEvent> getNameRenderer()
+   public NameRenderer getNameRenderer()
    {
       return nameRenderer;
    }
 
    public List<Consumer<NameRenderedEvent>> getNameRenderedListeners()
    {
-      return nameRenderedListeners;
+      return new ArrayList<>(nameRenderedListeners);
+   }
+
+   Map<RenderingContextOption<?>, Object> getOptions()
+   {
+      return options;
    }
 }

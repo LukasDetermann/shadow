@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.reflection.shadow.type;
 
 import io.determann.shadow.api.Implementation;
-import io.determann.shadow.api.Provider;
 import io.determann.shadow.api.reflection.R_Adapter;
 import io.determann.shadow.api.reflection.shadow.R_AnnotationUsage;
 import io.determann.shadow.api.reflection.shadow.type.R_Generic;
+import io.determann.shadow.api.reflection.shadow.type.R_Interface;
 import io.determann.shadow.api.reflection.shadow.type.R_Type;
 import io.determann.shadow.api.shadow.type.C_Generic;
 import io.determann.shadow.api.shadow.type.C_Type;
@@ -12,10 +12,11 @@ import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport
 
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import static io.determann.shadow.api.Operations.*;
+import static io.determann.shadow.api.Operations.GENERIC_GET_BOUND;
+import static io.determann.shadow.api.Operations.TYPE_REPRESENTS_SAME_TYPE;
 import static io.determann.shadow.api.Provider.requestOrThrow;
 import static io.determann.shadow.api.reflection.R_Adapter.IMPLEMENTATION;
 import static io.determann.shadow.api.reflection.R_Adapter.generalize;
@@ -48,20 +49,30 @@ public class GenericImpl implements R_Generic
    }
 
    @Override
-   public R_Type getExtends()
+   public R_Type getBound()
    {
-      java.lang.reflect.Type[] bounds = getTypeVariable().getBounds();
-      if (bounds.length == 1)
-      {
-         return generalize(bounds[0]);
-      }
-      return new IntersectionImpl(bounds);
+      return getBounds().getFirst();
    }
 
    @Override
-   public Optional<R_Type> getSuper()
+   public List<R_Type> getBounds()
    {
-      return Optional.empty();
+      return Arrays.stream(getTypeVariable().getBounds())
+                   .map(R_Adapter::generalize)
+                   .toList();
+   }
+
+   @Override
+   public List<R_Interface> getAdditionalBounds()
+   {
+      List<R_Type> bounds = getBounds();
+      if (bounds.size() <= 1)
+      {
+         return Collections.emptyList();
+      }
+      return bounds.stream().skip(1)
+                   .map(R_Interface.class::cast)
+                   .toList();
    }
 
    @Override
@@ -86,13 +97,7 @@ public class GenericImpl implements R_Generic
          return false;
       }
 
-      C_Type aExtends = requestOrThrow(generic, GENERIC_GET_EXTENDS);
-      Optional<C_Type> aSuper = Provider.requestOrEmpty(generic, GENERIC_GET_SUPER);
-
-      return requestOrThrow(aExtends, TYPE_REPRESENTS_SAME_TYPE, getExtends()) &&
-             ((aSuper.isEmpty() && getSuper().isEmpty()) ||
-              (aSuper.isPresent() && getSuper().isPresent()) &&
-              requestOrThrow(aSuper.get(), TYPE_REPRESENTS_SAME_TYPE, getSuper().get()));
+      return requestOrThrow(requestOrThrow(generic, GENERIC_GET_BOUND), TYPE_REPRESENTS_SAME_TYPE, getBound());
    }
 
    public TypeVariable<?> getTypeVariable()

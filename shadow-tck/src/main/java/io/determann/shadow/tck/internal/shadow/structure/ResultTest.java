@@ -29,7 +29,7 @@ class ResultTest
                      C_Class integer = requestOrThrow(implementation, GET_CLASS, "java.lang.Integer");
                      C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
                      C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RETURN);
+                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
 
                      assertEquals(integer, requestOrThrow(cReturn, RESULT_GET_TYPE));
                   });
@@ -49,7 +49,7 @@ class ResultTest
                   {
                      C_Class returnExample = requestOrThrow(implementation, GET_CLASS, "ReturnExample");
                      C_Method method = requestOrThrow(returnExample, DECLARED_GET_METHODS).get(0);
-                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RETURN);
+                     C_Result cReturn = requestOrThrow(method, METHOD_GET_RESULT);
 
                      List<? extends C_AnnotationUsage> usages = requestOrThrow(cReturn, ANNOTATIONABLE_GET_ANNOTATION_USAGES);
                      assertEquals(1, usages.size());

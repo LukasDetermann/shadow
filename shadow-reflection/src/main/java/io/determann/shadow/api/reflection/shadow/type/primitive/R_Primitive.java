@@ -3,7 +3,7 @@ package io.determann.shadow.api.reflection.shadow.type.primitive;
 import io.determann.shadow.api.reflection.shadow.R_Nameable;
 import io.determann.shadow.api.reflection.shadow.type.R_Array;
 import io.determann.shadow.api.reflection.shadow.type.R_Class;
-import io.determann.shadow.api.reflection.shadow.type.R_Type;
+import io.determann.shadow.api.reflection.shadow.type.R_VariableType;
 import io.determann.shadow.api.shadow.type.C_Type;
 import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 
@@ -13,7 +13,7 @@ import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
 public sealed interface R_Primitive
 
       extends C_Primitive,
-              R_Type,
+              R_VariableType,
               R_Nameable
 
       permits R_boolean,

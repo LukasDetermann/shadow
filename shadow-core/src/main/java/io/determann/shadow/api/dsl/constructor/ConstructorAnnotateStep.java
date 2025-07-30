@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.constructor;
 
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface ConstructorAnnotateStep
       extends ConstructorModifierStep
 {
    ConstructorAnnotateStep annotate(String... annotation);
 
-   ConstructorAnnotateStep annotate(C_AnnotationUsage... annotation);
+   default ConstructorAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return annotate(Arrays.asList(annotation));
+   }
 
-   ConstructorAnnotateStep annotate(AnnotationUsageRenderable... annotation);
+   ConstructorAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation);
 }

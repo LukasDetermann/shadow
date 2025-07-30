@@ -8,19 +8,14 @@ import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericExtendsStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
-import io.determann.shadow.api.shadow.type.C_Class;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.C_Interface;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.renderer.RenderingContextOptions.GENERIC_USAGE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 
 public class GenericDsl
       implements GenericAnnotateStep,
@@ -52,20 +47,12 @@ public class GenericDsl
    }
 
    @Override
-   public GenericAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public GenericAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new GenericDsl(this),
                               annotation,
-                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               genericDsl -> genericDsl.annotations::add);
-   }
-
-   @Override
-   public GenericAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new GenericDsl(this),
-                      annotation,
-                      genericDsl -> genericDsl.annotations::add);
    }
 
    @Override
@@ -85,77 +72,59 @@ public class GenericDsl
    }
 
    @Override
-   public GenericAndExtendsStep extends_(C_Class bound)
-   {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             (renderingContext, cClass) -> Renderer.render(cClass).type(renderingContext),
-                             genericDsl -> genericDsl.extends_::add);
-   }
-
-   @Override
    public GenericAndExtendsStep extends_(ClassRenderable bound)
    {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             genericDsl -> genericDsl.extends_::add);
-   }
-
-   @Override
-   public GenericAndExtendsStep extends_(C_Interface bound)
-   {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             (renderingContext, cInterface) -> Renderer.render(cInterface).type(renderingContext),
-                             genericDsl -> genericDsl.extends_::add);
+      return setType(new GenericDsl(this),
+                     bound,
+                     (genericDsl, classRenderable) -> genericDsl.extends_.add(classRenderable::renderQualifiedName));
    }
 
    @Override
    public GenericAndExtendsStep extends_(InterfaceRenderable bound)
    {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             genericDsl -> genericDsl.extends_::add);
-   }
-
-   @Override
-   public GenericAndExtendsStep extends_(C_Generic bound)
-   {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             (renderingContext, cGeneric) -> Renderer.render(cGeneric).type(renderingContext),
-                             genericDsl -> genericDsl.extends_::add);
+      return setType(new GenericDsl(this),
+                     bound,
+                     (genericDsl, interfaceRenderable) -> genericDsl.extends_.add(interfaceRenderable::renderQualifiedName));
    }
 
    @Override
    public GenericAndExtendsStep extends_(GenericRenderable bound)
    {
-      return addTypeRenderer(new GenericDsl(this),
-                             bound,
-                             genericDsl -> genericDsl.extends_::add);
+      return setType(new GenericDsl(this),
+                     bound,
+                     (genericDsl, genericRenderable) -> genericDsl.extends_.add(genericRenderable::renderDeclaration));
    }
 
    @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
-      if (renderingContext instanceof RenderingContextWrapper wrapper && wrapper.isGenericUsage())
-      {
-         return name;
-      }
-
       StringBuilder sb = new StringBuilder();
 
       renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(name);
-
-      if (!(renderingContext instanceof RenderingContextWrapper wrapper) || !wrapper.isGenericUsage())
-      {
-         RenderingContextWrapper wrapped = wrap(renderingContext);
-         wrapped.setGenericUsage(true);
-         renderElement(sb, " extends ", extends_, wrapped, " & ");
-      }
+      sb.append(renderType(renderingContext));
 
       return sb.toString();
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      StringBuilder sb = new StringBuilder();
+      sb.append(name);
+
+      if (renderingContext.hasOption(GENERIC_USAGE))
+      {
+         return sb.toString();
+      }
+
+      renderElement(sb, " extends ", extends_, renderingContextBuilder(renderingContext).withOption(GENERIC_USAGE).build(), " & ");
+      return sb.toString();
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
    }
 }

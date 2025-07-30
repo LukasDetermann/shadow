@@ -11,7 +11,7 @@ class ResultDslTest
    @Test
    void raw()
    {
-      assertEquals("MyType", Dsl.result().type("MyType").render(DEFAULT));
+      assertEquals("MyType", Dsl.result().type("MyType").renderDeclaration(DEFAULT));
    }
 
    @Test
@@ -22,7 +22,7 @@ class ResultDslTest
                           .annotate("Annotation1")
                           .annotate("Annotation2")
                           .type("MyType")
-                          .render(DEFAULT));
+                          .renderDeclaration(DEFAULT));
       //@end
    }
 }

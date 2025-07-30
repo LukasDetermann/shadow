@@ -1,10 +1,10 @@
 package io.determann.shadow.api.dsl.requires;
 
-import io.determann.shadow.api.shadow.structure.C_Module;
+import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
 
 public interface RequiresNameStep
 {
    RequiresRenderable dependency(String moduleName);
 
-   RequiresRenderable dependency(C_Module module);
+   RequiresRenderable dependency(ModuleNameRenderable module);
 }

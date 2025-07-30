@@ -2,11 +2,19 @@ package io.determann.shadow.api.dsl.field;
 
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
 
-public interface FieldModifierStep extends FieldTypeStep
+import java.util.Set;
+
+public interface FieldModifierStep
+      extends FieldTypeStep
 {
    FieldModifierStep modifier(String... modifiers);
 
-   FieldModifierStep modifier(C_Modifier... modifiers);
+   default FieldModifierStep modifier(C_Modifier... modifiers)
+   {
+      return modifier(Set.of(modifiers));
+   }
+
+   FieldModifierStep modifier(Set<C_Modifier> modifiers);
 
    FieldModifierStep public_();
 

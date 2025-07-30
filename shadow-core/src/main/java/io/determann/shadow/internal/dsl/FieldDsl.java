@@ -1,23 +1,17 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.dsl.VariableTypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.field.*;
-import io.determann.shadow.api.renderer.Renderer;
 import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
 import io.determann.shadow.api.shadow.modifier.C_Modifier;
-import io.determann.shadow.api.shadow.type.C_Array;
-import io.determann.shadow.api.shadow.type.C_Declared;
-import io.determann.shadow.api.shadow.type.C_Generic;
-import io.determann.shadow.api.shadow.type.primitive.C_Primitive;
-import io.determann.shadow.internal.renderer.RenderingContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static io.determann.shadow.internal.renderer.RenderingContextWrapper.wrap;
 import static java.util.stream.Collectors.joining;
 
 public class FieldDsl
@@ -59,20 +53,12 @@ public class FieldDsl
    }
 
    @Override
-   public FieldAnnotateStep annotate(C_AnnotationUsage... annotation)
+   public FieldAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation)
    {
       return addArrayRenderer(new FieldDsl(this),
                               annotation,
-                              (context, cAnnotation) -> Renderer.render(cAnnotation).declaration(context),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               fieldDsl -> fieldDsl.annotations::add);
-   }
-
-   @Override
-   public FieldAnnotateStep annotate(AnnotationUsageRenderable... annotation)
-   {
-      return addArray(new FieldDsl(this),
-                      annotation,
-                      fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
@@ -89,12 +75,11 @@ public class FieldDsl
    }
 
    @Override
-   public FieldModifierStep modifier(C_Modifier... modifiers)
+   public FieldModifierStep modifier(Set<C_Modifier> modifiers)
    {
-      return addArrayRenderer(new FieldDsl(this),
-                              modifiers,
-                              (context, modifier) -> Renderer.render(modifier).declaration(context),
-                              fieldDsl -> fieldDsl.modifiers::add);
+      return addArray(new FieldDsl(this),
+                      modifiers,
+                      fieldDsl -> fieldDsl.modifiers::add);
    }
 
    @Override
@@ -102,7 +87,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.PUBLIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -111,7 +95,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.PROTECTED,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -120,7 +103,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.PRIVATE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -129,7 +111,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.FINAL,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -138,7 +119,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.STATIC,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -147,7 +127,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.STRICTFP,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -156,7 +135,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.TRANSIENT,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -165,7 +143,6 @@ public class FieldDsl
    {
       return addTypeRenderer(new FieldDsl(this),
                              C_Modifier.VOLATILE,
-                             (renderingContext, modifier) -> Renderer.render(modifier).declaration(renderingContext),
                              fieldDsl -> fieldDsl.modifiers::add);
    }
 
@@ -178,55 +155,20 @@ public class FieldDsl
    @Override
    public FieldNameStep type(String type)
    {
-      return setTypeRenderer(new FieldDsl(this), type, (fieldDsl, function) -> fieldDsl.type = function);
+      return setType(new FieldDsl(this), type, (fieldDsl, string) -> fieldDsl.type = renderingContext -> string);
    }
 
    @Override
-   public FieldNameStep type(C_Array type)
+   public FieldNameStep type(VariableTypeRenderable type)
    {
       return setTypeRenderer(new FieldDsl(this),
                              type,
-                             (renderingContext, cArray) -> Renderer.render(cArray).type(renderingContext),
+                             (renderingContext, variableTypeRenderable) -> variableTypeRenderable.renderType(renderingContext),
                              (fieldDsl, function) -> fieldDsl.type = function);
    }
 
    @Override
-   public FieldNameStep type(C_Declared type)
-   {
-      return setTypeRenderer(new FieldDsl(this),
-                             type,
-                             (renderingContext, cDeclared) -> Renderer.render(cDeclared).type(renderingContext),
-                             (fieldDsl, function) -> fieldDsl.type = function);
-   }
-
-   @Override
-   public FieldNameStep type(C_Generic type)
-   {
-      return setTypeRenderer(new FieldDsl(this),
-                             type,
-                             (renderingContext, cGeneric) -> Renderer.render(cGeneric).type(renderingContext),
-                             (fieldDsl, function) -> fieldDsl.type = function);
-   }
-
-   @Override
-   public FieldNameStep type(C_Primitive type)
-   {
-      return setTypeRenderer(new FieldDsl(this),
-                             type,
-                             (renderingContext, cPrimitive) -> Renderer.render(cPrimitive).type(renderingContext),
-                             (fieldDsl, function) -> fieldDsl.type = function);
-   }
-
-   @Override
-   public FieldNameStep type(FieldTypeRenderable type)
-   {
-      return setType(new FieldDsl(this),
-                     type,
-                     (fieldDsl, function) -> fieldDsl.type = function);
-   }
-
-   @Override
-   public String render(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext renderingContext)
    {
       return partialRender(renderingContext) + ';';
    }
@@ -250,10 +192,7 @@ public class FieldDsl
            .append(' ');
       }
 
-      RenderingContextWrapper wrapped = wrap(renderingContext);
-      wrapped.setGenericUsage(true);
-
-      sb.append(type.render(wrapped))
+      sb.append(type.render(renderingContext))
         .append(' ');
 
       sb.append(name);
@@ -300,7 +239,7 @@ public class FieldDsl
       }
 
       @Override
-      public String render(RenderingContext renderingContext)
+      public String renderDeclaration(RenderingContext renderingContext)
       {
          StringBuilder sb = new StringBuilder();
 

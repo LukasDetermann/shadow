@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.method;
 
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
-import io.determann.shadow.api.shadow.type.C_Generic;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface MethodGenericStep
       extends MethodResultStep
 {
    MethodGenericStep generic(String... generic);
 
-   MethodGenericStep generic(C_Generic... generic);
+   default MethodGenericStep generic(GenericRenderable... generic)
+   {
+      return generic(Arrays.asList(generic));
+   }
 
-   MethodGenericStep generic(GenericRenderable... generic);
+   MethodGenericStep generic(List<? extends GenericRenderable> generic);
 }

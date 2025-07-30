@@ -16,7 +16,6 @@ import java.util.Optional;
  *}
  */
 public non-sealed interface LM_Wildcard
-
       extends C_Wildcard,
               LM_Type,
               LM_Erasable

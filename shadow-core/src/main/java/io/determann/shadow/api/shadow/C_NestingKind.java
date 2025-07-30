@@ -5,5 +5,5 @@ public enum C_NestingKind
    OUTER,
    INNER,
    LOCAL,
-   ANONYMOUS;
+   ANONYMOUS
 }

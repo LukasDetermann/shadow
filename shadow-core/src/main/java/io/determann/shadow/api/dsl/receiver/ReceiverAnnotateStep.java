@@ -1,13 +1,18 @@
 package io.determann.shadow.api.dsl.receiver;
 
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface ReceiverAnnotateStep extends ReceiverRenderable
 {
    ReceiverAnnotateStep annotate(String... annotation);
 
-   ReceiverAnnotateStep annotate(C_AnnotationUsage... annotation);
+   default ReceiverAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return annotate(Arrays.asList(annotation));
+   }
 
-   ReceiverAnnotateStep annotate(AnnotationUsageRenderable... annotation);
+   ReceiverAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation);
 }

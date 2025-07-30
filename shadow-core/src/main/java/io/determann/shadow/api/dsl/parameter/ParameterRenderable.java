@@ -1,7 +1,8 @@
 package io.determann.shadow.api.dsl.parameter;
 
-import io.determann.shadow.api.dsl.Renderable;
+import io.determann.shadow.api.renderer.RenderingContext;
 
-public interface ParameterRenderable extends Renderable
+public interface ParameterRenderable
 {
+   String renderDeclaration(RenderingContext renderingContext);
 }

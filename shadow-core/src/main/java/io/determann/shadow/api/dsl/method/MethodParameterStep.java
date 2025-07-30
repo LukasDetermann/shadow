@@ -1,13 +1,18 @@
 package io.determann.shadow.api.dsl.method;
 
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
-import io.determann.shadow.api.shadow.structure.C_Parameter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface MethodParameterStep extends MethodThrowsStep
 {
    MethodParameterStep parameter(String... parameter);
 
-   MethodParameterStep parameter(C_Parameter... parameter);
+   default MethodParameterStep parameter(ParameterRenderable... parameter)
+   {
+      return parameter(Arrays.asList(parameter));
+   }
 
-   MethodParameterStep parameter(ParameterRenderable... parameter);
+   MethodParameterStep parameter(List<? extends ParameterRenderable> parameter);
 }

@@ -1,14 +1,19 @@
 package io.determann.shadow.api.dsl.parameter;
 
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
-import io.determann.shadow.api.shadow.C_AnnotationUsage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface ParameterAnnotateStep
       extends ParameterModifierStep
 {
    ParameterAnnotateStep annotate(String... annotation);
 
-   ParameterAnnotateStep annotate(C_AnnotationUsage... annotation);
+   default ParameterAnnotateStep annotate(AnnotationUsageRenderable... annotation)
+   {
+      return annotate(Arrays.asList(annotation));
+   }
 
-   ParameterAnnotateStep annotate(AnnotationUsageRenderable... annotation);
+   ParameterAnnotateStep annotate(List<? extends AnnotationUsageRenderable> annotation);
 }
