@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
@@ -17,7 +16,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
-import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class InterfaceDsl
@@ -36,7 +34,7 @@ public class InterfaceDsl
    private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
    private final List<Renderable> generics = new ArrayList<>();
-   private List<Renderable> extends_;
+   private List<Renderable> extends_ = new ArrayList<>();
    private final List<Renderable> permits = new ArrayList<>();
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
@@ -77,7 +75,9 @@ public class InterfaceDsl
    @Override
    public InterfaceAnnotateStep annotate(String... annotation)
    {
-      return addArray2(new InterfaceDsl(this), annotation, (interfaceDsl, string) -> interfaceDsl.annotations.add(renderingContext -> '@' + string));
+      return addArray2(new InterfaceDsl(this),
+                       annotation,
+                       (interfaceDsl, string) -> interfaceDsl.annotations.add(renderingContext -> '@' + string));
    }
 
    @Override
@@ -98,73 +98,73 @@ public class InterfaceDsl
    @Override
    public InterfaceModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new InterfaceDsl(this),
-                      modifiers,
-                      interfaceDsl -> interfaceDsl.modifiers::add);
+      return addArray2(new InterfaceDsl(this),
+                       modifiers,
+                       (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep abstract_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.ABSTRACT,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.ABSTRACT,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep public_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.PUBLIC,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.PUBLIC,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep protected_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.PROTECTED,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.PROTECTED,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep private_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.PRIVATE,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.PRIVATE,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep sealed()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.SEALED,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.SEALED,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep nonSealed()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.NON_SEALED,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.NON_SEALED,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep static_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.STATIC,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.STATIC,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public InterfaceModifierStep strictfp_()
    {
-      return addTypeRenderer(new InterfaceDsl(this),
-                             Modifier.STRICTFP,
-                             interfaceDsl -> interfaceDsl.modifiers::add);
+      return setType(new InterfaceDsl(this),
+                     Modifier.STRICTFP,
+                     (interfaceDsl, modifier) -> interfaceDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -282,9 +282,9 @@ public class InterfaceDsl
    @Override
    public InterfaceImportStep import_(String... name)
    {
-      return addArrayRenderer(new InterfaceDsl(this),
-                              name,
-                              interfaceDsl -> interfaceDsl.imports::add);
+      return addArray2(new InterfaceDsl(this),
+                       name,
+                       (interfaceDsl, string) -> interfaceDsl.imports.add(renderingContext -> "import " + string));
    }
 
    @Override
@@ -292,7 +292,7 @@ public class InterfaceDsl
    {
       return addArrayRenderer(new InterfaceDsl(this),
                               declared,
-                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
                               interfaceDsl -> interfaceDsl.imports::add);
    }
 
@@ -301,7 +301,9 @@ public class InterfaceDsl
    {
       return addArrayRenderer(new InterfaceDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
+                              (renderingContext, packageRenderable) -> "import " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               interfaceDsl -> interfaceDsl.imports::add);
    }
 
@@ -310,7 +312,7 @@ public class InterfaceDsl
    {
       return addArrayRenderer(new InterfaceDsl(this),
                               name,
-                              (renderingContext, string) -> "static " + string,
+                              (renderingContext, string) -> "import static " + string,
                               interfaceDsl -> interfaceDsl.imports::add);
    }
 
@@ -319,7 +321,7 @@ public class InterfaceDsl
    {
       return addArrayRenderer(new InterfaceDsl(this),
                               declared,
-                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
                               interfaceDsl -> interfaceDsl.imports::add);
    }
 
@@ -328,7 +330,7 @@ public class InterfaceDsl
    {
       return addArrayRenderer(new InterfaceDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> "static " +
+                              (renderingContext, packageRenderable) -> "import static " +
                                                                        packageRenderable.renderQualifiedName(renderingContext) +
                                                                        ".*",
                               interfaceDsl -> interfaceDsl.imports::add);
@@ -338,8 +340,8 @@ public class InterfaceDsl
    public InterfaceExtendsStep extends_(String... interfaces)
    {
       return addArray2(new InterfaceDsl(this),
-                              interfaces,
-                              (interfaceDsl, string) -> interfaceDsl.extends_.add(renderingContext -> string));
+                       interfaces,
+                       (interfaceDsl, string) -> interfaceDsl.extends_.add(renderingContext -> string));
    }
 
    @Override
@@ -354,6 +356,10 @@ public class InterfaceDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
@@ -363,10 +369,11 @@ public class InterfaceDsl
 
       if (package_ != null)
       {
-         sb.append(package_.renderDeclaration(renderingContext));
+         sb.append(package_.renderDeclaration(context))
+           .append("\n\n");
       }
 
-      renderElement(sb, "import ", imports, ";", renderingContext, "\n");
+      renderElement(sb, imports, ";", context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");
@@ -374,36 +381,33 @@ public class InterfaceDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, modifiers, " ", renderingContext, " ");
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
 
       sb.append("interface ");
       sb.append(name);
       sb.append(' ');
 
-      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+      renderElement(sb, "<", generics, "> ", context, ", ");
 
-      renderElement(sb, "extends ", extends_, " ", renderingContext, ", ");
-      renderElement(sb, "permits ", permits, " ", renderingContext, ", ");
+      renderElement(sb, "extends ", extends_, " ", context, ", ");
+      renderElement(sb, "permits ", permits, " ", context, ", ");
 
       sb.append("{\n");
       if (body != null)
       {
-         sb.append(body);
+         sb.append(body)
+           .append('\n');
       }
       else
       {
-         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
-               .withOption(RECEIVER_TYPE, name)
-               .build();
-
-         renderElement(sb, fields, "\n", renderingContext, "\n");
-         renderElement(sb, methods, "\n\n", forReceiver, "\n");
-         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+         renderElement(sb, fields, "\n", context, "\n");
+         renderElement(sb, methods, "\n\n", context, "\n");
+         renderElement(sb, inner, "\n\n", context, "\n");
       }
       sb.append('}');
 
@@ -417,20 +421,26 @@ public class InterfaceDsl
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
+                                                .addSurrounding(this)
+                                                .build()) + '.' + name;
    }
 
    @Override
    public String renderType(RenderingContext renderingContext)
    {
-      String qualifiedName = renderQualifiedName(renderingContext);
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
+      String qualifiedName = renderQualifiedName(context);
       if (generics.isEmpty())
       {
          return qualifiedName;
       }
       return qualifiedName +
              '<' +
-             generics.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining(", ")) +
+             generics.stream().map(renderable -> renderable.render(context)).collect(Collectors.joining(", ")) +
              '>';
    }
 

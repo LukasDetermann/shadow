@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation.*;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
@@ -14,10 +13,8 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
-import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class AnnotationDsl
@@ -163,65 +160,65 @@ public class AnnotationDsl
    @Override
    public AnnotationModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new AnnotationDsl(this),
-                      modifiers,
-                      annotationDsl -> annotationDsl.modifiers::add);
+      return addArray2(new AnnotationDsl(this),
+                       modifiers,
+                       (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep public_()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.PUBLIC,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.PUBLIC,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep protected_()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.PROTECTED,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.PROTECTED,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep private_()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.PRIVATE,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.PRIVATE,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep abstract_()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.ABSTRACT,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.ABSTRACT,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep sealed()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.SEALED,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.SEALED,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep nonSealed()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.NON_SEALED,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.NON_SEALED,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public AnnotationModifierStep strictfp_()
    {
-      return addTypeRenderer(new AnnotationDsl(this),
-                             Modifier.STRICTFP,
-                             annotationDsl -> annotationDsl.modifiers::add);
+      return setType(new AnnotationDsl(this),
+                     Modifier.STRICTFP,
+                     (annotationDsl, modifier) -> annotationDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -257,9 +254,9 @@ public class AnnotationDsl
    @Override
    public AnnotationImportStep import_(String... name)
    {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              name,
-                              annotationDsl -> annotationDsl.imports::add);
+      return addArray2(new AnnotationDsl(this),
+                       name,
+                       (annotationDsl, string) -> annotationDsl.imports.add(renderingContext -> "import " + string));
    }
 
    @Override
@@ -267,7 +264,7 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               declared,
-                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -276,7 +273,9 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
+                              (renderingContext, packageRenderable) -> "import " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -285,7 +284,7 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               name,
-                              (renderingContext, string) -> "static " + string,
+                              (renderingContext, string) -> "import static " + string,
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -294,7 +293,7 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               declared,
-                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -303,7 +302,7 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> "static " +
+                              (renderingContext, packageRenderable) -> "import static " +
                                                                        packageRenderable.renderQualifiedName(renderingContext) +
                                                                        ".*",
                               annotationDsl -> annotationDsl.imports::add);
@@ -312,6 +311,10 @@ public class AnnotationDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
@@ -321,10 +324,11 @@ public class AnnotationDsl
 
       if (package_ != null)
       {
-         sb.append(package_.renderDeclaration(renderingContext));
+         sb.append(package_.renderDeclaration(context))
+           .append("\n\n");
       }
 
-      renderElement(sb, "import ", imports, ";", renderingContext, "\n");
+      renderElement(sb, imports, ";", context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");
@@ -332,15 +336,12 @@ public class AnnotationDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      if (!annotations.isEmpty())
-      {
-         sb.append(annotations.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining("\n")));
-         sb.append('\n');
-      }
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
 
       sb.append("@interface ");
       sb.append(name);
@@ -349,17 +350,14 @@ public class AnnotationDsl
       sb.append("{\n");
       if (body != null)
       {
-         sb.append(body);
+         sb.append(body)
+           .append('\n');
       }
       else
       {
-         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
-               .withOption(RECEIVER_TYPE, name)
-               .build();
-
-         renderElement(sb, fields, "\n", renderingContext, "\n");
-         renderElement(sb, methods, "\n\n", forReceiver, "\n");
-         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+         renderElement(sb, fields, "\n", context, "\n");
+         renderElement(sb, methods, "\n\n", context, "\n");
+         renderElement(sb, inner, "\n\n", context, "\n");
       }
       sb.append('}');
 
@@ -373,7 +371,9 @@ public class AnnotationDsl
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
+                                                .addSurrounding(this)
+                                                .build()) + '.' + name;
    }
 
    @Override

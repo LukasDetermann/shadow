@@ -1,14 +1,17 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.dsl.class_.ClassRenderable;
+import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
-import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.addArrayRenderer;
 import static io.determann.shadow.internal.dsl.DslSupport.renderElement;
 
@@ -47,20 +50,38 @@ public class ReceiverDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
-      String receiverType = renderingContext.getOption(RECEIVER_TYPE);
-      if (receiverType == null)
+      Deque<Object> surrounding = renderingContext.getSurrounding();
+      Object first = surrounding.pollFirst();
+      Object second = surrounding.pollFirst();
+      Object third = surrounding.pollFirst();
+
+      boolean isMethodReceiver = first instanceof MethodRenderable && second instanceof DeclaredRenderable;
+      boolean isConstructorReceiver = first instanceof ConstructorRenderable &&
+                                      second instanceof ClassRenderable &&
+                                      third instanceof DeclaredRenderable;
+
+      if (!isMethodReceiver && !isConstructorReceiver)
       {
-         throw new IllegalStateException(
-               "A Receiver is dependent on its context. it can only be rendered as part of a instance method or inner class constructor");
+         throw new IllegalStateException("A Receiver must be contained in a method or inner class constructor");
       }
 
       StringBuilder sb = new StringBuilder();
 
-      renderElement(sb, annotations, " ", renderingContext, ", ");
+      renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(receiverType);
+      DeclaredRenderable renderable;
+      if (isMethodReceiver)
+      {
+         renderable = (DeclaredRenderable) second;
+      }
+      else
+      {
+         renderable = (DeclaredRenderable) third;
+      }
+
+      sb.append(renderable.renderType(renderingContext));
       sb.append(' ');
-      sb.append(receiverType);
+      sb.append(renderable.renderName(renderingContext));
       sb.append(".this");
       return sb.toString();
    }

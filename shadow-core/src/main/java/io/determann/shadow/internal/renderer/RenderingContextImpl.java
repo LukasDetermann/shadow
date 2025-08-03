@@ -1,27 +1,31 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.renderer.*;
+import io.determann.shadow.api.renderer.NameRenderedEvent;
+import io.determann.shadow.api.renderer.NameRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.renderer.RenderingContextBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
+
+import static java.util.Collections.unmodifiableList;
 
 public class RenderingContextImpl
       implements RenderingContext
 {
    private final NameRenderer nameRenderer;
    private final List<Consumer<NameRenderedEvent>> nameRenderedListeners;
-   private final Map<RenderingContextOption<?>, Object> options = new HashMap<>();
+   private final Deque<Object> surrounding;
 
    RenderingContextImpl(NameRenderer nameRenderer,
                         List<Consumer<NameRenderedEvent>> nameRenderedListeners,
-                        Map<RenderingContextOption<?>, Object> options)
+                        Deque<Object> surrounding)
    {
       this.nameRenderer = nameRenderer;
       this.nameRenderedListeners = nameRenderedListeners;
-      this.options.putAll(options);
+      this.surrounding = surrounding;
    }
 
    @Override
@@ -31,16 +35,9 @@ public class RenderingContextImpl
    }
 
    @Override
-   public boolean hasOption(RenderingContextOption<?> option)
+   public Deque<Object> getSurrounding()
    {
-      return options.containsKey(option);
-   }
-
-   @Override
-   public <T> T getOption(RenderingContextOption<T> option)
-   {
-      //noinspection unchecked
-      return (T) options.get(option);
+      return new ArrayDeque<>(surrounding);
    }
 
    @Override
@@ -56,11 +53,6 @@ public class RenderingContextImpl
 
    public List<Consumer<NameRenderedEvent>> getNameRenderedListeners()
    {
-      return new ArrayList<>(nameRenderedListeners);
-   }
-
-   Map<RenderingContextOption<?>, Object> getOptions()
-   {
-      return options;
+      return unmodifiableList(nameRenderedListeners);
    }
 }

@@ -33,9 +33,11 @@ class ConstructorDslTest
    {
       assertEquals("""
                    @MyAnnotation
+                   @MyAnnotation2
                    MyType() {}""",
                    Dsl.constructor()
                       .annotate("MyAnnotation")
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .type("MyType")
                       .renderDeclaration(DEFAULT));
    }
@@ -56,10 +58,11 @@ class ConstructorDslTest
    @Test
    void generic()
    {
-      assertEquals("<T, S> MyType() {}",
+      assertEquals("<T, S, Z> MyType() {}",
                    Dsl.constructor()
                       .generic("T")
                       .generic("S")
+                      .generic(Dsl.generic("Z"))
                       .type("MyType")
                       .renderDeclaration(DEFAULT));
    }
@@ -68,8 +71,13 @@ class ConstructorDslTest
    void type()
    {
       C.Enum cEnum = TestFactory.create(C.Enum.class, "renderQualifiedName", "MyEnum");
+      C.Class cClass = TestFactory.create(C.Class.class, "renderQualifiedName", "MyClass");
+      C.Record cRecord = TestFactory.create(C.Record.class, "renderQualifiedName", "MyRecord");
 
+      assertEquals("MyEnum2() {}", Dsl.constructor().type("MyEnum2").renderDeclaration(DEFAULT));
       assertEquals("MyEnum() {}", Dsl.constructor().type(cEnum).renderDeclaration(DEFAULT));
+      assertEquals("MyClass() {}", Dsl.constructor().type(cClass).renderDeclaration(DEFAULT));
+      assertEquals("MyRecord() {}", Dsl.constructor().type(cRecord).renderDeclaration(DEFAULT));
    }
 
    @Test

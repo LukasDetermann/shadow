@@ -6,12 +6,7 @@ public interface RenderingContextBuilder
 {
    RenderingContextBuilder withNameRenderedListener(Consumer<NameRenderedEvent> nameRenderedListener);
 
-   default RenderingContextBuilder withOption(RenderingContextOption<?> option)
-   {
-      return withOption(option, null);
-   }
-
-   <T> RenderingContextBuilder withOption(RenderingContextOption<T> option, T value);
+   RenderingContextBuilder addSurrounding(Object surrounding);
 
    /**
     * all render methods produce qualified names except for the content of {@code java.lang}.

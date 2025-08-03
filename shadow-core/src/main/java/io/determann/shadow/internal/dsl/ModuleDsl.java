@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.module.*;
@@ -13,6 +12,7 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class ModuleDsl
@@ -159,6 +159,10 @@ public class ModuleDsl
    @Override
    public String renderModuleInfo(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
@@ -167,23 +171,29 @@ public class ModuleDsl
       }
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext))
+         sb.append(javadoc.render(context))
            .append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      renderElement(sb, annotations, "\n", context, "\n");
 
       sb.append("module ")
         .append(name)
         .append(" {\n");
 
-      renderElement(sb, "\n", requires, "\n", renderingContext, "\n");
-      renderElement(sb, "\n", exports, "\n", renderingContext, "\n");
-      renderElement(sb, "\n", opens, "\n", renderingContext, "\n");
-      renderElement(sb, "\n", uses, "\n", renderingContext, "\n");
-      renderElement(sb, "\n", provides, "\n", renderingContext, "\n");
+      renderElement(sb, "\n", requires, "\n", context, "\n");
+      renderElement(sb, "\n", exports, "\n", context, "\n");
+      renderElement(sb, "\n", opens, "\n", context, "\n");
+      renderElement(sb, "\n", uses, "\n", context, "\n");
+      renderElement(sb, "\n", provides, "\n", context, "\n");
 
       return sb.append('}')
                .toString();
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      return name;
    }
 }

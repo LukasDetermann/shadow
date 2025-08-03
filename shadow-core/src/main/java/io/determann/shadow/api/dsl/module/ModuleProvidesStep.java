@@ -6,7 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface ModuleProvidesStep
-      extends ModuleInfoRenderable
+      extends ModuleInfoRenderable,
+              ModuleNameRenderable
 {
    ModuleProvidesStep provides(String... provides);
 

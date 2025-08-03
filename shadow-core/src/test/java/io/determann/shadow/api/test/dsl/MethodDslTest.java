@@ -33,10 +33,12 @@ class MethodDslTest
    {
       assertEquals("""
                    @MyAnnotation
+                   @MyAnnotation2
                    MyType foo() {}""",
                    Dsl.method()
                       .annotate("MyAnnotation")
-                      .result("MyType")
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
+                      .result(Dsl.result().type("MyType"))
                       .name("foo")
                       .renderDeclaration(DEFAULT));
    }
@@ -64,10 +66,11 @@ class MethodDslTest
    @Test
    void generic()
    {
-      assertEquals("<T, S> MyType foo() {}",
+      assertEquals("<T, S, V> MyType foo() {}",
                    Dsl.method()
                       .generic("T")
                       .generic("S")
+                      .generic(Dsl.generic("V"))
                       .result("MyType")
                       .name("foo")
                       .renderDeclaration(DEFAULT));

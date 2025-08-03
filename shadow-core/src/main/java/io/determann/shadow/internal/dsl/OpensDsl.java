@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.opens.OpensTargetStep;

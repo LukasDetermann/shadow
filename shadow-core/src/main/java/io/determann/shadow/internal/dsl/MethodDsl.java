@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class MethodDsl
@@ -142,81 +142,81 @@ public class MethodDsl
    @Override
    public MethodModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new MethodDsl(this),
-                      modifiers,
-                      methodDsl -> methodDsl.modifiers::add);
+      return addArray2(new MethodDsl(this),
+                       modifiers,
+                       (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep abstract_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.ABSTRACT,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.ABSTRACT,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep public_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.PUBLIC,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.PUBLIC,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep protected_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.PROTECTED,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.PROTECTED,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep private_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.PRIVATE,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.PRIVATE,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep default_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.DEFAULT,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.DEFAULT,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep final_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.FINAL,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.FINAL,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep native_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.NATIVE,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.NATIVE,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep static_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.STATIC,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.STATIC,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public MethodModifierStep strictfp_()
    {
-      return addTypeRenderer(new MethodDsl(this),
-                             Modifier.STRICTFP,
-                             methodDsl -> methodDsl.modifiers::add);
+      return setType(new MethodDsl(this),
+                     Modifier.STRICTFP,
+                     (methodDsl, modifier) -> methodDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -266,38 +266,41 @@ public class MethodDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, modifiers, " ", renderingContext, " ");
-      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, "<", generics, "> ", context, ", ");
 
       if (result != null)
       {
-         sb.append(result.render(renderingContext));
+         sb.append(result.render(context));
          sb.append(' ');
       }
       sb.append(name);
       sb.append('(');
       if (receiver != null)
       {
-         sb.append(receiver.render(renderingContext));
-         sb.append(' ');
+         sb.append(receiver.render(context));
          if (!parameters.isEmpty())
          {
             sb.append(", ");
          }
       }
 
-      renderElement(sb, parameters, renderingContext, ", ");
+      renderElement(sb, parameters, context, ", ");
       sb.append(')');
 
-      renderElement(sb, " throws ", exceptions, renderingContext, ", ");
+      renderElement(sb, " throws ", exceptions, context, ", ");
 
       sb.append(" {");
       if (body != null)

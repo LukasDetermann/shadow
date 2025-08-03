@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantAnnotateStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;

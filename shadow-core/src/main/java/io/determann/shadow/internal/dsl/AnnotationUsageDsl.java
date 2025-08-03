@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation.AnnotationRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageNameStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;

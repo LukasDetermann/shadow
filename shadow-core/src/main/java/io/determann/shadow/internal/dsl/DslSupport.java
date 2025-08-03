@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.Collection;
@@ -53,6 +52,20 @@ interface DslSupport
 
    static <INSTANCE, TYPE> INSTANCE addArray2(INSTANCE instance,
                                               TYPE[] types,
+                                              BiConsumer<INSTANCE, TYPE> toAddToSupplier)
+   {
+      requireNonNull(instance);
+
+      for (TYPE type : types)
+      {
+         requireNonNull(type);
+         toAddToSupplier.accept(instance, type);
+      }
+      return instance;
+   }
+
+   static <INSTANCE, TYPE> INSTANCE addArray2(INSTANCE instance,
+                                              Collection<TYPE> types,
                                               BiConsumer<INSTANCE, TYPE> toAddToSupplier)
    {
       requireNonNull(instance);

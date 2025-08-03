@@ -1,11 +1,14 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.renderer.*;
+import io.determann.shadow.api.renderer.NameRenderedEvent;
+import io.determann.shadow.api.renderer.NameRenderer;
+import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.renderer.RenderingContextBuilder;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Deque;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
@@ -15,7 +18,7 @@ public class RenderingContextBuilderImpl
 {
    private final List<Consumer<NameRenderedEvent>> nameRenderedListeners = new ArrayList<>();
    private NameRenderer nameRenderer;
-   private final Map<RenderingContextOption<?>, Object> options = new HashMap<>();
+   private final Deque<Object> surrounding = new ArrayDeque<>();
 
 
    public RenderingContextBuilderImpl() {}
@@ -24,7 +27,7 @@ public class RenderingContextBuilderImpl
    {
       this.nameRenderedListeners.addAll(renderingContext.getNameRenderedListeners());
       this.nameRenderer = renderingContext.getNameRenderer();
-      this.options.putAll(((RenderingContextImpl) renderingContext).getOptions());
+      this.surrounding.addAll(renderingContext.getSurrounding());
    }
 
    public RenderingContextBuilder withNameRenderedListener(Consumer<NameRenderedEvent> nameRenderedListener)
@@ -34,10 +37,10 @@ public class RenderingContextBuilderImpl
    }
 
    @Override
-   public <T> RenderingContextBuilder withOption(RenderingContextOption<T> option, T value)
+   public RenderingContextBuilder addSurrounding(Object surrounding)
    {
-      requireNonNull(option);
-      this.options.put(option, value);
+      requireNonNull(surrounding);
+      this.surrounding.addFirst(surrounding);
       return this;
    }
 
@@ -81,6 +84,6 @@ public class RenderingContextBuilderImpl
 
    public RenderingContext build()
    {
-      return new RenderingContextImpl(nameRenderer, nameRenderedListeners, options);
+      return new RenderingContextImpl(nameRenderer, nameRenderedListeners, surrounding);
    }
 }

@@ -31,6 +31,7 @@ module io.determann.shadow.api {
    exports io.determann.shadow.api.dsl.requires;
    exports io.determann.shadow.api.dsl.result;
    exports io.determann.shadow.api.dsl.uses;
+   exports io.determann.shadow.internal.dsl;
 
    uses io.determann.shadow.api.query.ProviderSpi;
 }

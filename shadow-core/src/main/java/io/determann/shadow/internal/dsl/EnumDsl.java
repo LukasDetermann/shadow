@@ -2,7 +2,6 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
-import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class EnumDsl
@@ -103,49 +101,49 @@ public class EnumDsl
    @Override
    public EnumModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new EnumDsl(this),
-                      modifiers,
-                      enumDsl -> enumDsl.modifiers::add);
+      return addArray2(new EnumDsl(this),
+                       modifiers,
+                       (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public EnumModifierStep public_()
    {
-      return addTypeRenderer(new EnumDsl(this),
-                             Modifier.PUBLIC,
-                             enumDsl -> enumDsl.modifiers::add);
+      return setType(new EnumDsl(this),
+                     Modifier.PUBLIC,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public EnumModifierStep protected_()
    {
-      return addTypeRenderer(new EnumDsl(this),
-                             Modifier.PROTECTED,
-                             enumDsl -> enumDsl.modifiers::add);
+      return setType(new EnumDsl(this),
+                     Modifier.PROTECTED,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public EnumModifierStep private_()
    {
-      return addTypeRenderer(new EnumDsl(this),
-                             Modifier.PRIVATE,
-                             enumDsl -> enumDsl.modifiers::add);
+      return setType(new EnumDsl(this),
+                     Modifier.PRIVATE,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public EnumModifierStep static_()
    {
-      return addTypeRenderer(new EnumDsl(this),
-                             Modifier.STATIC,
-                             enumDsl -> enumDsl.modifiers::add);
+      return setType(new EnumDsl(this),
+                     Modifier.STATIC,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public EnumModifierStep strictfp_()
    {
-      return addTypeRenderer(new EnumDsl(this),
-                             Modifier.STRICTFP,
-                             enumDsl -> enumDsl.modifiers::add);
+      return setType(new EnumDsl(this),
+                     Modifier.STRICTFP,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -275,9 +273,9 @@ public class EnumDsl
    @Override
    public EnumImportStep import_(String... name)
    {
-      return addArrayRenderer(new EnumDsl(this),
-                              name,
-                              enumDsl -> enumDsl.imports::add);
+      return addArray2(new EnumDsl(this),
+                       name,
+                       (enumDsl, string) -> enumDsl.imports.add(renderingContext -> "import " + string));
    }
 
    @Override
@@ -285,7 +283,7 @@ public class EnumDsl
    {
       return addArrayRenderer(new EnumDsl(this),
                               declared,
-                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
                               enumDsl -> enumDsl.imports::add);
    }
 
@@ -294,7 +292,9 @@ public class EnumDsl
    {
       return addArrayRenderer(new EnumDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
+                              (renderingContext, packageRenderable) -> "import " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               enumDsl -> enumDsl.imports::add);
    }
 
@@ -303,7 +303,7 @@ public class EnumDsl
    {
       return addArrayRenderer(new EnumDsl(this),
                               name,
-                              (renderingContext, string) -> "static " + string,
+                              (renderingContext, string) -> "import static " + string,
                               enumDsl -> enumDsl.imports::add);
    }
 
@@ -312,7 +312,7 @@ public class EnumDsl
    {
       return addArrayRenderer(new EnumDsl(this),
                               declared,
-                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
                               enumDsl -> enumDsl.imports::add);
    }
 
@@ -321,7 +321,7 @@ public class EnumDsl
    {
       return addArrayRenderer(new EnumDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> "static " +
+                              (renderingContext, packageRenderable) -> "import static " +
                                                                        packageRenderable.renderQualifiedName(renderingContext) +
                                                                        ".*",
                               enumDsl -> enumDsl.imports::add);
@@ -347,6 +347,10 @@ public class EnumDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
@@ -356,10 +360,11 @@ public class EnumDsl
 
       if (package_ != null)
       {
-         sb.append(package_.renderDeclaration(renderingContext));
+         sb.append(package_.renderDeclaration(context))
+           .append("\n\n");
       }
 
-      renderElement(sb, "import ", imports, ";", renderingContext, "\n");
+      renderElement(sb, imports, ";", context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");
@@ -367,37 +372,34 @@ public class EnumDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, modifiers, " ", renderingContext, " ");
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
 
       sb.append("enum ");
       sb.append(name);
       sb.append(' ');
 
-      renderElement(sb, "implements ", implements_, " ", renderingContext, ", ");
+      renderElement(sb, "implements ", implements_, " ", context, ", ");
 
       sb.append("{\n");
       if (body != null)
       {
-         sb.append(body);
+         sb.append(body)
+           .append('\n');
       }
       else
       {
-         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
-               .withOption(RECEIVER_TYPE, name)
-               .build();
-
-         renderElement(sb, enumConstants, "\n", renderingContext, "\n");
-         renderElement(sb, fields, "\n", renderingContext, "\n");
-         renderElement(sb, staticInitializers, "\n\n", renderingContext, "\n");
-         renderElement(sb, constructors, "\n\n", renderingContext, "\n");
-         renderElement(sb, instanceInitializers, "\n\n", renderingContext, "\n");
-         renderElement(sb, methods, "\n\n", forReceiver, "\n");
-         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+         renderElement(sb, enumConstants, "\n", context, "\n");
+         renderElement(sb, fields, "\n", context, "\n");
+         renderElement(sb, staticInitializers, "\n\n", context, "\n");
+         renderElement(sb, constructors, "\n\n", context, "\n");
+         renderElement(sb, instanceInitializers, "\n\n", context, "\n");
+         renderElement(sb, methods, "\n\n", context, "\n");
+         renderElement(sb, inner, "\n\n", context, "\n");
       }
       sb.append('}');
 
@@ -411,7 +413,9 @@ public class EnumDsl
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
+                                                .addSurrounding(this)
+                                                .build()) + '.' + name;
    }
 
    @Override

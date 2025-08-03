@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class ConstructorDsl
@@ -141,33 +141,33 @@ public class ConstructorDsl
    @Override
    public ConstructorModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new ConstructorDsl(this),
-                      modifiers,
-                      constructorDsl -> constructorDsl.modifiers::add);
+      return addArray2(new ConstructorDsl(this),
+                       modifiers,
+                       (constructorDsl, modifier) -> constructorDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public ConstructorModifierStep public_()
    {
-      return addTypeRenderer(new ConstructorDsl(this),
-                             Modifier.PUBLIC,
-                             constructorDsl -> constructorDsl.modifiers::add);
+      return setType(new ConstructorDsl(this),
+                     Modifier.PUBLIC,
+                     (constructorDsl, modifier) -> constructorDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public ConstructorModifierStep protected_()
    {
-      return addTypeRenderer(new ConstructorDsl(this),
-                             Modifier.PROTECTED,
-                             constructorDsl -> constructorDsl.modifiers::add);
+      return setType(new ConstructorDsl(this),
+                     Modifier.PROTECTED,
+                     (constructorDsl, modifier) -> constructorDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public ConstructorModifierStep private_()
    {
-      return addTypeRenderer(new ConstructorDsl(this),
-                             Modifier.PRIVATE,
-                             constructorDsl -> constructorDsl.modifiers::add);
+      return setType(new ConstructorDsl(this),
+                     Modifier.PRIVATE,
+                     (constructorDsl, modifier) -> constructorDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -220,34 +220,38 @@ public class ConstructorDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, modifiers, " ", renderingContext, " ");
-      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, "<", generics, "> ", context, ", ");
 
       if (result != null)
       {
-         sb.append(result.render(renderingContext));
+         sb.append(result.render(context));
       }
       sb.append('(');
       if (receiver != null)
       {
-         sb.append(receiver.render(renderingContext));
+         sb.append(receiver.render(context));
          if (!parameters.isEmpty())
          {
             sb.append(", ");
          }
       }
-      renderElement(sb, parameters, renderingContext, ", ");
+      renderElement(sb, parameters, context, ", ");
       sb.append(')');
 
-      renderElement(sb, " throws ", exceptions, renderingContext, ", ");
+      renderElement(sb, " throws ", exceptions, context, ", ");
 
       sb.append(" {");
       if (body != null)

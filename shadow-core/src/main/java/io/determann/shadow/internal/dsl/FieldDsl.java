@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.VariableTypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.field.*;
@@ -77,73 +76,73 @@ public class FieldDsl
    @Override
    public FieldModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new FieldDsl(this),
-                      modifiers,
-                      fieldDsl -> fieldDsl.modifiers::add);
+      return addArray2(new FieldDsl(this),
+                       modifiers,
+                       (fieldDsl, modifier) -> fieldDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep public_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.PUBLIC,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.PUBLIC,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep protected_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.PROTECTED,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.PROTECTED,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep private_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.PRIVATE,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.PRIVATE,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep final_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.FINAL,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.FINAL,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep static_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.STATIC,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.STATIC,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep strictfp_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.STRICTFP,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.STRICTFP,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep transient_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.TRANSIENT,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.TRANSIENT,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public FieldModifierStep volatile_()
    {
-      return addTypeRenderer(new FieldDsl(this),
-                             Modifier.VOLATILE,
-                             fieldDsl -> fieldDsl.modifiers::add);
+      return setType(new FieldDsl(this),
+                     Modifier.VOLATILE,
+                     (enumDsl, modifier) -> enumDsl.modifiers.add(modifier::render));
    }
 
    @Override

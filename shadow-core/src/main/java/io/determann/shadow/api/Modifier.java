@@ -1,11 +1,9 @@
 package io.determann.shadow.api;
 
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 public enum Modifier
-      implements Renderable
 {
    PUBLIC("public"),
    PROTECTED("protected"),
@@ -30,7 +28,6 @@ public enum Modifier
       this.rendered = rendered;
    }
 
-   @Override
    public String render(RenderingContext renderingContext)
    {
       return rendered;

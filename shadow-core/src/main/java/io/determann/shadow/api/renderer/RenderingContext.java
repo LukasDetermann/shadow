@@ -2,6 +2,7 @@ package io.determann.shadow.api.renderer;
 
 import io.determann.shadow.internal.renderer.RenderingContextBuilderImpl;
 
+import java.util.Deque;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -26,9 +27,7 @@ public interface RenderingContext
    /// @see RenderingContextBuilder#withNameRenderedListener(Consumer)
    RenderingContextBuilder builder();
 
-   boolean hasOption(RenderingContextOption<?> option);
-
-   <T> T getOption(RenderingContextOption<T> option);
+   Deque<Object> getSurrounding();
 
    void onNameRendered(Consumer<NameRenderedEvent> onNameRendered);
 

@@ -2,7 +2,6 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
@@ -21,7 +20,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
-import static io.determann.shadow.api.renderer.RenderingContextOptions.RECEIVER_TYPE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class RecordDsl
@@ -105,57 +103,57 @@ public class RecordDsl
    @Override
    public RecordModifierStep modifier(Set<Modifier> modifiers)
    {
-      return addArray(new RecordDsl(this),
-                      modifiers,
-                      recordDsl -> recordDsl.modifiers::add);
+      return addArray2(new RecordDsl(this),
+                       modifiers,
+                       (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep public_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.PUBLIC,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.PUBLIC,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep protected_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.PROTECTED,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.PROTECTED,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep private_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.PRIVATE,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.PRIVATE,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep final_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.FINAL,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.FINAL,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep static_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.STATIC,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.STATIC,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
    public RecordModifierStep strictfp_()
    {
-      return addTypeRenderer(new RecordDsl(this),
-                             Modifier.STRICTFP,
-                             recordDsl -> recordDsl.modifiers::add);
+      return setType(new RecordDsl(this),
+                     Modifier.STRICTFP,
+                     (recordDsl, modifier) -> recordDsl.modifiers.add(modifier::render));
    }
 
    @Override
@@ -309,9 +307,9 @@ public class RecordDsl
    @Override
    public RecordImportStep import_(String... name)
    {
-      return addArrayRenderer(new RecordDsl(this),
-                              name,
-                              recordDsl -> recordDsl.imports::add);
+      return addArray2(new RecordDsl(this),
+                       name,
+                       (recordDsl, string) -> recordDsl.imports.add(renderingContext -> "import " + string));
    }
 
    @Override
@@ -319,7 +317,7 @@ public class RecordDsl
    {
       return addArrayRenderer(new RecordDsl(this),
                               declared,
-                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
                               recordDsl -> recordDsl.imports::add);
    }
 
@@ -328,7 +326,9 @@ public class RecordDsl
    {
       return addArrayRenderer(new RecordDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> packageRenderable.renderQualifiedName(renderingContext) + ".*",
+                              (renderingContext, packageRenderable) -> "import " +
+                                                                       packageRenderable.renderQualifiedName(renderingContext) +
+                                                                       ".*",
                               recordDsl -> recordDsl.imports::add);
    }
 
@@ -337,7 +337,7 @@ public class RecordDsl
    {
       return addArrayRenderer(new RecordDsl(this),
                               name,
-                              (renderingContext, string) -> "static " + string,
+                              (renderingContext, string) -> "import static " + string,
                               recordDsl -> recordDsl.imports::add);
    }
 
@@ -346,7 +346,7 @@ public class RecordDsl
    {
       return addArrayRenderer(new RecordDsl(this),
                               declared,
-                              (renderingContext, renderable) -> "static " + renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
                               recordDsl -> recordDsl.imports::add);
    }
 
@@ -355,7 +355,7 @@ public class RecordDsl
    {
       return addArrayRenderer(new RecordDsl(this),
                               cPackages,
-                              (renderingContext, packageRenderable) -> "static " +
+                              (renderingContext, packageRenderable) -> "import static " +
                                                                        packageRenderable.renderQualifiedName(renderingContext) +
                                                                        ".*",
                               recordDsl -> recordDsl.imports::add);
@@ -364,6 +364,10 @@ public class RecordDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
@@ -373,10 +377,11 @@ public class RecordDsl
 
       if (package_ != null)
       {
-         sb.append(package_.renderDeclaration(renderingContext));
+         sb.append(package_.renderDeclaration(context))
+           .append("\n\n");
       }
 
-      renderElement(sb, "import ", imports, ";", renderingContext, "\n");
+      renderElement(sb, imports, ";", context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");
@@ -384,40 +389,37 @@ public class RecordDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
-      renderElement(sb, modifiers, " ", renderingContext, " ");
+      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, modifiers, " ", context, " ");
 
       sb.append("record ");
       sb.append(name);
       sb.append('(');
-      renderElement(sb, components, renderingContext, ", ");
+      renderElement(sb, components, context, ", ");
       sb.append(')');
       sb.append(' ');
 
-      renderElement(sb, "<", generics, "> ", renderingContext, ", ");
+      renderElement(sb, "<", generics, "> ", context, ", ");
 
-      renderElement(sb, "implements ", implements_, " ", renderingContext, ", ");
+      renderElement(sb, "implements ", implements_, " ", context, ", ");
 
       sb.append("{\n");
       if (body != null)
       {
-         sb.append(body);
+         sb.append(body)
+           .append('\n');
       }
       else
       {
-         RenderingContext forReceiver = renderingContextBuilder(renderingContext)
-               .withOption(RECEIVER_TYPE, name)
-               .build();
-
-         renderElement(sb, fields, "\n", renderingContext, "\n");
-         renderElement(sb, staticInitializers, "\n\n", renderingContext, "\n");
-         renderElement(sb, constructors, "\n\n", renderingContext, "\n");
-         renderElement(sb, methods, "\n\n", forReceiver, "\n");
-         renderElement(sb, inner, "\n\n", forReceiver, "\n");
+         renderElement(sb, fields, "\n", context, "\n");
+         renderElement(sb, staticInitializers, "\n\n", context, "\n");
+         renderElement(sb, constructors, "\n\n", context, "\n");
+         renderElement(sb, methods, "\n\n", context, "\n");
+         renderElement(sb, inner, "\n\n", context, "\n");
       }
       sb.append('}');
 
@@ -431,20 +433,26 @@ public class RecordDsl
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
+                                                .addSurrounding(this)
+                                                .build()) + '.' + name;
    }
 
    @Override
    public String renderType(RenderingContext renderingContext)
    {
-      String qualifiedName = renderQualifiedName(renderingContext);
+      RenderingContext context = renderingContextBuilder(renderingContext)
+            .addSurrounding(this)
+            .build();
+
+      String qualifiedName = renderQualifiedName(context);
       if (generics.isEmpty())
       {
          return qualifiedName;
       }
       return qualifiedName +
              '<' +
-             generics.stream().map(renderable -> renderable.render(renderingContext)).collect(Collectors.joining(", ")) +
+             generics.stream().map(renderable -> renderable.render(context)).collect(Collectors.joining(", ")) +
              '>';
    }
 

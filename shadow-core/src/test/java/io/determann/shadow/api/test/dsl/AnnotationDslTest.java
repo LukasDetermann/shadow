@@ -1,0 +1,179 @@
+package io.determann.shadow.api.test.dsl;
+
+import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.dsl.Dsl;
+import io.determann.shadow.api.renderer.RenderingContext;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AnnotationDslTest
+{
+   @Test
+   void javadoc()
+   {
+      assertEquals("""
+                   /// some java doc
+                   @interface MyInterface {
+                   }""",
+                   Dsl.innerAnnotation().javadoc("/// some java doc")
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void annotate()
+   {
+      assertEquals("""
+                   @MyAnnotation
+                   @MyAnnotation
+                   @interface MyInterface {
+                   }""",
+                   Dsl.innerAnnotation()
+                      .annotate("MyAnnotation")
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void modifier()
+   {
+      assertEquals("""
+                   public dings abstract public protected private sealed non-sealed strictfp @interface MyInterface {
+                   }""",
+                   Dsl.innerAnnotation()
+                      .modifier(Modifier.PUBLIC)
+                      .modifier("dings")
+                      .abstract_()
+                      .public_()
+                      .protected_()
+                      .private_()
+                      .sealed()
+                      .nonSealed()
+                      .strictfp_()
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void body()
+   {
+      assertEquals("""
+                   @interface MyInterface {
+                   // some content
+                   }""",
+                   Dsl.innerAnnotation()
+                      .name("MyInterface")
+                      .body("// some content")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void field()
+   {
+      assertEquals("""
+                   @interface MyInterface {
+                   String s;
+                   private int i;
+                   }""",
+                   Dsl.innerAnnotation()
+                      .name("MyInterface")
+                      .field("String s;")
+                      .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void method()
+   {
+      assertEquals("""
+                   @interface MyInterface {
+                   abstract void foo() {}
+                   String myMethod() {}
+                   
+                   }""",
+                   Dsl.innerAnnotation()
+                      .name("MyInterface")
+                      .method("abstract void foo() {}")
+                      .method(Dsl.method().result("String").name("myMethod"))
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void inner()
+   {
+      assertEquals("""
+                   @interface MyInterface {
+                   @interface Inner {}
+                   @interface Inner2 {
+                   }
+                   
+                   }""",
+                   Dsl.innerAnnotation()
+                      .name("MyInterface")
+                      .inner("@interface Inner {}")
+                      .inner(Dsl.innerAnnotation().name("Inner2"))
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+
+   @Test
+   void copyright()
+   {
+      assertEquals("""
+                   // some copyright
+                   package org.example;
+                   
+                   /// some javadoc
+                   @interface MyInterface {
+                   }""",
+                   Dsl.annotation()
+                      .copyright("// some copyright")
+                      .package_(Dsl.packageInfo().name("org.example"))
+                         .javadoc("/// some javadoc")
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void package_()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   @interface MyInterface {
+                   }""",
+                   Dsl.annotation()
+                      .package_("org.example")
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void import_()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import some.thing
+                   import Dings
+                   import other.package.*
+                   import static foo.package
+                   import static MyInterface2
+                   import static some.other.package.*;
+                   
+                   @interface MyInterface {
+                   }""",
+                   Dsl.annotation()
+                      .package_("org.example")
+                      .import_("some.thing")
+                      .import_(Dsl.innerAnnotation().name("Dings"))
+                      .importPackage(Dsl.packageInfo().name("other.package"))
+                      .staticImport("foo.package")
+                      .staticImport(Dsl.innerAnnotation().name("MyInterface2"))
+                      .staticImportPackage(Dsl.packageInfo().name("some.other.package"))
+                      .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+}

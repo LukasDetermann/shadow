@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.Renderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.generic.GenericAndExtendsStep;
@@ -13,8 +12,6 @@ import io.determann.shadow.api.renderer.RenderingContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
-import static io.determann.shadow.api.renderer.RenderingContextOptions.GENERIC_USAGE;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class GenericDsl
@@ -92,7 +89,7 @@ public class GenericDsl
    {
       return setType(new GenericDsl(this),
                      bound,
-                     (genericDsl, genericRenderable) -> genericDsl.extends_.add(genericRenderable::renderDeclaration));
+                     (genericDsl, genericRenderable) -> genericDsl.extends_.add(genericRenderable::renderName));
    }
 
    @Override
@@ -113,12 +110,7 @@ public class GenericDsl
       StringBuilder sb = new StringBuilder();
       sb.append(name);
 
-      if (renderingContext.hasOption(GENERIC_USAGE))
-      {
-         return sb.toString();
-      }
-
-      renderElement(sb, " extends ", extends_, renderingContextBuilder(renderingContext).withOption(GENERIC_USAGE).build(), " & ");
+      renderElement(sb, " extends ", extends_, renderingContext, " & ");
       return sb.toString();
    }
 
