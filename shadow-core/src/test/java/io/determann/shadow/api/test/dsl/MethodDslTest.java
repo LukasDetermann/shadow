@@ -155,4 +155,10 @@ class MethodDslTest
                       .renderDeclaration(DEFAULT));
       //@end
    }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("foo", Dsl.method().resultType("void").name("foo").renderName(DEFAULT));
+   }
 }

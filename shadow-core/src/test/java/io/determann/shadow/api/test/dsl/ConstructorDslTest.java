@@ -146,4 +146,15 @@ class ConstructorDslTest
                       .renderDeclaration(DEFAULT));
       //@end
    }
+
+   @Test
+   void receiverAndParam()
+   {
+      assertEquals("MyType(Other Other.this, String s) {}",
+                   Dsl.constructor()
+                      .type("MyType")
+                      .receiver("Other Other.this")
+                      .parameter(Dsl.parameter("String", "s"))
+                      .renderDeclaration(DEFAULT));
+   }
 }

@@ -215,4 +215,31 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("MyInterface", Dsl.innerInterface().name("MyInterface").renderName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderType()
+   {
+      assertEquals("MyInterface<T, S>",
+                   Dsl.innerInterface()
+                      .name("MyInterface")
+                      .generic("T")
+                      .generic("S")
+                      .renderType(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderQualifiedName()
+   {
+      assertEquals("org.example.MyInterface",
+                   Dsl.interface_()
+                         .package_("org.example")
+                         .name("MyInterface")
+                         .renderQualifiedName(RenderingContext.DEFAULT));
+   }
 }

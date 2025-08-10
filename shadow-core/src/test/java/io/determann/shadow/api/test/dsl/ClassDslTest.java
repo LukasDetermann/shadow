@@ -290,4 +290,25 @@ class ClassDslTest
                       .name("MyClass")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
+
+   @Test
+   void renderType()
+   {
+      assertEquals("MyClass<T, S>",
+                   Dsl.innerClass()
+                      .name("MyClass")
+                      .generic("T")
+                      .generic("S")
+                      .renderType(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderQualifiedName()
+   {
+      assertEquals("org.example.MyClass",
+                   Dsl.class_()
+                      .package_("org.example")
+                      .name("MyClass")
+                      .renderQualifiedName(RenderingContext.DEFAULT));
+   }
 }

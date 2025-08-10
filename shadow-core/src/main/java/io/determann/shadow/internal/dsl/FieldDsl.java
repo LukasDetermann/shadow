@@ -258,7 +258,7 @@ public class FieldDsl
               .append(initializers.get(i));
          }
 
-         if (names.size() + 1 == initializers.size())
+         if (names.size() == initializers.size() + 1)
          {
             sb.append(", ")
               .append(names.getLast());
@@ -271,7 +271,7 @@ public class FieldDsl
       @Override
       public String renderName(RenderingContext renderingContext)
       {
-         return names.get(0);
+         return fieldDsl.name;
       }
    }
 }

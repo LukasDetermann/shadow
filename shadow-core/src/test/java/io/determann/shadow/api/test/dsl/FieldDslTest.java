@@ -207,4 +207,30 @@ class FieldDslTest
       assertEquals("public int i1 = 5;", Dsl.field(Modifier.PUBLIC, cPrimitive, "i1", "5").renderDeclaration(DEFAULT));
       //@end
    }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("s", Dsl.field("String", "s").renderName(DEFAULT));
+   }
+
+   @Test
+   void renderNameMultiDeclaration()
+   {
+      assertEquals("s", Dsl.field().type("String").name("s").initializer("\"\"").name("s1").renderName(DEFAULT));
+   }
+
+   @Test
+   void multiDeclaration()
+   {
+      assertEquals("int i = 0, i1 = 1, i2;",
+                   Dsl.field()
+                      .type("int")
+                      .name("i")
+                      .initializer("0")
+                      .name("i1")
+                      .initializer("1")
+                      .name("i2")
+                      .renderDeclaration(DEFAULT));
+   }
 }
