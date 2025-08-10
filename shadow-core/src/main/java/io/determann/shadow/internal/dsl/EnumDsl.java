@@ -2,11 +2,13 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.*;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
@@ -275,56 +277,15 @@ public class EnumDsl
    {
       return addArray2(new EnumDsl(this),
                        name,
-                       (enumDsl, string) -> enumDsl.imports.add(renderingContext -> "import " + string));
+                       (enumDsl, string) -> enumDsl.imports.add(renderingContext -> Dsl.import_(string).renderDeclaration(renderingContext)));
    }
 
    @Override
-   public EnumImportStep import_(List<? extends DeclaredRenderable> declared)
+   public EnumImportStep import_(List<? extends ImportRenderable> declared)
    {
-      return addArrayRenderer(new EnumDsl(this),
-                              declared,
-                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
-                              enumDsl -> enumDsl.imports::add);
-   }
-
-   @Override
-   public EnumImportStep importPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new EnumDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
-                              enumDsl -> enumDsl.imports::add);
-   }
-
-   @Override
-   public EnumImportStep staticImport(String... name)
-   {
-      return addArrayRenderer(new EnumDsl(this),
-                              name,
-                              (renderingContext, string) -> "import static " + string,
-                              enumDsl -> enumDsl.imports::add);
-   }
-
-   @Override
-   public EnumImportStep staticImport(List<? extends DeclaredRenderable> declared)
-   {
-      return addArrayRenderer(new EnumDsl(this),
-                              declared,
-                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
-                              enumDsl -> enumDsl.imports::add);
-   }
-
-   @Override
-   public EnumImportStep staticImportPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new EnumDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import static " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
-                              enumDsl -> enumDsl.imports::add);
+      return addArray2(new EnumDsl(this),
+                       declared,
+                       (enumDsl, importRenderable) -> enumDsl.imports.add(importRenderable::renderDeclaration));
    }
 
    @Override
@@ -364,7 +325,7 @@ public class EnumDsl
            .append("\n\n");
       }
 
-      renderElement(sb, imports, ";", context, "\n");
+      renderElement(sb, imports, context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");

@@ -583,6 +583,12 @@ public interface C
                                                              .throws_(requestOrEmpty(this, EXECUTABLE_GET_THROWS).orElse(emptyList()))
                                                              .renderDeclaration(renderingContext);
       }
+
+      @Override
+      default String renderName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
+      }
    }
 
    interface Variable
@@ -628,6 +634,12 @@ public interface C
          }
          return initializationStep.initializer(Provider.requestOrThrow(this, FIELD_GET_CONSTANT_VALUE).toString())
                                   .renderDeclaration(renderingContext);
+      }
+
+      @Override
+      default String renderName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
       }
    }
 

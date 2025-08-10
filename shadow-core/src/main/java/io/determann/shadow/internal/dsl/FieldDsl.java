@@ -204,6 +204,12 @@ public class FieldDsl
       return sb.toString();
    }
 
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
+   }
+
    private static class Additional
          implements FieldAdditionalNameStep,
                     FieldAdditionalInitializationStep
@@ -261,27 +267,11 @@ public class FieldDsl
 
          return sb.toString();
       }
+
+      @Override
+      public String renderName(RenderingContext renderingContext)
+      {
+         return names.get(0);
+      }
    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

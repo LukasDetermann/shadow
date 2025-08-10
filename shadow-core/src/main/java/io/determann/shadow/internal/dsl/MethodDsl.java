@@ -312,4 +312,10 @@ public class MethodDsl
       sb.append("}");
       return sb.toString();
    }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
+   }
 }

@@ -1,11 +1,13 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation.*;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
@@ -256,55 +258,16 @@ public class AnnotationDsl
    {
       return addArray2(new AnnotationDsl(this),
                        name,
-                       (annotationDsl, string) -> annotationDsl.imports.add(renderingContext -> "import " + string));
+                       (annotationDsl, string) -> annotationDsl.imports.add(renderingContext -> Dsl.import_(string)
+                                                                                                   .renderDeclaration(renderingContext)));
    }
 
    @Override
-   public AnnotationImportStep import_(List<? extends DeclaredRenderable> declared)
+   public AnnotationImportStep import_(List<? extends ImportRenderable> declared)
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               declared,
-                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
-                              annotationDsl -> annotationDsl.imports::add);
-   }
-
-   @Override
-   public AnnotationImportStep importPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
-                              annotationDsl -> annotationDsl.imports::add);
-   }
-
-   @Override
-   public AnnotationImportStep staticImport(String... name)
-   {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              name,
-                              (renderingContext, string) -> "import static " + string,
-                              annotationDsl -> annotationDsl.imports::add);
-   }
-
-   @Override
-   public AnnotationImportStep staticImport(List<? extends DeclaredRenderable> declared)
-   {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              declared,
-                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
-                              annotationDsl -> annotationDsl.imports::add);
-   }
-
-   @Override
-   public AnnotationImportStep staticImportPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new AnnotationDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import static " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
                               annotationDsl -> annotationDsl.imports::add);
    }
 
@@ -328,7 +291,7 @@ public class AnnotationDsl
            .append("\n\n");
       }
 
-      renderElement(sb, imports, ";", context, "\n");
+      renderElement(sb, imports, context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");

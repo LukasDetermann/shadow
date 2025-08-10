@@ -2,12 +2,14 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
@@ -309,56 +311,16 @@ public class RecordDsl
    {
       return addArray2(new RecordDsl(this),
                        name,
-                       (recordDsl, string) -> recordDsl.imports.add(renderingContext -> "import " + string));
+                       (recordDsl, string) -> recordDsl.imports.add(renderingContext -> Dsl.import_(string)
+                                                                                           .renderDeclaration(renderingContext)));
    }
 
    @Override
-   public RecordImportStep import_(List<? extends DeclaredRenderable> declared)
+   public RecordImportStep import_(List<? extends ImportRenderable> declared)
    {
-      return addArrayRenderer(new RecordDsl(this),
-                              declared,
-                              (renderingContext, renderable) -> "import " + renderable.renderQualifiedName(renderingContext),
-                              recordDsl -> recordDsl.imports::add);
-   }
-
-   @Override
-   public RecordImportStep importPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new RecordDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
-                              recordDsl -> recordDsl.imports::add);
-   }
-
-   @Override
-   public RecordImportStep staticImport(String... name)
-   {
-      return addArrayRenderer(new RecordDsl(this),
-                              name,
-                              (renderingContext, string) -> "import static " + string,
-                              recordDsl -> recordDsl.imports::add);
-   }
-
-   @Override
-   public RecordImportStep staticImport(List<? extends DeclaredRenderable> declared)
-   {
-      return addArrayRenderer(new RecordDsl(this),
-                              declared,
-                              (renderingContext, renderable) -> "import static " + renderable.renderQualifiedName(renderingContext),
-                              recordDsl -> recordDsl.imports::add);
-   }
-
-   @Override
-   public RecordImportStep staticImportPackage(List<? extends PackageRenderable> cPackages)
-   {
-      return addArrayRenderer(new RecordDsl(this),
-                              cPackages,
-                              (renderingContext, packageRenderable) -> "import static " +
-                                                                       packageRenderable.renderQualifiedName(renderingContext) +
-                                                                       ".*",
-                              recordDsl -> recordDsl.imports::add);
+      return addArray2(new RecordDsl(this),
+                       declared,
+                       (recordDsl, importRenderable) -> recordDsl.imports.add(importRenderable::renderDeclaration));
    }
 
    @Override
@@ -381,7 +343,7 @@ public class RecordDsl
            .append("\n\n");
       }
 
-      renderElement(sb, imports, ";", context, "\n");
+      renderElement(sb, imports, context, "\n");
       if (!imports.isEmpty())
       {
          sb.append("\n\n");

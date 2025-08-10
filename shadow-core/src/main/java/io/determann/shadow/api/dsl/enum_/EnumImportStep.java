@@ -1,7 +1,6 @@
 package io.determann.shadow.api.dsl.enum_;
 
-import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
-import io.determann.shadow.api.dsl.package_.PackageRenderable;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,33 +10,10 @@ public interface EnumImportStep
 {
    EnumImportStep import_(String... name);
 
-   default EnumImportStep import_(DeclaredRenderable... declared)
+   default EnumImportStep import_(ImportRenderable... imports)
    {
-      return import_(Arrays.asList(declared));
+      return import_(Arrays.asList(imports));
    }
 
-   EnumImportStep import_(List<? extends DeclaredRenderable> declared);
-
-   default EnumImportStep importPackage(PackageRenderable... cPackages)
-   {
-      return importPackage(Arrays.asList(cPackages));
-   }
-
-   EnumImportStep importPackage(List<? extends PackageRenderable> cPackages);
-
-   EnumImportStep staticImport(String... name);
-
-   default EnumImportStep staticImport(DeclaredRenderable... declared)
-   {
-      return staticImport(Arrays.asList(declared));
-   }
-
-   EnumImportStep staticImport(List<? extends DeclaredRenderable> declared);
-
-   default EnumImportStep staticImportPackage(PackageRenderable... cPackages)
-   {
-      return staticImportPackage(Arrays.asList(cPackages));
-   }
-
-   EnumImportStep staticImportPackage(List<? extends PackageRenderable> cPackages);
+   EnumImportStep import_(List<? extends ImportRenderable> imports);
 }

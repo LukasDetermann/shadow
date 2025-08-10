@@ -9,6 +9,7 @@ import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.class_.ClassJavaDocStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.EnumCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.enum_.EnumJavaDocStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
@@ -18,13 +19,17 @@ import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
+import io.determann.shadow.api.dsl.import_.ImportStaticStep;
 import io.determann.shadow.api.dsl.interface_.InterfaceCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.interface_.InterfaceJavaDocStep;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
+import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.module.ModuleCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.opens.OpensRenderable;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
@@ -46,6 +51,85 @@ import static java.util.stream.Collectors.joining;
 
 public interface Dsl
 {
+   static ImportStaticStep import_()
+   {
+      return new ImportDsl();
+   }
+
+   static ImportRenderable import_(String name)
+   {
+      return import_().import_(name);
+   }
+
+   static ImportRenderable import_(DeclaredRenderable declared)
+   {
+      return import_().import_(declared);
+   }
+
+   /// needs to be part of any declared
+   static ImportRenderable import_(MethodRenderable method)
+   {
+      return import_().import_(method);
+   }
+
+   /// needs to be part of any declared
+   static ImportRenderable import_(FieldRenderable field)
+   {
+      return import_().import_(field);
+   }
+
+   static ImportRenderable importAll(String cPackage)
+   {
+      return import_().importAll(cPackage);
+   }
+
+   static ImportRenderable importAll(PackageRenderable cPackage)
+   {
+      return import_().importAll(cPackage);
+   }
+
+   static ImportRenderable importAll(DeclaredRenderable declared)
+   {
+      return import_().importAll(declared);
+   }
+
+   static ImportRenderable staticImport(String name)
+   {
+      return import_().static_().import_(name);
+   }
+
+   static ImportRenderable staticImport(DeclaredRenderable declared)
+   {
+      return import_().static_().import_(declared);
+   }
+
+   /// needs to be part of any declared
+   static ImportRenderable staticImport(MethodRenderable method)
+   {
+      return import_().static_().import_(method);
+   }
+
+   /// needs to be part of any declared
+   static ImportRenderable staticImport(FieldRenderable field)
+   {
+      return import_().static_().import_(field);
+   }
+
+   static ImportRenderable staticImportAll(String cPackage)
+   {
+      return import_().static_().importAll(cPackage);
+   }
+
+   static ImportRenderable staticImportAll(PackageRenderable cPackage)
+   {
+      return import_().static_().importAll(cPackage);
+   }
+
+   static ImportRenderable staticImportAll(DeclaredRenderable declared)
+   {
+      return import_().static_().importAll(declared);
+   }
+
    /// {@snippet file = "ConstructorDslTest.java" region = "api"}
    static ConstructorJavaDocStep constructor()
    {

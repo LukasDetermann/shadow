@@ -270,11 +270,11 @@ class ClassDslTest
       assertEquals("""
                    package org.example;
                    
-                   import some.thing
-                   import Dings
-                   import other.package.*
-                   import static foo.package
-                   import static MyClass2
+                   import some.thing;
+                   import Dings;
+                   import other.package.*;
+                   import static foo.package;
+                   import static MyInterface2;
                    import static some.other.package.*;
                    
                    class MyClass {
@@ -282,11 +282,11 @@ class ClassDslTest
                    Dsl.class_()
                       .package_("org.example")
                       .import_("some.thing")
-                      .import_(Dsl.innerClass().name("Dings"))
-                      .importPackage(Dsl.packageInfo().name("other.package"))
-                      .staticImport("foo.package")
-                      .staticImport(Dsl.innerClass().name("MyClass2"))
-                      .staticImportPackage(Dsl.packageInfo().name("some.other.package"))
+                      .import_(Dsl.import_("Dings"))
+                      .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
+                      .import_(Dsl.staticImport("foo.package"))
+                      .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
+                      .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyClass")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }

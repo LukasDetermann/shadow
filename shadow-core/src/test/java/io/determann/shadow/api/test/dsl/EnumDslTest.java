@@ -221,11 +221,11 @@ class EnumDslTest
       assertEquals("""
                    package org.example;
                    
-                   import some.thing
-                   import Dings
-                   import other.package.*
-                   import static foo.package
-                   import static MyEnum2
+                   import some.thing;
+                   import Dings;
+                   import other.package.*;
+                   import static foo.package;
+                   import static MyInterface2;
                    import static some.other.package.*;
                    
                    enum MyEnum {
@@ -233,11 +233,11 @@ class EnumDslTest
                    Dsl.enum_()
                       .package_("org.example")
                       .import_("some.thing")
-                      .import_(Dsl.innerEnum().name("Dings"))
-                      .importPackage(Dsl.packageInfo().name("other.package"))
-                      .staticImport("foo.package")
-                      .staticImport(Dsl.innerEnum().name("MyEnum2"))
-                      .staticImportPackage(Dsl.packageInfo().name("some.other.package"))
+                      .import_(Dsl.import_("Dings"))
+                      .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
+                      .import_(Dsl.staticImport("foo.package"))
+                      .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
+                      .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyEnum")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
