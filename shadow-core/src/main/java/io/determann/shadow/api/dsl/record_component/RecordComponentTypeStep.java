@@ -4,7 +4,7 @@ import io.determann.shadow.api.dsl.TypeRenderable;
 
 public interface RecordComponentTypeStep
 {
-   RecordComponentRenderable type(String type);
+   RecordComponentNameStep type(String type);
 
-   RecordComponentRenderable type(TypeRenderable type);
+   RecordComponentNameStep type(TypeRenderable type);
 }

@@ -739,8 +739,9 @@ public interface C
       default String renderDeclaration(RenderingContext renderingContext)
       {
          return recordComponent().annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
+                                 .type(Provider.requestOrThrow(this, RECORD_COMPONENT_GET_TYPE))
                                  .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                                 .type(Provider.requestOrThrow(this, RECORD_COMPONENT_GET_TYPE)).renderDeclaration(renderingContext);
+                                 .renderDeclaration(renderingContext);
       }
    }
 

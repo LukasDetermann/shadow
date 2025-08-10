@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import java.util.Arrays;
 import java.util.List;
 
-public interface RecordComponentAnnotateStep extends RecordComponentNameStep
+public interface RecordComponentAnnotateStep extends RecordComponentTypeStep
 {
    RecordComponentAnnotateStep annotate(String... annotation);
 

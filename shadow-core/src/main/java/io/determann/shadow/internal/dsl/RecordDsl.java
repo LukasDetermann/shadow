@@ -1,6 +1,5 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
@@ -14,6 +13,7 @@ import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.dsl.record.*;
+import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
@@ -171,7 +171,7 @@ public class RecordDsl
    }
 
    @Override
-   public RecordRecordComponentStep component(List<? extends C.RecordComponent> recordComponent)
+   public RecordRecordComponentStep component(List<? extends RecordComponentRenderable> recordComponent)
    {
       return addArrayRenderer(new RecordDsl(this),
                               recordComponent,

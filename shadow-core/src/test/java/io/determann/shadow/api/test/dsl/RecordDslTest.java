@@ -235,4 +235,36 @@ class RecordDslTest
                       .name("MyRecord")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
+
+   @Test
+   void component()
+   {
+      assertEquals("""
+                   record MyRecord(int i) {
+                   }""",
+                   Dsl.innerRecord()
+                         .name("MyRecord")
+                         .component(Dsl.recordComponent().type("String").name("s"))
+                         .component("int i")
+                         .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderQualifiedName()
+   {
+      assertEquals("org.example.MyRecord", Dsl.record().package_("org.example").name("MyRecord").renderQualifiedName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderType()
+   {
+      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderType(RenderingContext.DEFAULT));
+      assertEquals("MyRecord<T, S>", Dsl.innerRecord().name("MyRecord").generic("T").generic("S").renderType(RenderingContext.DEFAULT));
+   }
 }

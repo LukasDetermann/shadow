@@ -161,4 +161,11 @@ class MethodDslTest
    {
       assertEquals("foo", Dsl.method().resultType("void").name("foo").renderName(DEFAULT));
    }
+
+   @Test
+   void receiver()
+   {
+      assertEquals("MyType foo(MyClass MyClass.this) {}",
+                   Dsl.method().resultType("MyType").name("foo").receiver("MyClass MyClass.this").renderDeclaration(DEFAULT));
+   }
 }

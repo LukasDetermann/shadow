@@ -34,9 +34,7 @@ public class MethodDsl
    private final List<Renderable> exceptions = new ArrayList<>();
    private String body;
 
-   public MethodDsl()
-   {
-   }
+   public MethodDsl() {}
 
    private MethodDsl(MethodDsl other)
    {
@@ -281,13 +279,11 @@ public class MethodDsl
       renderElement(sb, modifiers, " ", context, " ");
       renderElement(sb, "<", generics, "> ", context, ", ");
 
-      if (result != null)
-      {
-         sb.append(result.render(context));
-         sb.append(' ');
-      }
-      sb.append(name);
-      sb.append('(');
+      sb.append(result.render(context))
+        .append(' ')
+        .append(name)
+        .append('(');
+
       if (receiver != null)
       {
          sb.append(receiver.render(context));

@@ -3,8 +3,8 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
+import io.determann.shadow.api.dsl.record_component.RecordComponentNameStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
-import io.determann.shadow.api.dsl.record_component.RecordComponentTypeStep;
 import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class RecordComponentDsl
       implements RecordComponentAnnotateStep,
-                 RecordComponentTypeStep,
+                 RecordComponentNameStep,
                  RecordComponentRenderable
 {
    private final List<Renderable> annotations = new ArrayList<>();
@@ -49,13 +49,13 @@ public class RecordComponentDsl
    }
 
    @Override
-   public RecordComponentTypeStep name(String name)
+   public RecordComponentRenderable name(String name)
    {
       return setType(new RecordComponentDsl(this), name, (recordComponentDsl, s) -> recordComponentDsl.name = s);
    }
 
    @Override
-   public RecordComponentRenderable type(String type)
+   public RecordComponentNameStep type(String type)
    {
       return setType(new RecordComponentDsl(this),
                      type,
@@ -63,7 +63,7 @@ public class RecordComponentDsl
    }
 
    @Override
-   public RecordComponentRenderable type(TypeRenderable type)
+   public RecordComponentNameStep type(TypeRenderable type)
    {
       return setTypeRenderer(new RecordComponentDsl(this),
                              type,

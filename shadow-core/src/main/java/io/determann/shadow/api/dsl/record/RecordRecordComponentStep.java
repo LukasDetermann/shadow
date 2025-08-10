@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.record;
 
-import io.determann.shadow.api.C;
+import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,10 +10,10 @@ public interface RecordRecordComponentStep
 {
    RecordRecordComponentStep component(String... recordComponent);
 
-   default RecordRecordComponentStep component(C.RecordComponent... recordComponent)
+   default RecordRecordComponentStep component(RecordComponentRenderable... recordComponent)
    {
       return component(Arrays.asList(recordComponent));
    }
 
-   RecordRecordComponentStep component(List<? extends C.RecordComponent> recordComponent);
+   RecordRecordComponentStep component(List<? extends RecordComponentRenderable> recordComponent);
 }
