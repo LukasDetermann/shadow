@@ -47,7 +47,7 @@
         <org.apache.maven.plugins.maven-javadoc-plugin>3.11.2</org.apache.maven.plugins.maven-javadoc-plugin>
         <org.apache.maven.plugins.maven-gpg-plugin>3.2.7</org.apache.maven.plugins.maven-gpg-plugin>
         <org.sonatype.plugins.nexus-staging-maven-plugin>1.7.0</org.sonatype.plugins.nexus-staging-maven-plugin>
-        <org.apache.commons.commons-lang3.version>3.17.0</org.apache.commons.commons-lang3.version>
+        <org.apache.commons.commons-lang3.version>3.18.0</org.apache.commons.commons-lang3.version>
         <javadoc.snippet.path>${project.basedir}/../documentation/src/test/java/io/determann/shadow/javadoc</javadoc.snippet.path>
     </properties>
 
