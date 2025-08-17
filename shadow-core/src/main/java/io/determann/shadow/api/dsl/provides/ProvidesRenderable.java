@@ -1,8 +1,10 @@
 package io.determann.shadow.api.dsl.provides;
 
 import io.determann.shadow.api.renderer.RenderingContext;
+import org.jetbrains.annotations.Contract;
 
 public interface ProvidesRenderable
 {
+   @Contract(value = "_ -> new", pure = true)
    String renderDeclaration(RenderingContext renderingContext);
 }

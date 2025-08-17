@@ -1,8 +1,13 @@
 package io.determann.shadow.api.dsl.class_;
 
-public interface ClassExtendsStep extends ClassImplementsStep
+import org.jetbrains.annotations.Contract;
+
+public interface ClassExtendsStep
+      extends ClassImplementsStep
 {
+   @Contract(value = "_ -> new", pure = true)
    ClassImplementsStep extends_(String aClass);
 
+   @Contract(value = "_ -> new", pure = true)
    ClassImplementsStep extends_(ClassRenderable aClass);
 }

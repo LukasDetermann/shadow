@@ -1,6 +1,10 @@
 package io.determann.shadow.api.dsl.field;
 
-public interface FieldJavaDocStep extends FieldAnnotateStep
+import org.jetbrains.annotations.Contract;
+
+public interface FieldJavaDocStep
+      extends FieldAnnotateStep
 {
+   @Contract(value = "_ -> new", pure = true)
    FieldAnnotateStep javadoc(String javadoc);
 }

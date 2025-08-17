@@ -1,6 +1,10 @@
 package io.determann.shadow.api.dsl.constructor;
 
-public interface ConstructorBodyStep extends ConstructorRenderable
+import org.jetbrains.annotations.Contract;
+
+public interface ConstructorBodyStep
+      extends ConstructorRenderable
 {
+   @Contract(value = "_ -> new", pure = true)
    ConstructorRenderable body(String body);
 }

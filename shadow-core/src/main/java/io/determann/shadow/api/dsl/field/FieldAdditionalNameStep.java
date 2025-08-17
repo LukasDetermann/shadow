@@ -1,6 +1,10 @@
 package io.determann.shadow.api.dsl.field;
 
-public interface FieldAdditionalNameStep extends FieldRenderable
+import org.jetbrains.annotations.Contract;
+
+public interface FieldAdditionalNameStep
+      extends FieldRenderable
 {
+   @Contract(value = "_ -> new", pure = true)
    FieldAdditionalInitializationStep name(String string);
 }
