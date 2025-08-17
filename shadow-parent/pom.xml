@@ -48,6 +48,7 @@
         <org.apache.maven.plugins.maven-gpg-plugin>3.2.7</org.apache.maven.plugins.maven-gpg-plugin>
         <org.sonatype.plugins.nexus-staging-maven-plugin>1.7.0</org.sonatype.plugins.nexus-staging-maven-plugin>
         <org.apache.commons.commons-lang3.version>3.18.0</org.apache.commons.commons-lang3.version>
+        <org.jetbrains.annotations.version>26.0.2</org.jetbrains.annotations.version>
         <javadoc.snippet.path>${project.basedir}/../documentation/src/test/java/io/determann/shadow/javadoc</javadoc.snippet.path>
     </properties>
 
@@ -106,6 +107,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${org.apache.commons.commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${org.jetbrains.annotations.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

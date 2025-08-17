@@ -1,6 +1,7 @@
 package io.determann.shadow.api.query;
 
 import io.determann.shadow.api.query.operation.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
@@ -14,6 +15,7 @@ public final class Provider
    {
    }
 
+   @Nullable
    private static Map<Implementation, ProviderSpi> providers;
 
    //static 0
@@ -306,7 +308,7 @@ public final class Provider
 
    private static String buildExceptionText(Operation<?> operation,
                                             String msg,
-                                            ImplementationDefined instance,
+                                            @Nullable ImplementationDefined instance,
                                             Implementation implementation,
                                             Object... params)
    {
