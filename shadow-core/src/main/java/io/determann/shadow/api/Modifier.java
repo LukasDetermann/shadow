@@ -1,7 +1,7 @@
 package io.determann.shadow.api;
 
 
-import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.dsl.RenderingContext;
 
 public enum Modifier
 {

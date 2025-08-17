@@ -1,4 +1,4 @@
-package io.determann.shadow.api.renderer;
+package io.determann.shadow.api.dsl;
 
 public interface NameRenderer
 {

@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.dsl.RenderingContext;
 
 import java.util.Collection;
 import java.util.List;

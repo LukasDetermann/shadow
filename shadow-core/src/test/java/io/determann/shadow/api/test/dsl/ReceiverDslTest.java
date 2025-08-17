@@ -1,10 +1,10 @@
 package io.determann.shadow.api.test.dsl;
 
 import io.determann.shadow.api.dsl.Dsl;
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

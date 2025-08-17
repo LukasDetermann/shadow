@@ -8,7 +8,7 @@ import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodDslTest

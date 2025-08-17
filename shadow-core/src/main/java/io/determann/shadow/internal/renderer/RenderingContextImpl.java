@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.renderer;
 
-import io.determann.shadow.api.renderer.NameRenderedEvent;
-import io.determann.shadow.api.renderer.NameRenderer;
-import io.determann.shadow.api.renderer.RenderingContext;
-import io.determann.shadow.api.renderer.RenderingContextBuilder;
+import io.determann.shadow.api.dsl.NameRenderedEvent;
+import io.determann.shadow.api.dsl.NameRenderer;
+import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.RenderingContextBuilder;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

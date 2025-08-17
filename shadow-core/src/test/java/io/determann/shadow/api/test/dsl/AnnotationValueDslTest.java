@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.ElementType;
 
-import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

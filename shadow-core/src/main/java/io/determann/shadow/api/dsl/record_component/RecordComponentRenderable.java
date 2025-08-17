@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.record_component;
 
-import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.dsl.RenderingContext;
 import org.jetbrains.annotations.Contract;
 
 public interface RecordComponentRenderable

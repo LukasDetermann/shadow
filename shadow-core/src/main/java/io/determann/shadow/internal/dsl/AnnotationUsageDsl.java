@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.annotation.AnnotationRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageNameStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageValueStep;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
 import java.util.List;

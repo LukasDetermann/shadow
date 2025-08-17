@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.renderer.RenderingContext;
+import io.determann.shadow.api.dsl.RenderingContext;
 
 public interface Renderable
 {

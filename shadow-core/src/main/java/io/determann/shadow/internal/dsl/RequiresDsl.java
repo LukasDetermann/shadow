@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.requires.RequiresNameStep;
 import io.determann.shadow.api.dsl.requires.RequiresRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import static io.determann.shadow.internal.dsl.DslSupport.setType;
 import static io.determann.shadow.internal.dsl.DslSupport.setTypeRenderer;

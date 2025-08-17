@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.generic.GenericAndExtendsStep;
@@ -7,7 +8,6 @@ import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericExtendsStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
 import java.util.List;

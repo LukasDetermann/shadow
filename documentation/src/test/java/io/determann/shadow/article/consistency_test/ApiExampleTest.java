@@ -1,11 +1,11 @@
 package io.determann.shadow.article.consistency_test;
 
 import io.determann.shadow.api.C;
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.query.Operations;
 import io.determann.shadow.api.query.Provider;
 import io.determann.shadow.api.query.Response;
 import io.determann.shadow.api.reflection.Adapter;
-import io.determann.shadow.api.renderer.RenderingContext;
 import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

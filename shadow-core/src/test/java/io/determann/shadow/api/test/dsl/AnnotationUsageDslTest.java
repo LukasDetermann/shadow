@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.annotation.AnnotationRenderable;
 import io.determann.shadow.api.test.TestFactory;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.renderer.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnnotationUsageDslTest

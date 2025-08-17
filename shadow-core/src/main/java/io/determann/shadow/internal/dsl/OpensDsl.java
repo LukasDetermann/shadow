@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.opens.OpensTargetStep;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
 import java.util.List;

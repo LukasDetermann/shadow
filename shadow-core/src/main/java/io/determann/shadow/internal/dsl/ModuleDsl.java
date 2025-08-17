@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.module.*;
@@ -7,12 +8,11 @@ import io.determann.shadow.api.dsl.opens.OpensRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesRenderable;
 import io.determann.shadow.api.dsl.requires.RequiresRenderable;
 import io.determann.shadow.api.dsl.uses.UsesRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.api.renderer.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class ModuleDsl

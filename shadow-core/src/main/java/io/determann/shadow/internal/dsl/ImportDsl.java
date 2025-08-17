@@ -1,5 +1,6 @@
 package io.determann.shadow.internal.dsl;
 
+import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
@@ -7,7 +8,6 @@ import io.determann.shadow.api.dsl.import_.ImportStaticStep;
 import io.determann.shadow.api.dsl.import_.ImportTypeStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
-import io.determann.shadow.api.renderer.RenderingContext;
 
 import static io.determann.shadow.internal.dsl.DslSupport.setType;
 

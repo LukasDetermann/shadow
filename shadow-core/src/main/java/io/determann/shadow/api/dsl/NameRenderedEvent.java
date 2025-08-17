@@ -1,4 +1,4 @@
-package io.determann.shadow.api.renderer;
+package io.determann.shadow.api.dsl;
 
 public record NameRenderedEvent(String packageName,
                                 String simpleName,
