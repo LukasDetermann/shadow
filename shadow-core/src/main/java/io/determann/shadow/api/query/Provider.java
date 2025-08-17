@@ -2,6 +2,7 @@ package io.determann.shadow.api.query;
 
 import io.determann.shadow.api.query.operation.*;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.*;
 import java.util.function.Function;
@@ -26,6 +27,7 @@ public final class Provider
       return _request(implementation, operation);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(Implementation implementation,
                                                                                     StaticOperation0<RESULT> operation)
    {
@@ -57,6 +59,7 @@ public final class Provider
       return _request(implementation, operation, param1);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> RESULT requestOrThrow(Implementation implementation,
                                                                                              StaticOperation1<PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
@@ -91,6 +94,7 @@ public final class Provider
       return _request(implementation, operation, param1, param2);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, PARAM_1, PARAM_2, RESULT> RESULT requestOrThrow(Implementation implementation,
                                                                                                       StaticOperation2<PARAM_1, PARAM_2, RESULT> operation,
                                                                                                       PARAM_1 param1,
@@ -125,6 +129,7 @@ public final class Provider
       return _request(instance, operation);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, RESULT> RESULT requestOrThrow(TYPE instance,
                                                                                     InstanceOperation0<? super TYPE, RESULT> operation)
    {
@@ -156,6 +161,7 @@ public final class Provider
       return _request(instance, operation, param1);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, PARAM_1, RESULT> RESULT requestOrThrow(TYPE instance,
                                                                                              InstanceOperation1<? super TYPE, PARAM_1, RESULT> operation,
                                                                                              PARAM_1 param1)
@@ -190,6 +196,7 @@ public final class Provider
       return _request(instance, operation, param1, param2);
    }
 
+   @UnknownNullability
    public static <TYPE extends ImplementationDefined, PARAM_1, PARAM_2, RESULT> RESULT requestOrThrow(TYPE instance,
                                                                                                       InstanceOperation2<? super TYPE, PARAM_1, PARAM_2, RESULT> operation,
                                                                                                       PARAM_1 param1,

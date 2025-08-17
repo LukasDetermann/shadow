@@ -1,12 +1,12 @@
 package io.determann.shadow.api.query;
 
+import org.jetbrains.annotations.UnknownNullability;
+
 import java.util.Objects;
 
 public sealed interface Response<T>
 {
-   record Result<T>(T value) implements Response<T>
-   {
-   }
+   record Result<T>(@UnknownNullability T value) implements Response<T> {}
 
    /**
     * Equivalent to Optional.empty to prevent to much nesting
