@@ -196,7 +196,7 @@ class EnumDslTest
                    Dsl.enum_()
                       .copyright("// some copyright")
                       .package_(Dsl.packageInfo().name("org.example"))
-                         .javadoc("/// some javadoc")
+                      .javadoc("/// some javadoc")
                       .name("MyEnum")
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
@@ -239,6 +239,55 @@ class EnumDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyEnum")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderQualifiedName()
+   {
+      assertEquals("MyEnum",
+                   Dsl.innerEnum()
+                      .name("MyEnum")
+                      .renderQualifiedName(RenderingContext.DEFAULT));
+
+      assertEquals("org.example.MyEnum",
+                   Dsl.enum_()
+                      .package_("org.example")
+                      .name("MyEnum")
+                      .renderQualifiedName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderType()
+   {
+      assertEquals("org.example.MyEnum",
+                   Dsl.enum_()
+                      .package_("org.example")
+                      .name("MyEnum")
+                      .renderType(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("MyEnum",
+                   Dsl.innerEnum()
+                      .name("MyEnum")
+                      .renderName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void enumConstant()
+   {
+      assertEquals("""
+                   enum MyEnum {
+                   T1,
+                   T2;
+                   }""",
+                   Dsl.innerEnum()
+                      .name("MyEnum")
+                      .enumConstant("T1")
+                      .enumConstant(Dsl.enumConstant().name("T2"))
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
 }

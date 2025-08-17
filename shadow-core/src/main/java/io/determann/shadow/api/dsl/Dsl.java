@@ -66,18 +66,6 @@ public interface Dsl
       return import_().import_(declared);
    }
 
-   /// needs to be part of any declared
-   static ImportRenderable import_(MethodRenderable method)
-   {
-      return import_().import_(method);
-   }
-
-   /// needs to be part of any declared
-   static ImportRenderable import_(FieldRenderable field)
-   {
-      return import_().import_(field);
-   }
-
    static ImportRenderable importAll(String cPackage)
    {
       return import_().importAll(cPackage);
@@ -86,11 +74,6 @@ public interface Dsl
    static ImportRenderable importAll(PackageRenderable cPackage)
    {
       return import_().importAll(cPackage);
-   }
-
-   static ImportRenderable importAll(DeclaredRenderable declared)
-   {
-      return import_().importAll(declared);
    }
 
    static ImportRenderable staticImport(String name)
@@ -103,16 +86,14 @@ public interface Dsl
       return import_().static_().import_(declared);
    }
 
-   /// needs to be part of any declared
-   static ImportRenderable staticImport(MethodRenderable method)
+   static ImportRenderable staticImport(DeclaredRenderable declared,MethodRenderable method)
    {
-      return import_().static_().import_(method);
+      return import_().static_().import_(declared, method);
    }
 
-   /// needs to be part of any declared
-   static ImportRenderable staticImport(FieldRenderable field)
+   static ImportRenderable staticImport(DeclaredRenderable declared,FieldRenderable field)
    {
-      return import_().static_().import_(field);
+      return import_().static_().import_(declared, field);
    }
 
    static ImportRenderable staticImportAll(String cPackage)

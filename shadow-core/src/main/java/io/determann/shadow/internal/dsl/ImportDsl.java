@@ -54,28 +54,29 @@ public class ImportDsl
    }
 
    @Override
-   public ImportRenderable import_(MethodRenderable method)
+   public ImportRenderable import_(DeclaredRenderable declared, MethodRenderable method)
    {
+      record Pair(DeclaredRenderable declared,
+                  MethodRenderable method) {}
+
       return setType(new ImportDsl(this),
-                     method,
-                     (importDsl, methodRenderable) ->
-                           importDsl.import_ = renderingContext -> renderPackage(renderingContext) +
-                                                                   methodRenderable.renderName(renderingContext));
+                     new Pair(declared, method),
+                     (importDsl, pair) ->
+                           importDsl.import_ = renderingContext ->
+                                 pair.declared().renderQualifiedName(renderingContext) + '.' + pair.method().renderName(renderingContext));
    }
 
    @Override
-   public ImportRenderable import_(FieldRenderable field)
+   public ImportRenderable import_(DeclaredRenderable declared, FieldRenderable field)
    {
-      return setType(new ImportDsl(this),
-                     field,
-                     (importDsl, fieldRenderable) ->
-                           importDsl.import_ = renderingContext -> renderPackage(renderingContext) +
-                                                                   fieldRenderable.renderName(renderingContext));
-   }
+      record Pair(DeclaredRenderable declared,
+                  FieldRenderable field) {}
 
-   private static String renderPackage(RenderingContext renderingContext)
-   {
-      return renderingContext.getSurrounding(PackageRenderable.class).renderQualifiedName(renderingContext);
+      return setType(new ImportDsl(this),
+                     new Pair(declared, field),
+                     (importDsl, pair) ->
+                           importDsl.import_ = renderingContext ->
+                                 pair.declared().renderQualifiedName(renderingContext) + '.' + pair.field().renderName(renderingContext));
    }
 
    @Override

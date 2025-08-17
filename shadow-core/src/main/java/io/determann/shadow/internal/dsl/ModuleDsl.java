@@ -35,6 +35,7 @@ public class ModuleDsl
    {
       this.copyright = other.copyright;
       this.javadoc = other.javadoc;
+      this.annotations.addAll(other.annotations);
       this.name = other.name;
       this.requires.addAll(other.requires);
       this.exports.addAll(other.exports);
@@ -84,7 +85,7 @@ public class ModuleDsl
    @Override
    public ModuleRequiresStep requires(String... requires)
    {
-      return addArrayRenderer(new ModuleDsl(this), requires, moduleDsl -> moduleDsl.requires::add);
+      return addArray2(new ModuleDsl(this), requires, (moduleDsl, s) -> moduleDsl.requires.add(renderingContext -> "requires " + s + ';'));
    }
 
    @Override
@@ -99,7 +100,7 @@ public class ModuleDsl
    @Override
    public ModuleExportsStep exports(String... exports)
    {
-      return addArrayRenderer(new ModuleDsl(this), exports, moduleDsl -> moduleDsl.exports::add);
+      return addArray2(new ModuleDsl(this), exports, (moduleDsl, s) -> moduleDsl.exports.add(renderingContext -> "exports " + s + ';'));
    }
 
    @Override
@@ -114,7 +115,7 @@ public class ModuleDsl
    @Override
    public ModuleOpensStep opens(String... opens)
    {
-      return addArrayRenderer(new ModuleDsl(this), opens, moduleDsl -> moduleDsl.opens::add);
+      return addArray2(new ModuleDsl(this), opens, (moduleDsl, s) -> moduleDsl.opens.add(renderingContext -> "opens " + s + ';'));
    }
 
    @Override
@@ -129,7 +130,7 @@ public class ModuleDsl
    @Override
    public ModuleUsesStep uses(String... uses)
    {
-      return addArrayRenderer(new ModuleDsl(this), uses, moduleDsl -> moduleDsl.uses::add);
+      return addArray2(new ModuleDsl(this), uses, (moduleDsl, s) -> moduleDsl.uses.add(renderingContext -> "uses " + s + ';'));
    }
 
    @Override
@@ -144,7 +145,7 @@ public class ModuleDsl
    @Override
    public ModuleProvidesStep provides(String... provides)
    {
-      return addArrayRenderer(new ModuleDsl(this), provides, moduleDsl -> moduleDsl.provides::add);
+      return addArray2(new ModuleDsl(this), provides, (moduleDsl, s) -> moduleDsl.provides.add(renderingContext -> "provies " + s + ';'));
    }
 
    @Override

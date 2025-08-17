@@ -89,13 +89,13 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyInterface {
-                   abstract void foo() {}
-                   String myMethod() {}
+                   String foo();
+                   String myMethod();
                    
                    }""",
                    Dsl.innerAnnotation()
                       .name("MyInterface")
-                      .method("abstract void foo() {}")
+                      .method("String foo();")
                       .method(Dsl.method().result("String").name("myMethod"))
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
@@ -174,6 +174,51 @@ class AnnotationDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyInterface")
+                      .renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderQualifiedName()
+   {
+      assertEquals("org.example.MyAnnotation",
+                   Dsl.annotation()
+                      .package_("org.example")
+                      .name("MyAnnotation")
+                      .renderQualifiedName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderType()
+   {
+      assertEquals("org.example.MyAnnotation",
+                   Dsl.annotation()
+                      .package_("org.example")
+                      .name("MyAnnotation")
+                      .renderType(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderName()
+   {
+      assertEquals("MyAnnotation",
+                   Dsl.annotation()
+                      .package_("org.example")
+                      .name("MyAnnotation")
+                      .renderName(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void renderMethod()
+   {
+      assertEquals("""
+                   @interface MyAnnotation {
+                   String foo() default "";
+                   
+                   }""",
+                   Dsl.innerAnnotation()
+                      .name("MyAnnotation")
+                      .method(Dsl.method().result("String").name("foo"),
+                              Dsl.annotationValue(""))
                       .renderDeclaration(RenderingContext.DEFAULT));
    }
 }

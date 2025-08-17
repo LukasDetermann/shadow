@@ -240,7 +240,7 @@ class RecordDslTest
    void component()
    {
       assertEquals("""
-                   record MyRecord(int i) {
+                   record MyRecord(String s, int i) {
                    }""",
                    Dsl.innerRecord()
                          .name("MyRecord")

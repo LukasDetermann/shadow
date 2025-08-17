@@ -23,9 +23,7 @@ public class EnumConstantDsl
    private String name;
    private final List<Renderable> parameters = new ArrayList<>();
 
-   public EnumConstantDsl()
-   {
-   }
+   public EnumConstantDsl() {}
 
    private EnumConstantDsl(EnumConstantDsl other)
    {
@@ -85,7 +83,7 @@ public class EnumConstantDsl
    {
       return addArrayRenderer(new EnumConstantDsl(this),
                               parameter,
-                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderName(renderingContext),
                               enumConstantDsl -> enumConstantDsl.parameters::add);
    }
 
@@ -102,11 +100,11 @@ public class EnumConstantDsl
       renderElement(sb, annotations, "\n", renderingContext, "\n");
 
       sb.append(name);
-      renderElement(sb, "<", parameters, ">", renderingContext, ", ");
+      renderElement(sb, "(", parameters, ")", renderingContext, ", ");
 
       if (body != null)
       {
-         sb.append("{\n");
+         sb.append(" {\n");
          sb.append(body);
          sb.append("\n}");
       }

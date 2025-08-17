@@ -672,6 +672,12 @@ public interface C
          }
          return varargsStep.varArgs().renderDeclaration(renderingContext);
       }
+
+      @Override
+      default String renderName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
+      }
    }
 
    /// This represents a java beans Property. Only a [Getter][Operations#PROPERTY_GET_GETTER] is mandatory

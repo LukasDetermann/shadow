@@ -2,6 +2,7 @@ package io.determann.shadow.api.test.dsl;
 
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
+import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.renderer.RenderingContext;
 import org.junit.jupiter.api.Test;
@@ -62,12 +63,21 @@ class ReceiverDslTest
    }
 
    @Test
-   void constructorThrows()
+   void constructorMissingOuterClass()
    {
-      assertThrows(IllegalStateException.class,
-                   () -> Dsl.innerClass().name("Inner")
-                            .constructor(Dsl.constructor().type("Inner")
-                                            .receiver(Dsl.receiver()))
-                            .renderDeclaration(RenderingContext.DEFAULT));
+      ClassRenderable renderable = Dsl.innerClass().name("Inner")
+                                      .constructor(Dsl.constructor().type("Inner")
+                                                      .receiver(Dsl.receiver()));
+
+      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.DEFAULT));
+   }
+
+   @Test
+   void constructorMissingInnerClass()
+   {
+      ConstructorRenderable renderable = Dsl.constructor().type("Inner")
+                                            .receiver(Dsl.receiver());
+
+      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.DEFAULT));
    }
 }

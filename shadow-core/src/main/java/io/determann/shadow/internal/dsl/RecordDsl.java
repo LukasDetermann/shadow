@@ -63,6 +63,7 @@ public class RecordDsl
       this.annotations.addAll(other.annotations);
       this.modifiers.addAll(other.modifiers);
       this.name = other.name;
+      this.components.addAll(other.components);
       this.generics.addAll(other.generics);
       this.implements_.addAll(other.implements_);
       this.fields.addAll(other.fields);

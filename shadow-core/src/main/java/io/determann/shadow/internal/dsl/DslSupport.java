@@ -15,9 +15,9 @@ import static java.util.stream.Collectors.joining;
 /// implementation note: a bit overkill, but minimises bug potential
 interface DslSupport
 {
-   static <INSTANCE, TYPE> INSTANCE addTypeRenderer(INSTANCE instance,
-                                                    String string,
-                                                    Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
+   static <INSTANCE> INSTANCE addTypeRenderer(INSTANCE instance,
+                                              String string,
+                                              Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
       return addTypeRenderer(instance, renderingContext -> string, toAddToSupplier);
    }
@@ -30,9 +30,9 @@ interface DslSupport
       return addTypeRenderer(instance, renderingContext -> renderer.apply(renderingContext, type), toAddToSupplier);
    }
 
-   static <INSTANCE, TYPE> INSTANCE addTypeRenderer(INSTANCE instance,
-                                                    Renderable renderable,
-                                                    Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
+   static <INSTANCE> INSTANCE addTypeRenderer(INSTANCE instance,
+                                              Renderable renderable,
+                                              Function<INSTANCE, Consumer<Renderable>> toAddToSupplier)
    {
       requireNonNull(renderable);
 
@@ -114,59 +114,10 @@ interface DslSupport
       return instance;
    }
 
-   static <INSTANCE, TYPE> INSTANCE addArray(INSTANCE instance,
-                                             TYPE[] types,
-                                             Function<INSTANCE, Consumer<TYPE>> toAddToSupplier)
-   {
-      return addArray(instance, types, s -> s, toAddToSupplier);
-   }
 
-   static <INSTANCE, TYPE> INSTANCE addArray(INSTANCE instance,
-                                             Collection<TYPE> types,
-                                             Function<INSTANCE, Consumer<TYPE>> toAddToSupplier)
-   {
-      return addArray(instance, types, s -> s, toAddToSupplier);
-   }
-
-   static <INSTANCE, FROM, TO> INSTANCE addArray(INSTANCE instance,
-                                                 Collection<FROM> types,
-                                                 Function<FROM, TO> renderer,
-                                                 Function<INSTANCE, Consumer<TO>> toAddToSupplier)
-   {
-      requireNonNull(types);
-
-      Consumer<TO> renderingConsumer = toAddToSupplier.apply(instance);
-
-      for (FROM type : types)
-      {
-         requireNonNull(type);
-         renderingConsumer.accept(renderer.apply(type));
-      }
-
-      return instance;
-   }
-
-   static <INSTANCE, FROM, TO> INSTANCE addArray(INSTANCE instance,
-                                                 FROM[] types,
-                                                 Function<FROM, TO> renderer,
-                                                 Function<INSTANCE, Consumer<TO>> toAddToSupplier)
-   {
-      requireNonNull(types);
-
-      Consumer<TO> renderingConsumer = toAddToSupplier.apply(instance);
-
-      for (FROM type : types)
-      {
-         requireNonNull(type);
-         renderingConsumer.accept(renderer.apply(type));
-      }
-
-      return instance;
-   }
-
-   static <INSTANCE, TYPE> INSTANCE setTypeRenderer(INSTANCE instance,
-                                                    String string,
-                                                    BiConsumer<INSTANCE, Renderable> toAddToSupplier)
+   static <INSTANCE> INSTANCE setTypeRenderer(INSTANCE instance,
+                                              String string,
+                                              BiConsumer<INSTANCE, Renderable> toAddToSupplier)
    {
       return setTypeRenderer(instance, string, (renderingContext, o) -> o, toAddToSupplier);
    }
@@ -190,18 +141,6 @@ interface DslSupport
       requireNonNull(type);
 
       toAddToSupplier.accept(instance, type);
-
-      return instance;
-   }
-
-   static <INSTANCE, FROM, TO> INSTANCE setType(INSTANCE instance,
-                                                FROM type,
-                                                Function<FROM, TO> renderer,
-                                                BiConsumer<INSTANCE, TO> toAddToSupplier)
-   {
-      requireNonNull(type);
-
-      toAddToSupplier.accept(instance, renderer.apply(type));
 
       return instance;
    }

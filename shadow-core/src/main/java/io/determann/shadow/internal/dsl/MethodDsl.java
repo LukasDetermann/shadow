@@ -2,6 +2,7 @@ package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.TypeRenderable;
+import io.determann.shadow.api.dsl.annotation.AnnotationRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
@@ -298,14 +299,17 @@ public class MethodDsl
 
       renderElement(sb, " throws ", exceptions, context, ", ");
 
-      sb.append(" {");
-      if (body != null)
+      if (!(renderingContext.getSurrounding().peekFirst() instanceof AnnotationRenderable))
       {
-         sb.append('\n');
-         sb.append(body);
-         sb.append('\n');
+         sb.append(" {");
+         if (body != null)
+         {
+            sb.append('\n');
+            sb.append(body);
+            sb.append('\n');
+         }
+         sb.append("}");
       }
-      sb.append("}");
       return sb.toString();
    }
 

@@ -29,12 +29,6 @@ public interface RenderingContext
 
    Deque<Object> getSurrounding();
 
-   /// finds the first [#getSurrounding()] of that type
-   <TYPE> TYPE getSurrounding(Class<TYPE> typeClass);
-
-   /// finds the nth [#getSurrounding()] of that type
-   <TYPE> TYPE getSurrounding(int level, Class<TYPE> typeClass);
-
    void onNameRendered(Consumer<NameRenderedEvent> onNameRendered);
 
    List<Consumer<NameRenderedEvent>> getNameRenderedListeners();

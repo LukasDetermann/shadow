@@ -16,6 +16,7 @@ class ModuleDslTest
                    /// some Copyright notice
                    
                    /// some java doc
+                   @org.example.MyAnnotation
                    module my.module {
                    
                    requires transitive other.module;
@@ -41,5 +42,44 @@ class ModuleDslTest
                                    .with("org.example.SpiImplementation"))
                       .renderModuleInfo(DEFAULT));
       //@end
+   }
+
+   @Test
+   void annotate()
+   {
+      assertEquals("""
+                   @MyAnnotation
+                   module my.module {
+                   }""",
+                   Dsl.moduleInfo()
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                      .name("my.module")
+                      .renderModuleInfo(DEFAULT));
+   }
+
+   @Test
+   void stringApi()
+   {
+      assertEquals("""
+                   module my.module {
+                   
+                   requires other.module;
+                   
+                   exports some.package;
+                   
+                   opens another.package;
+                   
+                   uses some.Service;
+                   
+                   provies an.other.Service with ServiceImpl;
+                   }""",
+                   Dsl.moduleInfo()
+                         .name("my.module")
+                         .requires("other.module")
+                         .exports("some.package")
+                         .opens("another.package")
+                         .uses("some.Service")
+                         .provides("an.other.Service with ServiceImpl")
+                         .renderModuleInfo(DEFAULT));
    }
 }

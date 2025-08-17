@@ -38,7 +38,7 @@ class ParameterDslTest
    {
       assertEquals("@MyAnnotation @MyAnnotation2 @MyAnnotation3 ParamType one",
                    Dsl.parameter()
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                      .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .annotate(renderingContext -> "@MyAnnotation3")
                       .type("ParamType")

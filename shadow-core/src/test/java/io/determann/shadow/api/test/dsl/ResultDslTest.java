@@ -25,4 +25,14 @@ class ResultDslTest
                           .renderDeclaration(DEFAULT));
       //@end
    }
+
+   @Test
+   void wrapped()
+   {
+      assertEquals("@MyAnnotation MyType",
+                   Dsl.result()
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                      .type(Dsl.innerClass().name("MyType"))
+                      .renderDeclaration(DEFAULT));
+   }
 }

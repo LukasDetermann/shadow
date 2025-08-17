@@ -21,9 +21,7 @@ public class ParameterDsl
    private String name;
    private boolean isVarArgs = false;
 
-   public ParameterDsl()
-   {
-   }
+   public ParameterDsl() {}
 
    private ParameterDsl(ParameterDsl other)
    {
@@ -107,5 +105,11 @@ public class ParameterDsl
       sb.append(name);
 
       return sb.toString();
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return name;
    }
 }

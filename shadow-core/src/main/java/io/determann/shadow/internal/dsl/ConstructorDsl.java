@@ -235,10 +235,7 @@ public class ConstructorDsl
       renderElement(sb, modifiers, " ", context, " ");
       renderElement(sb, "<", generics, "> ", context, ", ");
 
-      if (result != null)
-      {
-         sb.append(result.render(context));
-      }
+      sb.append(result.render(context));
       sb.append('(');
       if (receiver != null)
       {

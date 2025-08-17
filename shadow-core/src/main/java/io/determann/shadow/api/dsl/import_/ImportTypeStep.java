@@ -12,10 +12,10 @@ public interface ImportTypeStep
    ImportRenderable import_(DeclaredRenderable declared);
 
    /// needs to be part of any declared
-   ImportRenderable import_(MethodRenderable method);
+   ImportRenderable import_(DeclaredRenderable declared, MethodRenderable method);
 
    /// needs to be part of any declared
-   ImportRenderable import_(FieldRenderable field);
+   ImportRenderable import_(DeclaredRenderable declared, FieldRenderable field);
 
    ImportRenderable importAll(String cPackage);
 

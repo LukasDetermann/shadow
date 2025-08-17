@@ -15,7 +15,7 @@ class GenericDslTest
       assertEquals("@MyAnnotation1 @MyAnnotation2 T",
                    Dsl.generic()
                       .annotate("MyAnnotation1")
-                      .annotate("MyAnnotation2")
+                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .name("T")
                       .renderDeclaration(DEFAULT));
    }

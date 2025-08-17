@@ -15,6 +15,11 @@ class RequiresDslTest
                    Dsl.requires()
                       .dependency("some.module")
                       .renderDeclaration(DEFAULT));
+
+      assertEquals("requires some.module;",
+                   Dsl.requires()
+                      .dependency(Dsl.moduleInfo().name("some.module"))
+                      .renderDeclaration(DEFAULT));
    }
 
    @Test

@@ -120,7 +120,7 @@ public class AnnotationDsl
    {
       return addArrayRenderer(new AnnotationDsl(this),
                               methods,
-                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext) + ';',
                               annotationDsl -> annotationDsl.methods::add);
    }
 

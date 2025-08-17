@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.*;
+import io.determann.shadow.api.dsl.enum_constant.EnumConstantRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
@@ -297,12 +297,12 @@ public class EnumDsl
    }
 
    @Override
-   public EnumEnumConstantStep enumConstant(List<? extends C.EnumConstant> enumConstant)
+   public EnumEnumConstantStep enumConstant(List<? extends EnumConstantRenderable> enumConstant)
    {
       return addArrayRenderer(new EnumDsl(this),
                               enumConstant,
                               (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
-                              enumDsl -> enumDsl.imports::add);
+                              enumDsl -> enumDsl.enumConstants::add);
    }
 
    @Override
@@ -354,7 +354,7 @@ public class EnumDsl
       }
       else
       {
-         renderElement(sb, enumConstants, "\n", context, "\n");
+         renderElement(sb, enumConstants, ";\n", context, ",\n");
          renderElement(sb, fields, "\n", context, "\n");
          renderElement(sb, staticInitializers, "\n\n", context, "\n");
          renderElement(sb, constructors, "\n\n", context, "\n");
