@@ -19,14 +19,14 @@ class ReceiverDslTest
                                    .result("void")
                                    .name("method")
                                    .receiver(Dsl.receiver()
-                                                .annotate("@Test")
+                                                .annotate("Test")
                                                 .annotate(Dsl.annotationUsage()
                                                              .type("MyAnnotation")))
                                    .parameter(Dsl.parameter("String", "s"));
 
       assertEquals("""
                    class MyClass {
-                   void method(@@Test @MyAnnotation MyClass MyClass.this, String s) {}
+                      void method(@Test @MyAnnotation MyClass MyClass.this, String s) {}
                    
                    }""",
                    Dsl.innerClass()
@@ -53,10 +53,10 @@ class ReceiverDslTest
 
       assertEquals("""
                    class Outer {
-                   class Inner {
-                   Inner(Outer Outer.this) {}
+                      class Inner {
+                         Inner(Outer Outer.this) {}
                    
-                   }
+                      }
                    
                    }""",
                    outerClass.renderDeclaration(RenderingContext.DEFAULT));

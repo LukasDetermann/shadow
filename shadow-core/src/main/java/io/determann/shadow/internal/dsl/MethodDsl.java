@@ -33,7 +33,7 @@ public class MethodDsl
    private Renderable receiver;
    private final List<Renderable> parameters = new ArrayList<>();
    private final List<Renderable> exceptions = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public MethodDsl() {}
 
@@ -54,7 +54,7 @@ public class MethodDsl
    @Override
    public MethodAnnotateStep javadoc(String javadoc)
    {
-      return setTypeRenderer(new MethodDsl(this), javadoc, (methodDsl, function) -> methodDsl.javadoc = function);
+      return setTypeRenderer(new MethodDsl(this), javadoc, DslSupport::indent, (methodDsl, function) -> methodDsl.javadoc = function);
    }
 
    @Override
@@ -111,7 +111,7 @@ public class MethodDsl
    @Override
    public MethodRenderable body(String body)
    {
-      return setType(new MethodDsl(this), body, (methodDsl, s) -> methodDsl.body = s);
+      return setType(new MethodDsl(this), body, (methodDsl, s) -> methodDsl.body = context -> indent(context, s));
    }
 
    @Override
@@ -119,7 +119,7 @@ public class MethodDsl
    {
       return addArrayRenderer(new MethodDsl(this),
                               annotation,
-                              (renderingContext, string) -> '@' + string,
+                              (context, string) -> indent(context, '@' + string),
                               methodDsl -> methodDsl.annotations::add);
    }
 
@@ -276,7 +276,8 @@ public class MethodDsl
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
       renderElement(sb, modifiers, " ", context, " ");
       renderElement(sb, "<", generics, "> ", context, ", ");
 
@@ -304,9 +305,12 @@ public class MethodDsl
          sb.append(" {");
          if (body != null)
          {
-            sb.append('\n');
-            sb.append(body);
-            sb.append('\n');
+            RenderingContext indented = context.builder().incrementIndentationLevel().build();
+
+            sb.append('\n')
+              .append(body.render(indented))
+              .append(context.getLineIndentation())
+              .append('\n');
          }
          sb.append("}");
       }

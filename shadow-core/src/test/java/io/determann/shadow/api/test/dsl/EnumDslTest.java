@@ -73,7 +73,7 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   // some content
+                      // some content
                    }""",
                    Dsl.innerEnum()
                       .name("MyEnum")
@@ -86,8 +86,8 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   String s;
-                   private int i;
+                      String s;
+                      private int i;
                    }""",
                    Dsl.innerEnum()
                       .name("MyEnum")
@@ -101,8 +101,8 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   abstract void foo() {}
-                   String myMethod() {}
+                      abstract void foo() {}
+                      String myMethod() {}
                    
                    }""",
                    Dsl.innerEnum()
@@ -117,9 +117,9 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   enum Inner {}
-                   enum Inner2 {
-                   }
+                      enum Inner {}
+                      enum Inner2 {
+                      }
                    
                    }""",
                    Dsl.innerEnum()
@@ -134,9 +134,9 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   {
-                   // something
-                   }
+                      {
+                      // something
+                      }
                    
                    }""",
                    Dsl.innerEnum()
@@ -153,9 +153,9 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   static {
-                   // something
-                   }
+                      static {
+                      // something
+                      }
                    
                    }""",
                    Dsl.innerEnum()
@@ -172,8 +172,8 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   MyEnum() {}
-                   MyEnum2() {}
+                      MyEnum() {}
+                      MyEnum2() {}
                    
                    }""",
                    Dsl.innerEnum()
@@ -281,8 +281,8 @@ class EnumDslTest
    {
       assertEquals("""
                    enum MyEnum {
-                   T1,
-                   T2;
+                      T1,
+                      T2;
                    }""",
                    Dsl.innerEnum()
                       .name("MyEnum")

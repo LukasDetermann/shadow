@@ -11,6 +11,7 @@ import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class EnumConstantDsl
@@ -19,7 +20,7 @@ public class EnumConstantDsl
 {
    private Renderable javadoc;
    private final List<Renderable> annotations = new ArrayList<>();
-   private String body;
+   private Renderable body;
    private String name;
    private final List<Renderable> parameters = new ArrayList<>();
 
@@ -39,6 +40,7 @@ public class EnumConstantDsl
    {
       return setTypeRenderer(new EnumConstantDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (classDsl, function) -> classDsl.javadoc = function);
    }
 
@@ -47,7 +49,7 @@ public class EnumConstantDsl
    {
       return addArrayRenderer(new EnumConstantDsl(this),
                               annotation,
-                              (renderingContext, string) -> '@' + string,
+                              (context, string) -> indent(context, '@' + string),
                               classDsl -> classDsl.annotations::add);
    }
 
@@ -63,7 +65,7 @@ public class EnumConstantDsl
    @Override
    public EnumConstantRenderable body(String body)
    {
-      return setType(new EnumConstantDsl(this), body, (classDsl, function) -> classDsl.body = function);
+      return setType(new EnumConstantDsl(this), body, (classDsl, s) -> classDsl.body = context -> indent(context, s));
    }
 
    @Override
@@ -88,24 +90,31 @@ public class EnumConstantDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
+      context = renderingContextBuilder(context)
+            .addSurrounding(this)
+            .build();
+
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext));
+         sb.append(javadoc.render(context));
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", renderingContext, "\n");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
 
-      sb.append(name);
-      renderElement(sb, "(", parameters, ")", renderingContext, ", ");
+      sb.append(context.getLineIndentation())
+        .append(name);
+      renderElement(sb, "(", parameters, ")", context, ", ");
 
       if (body != null)
       {
+         RenderingContext indented = context.builder().incrementIndentationLevel().build();
+
          sb.append(" {\n");
-         sb.append(body);
+         sb.append(body.render(indented));
          sb.append("\n}");
       }
       return sb.toString();

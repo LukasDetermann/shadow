@@ -30,7 +30,7 @@ public class ConstructorDsl
    private Renderable receiver;
    private final List<Renderable> parameters = new ArrayList<>();
    private final List<Renderable> exceptions = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public ConstructorDsl()
    {
@@ -54,6 +54,7 @@ public class ConstructorDsl
    {
       return setTypeRenderer(new ConstructorDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (constructorDsl, function) -> constructorDsl.javadoc = function);
    }
 
@@ -111,7 +112,7 @@ public class ConstructorDsl
    @Override
    public ConstructorRenderable body(String body)
    {
-      return setType(new ConstructorDsl(this), body, (constructorDsl, s) -> constructorDsl.body = s);
+      return setType(new ConstructorDsl(this), body, (constructorDsl, s) -> constructorDsl.body = context -> indent(context, s));
    }
 
    @Override
@@ -119,7 +120,7 @@ public class ConstructorDsl
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               annotation,
-                              (renderingContext, string) -> '@' + string,
+                              (context, string) -> indent(context, '@' + string),
                               constructorDsl -> constructorDsl.annotations::add);
    }
 
@@ -218,9 +219,9 @@ public class ConstructorDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
@@ -231,9 +232,10 @@ public class ConstructorDsl
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
-      renderElement(sb, "<", generics, "> ", context, ", ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
+      renderElement(sb, generics, context, ", ", new Padding("<", null, null, "> "));
 
       sb.append(result.render(context));
       sb.append('(');
@@ -251,13 +253,15 @@ public class ConstructorDsl
       renderElement(sb, " throws ", exceptions, context, ", ");
 
       sb.append(" {");
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       if (body != null)
       {
-         sb.append('\n');
-         sb.append(body);
-         sb.append('\n');
+         sb.append('\n')
+           .append(body.render(indented))
+           .append(context.getLineIndentation())
+           .append('\n');
       }
-      sb.append("}");
-      return sb.toString();
+      return sb.append("}")
+               .toString();
    }
 }

@@ -122,7 +122,7 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   // some content
+                      // some content
                    }""",
                    Dsl.innerClass()
                       .name("MyClass")
@@ -135,8 +135,8 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   String s;
-                   private int i;
+                      String s;
+                      private int i;
                    }""",
                    Dsl.innerClass()
                       .name("MyClass")
@@ -150,8 +150,8 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   abstract void foo() {}
-                   String myMethod() {}
+                      abstract void foo() {}
+                      String myMethod() {}
                    
                    }""",
                    Dsl.innerClass()
@@ -166,9 +166,9 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   class Inner {}
-                   class Inner2 {
-                   }
+                      class Inner {}
+                      class Inner2 {
+                      }
                    
                    }""",
                    Dsl.innerClass()
@@ -183,9 +183,9 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   {
-                   // something
-                   }
+                      {
+                      // something
+                      }
                    
                    }""",
                    Dsl.innerClass()
@@ -202,9 +202,9 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   static {
-                   // something
-                   }
+                      static {
+                      // something
+                      }
                    
                    }""",
                    Dsl.innerClass()
@@ -221,8 +221,8 @@ class ClassDslTest
    {
       assertEquals("""
                    class MyClass {
-                   MyClass() {}
-                   MyClass2() {}
+                      MyClass() {}
+                      MyClass2() {}
                    
                    }""",
                    Dsl.innerClass()

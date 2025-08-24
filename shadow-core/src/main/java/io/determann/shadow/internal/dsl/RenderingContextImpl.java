@@ -1,4 +1,4 @@
-package io.determann.shadow.internal.renderer;
+package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.NameRenderedEvent;
 import io.determann.shadow.api.dsl.NameRenderer;
@@ -12,20 +12,28 @@ import java.util.function.Consumer;
 
 import static java.util.Collections.unmodifiableList;
 
-public class RenderingContextImpl
+class RenderingContextImpl
       implements RenderingContext
 {
    private final NameRenderer nameRenderer;
    private final List<Consumer<NameRenderedEvent>> nameRenderedListeners;
    private final Deque<Object> surrounding;
+   private final int indentation;
+   private final String lineIndentation;
+   private final int indentationLevel;
 
    RenderingContextImpl(NameRenderer nameRenderer,
                         List<Consumer<NameRenderedEvent>> nameRenderedListeners,
-                        Deque<Object> surrounding)
+                        Deque<Object> surrounding,
+                        int indentation,
+                        int indentationLevel)
    {
       this.nameRenderer = nameRenderer;
       this.nameRenderedListeners = nameRenderedListeners;
       this.surrounding = surrounding;
+      this.indentation = indentation;
+      this.indentationLevel = indentationLevel;
+      this.lineIndentation = " ".repeat(indentation * indentationLevel);
    }
 
    @Override
@@ -38,6 +46,24 @@ public class RenderingContextImpl
    public Deque<Object> getSurrounding()
    {
       return new ArrayDeque<>(surrounding);
+   }
+
+   @Override
+   public int getIndentation()
+   {
+      return indentation;
+   }
+
+   @Override
+   public int getIndentationLevel()
+   {
+      return indentationLevel;
+   }
+
+   @Override
+   public String getLineIndentation()
+   {
+      return lineIndentation;
    }
 
    @Override

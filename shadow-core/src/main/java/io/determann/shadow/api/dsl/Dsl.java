@@ -93,11 +93,13 @@ public interface Dsl
       return import_().static_().import_(declared);
    }
 
+   @Contract(value = "_, _ -> new", pure = true)
    static ImportRenderable staticImport(DeclaredRenderable declared, MethodRenderable method)
    {
       return import_().static_().import_(declared, method);
    }
 
+   @Contract(value = "_, _ -> new", pure = true)
    static ImportRenderable staticImport(DeclaredRenderable declared, FieldRenderable field)
    {
       return import_().static_().import_(declared, field);

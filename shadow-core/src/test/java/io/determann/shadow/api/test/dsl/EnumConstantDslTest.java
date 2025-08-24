@@ -50,10 +50,10 @@ class EnumConstantDslTest
    {
       assertEquals("""
                    INSTANCE {
-                   @Override
-                   public String toString() {
-                      return "nope";
-                   }
+                      @Override
+                      public String toString() {
+                         return "nope";
+                      }
                    }""",
                    Dsl.enumConstant()
                       .name("INSTANCE")

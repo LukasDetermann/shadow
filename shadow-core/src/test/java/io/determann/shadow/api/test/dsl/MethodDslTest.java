@@ -125,7 +125,7 @@ class MethodDslTest
    {
       assertEquals("""
                    MyType foo() {
-                   //some content
+                      //some content
                    }""",
                    Dsl.method()
                       .resultType("MyType")
@@ -141,7 +141,7 @@ class MethodDslTest
       assertEquals("""
                    @MyAnnotation
                    private <T> MyType foo(int i1, int i2) throws AnException {
-                   // some content
+                      // some content
                    }""",
                    Dsl.method()
                       .annotate("MyAnnotation")

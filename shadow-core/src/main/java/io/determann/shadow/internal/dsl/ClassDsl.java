@@ -47,7 +47,7 @@ public class ClassDsl
    private final List<Renderable> instanceInitializers = new ArrayList<>();
    private final List<Renderable> staticInitializers = new ArrayList<>();
    private final List<Renderable> constructors = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public ClassDsl()
    {
@@ -81,13 +81,16 @@ public class ClassDsl
    {
       return setTypeRenderer(new ClassDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (classDsl, function) -> classDsl.javadoc = function);
    }
 
    @Override
    public ClassAnnotateStep annotate(String... annotation)
    {
-      return addArray2(new ClassDsl(this), annotation, (classDsl, string) -> classDsl.annotations.add(renderingContext -> '@' + string));
+      return addArray2(new ClassDsl(this),
+                       annotation,
+                       (classDsl, string) -> classDsl.annotations.add(context -> indent(context, '@' + string)));
    }
 
    @Override
@@ -255,13 +258,15 @@ public class ClassDsl
    public ClassRenderable body(String body)
    {
       return setType(new ClassDsl(this),
-                     body, (classDsl, function) -> classDsl.body = function);
+                     body, (classDsl, s) -> classDsl.body = context -> indent(context, s));
    }
 
    @Override
    public ClassBodyStep field(String... fields)
    {
-      return addArray2(new ClassDsl(this), fields, (classDsl, string) -> classDsl.fields.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this),
+                       fields,
+                       (classDsl, string) -> classDsl.fields.add(context -> indent(context, string)));
    }
 
    @Override
@@ -276,7 +281,9 @@ public class ClassDsl
    @Override
    public ClassBodyStep method(String... methods)
    {
-      return addArray2(new ClassDsl(this), methods, (classDsl, string) -> classDsl.methods.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this),
+                       methods,
+                       (classDsl, string) -> classDsl.methods.add(context -> indent(context, string)));
    }
 
    @Override
@@ -291,7 +298,7 @@ public class ClassDsl
    @Override
    public ClassBodyStep inner(String... inner)
    {
-      return addArray2(new ClassDsl(this), inner, (classDsl, string) -> classDsl.inner.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this), inner, (classDsl, string) -> classDsl.inner.add(context -> indent(context, string)));
    }
 
    @Override
@@ -299,26 +306,26 @@ public class ClassDsl
    {
       return addArrayRenderer(new ClassDsl(this),
                               inner,
-                              (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
+                              (context, renderable) -> renderable.renderDeclaration(context),
                               classDsl -> classDsl.inner::add);
    }
 
    @Override
    public ClassBodyStep instanceInitializer(String... instanceInitializers)
    {
-      return addArrayRenderer(new ClassDsl(this), instanceInitializers, classDsl -> classDsl.instanceInitializers::add);
+      return addArrayRenderer(new ClassDsl(this), instanceInitializers, DslSupport::indent, classDsl -> classDsl.instanceInitializers::add);
    }
 
    @Override
    public ClassBodyStep staticInitializer(String... staticInitializer)
    {
-      return addArrayRenderer(new ClassDsl(this), staticInitializer, classDsl -> classDsl.staticInitializers::add);
+      return addArrayRenderer(new ClassDsl(this), staticInitializer, DslSupport::indent, classDsl -> classDsl.staticInitializers::add);
    }
 
    @Override
    public ClassBodyStep constructor(String... constructors)
    {
-      return addArray2(new ClassDsl(this), constructors, (classDsl, string) -> classDsl.constructors.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this), constructors, (classDsl, string) -> classDsl.constructors.add(context -> indent(context, string)));
    }
 
    @Override
@@ -371,17 +378,17 @@ public class ClassDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
-         sb.append(copyright);
-         sb.append('\n');
+         sb.append(copyright)
+           .append('\n');
       }
 
       if (package_ != null)
@@ -398,16 +405,17 @@ public class ClassDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(context));
-         sb.append("\n");
+         sb.append(javadoc.render(context))
+           .append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
 
-      sb.append("class ");
-      sb.append(name);
-      sb.append(' ');
+      sb.append("class ")
+        .append(name)
+        .append(' ');
 
       renderElement(sb, "<", generics, "> ", context, ", ");
 
@@ -422,23 +430,24 @@ public class ClassDsl
       renderElement(sb, "permits ", permits, " ", context, ", ");
 
       sb.append("{\n");
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       if (body != null)
       {
-         sb.append(body)
+         sb.append(body.render(indented))
            .append('\n');
       }
       else
       {
-         renderElement(sb, fields, "\n", context, "\n");
-         renderElement(sb, staticInitializers, "\n\n", context, "\n");
-         renderElement(sb, constructors, "\n\n", context, "\n");
-         renderElement(sb, instanceInitializers, "\n\n", context, "\n");
-         renderElement(sb, methods, "\n\n", context, "\n");
-         renderElement(sb, inner, "\n\n", context, "\n");
+         renderElement(sb, fields, indented, "\n", new Padding(null, null, null, "\n"));
+         renderElement(sb, staticInitializers, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, constructors, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, instanceInitializers, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      sb.append('}');
-
-      return sb.toString();
+      return sb.append(context.getLineIndentation())
+               .append('}')
+               .toString();
    }
 
    @Override

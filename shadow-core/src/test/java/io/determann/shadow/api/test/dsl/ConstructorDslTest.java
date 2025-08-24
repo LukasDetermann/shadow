@@ -118,7 +118,7 @@ class ConstructorDslTest
    {
       assertEquals("""
                    MyType() {
-                   //some content
+                      //some content
                    }""",
                    Dsl.constructor()
                       .type("MyType")
@@ -133,7 +133,7 @@ class ConstructorDslTest
       assertEquals("""
                    @MyAnnotation
                    private <T> MyType(int i1, int i2) throws AnException {
-                   // some content
+                      // some content
                    }""",
                    Dsl.constructor()
                       .annotate("MyAnnotation")

@@ -101,7 +101,7 @@ class InterfaceDslTest
    {
       assertEquals("""
                    interface MyInterface {
-                   // some content
+                      // some content
                    }""",
                    Dsl.innerInterface()
                       .name("MyInterface")
@@ -114,8 +114,8 @@ class InterfaceDslTest
    {
       assertEquals("""
                    interface MyInterface {
-                   String s;
-                   private int i;
+                      String s;
+                      private int i;
                    }""",
                    Dsl.innerInterface()
                       .name("MyInterface")
@@ -129,8 +129,8 @@ class InterfaceDslTest
    {
       assertEquals("""
                    interface MyInterface {
-                   abstract void foo() {}
-                   String myMethod() {}
+                      abstract void foo() {}
+                      String myMethod() {}
                    
                    }""",
                    Dsl.innerInterface()
@@ -145,9 +145,9 @@ class InterfaceDslTest
    {
       assertEquals("""
                    interface MyInterface {
-                   interface Inner {}
-                   interface Inner2 {
-                   }
+                      interface Inner {}
+                      interface Inner2 {
+                      }
                    
                    }""",
                    Dsl.innerInterface()

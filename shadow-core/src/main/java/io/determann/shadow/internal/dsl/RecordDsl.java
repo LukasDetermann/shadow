@@ -47,7 +47,7 @@ public class RecordDsl
    private final List<Renderable> inner = new ArrayList<>();
    private final List<Renderable> staticInitializers = new ArrayList<>();
    private final List<Renderable> constructors = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public RecordDsl()
    {
@@ -79,13 +79,16 @@ public class RecordDsl
    {
       return setTypeRenderer(new RecordDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (recordDsl, function) -> recordDsl.javadoc = function);
    }
 
    @Override
    public RecordAnnotateStep annotate(String... annotation)
    {
-      return addArray2(new RecordDsl(this), annotation, (recordDsl, string) -> recordDsl.annotations.add(renderingContext -> '@' + string));
+      return addArray2(new RecordDsl(this),
+                       annotation,
+                       (recordDsl, string) -> recordDsl.annotations.add(context -> indent(context, '@' + string)));
    }
 
    @Override
@@ -214,13 +217,13 @@ public class RecordDsl
    public ClassRenderable body(String body)
    {
       return setType(new RecordDsl(this),
-                     body, (recordDsl, function) -> recordDsl.body = function);
+                     body, (recordDsl, function) -> recordDsl.body = context -> indent(context, function));
    }
 
    @Override
    public RecordBodyStep field(String... fields)
    {
-      return addArray2(new RecordDsl(this), fields, (recordDsl, string) -> recordDsl.fields.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this), fields, (recordDsl, string) -> recordDsl.fields.add(context -> indent(context, string)));
    }
 
    @Override
@@ -235,7 +238,7 @@ public class RecordDsl
    @Override
    public RecordBodyStep method(String... methods)
    {
-      return addArray2(new RecordDsl(this), methods, (recordDsl, string) -> recordDsl.methods.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this), methods, (recordDsl, string) -> recordDsl.methods.add(context -> indent(context, string)));
    }
 
    @Override
@@ -250,7 +253,7 @@ public class RecordDsl
    @Override
    public RecordBodyStep inner(String... inner)
    {
-      return addArray2(new RecordDsl(this), inner, (recordDsl, string) -> recordDsl.inner.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this), inner, (recordDsl, string) -> recordDsl.inner.add(context -> indent(context, string)));
    }
 
    @Override
@@ -265,13 +268,15 @@ public class RecordDsl
    @Override
    public RecordBodyStep staticInitializer(String... staticInitializer)
    {
-      return addArrayRenderer(new RecordDsl(this), staticInitializer, recordDsl -> recordDsl.staticInitializers::add);
+      return addArrayRenderer(new RecordDsl(this), staticInitializer, DslSupport::indent, recordDsl -> recordDsl.staticInitializers::add);
    }
 
    @Override
    public RecordBodyStep constructor(String... constructors)
    {
-      return addArray2(new RecordDsl(this), constructors, (recordDsl, string) -> recordDsl.constructors.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this),
+                       constructors,
+                       (recordDsl, string) -> recordDsl.constructors.add(context -> indent(context, string)));
    }
 
    @Override
@@ -325,17 +330,17 @@ public class RecordDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
-         sb.append(copyright);
-         sb.append('\n');
+         sb.append(copyright)
+           .append('\n');
       }
 
       if (package_ != null)
@@ -356,37 +361,39 @@ public class RecordDsl
          sb.append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
 
-      sb.append("record ");
-      sb.append(name);
-      sb.append('(');
+      sb.append("record ")
+        .append(name)
+        .append('(');
       renderElement(sb, components, context, ", ");
-      sb.append(')');
-      sb.append(' ');
+      sb.append(')')
+        .append(' ');
 
       renderElement(sb, "<", generics, "> ", context, ", ");
 
       renderElement(sb, "implements ", implements_, " ", context, ", ");
 
       sb.append("{\n");
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       if (body != null)
       {
-         sb.append(body)
+         sb.append(body.render(indented))
            .append('\n');
       }
       else
       {
-         renderElement(sb, fields, "\n", context, "\n");
-         renderElement(sb, staticInitializers, "\n\n", context, "\n");
-         renderElement(sb, constructors, "\n\n", context, "\n");
-         renderElement(sb, methods, "\n\n", context, "\n");
-         renderElement(sb, inner, "\n\n", context, "\n");
+         renderElement(sb, fields, indented, "\n", new Padding(null, null, null, "\n"));
+         renderElement(sb, staticInitializers, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, constructors, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      sb.append('}');
-
-      return sb.toString();
+      return sb.append(context.getLineIndentation())
+               .append('}')
+               .toString();
    }
 
    @Override

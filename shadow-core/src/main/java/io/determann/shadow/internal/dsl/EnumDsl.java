@@ -44,7 +44,7 @@ public class EnumDsl
    private final List<Renderable> instanceInitializers = new ArrayList<>();
    private final List<Renderable> staticInitializers = new ArrayList<>();
    private final List<Renderable> constructors = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public EnumDsl()
    {
@@ -76,13 +76,14 @@ public class EnumDsl
    {
       return setTypeRenderer(new EnumDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (enumDsl, function) -> enumDsl.javadoc = function);
    }
 
    @Override
    public EnumAnnotateStep annotate(String... annotation)
    {
-      return addArray2(new EnumDsl(this), annotation, (enumDsl, string) -> enumDsl.annotations.add(renderingContext -> '@' + string));
+      return addArray2(new EnumDsl(this), annotation, (enumDsl, string) -> enumDsl.annotations.add(context -> indent(context, '@' + string)));
    }
 
    @Override
@@ -173,13 +174,13 @@ public class EnumDsl
    public EnumRenderable body(String body)
    {
       return setType(new EnumDsl(this),
-                     body, (enumDsl, function) -> enumDsl.body = function);
+                     body, (enumDsl, s) -> enumDsl.body = context -> indent(context, s));
    }
 
    @Override
    public EnumBodyStep field(String... fields)
    {
-      return addArray2(new EnumDsl(this), fields, (enumDsl, string) -> enumDsl.fields.add(renderingContext -> string));
+      return addArray2(new EnumDsl(this), fields, (enumDsl, string) -> enumDsl.fields.add(context -> indent(context, string)));
    }
 
    @Override
@@ -194,7 +195,7 @@ public class EnumDsl
    @Override
    public EnumBodyStep method(String... methods)
    {
-      return addArray2(new EnumDsl(this), methods, (enumDsl, string) -> enumDsl.methods.add(renderingContext -> string));
+      return addArray2(new EnumDsl(this), methods, (enumDsl, string) -> enumDsl.methods.add(context -> indent(context, string)));
    }
 
    @Override
@@ -209,7 +210,7 @@ public class EnumDsl
    @Override
    public EnumBodyStep inner(String... inner)
    {
-      return addArray2(new EnumDsl(this), inner, (enumDsl, string) -> enumDsl.inner.add(renderingContext -> string));
+      return addArray2(new EnumDsl(this), inner, (enumDsl, string) -> enumDsl.inner.add(context -> indent(context, string)));
    }
 
    @Override
@@ -224,19 +225,19 @@ public class EnumDsl
    @Override
    public EnumBodyStep instanceInitializer(String... instanceInitializers)
    {
-      return addArrayRenderer(new EnumDsl(this), instanceInitializers, enumDsl -> enumDsl.instanceInitializers::add);
+      return addArrayRenderer(new EnumDsl(this), instanceInitializers, DslSupport::indent, enumDsl -> enumDsl.instanceInitializers::add);
    }
 
    @Override
    public EnumBodyStep staticInitializer(String... staticInitializer)
    {
-      return addArrayRenderer(new EnumDsl(this), staticInitializer, enumDsl -> enumDsl.staticInitializers::add);
+      return addArrayRenderer(new EnumDsl(this), staticInitializer, DslSupport::indent, enumDsl -> enumDsl.staticInitializers::add);
    }
 
    @Override
    public EnumBodyStep constructor(String... constructors)
    {
-      return addArray2(new EnumDsl(this), constructors, (enumDsl, string) -> enumDsl.constructors.add(renderingContext -> string));
+      return addArray2(new EnumDsl(this), constructors, (enumDsl, string) -> enumDsl.constructors.add(context -> indent(context, string)));
    }
 
    @Override
@@ -293,7 +294,7 @@ public class EnumDsl
    {
       return addArray2(new EnumDsl(this),
                        enumConstant,
-                       (enumDsl, string) -> enumDsl.enumConstants.add(renderingContext -> string));
+                       (enumDsl, string) -> enumDsl.enumConstants.add(context -> indent(context, string)));
    }
 
    @Override
@@ -306,17 +307,17 @@ public class EnumDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
-         sb.append(copyright);
-         sb.append('\n');
+         sb.append(copyright)
+           .append('\n');
       }
 
       if (package_ != null)
@@ -333,38 +334,40 @@ public class EnumDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(context));
-         sb.append("\n");
+         sb.append(javadoc.render(context))
+           .append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
 
-      sb.append("enum ");
-      sb.append(name);
-      sb.append(' ');
+      sb.append("enum ")
+        .append(name)
+        .append(' ');
 
-      renderElement(sb, "implements ", implements_, " ", context, ", ");
+      renderElement(sb, implements_, context, ", ", new Padding("implements ", null, null, " "));
 
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       sb.append("{\n");
       if (body != null)
       {
-         sb.append(body)
+         sb.append(body.render(indented))
            .append('\n');
       }
       else
       {
-         renderElement(sb, enumConstants, ";\n", context, ",\n");
-         renderElement(sb, fields, "\n", context, "\n");
-         renderElement(sb, staticInitializers, "\n\n", context, "\n");
-         renderElement(sb, constructors, "\n\n", context, "\n");
-         renderElement(sb, instanceInitializers, "\n\n", context, "\n");
-         renderElement(sb, methods, "\n\n", context, "\n");
-         renderElement(sb, inner, "\n\n", context, "\n");
+         renderElement(sb, enumConstants, indented, ",\n", new Padding(null, null, null, ";\n"));
+         renderElement(sb, fields, indented, "\n", new Padding(null, null, null, "\n"));
+         renderElement(sb, staticInitializers, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, constructors, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, instanceInitializers, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      sb.append('}');
-
-      return sb.toString();
+      return sb.append(context.getLineIndentation())
+               .append('}')
+               .toString();
    }
 
    @Override

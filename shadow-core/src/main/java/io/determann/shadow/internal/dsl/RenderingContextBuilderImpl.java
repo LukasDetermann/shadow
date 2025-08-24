@@ -1,4 +1,4 @@
-package io.determann.shadow.internal.renderer;
+package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.NameRenderedEvent;
 import io.determann.shadow.api.dsl.NameRenderer;
@@ -19,7 +19,8 @@ public class RenderingContextBuilderImpl
    private final List<Consumer<NameRenderedEvent>> nameRenderedListeners = new ArrayList<>();
    private NameRenderer nameRenderer;
    private final Deque<Object> surrounding = new ArrayDeque<>();
-
+   private int indentation;
+   private int indentationLevel;
 
    public RenderingContextBuilderImpl() {}
 
@@ -28,6 +29,8 @@ public class RenderingContextBuilderImpl
       this.nameRenderedListeners.addAll(renderingContext.getNameRenderedListeners());
       this.nameRenderer = renderingContext.getNameRenderer();
       this.surrounding.addAll(renderingContext.getSurrounding());
+      this.indentation = renderingContext.getIndentation();
+      this.indentationLevel = renderingContext.getIndentationLevel();
    }
 
    public RenderingContextBuilder withNameRenderedListener(Consumer<NameRenderedEvent> nameRenderedListener)
@@ -82,8 +85,22 @@ public class RenderingContextBuilderImpl
       return this;
    }
 
+   @Override
+   public RenderingContextBuilder withIndentation(int indentation)
+   {
+      this.indentation = indentation;
+      return this;
+   }
+
+   @Override
+   public RenderingContextBuilder incrementIndentationLevel()
+   {
+      indentationLevel++;
+      return this;
+   }
+
    public RenderingContext build()
    {
-      return new RenderingContextImpl(nameRenderer, nameRenderedListeners, surrounding);
+      return new RenderingContextImpl(nameRenderer, nameRenderedListeners, surrounding, indentation, indentationLevel);
    }
 }

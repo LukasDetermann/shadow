@@ -39,7 +39,7 @@ public class AnnotationDsl
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
    private final List<Renderable> inner = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public AnnotationDsl()
    {
@@ -66,7 +66,8 @@ public class AnnotationDsl
    {
       return setTypeRenderer(new AnnotationDsl(this),
                              javadoc,
-                             (annotationDsl, function) -> annotationDsl.javadoc = function);
+                             DslSupport::indent,
+                             (annotationDsl, renderable) -> annotationDsl.javadoc = renderable);
    }
 
    @Override
@@ -74,7 +75,7 @@ public class AnnotationDsl
    {
       return addArray2(new AnnotationDsl(this),
                        annotation,
-                       (annotationDsl, string) -> annotationDsl.annotations.add(renderingContext -> '@' + string));
+                       (annotationDsl, string) -> annotationDsl.annotations.add(renderingContext -> indent(renderingContext, '@' + string)));
    }
 
 
@@ -91,13 +92,15 @@ public class AnnotationDsl
    public AnnotationRenderable body(String body)
    {
       return setType(new AnnotationDsl(this),
-                     body, (annotationDsl, function) -> annotationDsl.body = function);
+                     body, (annotationDsl, s) -> annotationDsl.body = context -> indent(context, s));
    }
 
    @Override
    public AnnotationBodyStep field(String... fields)
    {
-      return addArray2(new AnnotationDsl(this), fields, (annotationDsl, s) -> annotationDsl.fields.add(renderingContext -> s));
+      return addArray2(new AnnotationDsl(this),
+                       fields,
+                       (annotationDsl, s) -> annotationDsl.fields.add(renderingContext -> indent(renderingContext, s)));
    }
 
    @Override
@@ -112,7 +115,9 @@ public class AnnotationDsl
    @Override
    public AnnotationBodyStep method(String... methods)
    {
-      return addArray2(new AnnotationDsl(this), methods, (annotationDsl, string) -> annotationDsl.methods.add(renderingContext -> string));
+      return addArray2(new AnnotationDsl(this),
+                       methods,
+                       (annotationDsl, string) -> annotationDsl.methods.add(renderingContext -> indent(renderingContext, string)));
    }
 
    @Override
@@ -141,7 +146,9 @@ public class AnnotationDsl
    @Override
    public AnnotationBodyStep inner(String... inner)
    {
-      return addArray2(new AnnotationDsl(this), inner, (annotationDsl, string) -> annotationDsl.inner.add(renderingContext -> string));
+      return addArray2(new AnnotationDsl(this),
+                       inner,
+                       (annotationDsl, string) -> annotationDsl.inner.add(renderingContext -> indent(renderingContext, string)));
    }
 
    @Override
@@ -272,17 +279,17 @@ public class AnnotationDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
-         sb.append(copyright);
-         sb.append('\n');
+         sb.append(copyright)
+           .append('\n');
       }
 
       if (package_ != null)
@@ -299,30 +306,33 @@ public class AnnotationDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(context));
-         sb.append("\n");
+         sb.append(javadoc.render(context))
+           .append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
 
-      sb.append("@interface ");
-      sb.append(name);
-      sb.append(' ');
+      sb.append("@interface ")
+        .append(name)
+        .append(' ');
 
       sb.append("{\n");
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       if (body != null)
       {
-         sb.append(body)
+         sb.append(body.render(indented))
            .append('\n');
       }
       else
       {
-         renderElement(sb, fields, "\n", context, "\n");
-         renderElement(sb, methods, "\n\n", context, "\n");
-         renderElement(sb, inner, "\n\n", context, "\n");
+         renderElement(sb, fields, indented, "\n", new Padding(null, null, null, "\n"));
+         renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      sb.append('}');
+      sb.append(context.getLineIndentation())
+        .append('}');
 
       return sb.toString();
    }

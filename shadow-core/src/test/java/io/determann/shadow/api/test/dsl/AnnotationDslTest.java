@@ -61,7 +61,7 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyInterface {
-                   // some content
+                      // some content
                    }""",
                    Dsl.innerAnnotation()
                       .name("MyInterface")
@@ -74,8 +74,8 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyInterface {
-                   String s;
-                   private int i;
+                      String s;
+                      private int i;
                    }""",
                    Dsl.innerAnnotation()
                       .name("MyInterface")
@@ -89,8 +89,8 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyInterface {
-                   String foo();
-                   String myMethod();
+                      String foo();
+                      String myMethod();
                    
                    }""",
                    Dsl.innerAnnotation()
@@ -105,9 +105,9 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyInterface {
-                   @interface Inner {}
-                   @interface Inner2 {
-                   }
+                      @interface Inner {}
+                      @interface Inner2 {
+                      }
                    
                    }""",
                    Dsl.innerAnnotation()
@@ -212,7 +212,7 @@ class AnnotationDslTest
    {
       assertEquals("""
                    @interface MyAnnotation {
-                   String foo() default "";
+                      String foo() default "";
                    
                    }""",
                    Dsl.innerAnnotation()

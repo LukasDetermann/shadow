@@ -38,5 +38,13 @@ public interface RenderingContextBuilder
     */
    RenderingContextBuilder withSimpleNames();
 
+   /// @see RenderingContext#getIndentation()
+   RenderingContextBuilder withIndentation(int indentation);
+
+   /// Should be called by the element owning the code block. e.g. class, method but not field
+   ///
+   /// @see RenderingContext#getIndentationLevel()
+   RenderingContextBuilder incrementIndentationLevel();
+
     RenderingContext build();
 }

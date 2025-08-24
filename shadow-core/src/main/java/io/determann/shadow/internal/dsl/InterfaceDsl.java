@@ -41,7 +41,7 @@ public class InterfaceDsl
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
    private final List<Renderable> inner = new ArrayList<>();
-   private String body;
+   private Renderable body;
 
    public InterfaceDsl()
    {
@@ -71,6 +71,7 @@ public class InterfaceDsl
    {
       return setTypeRenderer(new InterfaceDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (interfaceDsl, function) -> interfaceDsl.javadoc = function);
    }
 
@@ -79,7 +80,7 @@ public class InterfaceDsl
    {
       return addArray2(new InterfaceDsl(this),
                        annotation,
-                       (interfaceDsl, string) -> interfaceDsl.annotations.add(renderingContext -> '@' + string));
+                       (interfaceDsl, string) -> interfaceDsl.annotations.add(context -> indent(context, '@' + string)));
    }
 
    @Override
@@ -209,13 +210,14 @@ public class InterfaceDsl
    public InterfaceRenderable body(String body)
    {
       return setType(new InterfaceDsl(this),
-                     body, (interfaceDsl, function) -> interfaceDsl.body = function);
+                     body,
+                     (interfaceDsl, s) -> interfaceDsl.body = context -> indent(context, s));
    }
 
    @Override
    public InterfaceBodyStep field(String... fields)
    {
-      return addArray2(new InterfaceDsl(this), fields, (interfaceDsl, string) -> interfaceDsl.fields.add(renderingContext -> string));
+      return addArray2(new InterfaceDsl(this), fields, (interfaceDsl, string) -> interfaceDsl.fields.add(context -> indent(context, string)));
    }
 
    @Override
@@ -230,7 +232,7 @@ public class InterfaceDsl
    @Override
    public InterfaceBodyStep method(String... methods)
    {
-      return addArray2(new InterfaceDsl(this), methods, (interfaceDsl, string) -> interfaceDsl.methods.add(renderingContext -> string));
+      return addArray2(new InterfaceDsl(this), methods, (interfaceDsl, string) -> interfaceDsl.methods.add(context -> indent(context, string)));
    }
 
    @Override
@@ -245,7 +247,7 @@ public class InterfaceDsl
    @Override
    public InterfaceBodyStep inner(String... inner)
    {
-      return addArray2(new InterfaceDsl(this), inner, (interfaceDsl, string) -> interfaceDsl.inner.add(renderingContext -> string));
+      return addArray2(new InterfaceDsl(this), inner, (interfaceDsl, string) -> interfaceDsl.inner.add(context -> indent(context, string)));
    }
 
    @Override
@@ -316,17 +318,17 @@ public class InterfaceDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
+      context = renderingContextBuilder(context)
             .addSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();
       if (copyright != null)
       {
-         sb.append(copyright);
-         sb.append('\n');
+         sb.append(copyright)
+           .append('\n');
       }
 
       if (package_ != null)
@@ -343,12 +345,13 @@ public class InterfaceDsl
 
       if (javadoc != null)
       {
-         sb.append(javadoc.render(context));
-         sb.append("\n");
+         sb.append(javadoc.render(context))
+           .append("\n");
       }
 
-      renderElement(sb, annotations, "\n", context, "\n");
-      renderElement(sb, modifiers, " ", context, " ");
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
+      renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
 
       sb.append("interface ");
       sb.append(name);
@@ -360,20 +363,21 @@ public class InterfaceDsl
       renderElement(sb, "permits ", permits, " ", context, ", ");
 
       sb.append("{\n");
+      RenderingContext indented = context.builder().incrementIndentationLevel().build();
       if (body != null)
       {
-         sb.append(body)
+         sb.append(body.render(indented))
            .append('\n');
       }
       else
       {
-         renderElement(sb, fields, "\n", context, "\n");
-         renderElement(sb, methods, "\n\n", context, "\n");
-         renderElement(sb, inner, "\n\n", context, "\n");
+         renderElement(sb, fields, indented, "\n", new Padding(null, null, null, "\n"));
+         renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
+         renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      sb.append('}');
-
-      return sb.toString();
+      return sb.append(context.getLineIndentation())
+               .append('}')
+               .toString();
    }
 
    @Override

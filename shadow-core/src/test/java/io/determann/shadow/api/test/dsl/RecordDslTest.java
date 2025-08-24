@@ -86,7 +86,7 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   // some content
+                      // some content
                    }""",
                    Dsl.innerRecord()
                       .name("MyRecord")
@@ -99,8 +99,8 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   String s;
-                   private int i;
+                      String s;
+                      private int i;
                    }""",
                    Dsl.innerRecord()
                       .name("MyRecord")
@@ -114,8 +114,8 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   abstract void foo() {}
-                   String myMethod() {}
+                      abstract void foo() {}
+                      String myMethod() {}
                    
                    }""",
                    Dsl.innerRecord()
@@ -130,9 +130,9 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   record Inner() {}
-                   record Inner2() {
-                   }
+                      record Inner() {}
+                      record Inner2() {
+                      }
                    
                    }""",
                    Dsl.innerRecord()
@@ -147,9 +147,9 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   static {
-                   // something
-                   }
+                      static {
+                      // something
+                      }
                    
                    }""",
                    Dsl.innerRecord()
@@ -166,8 +166,8 @@ class RecordDslTest
    {
       assertEquals("""
                    record MyRecord() {
-                   MyRecord() {}
-                   MyRecord2() {}
+                      MyRecord() {}
+                      MyRecord2() {}
                    
                    }""",
                    Dsl.innerRecord()

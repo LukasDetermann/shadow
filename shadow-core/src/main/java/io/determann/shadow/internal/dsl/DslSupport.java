@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.RenderingContext;
+import org.jetbrains.annotations.NotNullByDefault;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +14,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
 /// implementation note: a bit overkill, but minimises bug potential
+@NotNullByDefault
 interface DslSupport
 {
    static <INSTANCE> INSTANCE addTypeRenderer(INSTANCE instance,
@@ -147,11 +149,16 @@ interface DslSupport
 
    static void renderElement(StringBuilder sb,
                              List<Renderable> renderers,
-                             String after,
+                             String afterAll,
                              RenderingContext renderingContext,
                              String delimiter)
    {
-      renderElement(sb, "", renderers, after, renderingContext, delimiter);
+      if (renderers.isEmpty())
+      {
+         return;
+      }
+
+      renderElement(sb, renderers, renderingContext, delimiter, new Padding(null, null, null, afterAll));
    }
 
    static void renderElement(StringBuilder sb,
@@ -159,30 +166,80 @@ interface DslSupport
                              RenderingContext renderingContext,
                              String delimiter)
    {
-      renderElement(sb, "", renderers, "", renderingContext, delimiter);
+      if (renderers.isEmpty())
+      {
+         return;
+      }
+      renderElement(sb, renderers, renderingContext, delimiter, new Padding(null, null, null, null));
    }
 
    static void renderElement(StringBuilder sb,
-                             String before,
+                             String beforeAll,
                              List<Renderable> renderers,
                              RenderingContext renderingContext,
                              String delimiter)
    {
-      renderElement(sb, before, renderers, "", renderingContext, delimiter);
+      if (renderers.isEmpty())
+      {
+         return;
+      }
+      renderElement(sb, renderers, renderingContext, delimiter, new Padding(beforeAll, null, null, null));
    }
 
    static void renderElement(StringBuilder sb,
-                             String before,
+                             String beforeAll,
                              List<Renderable> renderers,
-                             String after,
+                             String afterAll,
                              RenderingContext renderingContext,
                              String delimiter)
+   {
+      if (renderers.isEmpty())
+      {
+         return;
+      }
+      renderElement(sb, renderers, renderingContext, delimiter, new Padding(beforeAll, null, null, afterAll));
+   }
+
+   static void renderElement(StringBuilder sb,
+                             List<Renderable> renderers,
+                             RenderingContext renderingContext,
+                             String delimiter,
+                             Padding padding)
    {
       if (!renderers.isEmpty())
       {
-         sb.append(before);
-         sb.append(renderers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(delimiter)));
-         sb.append(after);
+         if (padding.beforeAll() != null)
+         {
+            sb.append(padding.beforeAll());
+         }
+         sb.append(renderers.stream().map(renderer ->
+                                          {
+                                             if (padding.beforeEach() == null && padding.afterEach() == null)
+                                             {
+                                                return renderer.render(renderingContext);
+                                             }
+                                             if (padding.beforeEach() != null && padding.afterEach() != null)
+                                             {
+                                                return padding.beforeEach() + renderer.render(renderingContext) + padding.afterEach();
+                                             }
+                                             if (padding.beforeEach() != null)
+                                             {
+                                                return padding.beforeEach() + renderer.render(renderingContext);
+                                             }
+                                             return renderer.render(renderingContext) + padding.afterEach();
+                                          }).collect(joining(delimiter)));
+         if (padding.afterAll() != null)
+         {
+            sb.append(padding.afterAll());
+         }
       }
+   }
+
+   static String indent(RenderingContext context, String s)
+   {
+      requireNonNull(context);
+      requireNonNull(s);
+
+      return s.lines().map(s1 -> context.getLineIndentation() + s1).collect(joining("\n"));
    }
 }

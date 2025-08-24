@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
-import static java.util.stream.Collectors.joining;
 
 public class FieldDsl
       implements FieldJavaDocStep,
@@ -42,13 +42,17 @@ public class FieldDsl
    {
       return setTypeRenderer(new FieldDsl(this),
                              javadoc,
+                             DslSupport::indent,
                              (fieldDsl, function) -> fieldDsl.javadoc = function);
    }
 
    @Override
    public FieldAnnotateStep annotate(String... annotation)
    {
-      return addArrayRenderer(new FieldDsl(this), annotation, (renderingContext, string) -> '@' + string, fieldDsl -> fieldDsl.annotations::add);
+      return addArrayRenderer(new FieldDsl(this),
+                              annotation,
+                              (context, string) -> indent(context, '@' + string),
+                              fieldDsl -> fieldDsl.annotations::add);
    }
 
    @Override
@@ -167,31 +171,29 @@ public class FieldDsl
    }
 
    @Override
-   public String renderDeclaration(RenderingContext renderingContext)
+   public String renderDeclaration(RenderingContext context)
    {
-      return partialRender(renderingContext) + ';';
+      return partialRender(renderingContextBuilder(context)
+                                 .addSurrounding(this)
+                                 .build()) + ';';
    }
 
-   private String partialRender(RenderingContext renderingContext)
+   private String partialRender(RenderingContext context)
    {
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {
-         sb.append(javadoc.render(renderingContext))
+         sb.append(javadoc.render(context))
            .append("\n");
       }
-      if (!annotations.isEmpty())
-      {
-         sb.append(this.annotations.stream().map(renderer -> renderer.render(renderingContext)).collect(joining("\n")))
-           .append('\n');
-      }
+      renderElement(sb, annotations, context, "\n", new Padding(null, context.getLineIndentation(), null, "\n"));
+      sb.append(context.getLineIndentation());
       if (!modifiers.isEmpty())
       {
-         sb.append(modifiers.stream().map(renderer -> renderer.render(renderingContext)).collect(joining(" ")))
-           .append(' ');
+         renderElement(sb, modifiers, context, " ", new Padding(null, null, null, " "));
       }
 
-      sb.append(type.render(renderingContext))
+      sb.append(type.render(context))
         .append(' ');
 
       sb.append(name);
@@ -244,11 +246,15 @@ public class FieldDsl
       }
 
       @Override
-      public String renderDeclaration(RenderingContext renderingContext)
+      public String renderDeclaration(RenderingContext context)
       {
+         context = renderingContextBuilder(context)
+               .addSurrounding(this)
+               .build();
+
          StringBuilder sb = new StringBuilder();
 
-         sb.append(fieldDsl.partialRender(renderingContext));
+         sb.append(fieldDsl.partialRender(context));
 
          for (int i = 0; i < initializers.size(); i++)
          {
