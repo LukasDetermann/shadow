@@ -309,8 +309,8 @@ public class MethodDsl
 
             sb.append('\n')
               .append(body.render(indented))
-              .append(context.getLineIndentation())
-              .append('\n');
+              .append('\n')
+              .append(context.getLineIndentation());
          }
          sb.append("}");
       }

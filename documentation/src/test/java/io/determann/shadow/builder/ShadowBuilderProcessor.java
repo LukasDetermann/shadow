@@ -69,7 +69,7 @@ public class ShadowBuilderProcessor
                 .field(builderElements.stream().map(BuilderElement::field).toArray(FieldRenderable[]::new))
                 .method(builderElements.stream().map(BuilderElement::mutator).toArray(MethodRenderable[]::new))
                 .method("""
-                           public %1$s build() {
+                        public %1$s build() {
                            %1$s %2$s = new %1$s();
                            %3$s
                            return %2$s;

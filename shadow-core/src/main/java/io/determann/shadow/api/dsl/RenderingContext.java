@@ -24,9 +24,9 @@ public interface RenderingContext
       return new RenderingContextBuilderImpl(context);
    }
 
-   /// @see RenderingContextBuilder#withNameRenderedListener(Consumer)
    RenderingContextBuilder builder();
 
+   /// Returns the objects surrounding the one being currently rendered
    Deque<Object> getSurrounding();
 
    /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [#getIndentation()])
