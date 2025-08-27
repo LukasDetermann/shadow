@@ -190,7 +190,7 @@ public interface C
       @Override
       default String renderName(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return renderingContext.renderName(renderQualifiedName(renderingContext));
       }
    }
 
@@ -220,7 +220,7 @@ public interface C
       @Override
       default String renderName(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return renderingContext.renderName(requestOrThrow(this, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
       }
 
       @Override
@@ -278,7 +278,7 @@ public interface C
       @Override
       default String renderName(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return renderingContext.renderName(renderQualifiedName(renderingContext));
       }
    }
 
@@ -326,7 +326,7 @@ public interface C
       @Override
       default String renderName(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return renderingContext.renderName(renderQualifiedName(renderingContext));
       }
    }
 
@@ -371,7 +371,7 @@ public interface C
       @Override
       default String renderName(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return renderingContext.renderName(renderQualifiedName(renderingContext));
       }
    }
 

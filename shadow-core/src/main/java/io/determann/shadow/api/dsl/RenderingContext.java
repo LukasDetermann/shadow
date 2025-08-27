@@ -1,16 +1,17 @@
 package io.determann.shadow.api.dsl;
 
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.internal.dsl.RenderingContextBuilderImpl;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
 public interface RenderingContext
 {
-   RenderingContext DEFAULT = renderingContextBuilder().withNamesWithoutNeedingImports().withIndentation(3).build();
+   RenderingContext DEFAULT = renderingContextBuilder().withIndentation(3).build();
 
    static RenderingContextBuilder renderingContextBuilder()
    {
@@ -47,9 +48,28 @@ public interface RenderingContext
    /// @see #getIndentationLevel()
    String getLineIndentation();
 
-   void onNameRendered(Consumer<NameRenderedEvent> onNameRendered);
+   List<ImportRenderable> getImports();
 
-   List<Consumer<NameRenderedEvent>> getNameRenderedListeners();
+   /// @see RenderingContextBuilder#withNewImportContext()
+   /// @see RenderingContextBuilder#withoutAutomaticImports()
+   /// @see #getImports()
+   /// @see #renderName(String)
+   String renderName(@Nullable String packageName, String simpleName);
 
-   NameRenderer getNameRenderer();
+   /// @see RenderingContextBuilder#withNewImportContext()
+   /// @see RenderingContextBuilder#withoutAutomaticImports()
+   /// @see #getImports()
+   /// @see #renderName(String, String)
+   default String renderName(String qualifiedName)
+   {
+      requireNonNull(qualifiedName);
+      int lastIndexOf = qualifiedName.lastIndexOf('.');
+      if (lastIndexOf == -1)
+      {
+         return renderName(null, qualifiedName);
+      }
+      String packageName = qualifiedName.substring(0, lastIndexOf);
+      String simpleName = qualifiedName.substring(lastIndexOf + 1);
+      return renderName(packageName, simpleName);
+   }
 }

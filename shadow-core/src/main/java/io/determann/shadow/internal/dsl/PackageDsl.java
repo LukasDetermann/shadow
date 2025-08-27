@@ -65,7 +65,7 @@ public class PackageDsl
    public String renderPackageInfo(RenderingContext renderingContext)
    {
       RenderingContext context = renderingContextBuilder(renderingContext)
-            .addSurrounding(this)
+            .withSurrounding(this)
             .build();
 
       StringBuilder sb = new StringBuilder();

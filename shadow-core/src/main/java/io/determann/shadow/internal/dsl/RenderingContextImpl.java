@@ -1,35 +1,29 @@
 package io.determann.shadow.internal.dsl;
 
-import io.determann.shadow.api.dsl.NameRenderedEvent;
-import io.determann.shadow.api.dsl.NameRenderer;
 import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.RenderingContextBuilder;
+import io.determann.shadow.api.dsl.import_.ImportRenderable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.function.Consumer;
-
-import static java.util.Collections.unmodifiableList;
 
 class RenderingContextImpl
       implements RenderingContext
 {
-   private final NameRenderer nameRenderer;
-   private final List<Consumer<NameRenderedEvent>> nameRenderedListeners;
+   private final ImportRenderingContextImpl importContext;
    private final Deque<Object> surrounding;
    private final int indentation;
    private final String lineIndentation;
    private final int indentationLevel;
 
-   RenderingContextImpl(NameRenderer nameRenderer,
-                        List<Consumer<NameRenderedEvent>> nameRenderedListeners,
+   RenderingContextImpl(ImportRenderingContextImpl importContext,
                         Deque<Object> surrounding,
                         int indentation,
                         int indentationLevel)
    {
-      this.nameRenderer = nameRenderer;
-      this.nameRenderedListeners = nameRenderedListeners;
+      this.importContext = importContext;
       this.surrounding = surrounding;
       this.indentation = indentation;
       this.indentationLevel = indentationLevel;
@@ -67,18 +61,19 @@ class RenderingContextImpl
    }
 
    @Override
-   public void onNameRendered(Consumer<NameRenderedEvent> onNameRendered)
+   public List<ImportRenderable> getImports()
    {
-      nameRenderedListeners.add(onNameRendered);
+      return importContext.getImports();
    }
 
-   public NameRenderer getNameRenderer()
+   @Override
+   public String renderName(@Nullable String packageName, String simpleName)
    {
-      return nameRenderer;
+      return importContext.renderName(packageName, simpleName);
    }
 
-   public List<Consumer<NameRenderedEvent>> getNameRenderedListeners()
+   ImportRenderingContextImpl getImportContext()
    {
-      return unmodifiableList(nameRenderedListeners);
+      return importContext;
    }
 }

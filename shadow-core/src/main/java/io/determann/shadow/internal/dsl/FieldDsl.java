@@ -174,7 +174,7 @@ public class FieldDsl
    public String renderDeclaration(RenderingContext context)
    {
       return partialRender(renderingContextBuilder(context)
-                                 .addSurrounding(this)
+                                 .withSurrounding(this)
                                  .build()) + ';';
    }
 
@@ -249,7 +249,7 @@ public class FieldDsl
       public String renderDeclaration(RenderingContext context)
       {
          context = renderingContextBuilder(context)
-               .addSurrounding(this)
+               .withSurrounding(this)
                .build();
 
          StringBuilder sb = new StringBuilder();

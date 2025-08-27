@@ -19,10 +19,10 @@ import io.determann.shadow.api.dsl.record_component.RecordComponentRenderable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
+import static java.util.stream.Collectors.joining;
 
 public class RecordDsl
       implements RecordCopyrightHeaderStep,
@@ -333,28 +333,15 @@ public class RecordDsl
    public String renderDeclaration(RenderingContext context)
    {
       context = renderingContextBuilder(context)
-            .addSurrounding(this)
+            .withSurrounding(this)
             .build();
 
+      if (isOuterType())
+      {
+         context = context.builder().withNewImportContext().build();
+      }
+
       StringBuilder sb = new StringBuilder();
-      if (copyright != null)
-      {
-         sb.append(copyright)
-           .append('\n');
-      }
-
-      if (package_ != null)
-      {
-         sb.append(package_.renderDeclaration(context))
-           .append("\n\n");
-      }
-
-      renderElement(sb, imports, context, "\n");
-      if (!imports.isEmpty())
-      {
-         sb.append("\n\n");
-      }
-
       if (javadoc != null)
       {
          sb.append(javadoc.render(context));
@@ -391,9 +378,38 @@ public class RecordDsl
          renderElement(sb, methods, indented, "\n", new Padding(null, null, null, "\n\n"));
          renderElement(sb, inner, indented, "\n", new Padding(null, null, null, "\n\n"));
       }
-      return sb.append(context.getLineIndentation())
-               .append('}')
-               .toString();
+
+      sb.append(context.getLineIndentation())
+        .append('}');
+
+      //render Header
+
+      if (!imports.isEmpty() || !context.getImports().isEmpty())
+      {
+         sb.insert(0, "\n\n");
+      }
+      RenderingContext finalContext = context;
+      sb.insert(0, imports.stream().map(renderable -> renderable.render(finalContext)).collect(joining("\n")));
+      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(finalContext)).collect(joining("\n")));
+
+      if (package_ != null)
+      {
+         sb.insert(0, "\n\n")
+           .insert(0, package_.renderDeclaration(context));
+      }
+
+      if (copyright != null)
+      {
+         sb.insert(0, '\n')
+           .insert(0, copyright);
+      }
+
+      return sb.toString();
+   }
+
+   private boolean isOuterType()
+   {
+      return package_ != null || imports.isEmpty();
    }
 
    @Override
@@ -404,7 +420,7 @@ public class RecordDsl
          return name;
       }
       return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
-                                                .addSurrounding(this)
+                                                .withSurrounding(this)
                                                 .build()) + '.' + name;
    }
 
@@ -412,7 +428,7 @@ public class RecordDsl
    public String renderType(RenderingContext renderingContext)
    {
       RenderingContext context = renderingContextBuilder(renderingContext)
-            .addSurrounding(this)
+            .withSurrounding(this)
             .build();
 
       String qualifiedName = renderQualifiedName(context);
@@ -422,13 +438,17 @@ public class RecordDsl
       }
       return qualifiedName +
              '<' +
-             generics.stream().map(renderable -> renderable.render(context)).collect(Collectors.joining(", ")) +
+             generics.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) +
              '>';
    }
 
    @Override
    public String renderName(RenderingContext renderingContext)
    {
-      return name;
+      if (package_ == null)
+      {
+         return renderingContext.renderName(name);
+      }
+      return renderingContext.renderName(package_.renderQualifiedName(renderingContext), name);
    }
 }
