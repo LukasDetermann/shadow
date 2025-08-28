@@ -118,11 +118,11 @@ package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.AP.Context;
 import io.determann.shadow.api.annotation_processing.AP.Processor;
-import io.determann.shadow.api.lang_model.LM.Nameable;
-import io.determann.shadow.api.lang_model.LM.QualifiedNameable;
-import io.determann.shadow.api.lang_model.LM.Property;
-import io.determann.shadow.api.lang_model.LM.Class;
-import io.determann.shadow.api.lang_model.LM.Type;
+import io.determann.shadow.api.annotation_processing.LM.Nameable;
+import io.determann.shadow.api.annotation_processing.LM.QualifiedNameable;
+import io.determann.shadow.api.annotation_processing.LM.Property;
+import io.determann.shadow.api.annotation_processing.LM.Class;
+import io.determann.shadow.api.annotation_processing.LM.Type;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -272,7 +272,6 @@ public class ShadowBuilderProcessor extends AP_Processor
 ## Supported
 
 - [Annotation Processing](https://www.shadow.determann.io/Shadow-Api/Annotation%20Processing.html)
-- [java.lang.model](https://www.shadow.determann.io/Shadow-Api/java.lang.model.html)
 - [reflection](https://www.shadow.determann.io/Shadow-Api/Reflection.html) (experimental)
 
 

@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing.shadow.type;
 
+import io.determann.shadow.api.annotation_processing.AP;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
-import io.determann.shadow.api.lang_model.LM;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -60,35 +60,35 @@ class ClassTest
    {
       ProcessorTest.process(context ->
                             {
-                               LM.Class declared = context.getClassOrThrow("InterpolateGenericsExample")
+                               AP.Class declared = context.getClassOrThrow("InterpolateGenericsExample")
                                                           .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                         context.getConstants().getUnboundWildcard());
 
-                               LM.Class capture = declared.interpolateGenerics();
-                               LM.Type interpolated = Optional.of((LM.Generic) capture.getGenericTypes().get(1))
-                                                              .map(LM.Generic::getBound)
-                                                              .map(LM.Interface.class::cast)
-                                                              .map(LM.Interface::getGenericTypes)
+                               AP.Class capture = declared.interpolateGenerics();
+                               AP.Type interpolated = Optional.of((AP.Generic) capture.getGenericTypes().get(1))
+                                                              .map(AP.Generic::getBound)
+                                                              .map(AP.Interface.class::cast)
+                                                              .map(AP.Interface::getGenericTypes)
                                                               .map(types -> types.get(0))
                                                               .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                               LM.Class independentExample = context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                               AP.Class independentExample = context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
                                                                     .withGenerics(context.getConstants().getUnboundWildcard());
 
-                               LM.Class independentCapture = independentExample.interpolateGenerics();
-                               LM.Type interpolatedIndependent = Optional.of(((LM.Generic) independentCapture.getGenericTypes().get(0)))
-                                                                         .map(LM.Generic::getBound)
+                               AP.Class independentCapture = independentExample.interpolateGenerics();
+                               AP.Type interpolatedIndependent = Optional.of(((AP.Generic) independentCapture.getGenericTypes().get(0)))
+                                                                         .map(AP.Generic::getBound)
                                                                          .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                               LM.Class dependentExample = context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
+                               AP.Class dependentExample = context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
                                                                   .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                 context.getClassOrThrow("java.lang.String"));
 
-                               LM.Class dependentCapture = dependentExample.interpolateGenerics();
-                               LM.Type interpolatedDependent = Optional.of(((LM.Generic) dependentCapture.getGenericTypes().get(0)))
-                                                                       .map(LM.Generic::getBound)
+                               AP.Class dependentCapture = dependentExample.interpolateGenerics();
+                               AP.Type interpolatedDependent = Optional.of(((AP.Generic) dependentCapture.getGenericTypes().get(0)))
+                                                                       .map(AP.Generic::getBound)
                                                                        .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })

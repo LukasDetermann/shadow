@@ -15,15 +15,15 @@
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
-            <artifactId>shadow-lang-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.determann</groupId>
             <artifactId>shadow-tck</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.determann</groupId>
+            <artifactId>shadow-implementation-support</artifactId>
         </dependency>
     </dependencies>
 </project>

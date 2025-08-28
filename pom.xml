@@ -11,7 +11,6 @@
     <modules>
         <module>shadow-annotation-processing</module>
         <module>shadow-core</module>
-        <module>shadow-lang-model</module>
         <module>shadow-parent</module>
         <module>shadow-reflection</module>
         <module>documentation</module>

@@ -85,8 +85,6 @@ endif::[]
 
 - xref:Annotation Processing.adoc[]
 
-- xref:java.lang.model.adoc[]
-
 - xref:Reflection.adoc[] (experimental)
 
 == Next Goals
