@@ -84,7 +84,9 @@ public class EnumDsl
    @Override
    public EnumAnnotateStep annotate(String... annotation)
    {
-      return addArray2(new EnumDsl(this), annotation, (enumDsl, string) -> enumDsl.annotations.add(context -> indent(context, '@' + string)));
+      return addArray2(new EnumDsl(this),
+                       annotation,
+                       (enumDsl, string) -> enumDsl.annotations.add(context -> indent(context, '@' + context.renderName(string))));
    }
 
    @Override
@@ -159,7 +161,9 @@ public class EnumDsl
    @Override
    public EnumImplementsStep implements_(String... interfaces)
    {
-      return addArray2(new EnumDsl(this), interfaces, (enumDsl, string) -> enumDsl.implements_.add(renderingContext -> string));
+      return addArray2(new EnumDsl(this),
+                       interfaces,
+                       (enumDsl, string) -> enumDsl.implements_.add(context -> context.renderName(string)));
    }
 
    @Override

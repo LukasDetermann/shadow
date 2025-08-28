@@ -158,7 +158,7 @@ public class FieldDsl
    @Override
    public FieldNameStep type(String type)
    {
-      return setType(new FieldDsl(this), type, (fieldDsl, string) -> fieldDsl.type = renderingContext -> string);
+      return setType(new FieldDsl(this), type, (fieldDsl, string) -> fieldDsl.type = context -> context.renderName(string));
    }
 
    @Override

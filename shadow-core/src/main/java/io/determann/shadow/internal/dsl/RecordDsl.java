@@ -88,7 +88,7 @@ public class RecordDsl
    {
       return addArray2(new RecordDsl(this),
                        annotation,
-                       (recordDsl, string) -> recordDsl.annotations.add(context -> indent(context, '@' + string)));
+                       (recordDsl, string) -> recordDsl.annotations.add(context -> indent(context, '@' + context.renderName(string))));
    }
 
    @Override
@@ -201,7 +201,7 @@ public class RecordDsl
    @Override
    public RecordImplementsStep implements_(String... interfaces)
    {
-      return addArray2(new RecordDsl(this), interfaces, (recordDsl, string) -> recordDsl.implements_.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this), interfaces, (recordDsl, string) -> recordDsl.implements_.add(context -> context.renderName(string)));
    }
 
    @Override

@@ -76,7 +76,9 @@ public class AnnotationDsl
    {
       return addArray2(new AnnotationDsl(this),
                        annotation,
-                       (annotationDsl, string) -> annotationDsl.annotations.add(renderingContext -> indent(renderingContext, '@' + string)));
+                       (annotationDsl, string) -> annotationDsl.annotations.add(renderingContext -> indent(renderingContext,
+                                                                                                           '@' +
+                                                                                                           renderingContext.renderName(string))));
    }
 
 

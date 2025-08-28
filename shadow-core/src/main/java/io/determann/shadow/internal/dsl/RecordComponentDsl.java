@@ -35,7 +35,7 @@ public class RecordComponentDsl
    {
       return addArrayRenderer(new RecordComponentDsl(this),
                               annotation,
-                              (renderingContext, string) -> '@' + string,
+                              (context, string) -> '@' + context.renderName(string),
                               recordComponentDsl -> recordComponentDsl.annotations::add);
    }
 
@@ -59,7 +59,7 @@ public class RecordComponentDsl
    {
       return setType(new RecordComponentDsl(this),
                      type,
-                     (recordComponentDsl, string) -> recordComponentDsl.type = renderingContext -> string);
+                     (recordComponentDsl, string) -> recordComponentDsl.type = context -> context.renderName(string));
    }
 
    @Override

@@ -9,15 +9,18 @@ import java.util.List;
 public interface EnumImportStep
       extends EnumJavaDocStep
 {
+   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    EnumImportStep import_(String... name);
 
+   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    default EnumImportStep import_(ImportRenderable... imports)
    {
       return import_(Arrays.asList(imports));
    }
 
+   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    EnumImportStep import_(List<? extends ImportRenderable> imports);
 }

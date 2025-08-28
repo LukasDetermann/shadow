@@ -49,7 +49,7 @@ public class EnumConstantDsl
    {
       return addArrayRenderer(new EnumConstantDsl(this),
                               annotation,
-                              (context, string) -> indent(context, '@' + string),
+                              (context, string) -> indent(context, '@' + context.renderName(string)),
                               classDsl -> classDsl.annotations::add);
    }
 

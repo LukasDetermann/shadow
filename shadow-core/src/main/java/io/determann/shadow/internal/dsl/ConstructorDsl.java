@@ -97,7 +97,7 @@ public class ConstructorDsl
    {
       return addArray2(new ConstructorDsl(this),
                        exception,
-                       (constructorDsl, string) -> constructorDsl.exceptions.add(renderingContext -> string));
+                       (constructorDsl, string) -> constructorDsl.exceptions.add(context -> context.renderName(string)));
    }
 
    @Override
@@ -120,7 +120,7 @@ public class ConstructorDsl
    {
       return addArrayRenderer(new ConstructorDsl(this),
                               annotation,
-                              (context, string) -> indent(context, '@' + string),
+                              (context, string) -> indent(context, '@' + context.renderName(string)),
                               constructorDsl -> constructorDsl.annotations::add);
    }
 

@@ -96,7 +96,9 @@ public class MethodDsl
    @Override
    public MethodThrowsStep throws_(String... exception)
    {
-      return addArray2(new MethodDsl(this), exception, (methodDsl, string) -> methodDsl.exceptions.add(renderingContext -> string));
+      return addArray2(new MethodDsl(this),
+                       exception,
+                       (methodDsl, string) -> methodDsl.exceptions.add(context -> context.renderName(string)));
    }
 
    @Override
@@ -119,7 +121,7 @@ public class MethodDsl
    {
       return addArrayRenderer(new MethodDsl(this),
                               annotation,
-                              (context, string) -> indent(context, '@' + string),
+                              (context, string) -> indent(context, '@' + context.renderName(string)),
                               methodDsl -> methodDsl.annotations::add);
    }
 
@@ -251,7 +253,9 @@ public class MethodDsl
    @Override
    public MethodNameStep resultType(String resultType)
    {
-      return setType(new MethodDsl(this), resultType, (methodDsl, string) -> methodDsl.result = renderingContext -> string);
+      return setType(new MethodDsl(this),
+                     resultType,
+                     (methodDsl, string) -> methodDsl.result = renderingContext -> renderingContext.renderName(string));
    }
 
    @Override

@@ -59,7 +59,9 @@ public class ParameterDsl
    @Override
    public ParameterNameStep type(String type)
    {
-      return setType(new ParameterDsl(this), type, (parameterDsl, string) -> parameterDsl.type = renderingContext -> string);
+      return setType(new ParameterDsl(this),
+                     type,
+                     (parameterDsl, string) -> parameterDsl.type = context -> context.renderName(string));
    }
 
    @Override

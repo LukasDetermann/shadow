@@ -51,7 +51,7 @@ public class ResultDsl
    {
       return setType(new ResultDsl(this),
                      type,
-                     (resultDsl, string) -> resultDsl.type = renderingContext -> string);
+                     (resultDsl, string) -> resultDsl.type = context -> context.renderName(string));
    }
 
    @Override

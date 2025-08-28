@@ -39,7 +39,7 @@ public class GenericDsl
    {
       return addArrayRenderer(new GenericDsl(this),
                               annotation,
-                              (renderingContext, string) -> '@' + string,
+                              (context, string) -> '@' + context.renderName(string),
                               genericDsl -> genericDsl.annotations::add);
    }
 

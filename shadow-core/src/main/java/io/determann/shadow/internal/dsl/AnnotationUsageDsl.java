@@ -35,7 +35,7 @@ public class AnnotationUsageDsl
    {
       return setType(new AnnotationUsageDsl(this),
                      annotation,
-                     (annotationUsageDsl, string) -> annotationUsageDsl.type = renderingContext -> string);
+                     (annotationUsageDsl, string) -> annotationUsageDsl.type = renderingContext -> renderingContext.renderName(string));
    }
 
    @Override

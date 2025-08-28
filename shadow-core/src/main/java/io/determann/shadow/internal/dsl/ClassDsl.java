@@ -90,7 +90,7 @@ public class ClassDsl
    {
       return addArray2(new ClassDsl(this),
                        annotation,
-                       (classDsl, string) -> classDsl.annotations.add(context -> indent(context, '@' + string)));
+                       (classDsl, string) -> classDsl.annotations.add(context -> indent(context, '@' + context.renderName(string))));
    }
 
    @Override
@@ -212,7 +212,9 @@ public class ClassDsl
    @Override
    public ClassImplementsStep extends_(String aClass)
    {
-      return setType(new ClassDsl(this), aClass, (classDsl, string) -> classDsl.extends_ = renderingContext -> string);
+      return setType(new ClassDsl(this),
+                     aClass,
+                     (classDsl, string) -> classDsl.extends_ = context -> context.renderName(string));
    }
 
    @Override
@@ -227,7 +229,9 @@ public class ClassDsl
    @Override
    public ClassImplementsStep implements_(String... interfaces)
    {
-      return addArray2(new ClassDsl(this), interfaces, (classDsl, string) -> classDsl.implements_.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this),
+                       interfaces,
+                       (classDsl, string) -> classDsl.implements_.add(context -> context.renderName(string)));
    }
 
    @Override
@@ -242,7 +246,9 @@ public class ClassDsl
    @Override
    public ClassPermitsStep permits(String... declared)
    {
-      return addArray2(new ClassDsl(this), declared, (classDsl, string) -> classDsl.permits.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this),
+                       declared,
+                       (classDsl, string) -> classDsl.permits.add(context -> context.renderName(string)));
    }
 
    @Override

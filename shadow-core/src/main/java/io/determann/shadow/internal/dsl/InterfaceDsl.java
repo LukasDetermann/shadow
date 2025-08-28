@@ -80,7 +80,7 @@ public class InterfaceDsl
    {
       return addArray2(new InterfaceDsl(this),
                        annotation,
-                       (interfaceDsl, string) -> interfaceDsl.annotations.add(context -> indent(context, '@' + string)));
+                       (interfaceDsl, string) -> interfaceDsl.annotations.add(context -> indent(context, '@' + context.renderName(string))));
    }
 
    @Override
@@ -194,7 +194,9 @@ public class InterfaceDsl
    @Override
    public InterfacePermitsStep permits(String... declared)
    {
-      return addArray2(new InterfaceDsl(this), declared, (interfaceDsl, string) -> interfaceDsl.permits.add(renderingContext -> string));
+      return addArray2(new InterfaceDsl(this),
+                       declared,
+                       (interfaceDsl, string) -> interfaceDsl.permits.add(context -> context.renderName(string)));
    }
 
    @Override
@@ -305,7 +307,7 @@ public class InterfaceDsl
    {
       return addArray2(new InterfaceDsl(this),
                        interfaces,
-                       (interfaceDsl, string) -> interfaceDsl.extends_.add(renderingContext -> string));
+                       (interfaceDsl, string) -> interfaceDsl.extends_.add(context -> context.renderName(string)));
    }
 
    @Override
