@@ -601,12 +601,12 @@ public class ApContextImpl
       return this;
    }
 
-   public ProcessingEnvironment getProcessingEnv()
+   private ProcessingEnvironment getProcessingEnv()
    {
       return processingEnv;
    }
 
-   public RoundEnvironment getRoundEnv()
+   private RoundEnvironment getRoundEnv()
    {
       return roundEnv;
    }

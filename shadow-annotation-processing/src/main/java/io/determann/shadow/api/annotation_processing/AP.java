@@ -504,8 +504,8 @@ public interface AP
       default List<Annotation> getAnnotations()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Annotation)
-                             .map(declared -> ((Annotation) declared))
+                             .filter(Annotation.class::isInstance)
+                             .map(Annotation.class::cast)
                              .toList();
       }
 
@@ -522,8 +522,8 @@ public interface AP
       default List<Class> getClasses()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Class)
-                             .map(declared -> ((Class) declared))
+                             .filter(Class.class::isInstance)
+                             .map(Class.class::cast)
                              .toList();
       }
 
@@ -540,8 +540,8 @@ public interface AP
       default List<Enum> getEnums()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof C.Enum)
-                             .map(declared -> ((Enum) declared))
+                             .filter(Enum.class::isInstance)
+                             .map(Enum.class::cast)
                              .toList();
       }
 
@@ -558,8 +558,8 @@ public interface AP
       default List<Interface> getInterfaces()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof C.Interface)
-                             .map(declared -> ((Interface) declared))
+                             .filter(Interface.class::isInstance)
+                             .map(Interface.class::cast)
                              .toList();
       }
 
@@ -576,8 +576,8 @@ public interface AP
       default List<Record> getRecords()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof C.Record)
-                             .map(declared -> ((Record) declared))
+                             .filter(Record.class::isInstance)
+                             .map(Record.class::cast)
                              .toList();
       }
 
@@ -1577,7 +1577,7 @@ public interface AP
       default List<Annotationable> getAnnotations()
       {
          return getDeclared().stream()
-                             .map(declared -> ((Annotationable) declared))
+                             .map(Annotationable.class::cast)
                              .toList();
       }
 
@@ -1594,8 +1594,8 @@ public interface AP
       default List<Class> getClasses()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Class)
-                             .map(declared -> ((Class) declared))
+                             .filter(Class.class::isInstance)
+                             .map(Class.class::cast)
                              .toList();
       }
 
@@ -1612,8 +1612,8 @@ public interface AP
       default List<Enum> getEnums()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Enum)
-                             .map(declared -> ((Enum) declared))
+                             .filter(Enum.class::isInstance)
+                             .map(Enum.class::cast)
                              .toList();
       }
 
@@ -1630,8 +1630,8 @@ public interface AP
       default List<Interface> getInterfaces()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Interface)
-                             .map(declared -> ((Interface) declared))
+                             .filter(Interface.class::isInstance)
+                             .map(Interface.class::cast)
                              .toList();
       }
 
@@ -1648,8 +1648,8 @@ public interface AP
       default List<Record> getRecords()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Record)
-                             .map(declared -> ((Record) declared))
+                             .filter(Record.class::isInstance)
+                             .map(Record.class::cast)
                              .toList();
       }
 
@@ -1689,8 +1689,8 @@ public interface AP
       default List<Annotation> getAnnotations()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Annotation)
-                             .map(declared -> ((Annotation) declared))
+                             .filter(Annotation.class::isInstance)
+                             .map(Annotation.class::cast)
                              .toList();
       }
 
@@ -1707,8 +1707,8 @@ public interface AP
       default List<Class> getClasses()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Class)
-                             .map(declared -> ((Class) declared))
+                             .filter(Class.class::isInstance)
+                             .map(Class.class::cast)
                              .toList();
       }
 
@@ -1725,8 +1725,8 @@ public interface AP
       default List<Enum> getEnums()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Enum)
-                             .map(declared -> ((Enum) declared))
+                             .filter(Enum.class::isInstance)
+                             .map(Enum.class::cast)
                              .toList();
       }
 
@@ -1743,8 +1743,8 @@ public interface AP
       default List<Interface> getInterfaces()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Interface)
-                             .map(declared -> ((Interface) declared))
+                             .filter(Interface.class::isInstance)
+                             .map(Interface.class::cast)
                              .toList();
       }
 
@@ -1761,8 +1761,8 @@ public interface AP
       default List<Record> getRecords()
       {
          return getDeclared().stream()
-                             .filter(declared -> declared instanceof Record)
-                             .map(declared -> ((Record) declared))
+                             .filter(Record.class::isInstance)
+                             .map(Record.class::cast)
                              .toList();
       }
 

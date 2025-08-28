@@ -17,7 +17,7 @@ public class ReceiverImpl implements AP.Receiver
    private final AP.Context context;
    private final TypeMirror typeMirror;
 
-   public ReceiverImpl(AP.Context context, TypeMirror typeMirror)
+   ReceiverImpl(AP.Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;

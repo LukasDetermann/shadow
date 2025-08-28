@@ -8,7 +8,7 @@ public class ApImplementation
 {
    private final AP.Context context;
 
-   public ApImplementation(String name, AP.Context context)
+   ApImplementation(String name, AP.Context context)
    {
       super(name);
       this.context = context;

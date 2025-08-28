@@ -32,7 +32,7 @@ public abstract class ExecutableImpl
    private final ExecutableElement executableElement;
 
 
-   public ExecutableImpl(AP.Context context, ExecutableElement executableElement)
+   protected ExecutableImpl(AP.Context context, ExecutableElement executableElement)
    {
       this.context = context;
       this.executableElement = executableElement;

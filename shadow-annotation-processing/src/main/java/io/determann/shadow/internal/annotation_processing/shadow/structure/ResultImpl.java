@@ -18,7 +18,7 @@ public class ResultImpl
    private final AP.Context context;
    private final TypeMirror typeMirror;
 
-   public ResultImpl(AP.Context context, TypeMirror typeMirror)
+   ResultImpl(AP.Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;

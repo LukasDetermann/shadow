@@ -16,6 +16,7 @@ public class ArrayAdapter
 
    public ArrayType toArrayType()
    {
+      //noinspection OverlyStrongTypeCast
       return ((ArrayImpl) array).getMirror();
    }
 }

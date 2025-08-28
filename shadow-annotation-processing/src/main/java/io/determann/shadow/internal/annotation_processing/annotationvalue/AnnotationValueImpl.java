@@ -305,7 +305,6 @@ public abstract class AnnotationValueImpl
                      context,
                      annotationValue1,
                      isDefault()))
-               .map(AP.AnnotationValue.class::cast)
                .toList();
       }
    }
