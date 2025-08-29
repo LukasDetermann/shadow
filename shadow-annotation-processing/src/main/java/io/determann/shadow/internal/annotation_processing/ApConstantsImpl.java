@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Constants;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
@@ -10,76 +10,76 @@ import static javax.lang.model.type.TypeKind.*;
 public class ApConstantsImpl
       implements Constants
 {
-   private final AP.Context context;
+   private final Ap.Context context;
 
-   ApConstantsImpl(AP.Context context)
+   ApConstantsImpl(Ap.Context context)
    {
       this.context = context;
    }
 
    @Override
-   public AP.Wildcard getUnboundWildcard()
+   public Ap.Wildcard getUnboundWildcard()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getWildcardType(null, null));
    }
 
    @Override
-   public AP.Null getNull()
+   public Ap.Null getNull()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getNullType());
    }
 
    @Override
-   public AP.Void getVoid()
+   public Ap.Void getVoid()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getNoType(VOID));
    }
 
    @Override
-   public AP.boolean_ getPrimitiveBoolean()
+   public Ap.boolean_ getPrimitiveBoolean()
    {
-      return (AP.boolean_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
+      return (Ap.boolean_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
    }
 
    @Override
-   public AP.byte_ getPrimitiveByte()
+   public Ap.byte_ getPrimitiveByte()
    {
-      return (AP.byte_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
+      return (Ap.byte_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
    }
 
    @Override
-   public AP.short_ getPrimitiveShort()
+   public Ap.short_ getPrimitiveShort()
    {
-      return (AP.short_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
+      return (Ap.short_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
    }
 
    @Override
-   public AP.int_ getPrimitiveInt()
+   public Ap.int_ getPrimitiveInt()
    {
-      return (AP.int_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
+      return (Ap.int_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
    }
 
    @Override
-   public AP.long_ getPrimitiveLong()
+   public Ap.long_ getPrimitiveLong()
    {
-      return (AP.long_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
+      return (Ap.long_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
    }
 
    @Override
-   public AP.char_ getPrimitiveChar()
+   public Ap.char_ getPrimitiveChar()
    {
-      return (AP.char_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
+      return (Ap.char_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
    }
 
    @Override
-   public AP.float_ getPrimitiveFloat()
+   public Ap.float_ getPrimitiveFloat()
    {
-      return (AP.float_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
+      return (Ap.float_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
    }
 
    @Override
-   public AP.double_ getPrimitiveDouble()
+   public Ap.double_ getPrimitiveDouble()
    {
-      return (AP.double_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
+      return (Ap.double_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
    }
 }

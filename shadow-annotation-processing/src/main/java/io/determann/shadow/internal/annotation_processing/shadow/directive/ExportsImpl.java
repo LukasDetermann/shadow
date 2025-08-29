@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
@@ -9,25 +9,25 @@ import javax.lang.model.element.ModuleElement;
 import java.util.Collections;
 import java.util.List;
 
-public class ExportsImpl extends DirectiveImpl implements AP.Exports
+public class ExportsImpl extends DirectiveImpl implements Ap.Exports
 {
 
    private final ModuleElement.ExportsDirective exportsDirective;
 
-   public ExportsImpl(AP.Context context, ModuleElement.ExportsDirective exportsDirective)
+   public ExportsImpl(Ap.Context context, ModuleElement.ExportsDirective exportsDirective)
    {
       super(context);
       this.exportsDirective = exportsDirective;
    }
 
    @Override
-   public AP.Package getPackage()
+   public Ap.Package getPackage()
    {
       return Adapters.adapt(getApi(), exportsDirective.getPackage());
    }
 
    @Override
-   public List<AP.Module> getTargetModules()
+   public List<Ap.Module> getTargetModules()
    {
       return exportsDirective.getTargetModules() == null ?
              Collections.emptyList() :

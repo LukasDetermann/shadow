@@ -2,7 +2,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
@@ -21,9 +21,9 @@ import static io.determann.shadow.api.query.Provider.requestOrThrow;
 public abstract class VariableImpl
 {
    private final VariableElement variableElement;
-   private final AP.Context context;
+   private final Ap.Context context;
 
-   protected VariableImpl(AP.Context context, VariableElement variableElement)
+   protected VariableImpl(Ap.Context context, VariableElement variableElement)
    {
       this.context = context;
       this.variableElement = variableElement;
@@ -36,17 +36,17 @@ public abstract class VariableImpl
 
    public boolean isSubtypeOf(C.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(adapt((AP.Declared) type).toDeclaredType(), getMirror());
+      return adapt(getApi()).toTypes().isSubtype(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
    }
 
    public boolean isAssignableFrom(C.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(adapt((AP.Declared) type).toDeclaredType(), getMirror());
+      return adapt(getApi()).toTypes().isAssignable(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
    }
 
-   public AP.VariableType getType()
+   public Ap.VariableType getType()
    {
-      return (AP.VariableType) adapt(getApi(), getElement().asType());
+      return (Ap.VariableType) adapt(getApi(), getElement().asType());
    }
 
    public VariableElement getElement()
@@ -54,7 +54,7 @@ public abstract class VariableImpl
       return variableElement;
    }
 
-   public AP.Module getModule()
+   public Ap.Module getModule()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -69,17 +69,17 @@ public abstract class VariableImpl
       return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

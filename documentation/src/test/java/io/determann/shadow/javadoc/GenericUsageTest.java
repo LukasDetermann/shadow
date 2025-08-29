@@ -1,6 +1,6 @@
 package io.determann.shadow.javadoc;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,9 @@ public class GenericUsageTest
       ProcessorTest.process(context ->
                             {
                                //@start region="GenericUsage.isSubtypeOf"
-                               AP.Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
-                               AP.Interface erasure = interfaceToTest.erasure();
-                               AP.Interface erasedCollection = context.getInterfaceOrThrow("java.util.Collection").erasure();
+                               Ap.Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
+                               Ap.Interface erasure = interfaceToTest.erasure();
+                               Ap.Interface erasedCollection = context.getInterfaceOrThrow("java.util.Collection").erasure();
                                Assertions.assertTrue(erasure.isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
                                //@end
                             })

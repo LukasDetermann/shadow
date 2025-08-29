@@ -1,17 +1,17 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 
 public abstract class DirectiveImpl
 {
-   private final AP.Context context;
+   private final Ap.Context context;
 
-   protected DirectiveImpl(AP.Context context)
+   protected DirectiveImpl(Ap.Context context)
    {
       this.context = context;
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 
@@ -19,14 +19,14 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl implements AP.Module
+public class ModuleImpl implements Ap.Module
 {
    private final ModuleElement moduleElement;
    private final NoType noType;
-   private final AP.Context context;
+   private final Ap.Context context;
 
 
-   public ModuleImpl(AP.Context context, ModuleElement moduleElement)
+   public ModuleImpl(Ap.Context context, ModuleElement moduleElement)
    {
       this.context = context;
       noType = (NoType) moduleElement.asType();
@@ -39,7 +39,7 @@ public class ModuleImpl implements AP.Module
    }
 
    @Override
-   public List<AP.Package> getPackages()
+   public List<Ap.Package> getPackages()
    {
       return getElement().getEnclosedElements()
                          .stream()
@@ -55,13 +55,13 @@ public class ModuleImpl implements AP.Module
    }
 
    @Override
-   public List<AP.Declared> getDeclared()
+   public List<Ap.Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> query(aPackage).getDeclared().stream()).toList();
    }
 
    @Override
-   public Optional<AP.Declared> getDeclared(String qualifiedName)
+   public Optional<Ap.Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(adapt(getApi()).toElements().getTypeElement(getElement(), qualifiedName))
             .map(typeElement -> Adapters.adapt(getApi(), typeElement));
@@ -86,7 +86,7 @@ public class ModuleImpl implements AP.Module
    }
 
    @Override
-   public List<AP.Directive> getDirectives()
+   public List<Ap.Directive> getDirectives()
    {
       return getElement().getDirectives()
                          .stream()
@@ -99,11 +99,11 @@ public class ModuleImpl implements AP.Module
                                        case USES -> adapt(getApi(), ((ModuleElement.UsesDirective) directive));
                                        case PROVIDES -> adapt(getApi(), ((ModuleElement.ProvidesDirective) directive));
                                     })
-                         .map(AP.Directive.class::cast)
-                         .collect(of((Supplier<List<AP.Directive>>) ArrayList::new,
+                         .map(Ap.Directive.class::cast)
+                         .collect(of((Supplier<List<Ap.Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!(directive instanceof AP.Provides provides))
+                                        if (!(directive instanceof Ap.Provides provides))
                                         {
                                            directives.add(directive);
                                            return;
@@ -151,13 +151,13 @@ public class ModuleImpl implements AP.Module
    }
 
    @Override
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
@@ -167,7 +167,7 @@ public class ModuleImpl implements AP.Module
       return noType;
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

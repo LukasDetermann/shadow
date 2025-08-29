@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApiHolder;
 
@@ -11,11 +11,11 @@ import static io.determann.shadow.api.annotation_processing.adapter.Adapters.ada
 
 public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
 {
-   private final AP.Context context;
+   private final Ap.Context context;
 
    private final MIRROR typeMirror;
 
-   protected TypeImpl(AP.Context context, MIRROR typeMirror)
+   protected TypeImpl(Ap.Context context, MIRROR typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
@@ -23,7 +23,7 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
 
    public boolean representsSameType(C.Type type)
    {
-      return adapt(getApi()).toTypes().isSameType(getMirror(), adapt((AP.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isSameType(getMirror(), adapt((Ap.Type) type).toTypeMirror());
    }
 
    public MIRROR getMirror()
@@ -32,7 +32,7 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
    }
 
    @Override
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

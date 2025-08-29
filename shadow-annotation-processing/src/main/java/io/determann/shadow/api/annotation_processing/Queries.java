@@ -10,229 +10,229 @@ import static java.util.Objects.requireNonNull;
 
 public interface Queries
 {
-   static AP.Nameable query(C.Nameable nameable)
+   static Ap.Nameable query(C.Nameable nameable)
    {
-      return ((AP.Nameable) validate(nameable));
+      return ((Ap.Nameable) validate(nameable));
    }
 
-   static AP.QualifiedNameable query(C.QualifiedNameable qualifiedNameable)
+   static Ap.QualifiedNameable query(C.QualifiedNameable qualifiedNameable)
    {
-      return ((AP.QualifiedNameable) validate(qualifiedNameable));
+      return ((Ap.QualifiedNameable) validate(qualifiedNameable));
    }
 
-   static AP.Wildcard query(C.Wildcard wildcard)
+   static Ap.Wildcard query(C.Wildcard wildcard)
    {
-      return ((AP.Wildcard) validate(wildcard));
+      return ((Ap.Wildcard) validate(wildcard));
    }
 
-   static AP.Primitive query(C.Primitive primitive)
+   static Ap.Primitive query(C.Primitive primitive)
    {
-      return ((AP.Primitive) validate(primitive));
+      return ((Ap.Primitive) validate(primitive));
    }
 
-   static AP.Type query(C.Type type)
+   static Ap.Type query(C.Type type)
    {
-      return ((AP.Type) validate(type));
+      return ((Ap.Type) validate(type));
    }
 
-   static AP.Package query(C.Package aPackage)
+   static Ap.Package query(C.Package aPackage)
    {
-      return (AP.Package) validate(aPackage);
+      return (Ap.Package) validate(aPackage);
    }
 
-   static AP.ModuleEnclosed query(C.ModuleEnclosed moduleEnclosed)
+   static Ap.ModuleEnclosed query(C.ModuleEnclosed moduleEnclosed)
    {
-      return ((AP.ModuleEnclosed) validate(moduleEnclosed));
+      return ((Ap.ModuleEnclosed) validate(moduleEnclosed));
    }
 
-   static AP.Documented query(C.Documented documented)
+   static Ap.Documented query(C.Documented documented)
    {
-      return (AP.Documented) validate(documented);
+      return (Ap.Documented) validate(documented);
    }
 
-   static AP.Declared query(C.Declared declared)
+   static Ap.Declared query(C.Declared declared)
    {
-      return (AP.Declared) validate(declared);
+      return (Ap.Declared) validate(declared);
    }
 
-   static AP.Enum query(C.Enum anEnum)
+   static Ap.Enum query(C.Enum anEnum)
    {
-      return (AP.Enum) validate(anEnum);
+      return (Ap.Enum) validate(anEnum);
    }
 
-   static AP.Interface query(C.Interface anInterface)
+   static Ap.Interface query(C.Interface anInterface)
    {
-      return (AP.Interface) validate(anInterface);
+      return (Ap.Interface) validate(anInterface);
    }
 
-   static AP.Record query(C.Record record)
+   static Ap.Record query(C.Record record)
    {
-      return (AP.Record) validate(record);
+      return (Ap.Record) validate(record);
    }
 
-   static AP.Class query(C.Class aClass)
+   static Ap.Class query(C.Class aClass)
    {
-      return (AP.Class) validate(aClass);
+      return (Ap.Class) validate(aClass);
    }
 
-   static AP.Array query(C.Array array)
+   static Ap.Array query(C.Array array)
    {
-      return (AP.Array) validate(array);
+      return (Ap.Array) validate(array);
    }
 
-   static AP.EnumConstant query(C.EnumConstant enumConstant)
+   static Ap.EnumConstant query(C.EnumConstant enumConstant)
    {
-      return (AP.EnumConstant) validate(enumConstant);
+      return (Ap.EnumConstant) validate(enumConstant);
    }
 
-   static AP.Field query(C.Field field)
+   static Ap.Field query(C.Field field)
    {
-      return (AP.Field) validate(field);
+      return (Ap.Field) validate(field);
    }
 
-   static AP.Parameter query(C.Parameter parameter)
+   static Ap.Parameter query(C.Parameter parameter)
    {
-      return (AP.Parameter) validate(parameter);
+      return (Ap.Parameter) validate(parameter);
    }
 
-   static AP.Variable query(C.Variable variable)
+   static Ap.Variable query(C.Variable variable)
    {
-      return (AP.Variable) validate(variable);
+      return (Ap.Variable) validate(variable);
    }
 
-   static AP.Constructor query(C.Constructor constructor)
+   static Ap.Constructor query(C.Constructor constructor)
    {
-      return (AP.Constructor) validate(constructor);
+      return (Ap.Constructor) validate(constructor);
    }
 
-   static AP.Executable query(C.Executable executable)
+   static Ap.Executable query(C.Executable executable)
    {
-      return (AP.Executable) validate(executable);
+      return (Ap.Executable) validate(executable);
    }
 
-   static AP.Method query(C.Method method)
+   static Ap.Method query(C.Method method)
    {
-      return (AP.Method) validate(method);
+      return (Ap.Method) validate(method);
    }
 
-   static AP.RecordComponent query(C.RecordComponent recordComponent)
+   static Ap.RecordComponent query(C.RecordComponent recordComponent)
    {
-      return (AP.RecordComponent) validate(recordComponent);
+      return (Ap.RecordComponent) validate(recordComponent);
    }
 
-   static AP.Result query(C.Result aReturn)
+   static Ap.Result query(C.Result aReturn)
    {
-      return (AP.Result) validate(aReturn);
+      return (Ap.Result) validate(aReturn);
    }
 
-   static AP.Receiver query(C.Receiver receiver)
+   static Ap.Receiver query(C.Receiver receiver)
    {
-      return (AP.Receiver) validate(receiver);
+      return (Ap.Receiver) validate(receiver);
    }
 
-   static AP.Generic query(C.Generic generic)
+   static Ap.Generic query(C.Generic generic)
    {
-      return (AP.Generic) validate(generic);
+      return (Ap.Generic) validate(generic);
    }
 
-   static AP.AnnotationUsage query(C.AnnotationUsage annotationUsage)
+   static Ap.AnnotationUsage query(C.AnnotationUsage annotationUsage)
    {
-      return (AP.AnnotationUsage) validate(annotationUsage);
+      return (Ap.AnnotationUsage) validate(annotationUsage);
    }
 
-   static AP.Module query(C.Module module)
+   static Ap.Module query(C.Module module)
    {
-      return (AP.Module) validate(module);
+      return (Ap.Module) validate(module);
    }
 
-   static AP.Annotation query(C.Annotation annotation)
+   static Ap.Annotation query(C.Annotation annotation)
    {
-      return (AP.Annotation) validate(annotation);
+      return (Ap.Annotation) validate(annotation);
    }
 
-   static AP.Modifiable query(C.Modifiable modifiable)
+   static Ap.Modifiable query(C.Modifiable modifiable)
    {
-      return (AP.Modifiable) validate(modifiable);
+      return (Ap.Modifiable) validate(modifiable);
    }
 
-   static AP.AbstractModifiable query(C.AbstractModifiable abstractModifiable)
+   static Ap.AbstractModifiable query(C.AbstractModifiable abstractModifiable)
    {
-      return (AP.AbstractModifiable) validate(abstractModifiable);
+      return (Ap.AbstractModifiable) validate(abstractModifiable);
    }
 
-   static AP.AccessModifiable query(C.AccessModifiable accessModifiable)
+   static Ap.AccessModifiable query(C.AccessModifiable accessModifiable)
    {
-      return (AP.AccessModifiable) validate(accessModifiable);
+      return (Ap.AccessModifiable) validate(accessModifiable);
    }
 
-   static AP.DefaultModifiable query(C.DefaultModifiable defaultModifiable)
+   static Ap.DefaultModifiable query(C.DefaultModifiable defaultModifiable)
    {
-      return (AP.DefaultModifiable) validate(defaultModifiable);
+      return (Ap.DefaultModifiable) validate(defaultModifiable);
    }
 
-   static AP.FinalModifiable query(C.FinalModifiable finalModifiable)
+   static Ap.FinalModifiable query(C.FinalModifiable finalModifiable)
    {
-      return (AP.FinalModifiable) validate(finalModifiable);
+      return (Ap.FinalModifiable) validate(finalModifiable);
    }
 
-   static AP.NativeModifiable query(C.NativeModifiable nativeModifiable)
+   static Ap.NativeModifiable query(C.NativeModifiable nativeModifiable)
    {
-      return (AP.NativeModifiable) validate(nativeModifiable);
+      return (Ap.NativeModifiable) validate(nativeModifiable);
    }
 
-   static AP.Sealable query(C.Sealable sealable)
+   static Ap.Sealable query(C.Sealable sealable)
    {
-      return (AP.Sealable) validate(sealable);
+      return (Ap.Sealable) validate(sealable);
    }
 
-   static AP.StaticModifiable query(C.StaticModifiable staticModifiable)
+   static Ap.StaticModifiable query(C.StaticModifiable staticModifiable)
    {
-      return (AP.StaticModifiable) validate(staticModifiable);
+      return (Ap.StaticModifiable) validate(staticModifiable);
    }
 
-   static AP.StrictfpModifiable query(C.StrictfpModifiable strictfpModifiable)
+   static Ap.StrictfpModifiable query(C.StrictfpModifiable strictfpModifiable)
    {
-      return (AP.StrictfpModifiable) validate(strictfpModifiable);
+      return (Ap.StrictfpModifiable) validate(strictfpModifiable);
    }
 
-   static AP.Exports query(C.Exports exports)
+   static Ap.Exports query(C.Exports exports)
    {
-      return (AP.Exports) validate(exports);
+      return (Ap.Exports) validate(exports);
    }
 
-   static AP.Opens query(C.Opens opens)
+   static Ap.Opens query(C.Opens opens)
    {
-      return (AP.Opens) validate(opens);
+      return (Ap.Opens) validate(opens);
    }
 
-   static AP.Provides query(C.Provides provides)
+   static Ap.Provides query(C.Provides provides)
    {
-      return (AP.Provides) validate(provides);
+      return (Ap.Provides) validate(provides);
    }
 
-   static AP.Requires query(C.Requires requires)
+   static Ap.Requires query(C.Requires requires)
    {
-      return (AP.Requires) validate(requires);
+      return (Ap.Requires) validate(requires);
    }
 
-   static AP.Uses query(C.Uses uses)
+   static Ap.Uses query(C.Uses uses)
    {
-      return (AP.Uses) validate(uses);
+      return (Ap.Uses) validate(uses);
    }
 
-   static AP.Annotationable query(C.Annotationable annotationable)
+   static Ap.Annotationable query(C.Annotationable annotationable)
    {
-      return (AP.Annotationable) validate(annotationable);
+      return (Ap.Annotationable) validate(annotationable);
    }
 
-   static AP.AnnotationValue query(C.AnnotationValue annotationValue)
+   static Ap.AnnotationValue query(C.AnnotationValue annotationValue)
    {
-      return (AP.AnnotationValue) validate(annotationValue);
+      return (Ap.AnnotationValue) validate(annotationValue);
    }
 
-   static AP.Property query(C.Property property)
+   static Ap.Property query(C.Property property)
    {
-      return (AP.Property) validate(property);
+      return (Ap.Property) validate(property);
    }
 
    private static <T extends ImplementationDefined> T validate(T toValidate)

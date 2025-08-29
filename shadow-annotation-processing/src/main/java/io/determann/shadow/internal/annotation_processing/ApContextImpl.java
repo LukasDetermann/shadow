@@ -2,7 +2,7 @@ package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Constants;
 import io.determann.shadow.api.annotation_processing.DiagnosticContext;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
@@ -34,7 +34,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 
 public class ApContextImpl
-      implements AP.Context
+      implements Ap.Context
 {
    public static final String IMPLEMENTATION_NAME = "io.determann.shadow-annotation-processing";
    private final Implementation implementation;
@@ -44,7 +44,7 @@ public class ApContextImpl
    private final int processingRound;
    private final Types types;
    private final Elements elements;
-   private BiConsumer<AP.Context, Throwable> exceptionHandler = (context, throwable) ->
+   private BiConsumer<Ap.Context, Throwable> exceptionHandler = (context, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -52,7 +52,7 @@ public class ApContextImpl
       logAndRaiseError(stringWriter.toString());
       throw new RuntimeException(throwable);
    };
-   private BiConsumer<AP.Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
+   private BiConsumer<Ap.Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
    {
       if (!context.isProcessingOver())
       {
@@ -69,7 +69,7 @@ public class ApContextImpl
                  "\n");
       }
    };
-   private BiConsumer<AP.Context, String> systemOutHandler = (context, s) ->
+   private BiConsumer<Ap.Context, String> systemOutHandler = (context, s) ->
    {
       if (!getProcessingEnv().toString().startsWith("javac"))
       {
@@ -134,7 +134,7 @@ public class ApContextImpl
 
    private <RESULT> Set<RESULT> getAnnotated(C.QualifiedNameable input, java.lang.Class<RESULT> resultClass)
    {
-      if (input instanceof AP.Annotation annotationLangModel)
+      if (input instanceof Ap.Annotation annotationLangModel)
       {
          return getAnnotated(adapt(annotationLangModel).toTypeElement(), resultClass);
       }
@@ -142,183 +142,183 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<AP.Annotationable> getAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Annotationable> getAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Annotationable.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Annotationable.class);
    }
 
    @Override
-   public Set<AP.Annotationable> getAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Annotationable> getAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Annotationable.class);
+      return getAnnotated(annotation, Ap.Annotationable.class);
    }
 
    @Override
-   public Set<AP.Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Declared.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Declared.class);
    }
 
    @Override
-   public Set<AP.Declared> getDeclaredAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Declared> getDeclaredAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Declared.class);
+      return getAnnotated(annotation, Ap.Declared.class);
    }
 
    @Override
-   public Set<AP.Class> getClassesAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Class> getClassesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Class.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Class.class);
    }
 
    @Override
-   public Set<AP.Class> getClassesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Class> getClassesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Class.class);
+      return getAnnotated(annotation, Ap.Class.class);
    }
 
    @Override
-   public Set<AP.Enum> getEnumsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Enum> getEnumsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Enum.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Enum.class);
    }
 
    @Override
-   public Set<AP.Enum> getEnumsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Enum> getEnumsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Enum.class);
+      return getAnnotated(annotation, Ap.Enum.class);
    }
 
    @Override
-   public Set<AP.Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Interface.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Interface.class);
    }
 
    @Override
-   public Set<AP.Interface> getInterfacesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Interface> getInterfacesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Interface.class);
+      return getAnnotated(annotation, Ap.Interface.class);
    }
 
    @Override
-   public Set<AP.Record> getRecordsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Record> getRecordsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Record.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Record.class);
    }
 
    @Override
-   public Set<AP.Record> getRecordsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Record> getRecordsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Record.class);
+      return getAnnotated(annotation, Ap.Record.class);
    }
 
    @Override
-   public Set<AP.Field> getFieldsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Field> getFieldsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Field.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Field.class);
    }
 
    @Override
-   public Set<AP.Field> getFieldsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Field> getFieldsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Field.class);
+      return getAnnotated(annotation, Ap.Field.class);
    }
 
    @Override
-   public Set<AP.Parameter> getParametersAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Parameter> getParametersAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Parameter.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Parameter.class);
    }
 
    @Override
-   public Set<AP.Parameter> getParametersAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Parameter> getParametersAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Parameter.class);
+      return getAnnotated(annotation, Ap.Parameter.class);
    }
 
    @Override
-   public Set<AP.Method> getMethodsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Method> getMethodsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Method.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Method.class);
    }
 
    @Override
-   public Set<AP.Method> getMethodsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Method> getMethodsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Method.class);
+      return getAnnotated(annotation, Ap.Method.class);
    }
 
    @Override
-   public Set<AP.Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Constructor.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Constructor.class);
    }
 
    @Override
-   public Set<AP.Constructor> getConstructorsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Constructor> getConstructorsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Constructor.class);
+      return getAnnotated(annotation, Ap.Constructor.class);
    }
 
    @Override
-   public Set<AP.Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Annotation.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Annotation.class);
    }
 
    @Override
-   public Set<AP.Annotation> getAnnotationsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Annotation> getAnnotationsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Annotation.class);
+      return getAnnotated(annotation, Ap.Annotation.class);
    }
 
    @Override
-   public Set<AP.Package> getPackagesAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Package> getPackagesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Package.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Package.class);
    }
 
    @Override
-   public Set<AP.Package> gePackagesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Package> gePackagesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Package.class);
+      return getAnnotated(annotation, Ap.Package.class);
    }
 
    @Override
-   public Set<AP.Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Generic.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Generic.class);
    }
 
    @Override
-   public Set<AP.Generic> geGenericsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Generic> geGenericsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Generic.class);
+      return getAnnotated(annotation, Ap.Generic.class);
    }
 
    @Override
-   public Set<AP.Module> getModulesAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Module> getModulesAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.Module.class);
+      return getAnnotated(qualifiedAnnotation, Ap.Module.class);
    }
 
    @Override
-   public Set<AP.Module> geModulesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Module> geModulesAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.Module.class);
+      return getAnnotated(annotation, Ap.Module.class);
    }
 
    @Override
-   public Set<AP.RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation)
    {
-      return getAnnotated(qualifiedAnnotation, AP.RecordComponent.class);
+      return getAnnotated(qualifiedAnnotation, Ap.RecordComponent.class);
    }
 
    @Override
-   public Set<AP.RecordComponent> geRecordComponentsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.RecordComponent> geRecordComponentsAnnotatedWith(C.Annotation annotation)
    {
-      return getAnnotated(annotation, AP.RecordComponent.class);
+      return getAnnotated(annotation, Ap.RecordComponent.class);
    }
 
    @Override
@@ -385,37 +385,37 @@ public class ApContextImpl
    }
 
    @Override
-   public void setExceptionHandler(BiConsumer<AP.Context, Throwable> exceptionHandler)
+   public void setExceptionHandler(BiConsumer<Ap.Context, Throwable> exceptionHandler)
    {
       this.exceptionHandler = exceptionHandler;
    }
 
    @Override
-   public BiConsumer<AP.Context, Throwable> getExceptionHandler()
+   public BiConsumer<Ap.Context, Throwable> getExceptionHandler()
    {
       return exceptionHandler;
    }
 
    @Override
-   public void setDiagnosticHandler(BiConsumer<AP.Context, DiagnosticContext> diagnosticHandler)
+   public void setDiagnosticHandler(BiConsumer<Ap.Context, DiagnosticContext> diagnosticHandler)
    {
       this.diagnosticHandler = diagnosticHandler;
    }
 
    @Override
-   public BiConsumer<AP.Context, DiagnosticContext> getDiagnosticHandler()
+   public BiConsumer<Ap.Context, DiagnosticContext> getDiagnosticHandler()
    {
       return diagnosticHandler;
    }
 
    @Override
-   public void setSystemOutHandler(BiConsumer<AP.Context, String> systemOutHandler)
+   public void setSystemOutHandler(BiConsumer<Ap.Context, String> systemOutHandler)
    {
       this.systemOutHandler = systemOutHandler;
    }
 
    @Override
-   public BiConsumer<AP.Context, String> getSystemOutHandler()
+   public BiConsumer<Ap.Context, String> getSystemOutHandler()
    {
       return systemOutHandler;
    }
@@ -439,19 +439,19 @@ public class ApContextImpl
    }
 
    @Override
-   public void logAndRaiseErrorAt(AP.Annotationable annotationable, String msg)
+   public void logAndRaiseErrorAt(Ap.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, adapt(annotationable).toElement());
    }
 
    @Override
-   public void logInfoAt(AP.Annotationable annotationable, String msg)
+   public void logInfoAt(Ap.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, adapt(annotationable).toElement());
    }
 
    @Override
-   public void logWarningAt(AP.Annotationable annotationable, String msg)
+   public void logWarningAt(Ap.Annotationable annotationable, String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, msg, adapt(annotationable).toElement());
    }
@@ -463,7 +463,7 @@ public class ApContextImpl
    }
 
    @Override
-   public List<AP.Module> getModules()
+   public List<Ap.Module> getModules()
    {
       return elements.getAllModuleElements()
                      .stream()
@@ -472,20 +472,20 @@ public class ApContextImpl
    }
 
    @Override
-   public Optional<AP.Module> getModule(String name)
+   public Optional<Ap.Module> getModule(String name)
    {
       return ofNullable(elements.getModuleElement(name))
             .map(moduleElement -> adapt(this, moduleElement));
    }
 
    @Override
-   public AP.Module getModuleOrThrow(String name)
+   public Ap.Module getModuleOrThrow(String name)
    {
       return getModule(name).orElseThrow();
    }
 
    @Override
-   public List<AP.Package> getPackage(String qualifiedName)
+   public List<Ap.Package> getPackage(String qualifiedName)
    {
       return elements.getAllPackageElements(qualifiedName)
                      .stream()
@@ -494,7 +494,7 @@ public class ApContextImpl
    }
 
    @Override
-   public List<AP.Package> getPackages()
+   public List<Ap.Package> getPackages()
    {
       return elements.getAllModuleElements()
                      .stream()
@@ -505,44 +505,44 @@ public class ApContextImpl
    }
 
    @Override
-   public Optional<AP.Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
+   public Optional<Ap.Package> getPackage(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getPackage(getModuleOrThrow(qualifiedModuleName), qualifiedPackageName);
    }
 
    @Override
-   public AP.Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
+   public Ap.Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName)
    {
       return getPackage(qualifiedModuleName, qualifiedPackageName).orElseThrow();
    }
 
    @Override
-   public Optional<AP.Package> getPackage(C.Module module, String qualifiedPackageName)
+   public Optional<Ap.Package> getPackage(C.Module module, String qualifiedPackageName)
    {
-      return ofNullable(elements.getPackageElement(adapt((AP.Module) module).toModuleElement(), qualifiedPackageName))
+      return ofNullable(elements.getPackageElement(adapt((Ap.Module) module).toModuleElement(), qualifiedPackageName))
             .map(packageElement -> adapt(this, packageElement));
    }
 
    @Override
-   public AP.Package getPackageOrThrow(C.Module module, String qualifiedPackageName)
+   public Ap.Package getPackageOrThrow(C.Module module, String qualifiedPackageName)
    {
       return getPackage(module, qualifiedPackageName).orElseThrow();
    }
 
    @Override
-   public Optional<AP.Declared> getDeclared(String qualifiedName)
+   public Optional<Ap.Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(elements.getTypeElement(qualifiedName))
             .map(typeElement -> adapt(this, typeElement));
    }
 
    @Override
-   public List<AP.Declared> getDeclared()
+   public List<Ap.Declared> getDeclared()
    {
       return getPackages()
             .stream()
             .flatMap(packageType -> requestOrThrow(packageType, PACKAGE_GET_DECLARED_LIST) .stream())
-            .map(AP.Declared.class::cast)
+            .map(Ap.Declared.class::cast)
             .toList();
    }
 
@@ -596,7 +596,7 @@ public class ApContextImpl
       return elements;
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return this;
    }

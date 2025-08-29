@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.query.Implementation;
 
 import java.util.Optional;
@@ -13,12 +13,12 @@ import static io.determann.shadow.api.query.Provider.requestOrThrow;
 /**
  * implementation note: the casts to LangModel types are safe
  */
-public class PropertyImpl implements AP.Property
+public class PropertyImpl implements Ap.Property
 {
    private final C.Property delegate;
-   private final AP.Context context;
+   private final Ap.Context context;
 
-   public PropertyImpl(AP.Context api, C.Property delegate)
+   public PropertyImpl(Ap.Context api, C.Property delegate)
    {
       this.delegate = delegate;
       this.context = api;
@@ -31,37 +31,37 @@ public class PropertyImpl implements AP.Property
    }
 
    @Override
-   public AP.VariableType getType()
+   public Ap.VariableType getType()
    {
-      return (AP.VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return (Ap.VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
    }
 
    @Override
-   public Optional<AP.Field> getField()
+   public Optional<Ap.Field> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(AP.Field.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(Ap.Field.class::cast);
    }
 
    @Override
-   public AP.Field getFieldOrThrow()
+   public Ap.Field getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public AP.Method getGetter()
+   public Ap.Method getGetter()
    {
-      return (AP.Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return (Ap.Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
    }
 
    @Override
-   public Optional<AP.Method> getSetter()
+   public Optional<Ap.Method> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(AP.Method.class::cast);
+      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(Ap.Method.class::cast);
    }
 
    @Override
-   public AP.Method getSetterOrThrow()
+   public Ap.Method getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }

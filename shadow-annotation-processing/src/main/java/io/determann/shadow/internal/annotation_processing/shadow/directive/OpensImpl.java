@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
@@ -8,24 +8,24 @@ import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupp
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
 
-public class OpensImpl extends DirectiveImpl implements AP.Opens
+public class OpensImpl extends DirectiveImpl implements Ap.Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(AP.Context langModelContext, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(Ap.Context langModelContext, ModuleElement.OpensDirective opensDirective)
    {
       super(langModelContext);
       this.opensDirective = opensDirective;
    }
 
    @Override
-   public AP.Package getPackage()
+   public Ap.Package getPackage()
    {
       return Adapters.adapt(getApi(), opensDirective.getPackage());
    }
 
    @Override
-   public List<AP.Module> getTargetModules()
+   public List<Ap.Module> getTargetModules()
    {
       return opensDirective.getTargetModules()
                            .stream()

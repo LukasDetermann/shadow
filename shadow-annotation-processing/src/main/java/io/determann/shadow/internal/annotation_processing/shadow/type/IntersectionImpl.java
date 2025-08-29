@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.type.IntersectionType;
@@ -10,21 +10,21 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 
-public class IntersectionImpl extends TypeImpl<IntersectionType> implements AP.Generic
+public class IntersectionImpl extends TypeImpl<IntersectionType> implements Ap.Generic
 {
-   public IntersectionImpl(AP.Context context, IntersectionType intersectionType)
+   public IntersectionImpl(Ap.Context context, IntersectionType intersectionType)
    {
       super(context, intersectionType);
    }
 
    @Override
-   public AP.Type getBound()
+   public Ap.Type getBound()
    {
       return getBounds().getFirst();
    }
 
    @Override
-   public List<AP.Type> getBounds()
+   public List<Ap.Type> getBounds()
    {
       return getMirror().getBounds().stream()
                         .map(typeMirror -> adapt(getApi(), typeMirror))
@@ -32,20 +32,20 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements AP.G
    }
 
    @Override
-   public List<AP.Interface> getAdditionalBounds()
+   public List<Ap.Interface> getAdditionalBounds()
    {
-      List<AP.Type> bounds = getBounds();
+      List<Ap.Type> bounds = getBounds();
       if (bounds.size() <= 1)
       {
          return Collections.emptyList();
       }
       return bounds.stream().skip(1)
-                   .map(AP.Interface.class::cast)
+                   .map(Ap.Interface.class::cast)
                    .toList();
    }
 
    @Override
-   public Optional<AP.Type> getSuper()
+   public Optional<Ap.Type> getSuper()
    {
       return Optional.empty();
    }
@@ -57,19 +57,19 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements AP.G
    }
 
    @Override
-   public AP.Generic erasure()
+   public Ap.Generic erasure()
    {
-      return (AP.Generic) adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+      return (Ap.Generic) adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return Collections.emptyList();
    }
 
    @Override
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Collections.emptyList();
    }

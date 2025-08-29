@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.api.query.Provider;
 
@@ -15,13 +15,13 @@ import static io.determann.shadow.api.annotation_processing.adapter.Adapters.ada
 import static io.determann.shadow.api.query.Operations.NAMEABLE_GET_NAME;
 import static io.determann.shadow.api.query.Operations.RECORD_COMPONENT_GET_TYPE;
 
-public class RecordComponentImpl implements AP.RecordComponent
+public class RecordComponentImpl implements Ap.RecordComponent
 {
    private final RecordComponentElement recordComponentElement;
-   private final AP.Context context;
+   private final Ap.Context context;
    private final TypeMirror typeMirror;
 
-   public RecordComponentImpl(AP.Context context, RecordComponentElement recordComponentElement)
+   public RecordComponentImpl(Ap.Context context, RecordComponentElement recordComponentElement)
    {
       this.typeMirror = recordComponentElement.asType();
       this.context = context;
@@ -31,31 +31,31 @@ public class RecordComponentImpl implements AP.RecordComponent
    @Override
    public boolean isSubtypeOf(C.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((AP.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((Ap.Type) type).toTypeMirror());
    }
 
    @Override
    public boolean isAssignableFrom(C.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((AP.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((Ap.Type) type).toTypeMirror());
    }
 
    @Override
-   public AP.Record getRecord()
+   public Ap.Record getRecord()
    {
-      return (AP.Record) adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
+      return (Ap.Record) adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
 
    @Override
-   public AP.Type getType()
+   public Ap.Type getType()
    {
       return adapt(getApi(), getElement().asType());
    }
 
    @Override
-   public AP.Method getGetter()
+   public Ap.Method getGetter()
    {
-      return (AP.Method) adapt(getApi(), getElement().getAccessor());
+      return (Ap.Method) adapt(getApi(), getElement().getAccessor());
    }
 
    public RecordComponentElement getElement()
@@ -64,7 +64,7 @@ public class RecordComponentImpl implements AP.RecordComponent
    }
 
    @Override
-   public AP.Module getModule()
+   public Ap.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -76,13 +76,13 @@ public class RecordComponentImpl implements AP.RecordComponent
    }
 
    @Override
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
@@ -119,7 +119,7 @@ public class RecordComponentImpl implements AP.RecordComponent
       return typeMirror;
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

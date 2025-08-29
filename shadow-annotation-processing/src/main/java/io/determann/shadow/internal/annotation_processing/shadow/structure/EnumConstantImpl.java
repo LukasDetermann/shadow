@@ -1,20 +1,20 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
 import javax.lang.model.element.VariableElement;
 
-public class EnumConstantImpl extends VariableImpl implements AP.EnumConstant
+public class EnumConstantImpl extends VariableImpl implements Ap.EnumConstant
 {
-   public EnumConstantImpl(AP.Context context, VariableElement variableElement)
+   public EnumConstantImpl(Ap.Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }
 
    @Override
-   public AP.Enum getSurrounding()
+   public Ap.Enum getSurrounding()
    {
-      return (AP.Enum) Adapters.adapt(getApi(), getElement().getEnclosingElement());
+      return (Ap.Enum) Adapters.adapt(getApi(), getElement().getEnclosingElement());
    }
 }

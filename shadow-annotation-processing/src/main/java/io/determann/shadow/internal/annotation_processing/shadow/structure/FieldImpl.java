@@ -1,20 +1,20 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-public class FieldImpl extends VariableImpl implements AP.Field
+public class FieldImpl extends VariableImpl implements Ap.Field
 {
-   public FieldImpl(AP.Context context, VariableElement variableElement)
+   public FieldImpl(Ap.Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }
 
    @Override
-   public AP.Declared getSurrounding()
+   public Ap.Declared getSurrounding()
    {
       return Adapters.adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }

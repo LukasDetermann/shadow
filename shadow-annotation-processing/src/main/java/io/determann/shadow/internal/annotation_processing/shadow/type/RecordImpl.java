@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
 import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
@@ -13,20 +13,20 @@ import java.util.List;
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 import static java.util.Arrays.stream;
 
-public class RecordImpl extends DeclaredImpl implements AP.Record
+public class RecordImpl extends DeclaredImpl implements Ap.Record
 {
-   public RecordImpl(AP.Context context, DeclaredType declaredTypeMirror)
+   public RecordImpl(Ap.Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public RecordImpl(AP.Context context, TypeElement typeElement)
+   public RecordImpl(Ap.Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
 
    @Override
-   public List<AP.RecordComponent> getRecordComponents()
+   public List<Ap.RecordComponent> getRecordComponents()
    {
       return getElement().getRecordComponents()
                          .stream()
@@ -35,7 +35,7 @@ public class RecordImpl extends DeclaredImpl implements AP.Record
    }
 
    @Override
-   public List<AP.Type> getGenericTypes()
+   public List<Ap.Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -44,7 +44,7 @@ public class RecordImpl extends DeclaredImpl implements AP.Record
    }
 
    @Override
-   public List<AP.Generic> getGenerics()
+   public List<Ap.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -53,7 +53,7 @@ public class RecordImpl extends DeclaredImpl implements AP.Record
    }
 
    @Override
-   public AP.Record withGenerics(AP.Type... generics)
+   public Ap.Record withGenerics(Ap.Type... generics)
    {
       if (generics.length == 0 || getGenerics().size() != generics.length)
       {
@@ -69,27 +69,27 @@ public class RecordImpl extends DeclaredImpl implements AP.Record
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (AP.Record) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (Ap.Record) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public AP.Record withGenerics(String... qualifiedGenerics)
+   public Ap.Record withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(AP.Type[]::new));
+                                .toArray(Ap.Type[]::new));
    }
 
    @Override
-   public AP.Record interpolateGenerics()
+   public Ap.Record interpolateGenerics()
    {
-      return (AP.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public AP.Record erasure()
+   public Ap.Record erasure()
    {
-      return (AP.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override

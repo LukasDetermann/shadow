@@ -1,6 +1,6 @@
 package io.determann.shadow.api.annotation_processing.adapter;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.internal.annotation_processing.shadow.structure.ModuleImpl;
 
 import javax.lang.model.element.ModuleElement;
@@ -8,9 +8,9 @@ import javax.lang.model.type.NoType;
 
 public class ModuleAdapter
 {
-   private final AP.Module module;
+   private final Ap.Module module;
 
-   ModuleAdapter(AP.Module module)
+   ModuleAdapter(Ap.Module module)
    {
       this.module = module;
    }

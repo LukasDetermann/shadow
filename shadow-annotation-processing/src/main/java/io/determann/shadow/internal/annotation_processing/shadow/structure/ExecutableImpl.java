@@ -2,7 +2,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
@@ -28,11 +28,11 @@ import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
 public abstract class ExecutableImpl
 {
-   private final AP.Context context;
+   private final Ap.Context context;
    private final ExecutableElement executableElement;
 
 
-   protected ExecutableImpl(AP.Context context, ExecutableElement executableElement)
+   protected ExecutableImpl(Ap.Context context, ExecutableElement executableElement)
    {
       this.context = context;
       this.executableElement = executableElement;
@@ -43,25 +43,25 @@ public abstract class ExecutableImpl
       return ApContextImpl.getModifiers(getElement());
    }
 
-   public AP.Result getResult()
+   public Ap.Result getResult()
    {
       return new ResultImpl(getApi(), getMirror().getReturnType());
    }
 
-   public AP.Type getReturnType()
+   public Ap.Type getReturnType()
    {
       return adapt(getApi(), getMirror().getReturnType());
    }
 
-   public List<AP.Type> getParameterTypes()
+   public List<Ap.Type> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> Adapters.<AP.Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<Ap.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
-   public Optional<AP.Declared> getReceiverType()
+   public Optional<Ap.Declared> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -71,7 +71,7 @@ public abstract class ExecutableImpl
       return Optional.of(adapt(getApi(), ((DeclaredType) receiverType)));
    }
 
-   public Optional<AP.Receiver> getReceiver()
+   public Optional<Ap.Receiver> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -81,12 +81,12 @@ public abstract class ExecutableImpl
       return Optional.of(new ReceiverImpl(getApi(), getMirror().getReceiverType()));
    }
 
-   public List<AP.Class> getThrows()
+   public List<Ap.Class> getThrows()
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> Adapters.<AP.Class>adapt(getApi(), typeMirror))
-                        .map(AP.Class.class::cast)
+                        .map(typeMirror -> Adapters.<Ap.Class>adapt(getApi(), typeMirror))
+                        .map(Ap.Class.class::cast)
                         .toList();
    }
 
@@ -100,7 +100,7 @@ public abstract class ExecutableImpl
       return getElement().isVarArgs();
    }
 
-   public AP.Declared getSurrounding()
+   public Ap.Declared getSurrounding()
    {
       return adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
@@ -113,33 +113,33 @@ public abstract class ExecutableImpl
    public boolean overrides(C.Method method)
    {
       return adapt(getApi()).toElements().overrides(getElement(),
-                                                    adapt(((AP.Executable) method)).toExecutableElement(),
+                                                    adapt(((Ap.Executable) method)).toExecutableElement(),
                                                     adapt(getSurrounding()).toTypeElement());
    }
 
    public boolean overwrittenBy(C.Method method)
    {
-      return adapt(getApi()).toElements().overrides(adapt((AP.Executable) method).toExecutableElement(),
+      return adapt(getApi()).toElements().overrides(adapt((Ap.Executable) method).toExecutableElement(),
                                                     getElement(),
                                                     adapt(query(method).getSurrounding()).toTypeElement());
    }
 
    public boolean sameParameterTypes(C.Method method)
    {
-      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((AP.Executable) method).toExecutableType());
+      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((Ap.Executable) method).toExecutableType());
    }
 
-   public List<AP.Parameter> getParameters()
+   public List<Ap.Parameter> getParameters()
    {
       return getElement().getParameters()
                          .stream()
                          .map(VariableElement.class::cast)
                          .map(variableElement -> adapt(getApi(), variableElement))
-                         .map(AP.Parameter.class::cast)
+                         .map(Ap.Parameter.class::cast)
                          .toList();
    }
 
-   public List<AP.Generic> getGenerics()
+   public List<Ap.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -147,7 +147,7 @@ public abstract class ExecutableImpl
                          .toList();
    }
 
-   public AP.Module getModule()
+   public Ap.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -162,17 +162,17 @@ public abstract class ExecutableImpl
       return adapt(getApi()).toElements().getDocComment(getElement());
    }
 
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
 
-   public AP.Context getApi()
+   public Ap.Context getApi()
    {
       return context;
    }

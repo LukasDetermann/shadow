@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 
@@ -17,13 +17,13 @@ import static io.determann.shadow.api.query.Operations.MODULE_ENCLOSED_GET_MODUL
 import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
 import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
-public class PackageImpl implements AP.Package
+public class PackageImpl implements Ap.Package
 {
    private final PackageElement packageElement;
-   private final AP.Context context;
+   private final Ap.Context context;
    private final NoType noType;
 
-   public PackageImpl(AP.Context context, PackageElement packageElement)
+   public PackageImpl(Ap.Context context, PackageElement packageElement)
    {
       this.context = context;
       this.packageElement = packageElement;
@@ -48,17 +48,17 @@ public class PackageImpl implements AP.Package
    }
 
    @Override
-   public List<AP.Declared> getDeclared()
+   public List<Ap.Declared> getDeclared()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> Adapters.<AP.Declared>adapt(getApi(), typeElement))
+                         .map(typeElement -> Adapters.<Ap.Declared>adapt(getApi(), typeElement))
                          .toList();
    }
 
    @Override
-   public Optional<AP.Declared> getDeclared(String qualifiedName)
+   public Optional<Ap.Declared> getDeclared(String qualifiedName)
    {
       return getDeclared().stream()
                           .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
@@ -66,7 +66,7 @@ public class PackageImpl implements AP.Package
    }
 
    @Override
-   public AP.Module getModule()
+   public Ap.Module getModule()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -84,13 +84,13 @@ public class PackageImpl implements AP.Package
    }
 
    @Override
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement().getAnnotationMirrors());
    }
@@ -129,7 +129,7 @@ public class PackageImpl implements AP.Package
       return getApi().getImplementation();
    }
 
-   private AP.Context getApi()
+   private Ap.Context getApi()
    {
       return context;
    }

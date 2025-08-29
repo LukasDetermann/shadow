@@ -2,25 +2,25 @@ package io.determann.shadow.api.annotation_processing;
 
 public interface Constants
 {
-   AP.Wildcard getUnboundWildcard();
+   Ap.Wildcard getUnboundWildcard();
 
-   AP.Null getNull();
+   Ap.Null getNull();
 
-   AP.Void getVoid();
+   Ap.Void getVoid();
 
-   AP.boolean_ getPrimitiveBoolean();
+   Ap.boolean_ getPrimitiveBoolean();
 
-   AP.byte_ getPrimitiveByte();
+   Ap.byte_ getPrimitiveByte();
 
-   AP.short_ getPrimitiveShort();
+   Ap.short_ getPrimitiveShort();
 
-   AP.int_ getPrimitiveInt();
+   Ap.int_ getPrimitiveInt();
 
-   AP.long_ getPrimitiveLong();
+   Ap.long_ getPrimitiveLong();
 
-   AP.char_ getPrimitiveChar();
+   Ap.char_ getPrimitiveChar();
 
-   AP.float_ getPrimitiveFloat();
+   Ap.float_ getPrimitiveFloat();
 
-   AP.double_ getPrimitiveDouble();
+   Ap.double_ getPrimitiveDouble();
 }

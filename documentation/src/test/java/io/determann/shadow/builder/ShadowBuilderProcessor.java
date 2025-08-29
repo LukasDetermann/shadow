@@ -1,6 +1,6 @@
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
@@ -15,13 +15,13 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /// Builds a companion Builder class for each annotated class
 public class ShadowBuilderProcessor
-      extends AP.Processor
+      extends Ap.Processor
 {
    @Override
-   public void process(final AP.Context context)
+   public void process(final Ap.Context context)
    {
       //iterate over every class annotated with the BuilderPattern annotation
-      for (AP.Class aClass : context
+      for (Ap.Class aClass : context
             .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          String toBuildQualifiedName = aClass.getQualifiedName();
@@ -35,7 +35,7 @@ public class ShadowBuilderProcessor
          List<BuilderElement> builderElements =
                aClass.getProperties()
                      .stream()
-                     .filter(AP.Property::isMutable)
+                     .filter(Ap.Property::isMutable)
                      .map(property -> renderProperty(builderSimpleName,
                                                      builderVariableName,
                                                      property))
@@ -81,7 +81,7 @@ public class ShadowBuilderProcessor
    /// Creates a {@link BuilderElement} for each property of the annotated pojo
    private BuilderElement renderProperty(final String builderSimpleName,
                                          final String builderVariableName,
-                                         final AP.Property property)
+                                         final Ap.Property property)
    {
       String propertyName = property.getName();
 

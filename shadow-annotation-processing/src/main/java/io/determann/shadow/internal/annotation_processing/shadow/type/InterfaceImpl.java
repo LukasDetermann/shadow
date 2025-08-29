@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
 import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
@@ -13,14 +13,14 @@ import java.util.List;
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 import static java.util.Arrays.stream;
 
-public class InterfaceImpl extends DeclaredImpl implements AP.Interface
+public class InterfaceImpl extends DeclaredImpl implements Ap.Interface
 {
-   public InterfaceImpl(AP.Context context, DeclaredType declaredTypeMirror)
+   public InterfaceImpl(Ap.Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public InterfaceImpl(AP.Context context, TypeElement typeElement)
+   public InterfaceImpl(Ap.Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
@@ -34,7 +34,7 @@ public class InterfaceImpl extends DeclaredImpl implements AP.Interface
    }
 
    @Override
-   public List<AP.Declared> getPermittedSubTypes()
+   public List<Ap.Declared> getPermittedSubTypes()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
@@ -43,7 +43,7 @@ public class InterfaceImpl extends DeclaredImpl implements AP.Interface
    }
 
    @Override
-   public List<AP.Type> getGenericTypes()
+   public List<Ap.Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -52,7 +52,7 @@ public class InterfaceImpl extends DeclaredImpl implements AP.Interface
    }
 
    @Override
-   public List<AP.Generic> getGenerics()
+   public List<Ap.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -61,7 +61,7 @@ public class InterfaceImpl extends DeclaredImpl implements AP.Interface
    }
 
    @Override
-   public AP.Interface withGenerics(AP.Type... generics)
+   public Ap.Interface withGenerics(Ap.Type... generics)
    {
       if (generics.length == 0 || getGenerics().size() != generics.length)
       {
@@ -77,27 +77,27 @@ public class InterfaceImpl extends DeclaredImpl implements AP.Interface
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (AP.Interface) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (Ap.Interface) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public AP.Interface withGenerics(String... qualifiedGenerics)
+   public Ap.Interface withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
             .map(name -> getApi().getDeclaredOrThrow(name))
-            .toArray(AP.Type[]::new));
+            .toArray(Ap.Type[]::new));
    }
 
    @Override
-   public AP.Interface interpolateGenerics()
+   public Ap.Interface interpolateGenerics()
    {
-      return (AP.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (Ap.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public AP.Interface erasure()
+   public Ap.Interface erasure()
    {
-      return (AP.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (Ap.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override

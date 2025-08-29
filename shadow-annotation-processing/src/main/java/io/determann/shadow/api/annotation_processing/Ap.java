@@ -22,7 +22,7 @@ import static io.determann.shadow.api.Modifier.*;
 import static io.determann.shadow.api.query.Operations.*;
 import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
-public interface AP
+public interface Ap
 {
    /**
     * Extend this class and implement {@link #process(Context)} for the easiest way to use the {@link Context}.

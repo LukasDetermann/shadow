@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
@@ -16,11 +16,11 @@ import java.util.List;
 
 public abstract class AnnotationValueImpl
 {
-   protected final AP.Context context;
+   protected final Ap.Context context;
    private final boolean defaultValue;
    private final AnnotationValue annotationValue;
 
-   public static AP.AnnotationValue create(AP.Context context,
+   public static Ap.AnnotationValue create(Ap.Context context,
                                            AnnotationValue annotationValue,
                                            boolean defaultValue)
    {
@@ -81,11 +81,11 @@ public abstract class AnnotationValueImpl
       throw new IllegalStateException();
    }
 
-   private static class StringValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.StringValue
+   private static class StringValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.StringValue
    {
       private final AnnotationValue annotationValue;
 
-      StringValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      StringValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -98,11 +98,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class BooleanValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.BooleanValue
+   private static class BooleanValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.BooleanValue
    {
       private final AnnotationValue annotationValue;
 
-      BooleanValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      BooleanValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -115,11 +115,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ByteValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.ByteValue
+   private static class ByteValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.ByteValue
    {
       private final AnnotationValue annotationValue;
 
-      ByteValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ByteValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -132,11 +132,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ShortValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.ShortValue
+   private static class ShortValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.ShortValue
    {
       private final AnnotationValue annotationValue;
 
-      ShortValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ShortValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -149,11 +149,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class IntegerValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.IntegerValue
+   private static class IntegerValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.IntegerValue
    {
       private final AnnotationValue annotationValue;
 
-      IntegerValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      IntegerValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -166,11 +166,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class LongValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.LongValue
+   private static class LongValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.LongValue
    {
       private final AnnotationValue annotationValue;
 
-      LongValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      LongValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -183,11 +183,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class CharacterValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.CharacterValue
+   private static class CharacterValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.CharacterValue
    {
       private final AnnotationValue annotationValue;
 
-      CharacterValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      CharacterValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -200,11 +200,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class FloatValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.FloatValue
+   private static class FloatValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.FloatValue
    {
       private final AnnotationValue annotationValue;
 
-      FloatValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      FloatValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -217,11 +217,11 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class DoubleValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.DoubleValue
+   private static class DoubleValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.DoubleValue
    {
       private final AnnotationValue annotationValue;
 
-      DoubleValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      DoubleValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -234,69 +234,69 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class TypeValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.TypeValue
+   private static class TypeValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.TypeValue
    {
       private final AnnotationValue annotationValue;
 
-      TypeValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      TypeValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public AP.Type getValue()
+      public Ap.Type getValue()
       {
          return Adapters.adapt(context, (TypeMirror) annotationValue.getValue());
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.EnumConstantValue
+   private static class EnumConstantValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.EnumConstantValue
    {
       private final AnnotationValue annotationValue;
 
-      EnumConstantValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      EnumConstantValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public AP.EnumConstant getValue()
+      public Ap.EnumConstant getValue()
       {
-         return ((AP.EnumConstant) Adapters.adapt(context, (VariableElement) annotationValue.getValue()));
+         return ((Ap.EnumConstant) Adapters.adapt(context, (VariableElement) annotationValue.getValue()));
       }
    }
 
-   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements AP.AnnotationValue.AnnotationUsageValue
+   private static class AnnotationUsageValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.AnnotationUsageValue
    {
       private final AnnotationValue annotationValue;
 
-      AnnotationUsageValueImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      AnnotationUsageValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public AP.AnnotationUsage getValue()
+      public Ap.AnnotationUsage getValue()
       {
          return AnnotationUsageImpl.from(context, (AnnotationMirror) annotationValue.getValue());
       }
    }
 
-   private static class ValuesImpl extends AnnotationValueImpl implements AP.AnnotationValue.Values
+   private static class ValuesImpl extends AnnotationValueImpl implements Ap.AnnotationValue.Values
    {
       private final AnnotationValue annotationValue;
 
-      ValuesImpl(AP.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ValuesImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
       }
 
       @Override
-      public List<AP.AnnotationValue> getValue()
+      public List<Ap.AnnotationValue> getValue()
       {
          //noinspection unchecked
          return ((Collection<AnnotationValue>) annotationValue.getValue())
@@ -309,7 +309,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private AnnotationValueImpl(AP.Context context, boolean defaultValue, AnnotationValue annotationValue)
+   private AnnotationValueImpl(Ap.Context context, boolean defaultValue, AnnotationValue annotationValue)
    {
       this.context = context;
       this.defaultValue = defaultValue;

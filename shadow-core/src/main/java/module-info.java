@@ -1,5 +1,6 @@
 module io.determann.shadow.api {
    requires static org.jetbrains.annotations;
+   requires static java.compiler;
 
    exports io.determann.shadow.api;
    exports io.determann.shadow.api.query;

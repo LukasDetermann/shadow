@@ -1,15 +1,15 @@
 package io.determann.shadow.api.annotation_processing.adapter;
 
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.internal.annotation_processing.annotationvalue.AnnotationUsageImpl;
 
 import javax.lang.model.element.AnnotationMirror;
 
 public class AnnotationUsageAdapter
 {
-   private final AP.AnnotationUsage annotationUsage;
+   private final Ap.AnnotationUsage annotationUsage;
 
-   AnnotationUsageAdapter(AP.AnnotationUsage annotationUsage)
+   AnnotationUsageAdapter(Ap.AnnotationUsage annotationUsage)
    {
       this.annotationUsage = annotationUsage;
    }

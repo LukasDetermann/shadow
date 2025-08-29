@@ -1,18 +1,18 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import javax.lang.model.element.ModuleElement;
 
-public class RequiresImpl extends DirectiveImpl implements AP.Requires
+public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(AP.Context context, ModuleElement.RequiresDirective requiresDirective)
+   public RequiresImpl(Ap.Context context, ModuleElement.RequiresDirective requiresDirective)
    {
       super(context);
       this.requiresDirective = requiresDirective;

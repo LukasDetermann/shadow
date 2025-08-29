@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
 import javax.lang.model.type.ArrayType;
@@ -9,10 +9,10 @@ import java.util.List;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 
-public final class ArrayImpl extends TypeImpl<ArrayType> implements AP.Array
+public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
 {
 
-   public ArrayImpl(AP.Context context, ArrayType arrayType)
+   public ArrayImpl(Ap.Context context, ArrayType arrayType)
    {
       super(context, arrayType);
    }
@@ -20,17 +20,17 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements AP.Array
    @Override
    public boolean isSubtypeOf(C.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(adapt((AP.Type) type).toTypeMirror(), getMirror());
+      return adapt(getApi()).toTypes().isSubtype(adapt((Ap.Type) type).toTypeMirror(), getMirror());
    }
 
    @Override
-   public AP.Type getComponentType()
+   public Ap.Type getComponentType()
    {
       return adapt(getApi(), getMirror().getComponentType());
    }
 
    @Override
-   public List<AP.Type> getDirectSuperTypes()
+   public List<Ap.Type> getDirectSuperTypes()
    {
       return adapt(getApi()).toTypes()
                        .directSupertypes(getMirror())
@@ -40,19 +40,19 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements AP.Array
    }
 
    @Override
-   public AP.Array asArray()
+   public Ap.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
    @Override
-   public AP.Wildcard asExtendsWildcard()
+   public Ap.Wildcard asExtendsWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
    }
 
    @Override
-   public AP.Wildcard asSuperWildcard()
+   public Ap.Wildcard asSuperWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(null, getMirror()));
    }
@@ -64,7 +64,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements AP.Array
    }
 
    @Override
-   public AP.Array erasure()
+   public Ap.Array erasure()
    {
       return adapt(getApi(), ((ArrayType) adapt(getApi()).toTypes().erasure(getMirror())));
    }

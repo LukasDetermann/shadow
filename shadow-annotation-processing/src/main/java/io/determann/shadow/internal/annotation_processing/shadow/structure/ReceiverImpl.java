@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.api.query.Provider;
@@ -12,31 +12,31 @@ import java.util.Objects;
 
 import static io.determann.shadow.api.query.Operations.RECEIVER_GET_TYPE;
 
-public class ReceiverImpl implements AP.Receiver
+public class ReceiverImpl implements Ap.Receiver
 {
-   private final AP.Context context;
+   private final Ap.Context context;
    private final TypeMirror typeMirror;
 
-   ReceiverImpl(AP.Context context, TypeMirror typeMirror)
+   ReceiverImpl(Ap.Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
    }
 
    @Override
-   public List<AP.AnnotationUsage> getAnnotationUsages()
+   public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
       return getDirectAnnotationUsages();
    }
 
    @Override
-   public List<AP.AnnotationUsage> getDirectAnnotationUsages()
+   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Adapters.adapt(context, getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
-   public AP.Type getType()
+   public Ap.Type getType()
    {
       return Adapters.adapt(context, getTypeMirror());
    }

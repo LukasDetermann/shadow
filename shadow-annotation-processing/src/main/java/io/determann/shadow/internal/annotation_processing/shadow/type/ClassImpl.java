@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
 import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
@@ -18,14 +18,14 @@ import java.util.Optional;
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 import static java.util.Arrays.stream;
 
-public class ClassImpl extends DeclaredImpl implements AP.Class
+public class ClassImpl extends DeclaredImpl implements Ap.Class
 {
-   public ClassImpl(AP.Context context, DeclaredType declaredTypeMirror)
+   public ClassImpl(Ap.Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public ClassImpl(AP.Context context, TypeElement typeElement)
+   public ClassImpl(Ap.Context context, TypeElement typeElement)
    {
       super(context, typeElement);
    }
@@ -33,42 +33,42 @@ public class ClassImpl extends DeclaredImpl implements AP.Class
    @Override
    public boolean isAssignableFrom(C.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((AP.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((Ap.Type) type).toTypeMirror());
    }
 
    @Override
-   public AP.Class getSuperClass()
+   public Ap.Class getSuperClass()
    {
       TypeMirror superclass = getElement().getSuperclass();
       if (TypeKind.NONE.equals(superclass.getKind()))
       {
          return null;
       }
-      return (AP.Class) adapt(getApi(), ((DeclaredType) superclass));
+      return (Ap.Class) adapt(getApi(), ((DeclaredType) superclass));
    }
 
    @Override
-   public List<AP.Class> getPermittedSubClasses()
+   public List<Ap.Class> getPermittedSubClasses()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
                          .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
-                         .map(AP.Class.class::cast)
+                         .map(Ap.Class.class::cast)
                          .toList();
    }
 
    @Override
-   public List<AP.Property> getProperties()
+   public List<Ap.Property> getProperties()
    {
       return PropertySupport.propertiesOf(this)
                             .stream()
                             .map(delegate -> new PropertyImpl(getApi(), delegate))
-                            .map(AP.Property.class::cast)
+                            .map(Ap.Property.class::cast)
                             .toList();
    }
 
    @Override
-   public Optional<AP.Declared> getOuterType()
+   public Optional<Ap.Declared> getOuterType()
    {
       TypeMirror enclosingType = getMirror().getEnclosingType();
       if (enclosingType.getKind().equals(TypeKind.NONE))
@@ -79,16 +79,16 @@ public class ClassImpl extends DeclaredImpl implements AP.Class
    }
 
    @Override
-   public List<AP.Type> getGenericTypes()
+   public List<Ap.Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> Adapters.<AP.Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<Ap.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<AP.Generic> getGenerics()
+   public List<Ap.Generic> getGenerics()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -97,7 +97,7 @@ public class ClassImpl extends DeclaredImpl implements AP.Class
    }
 
    @Override
-   public AP.Class withGenerics(AP.Type... generics)
+   public Ap.Class withGenerics(Ap.Type... generics)
    {
       if (generics.length == 0 || getGenerics().size() != generics.length)
       {
@@ -108,11 +108,11 @@ public class ClassImpl extends DeclaredImpl implements AP.Class
                                             generics.length +
                                             " are provided");
       }
-      Optional<AP.Declared> outerType = getOuterType();
+      Optional<Ap.Declared> outerType = getOuterType();
       if (outerType.isPresent() &&
-          (outerType.get() instanceof AP.Interface anInterface &&
+          (outerType.get() instanceof Ap.Interface anInterface &&
            !anInterface.getGenerics().isEmpty() ||
-           outerType.get() instanceof AP.Class aClass1 && !aClass1.getGenerics().isEmpty()))
+           outerType.get() instanceof Ap.Class aClass1 && !aClass1.getGenerics().isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +
@@ -123,33 +123,33 @@ public class ClassImpl extends DeclaredImpl implements AP.Class
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (AP.Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (Ap.Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public AP.Class withGenerics(String... qualifiedGenerics)
+   public Ap.Class withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(AP.Type[]::new));
+                                .toArray(Ap.Type[]::new));
    }
 
    @Override
-   public AP.Class interpolateGenerics()
+   public Ap.Class interpolateGenerics()
    {
-      return (AP.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public AP.Primitive asUnboxed()
+   public Ap.Primitive asUnboxed()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().unboxedType(getMirror()));
    }
 
    @Override
-   public AP.Class erasure()
+   public Ap.Class erasure()
    {
-      return (AP.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override

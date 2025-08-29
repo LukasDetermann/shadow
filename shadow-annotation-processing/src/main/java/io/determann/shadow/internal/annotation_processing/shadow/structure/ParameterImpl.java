@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
 import javax.lang.model.element.ExecutableElement;
@@ -13,9 +13,9 @@ import static io.determann.shadow.api.query.Operations.*;
 import static io.determann.shadow.api.query.Provider.requestOrEmpty;
 import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
-public class ParameterImpl extends VariableImpl implements AP.Parameter
+public class ParameterImpl extends VariableImpl implements Ap.Parameter
 {
-   public ParameterImpl(AP.Context context, VariableElement variableElement)
+   public ParameterImpl(Ap.Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }
@@ -36,7 +36,7 @@ public class ParameterImpl extends VariableImpl implements AP.Parameter
    }
 
    @Override
-   public AP.Executable getSurrounding()
+   public Ap.Executable getSurrounding()
    {
       return Adapters.adapt(getApi(), ((ExecutableElement) getElement().getEnclosingElement()));
    }

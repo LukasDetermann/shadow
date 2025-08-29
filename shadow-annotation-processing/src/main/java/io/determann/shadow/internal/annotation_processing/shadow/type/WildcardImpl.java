@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
 
@@ -11,15 +11,15 @@ import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 
-public class WildcardImpl extends TypeImpl<WildcardType> implements AP.Wildcard
+public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
 {
-   public WildcardImpl(AP.Context context, WildcardType wildcardTypeMirror)
+   public WildcardImpl(Ap.Context context, WildcardType wildcardTypeMirror)
    {
       super(context, wildcardTypeMirror);
    }
 
    @Override
-   public Optional<AP.Type> getExtends()
+   public Optional<Ap.Type> getExtends()
    {
       TypeMirror extendsBound = getMirror().getExtendsBound();
       if (extendsBound == null)
@@ -30,7 +30,7 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements AP.Wildcard
    }
 
    @Override
-   public Optional<AP.Type> getSuper()
+   public Optional<Ap.Type> getSuper()
    {
       TypeMirror superBound = getMirror().getSuperBound();
       if (superBound == null)
@@ -43,13 +43,13 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements AP.Wildcard
    @Override
    public boolean contains(C.Type type)
    {
-      return adapt(getApi()).toTypes().contains(getMirror(), adapt((AP.Declared) type).toDeclaredType());
+      return adapt(getApi()).toTypes().contains(getMirror(), adapt((Ap.Declared) type).toDeclaredType());
    }
 
    @Override
-   public AP.Wildcard erasure()
+   public Ap.Wildcard erasure()
    {
-      return (AP.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+      return (Ap.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override

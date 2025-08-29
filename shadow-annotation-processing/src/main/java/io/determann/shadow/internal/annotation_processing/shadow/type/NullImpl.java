@@ -1,14 +1,14 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.annotation_processing.AP;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.implementation.support.api.shadow.type.NullSupport;
 
 import javax.lang.model.type.NullType;
 
-public class NullImpl extends TypeImpl<NullType> implements AP.Null
+public class NullImpl extends TypeImpl<NullType> implements Ap.Null
 {
-   public NullImpl(AP.Context LangModelContext, NullType nullType)
+   public NullImpl(Ap.Context LangModelContext, NullType nullType)
    {
       super(LangModelContext, nullType);
    }
