@@ -5,10 +5,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 
 import javax.annotation.processing.Processor;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.SimpleJavaFileObject;
-import javax.tools.ToolProvider;
+import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -121,8 +118,14 @@ public class ProcessorTestImpl implements ProcessorTest
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
       Objects.requireNonNull(compiler);
       JavaCompiler.CompilationTask compilerTask = compiler.getTask(null,
-                                                                   null,
-                                                                   null,
+                                                                   new TestFileManager(compiler.getStandardFileManager(null, null, null)),
+                                                                   diagnostic ->
+                                                                   {
+                                                                      if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR))
+                                                                      {
+                                                                         throw new IllegalStateException(diagnostic.toString());
+                                                                      }
+                                                                   },
                                                                    options,
                                                                    compiledClassNames,
                                                                    toCompile);
