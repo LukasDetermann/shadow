@@ -125,15 +125,15 @@ One having the code to process and one containing the annotation processor.
 
 === 5) The processor itself
 
-.Extend `ShadowProcessor` for your own processor and override `process()`
+.Extend `Ap.Processor` for your own processor and override `process()`
 [%linenums,java]
 ----
 
 
-public class MyProcessor extends ShadowProcessor
+public class MyProcessor extends Ap.Processor
 {
    @Override
-   public void process(final AnnotationProcessingContext context) {
+   public void process(final Ap.Context context) {
    }
 }
 ----
@@ -161,11 +161,11 @@ public @interface MyAnnotation {}
 ----
 
 
-public class MyProcessor extends ShadowProcessor
+public class MyProcessor extends Ap.Processor
 {
    @Override
-   public void process(final AnnotationProcessingContext context) {
-      for (Shadow shadow : context.getAnnotatedWith("org.example.MyAnnotation").all()) {
+   public void process(final Ap.Context context) {
+      for (Annotationable annotationable : context.getAnnotatedWith("org.example.MyAnnotation").all()) {
       }
    }
 }
@@ -205,18 +205,22 @@ endif::[]
 .This builder would be generated
 [%linenums,java]
 ----
-public class CustomerShadowBuilder{
-   private java.lang.String name;
+package io.determann.shadow.builder;
 
-   public CustomerShadowBuilder withName(java.lang.String name) {
+import io.determann.shadow.builder.CustomerShadowBuilder;
+import io.determann.shadow.builder.Customer;
+
+class CustomerShadowBuilder {
+   private String name;
+   public CustomerShadowBuilder withName(String name) {
       this.name = name;
       return this;
    }
-
-   public io.determann.shadow.builder.Customer build() {
-     io.determann.shadow.builder.Customer customer = new io.determann.shadow.builder.Customer();
+   public Customer build() {
+      Customer customer = new Customer();
       customer.setName(name);
       return customer;
    }
+
 }
 ----
