@@ -431,7 +431,7 @@ public class RecordDsl
             .withSurrounding(this)
             .build();
 
-      String qualifiedName = renderQualifiedName(context);
+      String qualifiedName = renderName(context);
       if (generics.isEmpty())
       {
          return qualifiedName;

@@ -407,7 +407,7 @@ public class EnumDsl
    @Override
    public String renderType(RenderingContext renderingContext)
    {
-      return renderQualifiedName(renderingContext);
+      return renderName(renderingContext);
    }
 
    @Override

@@ -260,7 +260,7 @@ class EnumDslTest
    @Test
    void renderType()
    {
-      assertEquals("org.example.MyEnum",
+      assertEquals("MyEnum",
                    Dsl.enum_()
                       .package_("org.example")
                       .name("MyEnum")

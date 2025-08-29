@@ -417,7 +417,7 @@ public class InterfaceDsl
             .withSurrounding(this)
             .build();
 
-      String qualifiedName = renderQualifiedName(context);
+      String qualifiedName = renderName(context);
       if (generics.isEmpty())
       {
          return qualifiedName;
