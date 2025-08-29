@@ -4,6 +4,7 @@ import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.annotation.AnnotationJavaDocStep;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
@@ -43,6 +44,8 @@ import io.determann.shadow.api.dsl.uses.UsesRenderable;
 import io.determann.shadow.internal.dsl.*;
 import org.jetbrains.annotations.Contract;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
@@ -618,5 +621,29 @@ public interface Dsl
    static FieldRenderable field(Modifier modifier, VariableTypeRenderable type, String name, String initializer)
    {
       return field().modifier(modifier).type(type).name(name).initializer(initializer);
+   }
+
+   /// a [javax.annotation.processing.Generated] annotation
+   @Contract(value = "_ -> new", pure = true)
+   static AnnotationUsageRenderable generated(String generatorName)
+   {
+      return annotationUsage().type("javax.annotation.processing.Generated")
+                              .noName()
+                              .value(annotationValue(generatorName))
+                              .name("date")
+                              .value(annotationValue(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+   }
+
+   /// a [javax.annotation.processing.Generated] annotation
+   @Contract(value = "_, _ -> new", pure = true)
+   static AnnotationUsageRenderable generated(String generatorName, String comment)
+   {
+      return annotationUsage().type("javax.annotation.processing.Generated")
+                              .noName()
+                              .value(annotationValue(generatorName))
+                              .name("date")
+                              .value(annotationValue(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                              .name("comments")
+                              .value(annotationValue(comment));
    }
 }
