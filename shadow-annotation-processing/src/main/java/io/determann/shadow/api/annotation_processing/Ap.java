@@ -55,10 +55,9 @@ public interface Ap
 
       /**
        * Intercepts the process call and initializes the {@link Context}.
-       * If you want to use the {@link Context} don't override this method.
        */
       @Override
-      public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
+      public final boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
       {
          Instant start = Instant.now();
          Context api = new ApContextImpl(processingEnv, roundEnv, processingRound);
@@ -66,8 +65,7 @@ public interface Ap
          {
             process(api);
          }
-         //the compiler can crash when an uncaught exception is thrown. so it is just printed here and will raise an error
-         //using the proxied err outputStream in the ShadowApi
+         //the compiler can crash when an uncaught exception is thrown. so they are handled here. the default handler Logs and raises an error
          catch (Exception t)
          {
             if (api.getExceptionHandler() != null)
@@ -87,10 +85,10 @@ public interface Ap
       }
 
       /**
-       * Override this method if you want to use the {@link Context}. This Method can be called many times during compilation.
+       * Entry Point for Annotation Processing. This Method can be called many times during compilation.
        *
        * @see Context
-       * @see javax.annotation.processing.Processor for detailed doku on annotationProcessing without the shadowApi
+       * @see javax.annotation.processing.Processor for detailed doku on annotationProcessing without this Api
        */
       public abstract void process(Context annotationProcessingContext) throws Exception;
    }
