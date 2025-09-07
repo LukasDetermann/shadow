@@ -18,7 +18,7 @@ class AnnotationDslTest
                    }""",
                    Dsl.innerAnnotation().javadoc("/// some java doc")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,7 +33,7 @@ class AnnotationDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -53,7 +53,7 @@ class AnnotationDslTest
                       .nonSealed()
                       .strictfp_()
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -66,7 +66,7 @@ class AnnotationDslTest
                    Dsl.innerAnnotation()
                       .name("MyInterface")
                       .body("// some content")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -81,7 +81,7 @@ class AnnotationDslTest
                       .name("MyInterface")
                       .field("String s;")
                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -97,7 +97,7 @@ class AnnotationDslTest
                       .name("MyInterface")
                       .method("String foo();")
                       .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -114,7 +114,7 @@ class AnnotationDslTest
                       .name("MyInterface")
                       .inner("@interface Inner {}")
                       .inner(Dsl.innerAnnotation().name("Inner2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
 
@@ -133,7 +133,7 @@ class AnnotationDslTest
                       .package_(Dsl.packageInfo().name("org.example"))
                          .javadoc("/// some javadoc")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -147,7 +147,7 @@ class AnnotationDslTest
                    Dsl.annotation()
                       .package_("org.example")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -174,7 +174,7 @@ class AnnotationDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -184,7 +184,7 @@ class AnnotationDslTest
                    Dsl.annotation()
                       .package_("org.example")
                       .name("MyAnnotation")
-                      .renderQualifiedName(RenderingContext.DEFAULT));
+                      .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -194,7 +194,7 @@ class AnnotationDslTest
                    Dsl.annotation()
                       .package_("org.example")
                       .name("MyAnnotation")
-                      .renderType(RenderingContext.DEFAULT));
+                      .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -204,7 +204,7 @@ class AnnotationDslTest
                    Dsl.annotation()
                       .package_("org.example")
                       .name("MyAnnotation")
-                      .renderName(RenderingContext.DEFAULT));
+                      .renderName(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -219,6 +219,6 @@ class AnnotationDslTest
                       .name("MyAnnotation")
                       .method(Dsl.method().result("String").name("foo"),
                               Dsl.annotationValue(""))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

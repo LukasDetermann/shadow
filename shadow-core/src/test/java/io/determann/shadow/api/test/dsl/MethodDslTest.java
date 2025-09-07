@@ -8,7 +8,7 @@ import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodDslTest
@@ -25,7 +25,7 @@ class MethodDslTest
       assertEquals("""
                    /// some javadoc
                    MyType foo() {}""",
-                   Dsl.method().javadoc("/// some javadoc").result("MyType").name("foo").renderDeclaration(DEFAULT));
+                   Dsl.method().javadoc("/// some javadoc").result("MyType").name("foo").renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -40,7 +40,7 @@ class MethodDslTest
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .result(Dsl.result().type("MyType"))
                       .name("foo")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -60,7 +60,7 @@ class MethodDslTest
                       .strictfp_()
                       .result("MyType")
                       .name("foo")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -73,7 +73,7 @@ class MethodDslTest
                       .generic(Dsl.generic("V"))
                       .result("MyType")
                       .name("foo")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -81,7 +81,7 @@ class MethodDslTest
    {
       C.Enum cEnum = TestFactory.create(C.Enum.class, "renderName", "MyEnum");
 
-      assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").renderDeclaration(DEFAULT));
+      assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -92,7 +92,7 @@ class MethodDslTest
                       .name("foo")
                       .parameter("int i1", "int i2")
                       .parameter("int i3")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -103,7 +103,7 @@ class MethodDslTest
                       .name("foo")
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .parameter(Dsl.parameter("int", "i3"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -117,7 +117,7 @@ class MethodDslTest
                       .name("foo")
                       .throws_("MyException1", "MyException2")
                       .throws_(cClass)
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -131,7 +131,7 @@ class MethodDslTest
                       .resultType("MyType")
                       .name("foo")
                       .body("//some content")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -152,20 +152,20 @@ class MethodDslTest
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .throws_("AnException")
                       .body("// some content")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
       //@end
    }
 
    @Test
    void renderName()
    {
-      assertEquals("foo", Dsl.method().resultType("void").name("foo").renderName(DEFAULT));
+      assertEquals("foo", Dsl.method().resultType("void").name("foo").renderName(createRenderingContext()));
    }
 
    @Test
    void receiver()
    {
       assertEquals("MyType foo(MyClass MyClass.this) {}",
-                   Dsl.method().resultType("MyType").name("foo").receiver("MyClass MyClass.this").renderDeclaration(DEFAULT));
+                   Dsl.method().resultType("MyType").name("foo").receiver("MyClass MyClass.this").renderDeclaration(createRenderingContext()));
    }
 }

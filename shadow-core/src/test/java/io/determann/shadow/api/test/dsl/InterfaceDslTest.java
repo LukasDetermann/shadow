@@ -18,7 +18,7 @@ class InterfaceDslTest
                    }""",
                    Dsl.innerInterface().javadoc("/// some java doc")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,7 +33,7 @@ class InterfaceDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -54,7 +54,7 @@ class InterfaceDslTest
                       .static_()
                       .strictfp_()
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -67,7 +67,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .generic("T")
                       .generic(Dsl.generic("V"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -80,7 +80,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .extends_("SomeInterface")
                       .extends_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -93,7 +93,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .permits("Some")
                       .permits(Dsl.innerInterface().name("Thing"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -106,7 +106,7 @@ class InterfaceDslTest
                    Dsl.innerInterface()
                       .name("MyInterface")
                       .body("// some content")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -121,7 +121,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .field("String s;")
                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -137,7 +137,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .method("abstract void foo() {}")
                       .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -154,7 +154,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .inner("interface Inner {}")
                       .inner(Dsl.innerInterface().name("Inner2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -172,7 +172,7 @@ class InterfaceDslTest
                       .package_(Dsl.packageInfo().name("org.example"))
                          .javadoc("/// some javadoc")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -186,7 +186,7 @@ class InterfaceDslTest
                    Dsl.interface_()
                       .package_("org.example")
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -213,13 +213,13 @@ class InterfaceDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyInterface")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderName()
    {
-      assertEquals("MyInterface", Dsl.innerInterface().name("MyInterface").renderName(RenderingContext.DEFAULT));
+      assertEquals("MyInterface", Dsl.innerInterface().name("MyInterface").renderName(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -230,7 +230,7 @@ class InterfaceDslTest
                       .name("MyInterface")
                       .generic("T")
                       .generic("S")
-                      .renderType(RenderingContext.DEFAULT));
+                      .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -240,6 +240,6 @@ class InterfaceDslTest
                    Dsl.interface_()
                          .package_("org.example")
                          .name("MyInterface")
-                         .renderQualifiedName(RenderingContext.DEFAULT));
+                         .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class FieldDsl
@@ -173,9 +172,8 @@ public class FieldDsl
    @Override
    public String renderDeclaration(RenderingContext context)
    {
-      return partialRender(renderingContextBuilder(context)
-                                 .withSurrounding(this)
-                                 .build()) + ';';
+      context.addSurrounding(this);
+      return partialRender(context) + ';';
    }
 
    private String partialRender(RenderingContext context)
@@ -248,9 +246,7 @@ public class FieldDsl
       @Override
       public String renderDeclaration(RenderingContext context)
       {
-         context = renderingContextBuilder(context)
-               .withSurrounding(this)
-               .build();
+         context.addSurrounding(this);
 
          StringBuilder sb = new StringBuilder();
 

@@ -4,7 +4,7 @@ import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericDslTest
@@ -17,7 +17,7 @@ class GenericDslTest
                       .annotate("MyAnnotation1")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .name("T")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -29,7 +29,7 @@ class GenericDslTest
                       .extends_(Dsl.innerClass().name("MyClass"))
                       .extends_("MyInterface")
                       .extends_(Dsl.innerInterface().name("MyInterface2"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -43,7 +43,7 @@ class GenericDslTest
                    Dsl.generic()
                       .name("B")
                       .extends_(bound)
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -51,14 +51,14 @@ class GenericDslTest
    {
       GenericRenderable generic = Dsl.generic().name("T").extends_("MyClass");
 
-      assertEquals("T t", Dsl.parameter().type(generic).name("t").renderDeclaration(DEFAULT));
+      assertEquals("T t", Dsl.parameter().type(generic).name("t").renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void api()
    {
       //@start region="api"
-      assertEquals("T extends MyClass", Dsl.generic().name("T").extends_("MyClass").renderDeclaration(DEFAULT));
+      assertEquals("T extends MyClass", Dsl.generic().name("T").extends_("MyClass").renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -72,7 +72,7 @@ class GenericDslTest
 
       a = Dsl.generic().name("A").extends_(b);
 
-      assertEquals("A extends B, B extends A", a.renderDeclaration(DEFAULT) + ", " + b.renderDeclaration(DEFAULT));
+      assertEquals("A extends B, B extends A", a.renderDeclaration(createRenderingContext()) + ", " + b.renderDeclaration(createRenderingContext()));
       //@end
    }
 }

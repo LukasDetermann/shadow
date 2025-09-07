@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ModuleDslTest
@@ -40,7 +40,7 @@ class ModuleDslTest
                       .uses(Dsl.uses("org.example.Spi"))
                       .provides(Dsl.provides().service("org.example.Spi")
                                    .with("org.example.SpiImplementation"))
-                      .renderModuleInfo(DEFAULT));
+                      .renderModuleInfo(createRenderingContext()));
       //@end
    }
 
@@ -54,7 +54,7 @@ class ModuleDslTest
                    Dsl.moduleInfo()
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("my.module")
-                      .renderModuleInfo(DEFAULT));
+                      .renderModuleInfo(createRenderingContext()));
    }
 
    @Test
@@ -80,6 +80,6 @@ class ModuleDslTest
                          .opens("another.package")
                          .uses("some.Service")
                          .provides("an.other.Service with ServiceImpl")
-                         .renderModuleInfo(DEFAULT));
+                         .renderModuleInfo(createRenderingContext()));
    }
 }

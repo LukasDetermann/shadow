@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class ConstructorDsl
@@ -221,9 +221,7 @@ public class ConstructorDsl
    @Override
    public String renderDeclaration(RenderingContext context)
    {
-      context = renderingContextBuilder(context)
-            .withSurrounding(this)
-            .build();
+      context.addSurrounding(this);
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -253,7 +251,8 @@ public class ConstructorDsl
       renderElement(sb, " throws ", exceptions, context, ", ");
 
       sb.append(" {");
-      RenderingContext indented = context.builder().incrementIndentationLevel().build();
+      RenderingContext indented = createRenderingContext(context);
+      indented.incrementIndentationLevel();
       if (body != null)
       {
          sb.append('\n')

@@ -13,6 +13,6 @@ class UsesDslTest
    {
       assertEquals("uses some.Service;",
                    Dsl.uses("some.Service")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -13,14 +13,14 @@ class ImportDslTest
    void importAllDeclared()
    {
       assertEquals("import static org.example.MyClass.*;",
-                   Dsl.staticImportAll(Dsl.class_().package_("org.example").name("MyClass")).renderDeclaration(DEFAULT));
+                   Dsl.staticImportAll(Dsl.class_().package_("org.example").name("MyClass")).renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void importAlString()
    {
       assertEquals("import static org.examole.*;",
-                   Dsl.staticImportAll("org.examole").renderDeclaration(DEFAULT));
+                   Dsl.staticImportAll("org.examole").renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -29,7 +29,7 @@ class ImportDslTest
       assertEquals("import static org.example.MyClass.foo;",
                    Dsl.staticImport(Dsl.class_().package_("org.example").name("MyClass"),
                                     Dsl.method().result("String").name("foo"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -38,6 +38,6 @@ class ImportDslTest
       assertEquals("import static org.example.MyClass.A_CONSTANT;",
                    Dsl.staticImport(Dsl.class_().package_("org.example").name("MyClass"),
                                     Dsl.field().type("String").name("A_CONSTANT"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

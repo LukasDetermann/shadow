@@ -18,7 +18,7 @@ class EnumDslTest
                    }""",
                    Dsl.innerEnum().javadoc("/// some java doc")
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,7 +33,7 @@ class EnumDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -51,7 +51,7 @@ class EnumDslTest
                       .static_()
                       .strictfp_()
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -64,7 +64,7 @@ class EnumDslTest
                       .name("MyEnum")
                       .implements_("SomeInterface")
                       .implements_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
 
@@ -78,7 +78,7 @@ class EnumDslTest
                    Dsl.innerEnum()
                       .name("MyEnum")
                       .body("// some content")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -93,7 +93,7 @@ class EnumDslTest
                       .name("MyEnum")
                       .field("String s;")
                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -109,7 +109,7 @@ class EnumDslTest
                       .name("MyEnum")
                       .method("abstract void foo() {}")
                       .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -126,7 +126,7 @@ class EnumDslTest
                       .name("MyEnum")
                       .inner("enum Inner {}")
                       .inner(Dsl.innerEnum().name("Inner2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -145,7 +145,7 @@ class EnumDslTest
                                            {
                                            // something
                                            }""")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -164,7 +164,7 @@ class EnumDslTest
                                          static {
                                          // something
                                          }""")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -180,7 +180,7 @@ class EnumDslTest
                       .name("MyEnum")
                       .constructor("MyEnum() {}")
                       .constructor(Dsl.constructor().type("MyEnum2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -198,7 +198,7 @@ class EnumDslTest
                       .package_(Dsl.packageInfo().name("org.example"))
                       .javadoc("/// some javadoc")
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -212,7 +212,7 @@ class EnumDslTest
                    Dsl.enum_()
                       .package_("org.example")
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -239,7 +239,7 @@ class EnumDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyEnum")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -248,13 +248,13 @@ class EnumDslTest
       assertEquals("MyEnum",
                    Dsl.innerEnum()
                       .name("MyEnum")
-                      .renderQualifiedName(RenderingContext.DEFAULT));
+                      .renderQualifiedName(RenderingContext.createRenderingContext()));
 
       assertEquals("org.example.MyEnum",
                    Dsl.enum_()
                       .package_("org.example")
                       .name("MyEnum")
-                      .renderQualifiedName(RenderingContext.DEFAULT));
+                      .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -264,7 +264,7 @@ class EnumDslTest
                    Dsl.enum_()
                       .package_("org.example")
                       .name("MyEnum")
-                      .renderType(RenderingContext.DEFAULT));
+                      .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -273,7 +273,7 @@ class EnumDslTest
       assertEquals("MyEnum",
                    Dsl.innerEnum()
                       .name("MyEnum")
-                      .renderName(RenderingContext.DEFAULT));
+                      .renderName(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -288,6 +288,6 @@ class EnumDslTest
                       .name("MyEnum")
                       .enumConstant("T1")
                       .enumConstant(Dsl.enumConstant().name("T2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

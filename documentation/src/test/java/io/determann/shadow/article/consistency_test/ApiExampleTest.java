@@ -1,7 +1,6 @@
 package io.determann.shadow.article.consistency_test;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.query.Operations;
 import io.determann.shadow.api.query.Provider;
 import io.determann.shadow.api.query.Response;
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApiExampleTest
@@ -95,7 +95,7 @@ void classDeclarationRendering()
                                                            Operations. GET_CLASS,
                                                            "InterpolateGenericsExample");
 
-                  assertEquals(expected, cClass.renderDeclaration(RenderingContext.DEFAULT));
+                  assertEquals(expected, cClass.renderDeclaration(createRenderingContext()));
                });
 }
 //end::consistency[]

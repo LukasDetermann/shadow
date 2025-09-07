@@ -9,18 +9,18 @@ import java.util.List;
 public interface ClassImportStep
       extends ClassJavaDocStep
 {
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    ClassImportStep import_(String... name);
 
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    default ClassImportStep import_(ImportRenderable... imports)
    {
       return import_(Arrays.asList(imports));
    }
 
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    ClassImportStep import_(List<? extends ImportRenderable> imports);
 }

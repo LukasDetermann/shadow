@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
 
@@ -322,14 +322,7 @@ public class InterfaceDsl
    @Override
    public String renderDeclaration(RenderingContext context)
    {
-      context = renderingContextBuilder(context)
-            .withSurrounding(this)
-            .build();
-
-      if (isOuterType())
-      {
-         context = context.builder().withNewImportContext().build();
-      }
+      context.addSurrounding(this);
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -352,7 +345,8 @@ public class InterfaceDsl
       renderElement(sb, "permits ", permits, " ", context, ", ");
 
       sb.append("{\n");
-      RenderingContext indented = context.builder().incrementIndentationLevel().build();
+      RenderingContext indented = createRenderingContext(context);
+      indented.incrementIndentationLevel();
       if (body != null)
       {
          sb.append(body.render(indented))
@@ -374,9 +368,8 @@ public class InterfaceDsl
       {
          sb.insert(0, "\n\n");
       }
-      RenderingContext finalContext = context;
-      sb.insert(0, imports.stream().map(renderable -> renderable.render(finalContext)).collect(joining("\n")));
-      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(finalContext)).collect(joining("\n")));
+      sb.insert(0, imports.stream().map(renderable -> renderable.render(context)).collect(joining("\n")));
+      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(context)).collect(joining("\n")));
 
       if (package_ != null)
       {
@@ -393,29 +386,21 @@ public class InterfaceDsl
       return sb.toString();
    }
 
-   private boolean isOuterType()
-   {
-      return package_ != null || imports.isEmpty();
-   }
-
    @Override
-   public String renderQualifiedName(RenderingContext renderingContext)
+   public String renderQualifiedName(RenderingContext context)
    {
+      context.addSurrounding(this);
       if (package_ == null)
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
-                                                .withSurrounding(this)
-                                                .build()) + '.' + name;
+      return package_.renderQualifiedName(context) + '.' + name;
    }
 
    @Override
-   public String renderType(RenderingContext renderingContext)
+   public String renderType(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
-            .withSurrounding(this)
-            .build();
+      context.addSurrounding(this);
 
       String qualifiedName = renderName(context);
       if (generics.isEmpty())

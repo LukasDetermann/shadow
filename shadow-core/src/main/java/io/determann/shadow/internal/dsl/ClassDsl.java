@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
 
@@ -386,14 +386,7 @@ public class ClassDsl
    @Override
    public String renderDeclaration(RenderingContext context)
    {
-      context = renderingContextBuilder(context)
-            .withSurrounding(this)
-            .build();
-
-      if (isOuterType())
-      {
-         context = context.builder().withNewImportContext().build();
-      }
+      context.addSurrounding(this);
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -423,7 +416,8 @@ public class ClassDsl
       renderElement(sb, "permits ", permits, " ", context, ", ");
 
       sb.append("{\n");
-      RenderingContext indented = context.builder().incrementIndentationLevel().build();
+      RenderingContext indented = createRenderingContext(context);
+      indented.incrementIndentationLevel();
       if (body != null)
       {
          sb.append(body.render(indented))
@@ -466,11 +460,6 @@ public class ClassDsl
       return sb.toString();
    }
 
-   private boolean isOuterType()
-   {
-      return package_ != null || imports.isEmpty();
-   }
-
    @Override
    public String renderQualifiedName(RenderingContext renderingContext)
    {
@@ -478,26 +467,23 @@ public class ClassDsl
       {
          return name;
       }
-      return package_.renderQualifiedName(renderingContextBuilder(renderingContext)
-                                                .withSurrounding(this)
-                                                .build()) + '.' + name;
+      renderingContext.addSurrounding(this);
+      return package_.renderQualifiedName(renderingContext) + '.' + name;
    }
 
    @Override
    public String renderType(RenderingContext renderingContext)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
-            .withSurrounding(this)
-            .build();
+      renderingContext.addSurrounding(this);
 
-      String qualifiedName = renderName(context);
+      String qualifiedName = renderName(renderingContext);
       if (generics.isEmpty())
       {
          return qualifiedName;
       }
       return qualifiedName +
              '<' +
-             generics.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) +
+             generics.stream().map(renderable -> renderable.render(renderingContext)).collect(joining(", ")) +
              '>';
    }
 

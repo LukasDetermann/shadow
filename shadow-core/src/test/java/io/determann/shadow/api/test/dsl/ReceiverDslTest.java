@@ -32,7 +32,7 @@ class ReceiverDslTest
                    Dsl.innerClass()
                       .name("MyClass")
                       .method(method)
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -40,7 +40,7 @@ class ReceiverDslTest
    {
       MethodRenderable methodRenderable = Dsl.method().result("void").name("method").receiver(Dsl.receiver());
 
-      assertThrows(IllegalStateException.class, () -> methodRenderable.renderDeclaration(RenderingContext.DEFAULT));
+      assertThrows(IllegalStateException.class, () -> methodRenderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -59,7 +59,7 @@ class ReceiverDslTest
                       }
                    
                    }""",
-                   outerClass.renderDeclaration(RenderingContext.DEFAULT));
+                   outerClass.renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -69,7 +69,7 @@ class ReceiverDslTest
                                       .constructor(Dsl.constructor().type("Inner")
                                                       .receiver(Dsl.receiver()));
 
-      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.DEFAULT));
+      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -78,6 +78,6 @@ class ReceiverDslTest
       ConstructorRenderable renderable = Dsl.constructor().type("Inner")
                                             .receiver(Dsl.receiver());
 
-      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.DEFAULT));
+      assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

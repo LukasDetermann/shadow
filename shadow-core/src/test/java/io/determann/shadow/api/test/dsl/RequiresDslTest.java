@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RequiresDslTest
@@ -14,12 +14,12 @@ class RequiresDslTest
       assertEquals("requires some.module;",
                    Dsl.requires()
                       .dependency("some.module")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
 
       assertEquals("requires some.module;",
                    Dsl.requires()
                       .dependency(Dsl.moduleInfo().name("some.module"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -29,7 +29,7 @@ class RequiresDslTest
                    Dsl.requires()
                       .transitive()
                       .dependency("some.module")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -39,6 +39,6 @@ class RequiresDslTest
                    Dsl.requires()
                       .static_()
                       .dependency("some.module")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

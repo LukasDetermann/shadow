@@ -9,7 +9,6 @@ import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class PackageDsl
@@ -62,12 +61,9 @@ public class PackageDsl
    }
 
    @Override
-   public String renderPackageInfo(RenderingContext renderingContext)
+   public String renderPackageInfo(RenderingContext context)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
-            .withSurrounding(this)
-            .build();
-
+      context.addSurrounding(this);
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {

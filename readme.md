@@ -118,12 +118,12 @@ package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.class_.ClassBodyStep;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static java.lang.String.join;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
@@ -187,7 +187,7 @@ public class ShadowBuilderProcessor
 
          //writes the builder
          context.writeAndCompileSourceFile(toBuild.getQualifiedName() + "ShadowBuilder",
-                                           step.renderDeclaration(RenderingContext.DEFAULT));
+                                           step.renderDeclaration(createRenderingContext()));
       }
    }
 }

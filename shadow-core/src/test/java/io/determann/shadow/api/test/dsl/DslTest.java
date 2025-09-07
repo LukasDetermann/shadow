@@ -11,7 +11,7 @@ class DslTest
    @Test
    void generated()
    {
-      String result = Dsl.generated("org.example.MyGenerator", "some comment").renderDeclaration(RenderingContext.DEFAULT);
+      String result = Dsl.generated("org.example.MyGenerator", "some comment").renderDeclaration(RenderingContext.createRenderingContext());
 
       assertTrue(result.startsWith("@Generated(\"org.example.MyGenerator\", date = \""));
       assertTrue(result.endsWith("\", comments = \"some comment\")"));

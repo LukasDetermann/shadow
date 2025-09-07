@@ -1,63 +1,71 @@
 package io.determann.shadow.api.dsl;
 
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
-import io.determann.shadow.internal.dsl.RenderingContextBuilderImpl;
+import io.determann.shadow.internal.dsl.RenderingContextImpl;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.List;
 
+import static io.determann.shadow.api.dsl.RenderingConfiguration.DEFAULT_CONFIGURATION;
 import static java.util.Objects.requireNonNull;
 
+/// Mutable Context that contains all information needed for rendering.
+/// Each call to any `#render()` method should get a new instance of this context
+///
+/// @see #createRenderingContext()
+/// @see #createRenderingContext(RenderingConfiguration)
+/// @see #createRenderingContext(RenderingContext)
 public interface RenderingContext
 {
-   RenderingContext DEFAULT = renderingContextBuilder().withIndentation(3).build();
-
-   static RenderingContextBuilder renderingContextBuilder()
+   /// creates a [RenderingContext] with [RenderingConfiguration#DEFAULT_CONFIGURATION]
+   static RenderingContext createRenderingContext()
    {
-      return new RenderingContextBuilderImpl();
+      return createRenderingContext(DEFAULT_CONFIGURATION);
    }
 
-   /// creates a builder to modify values
-   static RenderingContextBuilder renderingContextBuilder(RenderingContext context)
+   /// creates a [RenderingContext] using the [RenderingConfiguration]
+   static RenderingContext createRenderingContext(RenderingConfiguration configuration)
    {
-      requireNonNull(context);
-      return new RenderingContextBuilderImpl(context);
+      return new RenderingContextImpl(configuration);
    }
 
-   RenderingContextBuilder builder();
+   /// creates a copy of the supplied [RenderingContext]
+   static RenderingContext createRenderingContext(RenderingContext renderingContext)
+   {
+      return new RenderingContextImpl(renderingContext);
+   }
 
    /// Returns the objects surrounding the one being currently rendered
    Deque<Object> getSurrounding();
 
-   /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [#getIndentation()])
-   ///
-   /// @see #getLineIndentation()
-   /// @see #getIndentationLevel()
-   int getIndentation();
+   void addSurrounding(Object surrounding);
 
-   /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [#getIndentation()])
+   /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [RenderingConfiguration#getIndentation()])
    ///
-   /// @see #getIndentation()
+   /// @see RenderingConfiguration#getIndentation()
    /// @see #getLineIndentation()
    int getIndentationLevel();
 
-   /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [#getIndentation()])
+   /// [#getLineIndentation()] = " ".repeat([#getIndentationLevel()] * [RenderingConfiguration#getIndentation()])
    ///
-   /// @see #getIndentation()
+   /// @see RenderingConfiguration#getIndentation()
    /// @see #getIndentationLevel()
    String getLineIndentation();
 
+   /// Should be called by the element owning the code block. e.g. class, method but not field
+   ///
+   /// @see RenderingContext#getIndentationLevel()
+   void incrementIndentationLevel();
+
    List<ImportRenderable> getImports();
 
-   /// @see RenderingContextBuilder#withNewImportContext()
-   /// @see RenderingContextBuilder#withoutAutomaticImports()
+   /// @see RenderingConfigurationBuilder#withoutAutomaticImports()
    /// @see #getImports()
    /// @see #renderName(String)
    String renderName(@Nullable String packageName, String simpleName);
 
-   /// @see RenderingContextBuilder#withNewImportContext()
-   /// @see RenderingContextBuilder#withoutAutomaticImports()
+   /// @see RenderingConfigurationBuilder#withoutAutomaticImports()
    /// @see #getImports()
    /// @see #renderName(String, String)
    default String renderName(String qualifiedName)

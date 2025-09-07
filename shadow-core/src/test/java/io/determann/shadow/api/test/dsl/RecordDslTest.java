@@ -18,7 +18,7 @@ class RecordDslTest
                    }""",
                    Dsl.innerRecord().javadoc("/// some java doc")
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,7 +33,7 @@ class RecordDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -52,7 +52,7 @@ class RecordDslTest
                       .static_()
                       .strictfp_()
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -65,7 +65,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .generic("T")
                       .generic(Dsl.generic("V"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -78,7 +78,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .implements_("SomeInterface")
                       .implements_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -91,7 +91,7 @@ class RecordDslTest
                    Dsl.innerRecord()
                       .name("MyRecord")
                       .body("// some content")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -106,7 +106,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .field("String s;")
                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -122,7 +122,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .method("abstract void foo() {}")
                       .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -139,7 +139,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .inner("record Inner() {}")
                       .inner(Dsl.innerRecord().name("Inner2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -158,7 +158,7 @@ class RecordDslTest
                                          static {
                                          // something
                                          }""")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -174,7 +174,7 @@ class RecordDslTest
                       .name("MyRecord")
                       .constructor("MyRecord() {}")
                       .constructor(Dsl.constructor().type("MyRecord2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -192,7 +192,7 @@ class RecordDslTest
                       .package_(Dsl.packageInfo().name("org.example"))
                       .javadoc("/// some javadoc")
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -206,7 +206,7 @@ class RecordDslTest
                    Dsl.record()
                       .package_("org.example")
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -233,7 +233,7 @@ class RecordDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyRecord")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -246,25 +246,25 @@ class RecordDslTest
                          .name("MyRecord")
                          .component(Dsl.recordComponent().type("String").name("s"))
                          .component("int i")
-                         .renderDeclaration(RenderingContext.DEFAULT));
+                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderName()
    {
-      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderName(RenderingContext.DEFAULT));
+      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderName(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderQualifiedName()
    {
-      assertEquals("org.example.MyRecord", Dsl.record().package_("org.example").name("MyRecord").renderQualifiedName(RenderingContext.DEFAULT));
+      assertEquals("org.example.MyRecord", Dsl.record().package_("org.example").name("MyRecord").renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderType()
    {
-      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderType(RenderingContext.DEFAULT));
-      assertEquals("MyRecord<T, S>", Dsl.innerRecord().name("MyRecord").generic("T").generic("S").renderType(RenderingContext.DEFAULT));
+      assertEquals("MyRecord", Dsl.innerRecord().name("MyRecord").renderType(RenderingContext.createRenderingContext()));
+      assertEquals("MyRecord<T, S>", Dsl.innerRecord().name("MyRecord").generic("T").generic("S").renderType(RenderingContext.createRenderingContext()));
    }
 }

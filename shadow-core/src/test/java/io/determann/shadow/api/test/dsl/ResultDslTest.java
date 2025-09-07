@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ResultDslTest
@@ -11,7 +11,7 @@ class ResultDslTest
    @Test
    void raw()
    {
-      assertEquals("MyType", Dsl.result().type("MyType").renderDeclaration(DEFAULT));
+      assertEquals("MyType", Dsl.result().type("MyType").renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -22,7 +22,7 @@ class ResultDslTest
                           .annotate("Annotation1")
                           .annotate("Annotation2")
                           .type("MyType")
-                          .renderDeclaration(DEFAULT));
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -33,6 +33,6 @@ class ResultDslTest
                    Dsl.result()
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .type(Dsl.innerClass().name("MyType"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

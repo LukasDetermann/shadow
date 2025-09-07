@@ -18,7 +18,7 @@ class ClassDslTest
                    }""",
                    Dsl.innerClass().javadoc("/// some java doc")
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,7 +33,7 @@ class ClassDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -55,7 +55,7 @@ class ClassDslTest
                       .static_()
                       .strictfp_()
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -68,7 +68,7 @@ class ClassDslTest
                       .name("MyClass")
                       .generic("T")
                       .generic(Dsl.generic("V"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -80,7 +80,7 @@ class ClassDslTest
                    Dsl.innerClass()
                       .name("MyClass")
                       .extends_("SomeOther")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
 
       assertEquals("""
                    class MyClass extends Parent {
@@ -88,7 +88,7 @@ class ClassDslTest
                    Dsl.innerClass()
                       .name("MyClass")
                       .extends_(Dsl.innerClass().name("Parent"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -101,7 +101,7 @@ class ClassDslTest
                       .name("MyClass")
                       .implements_("SomeInterface")
                       .implements_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -114,7 +114,7 @@ class ClassDslTest
                       .name("MyClass")
                       .permits("Some")
                       .permits(Dsl.innerClass().name("Thing"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -127,7 +127,7 @@ class ClassDslTest
                    Dsl.innerClass()
                       .name("MyClass")
                       .body("// some content")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -142,7 +142,7 @@ class ClassDslTest
                       .name("MyClass")
                       .field("String s;")
                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -158,7 +158,7 @@ class ClassDslTest
                       .name("MyClass")
                       .method("abstract void foo() {}")
                       .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -175,7 +175,7 @@ class ClassDslTest
                       .name("MyClass")
                       .inner("class Inner {}")
                       .inner(Dsl.innerClass().name("Inner2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -194,7 +194,7 @@ class ClassDslTest
                                            {
                                            // something
                                            }""")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -213,7 +213,7 @@ class ClassDslTest
                                          static {
                                          // something
                                          }""")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -229,7 +229,7 @@ class ClassDslTest
                       .name("MyClass")
                       .constructor("MyClass() {}")
                       .constructor(Dsl.constructor().type("MyClass2"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -247,7 +247,7 @@ class ClassDslTest
                       .package_(Dsl.packageInfo().name("org.example"))
                          .javadoc("/// some javadoc")
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -261,7 +261,7 @@ class ClassDslTest
                    Dsl.class_()
                       .package_("org.example")
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -288,7 +288,7 @@ class ClassDslTest
                       .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyClass")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -299,7 +299,7 @@ class ClassDslTest
                       .name("MyClass")
                       .generic("T")
                       .generic("S")
-                      .renderType(RenderingContext.DEFAULT));
+                      .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -309,6 +309,6 @@ class ClassDslTest
                    Dsl.class_()
                       .package_("org.example")
                       .name("MyClass")
-                      .renderQualifiedName(RenderingContext.DEFAULT));
+                      .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 }

@@ -13,7 +13,7 @@ class ExportsDslTest
    {
       assertEquals("exports some.package;",
                    Dsl.exports("some.package")
-                         .renderDeclaration(RenderingContext.DEFAULT));
+                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -27,6 +27,6 @@ class ExportsDslTest
                          .package_("some.package")
                          .to("first.module")
                          .to(Dsl.moduleInfo().name("second.module"))
-                         .renderDeclaration(RenderingContext.DEFAULT));
+                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

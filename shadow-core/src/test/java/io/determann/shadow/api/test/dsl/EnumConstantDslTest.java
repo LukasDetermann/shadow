@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumConstantDslTest
@@ -19,7 +19,7 @@ class EnumConstantDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation1"))
                       .name("FOO")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -31,7 +31,7 @@ class EnumConstantDslTest
                    Dsl.enumConstant()
                       .javadoc("// some doc")
                       .name("FOO")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -42,7 +42,7 @@ class EnumConstantDslTest
                       .name("FOO")
                       .parameter("\"test\"")
                       .parameter(Dsl.parameter("int", "4"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -62,6 +62,6 @@ class EnumConstantDslTest
                             public String toString() {
                                return "nope";
                             }""")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

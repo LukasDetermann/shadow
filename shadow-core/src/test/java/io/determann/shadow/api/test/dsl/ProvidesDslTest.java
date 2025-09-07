@@ -14,7 +14,7 @@ class ProvidesDslTest
       assertEquals("provides some.Service with some.Implementation;",
                    Dsl.provides().service(Dsl.innerClass().name("some.Service"))
                       .with("some.Implementation")
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
    @Test
    void providesWithMany()
@@ -26,6 +26,6 @@ class ProvidesDslTest
                    Dsl.provides().service("some.Service")
                       .with("some.Implementation")
                       .with(Dsl.innerClass().name("another.Implementation"))
-                      .renderDeclaration(RenderingContext.DEFAULT));
+                      .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

@@ -8,7 +8,7 @@ import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConstructorDslTest
@@ -25,7 +25,7 @@ class ConstructorDslTest
       assertEquals("""
                    /// some javadoc
                    MyType() {}""",
-                   Dsl.constructor().javadoc("/// some javadoc").type("MyType").renderDeclaration(DEFAULT));
+                   Dsl.constructor().javadoc("/// some javadoc").type("MyType").renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -39,7 +39,7 @@ class ConstructorDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .type("MyType")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -52,7 +52,7 @@ class ConstructorDslTest
                       .protected_()
                       .private_()
                       .type("MyType")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -64,7 +64,7 @@ class ConstructorDslTest
                       .generic("S")
                       .generic(Dsl.generic("Z"))
                       .type("MyType")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -74,10 +74,10 @@ class ConstructorDslTest
       C.Class cClass = TestFactory.create(C.Class.class, "renderQualifiedName", "MyClass");
       C.Record cRecord = TestFactory.create(C.Record.class, "renderQualifiedName", "MyRecord");
 
-      assertEquals("MyEnum2() {}", Dsl.constructor().type("MyEnum2").renderDeclaration(DEFAULT));
-      assertEquals("MyEnum() {}", Dsl.constructor().type(cEnum).renderDeclaration(DEFAULT));
-      assertEquals("MyClass() {}", Dsl.constructor().type(cClass).renderDeclaration(DEFAULT));
-      assertEquals("MyRecord() {}", Dsl.constructor().type(cRecord).renderDeclaration(DEFAULT));
+      assertEquals("MyEnum2() {}", Dsl.constructor().type("MyEnum2").renderDeclaration(createRenderingContext()));
+      assertEquals("MyEnum() {}", Dsl.constructor().type(cEnum).renderDeclaration(createRenderingContext()));
+      assertEquals("MyClass() {}", Dsl.constructor().type(cClass).renderDeclaration(createRenderingContext()));
+      assertEquals("MyRecord() {}", Dsl.constructor().type(cRecord).renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -87,7 +87,7 @@ class ConstructorDslTest
                    Dsl.constructor().type("MyType")
                       .parameter("int i1", "int i2")
                       .parameter("int i3")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -97,7 +97,7 @@ class ConstructorDslTest
                    Dsl.constructor().type("MyType")
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .parameter(Dsl.parameter("int", "i3"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -110,7 +110,7 @@ class ConstructorDslTest
                       .type("MyType")
                       .throws_("MyException1", "MyException2")
                       .throws_(cClass)
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -123,7 +123,7 @@ class ConstructorDslTest
                    Dsl.constructor()
                       .type("MyType")
                       .body("//some content")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -143,7 +143,7 @@ class ConstructorDslTest
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .throws_("AnException")
                       .body("// some content")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -155,6 +155,6 @@ class ConstructorDslTest
                       .type("MyType")
                       .receiver("Other Other.this")
                       .parameter(Dsl.parameter("String", "s"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

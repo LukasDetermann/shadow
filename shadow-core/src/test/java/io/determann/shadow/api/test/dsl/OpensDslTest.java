@@ -13,7 +13,7 @@ class OpensDslTest
       Assertions.assertEquals("opens some.package;",
                               Dsl.opens()
                                  .package_("some.package")
-                                 .renderDeclaration(RenderingContext.DEFAULT));
+                                 .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -27,6 +27,6 @@ class OpensDslTest
                                  .package_("some.package")
                                  .to("some.module")
                                  .to(Dsl.moduleInfo().name("another.module"))
-                                 .renderDeclaration(RenderingContext.DEFAULT));
+                                 .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

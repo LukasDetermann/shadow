@@ -11,7 +11,7 @@ import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class EnumConstantDsl
@@ -92,9 +92,7 @@ public class EnumConstantDsl
    @Override
    public String renderDeclaration(RenderingContext context)
    {
-      context = renderingContextBuilder(context)
-            .withSurrounding(this)
-            .build();
+      context.addSurrounding(this);
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -111,7 +109,8 @@ public class EnumConstantDsl
 
       if (body != null)
       {
-         RenderingContext indented = context.builder().incrementIndentationLevel().build();
+         RenderingContext indented = createRenderingContext(context);
+         indented.incrementIndentationLevel();
 
          sb.append(" {\n");
          sb.append(body.render(indented));

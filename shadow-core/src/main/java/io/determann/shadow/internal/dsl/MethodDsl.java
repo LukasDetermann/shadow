@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static io.determann.shadow.api.dsl.RenderingContext.renderingContextBuilder;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class MethodDsl
@@ -269,9 +269,8 @@ public class MethodDsl
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
-      RenderingContext context = renderingContextBuilder(renderingContext)
-            .withSurrounding(this)
-            .build();
+      RenderingContext context = createRenderingContext(renderingContext);
+      context.addSurrounding(this);
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -309,7 +308,8 @@ public class MethodDsl
          sb.append(" {");
          if (body != null)
          {
-            RenderingContext indented = context.builder().incrementIndentationLevel().build();
+            RenderingContext indented = createRenderingContext(context);
+            indented.incrementIndentationLevel();
 
             sb.append('\n')
               .append(body.render(indented))

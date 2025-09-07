@@ -3,7 +3,7 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.dsl.Dsl;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParameterDslTest
@@ -13,7 +13,7 @@ class ParameterDslTest
    {
       //@start region="short-api"
       assertEquals("ParamType two",
-                   Dsl.parameter("ParamType", "two").renderDeclaration(DEFAULT));
+                   Dsl.parameter("ParamType", "two").renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -29,7 +29,7 @@ class ParameterDslTest
                       .type("ParamType")
                       .name("one")
                       .varArgs()
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -43,7 +43,7 @@ class ParameterDslTest
                       .annotate(renderingContext -> "@MyAnnotation3")
                       .type("ParamType")
                       .name("one")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -54,7 +54,7 @@ class ParameterDslTest
                       .final_()
                       .type("ParamType")
                       .name("one")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -65,6 +65,6 @@ class ParameterDslTest
                       .type("ParamType")
                       .name("one")
                       .varArgs()
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }

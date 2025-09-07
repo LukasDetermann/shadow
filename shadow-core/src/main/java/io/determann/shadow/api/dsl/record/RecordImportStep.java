@@ -9,18 +9,18 @@ import java.util.List;
 public interface RecordImportStep
       extends RecordJavaDocStep
 {
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    RecordImportStep import_(String... name);
 
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    default RecordImportStep import_(ImportRenderable... imports)
    {
       return import_(Arrays.asList(imports));
    }
 
-   /// [io.determann.shadow.api.dsl.RenderingContextBuilder#withoutAutomaticImports()] To disable automatic importing
+   /// [io.determann.shadow.api.dsl.RenderingConfigurationBuilder#withoutAutomaticImports(] To disable automatic importing
    @Contract(value = "_ -> new", pure = true)
    RecordImportStep import_(List<? extends ImportRenderable> imports);
 }

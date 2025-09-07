@@ -19,7 +19,7 @@ class PackageDslTest
                       .javadoc("/// someJavadoc")
                       .annotate("MyAnnotation")
                       .name("org.example")
-                      .renderPackageInfo(RenderingContext.DEFAULT));
+                      .renderPackageInfo(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -33,6 +33,6 @@ class PackageDslTest
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
                       .name("org.example")
-                         .renderPackageInfo(RenderingContext.DEFAULT));
+                         .renderPackageInfo(RenderingContext.createRenderingContext()));
    }
 }

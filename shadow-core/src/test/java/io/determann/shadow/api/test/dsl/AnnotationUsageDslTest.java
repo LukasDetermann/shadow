@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.annotation.AnnotationRenderable;
 import io.determann.shadow.api.test.TestFactory;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.dsl.RenderingContext.DEFAULT;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnnotationUsageDslTest
@@ -18,7 +18,7 @@ class AnnotationUsageDslTest
                                  .type("MyType")
                                  .noName()
                                  .value(Dsl.annotationValue(1))
-                                 .renderDeclaration(DEFAULT));
+                                 .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -32,7 +32,7 @@ class AnnotationUsageDslTest
                       .value(Dsl.annotationValue(1))
                       .name("second")
                       .value("5L")
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -42,6 +42,6 @@ class AnnotationUsageDslTest
       assertEquals("@org.example.MyAnnotation",
                    Dsl.annotationUsage()
                       .type(TestFactory.create(AnnotationRenderable.class, "renderName", "org.example.MyAnnotation"))
-                      .renderDeclaration(DEFAULT));
+                      .renderDeclaration(createRenderingContext()));
    }
 }
