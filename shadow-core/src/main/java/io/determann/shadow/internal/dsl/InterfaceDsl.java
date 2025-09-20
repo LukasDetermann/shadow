@@ -274,7 +274,20 @@ public class InterfaceDsl
    {
       return setType(new InterfaceDsl(this),
                      packageName,
-                     (interfaceDsl, string) -> interfaceDsl.package_ = renderingContext -> string);
+                     (interfaceDsl, string) -> interfaceDsl.package_ = new PackageRenderable()
+                     {
+                        @Override
+                        public String renderQualifiedName(RenderingContext renderingContext)
+                        {
+                           return string;
+                        }
+
+                        @Override
+                        public String renderPackageInfo(RenderingContext renderingContext)
+                        {
+                           throw new IllegalStateException();
+                        }
+                     });
    }
 
    @Override

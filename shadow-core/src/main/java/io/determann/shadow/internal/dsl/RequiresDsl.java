@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.RenderingContext;
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.requires.RequiresNameStep;
 import io.determann.shadow.api.dsl.requires.RequiresRenderable;
@@ -45,7 +45,7 @@ public class RequiresDsl
    }
 
    @Override
-   public RequiresRenderable dependency(ModuleNameRenderable dependency)
+   public RequiresRenderable dependency(ModuleRenderable dependency)
    {
       return setTypeRenderer(new RequiresDsl(this),
                              dependency,

@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.RenderingContext;
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.opens.OpensTargetStep;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
@@ -51,7 +51,7 @@ public class OpensDsl
    }
 
    @Override
-   public OpensTargetStep to(List<? extends ModuleNameRenderable> modules)
+   public OpensTargetStep to(List<? extends ModuleRenderable> modules)
    {
       return addArrayRenderer(new OpensDsl(this),
                               modules,

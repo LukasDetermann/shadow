@@ -3,6 +3,9 @@ package io.determann.shadow.api.annotation_processing;
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.NestingKind;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
@@ -19,6 +22,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 import static io.determann.shadow.api.Modifier.*;
+import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.api.query.Operations.*;
 import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
@@ -418,6 +422,33 @@ public interface Ap
       void writeAndCompileSourceFile(String qualifiedName, String content);
 
       /**
+       * the created file will be registered for the next annotation processor round. writes .java files
+       */
+      default void writeAndCompileSourceFile(DeclaredRenderable declaredRenderable)
+      {
+         writeAndCompileSourceFile(declaredRenderable.renderQualifiedName(createRenderingContext()),
+                                   declaredRenderable.renderDeclaration(createRenderingContext()));
+      }
+
+      /**
+       * the created file will be registered for the next annotation processor round. writes .java files
+       */
+      default void writeAndCompileSourceFile(ModuleRenderable moduleRenderable)
+      {
+         writeAndCompileSourceFile(moduleRenderable.renderQualifiedName(createRenderingContext()),
+                                   moduleRenderable.renderModuleInfo(createRenderingContext()));
+      }
+
+      /**
+       * the created file will be registered for the next annotation processor round. writes .java files
+       */
+      default void writeAndCompileSourceFile(PackageRenderable packageRenderable)
+      {
+         writeAndCompileSourceFile(packageRenderable.renderQualifiedName(createRenderingContext()),
+                                   packageRenderable.renderPackageInfo(createRenderingContext()));
+      }
+
+      /**
        * the created file will be registered for the next annotation processor round. writes .class files
        */
       void writeClassFile(String qualifiedName, String content);
@@ -425,9 +456,9 @@ public interface Ap
       /**
        * the created file will NOT be registered for the next annotation processor round. writes anything
        */
-      void writeResource(StandardLocation location, String moduleAndPkg, String relativPath, String content);
+      void writeResource(StandardLocation location, String moduleAndPkg, String relativePath, String content);
 
-      FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException;
+      FileObject readResource(StandardLocation location, String moduleAndPkg, String relativePath) throws IOException;
 
       /**
        * Last round of annotation processing

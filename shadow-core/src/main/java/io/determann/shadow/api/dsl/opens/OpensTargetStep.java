@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.opens;
 
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Arrays;
@@ -13,11 +13,11 @@ public interface OpensTargetStep
    OpensTargetStep to(String... moduleNames);
 
    @Contract(value = "_ -> new", pure = true)
-   default OpensTargetStep to(ModuleNameRenderable... modules)
+   default OpensTargetStep to(ModuleRenderable... modules)
    {
       return to(Arrays.asList(modules));
    }
 
    @Contract(value = "_ -> new", pure = true)
-   OpensTargetStep to(List<? extends ModuleNameRenderable> modules);
+   OpensTargetStep to(List<? extends ModuleRenderable> modules);
 }

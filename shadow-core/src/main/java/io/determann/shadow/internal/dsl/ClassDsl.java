@@ -356,7 +356,20 @@ public class ClassDsl
    {
       return setType(new ClassDsl(this),
                      packageName,
-                     (classDsl, string) -> classDsl.package_ = renderingContext -> string);
+                     (classDsl, string) -> classDsl.package_ = new PackageRenderable()
+                     {
+                        @Override
+                        public String renderQualifiedName(RenderingContext renderingContext)
+                        {
+                           return string;
+                        }
+
+                        @Override
+                        public String renderPackageInfo(RenderingContext renderingContext)
+                        {
+                           throw new IllegalStateException();
+                        }
+                     });
    }
 
    @Override

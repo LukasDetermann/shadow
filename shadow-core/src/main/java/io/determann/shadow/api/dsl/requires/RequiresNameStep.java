@@ -1,6 +1,6 @@
 package io.determann.shadow.api.dsl.requires;
 
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import org.jetbrains.annotations.Contract;
 
 public interface RequiresNameStep
@@ -9,5 +9,5 @@ public interface RequiresNameStep
    RequiresRenderable dependency(String moduleName);
 
    @Contract(value = "_ -> new", pure = true)
-   RequiresRenderable dependency(ModuleNameRenderable module);
+   RequiresRenderable dependency(ModuleRenderable module);
 }

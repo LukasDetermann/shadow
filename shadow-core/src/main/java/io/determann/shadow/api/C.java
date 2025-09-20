@@ -19,10 +19,8 @@ import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.interface_.*;
 import io.determann.shadow.api.dsl.method.MethodReceiverStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
-import io.determann.shadow.api.dsl.module.ModuleInfoRenderable;
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import io.determann.shadow.api.dsl.opens.OpensRenderable;
-import io.determann.shadow.api.dsl.package_.PackageInfoRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import io.determann.shadow.api.dsl.parameter.*;
 import io.determann.shadow.api.dsl.provides.ProvidesRenderable;
@@ -753,7 +751,6 @@ public interface C
                  Annotationable,
                  ModuleEnclosed,
                  Documented,
-                 PackageInfoRenderable,
                  PackageRenderable
    {
       @Override
@@ -776,8 +773,7 @@ public interface C
                  QualifiedNameable,
                  Annotationable,
                  Documented,
-                 ModuleInfoRenderable,
-                 ModuleNameRenderable
+                 ModuleRenderable
    {
       @Override
       default String renderModuleInfo(RenderingContext renderingContext)

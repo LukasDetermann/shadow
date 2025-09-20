@@ -3,7 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.exports.ExportsTargetStep;
-import io.determann.shadow.api.dsl.module.ModuleNameRenderable;
+import io.determann.shadow.api.dsl.module.ModuleRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class ExportsDsl
    }
 
    @Override
-   public ExportsTargetStep to(List<? extends ModuleNameRenderable> modules)
+   public ExportsTargetStep to(List<? extends ModuleRenderable> modules)
    {
       return addArrayRenderer(new ExportsDsl(this),
                               modules,

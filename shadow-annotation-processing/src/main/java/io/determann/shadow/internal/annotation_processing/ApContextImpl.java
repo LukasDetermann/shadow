@@ -348,9 +348,9 @@ public class ApContextImpl
    }
 
    @Override
-   public void writeResource(StandardLocation location, String moduleAndPkg, String relativPath, String content)
+   public void writeResource(StandardLocation location, String moduleAndPkg, String relativePath, String content)
    {
-      try (Writer writer = getProcessingEnv().getFiler().createResource(location, moduleAndPkg, relativPath).openWriter())
+      try (Writer writer = getProcessingEnv().getFiler().createResource(location, moduleAndPkg, relativePath).openWriter())
       {
          writer.write(content);
       }
@@ -361,9 +361,9 @@ public class ApContextImpl
    }
 
    @Override
-   public FileObject readResource(StandardLocation location, String moduleAndPkg, String relativPath) throws IOException
+   public FileObject readResource(StandardLocation location, String moduleAndPkg, String relativePath) throws IOException
    {
-      return getProcessingEnv().getFiler().getResource(location, moduleAndPkg, relativPath);
+      return getProcessingEnv().getFiler().getResource(location, moduleAndPkg, relativePath);
    }
 
    @Override

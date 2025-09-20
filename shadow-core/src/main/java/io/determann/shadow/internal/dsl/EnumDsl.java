@@ -267,7 +267,20 @@ public class EnumDsl
    {
       return setType(new EnumDsl(this),
                      packageName,
-                     (enumDsl, string) -> enumDsl.package_ = renderingContext -> string);
+                     (enumDsl, string) -> enumDsl.package_ = new PackageRenderable()
+                     {
+                        @Override
+                        public String renderQualifiedName(RenderingContext renderingContext)
+                        {
+                           return string;
+                        }
+
+                        @Override
+                        public String renderPackageInfo(RenderingContext renderingContext)
+                        {
+                           throw new IllegalStateException();
+                        }
+                     });
    }
 
    @Override

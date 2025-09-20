@@ -13,4 +13,7 @@ public interface PackageRenderable
 
    @Contract(value = "_ -> new", pure = true)
    String renderQualifiedName(RenderingContext renderingContext);
+
+   @Contract(value = "_ -> new", pure = true)
+   String renderPackageInfo(RenderingContext renderingContext);
 }

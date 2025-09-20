@@ -301,7 +301,20 @@ public class RecordDsl
    {
       return setType(new RecordDsl(this),
                      packageName,
-                     (recordDsl, string) -> recordDsl.package_ = renderingContext -> string);
+                     (recordDsl, string) -> recordDsl.package_ = new PackageRenderable()
+                     {
+                        @Override
+                        public String renderQualifiedName(RenderingContext renderingContext)
+                        {
+                           return string;
+                        }
+
+                        @Override
+                        public String renderPackageInfo(RenderingContext renderingContext)
+                        {
+                           throw new IllegalStateException();
+                        }
+                     });
    }
 
    @Override

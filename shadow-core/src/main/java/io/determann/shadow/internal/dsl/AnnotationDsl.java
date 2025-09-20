@@ -251,8 +251,21 @@ public class AnnotationDsl
    public AnnotationImportStep package_(String packageName)
    {
       return setType(new AnnotationDsl(this),
-                     "package " + packageName + ';',
-                     (annotationDsl, string) -> annotationDsl.package_ = renderingContext -> packageName);
+                     packageName,
+                     (annotationDsl, string) -> annotationDsl.package_ = new PackageRenderable()
+                     {
+                        @Override
+                        public String renderQualifiedName(RenderingContext renderingContext)
+                        {
+                           return string;
+                        }
+
+                        @Override
+                        public String renderPackageInfo(RenderingContext renderingContext)
+                        {
+                           throw new IllegalStateException();
+                        }
+                     });
    }
 
    @Override

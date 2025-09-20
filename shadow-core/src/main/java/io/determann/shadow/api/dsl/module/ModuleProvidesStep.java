@@ -7,8 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface ModuleProvidesStep
-      extends ModuleInfoRenderable,
-              ModuleNameRenderable
+      extends ModuleRenderable
 {
    @Contract(value = "_ -> new", pure = true)
    ModuleProvidesStep provides(String... provides);

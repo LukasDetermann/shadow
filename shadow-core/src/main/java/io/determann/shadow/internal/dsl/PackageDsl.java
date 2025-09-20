@@ -3,8 +3,8 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.package_.PackageAnnotateStep;
-import io.determann.shadow.api.dsl.package_.PackageInfoRenderable;
 import io.determann.shadow.api.dsl.package_.PackageJavaDocStep;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import static io.determann.shadow.internal.dsl.DslSupport.*;
 
 public class PackageDsl
       implements PackageJavaDocStep,
-                 PackageInfoRenderable
+                 PackageRenderable
 {
    private Renderable javadoc;
    private final List<Renderable> annotations = new ArrayList<>();
@@ -55,7 +55,7 @@ public class PackageDsl
    }
 
    @Override
-   public PackageInfoRenderable name(String name)
+   public PackageRenderable name(String name)
    {
       return setType(new PackageDsl(this), name, (packageDsl, s) -> packageDsl.name = s);
    }
