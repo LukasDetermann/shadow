@@ -450,10 +450,10 @@ public interface Dsl
             {
                case C.Array array -> array.renderType(renderingContext);
                case C.Declared declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
-               case C.Generic _ -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
-               case C.Null _ -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
-               case C.Void _ -> "void";
-               case C.Wildcard _ -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
+               case C.Generic unused -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
+               case C.Null unused -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
+               case C.Void unused -> "void";
+               case C.Wildcard unused -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
                case C.Primitive primitive -> primitive.renderType(renderingContext);
                default -> throw new IllegalArgumentException("Can not be used as an Annotation Value " + value);
             }
