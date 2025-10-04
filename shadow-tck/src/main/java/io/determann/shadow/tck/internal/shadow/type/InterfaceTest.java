@@ -116,4 +116,20 @@ class InterfaceTest
                      assertEquals(Set.of(object, comparable, consumer), requestOrThrow(parent, DECLARED_GET_SUPER_TYPES));
                   });
    }
+
+   @Test
+   void getSurounding()
+   {
+      withSource("Outer.java", """
+                         public interface Outer {
+                               interface Inner {}
+                           }
+                         """)
+            .test(implementation -> {
+
+               C.Declared inner = requestOrThrow(implementation, GET_DECLARED, "Outer.Inner");
+               C.Declared outer = requestOrThrow(inner, DECLARED_GET_SURROUNDING);
+               assertEquals(requestOrThrow(implementation, GET_DECLARED, "Outer"), outer);
+            });
+   }
 }

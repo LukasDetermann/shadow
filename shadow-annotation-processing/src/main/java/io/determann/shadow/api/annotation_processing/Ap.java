@@ -959,11 +959,6 @@ public interface Ap
       List<Constructor> getConstructors();
 
       /**
-       * returns the outer type for not static classes
-       */
-      Optional<Declared> getOuterType();
-
-      /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
       List<Type> getGenericTypes();
@@ -1105,6 +1100,11 @@ public interface Ap
        * String -&gt; String[]
        */
       Array asArray();
+
+      /**
+       * returns the {@link Declared} that surrounds this {@link Declared}
+       */
+      Optional<Declared> getSurrounding();
 
       Wildcard asExtendsWildcard();
 
@@ -1489,7 +1489,7 @@ public interface Ap
       boolean isVarArgs();
 
       /**
-       * returns the {@link C.Declared} that surrounds this {@link Executable}
+       * returns the {@link Declared} that surrounds this {@link Executable}
        */
       Declared getSurrounding();
 

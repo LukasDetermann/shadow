@@ -109,6 +109,8 @@ public interface Operations
 
    InstanceOperation0<C.Declared, C.Array> DECLARED_AS_ARRAY = new InstanceOperation0<>("declared.asArray");
 
+   InstanceOperation0<C.Declared, C.Declared> DECLARED_GET_SURROUNDING = new InstanceOperation0<>("declared.getSurrounding");
+
    InstanceOperation0<C.Enum, List<? extends C.Constructor>> ENUM_GET_CONSTRUCTORS = new InstanceOperation0<>("enum.getConstructors");
 
    InstanceOperation0<C.Enum, List<? extends C.EnumConstant>> ENUM_GET_ENUM_CONSTANTS = new InstanceOperation0<>("enum.getEumConstants");
@@ -142,8 +144,6 @@ public interface Operations
    InstanceOperation0<C.Class, List<? extends C.Property>> CLASS_GET_PROPERTIES = new InstanceOperation0<>("class.getProperties");
 
    InstanceOperation1<C.Class, C.Type, Boolean> CLASS_IS_ASSIGNABLE_FROM = new InstanceOperation1<>("class.isAssignableFrom");
-
-   InstanceOperation0<C.Class, C.Declared> CLASS_GET_OUTER_TYPE = new InstanceOperation0<>("class.getOuterType");
 
    InstanceOperation0<C.Class, List<? extends C.Type>> CLASS_GET_GENERIC_TYPES = new InstanceOperation0<>("class.getGenericTypes");
 

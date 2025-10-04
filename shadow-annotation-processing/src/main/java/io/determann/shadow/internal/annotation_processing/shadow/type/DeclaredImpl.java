@@ -6,15 +6,13 @@ import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.ElementFilter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 import static io.determann.shadow.api.query.Operations.MODIFIABLE_GET_MODIFIERS;
@@ -130,6 +128,16 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
    public Ap.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
+   }
+
+   public Optional<Ap.Declared> getSurrounding()
+   {
+      Element enclosingElement = typeElement.getEnclosingElement();
+      if (!enclosingElement.getKind().isDeclaredType())
+      {
+         return Optional.empty();
+      }
+      return Optional.of((Ap.Declared) adapt(getApi(), enclosingElement));
    }
 
    public Ap.Wildcard asExtendsWildcard()

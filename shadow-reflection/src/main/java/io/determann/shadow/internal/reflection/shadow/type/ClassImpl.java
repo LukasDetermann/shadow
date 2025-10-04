@@ -10,7 +10,6 @@ import io.determann.shadow.internal.reflection.shadow.structure.PropertyImpl;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class ClassImpl extends DeclaredImpl implements R.Class
 {
@@ -61,17 +60,6 @@ public class ClassImpl extends DeclaredImpl implements R.Class
    public boolean isAssignableFrom(C.Type type)
    {
       return type instanceof C.Declared declared && getaClass().isAssignableFrom(Adapter.particularize((R.Declared) declared));
-   }
-
-   @Override
-   public Optional<R.Declared> getOuterType()
-   {
-      java.lang.Class<?> enclosingClass = getaClass().getEnclosingClass();
-      if (enclosingClass == null)
-      {
-         return Optional.empty();
-      }
-      return Optional.of(Adapter.generalize(enclosingClass));
    }
 
    @Override

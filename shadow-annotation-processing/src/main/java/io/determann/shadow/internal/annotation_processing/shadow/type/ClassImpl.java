@@ -68,17 +68,6 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    }
 
    @Override
-   public Optional<Ap.Declared> getOuterType()
-   {
-      TypeMirror enclosingType = getMirror().getEnclosingType();
-      if (enclosingType.getKind().equals(TypeKind.NONE))
-      {
-         return Optional.empty();
-      }
-      return Optional.of(adapt(getApi(), ((DeclaredType) enclosingType)));
-   }
-
-   @Override
    public List<Ap.Type> getGenericTypes()
    {
       return getMirror().getTypeArguments()
@@ -108,8 +97,8 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
                                             generics.length +
                                             " are provided");
       }
-      Optional<Ap.Declared> outerType = getOuterType();
-      if (outerType.isPresent() &&
+      Optional<Ap.Declared> outerType = getSurrounding();
+      if (!isStatic() && outerType.isPresent() &&
           (outerType.get() instanceof Ap.Interface anInterface &&
            !anInterface.getGenerics().isEmpty() ||
            outerType.get() instanceof Ap.Class aClass1 && !aClass1.getGenerics().isEmpty()))

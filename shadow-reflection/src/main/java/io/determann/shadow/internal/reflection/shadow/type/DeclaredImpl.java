@@ -178,6 +178,16 @@ public abstract class DeclaredImpl
       return Adapter.generalize(aClass.arrayType());
    }
 
+   public Optional<R.Declared> getSurrounding()
+   {
+      java.lang.Class<?> enclosingClass = getaClass().getEnclosingClass();
+      if (enclosingClass == null)
+      {
+         return Optional.empty();
+      }
+      return Optional.of(Adapter.generalize(enclosingClass));
+   }
+
    private boolean sameGenerics(List<C.Generic> generics, List<C.Generic> generics1)
    {
       if (generics.size() != generics1.size())

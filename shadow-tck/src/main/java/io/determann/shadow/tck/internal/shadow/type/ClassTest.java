@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrEmpty;
 import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static io.determann.shadow.tck.internal.TckTest.test;
 import static io.determann.shadow.tck.internal.TckTest.withSource;
@@ -52,29 +51,6 @@ class ClassTest
 
                      C.Class permittedSubClassesExample = requestOrThrow(implementation, GET_CLASS, "PermittedSubClassesExample");
                      assertEquals(expected, requestOrThrow(permittedSubClassesExample, CLASS_GET_PERMITTED_SUB_CLASSES));
-                  });
-   }
-
-   @Test
-   void getOuterType()
-   {
-      withSource("OuterTypeExample.java", """
-            public class OuterTypeExample {
-               private class InnerClass {}
-               private static class StaticInnerClass {}
-            }
-            """)
-            .test(implementation ->
-                  {
-                     C.Class outerTypeExample = requestOrThrow(implementation, GET_CLASS, "OuterTypeExample");
-                     C.Class innerClass = requestOrThrow(implementation, GET_CLASS, "OuterTypeExample.InnerClass");
-                     C.Class staticInnerClass = requestOrThrow(implementation, GET_CLASS, "OuterTypeExample.StaticInnerClass");
-
-                     assertEquals(outerTypeExample, requestOrThrow(innerClass, CLASS_GET_OUTER_TYPE));
-
-                     assertTrue(requestOrEmpty(outerTypeExample, CLASS_GET_OUTER_TYPE).isEmpty());
-
-                     assertTrue(requestOrEmpty(staticInnerClass, CLASS_GET_OUTER_TYPE).isEmpty());
                   });
    }
 
@@ -170,5 +146,21 @@ class ClassTest
                      assertEquals(Set.of(object, number, serializable, comparable, consumer),
                                   requestOrThrow(mixedParent, DECLARED_GET_SUPER_TYPES));
                   });
+   }
+
+   @Test
+   void getSurounding()
+   {
+      withSource("Outer.java", """
+                         public class Outer {
+                              static class Inner {}
+                           }
+                         """)
+            .test(implementation -> {
+
+               C.Declared inner = requestOrThrow(implementation, GET_DECLARED, "Outer.Inner");
+               C.Declared outer = requestOrThrow(inner, DECLARED_GET_SURROUNDING);
+               assertEquals(requestOrThrow(implementation, GET_DECLARED, "Outer"), outer);
+            });
    }
 }

@@ -305,11 +305,6 @@ public interface R
       boolean isAssignableFrom(C.Type type);
 
       /**
-       * returns the outer type for not static classes
-       */
-      Optional<Declared> getOuterType();
-
-      /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
       List<Type> getGenericTypes();
@@ -415,6 +410,11 @@ public interface R
       String getBinaryName();
 
       Array asArray();
+
+      /**
+       * returns the {@link Declared} that surrounds this {@link Executable}
+       */
+      Optional<Declared> getSurrounding();
 
       default boolean isPublic()
       {

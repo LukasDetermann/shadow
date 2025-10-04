@@ -90,4 +90,21 @@ class EnumTest
                                   requestOrThrow(multiParent, DECLARED_GET_SUPER_TYPES));
                   });
    }
+
+   @Test
+   void getSurounding()
+   {
+      withSource("Outer.java", """
+                         public enum Outer {
+                               UNUSED;
+                               enum Inner {}
+                           }
+                         """)
+            .test(implementation -> {
+
+               C.Declared inner = requestOrThrow(implementation, GET_DECLARED, "Outer.Inner");
+               C.Declared outer = requestOrThrow(inner, DECLARED_GET_SURROUNDING);
+               assertEquals(requestOrThrow(implementation, GET_DECLARED, "Outer"), outer);
+            });
+   }
 }
