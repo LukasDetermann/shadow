@@ -32,7 +32,7 @@ class ResultDslTest
       assertEquals("@MyAnnotation MyType",
                    Dsl.result()
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
-                      .type(Dsl.innerClass().name("MyType"))
+                      .type(Dsl.class_().package_("org.example").name("MyType"))
                       .renderDeclaration(createRenderingContext()));
    }
 }

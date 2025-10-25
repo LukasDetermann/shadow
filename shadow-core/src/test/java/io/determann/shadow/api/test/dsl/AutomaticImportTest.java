@@ -92,12 +92,12 @@ class AutomaticImportTest
                    package org.example;
                    
                    @other.package_.Foo
-                   @Foo2
+                   @org.example.Foo2
                    class MyClass {
                    }""",
                    Dsl.class_().package_("org.example")
                       .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo2")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("org.example").name("Foo2")))
                       .name("MyClass")
                       .renderDeclaration(createRenderingContext(renderingConfigurationBuilder(DEFAULT_CONFIGURATION)
                                                                       .withoutAutomaticImports()
@@ -115,8 +115,8 @@ class AutomaticImportTest
                    class MyClass {
                    }""",
                    Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
                       .name("MyClass")
                       .renderDeclaration(createRenderingContext()));
    }
@@ -125,15 +125,15 @@ class AutomaticImportTest
    void noPackageCollidesWithImported()
    {
       ClassGenericStep step = Dsl.class_().package_("org.example")
-                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("org.example").name("Foo")))
-                                 .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo")))
+                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Foo")))
+                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
                                  .name("MyClass");
 
       RenderingContext renderingContext = createRenderingContext();
 
       assertThrows(IllegalStateException.class,
                    () -> step.renderDeclaration(renderingContext),
-                   "Cannot import type from unnamed package \"Foo\" it clashes with the already imported type \"org.example.Foo\". Use RenderingContextBuilder#withoutAutomaticImports to disable auto importing.");
+                   "Cannot import type from unnamed package \"Foo\" it clashes with the already imported type \"some.other.Foo\". Use RenderingContextBuilder#withoutAutomaticImports to disable auto importing.");
    }
 
    @Test
@@ -141,7 +141,7 @@ class AutomaticImportTest
    {
       ClassGenericStep step = Dsl.class_().package_("org.example")
                                  .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                                 .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo")))
+                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
                                  .name("MyClass");
 
       RenderingContext renderingContext = createRenderingContext();
@@ -174,14 +174,14 @@ class AutomaticImportTest
       assertEquals("""
                    package org.example;
                    
-                   import org.example.Foo;
+                   import some.other.Foo;
                    
                    @Foo
                    @java.lang.Foo
                    class MyClass {
                    }""",
                    Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("org.example").name("Foo")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Foo")))
                       .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
                       .name("MyClass")
                       .renderDeclaration(createRenderingContext()));
@@ -198,8 +198,27 @@ class AutomaticImportTest
                    class MyClass {
                    }""",
                    Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.innerAnnotation().name("Foo")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
                       .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
+                      .name("MyClass")
+                      .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void innerClass()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import some.other.Outer;
+                   
+                   @Outer.Inner
+                   @Outer.OtherInner
+                   class MyClass {
+                   }""",
+                   Dsl.class_().package_("org.example")
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Outer.Inner")))
+                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Outer.OtherInner")))
                       .name("MyClass")
                       .renderDeclaration(createRenderingContext()));
    }

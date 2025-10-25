@@ -12,7 +12,7 @@ class ProvidesDslTest
    void provides()
    {
       assertEquals("provides some.Service with some.Implementation;",
-                   Dsl.provides().service(Dsl.innerClass().name("some.Service"))
+                   Dsl.provides().service(Dsl.class_().package_("some").name("Service"))
                       .with("some.Implementation")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -25,7 +25,7 @@ class ProvidesDslTest
                    another.Implementation;""",
                    Dsl.provides().service("some.Service")
                       .with("some.Implementation")
-                      .with(Dsl.innerClass().name("another.Implementation"))
+                      .with(Dsl.class_().package_("another").name("Implementation"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

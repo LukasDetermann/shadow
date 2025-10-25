@@ -15,7 +15,7 @@ class RecordComponentDslTest
                    Dsl.recordComponent()
                       .annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation1"))
-                      .type(Dsl.innerClass().name("String2"))
+                      .type(Dsl.class_().package_("org.example").name("String2"))
                       .name("s")
                       .renderDeclaration(createRenderingContext()));
    }

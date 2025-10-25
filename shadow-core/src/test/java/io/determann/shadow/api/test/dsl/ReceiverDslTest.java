@@ -25,11 +25,14 @@ class ReceiverDslTest
                                    .parameter(Dsl.parameter("String", "s"));
 
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       void method(@Test @MyAnnotation MyClass MyClass.this, String s) {}
                    
                    }""",
-                   Dsl.innerClass()
+                   Dsl.class_()
+                      .package_( "org.example")
                       .name("MyClass")
                       .method(method)
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -46,12 +49,15 @@ class ReceiverDslTest
    @Test
    void constructor()
    {
-      ClassRenderable outerClass = Dsl.innerClass().name("Outer")
-                                      .inner(Dsl.innerClass().name("Inner")
+      ClassRenderable outerClass = Dsl.class_().package_("org.example")
+                                      .name("Outer")
+                                      .inner(Dsl.innerClass().outer("Outer").name("Inner")
                                                 .constructor(Dsl.constructor().type("Inner")
                                                                 .receiver(Dsl.receiver())));
 
       assertEquals("""
+                   package org.example;
+                   
                    class Outer {
                       class Inner {
                          Inner(Outer Outer.this) {}
@@ -65,7 +71,8 @@ class ReceiverDslTest
    @Test
    void constructorMissingOuterClass()
    {
-      ClassRenderable renderable = Dsl.innerClass().name("Inner")
+      ClassRenderable renderable = Dsl.innerClass().outer("Outer")
+                                      .name("Inner")
                                       .constructor(Dsl.constructor().type("Inner")
                                                       .receiver(Dsl.receiver()));
 

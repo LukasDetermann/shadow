@@ -3,34 +3,40 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.class_.ClassImportStep;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClassDslTest
 {
+   private static final ClassImportStep CLASS = Dsl.class_().package_("org.example");
+
    @Test
    void javadoc()
    {
       assertEquals("""
+                   package org.example;
+                   
                    /// some java doc
                    class MyClass {
                    }""",
-                   Dsl.innerClass().javadoc("/// some java doc")
-                      .name("MyClass")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.javadoc("/// some java doc")
+                        .name("MyClass")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void annotate()
    {
       assertEquals("""
+                   package org.example;
+                   
                    @MyAnnotation
                    @MyAnnotation
                    class MyClass {
                    }""",
-                   Dsl.innerClass()
-                      .annotate("MyAnnotation")
+                   CLASS.annotate("MyAnnotation")
                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
                       .name("MyClass")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -40,10 +46,11 @@ class ClassDslTest
    void modifier()
    {
       assertEquals("""
+                   package org.example;
+                   
                    public dings abstract public protected private final sealed non-sealed static strictfp class MyClass {
                    }""",
-                   Dsl.innerClass()
-                      .modifier(Modifier.PUBLIC)
+                   CLASS.modifier(Modifier.PUBLIC)
                       .modifier("dings")
                       .abstract_()
                       .public_()
@@ -62,10 +69,11 @@ class ClassDslTest
    void generic()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass <T, V> {
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
+                   CLASS.name("MyClass")
                       .generic("T")
                       .generic(Dsl.generic("V"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -75,19 +83,23 @@ class ClassDslTest
    void extends_()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass extends SomeOther {
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .extends_("SomeOther")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .extends_("SomeOther")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
 
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass extends Parent {
                    }""",
-                   Dsl.innerClass()
+                   Dsl.class_()
+                      .package_("org.example")
                       .name("MyClass")
-                      .extends_(Dsl.innerClass().name("Parent"))
+                      .extends_(Dsl.class_().package_("org.example").name("Parent"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -95,138 +107,147 @@ class ClassDslTest
    void implements_()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass implements SomeInterface, Another {
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .implements_("SomeInterface")
-                      .implements_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .implements_("SomeInterface")
+                        .implements_(Dsl.interface_().package_("org.example").name("Another"))
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void permits()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass permits Some, Thing {
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .permits("Some")
-                      .permits(Dsl.innerClass().name("Thing"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .permits("Some")
+                        .permits(CLASS.name("Thing"))
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void body()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       // some content
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .body("// some content")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .body("// some content")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void field()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       String s;
                       private int i;
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .field("String s;")
-                      .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .field("String s;")
+                        .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void method()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       abstract void foo() {}
                       String myMethod() {}
                    
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .method("abstract void foo() {}")
-                      .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .method("abstract void foo() {}")
+                        .method(Dsl.method().result("String").name("myMethod"))
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void inner()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       class Inner {}
                       class Inner2 {
                       }
                    
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .inner("class Inner {}")
-                      .inner(Dsl.innerClass().name("Inner2"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .inner("class Inner {}")
+                        .inner(Dsl.innerClass().outer("Outer").name("Inner2"))
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void instanceInitializer()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       {
                       // something
                       }
                    
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .instanceInitializer("""
-                                           {
-                                           // something
-                                           }""")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .instanceInitializer("""
+                                             {
+                                             // something
+                                             }""")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void staticInitializer()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       static {
                       // something
                       }
                    
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .staticInitializer("""
-                                         static {
-                                         // something
-                                         }""")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .staticInitializer("""
+                                           static {
+                                           // something
+                                           }""")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void constructor()
    {
       assertEquals("""
+                   package org.example;
+                   
                    class MyClass {
                       MyClass() {}
                       MyClass2() {}
                    
                    }""",
-                   Dsl.innerClass()
-                      .name("MyClass")
+                   CLASS.name("MyClass")
                       .constructor("MyClass() {}")
                       .constructor(Dsl.constructor().type("MyClass2"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -245,7 +266,7 @@ class ClassDslTest
                    Dsl.class_()
                       .copyright("// some copyright")
                       .package_(Dsl.packageInfo().name("org.example"))
-                         .javadoc("/// some javadoc")
+                      .javadoc("/// some javadoc")
                       .name("MyClass")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -258,10 +279,8 @@ class ClassDslTest
                    
                    class MyClass {
                    }""",
-                   Dsl.class_()
-                      .package_("org.example")
-                      .name("MyClass")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -274,41 +293,36 @@ class ClassDslTest
                    import Dings;
                    import other.package.*;
                    import static foo.package;
-                   import static MyInterface2;
+                   import static org.example.MyInterface2;
                    import static some.other.package.*;
                    
                    class MyClass {
                    }""",
-                   Dsl.class_()
-                      .package_("org.example")
-                      .import_("some.thing")
-                      .import_(Dsl.import_("Dings"))
-                      .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
-                      .import_(Dsl.staticImport("foo.package"))
-                      .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
-                      .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
-                      .name("MyClass")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   CLASS.import_("some.thing")
+                        .import_(Dsl.import_("Dings"))
+                        .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
+                        .import_(Dsl.staticImport("foo.package"))
+                        .import_(Dsl.staticImport(Dsl.annotation().package_("org.example").name("MyInterface2")))
+                        .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
+                        .name("MyClass")
+                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderType()
    {
       assertEquals("MyClass<T, S>",
-                   Dsl.innerClass()
-                      .name("MyClass")
-                      .generic("T")
-                      .generic("S")
-                      .renderType(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .generic("T")
+                        .generic("S")
+                        .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderQualifiedName()
    {
       assertEquals("org.example.MyClass",
-                   Dsl.class_()
-                      .package_("org.example")
-                      .name("MyClass")
-                      .renderQualifiedName(RenderingContext.createRenderingContext()));
+                   CLASS.name("MyClass")
+                        .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 }

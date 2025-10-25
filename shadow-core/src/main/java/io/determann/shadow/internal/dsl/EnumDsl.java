@@ -25,8 +25,12 @@ import static java.util.stream.Collectors.joining;
 public class EnumDsl
       implements EnumCopyrightHeaderStep,
                  EnumImportStep,
-                 EnumImplementsStep
+                 EnumImplementsStep,
+                 EnumOuterStep
 {
+   /// optional only for inner
+   private Renderable outerType;
+
    /// optional and only for files
    private String copyright;
    private PackageRenderable package_;
@@ -53,6 +57,8 @@ public class EnumDsl
 
    private EnumDsl(EnumDsl other)
    {
+      this.outerType = other.outerType;
+
       this.copyright = other.copyright;
       this.package_ = other.package_;
       this.imports.addAll(other.imports);
@@ -70,6 +76,22 @@ public class EnumDsl
       this.staticInitializers.addAll(other.staticInitializers);
       this.constructors.addAll(other.constructors);
       this.body = other.body;
+   }
+
+   @Override
+   public EnumJavaDocStep outer(String qualifiedOuterType)
+   {
+      return setTypeRenderer(new EnumDsl(this), qualifiedOuterType, (enumDsl, s) -> enumDsl.outerType = s);
+   }
+
+   @Override
+   public EnumJavaDocStep outer(DeclaredRenderable outerType)
+   {
+      return setTypeRenderer(new EnumDsl(this),
+                             outerType,
+                             (renderingContext, declaredRenderable) -> declaredRenderable.renderQualifiedName(renderingContext),
+                             (enumDsl, s) -> enumDsl.outerType = s);
+
    }
 
    @Override
@@ -292,6 +314,12 @@ public class EnumDsl
    }
 
    @Override
+   public EnumImportStep noPackage()
+   {
+      return new EnumDsl(this);
+   }
+
+   @Override
    public EnumImportStep import_(String... name)
    {
       return addArray2(new EnumDsl(this),
@@ -328,6 +356,10 @@ public class EnumDsl
    public String renderDeclaration(RenderingContext context)
    {
       context.addSurrounding(this);
+      if (package_ != null)
+      {
+         context.setCurrentPackageName(package_.renderQualifiedName(context));
+      }
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -371,9 +403,8 @@ public class EnumDsl
       {
          sb.insert(0, "\n\n");
       }
-      RenderingContext finalContext = context;
-      sb.insert(0, imports.stream().map(renderable -> renderable.render(finalContext)).collect(joining("\n")));
-      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(finalContext)).collect(joining("\n")));
+      sb.insert(0, imports.stream().map(renderable -> renderable.render(context)).collect(joining("\n")));
+      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(context)).collect(joining("\n")));
 
       if (package_ != null)
       {
@@ -396,12 +427,22 @@ public class EnumDsl
    @Override
    public String renderQualifiedName(RenderingContext renderingContext)
    {
-      if (package_ == null)
-      {
-         return name;
-      }
       renderingContext.addSurrounding(this);
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+
+      StringBuilder sb = new StringBuilder();
+      if (package_ != null)
+      {
+         sb.append(package_.renderQualifiedName(renderingContext))
+           .append('.');
+      }
+      if (outerType != null)
+      {
+         sb.append(outerType.render(renderingContext))
+           .append('.');
+      }
+      sb.append(name);
+
+      return sb.toString();
    }
 
    @Override
@@ -413,6 +454,12 @@ public class EnumDsl
    @Override
    public String renderName(RenderingContext renderingContext)
    {
+      String name = this.name;
+
+      if (outerType != null)
+      {
+         name = outerType.render(renderingContext) + '.' + name;
+      }
       if (package_ == null)
       {
          return renderingContext.renderName(name);

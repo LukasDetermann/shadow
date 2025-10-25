@@ -3,68 +3,77 @@ package io.determann.shadow.api.test.dsl;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.enum_.EnumImportStep;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnumDslTest
 {
+
+   public static final EnumImportStep ENUM = Dsl.enum_().package_("org.example");
+
    @Test
    void javadoc()
    {
       assertEquals("""
+                   package org.example;
+                   
                    /// some java doc
                    enum MyEnum {
                    }""",
-                   Dsl.innerEnum().javadoc("/// some java doc")
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.javadoc("/// some java doc")
+                       .name("MyEnum")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void annotate()
    {
       assertEquals("""
+                   package org.example;
+                   
                    @MyAnnotation
                    @MyAnnotation
                    enum MyEnum {
                    }""",
-                   Dsl.innerEnum()
-                      .annotate("MyAnnotation")
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.annotate("MyAnnotation")
+                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                       .name("MyEnum")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void modifier()
    {
       assertEquals("""
+                   package org.example;
+                   
                    public dings public protected private static strictfp enum MyEnum {
                    }""",
-                   Dsl.innerEnum()
-                      .modifier(Modifier.PUBLIC)
-                      .modifier("dings")
-                      .public_()
-                      .protected_()
-                      .private_()
-                      .static_()
-                      .strictfp_()
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.modifier(Modifier.PUBLIC)
+                       .modifier("dings")
+                       .public_()
+                       .protected_()
+                       .private_()
+                       .static_()
+                       .strictfp_()
+                       .name("MyEnum")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void implements_()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum implements SomeInterface, Another {
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .implements_("SomeInterface")
-                      .implements_(Dsl.innerInterface().name("Another"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .implements_("SomeInterface")
+                       .implements_(Dsl.interface_().package_("org.example").name("Another"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
 
@@ -72,115 +81,122 @@ class EnumDslTest
    void body()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       // some content
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .body("// some content")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .body("// some content")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void field()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       String s;
                       private int i;
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .field("String s;")
-                      .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .field("String s;")
+                       .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void method()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       abstract void foo() {}
                       String myMethod() {}
                    
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .method("abstract void foo() {}")
-                      .method(Dsl.method().result("String").name("myMethod"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .method("abstract void foo() {}")
+                       .method(Dsl.method().result("String").name("myMethod"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void inner()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       enum Inner {}
                       enum Inner2 {
                       }
                    
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .inner("enum Inner {}")
-                      .inner(Dsl.innerEnum().name("Inner2"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .inner("enum Inner {}")
+                       .inner(Dsl.innerEnum().outer("org.example.MyEnum").name("Inner2"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void instanceInitializer()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       {
                       // something
                       }
                    
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .instanceInitializer("""
-                                           {
-                                           // something
-                                           }""")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .instanceInitializer("""
+                                            {
+                                            // something
+                                            }""")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void staticInitializer()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       static {
                       // something
                       }
                    
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .staticInitializer("""
-                                         static {
-                                         // something
-                                         }""")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .staticInitializer("""
+                                          static {
+                                          // something
+                                          }""")
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void constructor()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       MyEnum() {}
                       MyEnum2() {}
                    
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .constructor("MyEnum() {}")
-                      .constructor(Dsl.constructor().type("MyEnum2"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .constructor("MyEnum() {}")
+                       .constructor(Dsl.constructor().type("MyEnum2"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -225,7 +241,7 @@ class EnumDslTest
                    import Dings;
                    import other.package.*;
                    import static foo.package;
-                   import static MyInterface2;
+                   import static org.example.MyInterface2;
                    import static some.other.package.*;
                    
                    enum MyEnum {
@@ -236,7 +252,7 @@ class EnumDslTest
                       .import_(Dsl.import_("Dings"))
                       .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
                       .import_(Dsl.staticImport("foo.package"))
-                      .import_(Dsl.staticImport(Dsl.innerAnnotation().name("MyInterface2")))
+                      .import_(Dsl.staticImport(Dsl.annotation().package_("org.example").name("MyInterface2")))
                       .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyEnum")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -245,10 +261,9 @@ class EnumDslTest
    @Test
    void renderQualifiedName()
    {
-      assertEquals("MyEnum",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .renderQualifiedName(RenderingContext.createRenderingContext()));
+      assertEquals("org.example.MyEnum",
+                   ENUM.name("MyEnum")
+                       .renderQualifiedName(RenderingContext.createRenderingContext()));
 
       assertEquals("org.example.MyEnum",
                    Dsl.enum_()
@@ -271,23 +286,23 @@ class EnumDslTest
    void renderName()
    {
       assertEquals("MyEnum",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .renderName(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .renderName(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void enumConstant()
    {
       assertEquals("""
+                   package org.example;
+                   
                    enum MyEnum {
                       T1,
                       T2;
                    }""",
-                   Dsl.innerEnum()
-                      .name("MyEnum")
-                      .enumConstant("T1")
-                      .enumConstant(Dsl.enumConstant().name("T2"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   ENUM.name("MyEnum")
+                       .enumConstant("T1")
+                       .enumConstant(Dsl.enumConstant().name("T2"))
+                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

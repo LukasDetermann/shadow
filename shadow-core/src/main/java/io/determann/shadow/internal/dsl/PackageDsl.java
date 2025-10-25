@@ -64,6 +64,8 @@ public class PackageDsl
    public String renderPackageInfo(RenderingContext context)
    {
       context.addSurrounding(this);
+      context.setCurrentPackageName(name);
+
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
       {

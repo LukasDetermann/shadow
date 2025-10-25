@@ -27,8 +27,12 @@ import static java.util.stream.Collectors.joining;
 public class RecordDsl
       implements RecordCopyrightHeaderStep,
                  RecordImportStep,
-                 RecordRecordComponentStep
+                 RecordRecordComponentStep,
+                 RecordOuterStep
 {
+   /// optional only for inner
+   private Renderable outerType;
+
    /// optional and only for files
    private String copyright;
    private PackageRenderable package_;
@@ -55,6 +59,8 @@ public class RecordDsl
 
    private RecordDsl(RecordDsl other)
    {
+      this.outerType = other.outerType;
+
       this.copyright = other.copyright;
       this.package_ = other.package_;
       this.imports.addAll(other.imports);
@@ -72,6 +78,21 @@ public class RecordDsl
       this.staticInitializers.addAll(other.staticInitializers);
       this.constructors.addAll(other.constructors);
       this.body = other.body;
+   }
+
+   @Override
+   public RecordJavaDocStep outer(String outerType)
+   {
+      return setTypeRenderer(new RecordDsl(this), outerType, (recordDsl, s) -> recordDsl.outerType = s);
+   }
+
+   @Override
+   public RecordJavaDocStep outer(DeclaredRenderable qualifiedOuterType)
+   {
+      return setTypeRenderer(new RecordDsl(this),
+                             qualifiedOuterType,
+                             (renderingContext, declaredRenderable) -> declaredRenderable.renderQualifiedName(renderingContext),
+                             (recordDsl, s) -> recordDsl.outerType = s);
    }
 
    @Override
@@ -326,6 +347,12 @@ public class RecordDsl
    }
 
    @Override
+   public RecordImportStep noPackage()
+   {
+      return new RecordDsl(this);
+   }
+
+   @Override
    public RecordImportStep import_(String... name)
    {
       return addArray2(new RecordDsl(this),
@@ -346,6 +373,10 @@ public class RecordDsl
    public String renderDeclaration(RenderingContext context)
    {
       context.addSurrounding(this);
+      if (package_ != null)
+      {
+         context.setCurrentPackageName(package_.renderQualifiedName(context));
+      }
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -395,9 +426,8 @@ public class RecordDsl
       {
          sb.insert(0, "\n\n");
       }
-      RenderingContext finalContext = context;
-      sb.insert(0, imports.stream().map(renderable -> renderable.render(finalContext)).collect(joining("\n")));
-      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(finalContext)).collect(joining("\n")));
+      sb.insert(0, imports.stream().map(renderable -> renderable.render(context)).collect(joining("\n")));
+      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(context)).collect(joining("\n")));
 
       if (package_ != null)
       {
@@ -417,12 +447,22 @@ public class RecordDsl
    @Override
    public String renderQualifiedName(RenderingContext context)
    {
-      if (package_ == null)
-      {
-         return name;
-      }
       context.addSurrounding(this);
-      return package_.renderQualifiedName(context) + '.' + name;
+
+      StringBuilder sb = new StringBuilder();
+      if (package_ != null)
+      {
+         sb.append(package_.renderQualifiedName(context))
+           .append('.');
+      }
+      if (outerType != null)
+      {
+         sb.append(outerType.render(context))
+           .append('.');
+      }
+      sb.append(name);
+
+      return sb.toString();
    }
 
    @Override
@@ -444,6 +484,12 @@ public class RecordDsl
    @Override
    public String renderName(RenderingContext renderingContext)
    {
+      String name = this.name;
+
+      if (outerType != null)
+      {
+         name = outerType.render(renderingContext) + '.' + name;
+      }
       if (package_ == null)
       {
          return renderingContext.renderName(name);

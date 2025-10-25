@@ -9,14 +9,14 @@ import io.determann.shadow.api.dsl.array.ArrayRenderable;
 import io.determann.shadow.api.dsl.class_.*;
 import io.determann.shadow.api.dsl.constructor.*;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
-import io.determann.shadow.api.dsl.enum_.*;
+import io.determann.shadow.api.dsl.enum_.EnumRenderable;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantRenderable;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.field.FieldInitializationStep;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericExtendsStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
-import io.determann.shadow.api.dsl.interface_.*;
+import io.determann.shadow.api.dsl.interface_.InterfaceRenderable;
 import io.determann.shadow.api.dsl.method.MethodReceiverStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.module.ModuleRenderable;
@@ -179,10 +179,19 @@ public interface C
       @Override
       default String renderType(RenderingContext renderingContext)
       {
-         return record().package_(requestOrThrow(this, DECLARED_GET_PACKAGE))
-                        .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                        .generic(Provider.requestOrEmpty(this, RECORD_GET_GENERICS).orElse(emptyList()))
-                        .renderType(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> record().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerRecord().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .component(requestOrEmpty(this, RECORD_GET_RECORD_COMPONENTS).orElse(emptyList()))
+                   .generic(requestOrEmpty(this, RECORD_GET_GENERICS).orElse(emptyList()))
+                   .implements_(requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).orElse(emptyList()))
+                   .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
+                   .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
+                   .constructor(requestOrEmpty(this, RECORD_GET_CONSTRUCTORS).orElse(emptyList()))
+                   .renderType(renderingContext);
       }
 
       @Override
@@ -200,13 +209,17 @@ public interface C
       @Override
       default String renderDeclaration(RenderingContext renderingContext)
       {
-         return annotation().package_(requestOrThrow(this, DECLARED_GET_PACKAGE))
-                            .annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
-                            .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
-                            .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                            .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
-                            .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
-                            .renderDeclaration(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> annotation().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerAnnotation().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
+                   .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
+                   .name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
+                   .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
+                   .renderDeclaration(renderingContext);
       }
 
       @Override
@@ -240,15 +253,20 @@ public interface C
       @Override
       default String renderDeclaration(RenderingContext renderingContext)
       {
-         ClassAnnotateStep annotateStep = class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
-         ClassModifierStep modifierStep = requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).map(annotateStep::annotate)
-                                                                                                           .orElse(annotateStep);
-         ClassNameStep nameStep = requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).map(modifierStep::modifier).orElse(modifierStep);
-         ClassGenericStep genericStep = nameStep.name(requestOrThrow(this, NAMEABLE_GET_NAME));
-         ClassExtendsStep extendsStep = Provider.requestOrEmpty(this, CLASS_GET_GENERICS).map(genericStep::generic).orElse(genericStep);
+         ClassGenericStep extendsStep = (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                                     {
+                                        case OUTER -> class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                                        case INNER -> innerClass().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                                        case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                                     }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
+                                       .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
+                                       .name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                                       .generic(requestOrEmpty(this, CLASS_GET_GENERICS).orElse(emptyList()));
+
          ClassImplementsStep implementsStep = Provider.requestOrEmpty(this, CLASS_GET_SUPER_CLASS)
                                                       .map(extendsStep::extends_)
                                                       .orElse(extendsStep);
+
          ClassPermitsStep permitsStep = requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).map(implementsStep::implements_)
                                                                                             .orElse(implementsStep);
          ClassBodyStep bodyStep = Provider.requestOrEmpty(this, CLASS_GET_PERMITTED_SUB_CLASSES).map(permitsStep::permits).orElse(permitsStep);
@@ -291,19 +309,20 @@ public interface C
       @Override
       default String renderDeclaration(RenderingContext renderingContext)
       {
-         InterfaceImportStep annotateStep = interface_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
-         InterfaceModifierStep modifierStep = requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).map(annotateStep::annotate)
-                                                                                                               .orElse(annotateStep);
-         InterfaceNameStep nameStep = requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).map(modifierStep::modifier).orElse(modifierStep);
-         InterfaceGenericStep genericStep = nameStep.name(requestOrThrow(this, NAMEABLE_GET_NAME));
-         InterfaceExtendsStep extendsStep = Provider.requestOrEmpty(this, INTERFACE_GET_GENERICS).map(genericStep::generic).orElse(genericStep);
-         InterfacePermitsStep permitsStep = requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).map(extendsStep::extends_).orElse(extendsStep);
-         InterfaceBodyStep bodyStep = Provider.requestOrEmpty(this, INTERFACE_GET_PERMITTED_SUB_TYPES)
-                                              .map(permitsStep::permits)
-                                              .orElse(permitsStep);
-         bodyStep = requestOrEmpty(this, DECLARED_GET_FIELDS).map(bodyStep::field).orElse(bodyStep);
-         bodyStep = requestOrEmpty(this, DECLARED_GET_METHODS).map(bodyStep::method).orElse(bodyStep);
-         return bodyStep.renderDeclaration(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> interface_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerInterface().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
+                   .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
+                   .name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .generic(requestOrEmpty(this, INTERFACE_GET_GENERICS).orElse(emptyList()))
+                   .extends_(requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).orElse(emptyList()))
+                   .permits(requestOrEmpty(this, INTERFACE_GET_PERMITTED_SUB_TYPES).orElse(emptyList()))
+                   .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
+                   .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
+                   .renderDeclaration(renderingContext);
       }
 
       @Override
@@ -336,20 +355,20 @@ public interface C
       @Override
       default String renderDeclaration(RenderingContext renderingContext)
       {
-         EnumAnnotateStep annotateStep = enum_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
-         EnumModifierStep modifierStep = requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).map(annotateStep::annotate)
-                                                                                                          .orElse(annotateStep);
-         EnumNameStep nameStep = requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).map(modifierStep::modifier).orElse(modifierStep);
-         EnumImplementsStep implementsStep = nameStep.name(requestOrThrow(this, NAMEABLE_GET_NAME));
-         EnumEnumConstantStep enumEnumConstantStep = requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).map(implementsStep::implements_)
-                                                                                                         .orElse(implementsStep);
-         EnumBodyStep bodyStep = Provider.requestOrEmpty(this, ENUM_GET_ENUM_CONSTANTS)
-                                         .map(enumEnumConstantStep::enumConstant)
-                                         .orElse(enumEnumConstantStep);
-         bodyStep = requestOrEmpty(this, DECLARED_GET_FIELDS).map(bodyStep::field).orElse(bodyStep);
-         bodyStep = requestOrEmpty(this, DECLARED_GET_METHODS).map(bodyStep::method).orElse(bodyStep);
-         bodyStep = Provider.requestOrEmpty(this, ENUM_GET_CONSTRUCTORS).map(bodyStep::constructor).orElse(bodyStep);
-         return bodyStep.renderDeclaration(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> enum_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerEnum().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
+                   .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
+                   .name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .implements_(requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).orElse(emptyList()))
+                   .enumConstant(requestOrEmpty(this, ENUM_GET_ENUM_CONSTANTS).orElse(emptyList()))
+                   .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
+                   .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
+                   .constructor(requestOrEmpty(this, ENUM_GET_CONSTRUCTORS).orElse(emptyList()))
+                   .renderDeclaration(renderingContext);
       }
 
       @Override

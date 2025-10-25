@@ -10,4 +10,7 @@ public interface InterfacePackageStep
 
    @Contract(value = "_ -> new", pure = true)
    InterfaceImportStep package_(PackageRenderable aPackage);
+
+   @Contract(value = "-> new", pure = true)
+   InterfaceImportStep noPackage();
 }

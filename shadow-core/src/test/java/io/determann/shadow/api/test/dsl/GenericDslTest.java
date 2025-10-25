@@ -23,12 +23,12 @@ class GenericDslTest
    @Test
    void extends_()
    {
-      assertEquals("T extends MyClass & MyInterface & MyInterface2",
+      assertEquals("T extends org.example.MyClass & MyInterface & org.example.MyInterface2",
                    Dsl.generic()
                       .name("T")
-                      .extends_(Dsl.innerClass().name("MyClass"))
+                      .extends_(Dsl.class_().package_("org.example").name("MyClass"))
                       .extends_("MyInterface")
-                      .extends_(Dsl.innerInterface().name("MyInterface2"))
+                      .extends_(Dsl.interface_().package_("org.example").name("MyInterface2"))
                       .renderDeclaration(createRenderingContext()));
    }
 

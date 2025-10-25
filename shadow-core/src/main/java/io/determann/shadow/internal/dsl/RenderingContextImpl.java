@@ -3,11 +3,16 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.dsl.RenderingConfiguration;
 import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
 
 public class RenderingContextImpl
       implements RenderingContext
@@ -69,6 +74,11 @@ public class RenderingContextImpl
       lineIndentation = lineIndentation + " ".repeat(configuration.getIndentation());
    }
 
+   public void setCurrentPackageName(String currentPackageName)
+   {
+      importContext.setCurrentPackageName(currentPackageName);
+   }
+
    @Override
    public List<ImportRenderable> getImports()
    {
@@ -76,9 +86,66 @@ public class RenderingContextImpl
    }
 
    @Override
-   public String renderName(@Nullable String packageName, String simpleName)
+   public String renderName(@Nullable String packageName, String typeName)
    {
-      return importContext.renderName(packageName, simpleName);
+      return importContext.renderName(packageName, typeName);
+   }
+
+   @Override
+   public String renderName(String qualifiedName)
+   {
+      QualifiedName splitName = splitName(qualifiedName);
+      return renderName(splitName.packageName(), splitName.typeName());
+   }
+
+   public static @NotNull QualifiedName splitName(String qualifiedName)
+   {
+      requireNonNull(qualifiedName);
+
+      if (qualifiedName.isBlank())
+      {
+         throw new IllegalArgumentException("Blank name");
+      }
+
+      String[] byDot = qualifiedName.split("\\.");
+
+      if (byDot.length == 0)
+      {
+         throw new IllegalArgumentException('\"' + qualifiedName + '\"' + "is not a valid type name");
+      }
+
+      //no package and no outer class
+      if (byDot.length == 1)
+      {
+         return new QualifiedName(null, qualifiedName);
+      }
+      for (int i = 0; i < byDot.length; i++)
+      {
+         boolean isTypeName = !byDot[i].isEmpty() && Character.isUpperCase(byDot[i].charAt(0));
+         if (isTypeName)
+         {
+            if (i == 0)
+            {
+               //Outer + Inner without package
+               return new QualifiedName(null, qualifiedName);
+            }
+            // normal or inner type
+            return new QualifiedName(stream(byDot)
+                                           .limit(i)
+                                           .collect(Collectors.joining(".")),
+                                     stream(byDot)
+                                           .skip(i)
+                                           .collect(Collectors.joining(".")));
+         }
+      }
+
+      //lowercase className, can not handle an inner class with a lowercase outer class
+      return new QualifiedName(stream(byDot)
+                                     .limit(byDot.length - 1L)
+                                     .collect(Collectors.joining(".")),
+                               stream(byDot)
+                                     .skip(byDot.length - 1L)
+                                     .collect(Collectors.joining(".")));
    }
 
    ImportRenderingContextImpl getImportContext()

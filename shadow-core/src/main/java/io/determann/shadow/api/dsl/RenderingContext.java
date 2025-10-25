@@ -8,7 +8,6 @@ import java.util.Deque;
 import java.util.List;
 
 import static io.determann.shadow.api.dsl.RenderingConfiguration.DEFAULT_CONFIGURATION;
-import static java.util.Objects.requireNonNull;
 
 /// Mutable Context that contains all information needed for rendering.
 /// Each call to any `#render()` method should get a new instance of this context
@@ -63,21 +62,13 @@ public interface RenderingContext
    /// @see RenderingConfigurationBuilder#withoutAutomaticImports()
    /// @see #getImports()
    /// @see #renderName(String)
-   String renderName(@Nullable String packageName, String simpleName);
+   String renderName(@Nullable String packageName, String typeName);
 
    /// @see RenderingConfigurationBuilder#withoutAutomaticImports()
    /// @see #getImports()
    /// @see #renderName(String, String)
-   default String renderName(String qualifiedName)
-   {
-      requireNonNull(qualifiedName);
-      int lastIndexOf = qualifiedName.lastIndexOf('.');
-      if (lastIndexOf == -1)
-      {
-         return renderName(null, qualifiedName);
-      }
-      String packageName = qualifiedName.substring(0, lastIndexOf);
-      String simpleName = qualifiedName.substring(lastIndexOf + 1);
-      return renderName(packageName, simpleName);
-   }
+   String renderName(String qualifiedName);
+
+   /// sets the current package name. for types of this package no imports will be rendered
+   void setCurrentPackageName(String currentPackageName);
 }

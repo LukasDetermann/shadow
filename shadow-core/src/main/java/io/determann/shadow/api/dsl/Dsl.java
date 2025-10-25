@@ -3,16 +3,16 @@ package io.determann.shadow.api.dsl;
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
-import io.determann.shadow.api.dsl.annotation.AnnotationJavaDocStep;
+import io.determann.shadow.api.dsl.annotation.AnnotationOuterStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
-import io.determann.shadow.api.dsl.class_.ClassJavaDocStep;
+import io.determann.shadow.api.dsl.class_.ClassOuterStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.EnumCopyrightHeaderStep;
-import io.determann.shadow.api.dsl.enum_.EnumJavaDocStep;
+import io.determann.shadow.api.dsl.enum_.EnumOuterStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
@@ -23,7 +23,7 @@ import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.import_.ImportStaticStep;
 import io.determann.shadow.api.dsl.interface_.InterfaceCopyrightHeaderStep;
-import io.determann.shadow.api.dsl.interface_.InterfaceJavaDocStep;
+import io.determann.shadow.api.dsl.interface_.InterfaceOuterStep;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.module.ModuleCopyrightHeaderStep;
@@ -36,7 +36,7 @@ import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
 import io.determann.shadow.api.dsl.provides.ProvidesServiceStep;
 import io.determann.shadow.api.dsl.receiver.ReceiverAnnotateStep;
 import io.determann.shadow.api.dsl.record.RecordCopyrightHeaderStep;
-import io.determann.shadow.api.dsl.record.RecordJavaDocStep;
+import io.determann.shadow.api.dsl.record.RecordOuterStep;
 import io.determann.shadow.api.dsl.record_component.RecordComponentAnnotateStep;
 import io.determann.shadow.api.dsl.requires.RequiresModifierStep;
 import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
@@ -147,7 +147,7 @@ public interface Dsl
    }
 
    @Contract(value = " -> new", pure = true)
-   static ClassJavaDocStep innerClass()
+   static ClassOuterStep innerClass()
    {
       return new ClassDsl();
    }
@@ -159,7 +159,7 @@ public interface Dsl
    }
 
    @Contract(value = " -> new", pure = true)
-   static RecordJavaDocStep innerRecord()
+   static RecordOuterStep innerRecord()
    {
       return new RecordDsl();
    }
@@ -171,7 +171,7 @@ public interface Dsl
    }
 
    @Contract(value = " -> new", pure = true)
-   static InterfaceJavaDocStep innerInterface()
+   static InterfaceOuterStep innerInterface()
    {
       return new InterfaceDsl();
    }
@@ -183,7 +183,7 @@ public interface Dsl
    }
 
    @Contract(value = " -> new", pure = true)
-   static EnumJavaDocStep innerEnum()
+   static EnumOuterStep innerEnum()
    {
       return new EnumDsl();
    }
@@ -340,7 +340,7 @@ public interface Dsl
    }
 
    @Contract(value = " -> new", pure = true)
-   static AnnotationJavaDocStep innerAnnotation()
+   static AnnotationOuterStep innerAnnotation()
    {
       return new AnnotationDsl();
    }

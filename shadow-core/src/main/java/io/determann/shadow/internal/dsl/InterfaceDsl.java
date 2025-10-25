@@ -23,8 +23,12 @@ import static java.util.stream.Collectors.joining;
 public class InterfaceDsl
       implements InterfaceCopyrightHeaderStep,
                  InterfaceImportStep,
-                 InterfaceGenericStep
+                 InterfaceGenericStep,
+                 InterfaceOuterStep
 {
+   /// optional only for inner
+   private Renderable outerType;
+
    /// optional and only for files
    private String copyright;
    private PackageRenderable package_;
@@ -36,7 +40,7 @@ public class InterfaceDsl
    private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
    private final List<Renderable> generics = new ArrayList<>();
-   private List<Renderable> extends_ = new ArrayList<>();
+   private final  List<Renderable> extends_ = new ArrayList<>();
    private final List<Renderable> permits = new ArrayList<>();
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
@@ -49,6 +53,8 @@ public class InterfaceDsl
 
    private InterfaceDsl(InterfaceDsl other)
    {
+      this.outerType = other.outerType;
+
       this.copyright = other.copyright;
       this.package_ = other.package_;
       this.imports.addAll(other.imports);
@@ -58,12 +64,27 @@ public class InterfaceDsl
       this.modifiers.addAll(other.modifiers);
       this.name = other.name;
       this.generics.addAll(other.generics);
-      this.extends_ = other.extends_;
+      this.extends_.addAll(other.extends_);
       this.permits.addAll(other.permits);
       this.fields.addAll(other.fields);
       this.methods.addAll(other.methods);
       this.inner.addAll(other.inner);
       this.body = other.body;
+   }
+
+   @Override
+   public InterfaceJavaDocStep outer(String outerType)
+   {
+      return setTypeRenderer(new InterfaceDsl(this), outerType, (interfaceDsl, s) -> interfaceDsl.outerType = s);
+   }
+
+   @Override
+   public InterfaceJavaDocStep outer(DeclaredRenderable qualifiedOuterType)
+   {
+      return setTypeRenderer(new InterfaceDsl(this),
+                             qualifiedOuterType,
+                             (renderingContext, declaredRenderable) -> declaredRenderable.renderQualifiedName(renderingContext),
+                             (interfaceDsl, s) -> interfaceDsl.outerType = s);
    }
 
    @Override
@@ -299,6 +320,12 @@ public class InterfaceDsl
    }
 
    @Override
+   public InterfaceImportStep noPackage()
+   {
+      return new InterfaceDsl(this);
+   }
+
+   @Override
    public InterfaceImportStep import_(String... name)
    {
       return addArray2(new InterfaceDsl(this),
@@ -336,6 +363,10 @@ public class InterfaceDsl
    public String renderDeclaration(RenderingContext context)
    {
       context.addSurrounding(this);
+      if (package_ != null)
+      {
+         context.setCurrentPackageName(package_.renderQualifiedName(context));
+      }
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -403,11 +434,21 @@ public class InterfaceDsl
    public String renderQualifiedName(RenderingContext context)
    {
       context.addSurrounding(this);
-      if (package_ == null)
+
+      StringBuilder sb = new StringBuilder();
+      if (package_ != null)
       {
-         return name;
+         sb.append(package_.renderQualifiedName(context))
+           .append('.');
       }
-      return package_.renderQualifiedName(context) + '.' + name;
+      if (outerType != null)
+      {
+         sb.append(outerType.render(context))
+           .append('.');
+      }
+      sb.append(name);
+
+      return sb.toString();
    }
 
    @Override
@@ -429,6 +470,12 @@ public class InterfaceDsl
    @Override
    public String renderName(RenderingContext renderingContext)
    {
+      String name = this.name;
+
+      if (outerType != null)
+      {
+         name = outerType.render(renderingContext) + '.' + name;
+      }
       if (package_ == null)
       {
          return renderingContext.renderName(name);

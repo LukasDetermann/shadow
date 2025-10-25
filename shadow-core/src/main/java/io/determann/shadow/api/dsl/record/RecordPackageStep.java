@@ -10,4 +10,7 @@ public interface RecordPackageStep
 
    @Contract(value = "_ -> new", pure = true)
    RecordImportStep package_(PackageRenderable aPackage);
+
+   @Contract(value = "-> new", pure = true)
+   RecordImportStep noPackage();
 }

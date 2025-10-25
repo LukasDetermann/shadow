@@ -25,8 +25,12 @@ import static java.util.stream.Collectors.joining;
 public class ClassDsl
       implements ClassCopyrightHeaderStep,
                  ClassImportStep,
-                 ClassGenericStep
+                 ClassGenericStep,
+                 ClassOuterStep
 {
+   /// optional only for inner
+   private Renderable outerType;
+
    /// optional and only for files
    private String copyright;
    private PackageRenderable package_;
@@ -55,6 +59,8 @@ public class ClassDsl
 
    private ClassDsl(ClassDsl other)
    {
+      this.outerType = other.outerType;
+
       this.copyright = other.copyright;
       this.package_ = other.package_;
       this.imports.addAll(other.imports);
@@ -74,6 +80,21 @@ public class ClassDsl
       this.staticInitializers.addAll(other.staticInitializers);
       this.constructors.addAll(other.constructors);
       this.body = other.body;
+   }
+
+   @Override
+   public ClassJavaDocStep outer(String outerType)
+   {
+      return setTypeRenderer(new ClassDsl(this), outerType, (classDsl, s) -> classDsl.outerType = s);
+   }
+
+   @Override
+   public ClassJavaDocStep outer(DeclaredRenderable qualifiedOuterType)
+   {
+      return setTypeRenderer(new ClassDsl(this),
+                             qualifiedOuterType,
+                             (renderingContext, declaredRenderable) -> declaredRenderable.renderQualifiedName(renderingContext),
+                             (classDsl, s) -> classDsl.outerType = s);
    }
 
    @Override
@@ -256,7 +277,7 @@ public class ClassDsl
    {
       return addArrayRenderer(new ClassDsl(this),
                               declared,
-                              (renderingContext, renderable) -> renderable.renderQualifiedName(renderingContext),
+                              (renderingContext, renderable) -> renderable.renderName(renderingContext),
                               classDsl -> classDsl.permits::add);
    }
 
@@ -381,6 +402,12 @@ public class ClassDsl
    }
 
    @Override
+   public ClassImportStep noPackage()
+   {
+      return new ClassDsl(this);
+   }
+
+   @Override
    public ClassImportStep import_(String... name)
    {
       return addArray2(new ClassDsl(this),
@@ -400,6 +427,10 @@ public class ClassDsl
    public String renderDeclaration(RenderingContext context)
    {
       context.addSurrounding(this);
+      if (package_ != null)
+      {
+         context.setCurrentPackageName(package_.renderQualifiedName(context));
+      }
 
       StringBuilder sb = new StringBuilder();
       if (javadoc != null)
@@ -454,9 +485,8 @@ public class ClassDsl
       {
          sb.insert(0, "\n\n");
       }
-      RenderingContext finalContext = context;
-      sb.insert(0, imports.stream().map(renderable -> renderable.render(finalContext)).collect(joining("\n")));
-      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(finalContext)).collect(joining("\n")));
+      sb.insert(0, imports.stream().map(renderable -> renderable.render(context)).collect(joining("\n")));
+      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(context)).collect(joining("\n")));
 
       if (package_ != null)
       {
@@ -476,12 +506,22 @@ public class ClassDsl
    @Override
    public String renderQualifiedName(RenderingContext renderingContext)
    {
-      if (package_ == null)
-      {
-         return name;
-      }
       renderingContext.addSurrounding(this);
-      return package_.renderQualifiedName(renderingContext) + '.' + name;
+
+      StringBuilder sb = new StringBuilder();
+      if (package_ != null)
+      {
+         sb.append(package_.renderQualifiedName(renderingContext))
+           .append('.');
+      }
+      if (outerType != null)
+      {
+         sb.append(outerType.render(renderingContext))
+           .append('.');
+      }
+      sb.append(name);
+
+      return sb.toString();
    }
 
    @Override
@@ -503,6 +543,12 @@ public class ClassDsl
    @Override
    public String renderName(RenderingContext renderingContext)
    {
+      String name = this.name;
+
+      if (outerType != null)
+      {
+         name = outerType.render(renderingContext) + '.' + name;
+      }
       if (package_ == null)
       {
          return renderingContext.renderName(name);
