@@ -185,12 +185,7 @@ public interface C
                     case INNER -> innerRecord().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .component(requestOrEmpty(this, RECORD_GET_RECORD_COMPONENTS).orElse(emptyList()))
                    .generic(requestOrEmpty(this, RECORD_GET_GENERICS).orElse(emptyList()))
-                   .implements_(requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).orElse(emptyList()))
-                   .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
-                   .method(requestOrEmpty(this, DECLARED_GET_METHODS).orElse(emptyList()))
-                   .constructor(requestOrEmpty(this, RECORD_GET_CONSTRUCTORS).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -225,7 +220,13 @@ public interface C
       @Override
       default String renderType(RenderingContext renderingContext)
       {
-         return renderQualifiedName(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> annotation().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerAnnotation().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .renderType(renderingContext);
       }
 
       @Override
@@ -285,10 +286,14 @@ public interface C
       @Override
       default String renderType(RenderingContext renderingContext)
       {
-         return class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE))
-                        .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                        .generic(Provider.requestOrEmpty(this, CLASS_GET_GENERICS).orElse(emptyList()))
-                        .renderType(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerClass().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .generic(Provider.requestOrEmpty(this, CLASS_GET_GENERICS).orElse(emptyList()))
+                   .renderType(renderingContext);
       }
 
       @Override
@@ -334,10 +339,14 @@ public interface C
       @Override
       default String renderType(RenderingContext renderingContext)
       {
-         return class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE))
-                        .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                        .generic(Provider.requestOrEmpty(this, INTERFACE_GET_GENERICS).orElse(emptyList()))
-                        .renderType(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> interface_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerInterface().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .generic(Provider.requestOrEmpty(this, INTERFACE_GET_GENERICS).orElse(emptyList()))
+                   .renderType(renderingContext);
       }
 
       @Override
@@ -380,9 +389,13 @@ public interface C
       @Override
       default String renderType(RenderingContext renderingContext)
       {
-         return class_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE))
-                        .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                        .renderType(renderingContext);
+         return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
+                 {
+                    case OUTER -> enum_().package_(requestOrThrow(this, DECLARED_GET_PACKAGE));
+                    case INNER -> innerEnum().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
+                    case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
+                 }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
+                   .renderType(renderingContext);
       }
 
       @Override
