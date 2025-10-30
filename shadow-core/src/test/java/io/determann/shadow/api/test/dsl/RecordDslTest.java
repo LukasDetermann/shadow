@@ -65,7 +65,7 @@ class RecordDslTest
    }
 
    @Test
-   void generic()
+   void genericDeclaration()
    {
       assertEquals("""
                    package org.example;
@@ -73,8 +73,8 @@ class RecordDslTest
                    record MyRecord() <T, V> {
                    }""",
                    RECORD.name("MyRecord")
-                         .generic("T")
-                         .generic(Dsl.generic("V"))
+                         .genericDeclaration("T")
+                         .genericDeclaration(Dsl.generic("V"))
                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -283,6 +283,6 @@ class RecordDslTest
    void renderType()
    {
       assertEquals("MyRecord", RECORD.name("MyRecord").renderType(RenderingContext.createRenderingContext()));
-      assertEquals("MyRecord<T, S>", RECORD.name("MyRecord").generic("T").generic("S").renderType(RenderingContext.createRenderingContext()));
+      assertEquals("MyRecord<T, S>", RECORD.name("MyRecord").genericUsage("T").genericUsage("S").renderType(RenderingContext.createRenderingContext()));
    }
 }

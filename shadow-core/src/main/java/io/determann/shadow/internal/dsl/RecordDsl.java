@@ -3,6 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
@@ -44,7 +45,8 @@ public class RecordDsl
    private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
    private final List<Renderable> components = new ArrayList<>();
-   private final List<Renderable> generics = new ArrayList<>();
+   private final List<Renderable> genericDeclarations = new ArrayList<>();
+   private final List<Renderable> genericUsages = new ArrayList<>();
    private final List<Renderable> implements_ = new ArrayList<>();
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
@@ -70,7 +72,8 @@ public class RecordDsl
       this.modifiers.addAll(other.modifiers);
       this.name = other.name;
       this.components.addAll(other.components);
-      this.generics.addAll(other.generics);
+      this.genericDeclarations.addAll(other.genericDeclarations);
+      this.genericUsages.addAll(other.genericUsages);
       this.implements_.addAll(other.implements_);
       this.fields.addAll(other.fields);
       this.methods.addAll(other.methods);
@@ -205,18 +208,34 @@ public class RecordDsl
    }
 
    @Override
-   public RecordGenericStep generic(String... generic)
+   public RecordGenericStep genericDeclaration(String... genericDeclarations)
    {
-      return addArray2(new RecordDsl(this), generic, (recordDsl, string) -> recordDsl.generics.add(renderingContext -> string));
+      return addArray2(new RecordDsl(this), genericDeclarations, (recordDsl, string) -> recordDsl.genericDeclarations.add(renderingContext -> string));
    }
 
    @Override
-   public RecordGenericStep generic(List<? extends GenericRenderable> generics)
+   public RecordGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations)
    {
       return addArrayRenderer(new RecordDsl(this),
-                              generics,
+                              genericDeclarations,
                               (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
-                              recordDsl -> recordDsl.generics::add);
+                              recordDsl -> recordDsl.genericDeclarations::add);
+   }
+
+   @Override
+   public RecordGenericStep genericUsage(String... genericUsages)
+   {
+      return addArray2(new RecordDsl(this),
+                       genericUsages, (recordDsl, string) -> recordDsl.genericUsages.add(renderingContext -> string));
+   }
+
+   @Override
+   public RecordGenericStep genericUsage(List<? extends TypeRenderable> genericUsages)
+   {
+      return addArrayRenderer(new RecordDsl(this),
+                              genericUsages,
+                              (renderingContext, renderable) -> renderable.renderType(renderingContext),
+                              recordDsl -> recordDsl.genericUsages::add);
    }
 
    @Override
@@ -396,7 +415,7 @@ public class RecordDsl
       sb.append(')')
         .append(' ');
 
-      renderElement(sb, "<", generics, "> ", context, ", ");
+      renderElement(sb, "<", genericDeclarations, "> ", context, ", ");
 
       renderElement(sb, "implements ", implements_, " ", context, ", ");
 
@@ -471,14 +490,11 @@ public class RecordDsl
       context.addSurrounding(this);
 
       String qualifiedName = renderName(context);
-      if (generics.isEmpty())
+      if (genericUsages.isEmpty())
       {
          return qualifiedName;
       }
-      return qualifiedName +
-             '<' +
-             generics.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) +
-             '>';
+      return qualifiedName + '<' + genericUsages.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) + '>';
    }
 
    @Override

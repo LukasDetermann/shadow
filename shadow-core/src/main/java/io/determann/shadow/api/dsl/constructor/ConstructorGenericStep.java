@@ -10,14 +10,14 @@ public interface ConstructorGenericStep
       extends ConstructorTypeStep
 {
    @Contract(value = "_ -> new", pure = true)
-   ConstructorGenericStep generic(String... generic);
+   ConstructorGenericStep genericDeclaration(String... genericDeclarations);
 
    @Contract(value = "_ -> new", pure = true)
-   default ConstructorGenericStep generic(GenericRenderable... generic)
+   default ConstructorGenericStep genericDeclaration(GenericRenderable... genericDeclarations)
    {
-      return generic(Arrays.asList(generic));
+      return genericDeclaration(Arrays.asList(genericDeclarations));
    }
 
    @Contract(value = "_ -> new", pure = true)
-   ConstructorGenericStep generic(List<? extends GenericRenderable> generic);
+   ConstructorGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations);
 }

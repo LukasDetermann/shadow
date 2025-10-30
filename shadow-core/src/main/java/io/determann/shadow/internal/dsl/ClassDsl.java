@@ -3,6 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.*;
 import io.determann.shadow.api.dsl.constructor.ConstructorRenderable;
@@ -41,7 +42,8 @@ public class ClassDsl
    private final List<Renderable> annotations = new ArrayList<>();
    private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
-   private final List<Renderable> generics = new ArrayList<>();
+   private final List<Renderable> genericDeclarations = new ArrayList<>();
+   private final List<Renderable> genericUsages = new ArrayList<>();
    private Renderable extends_;
    private final List<Renderable> implements_ = new ArrayList<>();
    private final List<Renderable> permits = new ArrayList<>();
@@ -69,7 +71,8 @@ public class ClassDsl
       this.annotations.addAll(other.annotations);
       this.modifiers.addAll(other.modifiers);
       this.name = other.name;
-      this.generics.addAll(other.generics);
+      this.genericDeclarations.addAll(other.genericDeclarations);
+      this.genericUsages.addAll(other.genericUsages);
       this.extends_ = other.extends_;
       this.implements_.addAll(other.implements_);
       this.permits.addAll(other.permits);
@@ -216,18 +219,34 @@ public class ClassDsl
    }
 
    @Override
-   public ClassGenericStep generic(String... generic)
+   public ClassGenericStep genericDeclaration(String... genericDeclarations)
    {
-      return addArray2(new ClassDsl(this), generic, (classDsl, string) -> classDsl.generics.add(renderingContext -> string));
+      return addArray2(new ClassDsl(this), genericDeclarations, (classDsl, string) -> classDsl.genericDeclarations.add(renderingContext -> string));
    }
 
    @Override
-   public ClassGenericStep generic(List<? extends GenericRenderable> generics)
+   public ClassGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations)
    {
       return addArrayRenderer(new ClassDsl(this),
-                              generics,
+                              genericDeclarations,
                               (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
-                              classDsl -> classDsl.generics::add);
+                              classDsl -> classDsl.genericDeclarations::add);
+   }
+
+   @Override
+   public ClassGenericStep genericUsage(String... genericUsages)
+   {
+      return addArray2(new ClassDsl(this),
+                       genericUsages, (classDsl, string) -> classDsl.genericUsages.add(renderingContext -> string));
+   }
+
+   @Override
+   public ClassGenericStep genericUsage(List<? extends TypeRenderable> genericUsages)
+   {
+      return addArrayRenderer(new ClassDsl(this),
+                              genericUsages,
+                              (renderingContext, renderable) -> renderable.renderType(renderingContext),
+                              classDsl -> classDsl.genericUsages::add);
    }
 
    @Override
@@ -447,7 +466,7 @@ public class ClassDsl
         .append(name)
         .append(' ');
 
-      renderElement(sb, "<", generics, "> ", context, ", ");
+      renderElement(sb, "<", genericDeclarations, "> ", context, ", ");
 
       if (extends_ != null)
       {
@@ -530,14 +549,12 @@ public class ClassDsl
       renderingContext.addSurrounding(this);
 
       String qualifiedName = renderName(renderingContext);
-      if (generics.isEmpty())
+      if (genericUsages.isEmpty())
       {
          return qualifiedName;
       }
       return qualifiedName +
-             '<' +
-             generics.stream().map(renderable -> renderable.render(renderingContext)).collect(joining(", ")) +
-             '>';
+             '<' + genericUsages.stream().map(renderable -> renderable.render(renderingContext)).collect(joining(", ")) + '>';
    }
 
    @Override

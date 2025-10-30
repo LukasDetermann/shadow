@@ -1,5 +1,6 @@
 package io.determann.shadow.api.dsl.interface_;
 
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import org.jetbrains.annotations.Contract;
 
@@ -10,14 +11,26 @@ public interface InterfaceGenericStep
       extends InterfaceExtendsStep
 {
    @Contract(value = "_ -> new", pure = true)
-   InterfaceGenericStep generic(String... generics);
+   InterfaceGenericStep genericDeclaration(String... genericDeclarations);
 
    @Contract(value = "_ -> new", pure = true)
-   default InterfaceGenericStep generic(GenericRenderable... generics)
+   default InterfaceGenericStep genericDeclaration(GenericRenderable... genericDeclarations)
    {
-      return generic(Arrays.asList(generics));
+      return genericDeclaration(Arrays.asList(genericDeclarations));
    }
 
    @Contract(value = "_ -> new", pure = true)
-   InterfaceGenericStep generic(List<? extends GenericRenderable> generics);
+   InterfaceGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations);
+
+   @Contract(value = "_ -> new", pure = true)
+   InterfaceGenericStep genericUsage(String... genericUsages);
+
+   @Contract(value = "_ -> new", pure = true)
+   default InterfaceGenericStep genericUsage(TypeRenderable... genericUsages)
+   {
+      return genericUsage(Arrays.asList(genericUsages));
+   }
+
+   @Contract(value = "_ -> new", pure = true)
+   InterfaceGenericStep genericUsage(List<? extends TypeRenderable> genericUsages);
 }

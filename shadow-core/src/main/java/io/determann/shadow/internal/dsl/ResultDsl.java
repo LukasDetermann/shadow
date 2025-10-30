@@ -16,11 +16,9 @@ public class ResultDsl
                  ResultRenderable
 {
    private final List<Renderable> annotations = new ArrayList<>();
-   private TypeRenderable type;
+   private Renderable type;
 
-   public ResultDsl()
-   {
-   }
+   public ResultDsl() {}
 
    private ResultDsl(ResultDsl other)
    {
@@ -59,7 +57,7 @@ public class ResultDsl
    {
       return setType(new ResultDsl(this),
                      type,
-                     (resultDsl, typeNameRenderable) -> resultDsl.type = typeNameRenderable);
+                     (resultDsl, typeNameRenderable) -> resultDsl.type = typeNameRenderable::renderType);
    }
 
    @Override
@@ -69,7 +67,7 @@ public class ResultDsl
 
       renderElement(sb, annotations, " ", renderingContext, " ");
 
-      sb.append(type.renderName(renderingContext));
+      sb.append(type.render(renderingContext));
 
       return sb.toString();
    }

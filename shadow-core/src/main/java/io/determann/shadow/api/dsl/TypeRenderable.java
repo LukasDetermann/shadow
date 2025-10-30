@@ -7,4 +7,8 @@ public interface TypeRenderable
    /// renders a qualified name if possible, otherwise a simple name
    @Contract(value = "_ -> new", pure = true)
    String renderName(RenderingContext renderingContext);
+
+   /// renders a qualified name if possible, otherwise a simple name with genricUsages
+   @Contract(value = "_ -> new", pure = true)
+   String renderType(RenderingContext renderingContext);
 }

@@ -3,6 +3,7 @@ package io.determann.shadow.internal.dsl;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
@@ -39,8 +40,9 @@ public class InterfaceDsl
    private final List<Renderable> annotations = new ArrayList<>();
    private final List<Renderable> modifiers = new ArrayList<>();
    private String name;
-   private final List<Renderable> generics = new ArrayList<>();
-   private final  List<Renderable> extends_ = new ArrayList<>();
+   private final List<Renderable> genericDeclarations = new ArrayList<>();
+   private final List<Renderable> genericUsages = new ArrayList<>();
+   private final List<Renderable> extends_ = new ArrayList<>();
    private final List<Renderable> permits = new ArrayList<>();
    private final List<Renderable> fields = new ArrayList<>();
    private final List<Renderable> methods = new ArrayList<>();
@@ -63,7 +65,8 @@ public class InterfaceDsl
       this.annotations.addAll(other.annotations);
       this.modifiers.addAll(other.modifiers);
       this.name = other.name;
-      this.generics.addAll(other.generics);
+      this.genericDeclarations.addAll(other.genericDeclarations);
+      this.genericUsages.addAll(other.genericUsages);
       this.extends_.addAll(other.extends_);
       this.permits.addAll(other.permits);
       this.fields.addAll(other.fields);
@@ -198,18 +201,35 @@ public class InterfaceDsl
    }
 
    @Override
-   public InterfaceGenericStep generic(String... generic)
+   public InterfaceGenericStep genericDeclaration(String... genericDeclarations)
    {
-      return addArray2(new InterfaceDsl(this), generic, (interfaceDsl, string) -> interfaceDsl.generics.add(renderingContext -> string));
+      return addArray2(new InterfaceDsl(this),
+                       genericDeclarations, (interfaceDsl, string) -> interfaceDsl.genericDeclarations.add(renderingContext -> string));
    }
 
    @Override
-   public InterfaceGenericStep generic(List<? extends GenericRenderable> generics)
+   public InterfaceGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations)
    {
       return addArrayRenderer(new InterfaceDsl(this),
-                              generics,
+                              genericDeclarations,
                               (renderingContext, renderable) -> renderable.renderDeclaration(renderingContext),
-                              interfaceDsl -> interfaceDsl.generics::add);
+                              interfaceDsl -> interfaceDsl.genericDeclarations::add);
+   }
+
+   @Override
+   public InterfaceGenericStep genericUsage(String... genericUsages)
+   {
+      return addArray2(new InterfaceDsl(this),
+                       genericUsages, (interfaceDsl, string) -> interfaceDsl.genericUsages.add(renderingContext -> string));
+   }
+
+   @Override
+   public InterfaceGenericStep genericUsage(List<? extends TypeRenderable> genericUsages)
+   {
+      return addArrayRenderer(new InterfaceDsl(this),
+                              genericUsages,
+                              (renderingContext, renderable) -> renderable.renderType(renderingContext),
+                              interfaceDsl -> interfaceDsl.genericUsages::add);
    }
 
    @Override
@@ -383,7 +403,7 @@ public class InterfaceDsl
       sb.append(name);
       sb.append(' ');
 
-      renderElement(sb, "<", generics, "> ", context, ", ");
+      renderElement(sb, "<", genericDeclarations, "> ", context, ", ");
 
       renderElement(sb, "extends ", extends_, " ", context, ", ");
       renderElement(sb, "permits ", permits, " ", context, ", ");
@@ -457,14 +477,11 @@ public class InterfaceDsl
       context.addSurrounding(this);
 
       String qualifiedName = renderName(context);
-      if (generics.isEmpty())
+      if (genericUsages.isEmpty())
       {
          return qualifiedName;
       }
-      return qualifiedName +
-             '<' +
-             generics.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) +
-             '>';
+      return qualifiedName + '<' + genericUsages.stream().map(renderable -> renderable.render(context)).collect(joining(", ")) + '>';
    }
 
    @Override

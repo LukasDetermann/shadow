@@ -221,16 +221,16 @@ public class MethodDsl
    }
 
    @Override
-   public MethodGenericStep generic(String... generic)
+   public MethodGenericStep genericDeclaration(String... genericDeclarations)
    {
-      return addArray2(new MethodDsl(this), generic, (methodDsl, string) -> methodDsl.generics.add(renderingContext -> string));
+      return addArray2(new MethodDsl(this), genericDeclarations, (methodDsl, string) -> methodDsl.generics.add(renderingContext -> string));
    }
 
    @Override
-   public MethodGenericStep generic(List<? extends GenericRenderable> generic)
+   public MethodGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations)
    {
       return addArrayRenderer(new MethodDsl(this),
-                              generic,
+                              genericDeclarations,
                               (renderingContext, genericRenderable) -> genericRenderable.renderDeclaration(renderingContext),
                               methodDsl -> methodDsl.generics::add);
    }

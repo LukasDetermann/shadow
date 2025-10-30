@@ -60,9 +60,9 @@ class ConstructorDslTest
    {
       assertEquals("<T, S, Z> MyType() {}",
                    Dsl.constructor()
-                      .generic("T")
-                      .generic("S")
-                      .generic(Dsl.generic("Z"))
+                      .genericDeclaration("T")
+                      .genericDeclaration("S")
+                      .genericDeclaration(Dsl.generic("Z"))
                       .type("MyType")
                       .renderDeclaration(createRenderingContext()));
    }
@@ -138,7 +138,7 @@ class ConstructorDslTest
                    Dsl.constructor()
                       .annotate("MyAnnotation")
                       .private_()
-                      .generic("T")
+                      .genericDeclaration("T")
                       .type("MyType")
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))
                       .throws_("AnException")

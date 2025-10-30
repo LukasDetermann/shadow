@@ -66,7 +66,7 @@ class ClassDslTest
    }
 
    @Test
-   void generic()
+   void genericDeclaration()
    {
       assertEquals("""
                    package org.example;
@@ -74,8 +74,8 @@ class ClassDslTest
                    class MyClass <T, V> {
                    }""",
                    CLASS.name("MyClass")
-                      .generic("T")
-                      .generic(Dsl.generic("V"))
+                      .genericDeclaration("T")
+                      .genericDeclaration(Dsl.generic("V"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -313,8 +313,8 @@ class ClassDslTest
    {
       assertEquals("MyClass<T, S>",
                    CLASS.name("MyClass")
-                        .generic("T")
-                        .generic("S")
+                        .genericUsage("T")
+                        .genericUsage("S")
                         .renderType(RenderingContext.createRenderingContext()));
    }
 

@@ -10,14 +10,14 @@ public interface MethodGenericStep
       extends MethodResultStep
 {
    @Contract(value = "_ -> new", pure = true)
-   MethodGenericStep generic(String... generic);
+   MethodGenericStep genericDeclaration(String... genericDeclarations);
 
    @Contract(value = "_ -> new", pure = true)
-   default MethodGenericStep generic(GenericRenderable... generic)
+   default MethodGenericStep genericDeclaration(GenericRenderable... genericDeclarations)
    {
-      return generic(Arrays.asList(generic));
+      return genericDeclaration(Arrays.asList(genericDeclarations));
    }
 
    @Contract(value = "_ -> new", pure = true)
-   MethodGenericStep generic(List<? extends GenericRenderable> generic);
+   MethodGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations);
 }

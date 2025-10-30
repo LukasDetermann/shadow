@@ -75,8 +75,8 @@ class InterfaceDslTest
                    interface MyInterface <T, V> {
                    }""",
                    INTERFACE.name("MyInterface")
-                            .generic("T")
-                            .generic(Dsl.generic("V"))
+                            .genericDeclaration("T")
+                            .genericDeclaration(Dsl.generic("V"))
                             .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -242,10 +242,10 @@ class InterfaceDslTest
    void renderType()
    {
       assertEquals("MyInterface<T, S>",
-                   INTERFACE   .name("MyInterface")
-                      .generic("T")
-                      .generic("S")
-                      .renderType(RenderingContext.createRenderingContext()));
+                   INTERFACE.name("MyInterface")
+                            .genericUsage("T")
+                            .genericUsage("S")
+                            .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test

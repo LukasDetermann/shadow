@@ -172,16 +172,17 @@ public class ConstructorDsl
    }
 
    @Override
-   public ConstructorGenericStep generic(String... generic)
+   public ConstructorGenericStep genericDeclaration(String... genericDeclarations)
    {
-      return addArray2(new ConstructorDsl(this), generic, (constructorDsl, string) -> constructorDsl.generics.add(renderingContext -> string));
+      return addArray2(new ConstructorDsl(this),
+                       genericDeclarations, (constructorDsl, string) -> constructorDsl.generics.add(renderingContext -> string));
    }
 
    @Override
-   public ConstructorGenericStep generic(List<? extends GenericRenderable> generic)
+   public ConstructorGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations)
    {
       return addArrayRenderer(new ConstructorDsl(this),
-                              generic,
+                              genericDeclarations,
                               (renderingContext, genericRenderable) -> genericRenderable.renderDeclaration(renderingContext),
                               constructorDsl -> constructorDsl.generics::add);
    }

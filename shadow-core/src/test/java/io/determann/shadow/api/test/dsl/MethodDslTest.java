@@ -68,9 +68,9 @@ class MethodDslTest
    {
       assertEquals("<T, S, V> MyType foo() {}",
                    Dsl.method()
-                      .generic("T")
-                      .generic("S")
-                      .generic(Dsl.generic("V"))
+                      .genericDeclaration("T")
+                      .genericDeclaration("S")
+                      .genericDeclaration(Dsl.generic("V"))
                       .result("MyType")
                       .name("foo")
                       .renderDeclaration(createRenderingContext()));
@@ -146,7 +146,7 @@ class MethodDslTest
                    Dsl.method()
                       .annotate("MyAnnotation")
                       .private_()
-                      .generic("T")
+                      .genericDeclaration("T")
                       .resultType("MyType")
                       .name("foo")
                       .parameter(Dsl.parameter("int", "i1"), Dsl.parameter("int", "i2"))

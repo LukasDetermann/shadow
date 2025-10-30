@@ -1,5 +1,6 @@
 package io.determann.shadow.api.dsl.record;
 
+import io.determann.shadow.api.dsl.TypeRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import org.jetbrains.annotations.Contract;
 
@@ -10,14 +11,26 @@ public interface RecordGenericStep
       extends RecordImplementsStep
 {
    @Contract(value = "_ -> new", pure = true)
-   RecordGenericStep generic(String... generics);
+   RecordGenericStep genericDeclaration(String... genericDeclarations);
 
    @Contract(value = "_ -> new", pure = true)
-   default RecordGenericStep generic(GenericRenderable... generics)
+   default RecordGenericStep genericDeclaration(GenericRenderable... genericDeclarations)
    {
-      return generic(Arrays.asList(generics));
+      return genericDeclaration(Arrays.asList(genericDeclarations));
    }
 
    @Contract(value = "_ -> new", pure = true)
-   RecordGenericStep generic(List<? extends GenericRenderable> generics);
+   RecordGenericStep genericDeclaration(List<? extends GenericRenderable> genericDeclarations);
+
+   @Contract(value = "_ -> new", pure = true)
+   RecordGenericStep genericUsage(String... genericUsages);
+
+   @Contract(value = "_ -> new", pure = true)
+   default RecordGenericStep genericUsage(TypeRenderable... genericUsages)
+   {
+      return genericUsage(Arrays.asList(genericUsages));
+   }
+
+   @Contract(value = "_ -> new", pure = true)
+   RecordGenericStep genericUsage(List<? extends TypeRenderable> genericUsages);
 }
