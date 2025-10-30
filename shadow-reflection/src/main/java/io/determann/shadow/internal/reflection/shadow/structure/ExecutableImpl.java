@@ -131,7 +131,7 @@ public abstract class ExecutableImpl implements R.StaticModifiable
       return Adapter.generalize(getExecutable().getDeclaringClass());
    }
 
-   public List<R.Generic> getGenerics()
+   public List<R.Generic> getGenericDeclarations()
    {
       return Arrays.stream(getExecutable().getTypeParameters()).map(Adapter::generalize).map(R.Generic.class::cast).toList();
    }

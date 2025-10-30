@@ -57,13 +57,13 @@ public class InterfaceImpl extends DeclaredImpl implements R.Interface
    }
 
    @Override
-   public List<R.Type> getGenericTypes()
+   public List<R.Type> getGenericUsages()
    {
       return genericTypes;
    }
 
    @Override
-   public List<R.Generic> getGenerics()
+   public List<R.Generic> getGenericDeclarations()
    {
       return Arrays.stream(getaClass().getTypeParameters()).map(Adapter::generalize).map(R.Generic.class::cast).toList();
    }
@@ -72,10 +72,10 @@ public class InterfaceImpl extends DeclaredImpl implements R.Interface
    public boolean representsSameType(C.Type type)
    {
       return type instanceof C.Interface anInterface &&
-             requestOrThrow(anInterface, INTERFACE_GET_GENERIC_TYPES)
+             requestOrThrow(anInterface, INTERFACE_GET_GENERIC_USAGES)
                    .stream()
-                   .allMatch(type1 -> getGenericTypes().stream()
-                                                         .anyMatch(type2 -> requestOrThrow(type2, TYPE_REPRESENTS_SAME_TYPE, type1)));
+                   .allMatch(type1 -> getGenericUsages().stream()
+                                                        .anyMatch(type2 -> requestOrThrow(type2, TYPE_REPRESENTS_SAME_TYPE, type1)));
    }
 
    @Override

@@ -23,7 +23,7 @@ class DeclaredTest
       test(implementation ->
            {
               C.Interface comparable = requestOrThrow(implementation, GET_INTERFACE, "java.lang.Comparable");
-              C.Generic generics = requestOrThrow(comparable, INTERFACE_GET_GENERICS).get(0);
+              C.Generic generics = requestOrThrow(comparable, INTERFACE_GET_GENERIC_DECLARATIONS).get(0);
               assertEquals("T", requestOrThrow(generics, NAMEABLE_GET_NAME));
            });
    }

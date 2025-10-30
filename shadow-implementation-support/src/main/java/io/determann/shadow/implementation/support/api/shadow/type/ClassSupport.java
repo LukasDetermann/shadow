@@ -28,6 +28,6 @@ public class ClassSupport
                                                MODULE_ENCLOSED_GET_MODULE,
                                                //should be the binary name. this is close enough for most cases
                                                QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME,
-                                               CLASS_GET_GENERIC_TYPES);
+                                               CLASS_GET_GENERIC_USAGES);
    }
 }

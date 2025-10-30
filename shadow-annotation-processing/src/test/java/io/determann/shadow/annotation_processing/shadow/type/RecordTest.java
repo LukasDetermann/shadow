@@ -28,14 +28,14 @@ class RecordTest
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String")),
                                             context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
                                                    .withGenerics("java.lang.String")
-                                                   .getGenericTypes());
+                                                   .getGenericUsages());
 
                                assertEquals(List.of(context.getClassOrThrow("java.lang.String"),
                                                     context.getClassOrThrow("java.lang.Number")),
                                             context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
                                                    .withGenerics("java.lang.String",
                                                                  "java.lang.Number")
-                                                   .getGenericTypes());
+                                                   .getGenericUsages());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
                          public record InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> () {
@@ -59,10 +59,10 @@ class RecordTest
                                                                          context.getConstants().getUnboundWildcard());
 
                                Ap.Record capture = declared.interpolateGenerics();
-                               Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericTypes().get(1)))
+                               Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericUsages().get(1)))
                                                               .map(Ap.Generic::getBound)
                                                               .map(Ap.Interface.class::cast)
-                                                              .map(Ap.Interface::getGenericTypes)
+                                                              .map(Ap.Interface::getGenericUsages)
                                                               .map(types -> types.get(0))
                                                               .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
@@ -71,7 +71,7 @@ class RecordTest
                                                                      .withGenerics(context.getConstants().getUnboundWildcard());
 
                                Ap.Record independentCapture = independentExample.interpolateGenerics();
-                               Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericTypes().get(0)))
+                               Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
                                                                          .map(Ap.Generic::getBound)
                                                                          .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
@@ -81,7 +81,7 @@ class RecordTest
                                                                                  context.getClassOrThrow("java.lang.String"));
 
                                Ap.Record dependentCapture = dependentExample.interpolateGenerics();
-                               Ap.Type interpolatedDependent = Optional.of(((Ap.Generic) dependentCapture.getGenericTypes().get(0)))
+                               Ap.Type interpolatedDependent = Optional.of(((Ap.Generic) dependentCapture.getGenericUsages().get(0)))
                                                                        .map(Ap.Generic::getBound)
                                                                        .orElseThrow();
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);

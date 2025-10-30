@@ -162,7 +162,7 @@ public interface C
          RecordGenericStep genericStep = Provider.requestOrEmpty(this, RECORD_GET_RECORD_COMPONENTS)
                                                  .map(recordComponentStep::component)
                                                  .orElse(recordComponentStep);
-         RecordImplementsStep implementsStep = Provider.requestOrEmpty(this, RECORD_GET_GENERICS).map(genericStep::generic).orElse(genericStep);
+         RecordImplementsStep implementsStep = Provider.requestOrEmpty(this, RECORD_GET_GENERIC_DECLARATIONS).map(genericStep::generic).orElse(genericStep);
          RecordBodyStep bodyStep = requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).map(implementsStep::implements_).orElse(implementsStep);
          bodyStep = requestOrEmpty(this, DECLARED_GET_FIELDS).map(bodyStep::field).orElse(bodyStep);
          bodyStep = requestOrEmpty(this, DECLARED_GET_METHODS).map(bodyStep::method).orElse(bodyStep);
@@ -185,7 +185,7 @@ public interface C
                     case INNER -> innerRecord().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .generic(requestOrEmpty(this, RECORD_GET_GENERICS).orElse(emptyList()))
+                   .generic(requestOrEmpty(this, RECORD_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -262,7 +262,7 @@ public interface C
                                      }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
                                        .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
                                        .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                                       .generic(requestOrEmpty(this, CLASS_GET_GENERICS).orElse(emptyList()));
+                                       .generic(requestOrEmpty(this, CLASS_GET_GENERIC_DECLARATIONS).orElse(emptyList()));
 
          ClassImplementsStep implementsStep = Provider.requestOrEmpty(this, CLASS_GET_SUPER_CLASS)
                                                       .map(extendsStep::extends_)
@@ -292,7 +292,7 @@ public interface C
                     case INNER -> innerClass().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .generic(Provider.requestOrEmpty(this, CLASS_GET_GENERICS).orElse(emptyList()))
+                   .generic(Provider.requestOrEmpty(this, CLASS_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -322,7 +322,7 @@ public interface C
                  }).annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
                    .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
                    .name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .generic(requestOrEmpty(this, INTERFACE_GET_GENERICS).orElse(emptyList()))
+                   .generic(requestOrEmpty(this, INTERFACE_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
                    .extends_(requestOrEmpty(this, DECLARED_GET_DIRECT_INTERFACES).orElse(emptyList()))
                    .permits(requestOrEmpty(this, INTERFACE_GET_PERMITTED_SUB_TYPES).orElse(emptyList()))
                    .field(requestOrEmpty(this, DECLARED_GET_FIELDS).orElse(emptyList()))
@@ -345,7 +345,7 @@ public interface C
                     case INNER -> innerInterface().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .generic(Provider.requestOrEmpty(this, INTERFACE_GET_GENERICS).orElse(emptyList()))
+                   .generic(Provider.requestOrEmpty(this, INTERFACE_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -562,7 +562,7 @@ public interface C
          ConstructorModifierStep modifierStep = requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).map(annotateStep::annotate)
                                                                                                                  .orElse(annotateStep);
          ConstructorGenericStep genericStep = requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).map(modifierStep::modifier).orElse(modifierStep);
-         genericStep = requestOrEmpty(this, EXECUTABLE_GET_GENERICS).map(genericStep::generic).orElse(genericStep);
+         genericStep = requestOrEmpty(this, EXECUTABLE_GET_GENERIC_DECLARATIONS).map(genericStep::generic).orElse(genericStep);
 
          Declared type = requestOrThrow(this, EXECUTABLE_GET_SURROUNDING);
          ConstructorReceiverStep receiverStep = switch (type)
@@ -600,7 +600,7 @@ public interface C
          MethodReceiverStep receiverStep = method()
                .annotate(requestOrEmpty(this, ANNOTATIONABLE_GET_DIRECT_ANNOTATION_USAGES).orElse(emptyList()))
                .modifier(requestOrEmpty(this, MODIFIABLE_GET_MODIFIERS).orElse(emptySet()))
-               .generic(requestOrEmpty(this, EXECUTABLE_GET_GENERICS).orElse(emptyList()))
+               .generic(requestOrEmpty(this, EXECUTABLE_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
                .result(Provider.requestOrThrow(this, METHOD_GET_RESULT))
                .name(requestOrThrow(this, NAMEABLE_GET_NAME));
 

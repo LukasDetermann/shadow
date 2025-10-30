@@ -27,13 +27,13 @@ public class RecordImpl extends DeclaredImpl implements R.Record
    }
 
    @Override
-   public List<R.Type> getGenericTypes()
+   public List<R.Type> getGenericUsages()
    {
       return genericTypes;
    }
 
    @Override
-   public List<R.Generic> getGenerics()
+   public List<R.Generic> getGenericDeclarations()
    {
       return Arrays.stream(getaClass().getTypeParameters()).map(Adapter::generalize).map(R.Generic.class::cast).toList();
    }

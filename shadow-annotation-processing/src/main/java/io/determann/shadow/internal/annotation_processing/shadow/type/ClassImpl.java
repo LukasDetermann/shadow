@@ -68,7 +68,7 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    }
 
    @Override
-   public List<Ap.Type> getGenericTypes()
+   public List<Ap.Type> getGenericUsages()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -77,7 +77,7 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    }
 
    @Override
-   public List<Ap.Generic> getGenerics()
+   public List<Ap.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -88,11 +88,11 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    @Override
    public Ap.Class withGenerics(Ap.Type... generics)
    {
-      if (generics.length == 0 || getGenerics().size() != generics.length)
+      if (generics.length == 0 || getGenericDeclarations().size() != generics.length)
       {
          throw new IllegalArgumentException(getQualifiedName() +
                                             " has " +
-                                            getGenerics().size() +
+                                            getGenericDeclarations().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");
@@ -100,8 +100,8 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
       Optional<Ap.Declared> outerType = getSurrounding();
       if (!isStatic() && outerType.isPresent() &&
           (outerType.get() instanceof Ap.Interface anInterface &&
-           !anInterface.getGenerics().isEmpty() ||
-           outerType.get() instanceof Ap.Class aClass1 && !aClass1.getGenerics().isEmpty()))
+           !anInterface.getGenericDeclarations().isEmpty() ||
+           outerType.get() instanceof Ap.Class aClass1 && !aClass1.getGenericDeclarations().isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +

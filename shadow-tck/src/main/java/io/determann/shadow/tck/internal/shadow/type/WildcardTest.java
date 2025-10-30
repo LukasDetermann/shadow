@@ -24,7 +24,7 @@ class WildcardTest
                      C.Method extendsExample = requestOrThrow(boundsExample, DECLARED_GET_METHOD, "extendsExample").get(0);
                      C.Parameter parameter = requestOrThrow(extendsExample, EXECUTABLE_GET_PARAMETER, "numbers");
                      C.Interface parameterType = ((C.Interface) requestOrThrow(parameter, VARIABLE_GET_TYPE));
-                     C.Wildcard wildcard = (C.Wildcard) requestOrThrow(parameterType, INTERFACE_GET_GENERIC_TYPES).get(0);
+                     C.Wildcard wildcard = (C.Wildcard) requestOrThrow(parameterType, INTERFACE_GET_GENERIC_USAGES).get(0);
 
                      assertEquals(requestOrThrow(implementation, GET_CLASS, "java.lang.Number"),
                                   requestOrThrow(wildcard, WILDCARD_GET_EXTENDS));
@@ -45,7 +45,7 @@ class WildcardTest
                      C.Method extendsExample = requestOrThrow(boundsExample, DECLARED_GET_METHOD, "superExample").get(0);
                      C.Parameter parameter = requestOrThrow(extendsExample, EXECUTABLE_GET_PARAMETER, "numbers");
                      C.Interface parameterType = ((C.Interface) requestOrThrow(parameter, VARIABLE_GET_TYPE));
-                     C.Wildcard wildcard = (C.Wildcard) requestOrThrow(parameterType, INTERFACE_GET_GENERIC_TYPES).get(0);
+                     C.Wildcard wildcard = (C.Wildcard) requestOrThrow(parameterType, INTERFACE_GET_GENERIC_USAGES).get(0);
 
                      assertEquals(requestOrThrow(implementation, GET_CLASS, "java.lang.Number"),
                                   requestOrThrow(wildcard, WILDCARD_GET_SUPER));

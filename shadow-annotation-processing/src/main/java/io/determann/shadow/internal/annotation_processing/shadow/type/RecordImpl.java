@@ -35,7 +35,7 @@ public class RecordImpl extends DeclaredImpl implements Ap.Record
    }
 
    @Override
-   public List<Ap.Type> getGenericTypes()
+   public List<Ap.Type> getGenericUsages()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -44,7 +44,7 @@ public class RecordImpl extends DeclaredImpl implements Ap.Record
    }
 
    @Override
-   public List<Ap.Generic> getGenerics()
+   public List<Ap.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -55,11 +55,11 @@ public class RecordImpl extends DeclaredImpl implements Ap.Record
    @Override
    public Ap.Record withGenerics(Ap.Type... generics)
    {
-      if (generics.length == 0 || getGenerics().size() != generics.length)
+      if (generics.length == 0 || getGenericDeclarations().size() != generics.length)
       {
          throw new IllegalArgumentException(getQualifiedName() +
                                             " has " +
-                                            getGenerics().size() +
+                                            getGenericDeclarations().size() +
                                             " generics. " +
                                             generics.length +
                                             " are provided");

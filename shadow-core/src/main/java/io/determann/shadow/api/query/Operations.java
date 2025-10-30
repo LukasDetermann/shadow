@@ -119,9 +119,9 @@ public interface Operations
 
    InstanceOperation0<C.Interface, Boolean> INTERFACE_IS_FUNCTIONAL = new InstanceOperation0<>("Interface.isFunctional");
 
-   InstanceOperation0<C.Interface, List<? extends C.Type>> INTERFACE_GET_GENERIC_TYPES = new InstanceOperation0<>("interface.getGenericTypes");
+   InstanceOperation0<C.Interface, List<? extends C.Type>> INTERFACE_GET_GENERIC_USAGES = new InstanceOperation0<>("interface.getGenericUsages");
 
-   InstanceOperation0<C.Interface, List<? extends C.Generic>> INTERFACE_GET_GENERICS = new InstanceOperation0<>("interface.getGenerics");
+   InstanceOperation0<C.Interface, List<? extends C.Generic>> INTERFACE_GET_GENERIC_DECLARATIONS = new InstanceOperation0<>("interface.getGenericDeclarations");
 
    InstanceOperation0<C.Interface, List<? extends C.Declared>> INTERFACE_GET_PERMITTED_SUB_TYPES = new InstanceOperation0<>("interface.getPermittedSubTypes");
 
@@ -131,9 +131,9 @@ public interface Operations
 
    InstanceOperation1<C.Record, String, C.RecordComponent> RECORD_GET_RECORD_COMPONENT = new InstanceOperation1<>("record.getRecordComponent");
 
-   InstanceOperation0<C.Record, List<? extends C.Type>> RECORD_GET_GENERIC_TYPES = new InstanceOperation0<>("record.getGenericTypes");
+   InstanceOperation0<C.Record, List<? extends C.Type>> RECORD_GET_GENERIC_USAGES = new InstanceOperation0<>("record.getGenericUsages");
 
-   InstanceOperation0<C.Record, List<? extends C.Generic>> RECORD_GET_GENERICS = new InstanceOperation0<>("record.getGenerics");
+   InstanceOperation0<C.Record, List<? extends C.Generic>> RECORD_GET_GENERIC_DECLARATIONS = new InstanceOperation0<>("record.getGenericDeclarations");
 
    InstanceOperation0<C.Class, List<? extends C.Constructor>> CLASS_GET_CONSTRUCTORS = new InstanceOperation0<>("class.getConstructors");
 
@@ -145,9 +145,9 @@ public interface Operations
 
    InstanceOperation1<C.Class, C.Type, Boolean> CLASS_IS_ASSIGNABLE_FROM = new InstanceOperation1<>("class.isAssignableFrom");
 
-   InstanceOperation0<C.Class, List<? extends C.Type>> CLASS_GET_GENERIC_TYPES = new InstanceOperation0<>("class.getGenericTypes");
+   InstanceOperation0<C.Class, List<? extends C.Type>> CLASS_GET_GENERIC_USAGES = new InstanceOperation0<>("class.getGenericUsages");
 
-   InstanceOperation0<C.Class, List<? extends C.Generic>> CLASS_GET_GENERICS = new InstanceOperation0<>("class.getGenerics");
+   InstanceOperation0<C.Class, List<? extends C.Generic>> CLASS_GET_GENERIC_DECLARATIONS = new InstanceOperation0<>("class.getGenericDeclarations");
 
    InstanceOperation0<C.Class, C.Primitive> CLASS_AS_UNBOXED = new InstanceOperation0<>("class.asUnboxed");
 
@@ -191,7 +191,7 @@ public interface Operations
 
    InstanceOperation0<C.Executable, C.Declared> EXECUTABLE_GET_SURROUNDING = new InstanceOperation0<>("executable.getSurrounding");
 
-   InstanceOperation0<C.Executable, List<? extends C.Generic>> EXECUTABLE_GET_GENERICS = new InstanceOperation0<>("executable.getGenerics");
+   InstanceOperation0<C.Executable, List<? extends C.Generic>> EXECUTABLE_GET_GENERIC_DECLARATIONS = new InstanceOperation0<>("executable.getGenericDeclarations");
 
    InstanceOperation0<C.Executable, C.Declared> EXECUTABLE_GET_RECEIVER_TYPE = new InstanceOperation0<>("executable.getReceiverType");
 

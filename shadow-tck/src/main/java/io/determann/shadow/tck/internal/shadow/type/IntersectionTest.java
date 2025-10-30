@@ -24,7 +24,7 @@ class IntersectionTest
                      List<C.Interface> expected = List.of(collection, serializable);
 
                      C.Class intersectionExample = requestOrThrow(implementation, GET_CLASS, "IntersectionExample");
-                     C.Generic generic = requestOrThrow(intersectionExample, CLASS_GET_GENERICS).get(0);
+                     C.Generic generic = requestOrThrow(intersectionExample, CLASS_GET_GENERIC_DECLARATIONS).get(0);
 
                      assertEquals(expected, requestOrThrow(generic, GENERIC_GET_BOUNDS));
                   });

@@ -286,7 +286,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Generic> getGenericsAnnotatedWith(String qualifiedAnnotation)
+   public Set<Ap.Generic> getGenericDeclarationsAnnotatedWith(String qualifiedAnnotation)
    {
       return getAnnotated(qualifiedAnnotation, Ap.Generic.class);
    }

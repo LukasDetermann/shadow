@@ -139,7 +139,7 @@ public abstract class ExecutableImpl
                          .toList();
    }
 
-   public List<Ap.Generic> getGenerics()
+   public List<Ap.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()

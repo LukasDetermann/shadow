@@ -307,12 +307,12 @@ public interface R
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * Integer -&gt; int<br>
@@ -485,12 +485,12 @@ public interface R
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
    }
 
    non-sealed interface Null
@@ -518,12 +518,12 @@ public interface R
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
    }
 
    sealed interface ReferenceType
@@ -734,7 +734,7 @@ public interface R
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".

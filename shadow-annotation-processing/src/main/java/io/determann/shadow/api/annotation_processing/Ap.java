@@ -364,7 +364,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Generic> getGenericsAnnotatedWith(String qualifiedAnnotation);
+      Set<Generic> getGenericDeclarationsAnnotatedWith(String qualifiedAnnotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -961,12 +961,12 @@ public interface Ap
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
@@ -1182,12 +1182,12 @@ public interface Ap
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * {@code context.getDeclaredOrThrow("java.util.List")} represents {@code List}
@@ -1249,12 +1249,12 @@ public interface Ap
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
        */
-      List<Type> getGenericTypes();
+      List<Type> getGenericUsages();
 
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * {@code context.getRecordOrThrow("org.example.MyRecord")} represents {@code MyRecord}
@@ -1496,7 +1496,7 @@ public interface Ap
       /**
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
        */
-      List<Generic> getGenerics();
+      List<Generic> getGenericDeclarations();
 
       /**
        * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
