@@ -41,7 +41,7 @@ public class ShadowBuilderProcessor
 
             // render the existing field if possible, otherwise create a new one
             step = property.getField().map(step::field)
-                           .orElse(step.field(Dsl.field(property.getType(), propertyName)));
+                           .orElse(step.field(Dsl.field().private_().type(property.getType()).name(propertyName)));
 
             // render the wither
             step = step.method(Dsl.method()

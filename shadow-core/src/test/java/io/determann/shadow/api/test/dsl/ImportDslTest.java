@@ -13,21 +13,21 @@ class ImportDslTest
    void importAllDeclared()
    {
       assertEquals("import static org.example.MyClass.*;",
-                   Dsl.staticImportAll(Dsl.class_().package_("org.example").name("MyClass")).renderDeclaration(createRenderingContext()));
+                   Dsl.import_().static_().importAll(Dsl.class_().package_("org.example").name("MyClass")).renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void importAlString()
    {
       assertEquals("import static org.examole.*;",
-                   Dsl.staticImportAll("org.examole").renderDeclaration(createRenderingContext()));
+                   Dsl.import_().static_().importAll("org.examole").renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void importMethod()
    {
       assertEquals("import static org.example.MyClass.foo;",
-                   Dsl.staticImport(Dsl.class_().package_("org.example").name("MyClass"),
+                   Dsl.import_().static_().import_(Dsl.class_().package_("org.example").name("MyClass"),
                                     Dsl.method().result("String").name("foo"))
                       .renderDeclaration(createRenderingContext()));
    }
@@ -36,7 +36,7 @@ class ImportDslTest
    void importField()
    {
       assertEquals("import static org.example.MyClass.A_CONSTANT;",
-                   Dsl.staticImport(Dsl.class_().package_("org.example").name("MyClass"),
+                   Dsl.import_().static_().import_(Dsl.class_().package_("org.example").name("MyClass"),
                                     Dsl.field().type("String").name("A_CONSTANT"))
                       .renderDeclaration(createRenderingContext()));
    }

@@ -134,7 +134,7 @@ class InterfaceDslTest
                    }""",
                    INTERFACE.name("MyInterface")
                             .field("String s;")
-                            .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
+                            .field(Dsl.field().private_().type("int").name("i"))
                             .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -224,10 +224,10 @@ class InterfaceDslTest
                       .package_("org.example")
                       .import_("some.thing")
                       .import_(Dsl.import_("Dings"))
-                      .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
-                      .import_(Dsl.staticImport("foo.package"))
-                      .import_(Dsl.staticImport(Dsl.annotation().package_("org.example").name("MyInterface2")))
-                      .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
+                      .import_(Dsl.import_().importAll(Dsl.packageInfo().name("other.package")))
+                      .import_(Dsl.import_().static_().import_("foo.package"))
+                      .import_(Dsl.import_().static_().import_(Dsl.annotation().package_("org.example").name("MyInterface2")))
+                      .import_(Dsl.import_().static_().importAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyInterface")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }

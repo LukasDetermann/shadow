@@ -1,7 +1,6 @@
 package io.determann.shadow.api.dsl;
 
 import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.annotation.AnnotationOuterStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
@@ -10,14 +9,12 @@ import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
 import io.determann.shadow.api.dsl.class_.ClassCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.class_.ClassOuterStep;
 import io.determann.shadow.api.dsl.constructor.ConstructorJavaDocStep;
-import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.EnumCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.enum_.EnumOuterStep;
 import io.determann.shadow.api.dsl.enum_constant.EnumConstantJavaDocStep;
 import io.determann.shadow.api.dsl.exports.ExportsPackageStep;
 import io.determann.shadow.api.dsl.exports.ExportsRenderable;
 import io.determann.shadow.api.dsl.field.FieldJavaDocStep;
-import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.generic.GenericAnnotateStep;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
@@ -25,7 +22,6 @@ import io.determann.shadow.api.dsl.import_.ImportStaticStep;
 import io.determann.shadow.api.dsl.interface_.InterfaceCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.interface_.InterfaceOuterStep;
 import io.determann.shadow.api.dsl.method.MethodJavaDocStep;
-import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.module.ModuleCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.opens.OpensPackageStep;
 import io.determann.shadow.api.dsl.opens.OpensRenderable;
@@ -55,6 +51,7 @@ import static java.util.stream.Collectors.joining;
 
 public interface Dsl
 {
+   @Contract(value = "-> new", pure = true)
    static ImportStaticStep import_()
    {
       return new ImportDsl();
@@ -64,66 +61,6 @@ public interface Dsl
    static ImportRenderable import_(String name)
    {
       return import_().import_(name);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable import_(DeclaredRenderable declared)
-   {
-      return import_().import_(declared);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable importAll(String cPackage)
-   {
-      return import_().importAll(cPackage);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable importAll(PackageRenderable cPackage)
-   {
-      return import_().importAll(cPackage);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable staticImport(String name)
-   {
-      return import_().static_().import_(name);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable staticImport(DeclaredRenderable declared)
-   {
-      return import_().static_().import_(declared);
-   }
-
-   @Contract(value = "_, _ -> new", pure = true)
-   static ImportRenderable staticImport(DeclaredRenderable declared, MethodRenderable method)
-   {
-      return import_().static_().import_(declared, method);
-   }
-
-   @Contract(value = "_, _ -> new", pure = true)
-   static ImportRenderable staticImport(DeclaredRenderable declared, FieldRenderable field)
-   {
-      return import_().static_().import_(declared, field);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable staticImportAll(String cPackage)
-   {
-      return import_().static_().importAll(cPackage);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable staticImportAll(PackageRenderable cPackage)
-   {
-      return import_().static_().importAll(cPackage);
-   }
-
-   @Contract(value = "_ -> new", pure = true)
-   static ImportRenderable staticImportAll(DeclaredRenderable declared)
-   {
-      return import_().static_().importAll(declared);
    }
 
    /// {@snippet file = "ConstructorDslTest.java" region = "api"}
@@ -513,125 +450,6 @@ public interface Dsl
    static FieldJavaDocStep field()
    {
       return new FieldDsl();
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantStringStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable constant(String type, String name, String initializer)
-   {
-      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantTypeStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable constant(VariableTypeRenderable type, String name, String initializer)
-   {
-      return field().private_().static_().final_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantModifierStringStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _, _ -> new", pure = true)
-   static FieldRenderable constant(Modifier modifier, String type, String name, String initializer)
-   {
-      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "constantModifierTypeStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _, _ -> new", pure = true)
-   static FieldRenderable constant(Modifier modifier, VariableTypeRenderable type, String name, String initializer)
-   {
-      return field().modifier(modifier).final_().static_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _ -> new", pure = true)
-   static FieldRenderable field(String type, String name)
-   {
-      return field().private_().type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _ -> new", pure = true)
-   static FieldRenderable field(VariableTypeRenderable type, String name)
-   {
-      return field().private_().type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldStringStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable field(String type, String name, String initializer)
-   {
-      return field().private_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldTypeStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable field(VariableTypeRenderable type, String name, String initializer)
-   {
-      return field().private_().type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable field(Modifier modifier, String type, String name)
-   {
-      return field().modifier(modifier).type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _ -> new", pure = true)
-   static FieldRenderable field(Modifier modifier, VariableTypeRenderable type, String name)
-   {
-      return field().modifier(modifier).type(type).name(name);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierStringStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _, _ -> new", pure = true)
-   static FieldRenderable field(Modifier modifier, String type, String name, String initializer)
-   {
-      return field().modifier(modifier).type(type).name(name).initializer(initializer);
-   }
-
-   /// {@snippet file = "FieldDslTest.java" region = "fieldModifierTypeStringString"}
-   ///
-   /// @see #field()
-   @Contract(value = "_, _, _, _ -> new", pure = true)
-   static FieldRenderable field(Modifier modifier, VariableTypeRenderable type, String name, String initializer)
-   {
-      return field().modifier(modifier).type(type).name(name).initializer(initializer);
-   }
-
-   /// a [javax.annotation.processing.Generated] annotation
-   @Contract(value = "_ -> new", pure = true)
-   static AnnotationUsageRenderable generated(String generatorName)
-   {
-      return annotationUsage().type("javax.annotation.processing.Generated")
-                              .noName()
-                              .value(annotationValue(generatorName))
-                              .name("date")
-                              .value(annotationValue(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
    }
 
    /// a [javax.annotation.processing.Generated] annotation

@@ -1,9 +1,7 @@
 package io.determann.shadow.api.test.dsl;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.test.TestFactory;
 import io.determann.shadow.api.test.TestProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -98,120 +96,6 @@ class FieldDslTest
                       .initializer("5")
                       .renderDeclaration(createRenderingContext()));
       //@end
-   }
-
-   @Test
-   void constantStringStringString()
-   {
-      //@start region="constantStringStringString"
-      assertEquals("private static final int I1 = 5;", Dsl.constant("int", "I1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void constantTypeStringString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="constantTypeStringString"
-      assertEquals("private static final int I1 = 5;", Dsl.constant(cPrimitive, "I1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void constantModifierStringStringString()
-   {
-      //@start region="constantModifierStringStringString"
-      assertEquals("public final static int I1 = 5;", Dsl.constant(Modifier.PUBLIC, "int", "I1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void constantModifierTypeStringString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="constantModifierTypeStringString"
-      assertEquals("public final static int I1 = 5;", Dsl.constant(Modifier.PUBLIC, cPrimitive, "I1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldStringString()
-   {
-      //@start region="fieldStringString"
-      assertEquals("private int i1;", Dsl.field("int", "i1").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldTypeString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="fieldTypeString"
-      assertEquals("private int i1;", Dsl.field(cPrimitive, "i1").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldStringStringString()
-   {
-      //@start region="fieldStringStringString"
-      assertEquals("private int i1 = 5;", Dsl.field("int", "i1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldTypeStringString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="fieldTypeStringString"
-      assertEquals("private int i1 = 5;", Dsl.field(cPrimitive, "i1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldModifierStringString()
-   {
-      //@start region="fieldModifierStringString"
-      assertEquals("public int i1;", Dsl.field(Modifier.PUBLIC, "int", "i1").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldModifierTypeString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="fieldModifierTypeString"
-      assertEquals("public int i1;", Dsl.field(Modifier.PUBLIC, cPrimitive, "i1").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldModifierStringStringString()
-   {
-      //@start region="fieldModifierStringStringString"
-      assertEquals("public int i1 = 5;", Dsl.field(Modifier.PUBLIC, "int", "i1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void fieldModifierTypeStringString()
-   {
-      C.Primitive cPrimitive = TestFactory.create(C.Primitive.class, "renderType", "int");
-
-      //@start region="fieldModifierTypeStringString"
-      assertEquals("public int i1 = 5;", Dsl.field(Modifier.PUBLIC, cPrimitive, "i1", "5").renderDeclaration(createRenderingContext()));
-      //@end
-   }
-
-   @Test
-   void renderName()
-   {
-      assertEquals("s", Dsl.field("String", "s").renderName(createRenderingContext()));
    }
 
    @Test

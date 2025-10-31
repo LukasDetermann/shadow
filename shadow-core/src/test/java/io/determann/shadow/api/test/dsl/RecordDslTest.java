@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class RecordDslTest
 {
 
-   public static final RecordImportStep RECORD = Dsl.record().package_("org.example");
+   private static final RecordImportStep RECORD = Dsl.record().package_("org.example");
 
    @Test
    void javadoc()
@@ -118,7 +118,7 @@ class RecordDslTest
                    }""",
                    RECORD.name("MyRecord")
                          .field("String s;")
-                         .field(Dsl.field(Modifier.PRIVATE, "int", "i"))
+                         .field(Dsl.field().private_().type("int").name("i"))
                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -245,10 +245,10 @@ class RecordDslTest
                       .package_("org.example")
                       .import_("some.thing")
                       .import_(Dsl.import_("Dings"))
-                      .import_(Dsl.importAll(Dsl.packageInfo().name("other.package")))
-                      .import_(Dsl.staticImport("foo.package"))
-                      .import_(Dsl.staticImport(Dsl.annotation().package_("org.example").name("MyInterface2")))
-                      .import_(Dsl.staticImportAll(Dsl.packageInfo().name("some.other.package")))
+                      .import_(Dsl.import_().importAll(Dsl.packageInfo().name("other.package")))
+                      .import_(Dsl.import_().static_().import_("foo.package"))
+                      .import_(Dsl.import_().static_().import_(Dsl.annotation().package_("org.example").name("MyInterface2")))
+                      .import_(Dsl.import_().static_().importAll(Dsl.packageInfo().name("some.other.package")))
                       .name("MyRecord")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
