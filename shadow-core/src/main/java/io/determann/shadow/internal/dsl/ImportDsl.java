@@ -5,7 +5,7 @@ import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.field.FieldRenderable;
 import io.determann.shadow.api.dsl.import_.ImportRenderable;
 import io.determann.shadow.api.dsl.import_.ImportStaticStep;
-import io.determann.shadow.api.dsl.import_.ImportTypeStep;
+import io.determann.shadow.api.dsl.import_.StaticImportTypeStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import io.determann.shadow.api.dsl.package_.PackageRenderable;
 
@@ -17,28 +17,23 @@ public class ImportDsl
 {
    private static final String ALL_SUFFIX = ".*";
 
-   private boolean isStatic = false;
    private Renderable import_;
 
-   public ImportDsl()
-   {
-   }
+   public ImportDsl() {}
 
    private ImportDsl(ImportDsl other)
    {
-      this.isStatic = other.isStatic;
       this.import_ = other.import_;
    }
 
    @Override
-   public ImportTypeStep static_()
+   public StaticImportTypeStep static_()
    {
-      isStatic = true;
-      return new ImportDsl(this);
+      return new StaticImportDsl();
    }
 
    @Override
-   public ImportRenderable import_(String name)
+   public ImportRenderable declared(String name)
    {
       return setType(new ImportDsl(this),
                      name,
@@ -46,41 +41,16 @@ public class ImportDsl
    }
 
    @Override
-   public ImportRenderable import_(DeclaredRenderable declared)
+   public ImportRenderable declared(DeclaredRenderable declared)
    {
       return setType(new ImportDsl(this),
                      declared,
-                     (importDsl, declaredRenderable) -> importDsl.import_ = declaredRenderable::renderQualifiedName);
+                     (importDsl, declaredRenderable) ->
+                           importDsl.import_ = declaredRenderable::renderQualifiedName);
    }
 
    @Override
-   public ImportRenderable import_(DeclaredRenderable declared, MethodRenderable method)
-   {
-      record Pair(DeclaredRenderable declared,
-                  MethodRenderable method) {}
-
-      return setType(new ImportDsl(this),
-                     new Pair(declared, method),
-                     (importDsl, pair) ->
-                           importDsl.import_ = renderingContext ->
-                                 pair.declared().renderQualifiedName(renderingContext) + '.' + pair.method().renderName(renderingContext));
-   }
-
-   @Override
-   public ImportRenderable import_(DeclaredRenderable declared, FieldRenderable field)
-   {
-      record Pair(DeclaredRenderable declared,
-                  FieldRenderable field) {}
-
-      return setType(new ImportDsl(this),
-                     new Pair(declared, field),
-                     (importDsl, pair) ->
-                           importDsl.import_ = renderingContext ->
-                                 pair.declared().renderQualifiedName(renderingContext) + '.' + pair.field().renderName(renderingContext));
-   }
-
-   @Override
-   public ImportRenderable importAll(String cPackage)
+   public ImportRenderable package_(String cPackage)
    {
       return setType(new ImportDsl(this),
                      cPackage,
@@ -88,26 +58,80 @@ public class ImportDsl
    }
 
    @Override
-   public ImportRenderable importAll(PackageRenderable cPackage)
+   public ImportRenderable package_(PackageRenderable cPackage)
    {
       return setType(new ImportDsl(this),
                      cPackage,
                      (importDsl, packageRenderable) ->
-                           importDsl.import_ = renderingContext -> packageRenderable.renderQualifiedName(renderingContext) + ".*");
-   }
-
-   @Override
-   public ImportRenderable importAll(DeclaredRenderable declared)
-   {
-      return setType(new ImportDsl(this),
-                     declared,
-                     (importDsl, declaredRenderable) ->
-                           importDsl.import_ = renderingContext -> declaredRenderable.renderQualifiedName(renderingContext) + ".*");
+                           importDsl.import_ = renderingContext -> packageRenderable.renderQualifiedName(renderingContext) + ALL_SUFFIX);
    }
 
    @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
-      return "import " + (isStatic ? "static " : "") + import_.render(renderingContext) + ';';
+      return "import " + import_.render(renderingContext) + ';';
+   }
+
+   private static class StaticImportDsl
+         implements StaticImportTypeStep,
+                    ImportRenderable
+   {
+      private Renderable import_;
+
+      private StaticImportDsl() {}
+
+      private StaticImportDsl(StaticImportDsl other)
+      {
+         this.import_ = other.import_;
+      }
+
+      @Override
+      public ImportRenderable declared(String name)
+      {
+         return setType(new StaticImportDsl(this),
+                        name,
+                        (importDsl, string) -> importDsl.import_ = renderingContext -> string + ALL_SUFFIX);
+      }
+
+      @Override
+      public ImportRenderable declared(DeclaredRenderable declared)
+      {
+         return setType(new StaticImportDsl(this),
+                        declared,
+                        (importDsl, declaredRenderable) ->
+                              importDsl.import_ = renderingContext -> declaredRenderable.renderQualifiedName(renderingContext) + ALL_SUFFIX);
+      }
+
+      @Override
+      public ImportRenderable method(DeclaredRenderable declared, MethodRenderable method)
+      {
+         record Pair(DeclaredRenderable declared,
+                     MethodRenderable method) {}
+
+         return setType(new StaticImportDsl(this),
+                        new Pair(declared, method),
+                        (importDsl, pair) ->
+                              importDsl.import_ = renderingContext ->
+                                    pair.declared().renderQualifiedName(renderingContext) + '.' + pair.method().renderName(renderingContext));
+      }
+
+      @Override
+      public ImportRenderable field(DeclaredRenderable declared, FieldRenderable field)
+      {
+         record Pair(DeclaredRenderable declared,
+                     FieldRenderable field) {}
+
+         return setType(new StaticImportDsl(this),
+                        new Pair(declared, field),
+                        (importDsl, pair) ->
+                              importDsl.import_ = renderingContext ->
+                                    pair.declared().renderQualifiedName(renderingContext) + '.' + pair.field().renderName(renderingContext));
+      }
+
+      @Override
+      public String renderDeclaration(RenderingContext renderingContext)
+      {
+         return "import static " + import_.render(renderingContext) + ';';
+      }
    }
 }

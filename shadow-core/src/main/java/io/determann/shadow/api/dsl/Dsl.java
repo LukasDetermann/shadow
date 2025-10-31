@@ -60,7 +60,7 @@ public interface Dsl
    @Contract(value = "_ -> new", pure = true)
    static ImportRenderable import_(String name)
    {
-      return import_().import_(name);
+      return import_().declared(name);
    }
 
    /// {@snippet file = "ConstructorDslTest.java" region = "api"}

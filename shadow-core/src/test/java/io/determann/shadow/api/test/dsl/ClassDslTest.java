@@ -292,18 +292,16 @@ class ClassDslTest
                    import some.thing;
                    import Dings;
                    import other.package.*;
-                   import static foo.package;
-                   import static org.example.MyInterface2;
-                   import static some.other.package.*;
+                   import static foo.package.MyType.*;
+                   import static org.example.MyInterface2.*;
                    
                    class MyClass {
                    }""",
                    CLASS.import_("some.thing")
                         .import_(Dsl.import_("Dings"))
-                        .import_(Dsl.import_().importAll(Dsl.packageInfo().name("other.package")))
-                        .import_(Dsl.import_().static_().import_("foo.package"))
-                        .import_(Dsl.import_().static_().import_(Dsl.annotation().package_("org.example").name("MyInterface2")))
-                        .import_(Dsl.import_().static_().importAll(Dsl.packageInfo().name("some.other.package")))
+                        .import_(Dsl.import_().package_(Dsl.packageInfo().name("other.package")))
+                        .import_(Dsl.import_().static_().declared("foo.package.MyType"))
+                        .import_(Dsl.import_().static_().declared(Dsl.annotation().package_("org.example").name("MyInterface2")))
                         .name("MyClass")
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }

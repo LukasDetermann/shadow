@@ -6,5 +6,5 @@ public interface ImportStaticStep
       extends ImportTypeStep
 {
    @Contract(value = " -> new", pure = true)
-   ImportTypeStep static_();
+   StaticImportTypeStep static_();
 }
