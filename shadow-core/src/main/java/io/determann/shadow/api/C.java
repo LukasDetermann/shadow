@@ -206,6 +206,7 @@ public interface C
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
                    .genericDeclaration(requestOrEmpty(this, RECORD_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
+                   .genericUsage(requestOrEmpty(this, RECORD_GET_GENERIC_USAGES).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -313,7 +314,8 @@ public interface C
                     case INNER -> innerClass().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .genericDeclaration(Provider.requestOrEmpty(this, CLASS_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
+                   .genericDeclaration(requestOrEmpty(this, CLASS_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
+                   .genericUsage(requestOrEmpty(this, CLASS_GET_GENERIC_USAGES).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
@@ -367,7 +369,8 @@ public interface C
                     case INNER -> innerInterface().outer(requestOrThrow(this, DECLARED_GET_SURROUNDING));
                     case ANONYMOUS, LOCAL -> throw new UnsupportedOperationException();
                  }).name(requestOrThrow(this, NAMEABLE_GET_NAME))
-                   .genericDeclaration(Provider.requestOrEmpty(this, INTERFACE_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
+                   .genericDeclaration(requestOrEmpty(this, INTERFACE_GET_GENERIC_DECLARATIONS).orElse(emptyList()))
+                   .genericUsage(requestOrEmpty(this, INTERFACE_GET_GENERIC_USAGES).orElse(emptyList()))
                    .renderType(renderingContext);
       }
 
