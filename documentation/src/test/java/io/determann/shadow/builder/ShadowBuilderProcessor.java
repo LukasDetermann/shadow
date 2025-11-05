@@ -7,7 +7,6 @@ import io.determann.shadow.api.dsl.class_.ClassBodyStep;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static java.lang.String.join;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
@@ -70,8 +69,7 @@ public class ShadowBuilderProcessor
                                                    join("\n\n", setterInvocations))));
 
          //writes the builder
-         context.writeAndCompileSourceFile(toBuild.getQualifiedName() + "ShadowBuilder",
-                                           step.renderDeclaration(createRenderingContext()));
+         context.writeAndCompileSourceFile(step);
       }
    }
 }
