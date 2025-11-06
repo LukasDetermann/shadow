@@ -7,10 +7,13 @@
         <groupId>io.determann</groupId>
         <artifactId>shadow-parent</artifactId>
         <relativePath>../shadow-parent/pom.xml</relativePath>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.3.0</version>
     </parent>
 
     <artifactId>shadow-annotation-processing</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>api for annotation processing</description>
+    <url>https://github.com/LukasDetermann/shadow</url>
 
     <dependencies>
         <dependency>
