@@ -206,7 +206,6 @@ public class ShadowBuilderProcessor
 ## Next Goals
 
 - Improve Annotation Processing Support
-  - Add a Java DSL Api for Rendering 
   - Add support for specific Annotations
 - Improve Support for other Metaprogramming Apis
   - Move more of the implementation to the `shadow-implementation-support`
