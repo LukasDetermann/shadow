@@ -17,4 +17,7 @@ public interface MethodResultStep
 
    @Contract(value = "_ -> new", pure = true)
    MethodNameStep resultType(TypeRenderable resultType);
+
+   @Contract(value = "-> new", pure = true)
+   MethodNameStep surroundingResultType();
 }

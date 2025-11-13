@@ -18,4 +18,7 @@ public interface ConstructorTypeStep
 
    @Contract(value = "_ -> new", pure = true)
    ConstructorReceiverStep type(RecordRenderable type);
+
+   @Contract(value = "-> new", pure = true)
+   ConstructorReceiverStep surroundingType();
 }

@@ -5,6 +5,7 @@ import io.determann.shadow.api.dsl.RenderingContext;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.constructor.*;
+import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.dsl.enum_.EnumRenderable;
 import io.determann.shadow.api.dsl.generic.GenericRenderable;
 import io.determann.shadow.api.dsl.parameter.ParameterRenderable;
@@ -200,7 +201,7 @@ public class ConstructorDsl
    {
       return setType(new ConstructorDsl(this),
                      type,
-                     (constructorDsl, classRenderable) -> constructorDsl.result = classRenderable::renderQualifiedName);
+                     (constructorDsl, classRenderable) -> constructorDsl.result = classRenderable::renderSimpleName);
    }
 
    @Override
@@ -208,7 +209,7 @@ public class ConstructorDsl
    {
       return setType(new ConstructorDsl(this),
                      type,
-                     (constructorDsl, function) -> constructorDsl.result = function::renderQualifiedName);
+                     (constructorDsl, function) -> constructorDsl.result = function::renderSimpleName);
    }
 
    @Override
@@ -216,7 +217,22 @@ public class ConstructorDsl
    {
       return setType(new ConstructorDsl(this),
                      type,
-                     (constructorDsl, function) -> constructorDsl.result = function::renderQualifiedName);
+                     (constructorDsl, function) -> constructorDsl.result = function::renderSimpleName);
+   }
+
+   @Override
+   public ConstructorReceiverStep surroundingType()
+   {
+      return setType(new ConstructorDsl(this),
+                     (Renderable) renderingContext -> renderingContext
+                           .getSurrounding()
+                           .stream()
+                           .filter(DeclaredRenderable.class::isInstance)
+                           .map(DeclaredRenderable.class::cast)
+                           .map(declaredRenderable -> declaredRenderable.renderSimpleName(renderingContext))
+                           .findFirst()
+                           .orElseThrow(() -> new IllegalStateException("Result needs to be contained in a DeclaredRenderable")),
+                     (resultDsl, renderable) -> resultDsl.result = renderable);
    }
 
    @Override
@@ -259,7 +275,8 @@ public class ConstructorDsl
          sb.append('\n')
            .append(body.render(indented))
            .append(context.getLineIndentation())
-           .append('\n');
+           .append('\n')
+           .append(context.getLineIndentation());
       }
       return sb.append("}")
                .toString();

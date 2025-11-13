@@ -10,4 +10,7 @@ public interface ResultTypeStep
 
    @Contract(value = "_ -> new", pure = true)
    ResultRenderable type(TypeRenderable type);
+
+   @Contract(value = "-> new", pure = true)
+   ResultRenderable surroundingType();
 }

@@ -70,9 +70,9 @@ class ConstructorDslTest
    @Test
    void type()
    {
-      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderQualifiedName", "MyEnum");
-      C.Class cClass = TestFactory.create(C.Class.class, "renderQualifiedName", "MyClass");
-      C.Record cRecord = TestFactory.create(C.Record.class, "renderQualifiedName", "MyRecord");
+      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderSimpleName", "MyEnum");
+      C.Class cClass = TestFactory.create(C.Class.class, "renderSimpleName", "MyClass");
+      C.Record cRecord = TestFactory.create(C.Record.class, "renderSimpleName", "MyRecord");
 
       assertEquals("MyEnum2() {}", Dsl.constructor().type("MyEnum2").renderDeclaration(createRenderingContext()));
       assertEquals("MyEnum() {}", Dsl.constructor().type(cEnum).renderDeclaration(createRenderingContext()));

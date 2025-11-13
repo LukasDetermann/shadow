@@ -267,6 +267,21 @@ public class MethodDsl
    }
 
    @Override
+   public MethodNameStep surroundingResultType()
+   {
+      return setType(new MethodDsl(this),
+                     (Renderable) renderingContext -> renderingContext
+                           .getSurrounding()
+                           .stream()
+                           .filter(TypeRenderable.class::isInstance)
+                           .map(TypeRenderable.class::cast)
+                           .map(typeRenderable -> typeRenderable.renderType(renderingContext))
+                           .findFirst()
+                           .orElseThrow(() -> new IllegalStateException("Result needs to be contained in a TypeRenderable")),
+                     (resultDsl, renderable) -> resultDsl.result = renderable);
+   }
+
+   @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
       RenderingContext context = createRenderingContext(renderingContext);

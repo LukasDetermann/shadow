@@ -61,6 +61,21 @@ public class ResultDsl
    }
 
    @Override
+   public ResultRenderable surroundingType()
+   {
+      return setType(new ResultDsl(this),
+                     (Renderable) renderingContext -> renderingContext
+                           .getSurrounding()
+                           .stream()
+                           .filter(TypeRenderable.class::isInstance)
+                           .map(TypeRenderable.class::cast)
+                           .map(typeRenderable -> typeRenderable.renderType(renderingContext))
+                           .findFirst()
+                           .orElseThrow(() -> new IllegalStateException("Result needs to be contained in a TypeRenderable")),
+                     (resultDsl, renderable) -> resultDsl.type = renderable);
+   }
+
+   @Override
    public String renderDeclaration(RenderingContext renderingContext)
    {
       StringBuilder sb = new StringBuilder();
