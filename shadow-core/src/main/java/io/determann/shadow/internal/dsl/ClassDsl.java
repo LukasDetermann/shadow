@@ -545,6 +545,12 @@ public class ClassDsl
    }
 
    @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return name;
+   }
+
+   @Override
    public String renderType(RenderingContext renderingContext)
    {
       renderingContext.addSurrounding(this);

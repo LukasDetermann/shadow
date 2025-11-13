@@ -426,6 +426,12 @@ public class EnumDsl
    }
 
    @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return name;
+   }
+
+   @Override
    public String renderQualifiedName(RenderingContext renderingContext)
    {
       renderingContext.addSurrounding(this);

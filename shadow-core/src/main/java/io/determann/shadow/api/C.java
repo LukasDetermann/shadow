@@ -197,6 +197,12 @@ public interface C
       }
 
       @Override
+      default String renderSimpleName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
+      }
+
+      @Override
       default String renderType(RenderingContext renderingContext)
       {
          return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
@@ -261,6 +267,12 @@ public interface C
       {
          return requestOrThrow(this, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
       }
+
+      @Override
+      default String renderSimpleName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
+      }
    }
 
    interface Class
@@ -303,6 +315,12 @@ public interface C
       default String renderQualifiedName(RenderingContext renderingContext)
       {
          return requestOrThrow(this, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
+      }
+
+      @Override
+      default String renderSimpleName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
       }
 
       @Override
@@ -361,6 +379,12 @@ public interface C
       }
 
       @Override
+      default String renderSimpleName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
+      }
+
+      @Override
       default String renderType(RenderingContext renderingContext)
       {
          return (switch (requestOrThrow(this, DECLARED_GET_NESTING))
@@ -409,6 +433,12 @@ public interface C
       default String renderQualifiedName(RenderingContext renderingContext)
       {
          return requestOrThrow(this, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
+      }
+
+      @Override
+      default String renderSimpleName(RenderingContext renderingContext)
+      {
+         return requestOrThrow(this, NAMEABLE_GET_NAME);
       }
 
       @Override

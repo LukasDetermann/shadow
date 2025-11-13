@@ -20,6 +20,12 @@ public abstract class InterfaceRenderableAdapter implements InterfaceRenderable
    }
 
    @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      throw notImplemented();
+   }
+
+   @Override
    public String renderType(RenderingContext renderingContext)
    {
       throw notImplemented();

@@ -12,4 +12,7 @@ public interface DeclaredRenderable
 
    @Contract(value = "_ -> new", pure = true)
    String renderQualifiedName(RenderingContext renderingContext);
+
+   @Contract(value = "_ -> new", pure = true)
+   String renderSimpleName(RenderingContext renderingContext);
 }

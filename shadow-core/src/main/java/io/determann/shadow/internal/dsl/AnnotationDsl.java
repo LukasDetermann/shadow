@@ -415,6 +415,12 @@ public class AnnotationDsl
    }
 
    @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return name;
+   }
+
+   @Override
    public String renderName(RenderingContext renderingContext)
    {
       String name = this.name;

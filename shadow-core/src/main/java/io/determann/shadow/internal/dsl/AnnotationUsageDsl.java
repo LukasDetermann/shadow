@@ -60,7 +60,7 @@ public class AnnotationUsageDsl
    {
       return setTypeRenderer(new AnnotationUsageDsl(this),
                              name,
-                             (renderingContext, string) -> name + " = ",
+                             (renderingContext, string) -> string + " = ",
                              (annotationUsageDsl, renderer) -> annotationUsageDsl.names.add(renderer));
    }
 

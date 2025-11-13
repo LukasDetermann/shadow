@@ -465,6 +465,12 @@ public class RecordDsl
    }
 
    @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return name;
+   }
+
+   @Override
    public String renderQualifiedName(RenderingContext context)
    {
       context.addSurrounding(this);

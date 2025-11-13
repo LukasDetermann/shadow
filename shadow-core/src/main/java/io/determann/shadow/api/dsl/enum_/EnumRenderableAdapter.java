@@ -20,6 +20,12 @@ public abstract class EnumRenderableAdapter implements EnumRenderable
       throw notImplemented();
    }
 
+   @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      throw notImplemented();
+   }
+
    @Contract(value = "_ -> new", pure = true)
    @Override
    public String renderType(RenderingContext renderingContext)
