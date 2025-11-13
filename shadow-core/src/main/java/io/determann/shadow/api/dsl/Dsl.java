@@ -3,6 +3,7 @@ package io.determann.shadow.api.dsl;
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import io.determann.shadow.api.dsl.annotation.AnnotationOuterStep;
+import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageNameStep;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.dsl.annotation_usage.AnnotationUsageTypeStep;
 import io.determann.shadow.api.dsl.annotation_value.AnnotationValueRenderable;
@@ -39,6 +40,7 @@ import io.determann.shadow.api.dsl.result.ResultAnnotateStep;
 import io.determann.shadow.api.dsl.uses.UsesRenderable;
 import io.determann.shadow.internal.dsl.*;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -454,14 +456,27 @@ public interface Dsl
 
    /// a [javax.annotation.processing.Generated] annotation
    @Contract(value = "_, _ -> new", pure = true)
-   static AnnotationUsageRenderable generated(String generatorName, String comment)
+   static AnnotationUsageRenderable generated(String generatorName)
    {
-      return annotationUsage().type("javax.annotation.processing.Generated")
-                              .noName()
-                              .value(annotationValue(generatorName))
-                              .name("date")
-                              .value(annotationValue(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
-                              .name("comments")
-                              .value(annotationValue(comment));
+      return generated(generatorName, null);
+   }
+
+   /// a [javax.annotation.processing.Generated] annotation
+   @Contract(value = "_, _ -> new", pure = true)
+   static AnnotationUsageRenderable generated(String generatorName, @Nullable String comment)
+   {
+      AnnotationUsageNameStep step = annotationUsage()
+            .type("javax.annotation.processing.Generated")
+            .name("value")
+            .value(annotationValue(generatorName))
+            .name("date")
+            .value(annotationValue(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+
+      if (comment == null)
+      {
+         return step;
+      }
+      return step.name("comments")
+                 .value(annotationValue(comment));
    }
 }
