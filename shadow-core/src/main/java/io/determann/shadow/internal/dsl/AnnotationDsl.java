@@ -19,6 +19,7 @@ import java.util.Set;
 import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
 import static io.determann.shadow.internal.dsl.DslSupport.*;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Stream.concat;
 
 public class AnnotationDsl
       implements
@@ -368,8 +369,8 @@ public class AnnotationDsl
       {
          sb.insert(0, "\n\n");
       }
-      sb.insert(0, imports.stream().map(renderable -> renderable.render(context)).collect(joining("\n")));
-      sb.insert(0, context.getImports().stream().map(renderable -> renderable.renderDeclaration(context)).collect(joining("\n")));
+      sb.insert(0, concat(imports.stream().map(renderable -> renderable.render(context)),
+                          context.getImports().stream().map(renderable -> renderable.renderDeclaration(context))).collect(joining("\n")));
 
       if (package_ != null)
       {
