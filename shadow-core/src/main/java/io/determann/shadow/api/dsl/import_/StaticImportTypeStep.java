@@ -14,7 +14,13 @@ public interface StaticImportTypeStep
    ImportRenderable declared(DeclaredRenderable declared);
 
    @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable method(String declared, String method);
+
+   @Contract(value = "_, _ -> new", pure = true)
    ImportRenderable method(DeclaredRenderable declared, MethodRenderable method);
+
+   @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable field(String declared, String field);
 
    @Contract(value = "_, _ -> new", pure = true)
    ImportRenderable field(DeclaredRenderable declared, FieldRenderable field);

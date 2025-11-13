@@ -103,6 +103,14 @@ public class ImportDsl
       }
 
       @Override
+      public ImportRenderable method(String declared, String method)
+      {
+         return setType(new StaticImportDsl(this),
+                        declared + '.' + method,
+                        (importDsl, methodImport) -> importDsl.import_ = renderingContext -> methodImport);
+      }
+
+      @Override
       public ImportRenderable method(DeclaredRenderable declared, MethodRenderable method)
       {
          record Pair(DeclaredRenderable declared,
@@ -113,6 +121,14 @@ public class ImportDsl
                         (importDsl, pair) ->
                               importDsl.import_ = renderingContext ->
                                     pair.declared().renderQualifiedName(renderingContext) + '.' + pair.method().renderName(renderingContext));
+      }
+
+      @Override
+      public ImportRenderable field(String declared, String field)
+      {
+         return setType(new StaticImportDsl(this),
+                        declared + '.' + field,
+                        (importDsl, methodImport) -> importDsl.import_ = renderingContext -> methodImport);
       }
 
       @Override
