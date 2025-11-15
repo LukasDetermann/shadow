@@ -395,7 +395,7 @@ public class RecordDsl
       context.addSurrounding(this);
       if (package_ != null)
       {
-         context.setCurrentPackageName(package_.renderQualifiedName(context));
+         renderPackageName(package_, context).ifPresent(context::setCurrentPackageName);
       }
 
       StringBuilder sb = new StringBuilder();
@@ -451,8 +451,9 @@ public class RecordDsl
 
       if (package_ != null)
       {
-         sb.insert(0, "\n\n")
-           .insert(0, package_.renderDeclaration(context));
+         renderPackageDeclaration(package_, context)
+               .ifPresent(s -> sb.insert(0, "\n\n")
+                                 .insert(0, s));
       }
 
       if (copyright != null)
@@ -478,8 +479,7 @@ public class RecordDsl
       StringBuilder sb = new StringBuilder();
       if (package_ != null)
       {
-         sb.append(package_.renderQualifiedName(context))
-           .append('.');
+         renderPackageName(package_, context).ifPresent(s -> sb.append(s).append('.'));
       }
       if (outerType != null)
       {
@@ -513,10 +513,8 @@ public class RecordDsl
       {
          name = outerType.render(renderingContext) + '.' + name;
       }
-      if (package_ == null)
-      {
-         return renderingContext.renderName(name);
-      }
-      return renderingContext.renderName(package_.renderQualifiedName(renderingContext), name);
+      String finalName = name;
+      return renderPackageName(package_, renderingContext).map(s -> renderingContext.renderName(s, finalName))
+                                                          .orElseGet(() -> renderingContext.renderName(finalName));
    }
 }

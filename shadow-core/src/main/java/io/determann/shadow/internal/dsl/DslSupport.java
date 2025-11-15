@@ -1,10 +1,13 @@
 package io.determann.shadow.internal.dsl;
 
 import io.determann.shadow.api.dsl.RenderingContext;
+import io.determann.shadow.api.dsl.package_.PackageRenderable;
 import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -248,5 +251,25 @@ interface DslSupport
                               }
                               return context.getLineIndentation() + s1;
                            }).collect(joining("\n"));
+   }
+
+   static Optional<String> renderPackageName(@Nullable PackageRenderable packageRenderable, RenderingContext context)
+   {
+      if (packageRenderable == null)
+      {
+         return Optional.empty();
+      }
+      String packageName = packageRenderable.renderQualifiedName(context);
+      if (packageName.isEmpty())
+      {
+         return Optional.empty();
+      }
+      return Optional.of(packageName);
+   }
+
+   static Optional<String> renderPackageDeclaration(PackageRenderable packageRenderable, RenderingContext context)
+   {
+      return renderPackageName(packageRenderable, context)
+            .map(s -> "package " + s + ';');
    }
 }

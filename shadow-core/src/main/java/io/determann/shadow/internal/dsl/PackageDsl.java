@@ -63,6 +63,11 @@ public class PackageDsl
    @Override
    public String renderPackageInfo(RenderingContext context)
    {
+      if (name == null || name.isEmpty())
+      {
+         throw new IllegalStateException("cant render a package-info for an unnamed package");
+      }
+
       context.addSurrounding(this);
       context.setCurrentPackageName(name);
 
