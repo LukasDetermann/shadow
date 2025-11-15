@@ -89,11 +89,6 @@
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
-                <artifactId>shadow-lang-model</artifactId>
-                <version>0.3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>io.determann</groupId>
                 <artifactId>shadow-annotation-processing</artifactId>
                 <version>0.3.0</version>
             </dependency>
