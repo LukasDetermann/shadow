@@ -198,14 +198,14 @@ class AnnotationUsageTest
    }
 
    @Test
-   void enumConstantValue()
+   void enumValue()
    {
       withSimpleUsage().withSource("AnnotationUsageAnnotation.java", """
             import java.lang.annotation.ElementType;
             
             @java.lang.annotation.Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
             public @interface AnnotationUsageAnnotation {
-               ElementType enumConstantValue() default ElementType.ANNOTATION_TYPE;
+               ElementType enumValue() default ElementType.ANNOTATION_TYPE;
             }
             """).test(implementation ->
                       {
@@ -214,7 +214,7 @@ class AnnotationUsageTest
 
                          C.Enum elementType = requestOrThrow(implementation, GET_ENUM, "java.lang.annotation.ElementType");
                          C.EnumConstant annotationType = requestOrThrow(elementType, ENUM_GET_ENUM_CONSTANT, "ANNOTATION_TYPE");
-                         assertEquals(annotationType, get(defaultValues, "enumConstantValue"));
+                         assertEquals(annotationType, get(defaultValues, "enumValue"));
                       });
    }
 
@@ -283,7 +283,7 @@ class AnnotationUsageTest
                float floatValue() default 5f;
                double doubleValue() default 6D;
                Class<String> typeValue() default String.class;
-               ElementType enumConstantValue() default ElementType.ANNOTATION_TYPE;
+               ElementType enumValue() default ElementType.ANNOTATION_TYPE;
                Retention annotationUsageValue() default @Retention(RetentionPolicy.CLASS);
                char[] asListOfValues() default {'b', 'c'};
             }

@@ -62,7 +62,7 @@ public abstract class AnnotationValueImpl
       }
       if (value instanceof Enum<?>)
       {
-         return new EnumConstantValueImpl(value, isDefault);
+         return new EnumValueImpl(value, isDefault);
       }
       if (value.getClass().isArray())
       {
@@ -245,11 +245,12 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements R.AnnotationValue.EnumConstantValue
+   private static class EnumValueImpl
+         extends AnnotationValueImpl implements R.AnnotationValue.EnumValue
    {
       private final Object annotationValue;
 
-      EnumConstantValueImpl(Object annotationValue, boolean defaultValue)
+      EnumValueImpl(Object annotationValue, boolean defaultValue)
       {
          super(defaultValue);
          this.annotationValue = annotationValue;

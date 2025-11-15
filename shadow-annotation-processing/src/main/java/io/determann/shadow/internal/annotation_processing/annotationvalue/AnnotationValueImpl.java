@@ -68,7 +68,7 @@ public abstract class AnnotationValueImpl
       }
       if (value instanceof Element)
       {
-         return new EnumConstantValueImpl(context, annotationValue, defaultValue);
+         return new EnumValueImpl(context, annotationValue, defaultValue);
       }
       if (value instanceof AnnotationMirror)
       {
@@ -251,11 +251,12 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class EnumConstantValueImpl extends AnnotationValueImpl implements Ap.AnnotationValue.EnumConstantValue
+   private static class EnumValueImpl
+         extends AnnotationValueImpl implements Ap.AnnotationValue.EnumValue
    {
       private final AnnotationValue annotationValue;
 
-      EnumConstantValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      EnumValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;

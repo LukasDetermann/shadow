@@ -820,7 +820,7 @@ public interface Ap
          Type getValue();
       }
 
-      non-sealed interface EnumConstantValue
+      non-sealed interface EnumValue
             extends AnnotationValue
       {
          @Override
