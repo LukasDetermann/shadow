@@ -240,6 +240,13 @@ interface DslSupport
       requireNonNull(context);
       requireNonNull(s);
 
-      return s.lines().map(s1 -> context.getLineIndentation() + s1).collect(joining("\n"));
+      return s.lines().map(s1 ->
+                           {
+                              if (s1.isBlank())
+                              {
+                                 return s1;
+                              }
+                              return context.getLineIndentation() + s1;
+                           }).collect(joining("\n"));
    }
 }
