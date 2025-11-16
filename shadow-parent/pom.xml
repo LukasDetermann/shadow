@@ -7,7 +7,7 @@
     <groupId>io.determann</groupId>
     <artifactId>shadow-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>dependency and plugin management</description>
@@ -80,27 +80,27 @@
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-core</artifactId>
-                <version>0.3.0</version>
+                <version>0.3.1</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-reflection</artifactId>
-                <version>0.3.0</version>
+                <version>0.3.1</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-annotation-processing</artifactId>
-                <version>0.3.0</version>
+                <version>0.3.1</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-implementation-support</artifactId>
-                <version>0.3.0</version>
+                <version>0.3.1</version>
             </dependency>
             <dependency>
                 <groupId>io.determann</groupId>
                 <artifactId>shadow-tck</artifactId>
-                <version>0.3.0</version>
+                <version>0.3.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

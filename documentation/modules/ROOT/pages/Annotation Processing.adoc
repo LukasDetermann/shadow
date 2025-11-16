@@ -37,7 +37,7 @@ One having the code to process and one containing the annotation processor.
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processor-example</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 </project>
 ----
 .processed module
@@ -50,7 +50,7 @@ One having the code to process and one containing the annotation processor.
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.determann</groupId>
     <artifactId>processed-example</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 </project>
 ----
 
@@ -62,7 +62,7 @@ One having the code to process and one containing the annotation processor.
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>shadow</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1</version>
         </dependency>
 ----
 
@@ -72,7 +72,7 @@ One having the code to process and one containing the annotation processor.
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>processor-example</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1</version>
         </dependency>
 ----
 
@@ -92,7 +92,7 @@ One having the code to process and one containing the annotation processor.
                         <path>
                             <groupId>io.determann</groupId>
                             <artifactId>processor-example</artifactId>
-                            <version>0.3.0</version>
+                            <version>0.3.1</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

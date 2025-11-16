@@ -7,7 +7,7 @@
         <groupId>io.determann</groupId>
         <artifactId>shadow-parent</artifactId>
         <relativePath>../shadow-parent/pom.xml</relativePath>
-        <version>0.3.0</version>
+        <version>0.3.1</version>
     </parent>
 
     <artifactId>shadow-reflection</artifactId>
