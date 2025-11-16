@@ -57,7 +57,7 @@ public class SupportSupport
                                                                       InstanceOperation0<? super TYPE, ?>... operations)
    {
       String simpleName = typeClass.getSimpleName();
-      int index = simpleName.indexOf('_');
+      int index = simpleName.indexOf('.');
       if (index != -1 && index + 1 < simpleName.length())
       {
          simpleName = simpleName.substring(index + 1);
