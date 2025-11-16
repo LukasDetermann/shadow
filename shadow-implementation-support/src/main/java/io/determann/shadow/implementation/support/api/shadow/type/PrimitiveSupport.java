@@ -19,6 +19,17 @@ public class PrimitiveSupport
 
    public static String toString(C.Primitive primitive)
    {
-      return SupportSupport.toString(primitive, C.Primitive.class);
+      return (switch (primitive)
+              {
+                 case C.boolean_ aBoolean -> "boolean";
+                 case C.byte_ aByte -> "byte";
+                 case C.char_ aChar -> "char";
+                 case C.double_ aDouble -> "double";
+                 case C.float_ aFloat -> "float";
+                 case C.int_ anInt -> "int";
+                 case C.long_ aLong -> "long";
+                 case C.short_ aShort -> "short";
+                 default -> throw new IllegalArgumentException();
+              });
    }
 }
