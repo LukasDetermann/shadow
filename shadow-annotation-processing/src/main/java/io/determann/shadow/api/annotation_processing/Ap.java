@@ -834,11 +834,11 @@ public interface Ap
          AnnotationUsage getValue();
       }
 
-      non-sealed interface Values
+      non-sealed interface Values<T extends AnnotationValue>
             extends AnnotationValue
       {
          @Override
-         List<AnnotationValue> getValue();
+         List<T> getValue();
       }
    }
 

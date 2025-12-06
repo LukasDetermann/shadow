@@ -211,7 +211,7 @@ public interface Adapters
          case EXECUTABLE, NONE, PACKAGE, MODULE -> throw new IllegalArgumentException(
                "for " +
                typeMirror.getKind() +
-               " use LM_Adapters.adapt(LM_Context, javax.lang.model.element.Element) as they don't extend " + Ap.Type.class.getSimpleName());
+               " use Ap.Adapters.adapt(LM_Context, javax.lang.model.element.Element) as they don't extend " + Ap.Type.class.getSimpleName());
          case ERROR -> throw new IllegalArgumentException();
          case OTHER, UNION ->
                throw new IllegalArgumentException(typeMirror.getKind() + " is not exposed through annotation processing and not supported");

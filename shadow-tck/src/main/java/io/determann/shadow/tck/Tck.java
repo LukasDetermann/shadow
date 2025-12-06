@@ -15,12 +15,9 @@ import static java.util.ServiceLoader.load;
 @IncludePackages("io.determann.shadow.tck")
 public interface Tck
 {
-   @SuppressWarnings("ConstantExpression")
    Tck TCK = load(Tck.class)
          .findFirst()
-         .orElseThrow(() -> new IllegalStateException("No " +
-                                                      Tck.class.getName() +
-                                                      " implementation found to test"));
+         .orElseThrow(() -> new IllegalStateException("No " + Tck.class.getName() + " implementation found to test"));
 
    void test(Collection<Source> sources, Consumer<Implementation> implementationConsumer);
 }
