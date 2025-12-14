@@ -263,7 +263,7 @@ public class MethodDsl
    {
       return setType(new MethodDsl(this),
                      resultType,
-                     (methodDsl, typeNameRenderable) -> methodDsl.result = typeNameRenderable::renderName);
+                     (methodDsl, typeNameRenderable) -> methodDsl.result = typeNameRenderable::renderType);
    }
 
    @Override

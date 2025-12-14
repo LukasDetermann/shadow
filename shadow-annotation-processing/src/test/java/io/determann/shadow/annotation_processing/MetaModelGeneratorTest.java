@@ -71,7 +71,7 @@ class MetaModelGeneratorTest
                                                    throw new IllegalArgumentException("This Meta-Model represents a usage of \\"" +
                                                                                       QUALIFIED_ANNOTATION_NAME + "\\" not \\"" + qualifiedName + "\\"");
                                                 }
-                                                this.myAnnotation = usage;  \s
+                                                this.myAnnotation = usage;
                                              }
                                           
                                              public Ap.AnnotationValue.StringValue string() {
@@ -110,7 +110,7 @@ class MetaModelGeneratorTest
                                              public Ap.AnnotationValue.AnnotationUsageValue annotation() {
                                                 return (Ap.AnnotationValue.AnnotationUsageValue) requestOrThrow(myAnnotation, ANNOTATION_USAGE_GET_VALUE, "annotation");
                                              }
-                                             public Ap.AnnotationValue.Values values() {
+                                             public Ap.AnnotationValue.Values<Ap.AnnotationValue.IntegerValue> values() {
                                                 return (Ap.AnnotationValue.Values) requestOrThrow(myAnnotation, ANNOTATION_USAGE_GET_VALUE, "values");
                                              }
                                              @Override

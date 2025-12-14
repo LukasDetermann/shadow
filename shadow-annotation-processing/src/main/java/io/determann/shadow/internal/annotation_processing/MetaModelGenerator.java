@@ -4,6 +4,7 @@ import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.dsl.interface_.InterfaceGenericStep;
 import io.determann.shadow.api.dsl.method.MethodRenderable;
 import org.jetbrains.annotations.NotNullByDefault;
 
@@ -131,23 +132,29 @@ public class MetaModelGenerator
 
    private static DeclaredRenderable createAccessorType(Ap.Type returnType)
    {
-      return Dsl.interface_().package_("io.determann.shadow.api.annotation_processing")
-                .name(switch (returnType)
-                      {
-                         case Ap.Class aClass when "java.lang.String".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.StringValue";
-                         case Ap.Class aClass when "java.lang.Class".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.TypeValue";
-                         case Ap.boolean_ aBoolean -> "Ap.AnnotationValue.BooleanValue";
-                         case Ap.byte_ aByte -> "Ap.AnnotationValue.ByteValue";
-                         case Ap.short_ aShort -> "Ap.AnnotationValue.ShortValue";
-                         case Ap.int_ anInt -> "Ap.AnnotationValue.IntegerValue";
-                         case Ap.long_ aLong -> "Ap.AnnotationValue.LongValue";
-                         case Ap.char_ aChar -> "Ap.AnnotationValue.CharacterValue";
-                         case Ap.float_ aFloat -> "Ap.AnnotationValue.FloatValue";
-                         case Ap.double_ aDouble -> "Ap.AnnotationValue.DoubleValue";
-                         case Ap.Enum anEnum -> "Ap.AnnotationValue.EnumValue";
-                         case Ap.Annotation annotation -> "Ap.AnnotationValue.AnnotationUsageValue";
-                         case Ap.Array array -> "Ap.AnnotationValue.Values";
-                         default -> throw new IllegalStateException();
-                      });
+      InterfaceGenericStep genericStep =
+            Dsl.interface_().package_("io.determann.shadow.api.annotation_processing")
+               .name(switch (returnType)
+                     {
+                        case Ap.Class aClass when "java.lang.String".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.StringValue";
+                        case Ap.Class aClass when "java.lang.Class".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.TypeValue";
+                        case Ap.boolean_ aBoolean -> "Ap.AnnotationValue.BooleanValue";
+                        case Ap.byte_ aByte -> "Ap.AnnotationValue.ByteValue";
+                        case Ap.short_ aShort -> "Ap.AnnotationValue.ShortValue";
+                        case Ap.int_ anInt -> "Ap.AnnotationValue.IntegerValue";
+                        case Ap.long_ aLong -> "Ap.AnnotationValue.LongValue";
+                        case Ap.char_ aChar -> "Ap.AnnotationValue.CharacterValue";
+                        case Ap.float_ aFloat -> "Ap.AnnotationValue.FloatValue";
+                        case Ap.double_ aDouble -> "Ap.AnnotationValue.DoubleValue";
+                        case Ap.Enum anEnum -> "Ap.AnnotationValue.EnumValue";
+                        case Ap.Annotation annotation -> "Ap.AnnotationValue.AnnotationUsageValue";
+                        case Ap.Array array -> "Ap.AnnotationValue.Values";
+                        default -> throw new IllegalStateException();
+                     });
+      if (!(returnType instanceof Ap.Array array))
+      {
+         return genericStep;
+      }
+      return genericStep.genericUsage(createAccessorType(array.getComponentType()));
    }
 }

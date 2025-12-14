@@ -79,7 +79,7 @@ class MethodDslTest
    @Test
    void type()
    {
-      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderName", "MyEnum");
+      C.Enum cEnum = TestFactory.create(C.Enum.class, "renderType", "MyEnum");
 
       assertEquals("MyEnum foo() {}", Dsl.method().resultType(cEnum).name("foo").renderDeclaration(createRenderingContext()));
    }
