@@ -75,6 +75,7 @@ public class MetaModelGenerator
                                    .initializer("\"" + annotation.getQualifiedName() + "\""))
                      .field(field().private_().final_().type("io.determann.shadow.api.C.AnnotationUsage").name(fieldName))
                      .constructor(Dsl.constructor()
+                                     .public_()
                                      .surroundingType()
                                      .parameter(Dsl.parameter("io.determann.shadow.api.C.AnnotationUsage", "usage"))
                                      .body("""

@@ -61,7 +61,7 @@ class MetaModelGeneratorTest
                                           public class MyAnnotationMetaModel implements Ap.AnnotationUsage {
                                              private static final String QUALIFIED_ANNOTATION_NAME = "MyAnnotation";
                                              private final C.AnnotationUsage myAnnotation;
-                                             MyAnnotationMetaModel(C.AnnotationUsage usage) {
+                                             public MyAnnotationMetaModel(C.AnnotationUsage usage) {
                                                 Objects.requireNonNull(usage);
                                                 C.Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
                                                 String qualifiedName = requestOrThrow(annotation, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
