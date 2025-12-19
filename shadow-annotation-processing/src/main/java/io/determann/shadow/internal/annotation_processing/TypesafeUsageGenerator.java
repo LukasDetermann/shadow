@@ -20,24 +20,27 @@ import static java.lang.Character.toLowerCase;
 import static java.util.stream.Stream.concat;
 
 @NotNullByDefault
-public class MetaModelGenerator
+public class TypesafeUsageGenerator
       extends Ap.Processor
 {
+   private static final String GENERATE_TYPESAFE_USAGE_NAME = "io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsage";
+   private static final String GENERATE_TYPESAFE_USAGE_FOR_NAME = "io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsageFor";
+
    @Override
    public void process(Ap.Context context)
    {
       for (Ap.Annotation annotated : getAnnotated(context))
       {
-         context.writeAndCompileSourceFile(createMetaModel(annotated));
+         context.writeAndCompileSourceFile(createTypeSafeUsage(annotated));
       }
    }
 
    private static Set<Ap.Annotation> getAnnotated(Ap.Context context)
    {
-      Ap.Annotation genMetaModel = context.getAnnotationOrThrow("io.determann.shadow.api.annotation_processing.model_gen.GenerateMetaModel");
+      Ap.Annotation genMetaModel = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_NAME);
       Ap.Annotation
             genMetaModelFor
-            = context.getAnnotationOrThrow("io.determann.shadow.api.annotation_processing.model_gen.GenerateMetaModelFor");
+            = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_FOR_NAME);
 
       //noinspection unchecked
       return concat(context.getAnnotationsAnnotatedWith(genMetaModel).stream(),
@@ -54,7 +57,7 @@ public class MetaModelGenerator
             .collect(Collectors.toSet());
    }
 
-   public static ClassRenderable createMetaModel(Ap.Annotation annotation)
+   public static ClassRenderable createTypeSafeUsage(Ap.Annotation annotation)
    {
       String fieldName = getFieldName(annotation);
 
@@ -64,8 +67,8 @@ public class MetaModelGenerator
                      .import_(Dsl.import_("io.determann.shadow.api.query.Implementation"))
                      .import_(Dsl.import_().static_().method("io.determann.shadow.api.query.Provider", "requestOrThrow"))
                      .import_(Dsl.import_().static_().declared("io.determann.shadow.api.query.Operations"))
-                     .annotate(Dsl.generated(MetaModelGenerator.class.getName()))
-                     .public_().name(annotation.getName() + "MetaModel")
+                     .annotate(Dsl.generated(TypesafeUsageGenerator.class.getName()))
+                     .public_().name(annotation.getName() + "TypesafeUsage")
                      .implements_("io.determann.shadow.api.annotation_processing.Ap.AnnotationUsage")
                      .field(field().private_()
                                    .static_()

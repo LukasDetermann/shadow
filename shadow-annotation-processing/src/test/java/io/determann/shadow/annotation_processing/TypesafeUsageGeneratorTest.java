@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
-import static io.determann.shadow.internal.annotation_processing.MetaModelGenerator.createMetaModel;
+import static io.determann.shadow.internal.annotation_processing.TypesafeUsageGenerator.createTypeSafeUsage;
 
-class MetaModelGeneratorTest
+class TypesafeUsageGeneratorTest
 {
    @Test
    void allParams()
@@ -17,7 +17,7 @@ class MetaModelGeneratorTest
                             {
                                Ap.Annotation myAnnotation = context.getAnnotationOrThrow("MyAnnotation");
 
-                               String declaration = createMetaModel(myAnnotation).renderDeclaration(createRenderingContext());
+                               String declaration = createTypeSafeUsage(myAnnotation).renderDeclaration(createRenderingContext());
                                String withTimeVariance = declaration.replaceFirst(
                                      "date = \"\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+\"\\)",
                                      "date = \"1970-01-01T00:00:00.0000000\")");
@@ -57,11 +57,11 @@ class MetaModelGeneratorTest
                                           import javax.annotation.processing.Generated;
                                           import io.determann.shadow.api.C;
                                           
-                                          @Generated(value = "io.determann.shadow.internal.annotation_processing.MetaModelGenerator", date = "1970-01-01T00:00:00.0000000")
-                                          public class MyAnnotationMetaModel implements Ap.AnnotationUsage {
+                                          @Generated(value = "io.determann.shadow.internal.annotation_processing.TypesafeUsageGenerator", date = "1970-01-01T00:00:00.0000000")
+                                          public class MyAnnotationTypesafeUsage implements Ap.AnnotationUsage {
                                              private static final String QUALIFIED_ANNOTATION_NAME = "MyAnnotation";
                                              private final C.AnnotationUsage myAnnotation;
-                                             public MyAnnotationMetaModel(C.AnnotationUsage usage) {
+                                             public MyAnnotationTypesafeUsage(C.AnnotationUsage usage) {
                                                 Objects.requireNonNull(usage);
                                                 C.Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
                                                 String qualifiedName = requestOrThrow(annotation, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);

@@ -1,5 +1,5 @@
 import io.determann.shadow.internal.annotation_processing.ApProvider;
-import io.determann.shadow.internal.annotation_processing.MetaModelGenerator;
+import io.determann.shadow.internal.annotation_processing.TypesafeUsageGenerator;
 
 module io.determann.shadow.annotation.processing {
 
@@ -14,5 +14,5 @@ module io.determann.shadow.annotation.processing {
    exports io.determann.shadow.internal.annotation_processing to io.determann.shadow.annotation.processing.test;
 
    provides io.determann.shadow.api.query.ProviderSpi with ApProvider;
-   provides javax.annotation.processing.Processor with MetaModelGenerator;
+   provides javax.annotation.processing.Processor with TypesafeUsageGenerator;
 }
