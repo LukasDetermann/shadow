@@ -1509,6 +1509,15 @@ public interface Ap
        * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
        */
       Optional<Receiver> getReceiver();
+
+      /**
+       * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
+       * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
+       */
+      default Receiver getReceiverOrThrow()
+      {
+         return getReceiver().orElseThrow();
+      }
    }
 
    non-sealed interface Field

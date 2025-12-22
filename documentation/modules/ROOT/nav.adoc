@@ -2,5 +2,4 @@
 ** xref:AptLoading.adoc[Loading]
 * xref:Reflection.adoc[]
 * Articles
-** xref:ConsistencyTest.adoc[Consistency Testing]
 ** xref:Meta Model.adoc[]

@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest
 {
@@ -37,11 +38,11 @@ class InterfaceTest
                                                    .getGenericUsages());
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
-                         public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
-                            interface IndependentGeneric<C> {}
-                            interface DependentGeneric<D extends E, E> {}
-                         }
-                         """)
+                                                                         public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
+                                                                            interface IndependentGeneric<C> {}
+                                                                            interface DependentGeneric<D extends E, E> {}
+                                                                         }
+                                                                         """)
                    .compile();
    }
 
@@ -83,11 +84,135 @@ class InterfaceTest
                                assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                             })
                    .withCodeToCompile("InterpolateGenericsExample.java", """
-                         public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
-                            interface IndependentGeneric<C> {}
-                            interface DependentGeneric<D extends E, E> {}
-                         }
-                         """)
+                                                                         public interface InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {
+                                                                            interface IndependentGeneric<C> {}
+                                                                            interface DependentGeneric<D extends E, E> {}
+                                                                         }
+                                                                         """)
+                   .compile();
+   }
+
+   @Test
+   void getDirectInterfaces()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Ap.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
+                               Ap.Interface unaryOperator = context.getInterfaceOrThrow("java.util.function.UnaryOperator");
+
+                               assertEquals(0, function.getDirectInterfaces().size());
+
+                               assertEquals(List.of(function), unaryOperator.getDirectInterfaces());
+                            })
+                   .compile();
+   }
+
+   @Test
+   void isFunctional()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Predicate<String> isFunctional = name ->
+                               {
+                                  Ap.Interface cInterface = context.getInterfaceOrThrow(name);
+                                  return cInterface.isFunctional();
+                               };
+
+                               assertTrue(isFunctional.test("java.util.function.Function"));
+                               assertTrue(isFunctional.test("java.lang.Comparable"));
+                               assertFalse(isFunctional.test("java.util.List"));
+                            })
+                   .compile();
+   }
+
+   @Test
+   void isSubtypeOf()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Ap.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
+                               Ap.Class object = context.getClassOrThrow("java.lang.Object");
+                               Ap.Class number = context.getClassOrThrow("java.lang.Number");
+
+                               assertTrue(function.isSubtypeOf(object));
+                               assertTrue(function.isSubtypeOf(function));
+                               assertFalse(function.isSubtypeOf(number));
+                            })
+                   .compile();
+   }
+
+   @Test
+   void getDirectSuperTypes()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Ap.Class object = context.getClassOrThrow("java.lang.Object");
+                               Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                               Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+
+                               Ap.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
+                               assertEquals(List.of(object), noParent.getDirectSuperTypes());
+
+                               Ap.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
+                               assertEquals(List.of(object, comparable, consumer), parent.getDirectSuperTypes());
+                            })
+                   .withCodeToCompile("DirektSuperTypeExample.java", """
+                                                                     import java.util.function.Consumer;
+                                                                     import java.util.function.Supplier;
+                                                                     
+                                                                     public class DirektSuperTypeExample {
+                                                                        interface InterfaceNoParent {}
+                                                                     
+                                                                        interface InterfaceParent extends Comparable<InterfaceParent>,
+                                                                                                          Consumer<InterfaceParent> {}
+                                                                     }
+                                                                     """)
+                   .compile();
+   }
+
+   @Test
+   void getSuperTypes()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Ap.Class object = context.getClassOrThrow("java.lang.Object");
+                               Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                               Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+
+                               Ap.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
+                               assertEquals(Set.of(object), noParent.getSuperTypes());
+
+                               Ap.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
+                               assertEquals(Set.of(object, comparable, consumer), parent.getSuperTypes());
+                            })
+                   .withCodeToCompile("DirektSuperTypeExample.java", """
+                                                                     import java.util.function.Consumer;
+                                                                     import java.util.function.Supplier;
+                                                                     
+                                                                     public class DirektSuperTypeExample {
+                                                                        interface InterfaceNoParent {}
+                                                                     
+                                                                        interface InterfaceParent extends Comparable<InterfaceParent>,
+                                                                                                          Consumer<InterfaceParent> {}
+                                                                     }
+                                                                     """)
+                   .compile();
+   }
+
+   @Test
+   void getSurounding()
+   {
+      ProcessorTest.process(context ->
+                            {
+                               Ap.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
+                               Ap.Declared outer = inner.getSurrounding().orElseThrow();
+                               assertEquals(context.getDeclaredOrThrow("Outer"), outer);
+                            })
+                   .withCodeToCompile("Outer.java", """
+                                                    public interface Outer {
+                                                          interface Inner {}
+                                                      }
+                                                    """)
                    .compile();
    }
 }

@@ -11,7 +11,6 @@ module documentation {
    requires org.apache.commons.lang3;
 
    requires java.compiler;
-   requires io.determann.shadow.tck;
 
    opens io.determann.shadow to org.junit.platform.commons;
    opens io.determann.shadow.article.apt_loading to org.junit.platform.commons;

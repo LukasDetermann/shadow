@@ -9,15 +9,8 @@
 - implementation of the shadow-core Data-Structure
 - Adapter for shadow-Data-Structure ⇄ javax.annotation.processing
 
-=== shadow-reflection
-- implementation of the shadow-core Data-Structure
-- Adapter for shadow-Data-Structure ⇄ java.lang.reflect
-
 === shadow-implementation-support
 - contains functionality that can be used by any implementation
-
-=== shadow-tck
-- tests the different implementations
 
 === documentation
 - doc

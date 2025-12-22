@@ -14,6 +14,5 @@
         <module>shadow-parent</module>
         <module>documentation</module>
         <module>shadow-implementation-support</module>
-        <module>shadow-tck</module>
     </modules>
 </project>

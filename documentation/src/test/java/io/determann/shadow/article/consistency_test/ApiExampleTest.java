@@ -5,15 +5,13 @@ import io.determann.shadow.api.query.Operations;
 import io.determann.shadow.api.query.Provider;
 import io.determann.shadow.api.query.Response;
 import io.determann.shadow.api.reflection.Adapter;
-import io.determann.shadow.tck.internal.TckTest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ApiExampleTest
 {
@@ -76,28 +74,4 @@ void requestOrThrow()
    assertNotNull(out);
 }
 //end::requestOrThrow[]
-
-@Disabled("Don't run Tck tests for the doc")
-//tag::consistency[]
-@Test
-void classDeclarationRendering()
-{
-   String expected =
-   "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}\n";
-
-   String name = "InterpolateGenericsExample.java";
-   String content =
-   "public class InterpolateGenericsExample<A extends Comparable<B>, B extends Comparable<A>> {}";
-   TckTest.withSource(name, content)
-          .test(implementation ->
-               {
-                  C.Class cClass = Provider.requestOrThrow(implementation,
-                                                           Operations. GET_CLASS,
-                                                           "InterpolateGenericsExample");
-
-                  assertEquals(expected, cClass.renderDeclaration(createRenderingContext()));
-               });
-}
-//end::consistency[]
-//@formatter:on
 }
