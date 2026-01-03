@@ -1,24 +1,23 @@
-package io.determann.shadow.implementation.support.internal.property;
+package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.Modifier;
+import io.determann.shadow.api.annotation_processing.Ap;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
-import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.GETTER;
-import static io.determann.shadow.implementation.support.internal.property.PropertyFactory.AccessorType.SETTER;
+import static io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyFactory.AccessorType.GETTER;
+import static io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyFactory.AccessorType.SETTER;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.util.stream.Collectors.*;
 
 public class PropertyFactory
 {
-   private record Accessor(C.Method method,
+   private record Accessor(Ap.Method method,
                            AccessorType type,
                            String prefix,
                            String name,
@@ -36,19 +35,17 @@ public class PropertyFactory
 
    private PropertyFactory() {}
 
-   public static List<C.Property> of(C.Declared declared)
+   public static List<Ap.Property> of(Ap.Context api, Ap.Declared declared)
    {
-      Map<String, C.Field> nameField =
-            requestOrThrow(declared, DECLARED_GET_FIELDS).stream()
-                                                         .filter(field -> !requestOrThrow(field, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
-                                                         .collect(toMap(field -> requestOrThrow(field, NAMEABLE_GET_NAME),
-                                                                        Function.identity()));
+      Map<String, Ap.Field> nameField = declared.getFields().stream()
+                                                .filter(field -> !field.hasModifier(Modifier.STATIC))
+                                                .collect(toMap(Ap.Nameable::getName, Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
       Map<String, Map<AccessorType, List<Accessor>>> nameTypeAccessors =
             getMethods(declared).stream()
-                                .filter(method -> !requestOrThrow(method, MODIFIABLE_HAS_MODIFIER, Modifier.STATIC))
+                                .filter(method -> !method.hasModifier(Modifier.STATIC))
                                 .map(method1 -> toAccessor(method1, position.getAndIncrement()))
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
@@ -61,59 +58,59 @@ public class PropertyFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      C.VariableType type = ((C.VariableType) requestOrThrow(getter.method(), METHOD_GET_RETURN_TYPE));
+                                      Ap.VariableType type = ((Ap.VariableType) getter.method().getReturnType());
 
-                                      C.Method setter = findSetter(entry.getValue(), type).orElse(null);
-                                      C.Field field = findField(nameField, type, name).orElse(null);
+                                      Ap.Method setter = findSetter(entry.getValue(), type).orElse(null);
+                                      Ap.Field field = findField(nameField, type, name).orElse(null);
 
-                                      PropertyImpl template = new PropertyImpl(name, type, field, getter.method(), setter);
+                                      PropertyImpl template = new PropertyImpl(api, name, type, field, getter.method(), setter);
 
                                       return new AbstractMap.SimpleEntry<>(getter.position(), template);
                                    })
                               .sorted((Map.Entry.comparingByKey()))
                               .map(Map.Entry::getValue)
-                              .map(C.Property.class::cast)
+                              .map(Ap.Property.class::cast)
                               .toList();
    }
 
-   private static List<? extends C.Method> getMethods(C.Declared declared)
+   private static List<? extends Ap.Method> getMethods(Ap.Declared declared)
    {
-      if (!(declared instanceof C.Class aClass))
+      if (!(declared instanceof Ap.Class aClass))
       {
-         return requestOrThrow(declared, DECLARED_GET_METHODS);
+         return declared.getMethods();
       }
-      List<C.Class> superClasses = Stream.iterate((aClass),
-                                                  Objects::nonNull,
-                                                  aClass1 -> requestOrThrow(aClass1, CLASS_GET_SUPER_CLASS)).collect(toList());
+      List<Ap.Class> superClasses = Stream.iterate((aClass),
+                                                   Objects::nonNull,
+                                                   Ap.Class::getSuperClass).collect(toList());
 
       Collections.reverse(superClasses);
 
-      List<? extends C.Method> methods = superClasses.stream()
-                                                     .flatMap(aClass1 -> requestOrThrow(aClass1, DECLARED_GET_METHODS).stream())
-                                                     .toList();
+      List<? extends Ap.Method> methods = superClasses.stream()
+                                                      .map(Ap.Declared::getMethods)
+                                                      .flatMap(Collection::stream)
+                                                      .toList();
 
       return methods.stream()
-                    .filter(method -> methods.stream().noneMatch(method1 -> requestOrThrow(method, METHOD_OVERWRITTEN_BY, method1)))
+                    .filter(method -> methods.stream().noneMatch(method::overwrittenBy))
                     .toList();
    }
 
-   private static Optional<C.Field> findField(Map<String, C.Field> nameField, C.Type type, String name)
+   private static Optional<Ap.Field> findField(Map<String, Ap.Field> nameField, Ap.Type type, String name)
    {
-      C.Field field = nameField.get(name);
-      if (field == null || !requestOrThrow(requestOrThrow(field, VARIABLE_GET_TYPE), TYPE_REPRESENTS_SAME_TYPE, type))
+      Ap.Field field = nameField.get(name);
+      if (field == null || !field.getType().representsSameType(type))
       {
          return Optional.empty();
       }
       return Optional.of(field);
    }
 
-   private static Optional<C.Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, C.Type type)
+   private static Optional<Ap.Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Ap.Type type)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !requestOrThrow(requestOrThrow(requestOrThrow(setters.get(0).method(), EXECUTABLE_GET_PARAMETERS).get(0), VARIABLE_GET_TYPE),
-                          TYPE_REPRESENTS_SAME_TYPE, type))
+          !setters.get(0).method().getParameters().get(0).getType().representsSameType(type))
       {
          return Optional.empty();
       }
@@ -146,19 +143,19 @@ public class PropertyFactory
       throw new IllegalStateException();
    }
 
-   private static Optional<Accessor> toAccessor(C.Method method, int position)
+   private static Optional<Accessor> toAccessor(Ap.Method method, int position)
    {
-      String name = requestOrThrow(method, NAMEABLE_GET_NAME);
-      List<? extends C.Parameter> parameters = requestOrThrow(method, EXECUTABLE_GET_PARAMETERS);
-      C.Type returnType = requestOrThrow(method, METHOD_GET_RETURN_TYPE);
+      String name = method.getName();
+      List<? extends Ap.Parameter> parameters = method.getParameters();
+      C.Type returnType = method.getReturnType();
 
       //getter
-      if (!(returnType instanceof C.Void))
+      if (!(returnType instanceof Ap.Void))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = (returnType instanceof C.boolean_ ||
-                                returnType instanceof C.Declared declared &&
-                                "java.lang.Boolean".equals(requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME))) &&
+         boolean hasIsPrefix = (returnType instanceof Ap.boolean_ ||
+                                returnType instanceof Ap.Declared declared &&
+                                "java.lang.Boolean".equals(declared.getQualifiedName())) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
 
@@ -185,9 +182,9 @@ public class PropertyFactory
       return Optional.empty();
    }
 
-   private static String toPropertyName(C.Method method, String prefix)
+   private static String toPropertyName(Ap.Method method, String prefix)
    {
-      String name = requestOrThrow(method, NAMEABLE_GET_NAME).substring(prefix.length());
+      String name = method.getName().substring(prefix.length());
 
       //java beans 8.8
       if (name.length() > 1 && isUpperCase(name.charAt(0)) && isUpperCase(name.charAt(1)))

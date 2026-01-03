@@ -2,11 +2,11 @@ package io.determann.shadow.internal.annotation_processing.shadow.type.primitive
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.implementation.support.api.shadow.type.PrimitiveSupport;
 import io.determann.shadow.internal.annotation_processing.shadow.type.TypeImpl;
 
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
+import java.util.Objects;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 
@@ -16,7 +16,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_booleanImpl extends PrimitiveImpl implements Ap.boolean_
    {
-
       public LM_booleanImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "boolean");
@@ -25,7 +24,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_byteImpl extends PrimitiveImpl implements Ap.byte_
    {
-
       public LM_byteImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "byte");
@@ -34,7 +32,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_charImpl extends PrimitiveImpl implements Ap.char_
    {
-
       public LM_charImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "char");
@@ -43,7 +40,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_doubleImpl extends PrimitiveImpl implements Ap.double_
    {
-
       public LM_doubleImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "double");
@@ -52,7 +48,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_floatImpl extends PrimitiveImpl implements Ap.float_
    {
-
       public LM_floatImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "float");
@@ -61,7 +56,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_intImpl extends PrimitiveImpl implements Ap.int_
    {
-
       public LM_intImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "int");
@@ -70,7 +64,6 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_longImpl extends PrimitiveImpl implements Ap.long_
    {
-
       public LM_longImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "long");
@@ -79,14 +72,13 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_shortImpl extends PrimitiveImpl implements Ap.short_
    {
-
       public LM_shortImpl(Ap.Context context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "short");
       }
    }
 
-   protected PrimitiveImpl(Ap.Context context, PrimitiveType primitiveTypeMirror, String name)
+   private PrimitiveImpl(Ap.Context context, PrimitiveType primitiveTypeMirror, String name)
    {
       super(context, primitiveTypeMirror);
       this.name = name;
@@ -118,20 +110,21 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
    }
 
    @Override
-   public int hashCode()
+   public boolean equals(Object other)
    {
-      return PrimitiveSupport.hashCode((C.Primitive) this);
+      return other instanceof Ap.Primitive primitive &&
+             Objects.equals(getName(), primitive.getName());
    }
 
    @Override
-   public boolean equals(Object other)
+   public int hashCode()
    {
-      return PrimitiveSupport.equals((C.Primitive) this, other);
+      return Objects.hash(getName());
    }
 
    @Override
    public String toString()
    {
-      return PrimitiveSupport.toString((C.Primitive) this);
+      return name;
    }
 }

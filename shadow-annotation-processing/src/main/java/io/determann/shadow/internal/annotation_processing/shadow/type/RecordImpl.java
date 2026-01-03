@@ -3,7 +3,6 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
-import io.determann.shadow.implementation.support.api.shadow.type.RecordSupport;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -95,18 +94,12 @@ public class RecordImpl extends DeclaredImpl implements Ap.Record
    @Override
    public boolean equals(Object other)
    {
-      return RecordSupport.equals(this, other);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      return RecordSupport.hashCode(this);
+      return equals(Ap.Record.class, other);
    }
 
    @Override
    public String toString()
    {
-      return RecordSupport.toString(this);
+      return toString("Record");
    }
 }

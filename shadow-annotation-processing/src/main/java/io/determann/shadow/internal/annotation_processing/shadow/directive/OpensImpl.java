@@ -3,10 +3,10 @@ package io.determann.shadow.internal.annotation_processing.shadow.directive;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.implementation.support.api.shadow.directive.OpensSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
+import java.util.Objects;
 
 public class OpensImpl extends DirectiveImpl implements Ap.Opens
 {
@@ -51,20 +51,25 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
    }
 
    @Override
-   public boolean equals(Object other)
+   public final boolean equals(Object o)
    {
-      return OpensSupport.equals(this, other);
+      return o instanceof Ap.Opens opens &&
+             Objects.equals(getPackage(), opens.getPackage()) &&
+             Objects.equals(getTargetModules(), opens.getTargetModules());
    }
 
    @Override
    public int hashCode()
    {
-      return OpensSupport.hashCode(this);
+      return Objects.hash(getPackage(), getTargetModules());
    }
 
    @Override
    public String toString()
    {
-      return OpensSupport.toString(this);
+      return "Opens{" +
+             "package=" + getPackage() +
+             ", targetModules=" + getTargetModules() +
+             '}';
    }
 }

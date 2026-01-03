@@ -1,9 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.implementation.support.api.shadow.type.EnumSupport;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -36,26 +34,14 @@ public class EnumImpl extends DeclaredImpl implements Ap.Enum
    }
 
    @Override
-   public boolean representsSameType(C.Type type)
-   {
-      return EnumSupport.representsSameType(this, type);
-   }
-
-   @Override
    public boolean equals(Object other)
    {
-      return EnumSupport.equals(this, other);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      return EnumSupport.hashCode(this);
+      return equals(Ap.Enum.class, other);
    }
 
    @Override
    public String toString()
    {
-      return EnumSupport.toString(this);
+      return toString("Enum");
    }
 }

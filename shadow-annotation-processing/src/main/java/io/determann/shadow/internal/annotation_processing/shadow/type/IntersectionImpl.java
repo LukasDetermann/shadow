@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.implementation.support.api.shadow.type.GenericSupport;
 
 import javax.lang.model.type.IntersectionType;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
@@ -81,20 +81,25 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements Ap.G
    }
 
    @Override
-   public boolean equals(Object obj)
+   public boolean equals(Object other)
    {
-      return GenericSupport.equals(this, obj);
+      return other instanceof Ap.Generic generic &&
+             Objects.equals(getName(), generic.getName()) &&
+             Objects.equals(getBounds(), generic.getBounds());
    }
 
    @Override
    public int hashCode()
    {
-      return GenericSupport.hashCode(this);
+      return Objects.hash(getName(), getBounds());
    }
 
    @Override
    public String toString()
    {
-      return GenericSupport.toString(this);
+      return "Generic{" +
+             "name='" + getName()  + '\'' +
+             ", bounds=" + getBounds() +
+             '}';
    }
 }

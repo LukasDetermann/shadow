@@ -1,45 +1,55 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.query.Implementation;
 
+import java.util.Objects;
 import java.util.Optional;
 
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrEmpty;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static java.util.Optional.ofNullable;
 
-/**
- * implementation note: the casts to LangModel types are safe
- */
-public class PropertyImpl implements Ap.Property
+public class PropertyImpl
+      implements Ap.Property
 {
-   private final C.Property delegate;
    private final Ap.Context context;
 
-   public PropertyImpl(Ap.Context api, C.Property delegate)
+   private final String name;
+   private final Ap.VariableType type;
+   private final Ap.Field field;
+   private final Ap.Method getter;
+   private final Ap.Method setter;
+
+   PropertyImpl(Ap.Context api,
+                String name,
+                Ap.VariableType type,
+                Ap.Field field,
+                Ap.Method getter,
+                Ap.Method setter)
    {
-      this.delegate = delegate;
+      this.name = name;
+      this.type = type;
+      this.field = field;
+      this.getter = getter;
+      this.setter = setter;
       this.context = api;
    }
 
    @Override
    public String getName()
    {
-      return requestOrThrow(delegate, NAMEABLE_GET_NAME);
+      return name;
    }
 
    @Override
    public Ap.VariableType getType()
    {
-      return (Ap.VariableType) requestOrThrow(delegate, PROPERTY_GET_TYPE);
+      return type;
    }
 
    @Override
    public Optional<Ap.Field> getField()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_FIELD).map(Ap.Field.class::cast);
+      return ofNullable(field);
    }
 
    @Override
@@ -51,13 +61,13 @@ public class PropertyImpl implements Ap.Property
    @Override
    public Ap.Method getGetter()
    {
-      return (Ap.Method) requestOrThrow(delegate, PROPERTY_GET_GETTER);
+      return getter;
    }
 
    @Override
    public Optional<Ap.Method> getSetter()
    {
-      return requestOrEmpty(delegate, PROPERTY_GET_SETTER).map(Ap.Method.class::cast);
+      return ofNullable(setter);
    }
 
    @Override
@@ -69,12 +79,35 @@ public class PropertyImpl implements Ap.Property
    @Override
    public boolean isMutable()
    {
-      return requestOrThrow(delegate, PROPERTY_IS_MUTABLE);
+      return getSetter().isPresent();
    }
 
    @Override
    public Implementation getImplementation()
    {
       return context.getImplementation();
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      return other instanceof Ap.Property property &&
+             Objects.equals(getName(), property.getName()) &&
+             Objects.equals(getType(), property.getType());
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getName(), getType());
+   }
+
+   @Override
+   public String toString()
+   {
+      return "Property{" +
+             "name='" + getName() + '\'' +
+             ", type=" + getType() +
+             '}';
    }
 }

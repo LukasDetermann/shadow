@@ -4,9 +4,9 @@ import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.implementation.support.api.shadow.directive.RequiresSupport;
 
 import javax.lang.model.element.ModuleElement;
+import java.util.Objects;
 
 public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {
@@ -50,18 +50,27 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
    @Override
    public boolean equals(Object other)
    {
-      return RequiresSupport.equals(this, other);
+      return other instanceof Ap.Requires requires &&
+             Objects.equals(isStatic(), requires.isStatic()) &&
+             Objects.equals(isTransitive(), requires.isTransitive()) &&
+             Objects.equals(getDependency(), requires.getDependency());
+
    }
 
    @Override
    public int hashCode()
    {
-      return RequiresSupport.hashCode(this);
+      return Objects.hash(isStatic(), isTransitive(), getDependency());
    }
 
    @Override
    public String toString()
    {
-      return RequiresSupport.toString(this);
+      return "Requires{" +
+             "static=" + isStatic() +
+             ", transitive=" + isTransitive() +
+             ", dependency=" + getDependency() +
+             '}';
+
    }
 }

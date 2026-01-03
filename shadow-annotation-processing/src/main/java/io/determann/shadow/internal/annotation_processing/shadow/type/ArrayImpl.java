@@ -2,10 +2,10 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.implementation.support.api.shadow.type.ArraySupport;
 
 import javax.lang.model.type.ArrayType;
 import java.util.List;
+import java.util.Objects;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 
@@ -60,7 +60,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    @Override
    public boolean representsSameType(C.Type type)
    {
-      return ArraySupport.representsSameType(this, type);
+      return equals(type);
    }
 
    @Override
@@ -70,20 +70,23 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public int hashCode()
+   public boolean equals(Object other)
    {
-      return ArraySupport.hashCode(this);
+      return other instanceof Ap.Array array &&
+             Objects.equals(getComponentType(), array.getComponentType());
    }
 
    @Override
-   public boolean equals(Object other)
+   public int hashCode()
    {
-      return ArraySupport.equals(this, other);
+      return Objects.hash(getComponentType());
    }
 
    @Override
    public String toString()
    {
-      return ArraySupport.toString(this);
+      return "Array{" +
+             "componentType=" + getComponentType() +
+             '}';
    }
 }

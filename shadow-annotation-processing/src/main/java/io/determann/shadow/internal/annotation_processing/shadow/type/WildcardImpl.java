@@ -3,10 +3,10 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.implementation.support.api.shadow.type.WildcardSupport;
 
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
+import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
@@ -53,20 +53,25 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public int hashCode()
+   public boolean equals(Object other)
    {
-      return WildcardSupport.hashCode(this);
+      return other instanceof Ap.Wildcard wildcard &&
+             Objects.equals(getExtends(), wildcard.getExtends()) &&
+             Objects.equals(getSuper(), wildcard.getSuper());
    }
 
    @Override
-   public boolean equals(Object other)
+   public int hashCode()
    {
-      return WildcardSupport.equals(this, other);
+      return Objects.hash(getExtends(), getSuper());
    }
 
    @Override
    public String toString()
    {
-      return WildcardSupport.toString(this);
+      return "Wildcard{" +
+             "extends=" + getExtends() +
+             ", super=" + getSuper() +
+             '}';
    }
 }

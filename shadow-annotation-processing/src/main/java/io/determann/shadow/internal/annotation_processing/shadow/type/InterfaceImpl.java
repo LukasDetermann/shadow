@@ -3,7 +3,6 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
-import io.determann.shadow.implementation.support.api.shadow.type.InterfaceSupport;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -103,18 +102,12 @@ public class InterfaceImpl extends DeclaredImpl implements Ap.Interface
    @Override
    public boolean equals(Object other)
    {
-      return InterfaceSupport.equals(this, other);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      return InterfaceSupport.hashCode(this);
+      return equals(Ap.Interface.class, other);
    }
 
    @Override
    public String toString()
    {
-      return InterfaceSupport.toString(this);
+      return toString("Interface");
    }
 }

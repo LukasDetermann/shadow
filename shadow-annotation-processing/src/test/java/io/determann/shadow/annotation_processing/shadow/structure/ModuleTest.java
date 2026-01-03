@@ -63,10 +63,10 @@ class ModuleTest
       ProcessorTest.process(context ->
                             {
                                Ap.Module module = context.getModuleOrThrow("java.logging");
-                               assertEquals("Requires {getDependency=java.base, isStatic=false, isTransitive=false}, " +
-                                            "Exports {getPackage=java.util.logging, getTargetModules=[]}, " +
-                                            "Provides {getService=Class {getQualifiedName=jdk.internal.logger.DefaultLoggerFinder, getModifiers=[PUBLIC]}, " +
-                                            "getImplementations=[Class {getQualifiedName=sun.util.logging.internal.LoggingProviderImpl, getModifiers=[PUBLIC, FINAL]}]}",
+                               assertEquals("Requires{static=false, transitive=false, dependency=java.base}, " +
+                                            "Exports{package=java.util.logging, targetModules=[]}, " +
+                                            "Provides{service=Class{qualifiedName='jdk.internal.logger.DefaultLoggerFinder'}, " +
+                                            "implementations=[Class{qualifiedName='sun.util.logging.internal.LoggingProviderImpl'}]}",
                                             module.getDirectives()
                                                   .stream()
                                                   .map(Objects::toString)

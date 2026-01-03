@@ -3,10 +3,10 @@ package io.determann.shadow.internal.annotation_processing.shadow.directive;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.implementation.support.api.shadow.directive.ProvidesSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
+import java.util.Objects;
 
 public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
 {
@@ -42,18 +42,23 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    @Override
    public boolean equals(Object other)
    {
-      return ProvidesSupport.equals(this, other);
+      return other instanceof Ap.Provides provides &&
+             Objects.equals(getImplementations(), provides.getImplementations()) &&
+             Objects.equals(getService(), provides.getService());
    }
 
    @Override
    public int hashCode()
    {
-      return ProvidesSupport.hashCode(this);
+      return Objects.hash(getImplementations(), getService());
    }
 
    @Override
    public String toString()
    {
-      return ProvidesSupport.toString(this);
+      return "Provides{" +
+             "service=" + getService() +
+             ", implementations=" + getImplementations() +
+             '}';
    }
 }

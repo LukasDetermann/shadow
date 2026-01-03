@@ -1,10 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.implementation.support.api.shadow.AnnotationValueSupport;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -13,6 +11,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AnnotationValueImpl
 {
@@ -20,9 +19,9 @@ public abstract class AnnotationValueImpl
    private final boolean defaultValue;
    private final AnnotationValue annotationValue;
 
-   public static Ap.AnnotationValue create(Ap.Context context,
-                                           AnnotationValue annotationValue,
-                                           boolean defaultValue)
+   static Ap.AnnotationValue create(Ap.Context context,
+                                    AnnotationValue annotationValue,
+                                    boolean defaultValue)
    {
       Object value = annotationValue.getValue();
 
@@ -286,7 +285,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private static class ValuesImpl extends AnnotationValueImpl implements Ap.AnnotationValue.Values
+   private static class ValuesImpl<T extends Ap.AnnotationValue> extends AnnotationValueImpl implements Ap.AnnotationValue.Values<T>
    {
       private final AnnotationValue annotationValue;
 
@@ -297,15 +296,15 @@ public abstract class AnnotationValueImpl
       }
 
       @Override
-      public List<Ap.AnnotationValue> getValue()
+      public List<T> getValue()
       {
          //noinspection unchecked
          return ((Collection<AnnotationValue>) annotationValue.getValue())
                .stream()
-               .map(annotationValue1 -> create(
-                     context,
-                     annotationValue1,
-                     isDefault()))
+               .map(annotationValue1 -> create(context,
+                                               annotationValue1,
+                                               isDefault()))
+               .map(annotationValue1 -> ((T) annotationValue1))
                .toList();
       }
    }
@@ -329,32 +328,28 @@ public abstract class AnnotationValueImpl
 
    public abstract Object getValue();
 
-   private <VALUE extends C.AnnotationValue, T> T getSave(Class<VALUE> valueClass, Class<T> tClass)
-   {
-      if (valueClass.isInstance(this))
-      {
-         //noinspection unchecked
-         return ((T) getValue());
-      }
-      throw new IllegalStateException(valueClass.getName() + " does not contain values of type " + tClass.getName());
-   }
-
    @Override
    public boolean equals(Object other)
    {
-      return AnnotationValueSupport.equals((C.AnnotationValue) this, other);
+      return other instanceof Ap.AnnotationValue annotationValue1 &&
+             Objects.equals(isDefault(), annotationValue1.isDefault()) &&
+             Objects.equals(getValue(), annotationValue1.getValue());
+
    }
 
    @Override
    public int hashCode()
    {
-      return AnnotationValueSupport.hashCode(((C.AnnotationValue) this));
+      return Objects.hash(isDefault(), getValue());
    }
 
    @Override
    public String toString()
    {
-      return AnnotationValueSupport.toString((C.AnnotationValue) this);
+      return "AnnotationValue{" +
+             "default=" + isDefault() +
+             ", value=" + getValue() +
+             '}';
    }
 
    public Implementation getImplementation()

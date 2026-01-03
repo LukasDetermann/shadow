@@ -3,11 +3,11 @@ package io.determann.shadow.internal.annotation_processing.shadow.directive;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.implementation.support.api.shadow.directive.ExportsSupport;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ExportsImpl extends DirectiveImpl implements Ap.Exports
 {
@@ -55,20 +55,25 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
    }
 
    @Override
-   public boolean equals(Object other)
+   public final boolean equals(Object o)
    {
-      return ExportsSupport.equals(this, other);
+      return o instanceof Ap.Exports exports &&
+             Objects.equals(getPackage(), exports.getPackage()) &&
+             Objects.equals(getTargetModules(), exports.getTargetModules());
    }
 
    @Override
    public int hashCode()
    {
-      return ExportsSupport.hashCode(this);
+      return Objects.hash(getPackage(), getTargetModules());
    }
 
    @Override
    public String toString()
    {
-      return ExportsSupport.toString(this);
+      return "Exports{" +
+             "package=" + getPackage() +
+             ", targetModules=" + getTargetModules() +
+             '}';
    }
 }

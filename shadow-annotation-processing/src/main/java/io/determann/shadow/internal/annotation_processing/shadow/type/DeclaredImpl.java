@@ -15,10 +15,6 @@ import javax.lang.model.util.ElementFilter;
 import java.util.*;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.MODIFIABLE_GET_MODIFIERS;
-import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.query.Provider.requestOrEmpty;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 
 public class DeclaredImpl extends TypeImpl<DeclaredType>
 {
@@ -198,30 +194,37 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
    }
 
    @Override
-   public String toString()
+   public boolean representsSameType(C.Type type)
    {
-      return getElement().toString();
+      return type instanceof Ap.Declared declared &&
+             adapt(getApi()).toTypes().isSameType(getMirror(), adapt(declared).toDeclaredType());
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(getQualifiedName(),
-                          getModifiers());
+      return Objects.hash(getQualifiedName());
    }
 
-   @Override
-   public boolean equals(Object other)
+   protected boolean equals(Class<? extends Ap.Declared> type, Object other)
    {
       if (other == this)
       {
          return true;
       }
-      if (!(other instanceof C.Declared otherDeclared))
+      if (!type.isInstance(other))
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), requestOrThrow(otherDeclared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
-             requestOrEmpty(otherDeclared, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
+      Ap.Declared declared = (Ap.Declared) other;
+
+      return Objects.equals(getQualifiedName(), declared.getQualifiedName());
+   }
+
+   protected String toString(String type)
+   {
+      return type + "{" +
+             "qualifiedName='" + getQualifiedName()  + '\'' +
+             '}';
    }
 }

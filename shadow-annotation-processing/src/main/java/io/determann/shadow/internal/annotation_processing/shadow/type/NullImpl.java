@@ -2,9 +2,9 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.implementation.support.api.shadow.type.NullSupport;
 
 import javax.lang.model.type.NullType;
+import java.util.Objects;
 
 public class NullImpl extends TypeImpl<NullType> implements Ap.Null
 {
@@ -16,24 +16,24 @@ public class NullImpl extends TypeImpl<NullType> implements Ap.Null
    @Override
    public boolean representsSameType(C.Type type)
    {
-      return NullSupport.representsSameType(this, type);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      return NullSupport.hashCode(this);
+      return type instanceof C.Null;
    }
 
    @Override
    public boolean equals(Object other)
    {
-      return NullSupport.equals(this, other);
+      return other instanceof Ap.Null;
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(Ap.Null.class);
    }
 
    @Override
    public String toString()
    {
-      return NullSupport.toString(this);
+      return "Null";
    }
 }

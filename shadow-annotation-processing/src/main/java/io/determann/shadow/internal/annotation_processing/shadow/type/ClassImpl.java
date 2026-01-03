@@ -4,9 +4,7 @@ import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
-import io.determann.shadow.implementation.support.api.shadow.structure.PropertySupport;
-import io.determann.shadow.implementation.support.api.shadow.type.ClassSupport;
-import io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyImpl;
+import io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyFactory;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -60,11 +58,7 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    @Override
    public List<Ap.Property> getProperties()
    {
-      return PropertySupport.propertiesOf(this)
-                            .stream()
-                            .map(delegate -> new PropertyImpl(getApi(), delegate))
-                            .map(Ap.Property.class::cast)
-                            .toList();
+      return PropertyFactory.of(getApi(), this);
    }
 
    @Override
@@ -144,18 +138,12 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    @Override
    public boolean equals(Object other)
    {
-      return ClassSupport.equals(this, other);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      return ClassSupport.hashCode(this);
+      return equals(Ap.Class.class, other);
    }
 
    @Override
    public String toString()
    {
-      return ClassSupport.toString(this);
+      return toString("Class");
    }
 }
