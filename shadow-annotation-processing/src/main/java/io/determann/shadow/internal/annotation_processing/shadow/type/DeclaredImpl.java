@@ -1,9 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.NestingKind;
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Modifier;
+import io.determann.shadow.api.annotation_processing.NestingKind;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
 import javax.lang.model.element.Element;
@@ -15,6 +14,7 @@ import javax.lang.model.util.ElementFilter;
 import java.util.*;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
+import static java.util.Optional.ofNullable;
 
 public class DeclaredImpl extends TypeImpl<DeclaredType>
 {
@@ -37,9 +37,9 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return ApContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(C.Type type)
+   public boolean isSubtypeOf(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((Ap.Declared) type).toDeclaredType());
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((Ap.Declared) type).toDeclaredType());//todo
    }
 
    public TypeElement getElement()
@@ -178,9 +178,9 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return getElement().getSimpleName().toString();
    }
 
-   public String getJavaDoc()
+   public Optional<String> getJavaDoc()
    {
-      return adapt(getApi()).toElements().getDocComment(getElement());
+      return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
@@ -194,7 +194,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
    }
 
    @Override
-   public boolean representsSameType(C.Type type)
+   public boolean representsSameType(Ap.Type type)
    {
       return type instanceof Ap.Declared declared &&
              adapt(getApi()).toTypes().isSameType(getMirror(), adapt(declared).toDeclaredType());

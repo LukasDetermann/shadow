@@ -1,8 +1,8 @@
 package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.dsl.class_.ClassBodyStep;
+import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.class_.ClassBodyStep;
 
 import java.util.ArrayList;
 import java.util.List;

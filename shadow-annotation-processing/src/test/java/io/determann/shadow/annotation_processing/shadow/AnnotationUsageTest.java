@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.query.Operations.ANNOTATION_VALUE_GET_VALUE;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationUsageTest
@@ -283,7 +281,7 @@ class AnnotationUsageTest
                                Ap.AnnotationUsage defaultUsage = (Ap.AnnotationUsage) defaultValues.getValueOrThrow("annotationUsageValue")
                                                                                                    .getValue();
                                Ap.AnnotationValue defaultRetentionValue = defaultUsage.getValueOrThrow("value");
-                               assertEquals(classPolicy, requestOrThrow(defaultRetentionValue, ANNOTATION_VALUE_GET_VALUE));
+                               assertEquals(classPolicy, defaultRetentionValue.getValue());
                             })
                    .withCodeToCompile("AnnotationUsageAnnotation.java", """
                                                                         import java.lang.annotation.Retention;

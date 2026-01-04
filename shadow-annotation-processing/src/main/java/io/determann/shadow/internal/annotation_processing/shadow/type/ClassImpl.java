@@ -1,10 +1,12 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.dsl.class_.ClassGenericStep;
 import io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyFactory;
+import org.jetbrains.annotations.Nullable;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -14,9 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.class_;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerClass;
 import static java.util.Arrays.stream;
+import static java.util.Optional.ofNullable;
 
-public class ClassImpl extends DeclaredImpl implements Ap.Class
+public class ClassImpl
+      extends DeclaredImpl
+      implements Ap.Class
 {
    public ClassImpl(Ap.Context context, DeclaredType declaredTypeMirror)
    {
@@ -29,11 +36,12 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    }
 
    @Override
-   public boolean isAssignableFrom(C.Type type)
+   public boolean isAssignableFrom(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((Ap.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt(type).toTypeMirror());
    }
 
+   @Nullable
    @Override
    public Ap.Class getSuperClass()
    {
@@ -58,7 +66,7 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    @Override
    public List<Ap.Property> getProperties()
    {
-      return PropertyFactory.of(getApi(), this);
+      return PropertyFactory.of(this);
    }
 
    @Override
@@ -133,6 +141,61 @@ public class ClassImpl extends DeclaredImpl implements Ap.Class
    public Ap.Class erasure()
    {
       return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+   }
+
+   @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      ClassGenericStep extendsStep = (switch (getNesting())
+                                      {
+                                         case OUTER -> class_().package_(getPackage());
+                                         case INNER -> innerClass().outer(getSurrounding().orElseThrow());
+                                      }).annotate(getDirectAnnotationUsages())
+                                        .modifier(getModifiers())
+                                        .name(getName())
+                                        .genericDeclaration(getGenericDeclarations())
+                                        .genericUsage(getGenericUsages());
+
+      return ofNullable(getSuperClass())
+            .map(extendsStep::extends_)
+            .orElse(extendsStep)
+            .implements_(getDirectInterfaces())
+            .permits(getPermittedSubClasses())
+            .field(getFields())
+            .method(getMethods())
+            .constructor(getConstructors())
+            .renderDeclaration(renderingContext);
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      return getQualifiedName();
+   }
+
+   @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return getName();
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return (switch (getNesting())
+              {
+                 case OUTER -> class_().package_(getPackage());
+                 case INNER -> innerClass().outer(getSurrounding().orElseThrow());
+              }).name(getName())
+                .genericDeclaration(getGenericDeclarations())
+                .genericUsage(getGenericUsages())
+                .renderType(renderingContext);
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return renderingContext.renderName(renderQualifiedName(renderingContext));
    }
 
    @Override

@@ -10,9 +10,7 @@
     <version>0.3.1</version>
     <modules>
         <module>shadow-annotation-processing</module>
-        <module>shadow-core</module>
         <module>shadow-parent</module>
         <module>documentation</module>
-        <module>shadow-implementation-support</module>
     </modules>
 </project>

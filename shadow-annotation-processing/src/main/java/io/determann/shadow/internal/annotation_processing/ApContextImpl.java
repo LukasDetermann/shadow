@@ -1,12 +1,10 @@
 package io.determann.shadow.internal.annotation_processing;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Constants;
 import io.determann.shadow.api.annotation_processing.DiagnosticContext;
+import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -26,9 +24,6 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.PACKAGE_GET_DECLARED_LIST;
-import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static java.lang.System.out;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
@@ -36,9 +31,6 @@ import static java.util.stream.Collectors.toSet;
 public class ApContextImpl
       implements Ap.Context
 {
-   public static final String IMPLEMENTATION_NAME = "io.determann.shadow-annotation-processing";
-   private final Implementation implementation;
-
    private final ProcessingEnvironment processingEnv;
    private final RoundEnvironment roundEnv;
    private final int processingRound;
@@ -81,7 +73,6 @@ public class ApContextImpl
    {
       types = processingEnv.getTypeUtils();
       elements = processingEnv.getElementUtils();
-      implementation = new ApImplementation(IMPLEMENTATION_NAME, this);
       this.processingRound = processingRound;
       this.processingEnv = processingEnv;
       this.roundEnv = roundEnv;
@@ -123,22 +114,22 @@ public class ApContextImpl
                                {
                                   if (element.getKind().isExecutable())
                                   {
-                                     return (C.Annotationable) Adapters.adapt(getApi(), ((ExecutableElement) element));
+                                     return (Ap.Annotationable) Adapters.adapt(getApi(), ((ExecutableElement) element));
                                   }
-                                  return ((C.Annotationable) Adapters.adapt(getApi(), element));
+                                  return ((Ap.Annotationable) Adapters.adapt(getApi(), element));
                                })
                           .filter(typeClass::isInstance)
                           .map(typeClass::cast)
                           .collect(toSet());
    }
 
-   private <RESULT> Set<RESULT> getAnnotated(C.QualifiedNameable input, java.lang.Class<RESULT> resultClass)
+   private <RESULT> Set<RESULT> getAnnotated(Ap.QualifiedNameable input, java.lang.Class<RESULT> resultClass)
    {
       if (input instanceof Ap.Annotation annotationLangModel)
       {
          return getAnnotated(adapt(annotationLangModel).toTypeElement(), resultClass);
       }
-      return getAnnotated(requestOrThrow(input, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME), resultClass);
+      return getAnnotated(input.getQualifiedName(), resultClass);
    }
 
    @Override
@@ -148,7 +139,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Annotationable> getAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Annotationable> getAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Annotationable.class);
    }
@@ -160,7 +151,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Declared> getDeclaredAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Declared> getDeclaredAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Declared.class);
    }
@@ -172,7 +163,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Class> getClassesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Class> getClassesAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Class.class);
    }
@@ -184,7 +175,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Enum> getEnumsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Enum> getEnumsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Enum.class);
    }
@@ -196,7 +187,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Interface> getInterfacesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Interface> getInterfacesAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Interface.class);
    }
@@ -208,7 +199,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Record> getRecordsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Record> getRecordsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Record.class);
    }
@@ -220,7 +211,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Field> getFieldsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Field> getFieldsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Field.class);
    }
@@ -232,7 +223,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Parameter> getParametersAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Parameter> getParametersAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Parameter.class);
    }
@@ -244,7 +235,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Method> getMethodsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Method> getMethodsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Method.class);
    }
@@ -256,7 +247,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Constructor> getConstructorsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Constructor> getConstructorsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Constructor.class);
    }
@@ -268,7 +259,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Annotation> getAnnotationsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Annotation> getAnnotationsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Annotation.class);
    }
@@ -280,7 +271,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Package> gePackagesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Package> gePackagesAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Package.class);
    }
@@ -292,7 +283,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Generic> geGenericsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Generic> geGenericsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Generic.class);
    }
@@ -304,7 +295,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.Module> geModulesAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.Module> geModulesAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.Module.class);
    }
@@ -316,7 +307,7 @@ public class ApContextImpl
    }
 
    @Override
-   public Set<Ap.RecordComponent> geRecordComponentsAnnotatedWith(C.Annotation annotation)
+   public Set<Ap.RecordComponent> geRecordComponentsAnnotatedWith(Ap.Annotation annotation)
    {
       return getAnnotated(annotation, Ap.RecordComponent.class);
    }
@@ -457,12 +448,6 @@ public class ApContextImpl
    }
 
    @Override
-   public Implementation getImplementation()
-   {
-      return implementation;
-   }
-
-   @Override
    public List<Ap.Module> getModules()
    {
       return elements.getAllModuleElements()
@@ -517,14 +502,14 @@ public class ApContextImpl
    }
 
    @Override
-   public Optional<Ap.Package> getPackage(C.Module module, String qualifiedPackageName)
+   public Optional<Ap.Package> getPackage(Ap.Module module, String qualifiedPackageName)
    {
-      return ofNullable(elements.getPackageElement(adapt((Ap.Module) module).toModuleElement(), qualifiedPackageName))
+      return ofNullable(elements.getPackageElement(adapt(module).toModuleElement(), qualifiedPackageName))
             .map(packageElement -> adapt(this, packageElement));
    }
 
    @Override
-   public Ap.Package getPackageOrThrow(C.Module module, String qualifiedPackageName)
+   public Ap.Package getPackageOrThrow(Ap.Module module, String qualifiedPackageName)
    {
       return getPackage(module, qualifiedPackageName).orElseThrow();
    }
@@ -541,8 +526,7 @@ public class ApContextImpl
    {
       return getPackages()
             .stream()
-            .flatMap(packageType -> requestOrThrow(packageType, PACKAGE_GET_DECLARED_LIST) .stream())
-            .map(Ap.Declared.class::cast)
+            .flatMap(packageType -> packageType.getDeclared().stream())
             .toList();
    }
 

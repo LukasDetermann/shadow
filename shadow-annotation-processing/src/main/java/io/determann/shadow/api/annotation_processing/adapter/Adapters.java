@@ -6,7 +6,6 @@ import io.determann.shadow.internal.annotation_processing.annotationvalue.Annota
 import io.determann.shadow.internal.annotation_processing.shadow.directive.*;
 import io.determann.shadow.internal.annotation_processing.shadow.structure.*;
 import io.determann.shadow.internal.annotation_processing.shadow.type.*;
-import io.determann.shadow.internal.annotation_processing.shadow.type.primitive.PrimitiveImpl;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;

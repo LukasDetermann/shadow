@@ -2,11 +2,13 @@ package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
 import java.util.Objects;
+
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.provides;
 
 public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
 {
@@ -34,9 +36,11 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    }
 
    @Override
-   public Implementation getImplementation()
+   public String renderDeclaration(RenderingContext renderingContext)
    {
-      return getApi().getImplementation();
+      return provides().service(getService())
+                       .with(getImplementations())
+                       .renderDeclaration(renderingContext);
    }
 
    @Override

@@ -1,12 +1,14 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.dsl.requires.RequiresNameStep;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.Objects;
+
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.requires;
 
 public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {
@@ -31,7 +33,7 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
    }
 
    @Override
-   public C.Module getDependency()
+   public Ap.Module getDependency()
    {
       return Adapters.adapt(getApi(), requiresDirective.getDependency());
    }
@@ -42,9 +44,22 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
    }
 
    @Override
-   public Implementation getImplementation()
+   public String renderDeclaration(RenderingContext renderingContext)
    {
-      return getApi().getImplementation();
+      RequiresNameStep nameStep;
+      if (isStatic())
+      {
+         nameStep = requires().static_();
+      }
+      else if (isTransitive())
+      {
+         nameStep = requires().transitive();
+      }
+      else
+      {
+         nameStep = requires();
+      }
+      return nameStep.dependency(getDependency()).renderDeclaration(renderingContext);
    }
 
    @Override

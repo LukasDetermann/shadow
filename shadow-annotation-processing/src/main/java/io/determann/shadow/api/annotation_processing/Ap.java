@@ -1,13 +1,35 @@
 package io.determann.shadow.api.annotation_processing;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
-import io.determann.shadow.api.NestingKind;
-import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
-import io.determann.shadow.api.dsl.module.ModuleRenderable;
-import io.determann.shadow.api.dsl.package_.PackageRenderable;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.ReferenceTypeRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.TypeRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.VariableTypeRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.annotation.AnnotationRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.annotation_value.AnnotationValueRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.array.ArrayRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.enum_.EnumRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.enum_constant.EnumConstantRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.exports.ExportsRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.field.FieldRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.generic.GenericRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.method.MethodRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.module.ModuleRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.opens.OpensRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.package_.PackageRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.parameter.ParameterRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.provides.ProvidesRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.receiver.ReceiverRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.record.RecordRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.record_component.RecordComponentRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.requires.RequiresRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.result.ResultRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.uses.UsesRenderable;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -21,10 +43,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-import static io.determann.shadow.api.Modifier.*;
-import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.annotation_processing.Modifier.*;
+import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
 
 public interface Ap
 {
@@ -112,7 +132,7 @@ public interface Ap
     * </ul>
     *
     * @see Processor
-    * @see C.Type
+    * @see Type
     */
    interface Context
    {
@@ -134,7 +154,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Annotationable> getAnnotatedWith(C.Annotation annotation);
+      Set<Annotationable> getAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -154,7 +174,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Declared> getDeclaredAnnotatedWith(C.Annotation annotation);
+      Set<Declared> getDeclaredAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -174,7 +194,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Class> getClassesAnnotatedWith(C.Annotation annotation);
+      Set<Class> getClassesAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -194,7 +214,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Enum> getEnumsAnnotatedWith(C.Annotation annotation);
+      Set<Enum> getEnumsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -214,7 +234,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Interface> getInterfacesAnnotatedWith(C.Annotation annotation);
+      Set<Interface> getInterfacesAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -234,7 +254,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Record> getRecordsAnnotatedWith(C.Annotation annotation);
+      Set<Record> getRecordsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -254,7 +274,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Field> getFieldsAnnotatedWith(C.Annotation annotation);
+      Set<Field> getFieldsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -274,7 +294,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Parameter> getParametersAnnotatedWith(C.Annotation annotation);
+      Set<Parameter> getParametersAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -294,7 +314,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Method> getMethodsAnnotatedWith(C.Annotation annotation);
+      Set<Method> getMethodsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -314,7 +334,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Constructor> getConstructorsAnnotatedWith(C.Annotation annotation);
+      Set<Constructor> getConstructorsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -334,7 +354,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Annotation> getAnnotationsAnnotatedWith(C.Annotation annotation);
+      Set<Annotation> getAnnotationsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -354,7 +374,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Package> gePackagesAnnotatedWith(C.Annotation annotation);
+      Set<Package> gePackagesAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -374,7 +394,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Generic> geGenericsAnnotatedWith(C.Annotation annotation);
+      Set<Generic> geGenericsAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -394,7 +414,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<Module> geModulesAnnotatedWith(C.Annotation annotation);
+      Set<Module> geModulesAnnotatedWith(Annotation annotation);
 
       /**
        * Looks up annotated elements in currently compiled code. <br>
@@ -414,7 +434,7 @@ public interface Ap
        * @see #writeAndCompileSourceFile(String, String)
        * @see #writeClassFile(String, String)
        */
-      Set<RecordComponent> geRecordComponentsAnnotatedWith(C.Annotation annotation);
+      Set<RecordComponent> geRecordComponentsAnnotatedWith(Annotation annotation);
 
       /**
        * the created file will be registered for the next annotation processor round. writes .java files
@@ -518,8 +538,6 @@ public interface Ap
       void logInfoAt(Annotationable annotationable, String msg);
 
       void logWarningAt(Annotationable annotationable, String msg);
-
-      Implementation getImplementation();
 
       List<Declared> getDeclared();
 
@@ -637,28 +655,27 @@ public interface Ap
 
       Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
 
-      Optional<Package> getPackage(C.Module module, String qualifiedPackageName);
+      Optional<Package> getPackage(Module module, String qualifiedPackageName);
 
-      Package getPackageOrThrow(C.Module module, String qualifiedPackageName);
+      Package getPackageOrThrow(Module module, String qualifiedPackageName);
 
       Constants getConstants();
    }
 
    /// anything that can be annotated
    interface Annotationable
-         extends C.Annotationable
    {
       /// returns all annotations. Annotations on parentClasses are included when they are annotated with {@link java.lang.annotation.Inherited}
       List<AnnotationUsage> getAnnotationUsages();
 
-      default List<AnnotationUsage> getUsagesOf(C.Annotation annotation)
+      default List<AnnotationUsage> getUsagesOf(Annotation annotation)
       {
          return getAnnotationUsages().stream()
-                                     .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
+                                     .filter(usage -> usage.getAnnotation().equals(annotation))
                                      .toList();
       }
 
-      default Optional<AnnotationUsage> getUsageOf(C.Annotation annotation)
+      default Optional<AnnotationUsage> getUsageOf(Annotation annotation)
       {
          List<AnnotationUsage> usages = getUsagesOf(annotation);
 
@@ -673,15 +690,15 @@ public interface Ap
          throw new IllegalArgumentException();
       }
 
-      default AnnotationUsage getUsageOfOrThrow(C.Annotation annotation)
+      default AnnotationUsage getUsageOfOrThrow(Annotation annotation)
       {
          return getUsageOf(annotation).orElseThrow(IllegalArgumentException::new);
       }
 
-      default boolean isAnnotatedWith(C.Annotation annotation)
+      default boolean isAnnotatedWith(Annotation annotation)
       {
          return getAnnotationUsages().stream()
-                                     .map(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION))
+                                     .map(AnnotationUsage::getAnnotation)
                                      .anyMatch(annotation1 -> annotation1.equals(annotation));
       }
 
@@ -690,38 +707,38 @@ public interface Ap
       /// @see #getAnnotationUsages()
       List<AnnotationUsage> getDirectAnnotationUsages();
 
-      default List<AnnotationUsage> getDirectUsagesOf(C.Annotation annotation)
+      default List<AnnotationUsage> getDirectUsagesOf(Annotation annotation)
       {
          return getDirectAnnotationUsages().stream()
-                                           .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
+                                           .filter(usage -> usage.getAnnotation().equals(annotation))
                                            .toList();
       }
 
-      default Optional<AnnotationUsage> getDirectUsageOf(C.Annotation annotation)
+      default Optional<AnnotationUsage> getDirectUsageOf(Annotation annotation)
       {
          return getDirectAnnotationUsages().stream()
-                                           .filter(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION).equals(annotation))
+                                           .filter(usage -> usage.getAnnotation().equals(annotation))
                                            .findAny();
       }
 
-      default AnnotationUsage getDirectUsageOfOrThrow(C.Annotation annotation)
+      default AnnotationUsage getDirectUsageOfOrThrow(Annotation annotation)
       {
          return getDirectUsageOf(annotation).orElseThrow();
       }
 
-      default boolean isDirectlyAnnotatedWith(C.Annotation annotation)
+      default boolean isDirectlyAnnotatedWith(Annotation annotation)
       {
          return getDirectAnnotationUsages().stream()
-                                           .map(usage -> requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION))
+                                           .map(AnnotationUsage::getAnnotation)
                                            .anyMatch(annotation1 -> annotation1.equals(annotation));
       }
    }
 
-   /// {@link C.Annotation} represents the java file for the java concept of an annotation. This on the other hand represents
+   /// {@link Annotation} represents the java file for the java concept of an annotation. This on the other hand represents
    /// a usage of such an annotation. like <br>
    /// {@code @Documented("testValue) public class Test{ }}
    interface AnnotationUsage
-         extends C.AnnotationUsage
+         extends AnnotationUsageRenderable
    {
       Map<Method, AnnotationValue> getValues();
 
@@ -734,7 +751,7 @@ public interface Ap
       {
          return getValues().entrySet()
                            .stream()
-                           .filter(entry -> requestOrThrow(entry.getKey(), NAMEABLE_GET_NAME).equals(methodName))
+                           .filter(entry -> entry.getKey().getName().equals(methodName))
                            .map(Map.Entry::getValue)
                            .findAny();
       }
@@ -743,7 +760,7 @@ public interface Ap
    }
 
    sealed interface AnnotationValue
-         extends C.AnnotationValue
+         extends AnnotationValueRenderable
    {
       /// is this the default value specified in the annotation?
       boolean isDefault();
@@ -843,37 +860,31 @@ public interface Ap
    }
 
    interface Documented
-         extends C.Documented
    {
-      /// returns the javaDoc or null if none is present
-      String getJavaDoc();
+      Optional<String> getJavaDoc();
    }
 
    interface Erasable
-         extends C.Erasable
    {
       /// Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
       /// This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
       /// {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
       /// <p>
-      /// for {@link C.Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
+      /// for {@link Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
       Erasable erasure();
    }
 
    interface ModuleEnclosed
-         extends C.ModuleEnclosed
    {
       Module getModule();
    }
 
    interface Nameable
-         extends C.Nameable
    {
       String getName();
    }
 
    interface QualifiedNameable
-         extends C.QualifiedNameable
    {
       /**
        * a Qualified name is {@code javax.lang.model.element.QualifiedNameable}
@@ -882,21 +893,21 @@ public interface Ap
    }
 
    non-sealed interface Annotation
-         extends C.Annotation,
-                 Declared,
-                 StaticModifiable {}
+         extends Declared,
+                 StaticModifiable,
+                 AnnotationRenderable {}
 
    non-sealed interface Array
-         extends C.Array,
-                 Erasable,
-                 ReferenceType
+         extends Erasable,
+                 ReferenceType,
+                 ArrayRenderable
    {
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a
        * {@link java.util.Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
        */
-      boolean isSubtypeOf(C.Type type);
+      boolean isSubtypeOf(Type type);
 
       /**
        * {@snippet :
@@ -906,7 +917,7 @@ public interface Ap
       Type getComponentType();
 
       /**
-       * returns Object[] for declared Arrays and an {@link C.Generic} with bounds of {@code java.io.Serializable&java.lang.Cloneable}
+       * returns Object[] for declared Arrays and an {@link Generic} with bounds of {@code java.io.Serializable&java.lang.Cloneable}
        * for primitive Arrays
        */
       List<Type> getDirectSuperTypes();
@@ -925,36 +936,36 @@ public interface Ap
        * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
+       * for {@link Array}s this means for example {@code T[]} -&gt; {@code java.lang.Object[]}
        */
       @Override
       Array erasure();
    }
 
    non-sealed interface Class
-         extends C.Class,
-                 Declared,
+         extends Declared,
                  AbstractModifiable,
                  StaticModifiable,
                  Sealable,
                  FinalModifiable,
-                 Erasable
+                 Erasable,
+                 ClassRenderable
    {
       /**
        * reruns the super class of this class. calling {@code getSuperClass())} on {@link Integer} will return {@link Number}.
        * For {@link Object} null will be returned
        */
-      Class getSuperClass();
+      @Nullable Class getSuperClass();
 
       List<Class> getPermittedSubClasses();
 
       List<Property> getProperties();
 
       /**
-       * Equivalent to {@link #isSubtypeOf(C.Type)} except for primitives.
+       * Equivalent to {@link #isSubtypeOf(Type)} except for primitives.
        * if one is a primitive and the other is not it tries to convert them
        */
-      boolean isAssignableFrom(C.Type type);
+      boolean isAssignableFrom(Type type);
 
       List<Constructor> getConstructors();
 
@@ -1002,7 +1013,7 @@ public interface Ap
        * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
+       * for {@link Class}s this means for example {@code class MyClass<T>{}} -&gt; {@code class MyClass{}}
        */
       Class erasure();
    }
@@ -1011,17 +1022,15 @@ public interface Ap
     * Anything that can be a file.
     */
    sealed interface Declared
-
-         extends C.Declared,
+         extends ReferenceType,
                  Annotationable,
                  AccessModifiable,
                  StrictfpModifiable,
-                 ReferenceType,
                  Nameable,
                  QualifiedNameable,
                  ModuleEnclosed,
-                 Documented
-
+                 Documented,
+                 DeclaredRenderable
          permits Annotation,
                  Class,
                  Enum,
@@ -1033,7 +1042,7 @@ public interface Ap
        * This can be useful if you want to check if a type implements for example a {@link java.util.Collection}
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
        */
-      boolean isSubtypeOf(C.Type type);
+      boolean isSubtypeOf(Type type);
 
       /**
        * is it an outer or inner class? etc.
@@ -1042,14 +1051,14 @@ public interface Ap
 
       default Field getFieldOrThrow(String simpleName)
       {
-         return getFields().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
+         return getFields().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
       }
 
       List<Field> getFields();
 
       default List<Method> getMethods(String simpleName)
       {
-         return getMethods().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).toList();
+         return getMethods().stream().filter(field -> field.getName().equals(simpleName)).toList();
       }
 
       List<Method> getMethods();
@@ -1069,7 +1078,7 @@ public interface Ap
       default Interface getInterfaceOrThrow(String qualifiedName)
       {
          return getInterfaces().stream()
-                               .filter(anInterface -> requestOrThrow(anInterface, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
+                               .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
                                .findAny()
                                .orElseThrow();
       }
@@ -1080,8 +1089,7 @@ public interface Ap
       default Interface getDirectInterfaceOrThrow(String qualifiedName)
       {
          return getDirectInterfaces().stream()
-                                     .filter(anInterface -> requestOrThrow(anInterface,
-                                                                           QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
+                                     .filter(anInterface -> anInterface.getQualifiedName().equals(qualifiedName))
                                      .findAny()
                                      .orElseThrow();
       }
@@ -1112,17 +1120,17 @@ public interface Ap
    }
 
    non-sealed interface Enum
-         extends C.Enum,
-                 Declared,
-                 StaticModifiable
+         extends Declared,
+                 StaticModifiable,
+                 EnumRenderable
    {
       List<Constructor> getConstructors();
 
-      List<EnumConstant> getEumConstants();
+      List<EnumConstant> getEnumConstants();
 
       default EnumConstant getEnumConstantOrThrow(String simpleName)
       {
-         return getEumConstants().stream().filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName)).findAny().orElseThrow();
+         return getEnumConstants().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
       }
    }
 
@@ -1130,11 +1138,11 @@ public interface Ap
     * represents the generic parameter at a class, method, constructor etc.
     */
    non-sealed interface Generic
-         extends C.Generic,
+         extends ReferenceType,
                  Annotationable,
-                 ReferenceType,
                  Nameable,
-                 Erasable
+                 Erasable,
+                 GenericRenderable
    {
       Type getBound();
 
@@ -1147,7 +1155,7 @@ public interface Ap
 
       List<Interface> getAdditionalBounds();
 
-      /// Can not be declared in java normal java code. some results of [Class#interpolateGenerics()] can create a [C.Generic] with a super type
+      /// Can not be declared in java normal java code. some results of [Class#interpolateGenerics()] can create a [Generic] with a super type
       Optional<Type> getSuper();
 
       /**
@@ -1160,20 +1168,19 @@ public interface Ap
        * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
+       * for {@link Generic}s this means for example {@code T extends Number} -&gt; {@code Number}
        */
       @Override
       Generic erasure();
    }
 
    non-sealed interface Interface
-
-         extends C.Interface,
-                 Declared,
+         extends Declared,
                  AbstractModifiable,
                  StaticModifiable,
                  Sealable,
-                 Erasable
+                 Erasable,
+                 InterfaceRenderable
    {
       boolean isFunctional();
 
@@ -1216,28 +1223,26 @@ public interface Ap
        * This can be useful if you want to check if a shadow implements for example {@link java.util.Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
+       * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
        */
       @Override
       Interface erasure();
    }
 
    non-sealed interface Null
-         extends Type,
-                 C.Null {}
+         extends Type {}
 
    non-sealed interface Record
-
-         extends C.Record,
-                 Declared,
+         extends Declared,
                  StaticModifiable,
                  FinalModifiable,
-                 Erasable
+                 Erasable,
+                 RecordRenderable
    {
       default RecordComponent getRecordComponentOrThrow(String simpleName)
       {
          return getRecordComponents().stream()
-                                     .filter(field -> requestOrThrow(field, NAMEABLE_GET_NAME).equals(simpleName))
+                                     .filter(field -> field.getName().equals(simpleName))
                                      .findAny()
                                      .orElseThrow();
       }
@@ -1283,21 +1288,21 @@ public interface Ap
        * This can be useful if you want to check if a shadow implements for example {@link Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
+       * for {@link Interface}s this means for example {@code interface MyInterface<T>{}} -&gt; {@code interface MyInterface{}}
        */
       @Override
       Record erasure();
    }
 
    sealed interface ReferenceType
-         extends C.ReferenceType,
-                 VariableType
+         extends VariableType,
+                 ReferenceTypeRenderable
          permits Array,
                  Declared,
                  Generic {}
 
    sealed interface Type
-         extends C.Type
+         extends TypeRenderable
          permits Null,
                  VariableType,
                  Void,
@@ -1306,19 +1311,18 @@ public interface Ap
       /**
        * type equals from the compiler perspective. for example ? does not equal ? for the compiler
        */
-      boolean representsSameType(C.Type type);
+      boolean representsSameType(Type type);
    }
 
    /// a type that can be used as method/ constructor parameter or field
    sealed interface VariableType
-         extends C.VariableType,
-                 Type
+         extends Type,
+                 VariableTypeRenderable
          permits ReferenceType,
                  Primitive {}
 
    non-sealed interface Void
-         extends Type,
-                 C.Void {}
+         extends Type {}
 
    /**
     * {@snippet id = "test":
@@ -1330,8 +1334,7 @@ public interface Ap
     *}
     */
    non-sealed interface Wildcard
-         extends C.Wildcard,
-                 Type,
+         extends Type,
                  Erasable
    {
       /**
@@ -1351,53 +1354,48 @@ public interface Ap
       /**
        * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}
        */
-      boolean contains(C.Type type);
+      boolean contains(Type type);
 
       /**
        * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
        * This can be useful if you want to check if a shadow implements for example {@link Collection}
        * {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        * <p>
-       * for {@link C.Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
+       * for {@link Wildcard}s this means for example {@code ? extends java.lang.Number} -&gt; {@code java.lang.Number}
        */
       @Override
       Wildcard erasure();
    }
 
    non-sealed interface boolean_
-         extends Primitive,
-                 C.boolean_ {}
+         extends Primitive {}
 
    non-sealed interface byte_
-         extends Primitive,
-                 C.byte_ {}
+         extends Primitive {}
 
    non-sealed interface char_
-         extends Primitive,
-                 C.byte_ {}
+         extends Primitive {}
 
    non-sealed interface double_
-         extends Primitive,
-                 C.double_ {}
+         extends Primitive {}
 
    non-sealed interface float_
-         extends Primitive,
-                 C.float_ {}
+         extends Primitive {}
 
    non-sealed interface int_
-         extends Primitive,
-                 C.int_ {}
+         extends Primitive {}
 
    non-sealed interface long_
-         extends Primitive,
-                 C.long_ {}
+         extends Primitive {}
+
+   non-sealed interface short_
+         extends Primitive {}
 
    /**
     * represents primitive types, but not there wrapper classes. for example int, long, short
     */
    sealed interface Primitive
-         extends C.Primitive,
-                 Nameable,
+         extends Nameable,
                  VariableType
          permits boolean_,
                  byte_,
@@ -1413,13 +1411,13 @@ public interface Ap
        * This can be useful if you want to check if a type implements for example a
        * {@link Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
        */
-      boolean isSubtypeOf(C.Type type);
+      boolean isSubtypeOf(Type type);
 
       /**
-       * Equivalent to {@link #isSubtypeOf(C.Type)} except for primitives.
+       * Equivalent to {@link #isSubtypeOf(Type)} except for primitives.
        * if one is a primitive and the other is not it tries to convert them
        */
-      boolean isAssignableFrom(C.Type type);
+      boolean isAssignableFrom(Type type);
 
       /**
        * int -&gt; Integer<br>
@@ -1434,28 +1432,22 @@ public interface Ap
       Array asArray();
    }
 
-   non-sealed interface short_
-         extends Primitive,
-                 C.short_ {}
 
    non-sealed interface Constructor
-
-         extends C.Constructor,
-                 Executable,
-                 AccessModifiable {}
+         extends Executable,
+                 AccessModifiable,
+                 ConstructorRenderable {}
 
    non-sealed interface EnumConstant
-
-         extends C.EnumConstant,
-                 Variable
+         extends Variable,
+                 EnumConstantRenderable
    {
       @Override
       Enum getSurrounding();
    }
 
    sealed interface Executable
-         extends C.Executable,
-                 Annotationable,
+         extends Annotationable,
                  Nameable,
                  Modifiable,
                  ModuleEnclosed,
@@ -1470,13 +1462,13 @@ public interface Ap
        * Returns the formal parameters, meaning everything but the Receiver.
        * <p>
        * there is a bug in {@link java.lang.reflect.Executable#getParameters()} for {@link java.lang.reflect.Constructor}s. For
-       * {@link C.Constructor}s with more than one {@link C.Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
+       * {@link Constructor}s with more than one {@link Parameter} of the {@link #getReceiverType()} a Receiver will be returned.
        */
       List<Parameter> getParameters();
 
       default Parameter getParameterOrThrow(String name)
       {
-         return getParameters().stream().filter(parameter -> requestOrThrow(parameter, NAMEABLE_GET_NAME).equals(name)).findAny().orElseThrow();
+         return getParameters().stream().filter(parameter -> parameter.getName().equals(name)).findAny().orElseThrow();
       }
 
       List<Type> getParameterTypes();
@@ -1521,11 +1513,11 @@ public interface Ap
    }
 
    non-sealed interface Field
-         extends C.Field,
-                 Variable,
+         extends Variable,
                  AccessModifiable,
                  FinalModifiable,
-                 StaticModifiable
+                 StaticModifiable,
+                 FieldRenderable
 
    {
       boolean isConstant();
@@ -1540,21 +1532,21 @@ public interface Ap
    }
 
    non-sealed interface Method
-         extends C.Method,
-                 Executable,
+         extends Executable,
                  StaticModifiable,
                  DefaultModifiable,
                  AccessModifiable,
                  AbstractModifiable,
                  FinalModifiable,
                  StrictfpModifiable,
-                 NativeModifiable
+                 NativeModifiable,
+                 MethodRenderable
    {
       Type getReturnType();
 
-      boolean overrides(C.Method method);
+      boolean overrides(Method method);
 
-      boolean overwrittenBy(C.Method method);
+      boolean overwrittenBy(Method method);
 
       /**
        * <pre>{@code
@@ -1567,7 +1559,7 @@ public interface Ap
        * a(List<String> strings) b(List list) -> false
        * }</pre>
        */
-      boolean sameParameterTypes(C.Method method);
+      boolean sameParameterTypes(Method method);
 
       /**
        * The java language and the java virtual machine have different specification. Bridge Methods are created to bridge that gap
@@ -1581,11 +1573,11 @@ public interface Ap
    }
 
    interface Module
-         extends C.Module,
-                 Annotationable,
+         extends Annotationable,
                  Nameable,
                  QualifiedNameable,
-                 Documented
+                 Documented,
+                 ModuleRenderable
    {
       List<Package> getPackages();
 
@@ -1703,12 +1695,12 @@ public interface Ap
    }
 
    interface Package
-         extends C.Package,
-                 Annotationable,
+         extends Annotationable,
                  Nameable,
                  QualifiedNameable,
                  ModuleEnclosed,
-                 Documented
+                 Documented,
+                 PackageRenderable
    {
       /**
        * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects
@@ -1819,10 +1811,9 @@ public interface Ap
    ///
    /// @see Executable#getParameters()
    non-sealed interface Parameter
-
-         extends C.Parameter,
-                 Variable,
-                 FinalModifiable
+         extends Variable,
+                 FinalModifiable,
+                 ParameterRenderable
    {
       /**
        * {@link List#of(Object[])}
@@ -1856,8 +1847,7 @@ public interface Ap
    /// or the name matches with the first Character converted to lowercase
    ///    - [Java Beans 8.8](https://www.oracle.com/java/technologies/javase/javabeans-spec.html)
    interface Property
-         extends C.Property,
-                 Nameable
+         extends Nameable
    {
       /**
        * based on the name of the getter without the prefix. if one of the first 2 chars is uppercase the
@@ -1875,7 +1865,7 @@ public interface Ap
       VariableType getType();
 
       /**
-       * a {@link C.Field} with the name and tye of this property
+       * a {@link Field} with the name and tye of this property
        *
        * @see #getName()
        * @see #getType()
@@ -1917,30 +1907,30 @@ public interface Ap
    }
 
    interface Receiver
-         extends C.Receiver,
-                 Annotationable
+         extends Annotationable,
+                 ReceiverRenderable
    {
       Type getType();
    }
 
    interface RecordComponent
-         extends C.RecordComponent,
-                 Annotationable,
+         extends Annotationable,
                  Nameable,
-                 ModuleEnclosed
+                 ModuleEnclosed,
+                 RecordComponentRenderable
    {
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a
        * {@link Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
        */
-      boolean isSubtypeOf(C.Type type);
+      boolean isSubtypeOf(Type type);
 
       /**
-       * Equivalent to {@link #isSubtypeOf(C.Type)} except for primitives.
+       * Equivalent to {@link #isSubtypeOf(Type)} except for primitives.
        * if one is a primitive and the other is not it tries to convert them
        */
-      boolean isAssignableFrom(C.Type type);
+      boolean isAssignableFrom(Type type);
 
       /**
        * returns the record this is a port of
@@ -1953,15 +1943,14 @@ public interface Ap
    }
 
    interface Result
-         extends C.Result,
-                 Annotationable
+         extends Annotationable,
+                 ResultRenderable
    {
       Type getType();
    }
 
    sealed interface Variable
-         extends C.Variable,
-                 Annotationable,
+         extends Annotationable,
                  Documented,
                  Nameable,
                  ModuleEnclosed,
@@ -1975,13 +1964,13 @@ public interface Ap
        * This can be useful if you want to check if a type implements for example a
        * {@link Collection} {@code typeToTest.erasure().isSubtypeOf(context.getDeclaredOrThrow("java.util.Collection").erasure())}
        */
-      boolean isSubtypeOf(C.Type type);
+      boolean isSubtypeOf(Type type);
 
       /**
-       * Equivalent to {@link #isSubtypeOf(C.Type)} except for primitives.
+       * Equivalent to {@link #isSubtypeOf(Type)} except for primitives.
        * if one is a primitive and the other is not it tries to convert them
        */
-      boolean isAssignableFrom(C.Type type);
+      boolean isAssignableFrom(Type type);
 
       VariableType getType();
 
@@ -1992,8 +1981,7 @@ public interface Ap
    }
 
    interface AbstractModifiable
-         extends Modifiable,
-                 C.AbstractModifiable
+         extends Modifiable
    {
       default boolean isAbstract()
       {
@@ -2002,8 +1990,7 @@ public interface Ap
    }
 
    interface AccessModifiable
-         extends Modifiable,
-                 C.AccessModifiable
+         extends Modifiable
    {
       default boolean isPublic()
       {
@@ -2027,8 +2014,7 @@ public interface Ap
    }
 
    interface DefaultModifiable
-         extends Modifiable,
-                 C.DefaultModifiable
+         extends Modifiable
    {
       default boolean isDefault()
       {
@@ -2037,8 +2023,7 @@ public interface Ap
    }
 
    interface FinalModifiable
-         extends Modifiable,
-                 C.FinalModifiable
+         extends Modifiable
    {
       default boolean isFinal()
       {
@@ -2047,7 +2032,6 @@ public interface Ap
    }
 
    interface Modifiable
-         extends C.Modifiable
    {
       Set<Modifier> getModifiers();
 
@@ -2058,8 +2042,7 @@ public interface Ap
    }
 
    interface NativeModifiable
-         extends Modifiable,
-                 C.NativeModifiable
+         extends Modifiable
    {
       default boolean isNative()
       {
@@ -2068,8 +2051,7 @@ public interface Ap
    }
 
    interface Sealable
-         extends Modifiable,
-                 C.Sealable
+         extends Modifiable
    {
       default boolean isSealed()
       {
@@ -2083,8 +2065,7 @@ public interface Ap
    }
 
    interface StaticModifiable
-         extends Modifiable,
-                 C.StaticModifiable
+         extends Modifiable
    {
       default boolean isStatic()
       {
@@ -2093,8 +2074,7 @@ public interface Ap
    }
 
    interface StrictfpModifiable
-         extends Modifiable,
-                 C.StrictfpModifiable
+         extends Modifiable
    {
       default boolean isStrictfp()
       {
@@ -2104,7 +2084,6 @@ public interface Ap
 
    /// Relation between modules
    sealed interface Directive
-         extends C.Directive
          permits Exports,
                  Opens,
                  Provides,
@@ -2116,7 +2095,7 @@ public interface Ap
     */
    non-sealed interface Exports
          extends Directive,
-                 C.Exports
+                 ExportsRenderable
    {
       /**
        * packages to export to every module in {@link #getTargetModules()} or all if the list is empty
@@ -2136,7 +2115,7 @@ public interface Ap
     */
    non-sealed interface Opens
          extends Directive,
-                 C.Opens
+                 OpensRenderable
    {
       /**
        * the package to be accessed by reflection
@@ -2158,7 +2137,7 @@ public interface Ap
     */
    non-sealed interface Provides
          extends Directive,
-                 C.Provides
+                 ProvidesRenderable
    {
       /**
        * a service to provide to other modules
@@ -2176,7 +2155,7 @@ public interface Ap
     */
    non-sealed interface Requires
          extends Directive,
-                 C.Requires
+                 RequiresRenderable
    {
       /**
        * The dependent module is required at compile time and optional at runtime
@@ -2191,7 +2170,7 @@ public interface Ap
        */
       boolean isTransitive();
 
-      C.Module getDependency();
+      Module getDependency();
    }
 
    /**
@@ -2201,7 +2180,7 @@ public interface Ap
     */
    non-sealed interface Uses
          extends Directive,
-                 C.Uses
+                 UsesRenderable
    {
       Declared getService();
    }

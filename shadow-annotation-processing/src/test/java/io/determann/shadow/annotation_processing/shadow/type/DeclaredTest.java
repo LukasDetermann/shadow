@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.NestingKind.INNER;
-import static io.determann.shadow.api.NestingKind.OUTER;
+import static io.determann.shadow.api.annotation_processing.NestingKind.INNER;
+import static io.determann.shadow.api.annotation_processing.NestingKind.OUTER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DeclaredTest

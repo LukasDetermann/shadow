@@ -1,9 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.element.TypeElement;
@@ -12,8 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.NAMEABLE_GET_NAME;
-import static io.determann.shadow.api.query.Operations.RECORD_COMPONENT_GET_TYPE;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.recordComponent;
 
 public class RecordComponentImpl implements Ap.RecordComponent
 {
@@ -29,15 +26,15 @@ public class RecordComponentImpl implements Ap.RecordComponent
    }
 
    @Override
-   public boolean isSubtypeOf(C.Type type)
+   public boolean isSubtypeOf(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((Ap.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt(type).toTypeMirror());
    }
 
    @Override
-   public boolean isAssignableFrom(C.Type type)
+   public boolean isAssignableFrom(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt((Ap.Type) type).toTypeMirror());
+      return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt(type).toTypeMirror());
    }
 
    @Override
@@ -88,6 +85,15 @@ public class RecordComponentImpl implements Ap.RecordComponent
    }
 
    @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      return recordComponent().annotate(getDirectAnnotationUsages())
+                              .type(getType())
+                              .name(getName())
+                              .renderDeclaration(renderingContext);
+   }
+
+   @Override
    public String toString()
    {
       return getElement().toString();
@@ -106,12 +112,12 @@ public class RecordComponentImpl implements Ap.RecordComponent
       {
          return true;
       }
-      if (!(other instanceof C.RecordComponent otherRecordComponent))
+      if (!(other instanceof Ap.RecordComponent otherRecordComponent))
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherRecordComponent, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Provider.requestOrEmpty(otherRecordComponent, RECORD_COMPONENT_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
+      return Objects.equals(getName(), otherRecordComponent.getName()) &&
+             Objects.equals(getType(), otherRecordComponent.getType());
    }
 
    public TypeMirror getMirror()
@@ -122,11 +128,5 @@ public class RecordComponentImpl implements Ap.RecordComponent
    public Ap.Context getApi()
    {
       return context;
-   }
-
-   @Override
-   public Implementation getImplementation()
-   {
-      return getApi().getImplementation();
    }
 }

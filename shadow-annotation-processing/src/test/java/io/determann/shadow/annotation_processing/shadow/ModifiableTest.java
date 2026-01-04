@@ -5,7 +5,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.Modifier.*;
+import static io.determann.shadow.api.annotation_processing.Modifier.*;
 
 class ModifiableTest
 {

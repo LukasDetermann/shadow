@@ -1,0 +1,110 @@
+package io.determann.shadow.annotation_processing.dsl;
+
+import io.determann.shadow.annotation_processing.TestFactory;
+import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import org.junit.jupiter.api.Test;
+
+import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DirectiveDslTest
+{
+   @Test
+   void exports()
+   {
+      //@start region="exports-api-simple-string"
+      assertEquals("exports org.example;", Dsl.exports("org.example").renderDeclaration(createRenderingContext()));
+      //@end
+
+      assertEquals("exports org.example to module;", Dsl.exports().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
+
+      Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
+      Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
+
+      //@start region="exports-api-simple-type"
+      assertEquals("exports org.example;", Dsl.exports(aPackage).renderDeclaration(createRenderingContext()));
+      //@end
+
+      //@start region="exports-api"
+      assertEquals("""
+                   exports org.example to
+                   anotherOne,
+                   andAnotherOne;""",
+                   Dsl.exports().package_(aPackage)
+                      .to("anotherOne")
+                      .to(module)
+                      .renderDeclaration(createRenderingContext()));
+      //@end
+   }
+
+   @Test
+   void uses()
+   {
+      //@start region="uses-api-string"
+      assertEquals("uses org.example.MySpi;", Dsl.uses("org.example.MySpi").renderDeclaration(createRenderingContext()));
+      //@end
+
+      Ap.Class service = TestFactory.create(Ap.Class.class, "getQualifiedName", "org.example.MySpi");
+
+      //@start region="uses-api-type"
+      assertEquals("uses org.example.MySpi;", Dsl.uses(service).renderDeclaration(createRenderingContext()));
+      //@end
+   }
+
+   @Test
+   void opens()
+   {
+      //@start region="opens-api-simple-string"
+      assertEquals("opens org.example;", Dsl.opens("org.example").renderDeclaration(createRenderingContext()));
+      //@end
+
+      assertEquals("opens org.example to module;", Dsl.opens().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
+
+      Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
+      Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
+
+      //@start region="opens-api-simple-type"
+      assertEquals("opens org.example;", Dsl.opens(aPackage).renderDeclaration(createRenderingContext()));
+      //@end
+
+      //@start region="opens-api"
+      assertEquals("""
+                   opens org.example to
+                   anotherOne,
+                   andAnotherOne;""",
+                   Dsl.opens().package_(aPackage)
+                      .to("anotherOne")
+                      .to(module)
+                      .renderDeclaration(createRenderingContext()));
+      //@end
+   }
+
+   @Test
+   void requires()
+   {
+      //@start region="requires-api"
+      assertEquals("requires transitive org.example;",
+                   Dsl.requires()
+                      .transitive()
+                      .dependency("org.example")
+                      .renderDeclaration(createRenderingContext()));
+      //@end
+   }
+
+   @Test
+   void provides()
+   {
+      //@start region="provides-api"
+      assertEquals("""
+                   provides org.example.Spi with
+                   org.example.Implementation1,
+                   org.example.Implementation2;""",
+                   Dsl.provides()
+                      .service("org.example.Spi")
+                      .with("org.example.Implementation1")
+                      .with("org.example.Implementation2")
+                      .renderDeclaration(createRenderingContext()));
+      //@end
+   }
+}

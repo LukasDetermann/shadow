@@ -1,16 +1,14 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
-import io.determann.shadow.api.query.Provider;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.query.Operations.RESULT_GET_TYPE;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.result;
 
 public class ResultImpl
       implements Ap.Result
@@ -48,6 +46,14 @@ public class ResultImpl
    }
 
    @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      return result().annotate(getDirectAnnotationUsages())
+                     .type(getType())
+                     .renderDeclaration(renderingContext);
+   }
+
+   @Override
    public int hashCode()
    {
       return Objects.hashCode(getType());
@@ -60,16 +66,10 @@ public class ResultImpl
       {
          return true;
       }
-      if (!(other instanceof C.Result otherReturn))
+      if (!(other instanceof Ap.Result otherReturn))
       {
          return false;
       }
-      return Provider.requestOrEmpty(otherReturn, RESULT_GET_TYPE).map(type -> Objects.equals(type, getType())).orElse(false);
-   }
-
-   @Override
-   public Implementation getImplementation()
-   {
-      return context.getImplementation();
+      return Objects.equals(getType(), otherReturn.getType());
    }
 }

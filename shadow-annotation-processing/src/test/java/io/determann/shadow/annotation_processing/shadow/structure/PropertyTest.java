@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PropertyTest
@@ -24,7 +22,7 @@ class PropertyTest
                                assertEquals("class", properties.get(0).getName());
 
                                assertEquals("id", properties.get(1).getName());
-                               assertTrue(requestOrThrow(properties.get(1), PROPERTY_IS_MUTABLE));
+                               assertTrue(properties.get(1).isMutable());
                                Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
                                assertEquals("Long", type.getName());
                                Ap.Field field = properties.get(1).getFieldOrThrow();
@@ -216,8 +214,8 @@ class PropertyTest
                                assertEquals("flag", properties.get(1).getName());
                                Ap.Field field = properties.get(1).getFieldOrThrow();
                                assertEquals("flag", field.getName());
-                               Ap.QualifiedNameable fieldType = ((Ap.QualifiedNameable) requestOrThrow(field, VARIABLE_GET_TYPE));
-                               assertEquals("java.lang.Boolean", requestOrThrow(fieldType, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
+                               Ap.QualifiedNameable fieldType = (Ap.QualifiedNameable) field.getType();
+                               assertEquals("java.lang.Boolean", fieldType.getQualifiedName());
                             })
                    .withCodeToCompile("Pojo", """
                                               class Pojo {

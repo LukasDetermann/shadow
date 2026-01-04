@@ -1,9 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -13,9 +12,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.MODULE_ENCLOSED_GET_MODULE;
-import static io.determann.shadow.api.query.Operations.QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.packageInfo;
+import static java.util.Optional.ofNullable;
 
 public class PackageImpl implements Ap.Package
 {
@@ -61,7 +59,7 @@ public class PackageImpl implements Ap.Package
    public Optional<Ap.Declared> getDeclared(String qualifiedName)
    {
       return getDeclared().stream()
-                          .filter(declared -> requestOrThrow(declared, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME).equals(qualifiedName))
+                          .filter(declared -> declared.getQualifiedName().equals(qualifiedName))
                           .findFirst();
    }
 
@@ -78,9 +76,9 @@ public class PackageImpl implements Ap.Package
    }
 
    @Override
-   public String getJavaDoc()
+   public Optional<String> getJavaDoc()
    {
-      return adapt(getApi()).toElements().getDocComment(getElement());
+      return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
    @Override
@@ -96,6 +94,20 @@ public class PackageImpl implements Ap.Package
    }
 
    @Override
+   public String renderPackageInfo(RenderingContext renderingContext)
+   {
+      return packageInfo().annotate(getDirectAnnotationUsages())
+                          .name(getQualifiedName())
+                          .renderPackageInfo(renderingContext);
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      return getQualifiedName();
+   }
+
+   @Override
    public String toString()
    {
       return getElement().toString();
@@ -104,8 +116,7 @@ public class PackageImpl implements Ap.Package
    @Override
    public int hashCode()
    {
-      return Objects.hash(getQualifiedName(),
-                          getModule());
+      return Objects.hash(getQualifiedName(), getModule());
    }
 
    @Override
@@ -115,18 +126,12 @@ public class PackageImpl implements Ap.Package
       {
          return true;
       }
-      if (!(other instanceof C.Package otherPackage))
+      if (!(other instanceof Ap.Package otherPackage))
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), requestOrThrow(otherPackage, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME)) &&
-             Objects.equals(getModule(), requestOrThrow(otherPackage, MODULE_ENCLOSED_GET_MODULE));
-   }
-
-   @Override
-   public Implementation getImplementation()
-   {
-      return getApi().getImplementation();
+      return Objects.equals(getQualifiedName(), otherPackage.getQualifiedName()) &&
+             Objects.equals(getModule(), otherPackage.getModule());
    }
 
    private Ap.Context getApi()

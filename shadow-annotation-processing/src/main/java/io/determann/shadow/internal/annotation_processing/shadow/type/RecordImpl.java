@@ -3,6 +3,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -10,9 +11,13 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerRecord;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.record;
 import static java.util.Arrays.stream;
 
-public class RecordImpl extends DeclaredImpl implements Ap.Record
+public class RecordImpl
+      extends DeclaredImpl
+      implements Ap.Record
 {
    public RecordImpl(Ap.Context context, DeclaredType declaredTypeMirror)
    {
@@ -89,6 +94,57 @@ public class RecordImpl extends DeclaredImpl implements Ap.Record
    public Ap.Record erasure()
    {
       return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+   }
+
+   @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      return (switch (getNesting())
+              {
+                 case OUTER -> record().package_(getPackage());
+                 case INNER -> innerRecord().outer(getSurrounding().orElseThrow());
+              }).annotate(getDirectAnnotationUsages())
+                .modifier(getModifiers())
+                .name(getName())
+                .component(getRecordComponents())
+                .genericDeclaration(getGenericDeclarations())
+                .genericUsage(getGenericUsages())
+                .implements_(getDirectInterfaces())
+                .field(getFields())
+                .method(getMethods())
+                .constructor(getConstructors())
+                .renderDeclaration(renderingContext);
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      return getQualifiedName();
+   }
+
+   @Override
+   public String renderSimpleName(RenderingContext renderingContext)
+   {
+      return getName();
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return (switch (getNesting())
+              {
+                 case OUTER -> record().package_(getPackage());
+                 case INNER -> innerRecord().outer(getSurrounding().orElseThrow());
+              }).name(getName())
+                .genericDeclaration(getGenericDeclarations())
+                .genericUsage(getGenericUsages())
+                .renderType(renderingContext);
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return renderingContext.renderName(renderQualifiedName(renderingContext));
    }
 
    @Override

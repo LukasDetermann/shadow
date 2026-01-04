@@ -4,8 +4,6 @@ import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.query.Operations.VARIABLE_IS_SUBTYPE_OF;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 abstract class VariableTest
@@ -19,7 +17,7 @@ abstract class VariableTest
                                Ap.Class example = context.getClassOrThrow("ParameterExample");
                                Ap.Constructor constructor = example.getConstructors().get(0);
                                Ap.Parameter parameter = constructor.getParameters().get(0);
-                               assertTrue(requestOrThrow(parameter, VARIABLE_IS_SUBTYPE_OF, string));
+                               assertTrue(parameter.isSubtypeOf(string));
                             })
                    .withCodeToCompile("ParameterExample.java", """
                                                                public class ParameterExample

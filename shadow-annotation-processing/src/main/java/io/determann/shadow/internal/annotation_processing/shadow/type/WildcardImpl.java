@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
@@ -41,15 +41,37 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public boolean contains(C.Type type)
+   public boolean contains(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().contains(getMirror(), adapt((Ap.Declared) type).toDeclaredType());
+      return adapt(getApi()).toTypes().contains(getMirror(), adapt((Ap.Declared) type).toDeclaredType());//todo
    }
 
    @Override
    public Ap.Wildcard erasure()
    {
       return (Ap.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      Optional<Ap.Type> superType = getSuper();
+      if (superType.isPresent())
+      {
+         return "? super " + superType.get().renderName(renderingContext);
+      }
+      Optional<Ap.Type> extendsType = getExtends();
+      if (extendsType.isPresent())
+      {
+         return "? extends " + extendsType.get();
+      }
+      return "?";
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return renderName(renderingContext);
    }
 
    @Override

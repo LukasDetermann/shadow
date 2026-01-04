@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.type.NoType;
 import java.util.Objects;
@@ -30,5 +31,17 @@ public class VoidImpl
    public String toString()
    {
       return "void";
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return "void";
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return renderName(renderingContext);
    }
 }

@@ -5,7 +5,7 @@ import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DocumentedTest
 {
@@ -14,12 +14,12 @@ class DocumentedTest
    {
       ProcessorTest.process(context ->
                             {
-                               assertNull(context.getInterfaceOrThrow("java.util.Collection").getJavaDoc());
+                               assertTrue(context.getInterfaceOrThrow("java.util.Collection").getJavaDoc().isEmpty());
 
                                Ap.Class aClass = context.getClassOrThrow("JavaDocExample");
-                               assertEquals(" Class level doc\n", aClass.getJavaDoc());
-                               assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc());
-                               assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc());
+                               assertEquals(" Class level doc\n", aClass.getJavaDoc().orElseThrow());
+                               assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc().orElseThrow());
+                               assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc().orElseThrow());
                             })
                    .withCodeToCompile("JavaDocExample.java", """
                          /**

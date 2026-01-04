@@ -1,0 +1,14 @@
+package io.determann.shadow.api.annotation_processing.dsl.package_;
+
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import org.jetbrains.annotations.Contract;
+
+public interface PackageRenderable
+{
+   /// "", when package is unnamed
+   @Contract(value = "_ -> new", pure = true)
+   String renderQualifiedName(RenderingContext renderingContext);
+
+   @Contract(value = "_ -> new", pure = true)
+   String renderPackageInfo(RenderingContext renderingContext);
+}

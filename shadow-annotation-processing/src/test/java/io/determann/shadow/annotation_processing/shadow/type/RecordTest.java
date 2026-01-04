@@ -9,8 +9,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.query.Operations.DECLARED_GET_SUPER_TYPES;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecordTest
@@ -189,7 +187,7 @@ class RecordTest
                                assertEquals(Set.of(object, cRecord), noParent.getSuperTypes());
 
                                Ap.Record multiParent = context.getRecordOrThrow("RecordMultiParent");
-                               assertEquals(Set.of(object, cRecord, consumer, supplier), requestOrThrow(multiParent, DECLARED_GET_SUPER_TYPES));
+                               assertEquals(Set.of(object, cRecord, consumer, supplier), multiParent.getSuperTypes());
                             })
                    .withCodeToCompile("RecordNoParent.java", "record RecordNoParent() {}")
                    .withCodeToCompile("RecordMultiParent.java", """

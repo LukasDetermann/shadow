@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.type.ArrayType;
 import java.util.List;
@@ -18,9 +18,9 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public boolean isSubtypeOf(C.Type type)
+   public boolean isSubtypeOf(Ap.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(adapt((Ap.Type) type).toTypeMirror(), getMirror());
+      return adapt(getApi()).toTypes().isSubtype(adapt(type).toTypeMirror(), getMirror());
    }
 
    @Override
@@ -58,7 +58,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public boolean representsSameType(C.Type type)
+   public boolean representsSameType(Ap.Type type)
    {
       return equals(type);
    }
@@ -67,6 +67,18 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    public Ap.Array erasure()
    {
       return adapt(getApi(), ((ArrayType) adapt(getApi()).toTypes().erasure(getMirror())));
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return getComponentType().renderName(renderingContext) + "[]";
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return renderType(renderingContext);
    }
 
    @Override

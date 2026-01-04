@@ -1,10 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
 import javax.lang.model.element.ExecutableElement;
@@ -19,11 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.determann.shadow.api.annotation_processing.Queries.query;
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrEmpty;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static java.util.Optional.ofNullable;
 
 
 public abstract class ExecutableImpl
@@ -110,23 +105,23 @@ public abstract class ExecutableImpl
       return executableElement;
    }
 
-   public boolean overrides(C.Method method)
+   public boolean overrides(Ap.Method method)
    {
       return adapt(getApi()).toElements().overrides(getElement(),
-                                                    adapt(((Ap.Executable) method)).toExecutableElement(),
+                                                    adapt(method).toExecutableElement(),
                                                     adapt(getSurrounding()).toTypeElement());
    }
 
-   public boolean overwrittenBy(C.Method method)
+   public boolean overwrittenBy(Ap.Method method)
    {
-      return adapt(getApi()).toElements().overrides(adapt((Ap.Executable) method).toExecutableElement(),
+      return adapt(getApi()).toElements().overrides(adapt(method).toExecutableElement(),
                                                     getElement(),
-                                                    adapt(query(method).getSurrounding()).toTypeElement());
+                                                    adapt(method.getSurrounding()).toTypeElement());
    }
 
-   public boolean sameParameterTypes(C.Method method)
+   public boolean sameParameterTypes(Ap.Method method)
    {
-      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt((Ap.Executable) method).toExecutableType());
+      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt(method).toExecutableType());
    }
 
    public List<Ap.Parameter> getParameters()
@@ -157,9 +152,9 @@ public abstract class ExecutableImpl
       return getElement().getSimpleName().toString();
    }
 
-   public String getJavaDoc()
+   public Optional<String> getJavaDoc()
    {
-      return adapt(getApi()).toElements().getDocComment(getElement());
+      return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
@@ -204,19 +199,12 @@ public abstract class ExecutableImpl
       {
          return true;
       }
-      if (!(other instanceof C.Executable otherExecutable))
+      if (!(other instanceof Ap.Executable otherExecutable))
       {
          return false;
       }
-      return requestOrEmpty(otherExecutable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getParameters(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETERS)) &&
-             requestOrEmpty(otherExecutable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers()))
-                                                                      .orElse(false) &&
-             Objects.equals(getParameterTypes(), requestOrThrow(otherExecutable, EXECUTABLE_GET_PARAMETER_TYPES));
-   }
-
-   public Implementation getImplementation()
-   {
-      return getApi().getImplementation();
+      return Objects.equals(getName(), otherExecutable.getName()) &&
+             Objects.equals(getParameters(), otherExecutable.getParameters()) &&
+             Objects.equals(getModifiers(), otherExecutable.getModifiers());
    }
 }

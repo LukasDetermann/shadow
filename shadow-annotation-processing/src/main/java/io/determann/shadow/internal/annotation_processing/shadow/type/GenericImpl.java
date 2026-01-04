@@ -1,9 +1,14 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.dsl.generic.GenericAndExtendsStep;
+import io.determann.shadow.api.annotation_processing.dsl.generic.GenericExtendsStep;
+import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceRenderable;
 
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.IntersectionType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import java.util.Collections;
@@ -12,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.generic;
 
 public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
 {
@@ -65,7 +71,7 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
    public Optional<Ap.Type> getSuper()
    {
       TypeMirror lowerBound = getMirror().getLowerBound();
-      if (lowerBound == null || lowerBound.getKind().equals(javax.lang.model.type.TypeKind.NONE))
+      if (lowerBound == null || lowerBound.getKind().equals(TypeKind.NONE))
       {
          return Optional.empty();
       }
@@ -105,6 +111,47 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
    public Ap.Generic erasure()
    {
       return (Ap.Generic) adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+   }
+
+   @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      GenericExtendsStep extendsStep = generic().name(getName());
+
+      List<Ap.Type> bounds = getBounds();
+      if (bounds.isEmpty())
+      {
+         return extendsStep.renderDeclaration(renderingContext);
+      }
+      GenericAndExtendsStep andExtendsStep = switch (bounds.getFirst())
+      {
+         case Ap.Class cClass -> extendsStep.extends_(cClass);
+         case Ap.Interface cInterface -> extendsStep.extends_(cInterface);
+         case Ap.Generic generic -> extendsStep.extends_(generic);
+         default -> throw new IllegalStateException();
+      };
+      if (bounds.size() == 1)
+      {
+         return andExtendsStep.renderDeclaration(renderingContext);
+      }
+
+      for (Ap.Type additionalBound : bounds.subList(1, bounds.size()))
+      {
+         andExtendsStep = andExtendsStep.extends_(((InterfaceRenderable) additionalBound));
+      }
+      return extendsStep.renderDeclaration(renderingContext);
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return renderName(renderingContext);
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      return getName();
    }
 
    @Override

@@ -1,8 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Modifier;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,7 +34,7 @@ public class PropertyFactory
 
    private PropertyFactory() {}
 
-   public static List<Ap.Property> of(Ap.Context api, Ap.Declared declared)
+   public static List<Ap.Property> of(Ap.Declared declared)
    {
       Map<String, Ap.Field> nameField = declared.getFields().stream()
                                                 .filter(field -> !field.hasModifier(Modifier.STATIC))
@@ -63,7 +62,7 @@ public class PropertyFactory
                                       Ap.Method setter = findSetter(entry.getValue(), type).orElse(null);
                                       Ap.Field field = findField(nameField, type, name).orElse(null);
 
-                                      PropertyImpl template = new PropertyImpl(api, name, type, field, getter.method(), setter);
+                                      PropertyImpl template = new PropertyImpl(name, type, field, getter.method(), setter);
 
                                       return new AbstractMap.SimpleEntry<>(getter.position(), template);
                                    })
@@ -147,7 +146,7 @@ public class PropertyFactory
    {
       String name = method.getName();
       List<? extends Ap.Parameter> parameters = method.getParameters();
-      C.Type returnType = method.getReturnType();
+      Ap.Type returnType = method.getReturnType();
 
       //getter
       if (!(returnType instanceof Ap.Void))

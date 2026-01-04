@@ -2,7 +2,8 @@ package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.Objects;
@@ -29,9 +30,9 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
    }
 
    @Override
-   public Implementation getImplementation()
+   public String renderDeclaration(RenderingContext renderingContext)
    {
-      return getApi().getImplementation();
+      return Dsl.uses(getService()).renderDeclaration(renderingContext);
    }
 
    @Override

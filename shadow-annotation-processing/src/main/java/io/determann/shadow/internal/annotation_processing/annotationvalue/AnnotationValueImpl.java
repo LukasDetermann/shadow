@@ -2,7 +2,8 @@ package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.dsl.annotation_value.AnnotationValueRenderable;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -12,6 +13,8 @@ import javax.lang.model.type.TypeMirror;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.annotationValue;
 
 public abstract class AnnotationValueImpl
 {
@@ -328,6 +331,32 @@ public abstract class AnnotationValueImpl
 
    public abstract Object getValue();
 
+
+   public String render(RenderingContext renderingContext)
+   {
+      Object object = getValue();
+
+      return (switch (object)
+              {
+                 case Character c -> annotationValue(c);
+                 case String s -> annotationValue(s);
+                 case Boolean b -> annotationValue(b);
+                 case Byte b -> annotationValue(b);
+                 case Short s -> annotationValue(s);
+                 case Integer i -> annotationValue(i);
+                 case Long l -> annotationValue(l);
+                 case Float f -> annotationValue(f);
+                 case Ap.EnumConstant e -> annotationValue(e);
+                 case Ap.Type t -> annotationValue(t);
+                 case Ap.AnnotationUsage a -> annotationValue(a);
+                 case List<?> l ->
+                    //noinspection unchecked
+                       annotationValue((List<AnnotationValueRenderable>) l);
+
+                 default -> throw new IllegalStateException("Unexpected value: " + object);
+              }).render(renderingContext);
+   }
+
    @Override
    public boolean equals(Object other)
    {
@@ -350,10 +379,5 @@ public abstract class AnnotationValueImpl
              "default=" + isDefault() +
              ", value=" + getValue() +
              '}';
-   }
-
-   public Implementation getImplementation()
-   {
-      return context.getImplementation();
    }
 }

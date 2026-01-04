@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.dsl.Dsl;
-import io.determann.shadow.api.dsl.class_.ClassRenderable;
-import io.determann.shadow.api.dsl.declared.DeclaredRenderable;
-import io.determann.shadow.api.dsl.interface_.InterfaceGenericStep;
-import io.determann.shadow.api.dsl.method.MethodRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
+import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceGenericStep;
+import io.determann.shadow.api.annotation_processing.dsl.method.MethodRenderable;
 import org.jetbrains.annotations.NotNullByDefault;
 
 import java.util.Collection;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.dsl.Dsl.class_;
-import static io.determann.shadow.api.dsl.Dsl.field;
-import static io.determann.shadow.api.dsl.RenderingContext.createRenderingContext;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.class_;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.field;
+import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
 import static java.lang.Character.toLowerCase;
 import static java.util.stream.Stream.concat;
 

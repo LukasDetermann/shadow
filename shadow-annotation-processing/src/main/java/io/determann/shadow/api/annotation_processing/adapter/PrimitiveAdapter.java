@@ -1,7 +1,7 @@
 package io.determann.shadow.api.annotation_processing.adapter;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.internal.annotation_processing.shadow.type.primitive.PrimitiveImpl;
+import io.determann.shadow.internal.annotation_processing.shadow.type.PrimitiveImpl;
 
 import javax.lang.model.type.PrimitiveType;
 

@@ -1,22 +1,19 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
-import io.determann.shadow.api.Modifier;
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrEmpty;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static java.util.Optional.ofNullable;
 
 public abstract class VariableImpl
 {
@@ -34,12 +31,12 @@ public abstract class VariableImpl
       return ApContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(C.Type type)
+   public boolean isSubtypeOf(Ap.Type type)
    {
       return adapt(getApi()).toTypes().isSubtype(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
    }
 
-   public boolean isAssignableFrom(C.Type type)
+   public boolean isAssignableFrom(Ap.Type type)
    {
       return adapt(getApi()).toTypes().isAssignable(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
    }
@@ -64,9 +61,9 @@ public abstract class VariableImpl
       return getElement().getSimpleName().toString();
    }
 
-   public String getJavaDoc()
+   public Optional<String> getJavaDoc()
    {
-      return adapt(getApi()).toElements().getDocComment(getElement());
+      return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
@@ -87,11 +84,6 @@ public abstract class VariableImpl
    public TypeMirror getMirror()
    {
       return variableElement.asType();
-   }
-
-   public Implementation getImplementation()
-   {
-      return getApi().getImplementation();
    }
 
    @Override
@@ -115,12 +107,12 @@ public abstract class VariableImpl
       {
          return true;
       }
-      if (!(other instanceof C.Variable otherVariable))
+      if (!(other instanceof Ap.Variable otherVariable))
       {
          return false;
       }
-      return requestOrEmpty(otherVariable, NAMEABLE_GET_NAME).map(name -> Objects.equals(getName(), name)).orElse(false) &&
-             Objects.equals(getType(), requestOrThrow(otherVariable, VARIABLE_GET_TYPE)) &&
-             requestOrEmpty(otherVariable, MODIFIABLE_GET_MODIFIERS).map(modifiers -> Objects.equals(modifiers, getModifiers())).orElse(false);
+      return Objects.equals(getName(), otherVariable.getName()) &&
+             Objects.equals(getType(), otherVariable.getType()) &&
+             Objects.equals(getModifiers(), otherVariable.getModifiers());
    }
 }

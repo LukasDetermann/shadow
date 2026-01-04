@@ -1,9 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
-import io.determann.shadow.api.C;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.api.query.Implementation;
+import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.PackageElement;
@@ -11,10 +10,8 @@ import javax.lang.model.type.NoType;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.determann.shadow.api.annotation_processing.Queries.query;
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.query.Operations.*;
-import static io.determann.shadow.api.query.Provider.requestOrThrow;
+import static io.determann.shadow.api.annotation_processing.dsl.Dsl.moduleInfo;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
@@ -57,7 +54,7 @@ public class ModuleImpl implements Ap.Module
    @Override
    public List<Ap.Declared> getDeclared()
    {
-      return getPackages().stream().flatMap(aPackage -> query(aPackage).getDeclared().stream()).toList();
+      return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).toList();
    }
 
    @Override
@@ -99,7 +96,6 @@ public class ModuleImpl implements Ap.Module
                                        case USES -> adapt(getApi(), ((ModuleElement.UsesDirective) directive));
                                        case PROVIDES -> adapt(getApi(), ((ModuleElement.ProvidesDirective) directive));
                                     })
-                         .map(Ap.Directive.class::cast)
                          .collect(of((Supplier<List<Ap.Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
@@ -109,11 +105,11 @@ public class ModuleImpl implements Ap.Module
                                            return;
                                         }
 
-                                        Optional<C.Provides> existing =
+                                        Optional<Ap.Provides> existing =
                                               directives.stream()
-                                                        .filter(C.Provides.class::isInstance)
-                                                        .map(C.Provides.class::cast)
-                                                        .filter(collected -> query((C.Type) requestOrThrow(collected, PROVIDES_GET_SERVICE)).representsSameType(requestOrThrow(provides, PROVIDES_GET_SERVICE)))
+                                                        .filter(Ap.Provides.class::isInstance)
+                                                        .map(Ap.Provides.class::cast)
+                                                        .filter(collected -> collected.getService().representsSameType(provides.getService()))
                                                         .findAny();
 
                                         if (existing.isEmpty())
@@ -121,7 +117,7 @@ public class ModuleImpl implements Ap.Module
                                            directives.add(directive);
                                            return;
                                         }
-                                        if (requestOrThrow(existing.get(),PROVIDES_GET_IMPLEMENTATIONS).size() > requestOrThrow(provides,PROVIDES_GET_IMPLEMENTATIONS).size())
+                                        if (existing.get().getImplementations().size() > provides.getImplementations().size())
                                         {
                                            return;
                                         }
@@ -145,9 +141,9 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
-   public String getJavaDoc()
+   public Optional<String> getJavaDoc()
    {
-      return adapt(getApi()).toElements().getDocComment(getElement());
+      return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
    @Override
@@ -173,6 +169,27 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
+   public String renderModuleInfo(RenderingContext renderingContext)
+   {
+      List<? extends Ap.Directive> directives = getDirectives();
+
+      return moduleInfo().annotate(getAnnotationUsages())
+                         .name(getName())
+                         .requires(directives.stream().filter(Ap.Requires.class::isInstance).map(Ap.Requires.class::cast).toList())
+                         .exports(directives.stream().filter(Ap.Exports.class::isInstance).map(Ap.Exports.class::cast).toList())
+                         .opens(directives.stream().filter(Ap.Opens.class::isInstance).map(Ap.Opens.class::cast).toList())
+                         .uses(directives.stream().filter(Ap.Uses.class::isInstance).map(Ap.Uses.class::cast).toList())
+                         .provides(directives.stream().filter(Ap.Provides.class::isInstance).map(Ap.Provides.class::cast).toList())
+                         .renderModuleInfo(renderingContext);
+   }
+
+   @Override
+   public String renderQualifiedName(RenderingContext renderingContext)
+   {
+      return getQualifiedName();
+   }
+
+   @Override
    public String toString()
    {
       return getElement().toString();
@@ -191,16 +208,10 @@ public class ModuleImpl implements Ap.Module
       {
          return true;
       }
-      if (!(other instanceof C.Module otherModule))
+      if (!(other instanceof Ap.Module otherModule))
       {
          return false;
       }
-      return Objects.equals(getQualifiedName(), requestOrThrow(otherModule, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME));
-   }
-
-   @Override
-   public Implementation getImplementation()
-   {
-      return getApi().getImplementation();
+      return Objects.equals(getQualifiedName(), otherModule.getQualifiedName());
    }
 }

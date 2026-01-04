@@ -1,7 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.query.Implementation;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -11,16 +10,13 @@ import static java.util.Optional.ofNullable;
 public class PropertyImpl
       implements Ap.Property
 {
-   private final Ap.Context context;
-
    private final String name;
    private final Ap.VariableType type;
    private final Ap.Field field;
    private final Ap.Method getter;
    private final Ap.Method setter;
 
-   PropertyImpl(Ap.Context api,
-                String name,
+   PropertyImpl(String name,
                 Ap.VariableType type,
                 Ap.Field field,
                 Ap.Method getter,
@@ -31,7 +27,6 @@ public class PropertyImpl
       this.field = field;
       this.getter = getter;
       this.setter = setter;
-      this.context = api;
    }
 
    @Override
@@ -80,12 +75,6 @@ public class PropertyImpl
    public boolean isMutable()
    {
       return getSetter().isPresent();
-   }
-
-   @Override
-   public Implementation getImplementation()
-   {
-      return context.getImplementation();
    }
 
    @Override
