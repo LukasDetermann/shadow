@@ -2,31 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>io.determann</groupId>
-        <artifactId>shadow-parent</artifactId>
-        <relativePath>../shadow-parent/pom.xml</relativePath>
-        <version>0.3.1</version>
-    </parent>
 
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.determann</groupId>
     <artifactId>documentation</artifactId>
-    <packaging>jar</packaging>
+    <version>0.3.1</version>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <org.junit.jupiter.junit-jupiter-api.version>5.11.4</org.junit.jupiter.junit-jupiter-api.version>
+        <org.apache.commons.commons-lang3.version>3.18.0</org.apache.commons.commons-lang3.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
             <artifactId>shadow-annotation-processing</artifactId>
+            <version>0.3.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <version>${org.apache.commons.commons-lang3.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>${org.junit.jupiter.junit-jupiter-api.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
