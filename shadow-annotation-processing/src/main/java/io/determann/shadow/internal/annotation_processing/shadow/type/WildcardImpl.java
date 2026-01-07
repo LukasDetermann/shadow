@@ -41,9 +41,16 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public boolean contains(Ap.Type type)
+   public boolean contains(Ap.ReferenceType referenceType)
    {
-      return adapt(getApi()).toTypes().contains(getMirror(), adapt((Ap.Declared) type).toDeclaredType());//todo
+      TypeMirror typemirror = switch (referenceType)
+      {
+         case Ap.Array array -> adapt(array).toArrayType();
+         case Ap.Generic generic -> adapt(generic).toTypeVariable();
+         case Ap.Declared declared -> adapt(declared).toDeclaredType();
+      };
+
+      return adapt(getApi()).toTypes().contains(getMirror(), typemirror);
    }
 
    @Override

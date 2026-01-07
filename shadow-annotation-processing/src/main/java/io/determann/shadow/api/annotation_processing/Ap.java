@@ -962,7 +962,7 @@ public interface Ap
       List<Property> getProperties();
 
       /**
-       * Equivalent to {@link #isSubtypeOf(Type)} except for primitives.
+       * Equivalent to {@link Declared#isSubtypeOf(ReferenceType)} except for primitives.
        * if one is a primitive and the other is not it tries to convert them
        */
       boolean isAssignableFrom(Type type);
@@ -1042,7 +1042,7 @@ public interface Ap
        * This can be useful if you want to check if a type implements for example a {@link java.util.Collection}
        * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
        */
-      boolean isSubtypeOf(Type type);
+      boolean isSubtypeOf(ReferenceType referenceType);
 
       /**
        * is it an outer or inner class? etc.
@@ -1354,7 +1354,7 @@ public interface Ap
       /**
        * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}
        */
-      boolean contains(Type type);
+      boolean contains(ReferenceType referenceType);
 
       /**
        * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.

@@ -10,6 +10,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.*;
 
@@ -37,9 +38,16 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return ApContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(Ap.Type type)
+   public boolean isSubtypeOf(Ap.ReferenceType referenceType)
    {
-      return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt((Ap.Declared) type).toDeclaredType());//todo
+      TypeMirror typemirror = switch (referenceType)
+      {
+         case Ap.Array array -> adapt(array).toArrayType();
+         case Ap.Generic generic -> adapt(generic).toTypeVariable();
+         case Ap.Declared declared -> adapt(declared).toDeclaredType();
+      };
+
+      return adapt(getApi()).toTypes().isSubtype(getMirror(), typemirror);
    }
 
    public TypeElement getElement()
