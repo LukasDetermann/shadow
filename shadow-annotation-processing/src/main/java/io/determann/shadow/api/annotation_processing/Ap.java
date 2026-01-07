@@ -92,16 +92,10 @@ public interface Ap
          //the compiler can crash when an uncaught exception is thrown. so they are handled here. the default handler Logs and raises an error
          catch (Exception t)
          {
-            if (api.getExceptionHandler() != null)
-            {
-               api.getExceptionHandler().accept(api, t);
-            }
+            api.getExceptionHandler().accept(api, t);
          }
-         if (api.getDiagnosticHandler() != null)
-         {
-            String processorName = getClass().isAnonymousClass() ? "anonymousProcessor" : getClass().getSimpleName();
-            api.getDiagnosticHandler().accept(api, new DiagnosticContext(api, processorName, processingRound, start, Instant.now()));
-         }
+         String processorName = getClass().isAnonymousClass() ? "anonymousProcessor" : getClass().getSimpleName();
+         api.getDiagnosticHandler().accept(api, new DiagnosticContext(api, processorName, processingRound, start, Instant.now()));
          processingRound++;
 
          //claiming annotations is kinda useless

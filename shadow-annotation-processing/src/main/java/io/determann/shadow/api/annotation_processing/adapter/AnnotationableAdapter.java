@@ -15,34 +15,16 @@ public class AnnotationableAdapter
 
    public Element toElement()
    {
-      if (annotationable instanceof Ap.Declared declared)
+      return switch (annotationable)
       {
-         return new DeclaredAdapter(declared).toTypeElement();
-      }
-      if (annotationable instanceof Ap.Executable executable)
-      {
-         return new ExecutableAdapter(executable).toExecutableElement();
-      }
-      if (annotationable instanceof Ap.Generic generic)
-      {
-         return new GenericAdapter(generic).toTypeParameterElement();
-      }
-      if (annotationable instanceof Ap.Module module)
-      {
-         return new ModuleAdapter(module).toModuleElement();
-      }
-      if (annotationable instanceof Ap.Package aPackage)
-      {
-         return new PackageAdapter(aPackage).toPackageElement();
-      }
-      if (annotationable instanceof Ap.RecordComponent recordComponent)
-      {
-         return new RecordComponentAdapter(recordComponent).toRecordComponentElement();
-      }
-      if (annotationable instanceof Ap.Variable variable)
-      {
-         return new VariableAdapter(variable).toVariableElement();
-      }
-      throw new IllegalArgumentException();
+         case Ap.Declared declared -> new DeclaredAdapter(declared).toTypeElement();
+         case Ap.Executable executable -> new ExecutableAdapter(executable).toExecutableElement();
+         case Ap.Generic generic -> new GenericAdapter(generic).toTypeParameterElement();
+         case Ap.Module module -> new ModuleAdapter(module).toModuleElement();
+         case Ap.Package aPackage -> new PackageAdapter(aPackage).toPackageElement();
+         case Ap.RecordComponent recordComponent -> new RecordComponentAdapter(recordComponent).toRecordComponentElement();
+         case Ap.Variable variable -> new VariableAdapter(variable).toVariableElement();
+         case null, default -> throw new IllegalArgumentException();
+      };
    }
 }

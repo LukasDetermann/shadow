@@ -52,11 +52,10 @@ public class DiagnosticContext
       {
          return true;
       }
-      if (!(o instanceof DiagnosticContext))
+      if (!(o instanceof DiagnosticContext context))
       {
          return false;
       }
-      DiagnosticContext context = (DiagnosticContext) o;
       return getProcessingRound() == context.getProcessingRound() &&
              Objects.equals(getApi(), context.getApi()) &&
              Objects.equals(getProcessorName(), context.getProcessorName()) &&
