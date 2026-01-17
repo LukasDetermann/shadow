@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorRenderable;
@@ -15,14 +15,14 @@ class ReceiverDslTest
    @Test
    void method()
    {
-      MethodRenderable method = Dsl.method()
-                                   .result("void")
-                                   .name("method")
-                                   .receiver(Dsl.receiver()
-                                                .annotate("Test")
-                                                .annotate(Dsl.annotationUsage()
-                                                             .type("MyAnnotation")))
-                                   .parameter(Dsl.parameter("String", "s"));
+      MethodRenderable method = JavaDsl.method()
+                                       .result("void")
+                                       .name("method")
+                                       .receiver(JavaDsl.receiver()
+                                                        .annotate("Test")
+                                                        .annotate(JavaDsl.annotationUsage()
+                                                                         .type("MyAnnotation")))
+                                       .parameter(JavaDsl.parameter("String", "s"));
 
       assertEquals("""
                    package org.example;
@@ -31,17 +31,17 @@ class ReceiverDslTest
                       void method(@Test @MyAnnotation MyClass MyClass.this, String s) {}
                    
                    }""",
-                   Dsl.class_()
-                      .package_( "org.example")
-                      .name("MyClass")
-                      .method(method)
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.class_()
+                          .package_( "org.example")
+                          .name("MyClass")
+                          .method(method)
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void methodThrows()
    {
-      MethodRenderable methodRenderable = Dsl.method().result("void").name("method").receiver(Dsl.receiver());
+      MethodRenderable methodRenderable = JavaDsl.method().result("void").name("method").receiver(JavaDsl.receiver());
 
       assertThrows(IllegalStateException.class, () -> methodRenderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -49,11 +49,11 @@ class ReceiverDslTest
    @Test
    void constructor()
    {
-      ClassRenderable outerClass = Dsl.class_().package_("org.example")
-                                      .name("Outer")
-                                      .inner(Dsl.innerClass().outer("Outer").name("Inner")
-                                                .constructor(Dsl.constructor().type("Inner")
-                                                                .receiver(Dsl.receiver())));
+      ClassRenderable outerClass = JavaDsl.class_().package_("org.example")
+                                          .name("Outer")
+                                          .inner(JavaDsl.innerClass().outer("Outer").name("Inner")
+                                                        .constructor(JavaDsl.constructor().type("Inner")
+                                                                            .receiver(JavaDsl.receiver())));
 
       assertEquals("""
                    package org.example;
@@ -71,10 +71,10 @@ class ReceiverDslTest
    @Test
    void constructorMissingOuterClass()
    {
-      ClassRenderable renderable = Dsl.innerClass().outer("Outer")
-                                      .name("Inner")
-                                      .constructor(Dsl.constructor().type("Inner")
-                                                      .receiver(Dsl.receiver()));
+      ClassRenderable renderable = JavaDsl.innerClass().outer("Outer")
+                                          .name("Inner")
+                                          .constructor(JavaDsl.constructor().type("Inner")
+                                                              .receiver(JavaDsl.receiver()));
 
       assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -82,8 +82,8 @@ class ReceiverDslTest
    @Test
    void constructorMissingInnerClass()
    {
-      ConstructorRenderable renderable = Dsl.constructor().type("Inner")
-                                            .receiver(Dsl.receiver());
+      ConstructorRenderable renderable = JavaDsl.constructor().type("Inner")
+                                                .receiver(JavaDsl.receiver());
 
       assertThrows(IllegalStateException.class, () -> renderable.renderDeclaration(RenderingContext.createRenderingContext()));
    }

@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing.dsl;
 
 import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.enum_.EnumImportStep;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EnumDslTest
 {
 
-   public static final EnumImportStep ENUM = Dsl.enum_().package_("org.example");
+   public static final EnumImportStep ENUM = JavaDsl.enum_().package_("org.example");
 
    @Test
    void javadoc()
@@ -38,7 +38,7 @@ class EnumDslTest
                    enum MyEnum {
                    }""",
                    ENUM.annotate("MyAnnotation")
-                       .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                       .annotate(JavaDsl.annotationUsage().type("MyAnnotation"))
                        .name("MyEnum")
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -72,7 +72,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .implements_("SomeInterface")
-                       .implements_(Dsl.interface_().package_("org.example").name("Another"))
+                       .implements_(JavaDsl.interface_().package_("org.example").name("Another"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -103,7 +103,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .field("String s;")
-                       .field(Dsl.field().private_().type("int").name("i"))
+                       .field(JavaDsl.field().private_().type("int").name("i"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -120,7 +120,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .method("abstract void foo() {}")
-                       .method(Dsl.method().result("String").name("myMethod"))
+                       .method(JavaDsl.method().result("String").name("myMethod"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -138,7 +138,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .inner("enum Inner {}")
-                       .inner(Dsl.innerEnum().outer("org.example.MyEnum").name("Inner2"))
+                       .inner(JavaDsl.innerEnum().outer("org.example.MyEnum").name("Inner2"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -195,7 +195,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .constructor("MyEnum() {}")
-                       .constructor(Dsl.constructor().type("MyEnum2"))
+                       .constructor(JavaDsl.constructor().type("MyEnum2"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -209,12 +209,12 @@ class EnumDslTest
                    /// some javadoc
                    enum MyEnum {
                    }""",
-                   Dsl.enum_()
-                      .copyright("// some copyright")
-                      .package_(Dsl.packageInfo().name("org.example"))
-                      .javadoc("/// some javadoc")
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.enum_()
+                          .copyright("// some copyright")
+                          .package_(JavaDsl.packageInfo().name("org.example"))
+                          .javadoc("/// some javadoc")
+                          .name("MyEnum")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -225,10 +225,10 @@ class EnumDslTest
                    
                    enum MyEnum {
                    }""",
-                   Dsl.enum_()
-                      .package_("org.example")
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.enum_()
+                          .package_("org.example")
+                          .name("MyEnum")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -245,15 +245,15 @@ class EnumDslTest
                    
                    enum MyEnum {
                    }""",
-                   Dsl.enum_()
-                      .package_("org.example")
-                      .import_("some.thing")
-                      .import_(Dsl.import_("Dings"))
-                      .import_(Dsl.import_().package_(Dsl.packageInfo().name("other.package")))
-                      .import_(Dsl.import_().static_().declared("foo.package.MyType"))
-                      .import_(Dsl.import_().static_().declared(Dsl.annotation().package_("org.example").name("MyInterface2")))
-                      .name("MyEnum")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.enum_()
+                          .package_("org.example")
+                          .import_("some.thing")
+                          .import_(JavaDsl.import_("Dings"))
+                          .import_(JavaDsl.import_().package_(JavaDsl.packageInfo().name("other.package")))
+                          .import_(JavaDsl.import_().static_().declared("foo.package.MyType"))
+                          .import_(JavaDsl.import_().static_().declared(JavaDsl.annotation().package_("org.example").name("MyInterface2")))
+                          .name("MyEnum")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -264,20 +264,20 @@ class EnumDslTest
                        .renderQualifiedName(RenderingContext.createRenderingContext()));
 
       assertEquals("org.example.MyEnum",
-                   Dsl.enum_()
-                      .package_("org.example")
-                      .name("MyEnum")
-                      .renderQualifiedName(RenderingContext.createRenderingContext()));
+                   JavaDsl.enum_()
+                          .package_("org.example")
+                          .name("MyEnum")
+                          .renderQualifiedName(RenderingContext.createRenderingContext()));
    }
 
    @Test
    void renderType()
    {
       assertEquals("MyEnum",
-                   Dsl.enum_()
-                      .package_("org.example")
-                      .name("MyEnum")
-                      .renderType(RenderingContext.createRenderingContext()));
+                   JavaDsl.enum_()
+                          .package_("org.example")
+                          .name("MyEnum")
+                          .renderType(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -300,7 +300,7 @@ class EnumDslTest
                    }""",
                    ENUM.name("MyEnum")
                        .enumConstant("T1")
-                       .enumConstant(Dsl.enumConstant().name("T2"))
+                       .enumConstant(JavaDsl.enumConstant().name("T2"))
                        .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

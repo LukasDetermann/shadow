@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.annotationValue;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.annotationValue;
 
 public abstract class AnnotationValueImpl
 {

@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingConfiguration;
 import io.determann.shadow.api.annotation_processing.dsl.import_.ImportRenderable;
 import org.jetbrains.annotations.NotNull;
@@ -189,7 +189,7 @@ public class ImportRenderingContextImpl
                     .stream()
                     .map(QualifiedName::importableName)
                     .distinct()
-                    .map(Dsl::import_)
+                    .map(JavaDsl::import_)
                     .toList();
    }
 }

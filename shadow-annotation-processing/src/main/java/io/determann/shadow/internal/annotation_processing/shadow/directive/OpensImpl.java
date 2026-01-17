@@ -8,7 +8,7 @@ import javax.lang.model.element.ModuleElement;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.opens;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.opens;
 
 public class OpensImpl extends DirectiveImpl implements Ap.Opens
 {

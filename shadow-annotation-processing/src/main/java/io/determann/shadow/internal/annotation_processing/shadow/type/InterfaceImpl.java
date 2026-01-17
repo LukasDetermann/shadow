@@ -11,8 +11,8 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerInterface;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.interface_;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerInterface;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.interface_;
 import static java.util.Arrays.stream;
 
 public class InterfaceImpl

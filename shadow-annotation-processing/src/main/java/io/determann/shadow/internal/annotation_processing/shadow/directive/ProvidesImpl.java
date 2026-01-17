@@ -8,7 +8,7 @@ import javax.lang.model.element.ModuleElement;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.provides;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.provides;
 
 public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
 {

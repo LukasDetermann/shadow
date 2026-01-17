@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.exports;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.exports;
 
 public class ExportsImpl extends DirectiveImpl implements Ap.Exports
 {

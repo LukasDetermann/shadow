@@ -11,8 +11,8 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerRecord;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.record;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerRecord;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.record;
 import static java.util.Arrays.stream;
 
 public class RecordImpl

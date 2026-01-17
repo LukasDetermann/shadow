@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.generic;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.generic;
 
 public class IntersectionImpl extends TypeImpl<IntersectionType> implements Ap.Generic
 {

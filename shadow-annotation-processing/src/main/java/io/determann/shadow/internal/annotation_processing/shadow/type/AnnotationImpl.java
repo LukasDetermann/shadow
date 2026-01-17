@@ -6,8 +6,8 @@ import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.annotation;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerAnnotation;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.annotation;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerAnnotation;
 
 public class AnnotationImpl extends DeclaredImpl implements Ap.Annotation
 {

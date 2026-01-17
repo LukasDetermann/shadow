@@ -2,7 +2,7 @@ package io.determann.shadow.internal.annotation_processing.dsl;
 
 
 import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorRenderable;
@@ -324,7 +324,7 @@ public class EnumDsl
    {
       return addArray2(new EnumDsl(this),
                        name,
-                       (enumDsl, string) -> enumDsl.imports.add(renderingContext -> Dsl.import_(string).renderDeclaration(renderingContext)));
+                       (enumDsl, string) -> enumDsl.imports.add(renderingContext -> JavaDsl.import_(string).renderDeclaration(renderingContext)));
    }
 
    @Override

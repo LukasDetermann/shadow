@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericRenderable;
 import org.junit.jupiter.api.Test;
 
@@ -13,52 +13,52 @@ class GenericDslTest
    void annotate()
    {
       assertEquals("@MyAnnotation1 @MyAnnotation2 T",
-                   Dsl.generic()
-                      .annotate("MyAnnotation1")
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
-                      .name("T")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.generic()
+                          .annotate("MyAnnotation1")
+                          .annotate(JavaDsl.annotationUsage().type("MyAnnotation2"))
+                          .name("T")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void extends_()
    {
       assertEquals("T extends org.example.MyClass & MyInterface & org.example.MyInterface2",
-                   Dsl.generic()
-                      .name("T")
-                      .extends_(Dsl.class_().package_("org.example").name("MyClass"))
-                      .extends_("MyInterface")
-                      .extends_(Dsl.interface_().package_("org.example").name("MyInterface2"))
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.generic()
+                          .name("T")
+                          .extends_(JavaDsl.class_().package_("org.example").name("MyClass"))
+                          .extends_("MyInterface")
+                          .extends_(JavaDsl.interface_().package_("org.example").name("MyInterface2"))
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void nested()
    {
-      GenericRenderable bound = Dsl.generic()
-                                   .name("A")
-                                   .extends_("MyClass");
+      GenericRenderable bound = JavaDsl.generic()
+                                       .name("A")
+                                       .extends_("MyClass");
 
       assertEquals("B extends A",
-                   Dsl.generic()
-                      .name("B")
-                      .extends_(bound)
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.generic()
+                          .name("B")
+                          .extends_(bound)
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void usage()
    {
-      GenericRenderable generic = Dsl.generic().name("T").extends_("MyClass");
+      GenericRenderable generic = JavaDsl.generic().name("T").extends_("MyClass");
 
-      assertEquals("T t", Dsl.parameter().type(generic).name("t").renderDeclaration(createRenderingContext()));
+      assertEquals("T t", JavaDsl.parameter().type(generic).name("t").renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void api()
    {
       //@start region="api"
-      assertEquals("T extends MyClass", Dsl.generic().name("T").extends_("MyClass").renderDeclaration(createRenderingContext()));
+      assertEquals("T extends MyClass", JavaDsl.generic().name("T").extends_("MyClass").renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -66,11 +66,11 @@ class GenericDslTest
    void recursive()
    {
       //@start region="recursive"
-      GenericRenderable a = Dsl.generic().name("A");
+      GenericRenderable a = JavaDsl.generic().name("A");
 
-      GenericRenderable b = Dsl.generic().name("B").extends_(a);
+      GenericRenderable b = JavaDsl.generic().name("B").extends_(a);
 
-      a = Dsl.generic().name("A").extends_(b);
+      a = JavaDsl.generic().name("A").extends_(b);
 
       assertEquals("A extends B, B extends A", a.renderDeclaration(createRenderingContext()) + ", " + b.renderDeclaration(createRenderingContext()));
       //@end

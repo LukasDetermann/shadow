@@ -9,7 +9,7 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.*;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.annotationUsage;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.annotationUsage;
 import static io.determann.shadow.internal.annotation_processing.annotationvalue.AnnotationValueImpl.create;
 
 public class AnnotationUsageImpl

@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
@@ -13,7 +13,7 @@ class ParameterDslTest
    {
       //@start region="short-api"
       assertEquals("ParamType two",
-                   Dsl.parameter("ParamType", "two").renderDeclaration(createRenderingContext()));
+                   JavaDsl.parameter("ParamType", "two").renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -22,14 +22,14 @@ class ParameterDslTest
    {
       //@start region="api"
       assertEquals("@MyAnnotation @MyAnnotation2 final ParamType... one",
-                   Dsl.parameter()
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
-                      .final_()
-                      .type("ParamType")
-                      .name("one")
-                      .varArgs()
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.parameter()
+                          .annotate(JavaDsl.annotationUsage().type("MyAnnotation"))
+                          .annotate(JavaDsl.annotationUsage().type("MyAnnotation2"))
+                          .final_()
+                          .type("ParamType")
+                          .name("one")
+                          .varArgs()
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -37,34 +37,34 @@ class ParameterDslTest
    void annotated()
    {
       assertEquals("@MyAnnotation @MyAnnotation2 @MyAnnotation3 ParamType one",
-                   Dsl.parameter()
-                      .annotate("MyAnnotation")
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation2"))
-                      .annotate(renderingContext -> "@MyAnnotation3")
-                      .type("ParamType")
-                      .name("one")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.parameter()
+                          .annotate("MyAnnotation")
+                          .annotate(JavaDsl.annotationUsage().type("MyAnnotation2"))
+                          .annotate(renderingContext -> "@MyAnnotation3")
+                          .type("ParamType")
+                          .name("one")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void final_()
    {
       assertEquals("final ParamType one",
-                   Dsl.parameter()
-                      .final_()
-                      .type("ParamType")
-                      .name("one")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.parameter()
+                          .final_()
+                          .type("ParamType")
+                          .name("one")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void varArgs()
    {
       assertEquals("ParamType... one",
-                   Dsl.parameter()
-                      .type("ParamType")
-                      .name("one")
-                      .varArgs()
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.parameter()
+                          .type("ParamType")
+                          .name("one")
+                          .varArgs()
+                          .renderDeclaration(createRenderingContext()));
    }
 }

@@ -1,18 +1,18 @@
 package io.determann.shadow.annotation_processing.dsl;
 
 import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation.AnnotationImportStep;
 import org.junit.jupiter.api.Test;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.annotation;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.annotation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnnotationDslTest
 {
 
-   public static final AnnotationImportStep ANNOTATION = Dsl.annotation().package_("org.example");
+   public static final AnnotationImportStep ANNOTATION = JavaDsl.annotation().package_("org.example");
 
    @Test
    void javadoc()
@@ -39,7 +39,7 @@ class AnnotationDslTest
                    @interface MyInterface {
                    }""",
                    ANNOTATION.annotate("MyAnnotation")
-                             .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                             .annotate(JavaDsl.annotationUsage().type("MyAnnotation"))
                              .name("MyInterface")
                              .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -91,7 +91,7 @@ class AnnotationDslTest
                    }""",
                    ANNOTATION.name("MyInterface")
                              .field("String s;")
-                             .field(Dsl.field().private_().type("int").name("i"))
+                             .field(JavaDsl.field().private_().type("int").name("i"))
                              .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -108,7 +108,7 @@ class AnnotationDslTest
                    }""",
                    ANNOTATION.name("MyInterface")
                              .method("String foo();")
-                             .method(Dsl.method().result("String").name("myMethod"))
+                             .method(JavaDsl.method().result("String").name("myMethod"))
                              .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -126,7 +126,7 @@ class AnnotationDslTest
                    }""",
                    ANNOTATION.name("MyInterface")
                              .inner("@interface Inner {}")
-                             .inner(Dsl.innerAnnotation().outer("org.example.MyInterface").name("Inner2"))
+                             .inner(JavaDsl.innerAnnotation().outer("org.example.MyInterface").name("Inner2"))
                              .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -143,7 +143,7 @@ class AnnotationDslTest
                    }""",
                    annotation()
                       .copyright("// some copyright")
-                      .package_(Dsl.packageInfo().name("org.example"))
+                      .package_(JavaDsl.packageInfo().name("org.example"))
                          .javadoc("/// some javadoc")
                       .name("MyInterface")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
@@ -180,10 +180,10 @@ class AnnotationDslTest
                    annotation()
                       .package_("org.example")
                       .import_("some.thing")
-                      .import_(Dsl.import_("Dings"))
-                      .import_(Dsl.import_().package_(Dsl.packageInfo().name("other.package")))
-                      .import_(Dsl.import_().static_().declared("foo.package.MyType"))
-                      .import_(Dsl.import_().static_().declared(ANNOTATION.name("MyInterface2")))
+                      .import_(JavaDsl.import_("Dings"))
+                      .import_(JavaDsl.import_().package_(JavaDsl.packageInfo().name("other.package")))
+                      .import_(JavaDsl.import_().static_().declared("foo.package.MyType"))
+                      .import_(JavaDsl.import_().static_().declared(ANNOTATION.name("MyInterface2")))
                       .name("MyInterface")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -229,8 +229,8 @@ class AnnotationDslTest
                    
                    }""",
                    ANNOTATION.name("MyAnnotation")
-                             .method(Dsl.method().result("String").name("foo"),
-                                     Dsl.annotationValue(""))
+                             .method(JavaDsl.method().result("String").name("foo"),
+                                     JavaDsl.annotationValue(""))
                              .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +12,8 @@ class ExportsDslTest
    void exports()
    {
       assertEquals("exports some.package;",
-                   Dsl.exports("some.package")
-                         .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.exports("some.package")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -23,10 +23,10 @@ class ExportsDslTest
                    exports some.package to
                    first.module,
                    second.module;""",
-                   Dsl.exports()
-                         .package_("some.package")
-                         .to("first.module")
-                         .to(Dsl.moduleInfo().name("second.module"))
-                         .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.exports()
+                          .package_("some.package")
+                          .to("first.module")
+                          .to(JavaDsl.moduleInfo().name("second.module"))
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 }

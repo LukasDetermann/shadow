@@ -6,7 +6,7 @@ import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.VariableElement;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.enumConstant;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.enumConstant;
 
 public class EnumConstantImpl extends VariableImpl implements Ap.EnumConstant
 {

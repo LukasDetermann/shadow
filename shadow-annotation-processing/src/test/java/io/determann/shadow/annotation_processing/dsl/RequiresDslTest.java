@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
@@ -12,33 +12,33 @@ class RequiresDslTest
    void requires()
    {
       assertEquals("requires some.module;",
-                   Dsl.requires()
-                      .dependency("some.module")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.requires()
+                          .dependency("some.module")
+                          .renderDeclaration(createRenderingContext()));
 
       assertEquals("requires some.module;",
-                   Dsl.requires()
-                      .dependency(Dsl.moduleInfo().name("some.module"))
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.requires()
+                          .dependency(JavaDsl.moduleInfo().name("some.module"))
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void requiresTransitive()
    {
       assertEquals("requires transitive some.module;",
-                   Dsl.requires()
-                      .transitive()
-                      .dependency("some.module")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.requires()
+                          .transitive()
+                          .dependency("some.module")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void requiresStatic()
    {
       assertEquals("requires static some.module;",
-                   Dsl.requires()
-                      .static_()
-                      .dependency("some.module")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.requires()
+                          .static_()
+                          .dependency("some.module")
+                          .renderDeclaration(createRenderingContext()));
    }
 }

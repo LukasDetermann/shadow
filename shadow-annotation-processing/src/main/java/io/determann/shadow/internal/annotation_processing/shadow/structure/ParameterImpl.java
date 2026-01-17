@@ -12,7 +12,7 @@ import javax.lang.model.element.VariableElement;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.parameter;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.parameter;
 
 public class ParameterImpl extends VariableImpl implements Ap.Parameter
 {

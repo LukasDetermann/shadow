@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing.dsl;
 
 import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassImportStep;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClassDslTest
 {
-   private static final ClassImportStep CLASS = Dsl.class_().package_("org.example");
+   private static final ClassImportStep CLASS = JavaDsl.class_().package_("org.example");
 
    @Test
    void javadoc()
@@ -37,7 +37,7 @@ class ClassDslTest
                    class MyClass {
                    }""",
                    CLASS.annotate("MyAnnotation")
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation"))
+                      .annotate(JavaDsl.annotationUsage().type("MyAnnotation"))
                       .name("MyClass")
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
@@ -75,7 +75,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                       .genericDeclaration("T")
-                      .genericDeclaration(Dsl.generic("V"))
+                      .genericDeclaration(JavaDsl.generic("V"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -96,11 +96,11 @@ class ClassDslTest
                    
                    class MyClass extends Parent {
                    }""",
-                   Dsl.class_()
-                      .package_("org.example")
-                      .name("MyClass")
-                      .extends_(Dsl.class_().package_("org.example").name("Parent"))
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.class_()
+                          .package_("org.example")
+                          .name("MyClass")
+                          .extends_(JavaDsl.class_().package_("org.example").name("Parent"))
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -113,7 +113,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                         .implements_("SomeInterface")
-                        .implements_(Dsl.interface_().package_("org.example").name("Another"))
+                        .implements_(JavaDsl.interface_().package_("org.example").name("Another"))
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -157,7 +157,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                         .field("String s;")
-                        .field(Dsl.field().private_().type("int").name("i"))
+                        .field(JavaDsl.field().private_().type("int").name("i"))
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -174,7 +174,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                         .method("abstract void foo() {}")
-                        .method(Dsl.method().result("String").name("myMethod"))
+                        .method(JavaDsl.method().result("String").name("myMethod"))
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -192,7 +192,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                         .inner("class Inner {}")
-                        .inner(Dsl.innerClass().outer("Outer").name("Inner2"))
+                        .inner(JavaDsl.innerClass().outer("Outer").name("Inner2"))
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -249,7 +249,7 @@ class ClassDslTest
                    }""",
                    CLASS.name("MyClass")
                       .constructor("MyClass() {}")
-                      .constructor(Dsl.constructor().type("MyClass2"))
+                      .constructor(JavaDsl.constructor().type("MyClass2"))
                       .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
@@ -263,12 +263,12 @@ class ClassDslTest
                    /// some javadoc
                    class MyClass {
                    }""",
-                   Dsl.class_()
-                      .copyright("// some copyright")
-                      .package_(Dsl.packageInfo().name("org.example"))
-                      .javadoc("/// some javadoc")
-                      .name("MyClass")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.class_()
+                          .copyright("// some copyright")
+                          .package_(JavaDsl.packageInfo().name("org.example"))
+                          .javadoc("/// some javadoc")
+                          .name("MyClass")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -298,10 +298,10 @@ class ClassDslTest
                    class MyClass {
                    }""",
                    CLASS.import_("some.thing")
-                        .import_(Dsl.import_("Dings"))
-                        .import_(Dsl.import_().package_(Dsl.packageInfo().name("other.package")))
-                        .import_(Dsl.import_().static_().declared("foo.package.MyType"))
-                        .import_(Dsl.import_().static_().declared(Dsl.annotation().package_("org.example").name("MyInterface2")))
+                        .import_(JavaDsl.import_("Dings"))
+                        .import_(JavaDsl.import_().package_(JavaDsl.packageInfo().name("other.package")))
+                        .import_(JavaDsl.import_().static_().declared("foo.package.MyType"))
+                        .import_(JavaDsl.import_().static_().declared(JavaDsl.annotation().package_("org.example").name("MyInterface2")))
                         .name("MyClass")
                         .renderDeclaration(RenderingContext.createRenderingContext()));
    }

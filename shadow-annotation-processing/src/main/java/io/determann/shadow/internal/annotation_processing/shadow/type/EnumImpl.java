@@ -10,8 +10,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.enum_;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerEnum;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.enum_;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerEnum;
 
 public class EnumImpl
       extends DeclaredImpl

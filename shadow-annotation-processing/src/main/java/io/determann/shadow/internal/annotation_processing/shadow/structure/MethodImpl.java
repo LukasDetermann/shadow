@@ -6,7 +6,7 @@ import io.determann.shadow.api.annotation_processing.dsl.method.MethodReceiverSt
 
 import javax.lang.model.element.ExecutableElement;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.method;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.method;
 
 public class MethodImpl
       extends ExecutableImpl

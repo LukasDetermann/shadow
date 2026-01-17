@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
@@ -15,11 +15,11 @@ class EnumConstantDslTest
                    @MyAnnotation
                    @MyAnnotation1
                    FOO""",
-                   Dsl.enumConstant()
-                      .annotate("MyAnnotation")
-                      .annotate(Dsl.annotationUsage().type("MyAnnotation1"))
-                      .name("FOO")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.enumConstant()
+                          .annotate("MyAnnotation")
+                          .annotate(JavaDsl.annotationUsage().type("MyAnnotation1"))
+                          .name("FOO")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -28,21 +28,21 @@ class EnumConstantDslTest
       assertEquals("""
                    // some doc
                    FOO""",
-                   Dsl.enumConstant()
-                      .javadoc("// some doc")
-                      .name("FOO")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.enumConstant()
+                          .javadoc("// some doc")
+                          .name("FOO")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void parameter()
    {
       assertEquals("FOO(\"test\", 4)",
-                   Dsl.enumConstant()
-                      .name("FOO")
-                      .parameter("\"test\"")
-                      .parameter(Dsl.parameter("int", "4"))
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.enumConstant()
+                          .name("FOO")
+                          .parameter("\"test\"")
+                          .parameter(JavaDsl.parameter("int", "4"))
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -55,13 +55,13 @@ class EnumConstantDslTest
                          return "nope";
                       }
                    }""",
-                   Dsl.enumConstant()
-                      .name("INSTANCE")
-                      .body("""
+                   JavaDsl.enumConstant()
+                          .name("INSTANCE")
+                          .body("""
                             @Override
                             public String toString() {
                                return "nope";
                             }""")
-                      .renderDeclaration(createRenderingContext()));
+                          .renderDeclaration(createRenderingContext()));
    }
 }

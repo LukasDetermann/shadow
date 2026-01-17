@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.class_;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.innerClass;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.class_;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerClass;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 

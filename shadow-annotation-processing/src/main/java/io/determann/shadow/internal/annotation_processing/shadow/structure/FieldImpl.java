@@ -8,7 +8,7 @@ import io.determann.shadow.api.annotation_processing.dsl.field.FieldInitializati
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.field;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.field;
 
 public class FieldImpl extends VariableImpl implements Ap.Field
 {

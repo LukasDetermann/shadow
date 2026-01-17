@@ -1,7 +1,7 @@
 package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassBodyStep;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class ShadowBuilderProcessor
             .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
       {
          // create the Builder Class
-         ClassBodyStep step = Dsl.class_()
-                                 .package_(toBuild.getPackage().getQualifiedName())
-                                 .name(toBuild.getName() + "ShadowBuilder");
+         ClassBodyStep step = JavaDsl.class_()
+                                     .package_(toBuild.getPackage().getQualifiedName())
+                                     .name(toBuild.getName() + "ShadowBuilder");
 
          String toBuildVariableName = uncapitalize(toBuild.getName());
          List<String> setterInvocations = new ArrayList<>();
@@ -40,15 +40,15 @@ public class ShadowBuilderProcessor
 
             // render the existing field if possible, otherwise create a new one
             step = property.getField().map(step::field)
-                           .orElse(step.field(Dsl.field().private_().type(property.getType()).name(propertyName)));
+                           .orElse(step.field(JavaDsl.field().private_().type(property.getType()).name(propertyName)));
 
             // render the wither
-            step = step.method(Dsl.method()
-                                  .public_()
-                                  .resultType(step)//use the builder type
-                                  .name("with" + capitalize(propertyName))
-                                  .parameter(Dsl.parameter(property.getType(), propertyName))
-                                  .body("""
+            step = step.method(JavaDsl.method()
+                                      .public_()
+                                      .resultType(step)//use the builder type
+                                      .name("with" + capitalize(propertyName))
+                                      .parameter(JavaDsl.parameter(property.getType(), propertyName))
+                                      .body("""
                                         this.%1$s = %1$s;
                                         return this;""".formatted(propertyName)));
 
@@ -59,8 +59,8 @@ public class ShadowBuilderProcessor
          }
 
          // render the build method
-         step = step.method(Dsl.method().public_().resultType(toBuild).name("build")
-                               .body("""
+         step = step.method(JavaDsl.method().public_().resultType(toBuild).name("build")
+                                   .body("""
                                      %1$s %2$s = new %1$s();
                                      %3$s
                                      return %2$s;

@@ -8,7 +8,7 @@ import io.determann.shadow.api.annotation_processing.dsl.requires.RequiresNameSt
 import javax.lang.model.element.ModuleElement;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.requires;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.requires;
 
 public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {

@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ class DslTest
    @Test
    void generated()
    {
-      String result = Dsl.generated("org.example.MyGenerator", "some comment").renderDeclaration(RenderingContext.createRenderingContext());
+      String result = JavaDsl.generated("org.example.MyGenerator", "some comment").renderDeclaration(RenderingContext.createRenderingContext());
 
       assertTrue(result.startsWith("@Generated(value = \"org.example.MyGenerator\", date = \""));
       assertTrue(result.endsWith("\", comments = \"some comment\")"));

@@ -8,7 +8,7 @@ import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Objects;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.receiver;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.receiver;
 
 public class ReceiverImpl implements Ap.Receiver
 {

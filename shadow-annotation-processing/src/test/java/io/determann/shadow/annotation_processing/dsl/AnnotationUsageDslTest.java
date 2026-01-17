@@ -1,7 +1,7 @@
 package io.determann.shadow.annotation_processing.dsl;
 
 import io.determann.shadow.annotation_processing.TestFactory;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.annotation.AnnotationRenderable;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +14,11 @@ class AnnotationUsageDslTest
    void noName()
    {
       assertEquals("@MyType(1)",
-                              Dsl.annotationUsage()
-                                 .type("MyType")
-                                 .noName()
-                                 .value(Dsl.annotationValue(1))
-                                 .renderDeclaration(createRenderingContext()));
+                   JavaDsl.annotationUsage()
+                          .type("MyType")
+                          .noName()
+                          .value(JavaDsl.annotationValue(1))
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -26,13 +26,13 @@ class AnnotationUsageDslTest
    {
       //@start region="api"
       assertEquals("@MyType(1, second = 5L)",
-                   Dsl.annotationUsage()
-                      .type("MyType")
-                      .noName()
-                      .value(Dsl.annotationValue(1))
-                      .name("second")
-                      .value("5L")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.annotationUsage()
+                          .type("MyType")
+                          .noName()
+                          .value(JavaDsl.annotationValue(1))
+                          .name("second")
+                          .value("5L")
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -40,8 +40,8 @@ class AnnotationUsageDslTest
    void cAnnotation()
    {
       assertEquals("@org.example.MyAnnotation",
-                   Dsl.annotationUsage()
-                      .type(TestFactory.create(AnnotationRenderable.class, "renderName", "org.example.MyAnnotation"))
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.annotationUsage()
+                          .type(TestFactory.create(AnnotationRenderable.class, "renderName", "org.example.MyAnnotation"))
+                          .renderDeclaration(createRenderingContext()));
    }
 }

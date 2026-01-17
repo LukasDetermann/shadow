@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.packageInfo;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.packageInfo;
 import static java.util.Optional.ofNullable;
 
 public class PackageImpl implements Ap.Package

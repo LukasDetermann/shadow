@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.recordComponent;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.recordComponent;
 
 public class RecordComponentImpl implements Ap.RecordComponent
 {

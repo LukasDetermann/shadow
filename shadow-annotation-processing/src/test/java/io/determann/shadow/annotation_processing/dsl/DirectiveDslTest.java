@@ -2,7 +2,7 @@ package io.determann.shadow.annotation_processing.dsl;
 
 import io.determann.shadow.annotation_processing.TestFactory;
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
@@ -14,16 +14,16 @@ class DirectiveDslTest
    void exports()
    {
       //@start region="exports-api-simple-string"
-      assertEquals("exports org.example;", Dsl.exports("org.example").renderDeclaration(createRenderingContext()));
+      assertEquals("exports org.example;", JavaDsl.exports("org.example").renderDeclaration(createRenderingContext()));
       //@end
 
-      assertEquals("exports org.example to module;", Dsl.exports().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
+      assertEquals("exports org.example to module;", JavaDsl.exports().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
 
       Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
       Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="exports-api-simple-type"
-      assertEquals("exports org.example;", Dsl.exports(aPackage).renderDeclaration(createRenderingContext()));
+      assertEquals("exports org.example;", JavaDsl.exports(aPackage).renderDeclaration(createRenderingContext()));
       //@end
 
       //@start region="exports-api"
@@ -31,10 +31,10 @@ class DirectiveDslTest
                    exports org.example to
                    anotherOne,
                    andAnotherOne;""",
-                   Dsl.exports().package_(aPackage)
-                      .to("anotherOne")
-                      .to(module)
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.exports().package_(aPackage)
+                          .to("anotherOne")
+                          .to(module)
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -42,13 +42,13 @@ class DirectiveDslTest
    void uses()
    {
       //@start region="uses-api-string"
-      assertEquals("uses org.example.MySpi;", Dsl.uses("org.example.MySpi").renderDeclaration(createRenderingContext()));
+      assertEquals("uses org.example.MySpi;", JavaDsl.uses("org.example.MySpi").renderDeclaration(createRenderingContext()));
       //@end
 
       Ap.Class service = TestFactory.create(Ap.Class.class, "getQualifiedName", "org.example.MySpi");
 
       //@start region="uses-api-type"
-      assertEquals("uses org.example.MySpi;", Dsl.uses(service).renderDeclaration(createRenderingContext()));
+      assertEquals("uses org.example.MySpi;", JavaDsl.uses(service).renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -56,16 +56,16 @@ class DirectiveDslTest
    void opens()
    {
       //@start region="opens-api-simple-string"
-      assertEquals("opens org.example;", Dsl.opens("org.example").renderDeclaration(createRenderingContext()));
+      assertEquals("opens org.example;", JavaDsl.opens("org.example").renderDeclaration(createRenderingContext()));
       //@end
 
-      assertEquals("opens org.example to module;", Dsl.opens().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
+      assertEquals("opens org.example to module;", JavaDsl.opens().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
 
       Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
       Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="opens-api-simple-type"
-      assertEquals("opens org.example;", Dsl.opens(aPackage).renderDeclaration(createRenderingContext()));
+      assertEquals("opens org.example;", JavaDsl.opens(aPackage).renderDeclaration(createRenderingContext()));
       //@end
 
       //@start region="opens-api"
@@ -73,10 +73,10 @@ class DirectiveDslTest
                    opens org.example to
                    anotherOne,
                    andAnotherOne;""",
-                   Dsl.opens().package_(aPackage)
-                      .to("anotherOne")
-                      .to(module)
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.opens().package_(aPackage)
+                          .to("anotherOne")
+                          .to(module)
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -85,10 +85,10 @@ class DirectiveDslTest
    {
       //@start region="requires-api"
       assertEquals("requires transitive org.example;",
-                   Dsl.requires()
-                      .transitive()
-                      .dependency("org.example")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.requires()
+                          .transitive()
+                          .dependency("org.example")
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 
@@ -100,11 +100,11 @@ class DirectiveDslTest
                    provides org.example.Spi with
                    org.example.Implementation1,
                    org.example.Implementation2;""",
-                   Dsl.provides()
-                      .service("org.example.Spi")
-                      .with("org.example.Implementation1")
-                      .with("org.example.Implementation2")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.provides()
+                          .service("org.example.Spi")
+                          .with("org.example.Implementation1")
+                          .with("org.example.Implementation2")
+                          .renderDeclaration(createRenderingContext()));
       //@end
    }
 }

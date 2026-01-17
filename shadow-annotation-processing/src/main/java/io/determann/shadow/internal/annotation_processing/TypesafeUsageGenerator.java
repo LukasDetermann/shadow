@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceGenericStep;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.class_;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.field;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.class_;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.field;
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
 import static java.lang.Character.toLowerCase;
 import static java.util.stream.Stream.concat;
@@ -62,12 +62,12 @@ public class TypesafeUsageGenerator
       String fieldName = getFieldName(annotation);
 
       return class_().package_(annotation.getPackage())
-                     .import_(Dsl.import_("java.util.Objects"))
-                     .import_(Dsl.import_("java.util.Map"))
-                     .import_(Dsl.import_("io.determann.shadow.api.query.Implementation"))
-                     .import_(Dsl.import_().static_().method("io.determann.shadow.api.query.Provider", "requestOrThrow"))
-                     .import_(Dsl.import_().static_().declared("io.determann.shadow.api.query.Operations"))
-                     .annotate(Dsl.generated(TypesafeUsageGenerator.class.getName()))
+                     .import_(JavaDsl.import_("java.util.Objects"))
+                     .import_(JavaDsl.import_("java.util.Map"))
+                     .import_(JavaDsl.import_("io.determann.shadow.api.query.Implementation"))
+                     .import_(JavaDsl.import_().static_().method("io.determann.shadow.api.query.Provider", "requestOrThrow"))
+                     .import_(JavaDsl.import_().static_().declared("io.determann.shadow.api.query.Operations"))
+                     .annotate(JavaDsl.generated(TypesafeUsageGenerator.class.getName()))
                      .public_().name(annotation.getName() + "TypesafeUsage")
                      .implements_("io.determann.shadow.api.annotation_processing.Ap.AnnotationUsage")
                      .field(field().private_()
@@ -77,11 +77,11 @@ public class TypesafeUsageGenerator
                                    .name("QUALIFIED_ANNOTATION_NAME")
                                    .initializer("\"" + annotation.getQualifiedName() + "\""))
                      .field(field().private_().final_().type("io.determann.shadow.api.C.AnnotationUsage").name(fieldName))
-                     .constructor(Dsl.constructor()
-                                     .public_()
-                                     .surroundingType()
-                                     .parameter(Dsl.parameter("io.determann.shadow.api.C.AnnotationUsage", "usage"))
-                                     .body("""
+                     .constructor(JavaDsl.constructor()
+                                         .public_()
+                                         .surroundingType()
+                                         .parameter(JavaDsl.parameter("io.determann.shadow.api.C.AnnotationUsage", "usage"))
+                                         .body("""
                                            Objects.requireNonNull(usage);
                                            C.Annotation annotation = requestOrThrow(usage, ANNOTATION_USAGE_GET_ANNOTATION);
                                            String qualifiedName = requestOrThrow(annotation, QUALIFIED_NAMEABLE_GET_QUALIFIED_NAME);
@@ -125,9 +125,9 @@ public class TypesafeUsageGenerator
 
                                                      DeclaredRenderable accessorType = createAccessorType(returnType);
 
-                                                     return Dsl.method().public_().resultType(accessorType)
-                                                               .name(method.getName())
-                                                               .body("return (%s) requestOrThrow(%s, ANNOTATION_USAGE_GET_VALUE, \"%s\");"
+                                                     return JavaDsl.method().public_().resultType(accessorType)
+                                                                   .name(method.getName())
+                                                                   .body("return (%s) requestOrThrow(%s, ANNOTATION_USAGE_GET_VALUE, \"%s\");"
                                                                            .formatted(accessorType.renderSimpleName(createRenderingContext()),
                                                                                       fieldName,
                                                                                       method.getName()));
@@ -137,8 +137,8 @@ public class TypesafeUsageGenerator
    private static DeclaredRenderable createAccessorType(Ap.Type returnType)
    {
       InterfaceGenericStep genericStep =
-            Dsl.interface_().package_("io.determann.shadow.api.annotation_processing")
-               .name(switch (returnType)
+            JavaDsl.interface_().package_("io.determann.shadow.api.annotation_processing")
+                   .name(switch (returnType)
                      {
                         case Ap.Class aClass when "java.lang.String".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.StringValue";
                         case Ap.Class aClass when "java.lang.Class".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.TypeValue";

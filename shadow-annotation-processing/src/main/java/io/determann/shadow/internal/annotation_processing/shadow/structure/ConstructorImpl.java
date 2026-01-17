@@ -8,7 +8,7 @@ import io.determann.shadow.api.annotation_processing.dsl.constructor.Constructor
 
 import javax.lang.model.element.ExecutableElement;
 
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.constructor;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.constructor;
 
 public class ConstructorImpl
       extends ExecutableImpl

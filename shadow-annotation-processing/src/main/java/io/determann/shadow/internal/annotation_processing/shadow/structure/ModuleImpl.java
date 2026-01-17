@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static io.determann.shadow.api.annotation_processing.dsl.Dsl.moduleInfo;
+import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.moduleInfo;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;

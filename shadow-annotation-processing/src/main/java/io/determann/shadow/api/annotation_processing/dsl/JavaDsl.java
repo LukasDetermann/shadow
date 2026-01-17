@@ -49,7 +49,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
-public interface Dsl
+public interface JavaDsl
 {
    @Contract(value = "-> new", pure = true)
    static ImportStaticStep import_()

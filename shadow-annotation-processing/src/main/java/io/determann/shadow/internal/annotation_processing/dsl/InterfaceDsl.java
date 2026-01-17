@@ -2,7 +2,7 @@ package io.determann.shadow.internal.annotation_processing.dsl;
 
 
 import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.TypeRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageRenderable;
@@ -350,8 +350,8 @@ public class InterfaceDsl
    {
       return addArray2(new InterfaceDsl(this),
                        name,
-                       (interfaceDsl, string) -> interfaceDsl.imports.add(renderingContext -> Dsl.import_(string)
-                                                                                                 .renderDeclaration(renderingContext)));
+                       (interfaceDsl, string) -> interfaceDsl.imports.add(renderingContext -> JavaDsl.import_(string)
+                                                                                                     .renderDeclaration(renderingContext)));
    }
 
    @Override

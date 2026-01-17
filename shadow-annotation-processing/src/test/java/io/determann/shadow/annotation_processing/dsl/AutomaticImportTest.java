@@ -1,6 +1,6 @@
 package io.determann.shadow.annotation_processing.dsl;
 
-import io.determann.shadow.api.annotation_processing.dsl.Dsl;
+import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassGenericStep;
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,10 @@ class AutomaticImportTest
                    @Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -42,11 +42,11 @@ class AutomaticImportTest
                    @other.package2.Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package2").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package2").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -61,11 +61,11 @@ class AutomaticImportTest
                    @Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(RenderingContext.createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
    }
 
    @Test
@@ -78,11 +78,11 @@ class AutomaticImportTest
                       String foo() {}
                    
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .name("MyClass")
-                      .method(Dsl.method().resultType(Dsl.class_().package_("java.lang").name("String"))
-                                 .name("foo"))
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .name("MyClass")
+                          .method(JavaDsl.method().resultType(JavaDsl.class_().package_("java.lang").name("String"))
+                                         .name("foo"))
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -95,11 +95,11 @@ class AutomaticImportTest
                    @org.example.Foo2
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("other.package_").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("org.example").name("Foo2")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext(renderingConfigurationBuilder(DEFAULT_CONFIGURATION)
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("org.example").name("Foo2")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext(renderingConfigurationBuilder(DEFAULT_CONFIGURATION)
                                                                       .withoutAutomaticImports()
                                                                       .build())));
    }
@@ -114,20 +114,20 @@ class AutomaticImportTest
                    @Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
    void noPackageCollidesWithImported()
    {
-      ClassGenericStep step = Dsl.class_().package_("org.example")
-                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Foo")))
-                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
-                                 .name("MyClass");
+      ClassGenericStep step = JavaDsl.class_().package_("org.example")
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Foo")))
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                                     .name("MyClass");
 
       RenderingContext renderingContext = createRenderingContext();
 
@@ -139,10 +139,10 @@ class AutomaticImportTest
    @Test
    void noPackageCollidesWithJavaLang()
    {
-      ClassGenericStep step = Dsl.class_().package_("org.example")
-                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                                 .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
-                                 .name("MyClass");
+      ClassGenericStep step = JavaDsl.class_().package_("org.example")
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                                     .name("MyClass");
 
       RenderingContext renderingContext = createRenderingContext();
 
@@ -161,11 +161,11 @@ class AutomaticImportTest
                    @Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -180,11 +180,11 @@ class AutomaticImportTest
                    @java.lang.Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -197,11 +197,11 @@ class AutomaticImportTest
                    @java.lang.Foo
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().noPackage().name("Foo")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("java.lang").name("Foo")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 
    @Test
@@ -216,10 +216,10 @@ class AutomaticImportTest
                    @Outer.OtherInner
                    class MyClass {
                    }""",
-                   Dsl.class_().package_("org.example")
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Outer.Inner")))
-                      .annotate(Dsl.annotationUsage().type(Dsl.annotation().package_("some.other").name("Outer.OtherInner")))
-                      .name("MyClass")
-                      .renderDeclaration(createRenderingContext()));
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Outer.Inner")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Outer.OtherInner")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
    }
 }
