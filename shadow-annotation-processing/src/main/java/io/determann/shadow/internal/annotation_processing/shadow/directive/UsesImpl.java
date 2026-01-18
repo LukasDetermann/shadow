@@ -12,9 +12,9 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
 {
    private final ModuleElement.UsesDirective usesDirective;
 
-   public UsesImpl(Ap.Context context, ModuleElement.UsesDirective usesDirective)
+   public UsesImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
    {
-      super(context);
+      super(context, declaringModule);
       this.usesDirective = usesDirective;
    }
 
@@ -24,6 +24,7 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
       return Adapters.adapt(getApi(), usesDirective.getService());
    }
 
+   @Override
    public ModuleElement.UsesDirective getMirror()
    {
       return usesDirective;

@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericAndExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericExtendsStep;
@@ -84,6 +85,12 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
       return adapt(getApi(), getElement().getGenericElement());
    }
 
+   @Override
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
    public TypeParameterElement getElement()
    {
       return typeParameterElement;
@@ -98,13 +105,13 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
    @Override
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    @Override

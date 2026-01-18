@@ -14,9 +14,9 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(Ap.Context langModelContext, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(Ap.Context langModelContext, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
    {
-      super(langModelContext);
+      super(langModelContext, declaringModule);
       this.opensDirective = opensDirective;
    }
 
@@ -41,6 +41,7 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
       return getTargetModules().isEmpty();
    }
 
+   @Override
    public ModuleElement.OpensDirective getMirror()
    {
       return opensDirective;

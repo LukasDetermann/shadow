@@ -14,9 +14,9 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
-   public ProvidesImpl(Ap.Context context, ModuleElement.ProvidesDirective providesDirective)
+   public ProvidesImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
    {
-      super(context);
+      super(context, declaringModule);
       this.providesDirective = providesDirective;
    }
 
@@ -24,6 +24,12 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    public Ap.Declared getService()
    {
       return Adapters.adapt(getApi(), providesDirective.getService());
+   }
+
+   @Override
+   public ModuleElement.ProvidesDirective getMirror()
+   {
+      return providesDirective;
    }
 
    @Override

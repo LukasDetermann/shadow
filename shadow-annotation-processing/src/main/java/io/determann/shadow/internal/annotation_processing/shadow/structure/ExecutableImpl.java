@@ -2,6 +2,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Modifier;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
@@ -90,6 +91,16 @@ public abstract class ExecutableImpl
       return adapt(getApi()).toElements().isBridge(getElement());
    }
 
+   public boolean isDeprecated()
+   {
+      return adapt(getApi()).toElements().isDeprecated(getElement());
+   }
+
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
    public boolean isVarArgs()
    {
       return getElement().isVarArgs();
@@ -159,12 +170,12 @@ public abstract class ExecutableImpl
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    public Ap.Context getApi()

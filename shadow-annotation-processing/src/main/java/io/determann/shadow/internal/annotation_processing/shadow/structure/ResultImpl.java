@@ -31,7 +31,7 @@ public class ResultImpl
    @Override
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return Adapters.adapt(context, getTypeMirror().getAnnotationMirrors());
+      return Adapters.adapt(context, getTypeMirror(), getTypeMirror().getAnnotationMirrors());
    }
 
    @Override

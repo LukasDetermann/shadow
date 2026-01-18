@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -38,6 +39,18 @@ public class PackageImpl implements Ap.Package
    public boolean isUnnamed()
    {
       return getElement().isUnnamed();
+   }
+
+   @Override
+   public boolean isDeprecated()
+   {
+      return adapt(getApi()).toElements().isDeprecated(getElement());
+   }
+
+   @Override
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
    }
 
    public PackageElement getElement()
@@ -84,13 +97,13 @@ public class PackageImpl implements Ap.Package
    @Override
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return Adapters.adapt(getApi(), getMirror(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    @Override

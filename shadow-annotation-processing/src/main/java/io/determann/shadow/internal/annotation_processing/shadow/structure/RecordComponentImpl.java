@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.element.RecordComponentElement;
@@ -55,6 +56,12 @@ public class RecordComponentImpl implements Ap.RecordComponent
       return (Ap.Method) adapt(getApi(), getElement().getAccessor());
    }
 
+   @Override
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
    public RecordComponentElement getElement()
    {
       return recordComponentElement;
@@ -75,13 +82,13 @@ public class RecordComponentImpl implements Ap.RecordComponent
    @Override
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    @Override

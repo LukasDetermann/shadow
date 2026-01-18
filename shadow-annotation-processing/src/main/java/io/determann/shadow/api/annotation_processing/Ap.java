@@ -750,6 +750,8 @@ public interface Ap
                            .findAny();
       }
 
+      Origin getOrigin();
+
       Annotation getAnnotation();
    }
 
@@ -1108,6 +1110,10 @@ public interface Ap
        */
       Optional<Declared> getSurrounding();
 
+      Optional<Declared> getOutermostSurrounding();
+
+      Origin getOrigin();
+
       Wildcard asExtendsWildcard();
 
       Wildcard asSuperWildcard();
@@ -1156,6 +1162,8 @@ public interface Ap
        * returns the class, method constructor etc. this is the generic for
        */
       Object getEnclosing();
+
+      Origin getOrigin();
 
       /**
        * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -1430,7 +1438,12 @@ public interface Ap
    non-sealed interface Constructor
          extends Executable,
                  AccessModifiable,
-                 ConstructorRenderable {}
+                 ConstructorRenderable {
+
+      boolean isCompact();
+
+      boolean isCanonical();
+   }
 
    non-sealed interface EnumConstant
          extends Variable,
@@ -1473,6 +1486,10 @@ public interface Ap
        * {@link List#of(Object[])}
        */
       boolean isVarArgs();
+
+      boolean isDeprecated();
+
+      Origin getOrigin();
 
       /**
        * returns the {@link Declared} that surrounds this {@link Executable}
@@ -1583,6 +1600,10 @@ public interface Ap
       boolean isUnnamed();
 
       boolean isAutomatic();
+
+      boolean isDeprecated();
+
+      Origin getOrigin();
 
       /**
        * Relations between modules
@@ -1700,6 +1721,10 @@ public interface Ap
        * Unnamed packages are intend for small snips of code like jShell and not seen in regular projects
        */
       boolean isUnnamed();
+
+      boolean isDeprecated();
+
+      Origin getOrigin();
 
       List<Declared> getDeclared();
 
@@ -1934,6 +1959,8 @@ public interface Ap
       Type getType();
 
       Method getGetter();
+
+      Origin getOrigin();
    }
 
    interface Result
@@ -1967,6 +1994,10 @@ public interface Ap
       boolean isAssignableFrom(Type type);
 
       VariableType getType();
+
+      boolean isDeprecated();
+
+      Origin getOrigin();
 
       /**
        * The {@link Object} surrounding this {@link Variable}
@@ -2082,7 +2113,10 @@ public interface Ap
                  Opens,
                  Provides,
                  Requires,
-                 Uses {}
+                 Uses
+   {
+      Origin getOrigin();
+   }
 
    /**
     * Exports a {@link #getPackage()} to {@link #getTargetModules()} or {@link #toAll()}

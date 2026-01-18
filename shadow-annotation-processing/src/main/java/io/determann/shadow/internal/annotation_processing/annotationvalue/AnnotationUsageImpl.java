@@ -1,9 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageNameStep;
 
+import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import java.util.*;
@@ -17,10 +19,13 @@ public class AnnotationUsageImpl
 {
    private final Ap.Context context;
    private final AnnotationMirror annotationMirror;
+   private static AnnotatedConstruct annotated;
 
    public static List<Ap.AnnotationUsage> from(Ap.Context langModelContext,
+                                               AnnotatedConstruct annotated,
                                                Collection<? extends AnnotationMirror> annotationMirrors)
    {
+      AnnotationUsageImpl.annotated = annotated;
       return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
@@ -51,6 +56,12 @@ public class AnnotationUsageImpl
                     create(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
+   }
+
+   @Override
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(annotated, getAnnotationMirror()));
    }
 
    @Override

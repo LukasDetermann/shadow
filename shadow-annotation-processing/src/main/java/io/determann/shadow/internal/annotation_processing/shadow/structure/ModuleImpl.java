@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -83,19 +84,23 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
+   public boolean isDeprecated()
+   {
+      return adapt(getApi()).toElements().isDeprecated(getElement());
+   }
+
+   @Override
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
+   @Override
    public List<Ap.Directive> getDirectives()
    {
       return getElement().getDirectives()
                          .stream()
-                         .map(directive ->
-                                    switch (directive.getKind())
-                                    {
-                                       case REQUIRES -> adapt(getApi(), ((ModuleElement.RequiresDirective) directive));
-                                       case EXPORTS -> adapt(getApi(), ((ModuleElement.ExportsDirective) directive));
-                                       case OPENS -> adapt(getApi(), ((ModuleElement.OpensDirective) directive));
-                                       case USES -> adapt(getApi(), ((ModuleElement.UsesDirective) directive));
-                                       case PROVIDES -> adapt(getApi(), ((ModuleElement.ProvidesDirective) directive));
-                                    })
+                         .map(directive -> adapt(context, getElement(), directive))
                          .collect(of((Supplier<List<Ap.Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
@@ -149,13 +154,13 @@ public class ModuleImpl implements Ap.Module
    @Override
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return Adapters.adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    public NoType getMirror()

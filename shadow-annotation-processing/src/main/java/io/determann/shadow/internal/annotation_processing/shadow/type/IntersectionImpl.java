@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericAndExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericExtendsStep;
@@ -59,6 +60,12 @@ public class IntersectionImpl extends TypeImpl<IntersectionType> implements Ap.G
    public Object getEnclosing()
    {
       throw new IllegalStateException("can not get the enclosing Object for a generic backed by an intersection type");
+   }
+
+   @Override
+   public Origin getOrigin()
+   {
+      return Origin.SOURCE_DECLARED;
    }
 
    @Override

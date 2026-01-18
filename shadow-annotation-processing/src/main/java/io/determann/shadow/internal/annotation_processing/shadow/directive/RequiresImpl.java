@@ -14,9 +14,9 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(Ap.Context context, ModuleElement.RequiresDirective requiresDirective)
+   public RequiresImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
    {
-      super(context);
+      super(context, declaringModule);
       this.requiresDirective = requiresDirective;
    }
 
@@ -38,6 +38,7 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
       return Adapters.adapt(getApi(), requiresDirective.getDependency());
    }
 
+   @Override
    public ModuleElement.RequiresDirective getMirror()
    {
       return requiresDirective;

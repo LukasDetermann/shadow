@@ -8,6 +8,7 @@ import io.determann.shadow.api.annotation_processing.dsl.constructor.Constructor
 
 import javax.lang.model.element.ExecutableElement;
 
+import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
 import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.constructor;
 
 public class ConstructorImpl
@@ -17,6 +18,18 @@ public class ConstructorImpl
    public ConstructorImpl(Ap.Context context, ExecutableElement executableElement)
    {
       super(context, executableElement);
+   }
+
+   @Override
+   public boolean isCompact()
+   {
+      return adapt(getApi()).toElements().isCompactConstructor(getElement());
+   }
+
+   @Override
+   public boolean isCanonical()
+   {
+      return adapt(getApi()).toElements().isCanonicalConstructor(getElement());
    }
 
    @Override

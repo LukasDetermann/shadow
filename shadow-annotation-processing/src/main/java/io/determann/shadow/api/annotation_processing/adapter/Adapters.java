@@ -1,18 +1,25 @@
 package io.determann.shadow.api.annotation_processing.adapter;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.internal.annotation_processing.annotationvalue.AnnotationUsageImpl;
 import io.determann.shadow.internal.annotation_processing.annotationvalue.AnnotationValueImpl;
 import io.determann.shadow.internal.annotation_processing.shadow.directive.*;
 import io.determann.shadow.internal.annotation_processing.shadow.structure.*;
 import io.determann.shadow.internal.annotation_processing.shadow.type.*;
 
+import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
+import javax.lang.model.util.Elements;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
 
+
+/**
+ * If supporting new features in the underlying JDK API requires additional information, this API might break.
+ */
 public interface Adapters
 {
    //shadow -> jdk
@@ -100,6 +107,11 @@ public interface Adapters
    static OpensAdapter adapt(Ap.Opens opens)
    {
       return new OpensAdapter(opens);
+   }
+
+   static ProvidesAdapter adapt(Ap.Provides provides)
+   {
+      return new ProvidesAdapter(provides);
    }
 
    static RequiresAdapter adapt(Ap.Requires requires)
@@ -287,44 +299,66 @@ public interface Adapters
       return new PackageImpl(context, packageElement);
    }
 
-   static Ap.AnnotationUsage adapt(Ap.Context context, AnnotationMirror annotationMirror)
+   static Ap.AnnotationUsage adapt(Ap.Context context, AnnotatedConstruct annotated, AnnotationMirror annotationMirror)
    {
-      return adapt(context, singletonList(annotationMirror)).get(0);
+      return adapt(context, annotated, singletonList(annotationMirror)).get(0);
    }
 
-   static List<Ap.AnnotationUsage> adapt(Ap.Context context, List<? extends AnnotationMirror> annotationMirrors)
+   static List<Ap.AnnotationUsage> adapt(Ap.Context context, AnnotatedConstruct annotated, List<? extends AnnotationMirror> annotationMirrors)
    {
-      return AnnotationUsageImpl.from(context, annotationMirrors);
+      return AnnotationUsageImpl.from(context, annotated, annotationMirrors);
    }
 
-   static Ap.Exports adapt(Ap.Context context, ModuleElement.ExportsDirective exportsDirective)
+   static Ap.Directive adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.Directive directive)
    {
-      return new ExportsImpl(context, exportsDirective);
+      return switch (directive.getKind())
+      {
+         case REQUIRES -> adapt(context, declaringModule, ((ModuleElement.RequiresDirective) directive));
+         case EXPORTS -> adapt(context, declaringModule, ((ModuleElement.ExportsDirective) directive));
+         case OPENS -> adapt(context, declaringModule, ((ModuleElement.OpensDirective) directive));
+         case USES -> adapt(context, declaringModule, ((ModuleElement.UsesDirective) directive));
+         case PROVIDES -> adapt(context, declaringModule, ((ModuleElement.ProvidesDirective) directive));
+      };
    }
 
-   static Ap.Opens adapt(Ap.Context context, ModuleElement.OpensDirective opensDirective)
+   static Ap.Exports adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
    {
-      return new OpensImpl(context, opensDirective);
+      return new ExportsImpl(context, declaringModule, exportsDirective);
    }
 
-   static Ap.Provides adapt(Ap.Context context, ModuleElement.ProvidesDirective providesDirective)
+   static Ap.Opens adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
    {
-      return new ProvidesImpl(context, providesDirective);
+      return new OpensImpl(context, declaringModule, opensDirective);
    }
 
-   static Ap.Requires adapt(Ap.Context context, ModuleElement.RequiresDirective requiresDirective)
+   static Ap.Provides adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
    {
-      return new RequiresImpl(context, requiresDirective);
+      return new ProvidesImpl(context, declaringModule, providesDirective);
    }
 
-   static Ap.Uses adapt(Ap.Context context, ModuleElement.UsesDirective usesDirective)
+   static Ap.Requires adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
    {
-      return new UsesImpl(context, usesDirective);
+      return new RequiresImpl(context, declaringModule, requiresDirective);
+   }
+
+   static Ap.Uses adapt(Ap.Context context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
+   {
+      return new UsesImpl(context, declaringModule, usesDirective);
    }
 
    static AnnotationValue adapt(AnnotationValue annotationValue)
    {
       return ((AnnotationValueImpl) annotationValue).getAnnotationValue();
+   }
+
+   static Origin adapt(Elements.Origin origin)
+   {
+      return switch (origin)
+      {
+         case EXPLICIT -> Origin.SOURCE_DECLARED;
+         case MANDATED -> Origin.LANGUAGE_REQUIRED;
+         case SYNTHETIC -> Origin.COMPILER_GENERATED;
+      };
    }
 
    static ContextAdapter adapt(Ap.Context context)

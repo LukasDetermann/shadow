@@ -16,9 +16,9 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
 
    private final ModuleElement.ExportsDirective exportsDirective;
 
-   public ExportsImpl(Ap.Context context, ModuleElement.ExportsDirective exportsDirective)
+   public ExportsImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
    {
-      super(context);
+      super(context, declaringModule);
       this.exportsDirective = exportsDirective;
    }
 
@@ -45,6 +45,7 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
       return getTargetModules().isEmpty();
    }
 
+   @Override
    public ModuleElement.ExportsDirective getMirror()
    {
       return exportsDirective;

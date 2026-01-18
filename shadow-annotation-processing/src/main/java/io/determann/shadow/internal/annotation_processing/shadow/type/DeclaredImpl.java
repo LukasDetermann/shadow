@@ -3,6 +3,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.type;
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.NestingKind;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
 import javax.lang.model.element.Element;
@@ -144,6 +145,21 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return Optional.of((Ap.Declared) adapt(getApi(), enclosingElement));
    }
 
+   public Optional<Ap.Declared> getOutermostSurrounding()
+   {
+      TypeElement outermost = adapt(getApi()).toElements().getOutermostTypeElement(getElement());
+      if (outermost == null)
+      {
+         return Optional.empty();
+      }
+      return Optional.of(adapt(getApi(), outermost));
+   }
+
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
    public Ap.Wildcard asExtendsWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
@@ -193,12 +209,12 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    @Override

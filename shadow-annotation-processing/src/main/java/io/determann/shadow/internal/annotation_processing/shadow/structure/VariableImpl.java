@@ -2,6 +2,7 @@ package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Modifier;
+import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
@@ -41,6 +42,16 @@ public abstract class VariableImpl
       return adapt(getApi()).toTypes().isAssignable(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
    }
 
+   public boolean isDeprecated()
+   {
+      return adapt(getApi()).toElements().isDeprecated(getElement());
+   }
+
+   public Origin getOrigin()
+   {
+      return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
+   }
+
    public Ap.VariableType getType()
    {
       return (Ap.VariableType) adapt(getApi(), getElement().asType());
@@ -68,12 +79,12 @@ public abstract class VariableImpl
 
    public List<Ap.AnnotationUsage> getAnnotationUsages()
    {
-      return Adapters.adapt(getApi(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
+      return Adapters.adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
    {
-      return adapt(getApi(), getElement().getAnnotationMirrors());
+      return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    public Ap.Context getApi()
