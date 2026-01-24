@@ -47,7 +47,7 @@ class InterfaceTest
    }
 
    @Test
-   void interpolateGenerics()
+   void capture()
    {
       ProcessorTest.process(context ->
                             {
@@ -55,7 +55,7 @@ class InterfaceTest
                                                               .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                             context.getConstants().getUnboundWildcard());
 
-                               Ap.Interface capture = declared.interpolateGenerics();
+                               Ap.Interface capture = declared.capture();
                                Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericUsages().get(1)))
                                                               .map(Ap.Generic::getBound)
                                                               .map(Ap.Interface.class::cast)
@@ -67,7 +67,7 @@ class InterfaceTest
                                Ap.Interface independentExample = context.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric")
                                                                         .withGenerics(context.getConstants().getUnboundWildcard());
 
-                               Ap.Interface independentCapture = independentExample.interpolateGenerics();
+                               Ap.Interface independentCapture = independentExample.capture();
                                Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
                                                                          .map(Ap.Generic::getBound)
                                                                          .orElseThrow();
@@ -77,7 +77,7 @@ class InterfaceTest
                                                                       .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                     context.getClassOrThrow("java.lang.String"));
 
-                               Ap.Interface dependentCapture = dependentExample.interpolateGenerics();
+                               Ap.Interface dependentCapture = dependentExample.capture();
                                Ap.Type interpolatedDependent = Optional.of((Ap.Generic) dependentCapture.getGenericUsages().get(0))
                                                                        .map(Ap.Generic::getBound)
                                                                        .orElseThrow();

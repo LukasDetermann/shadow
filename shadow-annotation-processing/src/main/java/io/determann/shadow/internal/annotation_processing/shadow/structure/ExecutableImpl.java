@@ -130,6 +130,16 @@ public abstract class ExecutableImpl
                                                     adapt(method.getSurrounding()).toTypeElement());
    }
 
+   public boolean isSubsignatureOf(Ap.Executable executable)
+   {
+      return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt(executable).toExecutableType());
+   }
+
+   public boolean isSubsignatureFor(Ap.Executable executable)
+   {
+      return adapt(getApi()).toTypes().isSubsignature(adapt(executable).toExecutableType(), getMirror());
+   }
+
    public boolean sameParameterTypes(Ap.Method method)
    {
       return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt(method).toExecutableType());

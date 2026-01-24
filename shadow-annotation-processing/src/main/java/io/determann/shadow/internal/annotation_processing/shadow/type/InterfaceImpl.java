@@ -92,7 +92,7 @@ public class InterfaceImpl
    }
 
    @Override
-   public Ap.Interface interpolateGenerics()
+   public Ap.Interface capture()
    {
       return (Ap.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }

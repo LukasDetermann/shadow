@@ -218,7 +218,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
    }
 
    @Override
-   public boolean representsSameType(Ap.Type type)
+   public boolean isSameType(Ap.Type type)
    {
       return type instanceof Ap.Declared declared &&
              adapt(getApi()).toTypes().isSameType(getMirror(), adapt(declared).toDeclaredType());

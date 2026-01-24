@@ -126,7 +126,7 @@ public class ClassImpl
    }
 
    @Override
-   public Ap.Class interpolateGenerics()
+   public Ap.Class capture()
    {
       return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }

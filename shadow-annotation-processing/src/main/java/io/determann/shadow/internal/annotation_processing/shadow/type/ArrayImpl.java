@@ -58,7 +58,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public boolean representsSameType(Ap.Type type)
+   public boolean isSameType(Ap.Type type)
    {
       return equals(type);
    }

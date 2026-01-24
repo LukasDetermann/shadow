@@ -85,7 +85,7 @@ public class RecordImpl
    }
 
    @Override
-   public Ap.Record interpolateGenerics()
+   public Ap.Record capture()
    {
       return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }

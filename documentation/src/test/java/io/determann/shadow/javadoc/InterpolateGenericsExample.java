@@ -22,7 +22,7 @@ public class InterpolateGenericsExample
                                                                             //the unboundWildcard will be replaced with the result
                                                                             context.getConstants().getUnboundWildcard());
 
-                               Ap.Class capture = withGenerics.interpolateGenerics();
+                               Ap.Class capture = withGenerics.capture();
 
                                Ap.Type stringRep = Optional.of(capture.getGenericUsages().get(1))
                                                            .map(Ap.Generic.class::cast)

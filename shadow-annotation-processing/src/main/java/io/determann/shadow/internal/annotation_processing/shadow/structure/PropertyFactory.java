@@ -97,7 +97,7 @@ public class PropertyFactory
    private static Optional<Ap.Field> findField(Map<String, Ap.Field> nameField, Ap.Type type, String name)
    {
       Ap.Field field = nameField.get(name);
-      if (field == null || !field.getType().representsSameType(type))
+      if (field == null || !field.getType().isSameType(type))
       {
          return Optional.empty();
       }
@@ -109,7 +109,7 @@ public class PropertyFactory
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
           setters.size() != 1 ||
-          !setters.get(0).method().getParameters().get(0).getType().representsSameType(type))
+          !setters.get(0).method().getParameters().get(0).getType().isSameType(type))
       {
          return Optional.empty();
       }

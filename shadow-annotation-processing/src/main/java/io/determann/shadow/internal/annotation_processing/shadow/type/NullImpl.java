@@ -14,7 +14,7 @@ public class NullImpl extends TypeImpl<NullType> implements Ap.Null
    }
 
    @Override
-   public boolean representsSameType(Ap.Type type)
+   public boolean isSameType(Ap.Type type)
    {
       return type instanceof Ap.Null;
    }

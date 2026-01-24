@@ -51,7 +51,7 @@ class RecordTest
    }
 
    @Test
-   void interpolateGenerics()
+   void capture()
    {
       ProcessorTest.process(context ->
                             {
@@ -59,7 +59,7 @@ class RecordTest
                                                            .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                          context.getConstants().getUnboundWildcard());
 
-                               Ap.Record capture = declared.interpolateGenerics();
+                               Ap.Record capture = declared.capture();
                                Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericUsages().get(1)))
                                                               .map(Ap.Generic::getBound)
                                                               .map(Ap.Interface.class::cast)
@@ -71,7 +71,7 @@ class RecordTest
                                Ap.Record independentExample = context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
                                                                      .withGenerics(context.getConstants().getUnboundWildcard());
 
-                               Ap.Record independentCapture = independentExample.interpolateGenerics();
+                               Ap.Record independentCapture = independentExample.capture();
                                Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
                                                                          .map(Ap.Generic::getBound)
                                                                          .orElseThrow();
@@ -81,7 +81,7 @@ class RecordTest
                                                                    .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                  context.getClassOrThrow("java.lang.String"));
 
-                               Ap.Record dependentCapture = dependentExample.interpolateGenerics();
+                               Ap.Record dependentCapture = dependentExample.capture();
                                Ap.Type interpolatedDependent = Optional.of(((Ap.Generic) dependentCapture.getGenericUsages().get(0)))
                                                                        .map(Ap.Generic::getBound)
                                                                        .orElseThrow();

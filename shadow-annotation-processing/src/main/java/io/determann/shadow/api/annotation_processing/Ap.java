@@ -995,7 +995,7 @@ public interface Ap
        * The code for the example
        * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
        */
-      Class interpolateGenerics();
+      Class capture();
 
       /**
        * Integer -&gt; int<br>
@@ -1155,7 +1155,7 @@ public interface Ap
 
       List<Interface> getAdditionalBounds();
 
-      /// Can not be declared in java normal java code. some results of [Class#interpolateGenerics()] can create a [Generic] with a super type
+      /// Can not be declared in java normal java code. some results of [Class#capture()] can create a [Generic] with a super type
       Optional<Type> getSuper();
 
       /**
@@ -1218,7 +1218,7 @@ public interface Ap
        * The code for the example
        * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
        */
-      Interface interpolateGenerics();
+      Interface capture();
 
       /**
        * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -1283,7 +1283,7 @@ public interface Ap
        * The code for the example
        * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
        */
-      Record interpolateGenerics();
+      Record capture();
 
       /**
        * Information regarding generics is lost after the compilation. For Example {@code List<String>} becomes {@code List}. This method Does the same.
@@ -1313,7 +1313,7 @@ public interface Ap
       /**
        * type equals from the compiler perspective. for example ? does not equal ? for the compiler
        */
-      boolean representsSameType(Type type);
+      boolean isSameType(Type type);
    }
 
    /// a type that can be used as method/ constructor parameter or field
@@ -1488,6 +1488,10 @@ public interface Ap
       boolean isVarArgs();
 
       boolean isDeprecated();
+
+      boolean isSubsignatureOf(Executable method);
+
+      boolean isSubsignatureFor(Executable method);
 
       Origin getOrigin();
 

@@ -114,7 +114,7 @@ public class ModuleImpl implements Ap.Module
                                               directives.stream()
                                                         .filter(Ap.Provides.class::isInstance)
                                                         .map(Ap.Provides.class::cast)
-                                                        .filter(collected -> collected.getService().representsSameType(provides.getService()))
+                                                        .filter(collected -> collected.getService().isSameType(provides.getService()))
                                                         .findAny();
 
                                         if (existing.isEmpty())

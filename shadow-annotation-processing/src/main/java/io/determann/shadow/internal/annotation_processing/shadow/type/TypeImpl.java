@@ -19,7 +19,7 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
       this.typeMirror = typeMirror;
    }
 
-   public boolean representsSameType(Ap.Type type)
+   public boolean isSameType(Ap.Type type)
    {
       return adapt(getApi()).toTypes().isSameType(getMirror(), adapt(type).toTypeMirror());
    }
