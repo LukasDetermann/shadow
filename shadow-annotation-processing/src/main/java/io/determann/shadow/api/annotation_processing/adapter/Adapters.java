@@ -219,11 +219,11 @@ public interface Adapters
          case NULL -> adapt(context, (NullType) typeMirror);
          case TYPEVAR -> adapt(context, ((TypeVariable) typeMirror));
          case INTERSECTION -> adapt(context, ((IntersectionType) typeMirror));
+         case ERROR -> adapt(context, ((ErrorType) typeMirror));
          case EXECUTABLE, NONE, PACKAGE, MODULE -> throw new IllegalArgumentException(
                "for " +
                typeMirror.getKind() +
                " use Ap.Adapters.adapt(LM_Context, javax.lang.model.element.Element) as they don't extend " + Ap.Type.class.getSimpleName());
-         case ERROR -> throw new IllegalArgumentException();
          case OTHER, UNION ->
                throw new IllegalArgumentException(typeMirror.getKind() + " is not exposed through annotation processing and not supported");
       };
@@ -231,6 +231,11 @@ public interface Adapters
 
    static Ap.Declared adapt(Ap.Context context, DeclaredType declaredType)
    {
+      if (TypeKind.ERROR.equals(declaredType.getKind()))
+      {
+         return adapt(context, ((ErrorType) declaredType));
+      }
+
       return switch (adapt(context).toTypes().asElement(declaredType).getKind())
       {
          case ENUM -> new EnumImpl(context, declaredType);
@@ -241,6 +246,11 @@ public interface Adapters
          default -> throw new IllegalStateException(
                "javax.lang.model.type.DeclaredType that is nether a ENUM, CLASS, ANNOTATION_TYPE, INTERFACE or RECORD\n" + declaredType);
       };
+   }
+
+   static Ap.Unresolved adapt(Ap.Context context, ErrorType errorType)
+   {
+      return new UnresolvedImpl(context, errorType);
    }
 
    /// used to create [Ap.Void].

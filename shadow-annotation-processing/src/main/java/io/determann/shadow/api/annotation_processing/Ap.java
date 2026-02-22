@@ -1031,7 +1031,8 @@ public interface Ap
                  Class,
                  Enum,
                  Interface,
-                 Record
+                 Record,
+                 Unresolved
    {
       /**
        * returns true if this can be cast to that.
@@ -1133,6 +1134,12 @@ public interface Ap
          return getEnumConstants().stream().filter(field -> field.getName().equals(simpleName)).findAny().orElseThrow();
       }
    }
+
+   /**
+    * Represents a Type that can not be resolved in this processing Round
+    */
+   non-sealed interface Unresolved
+         extends Declared {}
 
    /**
     * represents the generic parameter at a class, method, constructor etc.
