@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
@@ -24,11 +25,11 @@ import static java.util.Optional.ofNullable;
 
 public abstract class ExecutableImpl
 {
-   private final Ap.Context context;
+   private final Context context;
    private final ExecutableElement executableElement;
 
 
-   protected ExecutableImpl(Ap.Context context, ExecutableElement executableElement)
+   protected ExecutableImpl(Context context, ExecutableElement executableElement)
    {
       this.context = context;
       this.executableElement = executableElement;
@@ -188,7 +189,7 @@ public abstract class ExecutableImpl
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return context;
    }

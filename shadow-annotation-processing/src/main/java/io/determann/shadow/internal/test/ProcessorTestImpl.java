@@ -1,6 +1,6 @@
 package io.determann.shadow.internal.test;
 
-import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 
@@ -157,10 +157,10 @@ public class ProcessorTestImpl implements ProcessorTest
 
    private Processor createProcessor(ProcessingCallback processingCallback)
    {
-      return new Ap.Processor()
+      return new io.determann.shadow.api.annotation_processing.Processor()
       {
          @Override
-         public void process(Ap.Context annotationProcessingContext) throws Exception
+         public void process(Context annotationProcessingContext) throws Exception
          {
             processingCallback.process(annotationProcessingContext);
          }

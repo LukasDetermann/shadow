@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorGenericStep;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorParameterStep;
@@ -15,7 +16,7 @@ public class ConstructorImpl
       extends ExecutableImpl
       implements Ap.Constructor
 {
-   public ConstructorImpl(Ap.Context context, ExecutableElement executableElement)
+   public ConstructorImpl(Context context, ExecutableElement executableElement)
    {
       super(context, executableElement);
    }

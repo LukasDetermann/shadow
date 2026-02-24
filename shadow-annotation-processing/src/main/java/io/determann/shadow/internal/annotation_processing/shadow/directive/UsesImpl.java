@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
@@ -12,7 +13,7 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
 {
    private final ModuleElement.UsesDirective usesDirective;
 
-   public UsesImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
+   public UsesImpl(Context context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
    {
       super(context, declaringModule);
       this.usesDirective = usesDirective;

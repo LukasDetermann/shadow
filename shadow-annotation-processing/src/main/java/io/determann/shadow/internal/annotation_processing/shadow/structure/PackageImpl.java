@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
@@ -19,10 +20,10 @@ import static java.util.Optional.ofNullable;
 public class PackageImpl implements Ap.Package
 {
    private final PackageElement packageElement;
-   private final Ap.Context context;
+   private final Context context;
    private final NoType noType;
 
-   public PackageImpl(Ap.Context context, PackageElement packageElement)
+   public PackageImpl(Context context, PackageElement packageElement)
    {
       this.context = context;
       this.packageElement = packageElement;
@@ -147,7 +148,7 @@ public class PackageImpl implements Ap.Package
              Objects.equals(getModule(), otherPackage.getModule());
    }
 
-   private Ap.Context getApi()
+   private Context getApi()
    {
       return context;
    }

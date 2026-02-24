@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class DiagnosticContext
 {
-   private final Ap.Context api;
+   private final Context api;
    private final String processorName;
    private final int processingRound;
    private final Instant start;
    private final Instant end;
 
-   DiagnosticContext(Ap.Context api, String processorName, int processingRound, Instant start, Instant end)
+   DiagnosticContext(Context api, String processorName, int processingRound, Instant start, Instant end)
    {
       this.api = api;
       this.processorName = processorName;
@@ -20,7 +20,7 @@ public class DiagnosticContext
       this.end = end;
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return api;
    }

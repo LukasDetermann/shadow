@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -16,7 +17,7 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
 
    private final ModuleElement.ExportsDirective exportsDirective;
 
-   public ExportsImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
+   public ExportsImpl(Context context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
    {
       super(context, declaringModule);
       this.exportsDirective = exportsDirective;

@@ -1,6 +1,8 @@
 package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
+import io.determann.shadow.api.annotation_processing.Processor;
 import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
@@ -21,13 +23,13 @@ import static java.util.stream.Stream.concat;
 
 @NotNullByDefault
 public class TypesafeUsageGenerator
-      extends Ap.Processor
+      extends Processor
 {
    private static final String GENERATE_TYPESAFE_USAGE_NAME = "io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsage";
    private static final String GENERATE_TYPESAFE_USAGE_FOR_NAME = "io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsageFor";
 
    @Override
-   public void process(Ap.Context context)
+   public void process(Context context)
    {
       for (Ap.Annotation annotated : getAnnotated(context))
       {
@@ -35,7 +37,7 @@ public class TypesafeUsageGenerator
       }
    }
 
-   private static Set<Ap.Annotation> getAnnotated(Ap.Context context)
+   private static Set<Ap.Annotation> getAnnotated(Context context)
    {
       Ap.Annotation genMetaModel = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_NAME);
       Ap.Annotation

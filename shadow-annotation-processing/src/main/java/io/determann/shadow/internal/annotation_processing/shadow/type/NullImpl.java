@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
 import javax.lang.model.type.NullType;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 public class NullImpl extends TypeImpl<NullType> implements Ap.Null
 {
-   public NullImpl(Ap.Context context, NullType nullType)
+   public NullImpl(Context context, NullType nullType)
    {
       super(context, nullType);
    }

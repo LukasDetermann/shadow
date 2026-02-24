@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
@@ -19,9 +20,9 @@ import static java.util.Optional.ofNullable;
 public abstract class VariableImpl
 {
    private final VariableElement variableElement;
-   private final Ap.Context context;
+   private final Context context;
 
-   protected VariableImpl(Ap.Context context, VariableElement variableElement)
+   protected VariableImpl(Context context, VariableElement variableElement)
    {
       this.context = context;
       this.variableElement = variableElement;
@@ -87,7 +88,7 @@ public abstract class VariableImpl
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return context;
    }

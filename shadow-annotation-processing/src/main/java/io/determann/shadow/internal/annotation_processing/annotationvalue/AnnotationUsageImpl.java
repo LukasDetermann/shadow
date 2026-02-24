@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageNameStep;
@@ -17,11 +18,11 @@ import static io.determann.shadow.internal.annotation_processing.annotationvalue
 public class AnnotationUsageImpl
       implements Ap.AnnotationUsage
 {
-   private final Ap.Context context;
+   private final Context context;
    private final AnnotationMirror annotationMirror;
    private static AnnotatedConstruct annotated;
 
-   public static List<Ap.AnnotationUsage> from(Ap.Context langModelContext,
+   public static List<Ap.AnnotationUsage> from(Context langModelContext,
                                                AnnotatedConstruct annotated,
                                                Collection<? extends AnnotationMirror> annotationMirrors)
    {
@@ -29,12 +30,12 @@ public class AnnotationUsageImpl
       return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
-   static Ap.AnnotationUsage from(Ap.Context langModelContext, AnnotationMirror annotationMirror)
+   static Ap.AnnotationUsage from(Context langModelContext, AnnotationMirror annotationMirror)
    {
       return new AnnotationUsageImpl(langModelContext, annotationMirror);
    }
 
-   private AnnotationUsageImpl(Ap.Context context, AnnotationMirror annotationMirror)
+   private AnnotationUsageImpl(Context context, AnnotationMirror annotationMirror)
    {
       this.context = context;
       this.annotationMirror = annotationMirror;
@@ -81,7 +82,7 @@ public class AnnotationUsageImpl
       return annotationMirror;
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return context;
    }

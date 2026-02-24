@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -13,10 +14,10 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.result;
 public class ResultImpl
       implements Ap.Result
 {
-   private final Ap.Context context;
+   private final Context context;
    private final TypeMirror typeMirror;
 
-   ResultImpl(Ap.Context context, TypeMirror typeMirror)
+   ResultImpl(Context context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;

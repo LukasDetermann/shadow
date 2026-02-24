@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -16,10 +17,10 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.recordCo
 public class RecordComponentImpl implements Ap.RecordComponent
 {
    private final RecordComponentElement recordComponentElement;
-   private final Ap.Context context;
+   private final Context context;
    private final TypeMirror typeMirror;
 
-   public RecordComponentImpl(Ap.Context context, RecordComponentElement recordComponentElement)
+   public RecordComponentImpl(Context context, RecordComponentElement recordComponentElement)
    {
       this.typeMirror = recordComponentElement.asType();
       this.context = context;
@@ -132,7 +133,7 @@ public class RecordComponentImpl implements Ap.RecordComponent
       return typeMirror;
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return context;
    }

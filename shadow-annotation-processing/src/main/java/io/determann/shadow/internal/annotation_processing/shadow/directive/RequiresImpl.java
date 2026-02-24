@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.requires.RequiresNameStep;
@@ -14,7 +15,7 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
-   public RequiresImpl(Ap.Context context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
+   public RequiresImpl(Context context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
    {
       super(context, declaringModule);
       this.requiresDirective = requiresDirective;

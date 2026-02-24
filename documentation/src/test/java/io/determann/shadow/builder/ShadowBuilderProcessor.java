@@ -1,6 +1,8 @@
 package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
+import io.determann.shadow.api.annotation_processing.Processor;
 import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassBodyStep;
 
@@ -13,10 +15,10 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /// Builds a companion Builder class for each annotated class
 public class ShadowBuilderProcessor
-      extends Ap.Processor
+      extends Processor
 {
    @Override
-   public void process(final Ap.Context context)
+   public void process(final Context context)
    {
       // iterate over every class annotated with the BuilderPattern annotation
       for (Ap.Class toBuild : context

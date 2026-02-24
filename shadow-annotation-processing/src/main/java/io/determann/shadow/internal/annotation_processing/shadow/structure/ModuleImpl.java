@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
@@ -21,10 +22,10 @@ public class ModuleImpl implements Ap.Module
 {
    private final ModuleElement moduleElement;
    private final NoType noType;
-   private final Ap.Context context;
+   private final Context context;
 
 
-   public ModuleImpl(Ap.Context context, ModuleElement moduleElement)
+   public ModuleImpl(Context context, ModuleElement moduleElement)
    {
       this.context = context;
       noType = (NoType) moduleElement.asType();
@@ -168,7 +169,7 @@ public class ModuleImpl implements Ap.Module
       return noType;
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return context;
    }

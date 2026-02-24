@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -10,7 +11,7 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.enumCons
 
 public class EnumConstantImpl extends VariableImpl implements Ap.EnumConstant
 {
-   public EnumConstantImpl(Ap.Context context, VariableElement variableElement)
+   public EnumConstantImpl(Context context, VariableElement variableElement)
    {
       super(context, variableElement);
    }

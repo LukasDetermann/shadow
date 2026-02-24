@@ -2,6 +2,7 @@ package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Constants;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
@@ -10,9 +11,9 @@ import static javax.lang.model.type.TypeKind.*;
 public class ApConstantsImpl
       implements Constants
 {
-   private final Ap.Context context;
+   private final Context context;
 
-   ApConstantsImpl(Ap.Context context)
+   ApConstantsImpl(Context context)
    {
       this.context = context;
    }

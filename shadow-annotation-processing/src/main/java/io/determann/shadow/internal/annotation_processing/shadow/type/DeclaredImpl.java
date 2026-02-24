@@ -1,9 +1,6 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Modifier;
-import io.determann.shadow.api.annotation_processing.NestingKind;
-import io.determann.shadow.api.annotation_processing.Origin;
+import io.determann.shadow.api.annotation_processing.*;
 import io.determann.shadow.internal.annotation_processing.ApContextImpl;
 
 import javax.lang.model.element.Element;
@@ -22,13 +19,13 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
 {
    private final TypeElement typeElement;
 
-   DeclaredImpl(Ap.Context context, DeclaredType declaredTypeMirror)
+   DeclaredImpl(Context context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
       this.typeElement = (TypeElement) declaredTypeMirror.asElement();
    }
 
-   DeclaredImpl(Ap.Context context, TypeElement typeElement)
+   DeclaredImpl(Context context, TypeElement typeElement)
    {
       super(context, (DeclaredType) typeElement.asType());
       this.typeElement = typeElement;

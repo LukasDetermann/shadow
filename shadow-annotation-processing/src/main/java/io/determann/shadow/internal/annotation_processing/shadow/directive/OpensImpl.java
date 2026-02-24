@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 
@@ -14,7 +15,7 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
-   public OpensImpl(Ap.Context langModelContext, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
+   public OpensImpl(Context langModelContext, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
    {
       super(langModelContext, declaringModule);
       this.opensDirective = opensDirective;

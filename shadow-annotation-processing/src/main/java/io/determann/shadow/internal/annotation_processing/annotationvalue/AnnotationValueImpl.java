@@ -1,6 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.annotation_processing.Ap;
+import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_value.AnnotationValueRenderable;
@@ -18,11 +19,11 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.annotati
 
 public abstract class AnnotationValueImpl
 {
-   protected final Ap.Context context;
+   protected final Context context;
    private final boolean defaultValue;
    private final AnnotationValue annotationValue;
 
-   static Ap.AnnotationValue create(Ap.Context context,
+   static Ap.AnnotationValue create(Context context,
                                     AnnotationValue annotationValue,
                                     boolean defaultValue)
    {
@@ -87,7 +88,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      StringValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      StringValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -104,7 +105,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      BooleanValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      BooleanValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -121,7 +122,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      ByteValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ByteValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -138,7 +139,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      ShortValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ShortValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -155,7 +156,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      IntegerValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      IntegerValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -172,7 +173,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      LongValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      LongValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -189,7 +190,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      CharacterValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      CharacterValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -206,7 +207,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      FloatValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      FloatValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -223,7 +224,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      DoubleValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      DoubleValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -240,7 +241,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      TypeValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      TypeValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -258,7 +259,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      EnumValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      EnumValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -275,7 +276,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      AnnotationUsageValueImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      AnnotationUsageValueImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -292,7 +293,7 @@ public abstract class AnnotationValueImpl
    {
       private final AnnotationValue annotationValue;
 
-      ValuesImpl(Ap.Context context, AnnotationValue annotationValue, boolean defaultValue)
+      ValuesImpl(Context context, AnnotationValue annotationValue, boolean defaultValue)
       {
          super(context, defaultValue, annotationValue);
          this.annotationValue = annotationValue;
@@ -312,7 +313,7 @@ public abstract class AnnotationValueImpl
       }
    }
 
-   private AnnotationValueImpl(Ap.Context context, boolean defaultValue, AnnotationValue annotationValue)
+   private AnnotationValueImpl(Context context, boolean defaultValue, AnnotationValue annotationValue)
    {
       this.context = context;
       this.defaultValue = defaultValue;

@@ -1,8 +1,6 @@
 package io.determann.shadow.internal.annotation_processing;
 
-import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Constants;
-import io.determann.shadow.api.annotation_processing.DiagnosticContext;
+import io.determann.shadow.api.annotation_processing.*;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 
@@ -29,14 +27,14 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 
 public class ApContextImpl
-      implements Ap.Context
+      implements Context
 {
    private final ProcessingEnvironment processingEnv;
    private final RoundEnvironment roundEnv;
    private final int processingRound;
    private final Types types;
    private final Elements elements;
-   private BiConsumer<Ap.Context, Throwable> exceptionHandler = (context, throwable) ->
+   private BiConsumer<Context, Throwable> exceptionHandler = (context, throwable) ->
    {
       StringWriter stringWriter = new StringWriter();
       PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -44,7 +42,7 @@ public class ApContextImpl
       logAndRaiseError(stringWriter.toString());
       throw new RuntimeException(throwable);
    };
-   private BiConsumer<Ap.Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
+   private BiConsumer<Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
    {
       if (!context.isProcessingOver())
       {
@@ -61,7 +59,7 @@ public class ApContextImpl
                  "\n");
       }
    };
-   private BiConsumer<Ap.Context, String> systemOutHandler = (context, s) ->
+   private BiConsumer<Context, String> systemOutHandler = (context, s) ->
    {
       if (!getProcessingEnv().toString().startsWith("javac"))
       {
@@ -376,37 +374,37 @@ public class ApContextImpl
    }
 
    @Override
-   public void setExceptionHandler(BiConsumer<Ap.Context, Throwable> exceptionHandler)
+   public void setExceptionHandler(BiConsumer<Context, Throwable> exceptionHandler)
    {
       this.exceptionHandler = exceptionHandler;
    }
 
    @Override
-   public BiConsumer<Ap.Context, Throwable> getExceptionHandler()
+   public BiConsumer<Context, Throwable> getExceptionHandler()
    {
       return exceptionHandler;
    }
 
    @Override
-   public void setDiagnosticHandler(BiConsumer<Ap.Context, DiagnosticContext> diagnosticHandler)
+   public void setDiagnosticHandler(BiConsumer<Context, DiagnosticContext> diagnosticHandler)
    {
       this.diagnosticHandler = diagnosticHandler;
    }
 
    @Override
-   public BiConsumer<Ap.Context, DiagnosticContext> getDiagnosticHandler()
+   public BiConsumer<Context, DiagnosticContext> getDiagnosticHandler()
    {
       return diagnosticHandler;
    }
 
    @Override
-   public void setSystemOutHandler(BiConsumer<Ap.Context, String> systemOutHandler)
+   public void setSystemOutHandler(BiConsumer<Context, String> systemOutHandler)
    {
       this.systemOutHandler = systemOutHandler;
    }
 
    @Override
-   public BiConsumer<Ap.Context, String> getSystemOutHandler()
+   public BiConsumer<Context, String> getSystemOutHandler()
    {
       return systemOutHandler;
    }
@@ -580,7 +578,7 @@ public class ApContextImpl
       return elements;
    }
 
-   public Ap.Context getApi()
+   public Context getApi()
    {
       return this;
    }
