@@ -160,7 +160,7 @@ public class ProcessorTestImpl implements ProcessorTest
       return new Ap.Processor()
       {
          @Override
-         public void process(Ap.Context annotationProcessingContext)
+         public void process(Ap.Context annotationProcessingContext) throws Exception
          {
             processingCallback.process(annotationProcessingContext);
          }

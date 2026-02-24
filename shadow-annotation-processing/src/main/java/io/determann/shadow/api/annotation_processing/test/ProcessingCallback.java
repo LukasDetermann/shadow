@@ -8,5 +8,5 @@ import io.determann.shadow.api.annotation_processing.Ap;
 @FunctionalInterface
 public interface ProcessingCallback
 {
-   void process(Ap.Context annotationProcessingContext);
+   void process(Ap.Context annotationProcessingContext) throws Exception;
 }
