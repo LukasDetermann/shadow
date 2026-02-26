@@ -5,6 +5,7 @@ import io.determann.shadow.internal.test.ProcessorTestImpl;
 import javax.annotation.processing.Processor;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * Builder to test annotation processors
@@ -17,9 +18,9 @@ public interface ProcessorTest
    }
 
    @SafeVarargs
-   static ProcessorTest process(Class<? extends Processor>... processingCallback)
+   static ProcessorTest process(Processor... processors)
    {
-      return new ProcessorTestImpl(processingCallback);
+      return new ProcessorTestImpl(Arrays.asList(processors));
    }
 
    /**

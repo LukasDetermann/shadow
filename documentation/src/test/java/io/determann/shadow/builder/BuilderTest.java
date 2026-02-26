@@ -21,7 +21,7 @@ class BuilderTest
    @Test
    void shadow()
    {
-      assertDoesNotThrow(() -> ProcessorTest.process(ShadowBuilderProcessor.class)
+      assertDoesNotThrow(() -> ProcessorTest.process(new ShadowBuilderProcessor())
                                             .withCodeToCompile(DIR.resolve("BuilderPattern.java"))
                                             .withCodeToCompile(DIR.resolve("Customer.java"))
                                             .compile());
@@ -30,7 +30,7 @@ class BuilderTest
    @Test
    void jdk()
    {
-      assertDoesNotThrow(() -> ProcessorTest.process(JdkBuilderProcessor.class)
+      assertDoesNotThrow(() -> ProcessorTest.process(new JdkBuilderProcessor())
                                             .withCodeToCompile(DIR.resolve("BuilderPattern.java"))
                                             .withCodeToCompile(DIR.resolve("Customer.java"))
                                             .compile());

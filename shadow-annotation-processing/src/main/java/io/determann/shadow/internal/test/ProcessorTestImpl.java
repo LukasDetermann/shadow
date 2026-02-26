@@ -8,12 +8,14 @@ import javax.annotation.processing.Processor;
 import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class ProcessorTestImpl implements ProcessorTest
 {
@@ -42,9 +44,9 @@ public class ProcessorTestImpl implements ProcessorTest
       compiledClassNames.add("java.lang.Object");
    }
 
-   public ProcessorTestImpl(Class<? extends Processor>[] processingCallback)
+   public ProcessorTestImpl(List<? extends Processor> processors)
    {
-      this.processors = createProcessors(processingCallback);
+      this.processors = processors;
       toCompile = new ArrayList<>();
       options = new ArrayList<>();
       compiledClassNames = new ArrayList<>();
@@ -132,27 +134,6 @@ public class ProcessorTestImpl implements ProcessorTest
 
       compilerTask.setProcessors(processors);
       compilerTask.call();
-   }
-
-   private List<Processor> createProcessors(Class<? extends Processor>[] processors)
-   {
-      //noinspection unchecked
-      return Arrays.stream(processors)
-                   .map(aClass -> (Class<Processor>) aClass)
-                   .map(aClass ->
-                        {
-                           try
-                           {
-                              return aClass.getConstructor().newInstance();
-                           }
-                           catch (NoSuchMethodException |
-                                  InstantiationException |
-                                  IllegalAccessException |
-                                  InvocationTargetException e)
-                           {
-                              throw new RuntimeException(e);
-                           }
-                        }).toList();
    }
 
    private Processor createProcessor(ProcessingCallback processingCallback)
