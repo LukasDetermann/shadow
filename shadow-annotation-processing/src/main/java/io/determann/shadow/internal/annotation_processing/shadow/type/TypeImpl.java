@@ -1,7 +1,7 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.internal.annotation_processing.ApiHolder;
 
 import javax.lang.model.type.TypeMirror;
@@ -10,11 +10,11 @@ import static io.determann.shadow.api.annotation_processing.adapter.Adapters.ada
 
 public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
 {
-   private final Context context;
+   private final SimpleContext context;
 
    private final MIRROR typeMirror;
 
-   protected TypeImpl(Context context, MIRROR typeMirror)
+   protected TypeImpl(SimpleContext context, MIRROR typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;
@@ -31,7 +31,7 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
    }
 
    @Override
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return context;
    }

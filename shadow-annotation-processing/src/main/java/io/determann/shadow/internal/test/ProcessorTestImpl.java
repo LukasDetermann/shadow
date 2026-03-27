@@ -1,6 +1,8 @@
 package io.determann.shadow.internal.test;
 
-import io.determann.shadow.api.annotation_processing.Context;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorBuilder;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorConfiguration;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 
@@ -35,7 +37,7 @@ public class ProcessorTestImpl implements ProcessorTest
       this.compiledClassNames = compiledClassNames;
    }
 
-   public ProcessorTestImpl(ProcessingCallback processingCallback)
+   public ProcessorTestImpl(ProcessingCallback<SimpleContext> processingCallback)
    {
       this.processors = Collections.singletonList(createProcessor(processingCallback));
       toCompile = new ArrayList<>();
@@ -136,14 +138,14 @@ public class ProcessorTestImpl implements ProcessorTest
       compilerTask.call();
    }
 
-   private Processor createProcessor(ProcessingCallback processingCallback)
+   private Processor createProcessor(ProcessingCallback<SimpleContext> processingCallback)
    {
-      return new io.determann.shadow.api.annotation_processing.Processor()
+      return new io.determann.shadow.api.annotation_processing.processor.Processor()
       {
          @Override
-         public void process(Context annotationProcessingContext) throws Exception
+         public ProcessorConfiguration buildProcessor(ProcessorBuilder processorBuilder)
          {
-            processingCallback.process(annotationProcessingContext);
+            return processorBuilder.process(processingCallback);
          }
       };
    }

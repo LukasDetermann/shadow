@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericAndExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceRenderable;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.IntersectionType;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.generic;
 
 public class IntersectionImpl extends TypeImpl<IntersectionType> implements Ap.Generic
 {
-   public IntersectionImpl(Context context, IntersectionType intersectionType)
+   public IntersectionImpl(SimpleContext context, IntersectionType intersectionType)
    {
       super(context, intersectionType);
    }

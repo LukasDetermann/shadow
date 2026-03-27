@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorGenericStep;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorParameterStep;
 import io.determann.shadow.api.annotation_processing.dsl.constructor.ConstructorReceiverStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.ExecutableElement;
 
@@ -16,7 +16,7 @@ public class ConstructorImpl
       extends ExecutableImpl
       implements Ap.Constructor
 {
-   public ConstructorImpl(Context context, ExecutableElement executableElement)
+   public ConstructorImpl(SimpleContext context, ExecutableElement executableElement)
    {
       super(context, executableElement);
    }

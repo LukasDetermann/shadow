@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.method.MethodReceiverStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.ExecutableElement;
 
@@ -13,7 +13,7 @@ public class MethodImpl
       extends ExecutableImpl
       implements Ap.Method
 {
-   public MethodImpl(Context context, ExecutableElement executableElement)
+   public MethodImpl(SimpleContext context, ExecutableElement executableElement)
    {
       super(context, executableElement);
    }

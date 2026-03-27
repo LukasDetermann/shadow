@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.parameter.ParameterAnnotateStep;
 import io.determann.shadow.api.annotation_processing.dsl.parameter.ParameterTypeStep;
 import io.determann.shadow.api.annotation_processing.dsl.parameter.ParameterVarargsStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
@@ -17,7 +17,7 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.paramete
 
 public class ParameterImpl extends VariableImpl implements Ap.Parameter
 {
-   public ParameterImpl(Context context, VariableElement variableElement)
+   public ParameterImpl(SimpleContext context, VariableElement variableElement)
    {
       super(context, variableElement);
    }

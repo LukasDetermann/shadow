@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.ErrorType;
 
@@ -10,7 +10,7 @@ public class UnresolvedImpl
       extends DeclaredImpl
       implements Ap.Unresolved
 {
-   public UnresolvedImpl(Context context, ErrorType declaredTypeMirror)
+   public UnresolvedImpl(SimpleContext context, ErrorType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }

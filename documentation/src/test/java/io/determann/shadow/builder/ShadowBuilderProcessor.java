@@ -1,10 +1,12 @@
 package io.determann.shadow.builder;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
-import io.determann.shadow.api.annotation_processing.Processor;
 import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassBodyStep;
+import io.determann.shadow.api.annotation_processing.processor.Processor;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorBuilder;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorConfiguration;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,12 @@ public class ShadowBuilderProcessor
       extends Processor
 {
    @Override
-   public void process(final Context context)
+   public ProcessorConfiguration buildProcessor(ProcessorBuilder processorBuilder)
+   {
+      return processorBuilder.process(ShadowBuilderProcessor::process);
+   }
+
+   private static void process(SimpleContext context)
    {
       // iterate over every class annotated with the BuilderPattern annotation
       for (Ap.Class toBuild : context
@@ -51,8 +58,8 @@ public class ShadowBuilderProcessor
                                       .name("with" + capitalize(propertyName))
                                       .parameter(JavaDsl.parameter(property.getType(), propertyName))
                                       .body("""
-                                        this.%1$s = %1$s;
-                                        return this;""".formatted(propertyName)));
+                                            this.%1$s = %1$s;
+                                            return this;""".formatted(propertyName)));
 
             // collect all setter invocations for the object being build
             setterInvocations.add(toBuildVariableName + "." +
@@ -63,12 +70,12 @@ public class ShadowBuilderProcessor
          // render the build method
          step = step.method(JavaDsl.method().public_().resultType(toBuild).name("build")
                                    .body("""
-                                     %1$s %2$s = new %1$s();
-                                     %3$s
-                                     return %2$s;
-                                     """.formatted(toBuild.getName(),
-                                                   toBuildVariableName,
-                                                   join("\n\n", setterInvocations))));
+                                         %1$s %2$s = new %1$s();
+                                         %3$s
+                                         return %2$s;
+                                         """.formatted(toBuild.getName(),
+                                                       toBuildVariableName,
+                                                       join("\n\n", setterInvocations))));
 
          //writes the builder
          context.writeAndCompileSourceFile(step);

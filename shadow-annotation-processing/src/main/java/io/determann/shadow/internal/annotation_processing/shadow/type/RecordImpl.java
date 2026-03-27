@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -20,12 +20,12 @@ public class RecordImpl
       extends DeclaredImpl
       implements Ap.Record
 {
-   public RecordImpl(Context context, DeclaredType declaredTypeMirror)
+   public RecordImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public RecordImpl(Context context, TypeElement typeElement)
+   public RecordImpl(SimpleContext context, TypeElement typeElement)
    {
       super(context, typeElement);
    }

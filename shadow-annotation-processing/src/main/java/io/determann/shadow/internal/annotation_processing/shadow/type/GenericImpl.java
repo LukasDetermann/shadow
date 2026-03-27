@@ -1,12 +1,12 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericAndExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.generic.GenericExtendsStep;
 import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceRenderable;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.IntersectionType;
@@ -25,13 +25,13 @@ public class GenericImpl extends TypeImpl<TypeVariable> implements Ap.Generic
 {
    private final TypeParameterElement typeParameterElement;
 
-   public GenericImpl(Context context, TypeParameterElement typeParameterElement)
+   public GenericImpl(SimpleContext context, TypeParameterElement typeParameterElement)
    {
       super(context, ((TypeVariable) typeParameterElement.asType()));
       this.typeParameterElement = typeParameterElement;
    }
 
-   public GenericImpl(Context context, TypeVariable typeMirror)
+   public GenericImpl(SimpleContext context, TypeVariable typeMirror)
    {
       super(context, typeMirror);
       this.typeParameterElement = (TypeParameterElement) adapt(getApi()).toTypes().asElement(typeMirror);

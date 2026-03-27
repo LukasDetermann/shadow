@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
@@ -14,7 +14,7 @@ import static io.determann.shadow.api.annotation_processing.adapter.Adapters.ada
 
 public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
 {
-   public WildcardImpl(Context context, WildcardType wildcardTypeMirror)
+   public WildcardImpl(SimpleContext context, WildcardType wildcardTypeMirror)
    {
       super(context, wildcardTypeMirror);
    }

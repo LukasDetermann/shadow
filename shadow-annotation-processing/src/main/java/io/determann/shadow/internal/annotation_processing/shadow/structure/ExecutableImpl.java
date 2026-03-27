@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.internal.annotation_processing.ApContextImpl;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
+import io.determann.shadow.internal.annotation_processing.processor.ContextImpl;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -25,11 +25,11 @@ import static java.util.Optional.ofNullable;
 
 public abstract class ExecutableImpl
 {
-   private final Context context;
+   private final SimpleContext context;
    private final ExecutableElement executableElement;
 
 
-   protected ExecutableImpl(Context context, ExecutableElement executableElement)
+   protected ExecutableImpl(SimpleContext context, ExecutableElement executableElement)
    {
       this.context = context;
       this.executableElement = executableElement;
@@ -37,7 +37,7 @@ public abstract class ExecutableImpl
 
    public Set<Modifier> getModifiers()
    {
-      return ApContextImpl.getModifiers(getElement());
+      return ContextImpl.getModifiers(getElement());
    }
 
    public Ap.Result getResult()
@@ -189,7 +189,7 @@ public abstract class ExecutableImpl
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return context;
    }

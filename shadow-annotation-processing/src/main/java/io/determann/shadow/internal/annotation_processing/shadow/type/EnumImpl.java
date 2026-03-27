@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -18,12 +18,12 @@ public class EnumImpl
       extends DeclaredImpl
       implements Ap.Enum
 {
-   public EnumImpl(Context context, DeclaredType declaredTypeMirror)
+   public EnumImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public EnumImpl(Context context, TypeElement typeElement)
+   public EnumImpl(SimpleContext context, TypeElement typeElement)
    {
       super(context, typeElement);
    }

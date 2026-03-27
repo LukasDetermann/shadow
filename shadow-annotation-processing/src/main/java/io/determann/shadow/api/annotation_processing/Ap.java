@@ -28,6 +28,7 @@ import io.determann.shadow.api.annotation_processing.dsl.record_component.Record
 import io.determann.shadow.api.annotation_processing.dsl.requires.RequiresRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.result.ResultRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.uses.UsesRenderable;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.ElementType;
@@ -363,7 +364,7 @@ public interface Ap
       Class withGenerics(Type... generics);
 
       /**
-       * like {@link #withGenerics(Type...)} but resolves the names using {@link Context#getDeclaredOrThrow(String)}
+       * like {@link #withGenerics(Type...)} but resolves the names using {@link SimpleContext#getDeclaredOrThrow(String)}
        */
       Class withGenerics(String... qualifiedGenerics);
 
@@ -593,7 +594,7 @@ public interface Ap
       Interface withGenerics(Type... generics);
 
       /**
-       * like {@link #withGenerics(Type...)} but resolves the names using {@link Context#getDeclaredOrThrow(String)}
+       * like {@link #withGenerics(Type...)} but resolves the names using {@link SimpleContext#getDeclaredOrThrow(String)}
        */
       Interface withGenerics(String... qualifiedGenerics);
 
@@ -658,7 +659,7 @@ public interface Ap
       Record withGenerics(Type... generics);
 
       /**
-       * like {@link #withGenerics(Type...)} but resolves the names using {@link Context#getDeclaredOrThrow(String)}
+       * like {@link #withGenerics(Type...)} but resolves the names using {@link SimpleContext#getDeclaredOrThrow(String)}
        */
       Record withGenerics(String... qualifiedGenerics);
 

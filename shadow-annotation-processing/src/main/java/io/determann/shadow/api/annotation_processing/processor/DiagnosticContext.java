@@ -1,17 +1,17 @@
-package io.determann.shadow.api.annotation_processing;
+package io.determann.shadow.api.annotation_processing.processor;
 
 import java.time.Instant;
 import java.util.Objects;
 
 public class DiagnosticContext
 {
-   private final Context api;
+   private final SimpleContext api;
    private final String processorName;
    private final int processingRound;
    private final Instant start;
    private final Instant end;
 
-   DiagnosticContext(Context api, String processorName, int processingRound, Instant start, Instant end)
+   DiagnosticContext(SimpleContext api, String processorName, int processingRound, Instant start, Instant end)
    {
       this.api = api;
       this.processorName = processorName;
@@ -20,7 +20,7 @@ public class DiagnosticContext
       this.end = end;
    }
 
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return api;
    }

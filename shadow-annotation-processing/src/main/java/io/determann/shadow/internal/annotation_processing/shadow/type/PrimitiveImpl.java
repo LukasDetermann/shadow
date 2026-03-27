@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
@@ -16,7 +16,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_booleanImpl extends PrimitiveImpl implements Ap.boolean_
    {
-      public LM_booleanImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_booleanImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "boolean");
       }
@@ -24,7 +24,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_byteImpl extends PrimitiveImpl implements Ap.byte_
    {
-      public LM_byteImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_byteImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "byte");
       }
@@ -32,7 +32,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_charImpl extends PrimitiveImpl implements Ap.char_
    {
-      public LM_charImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_charImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "char");
       }
@@ -40,7 +40,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_doubleImpl extends PrimitiveImpl implements Ap.double_
    {
-      public LM_doubleImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_doubleImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "double");
       }
@@ -48,7 +48,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_floatImpl extends PrimitiveImpl implements Ap.float_
    {
-      public LM_floatImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_floatImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "float");
       }
@@ -56,7 +56,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_intImpl extends PrimitiveImpl implements Ap.int_
    {
-      public LM_intImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_intImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "int");
       }
@@ -64,7 +64,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_longImpl extends PrimitiveImpl implements Ap.long_
    {
-      public LM_longImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_longImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "long");
       }
@@ -72,13 +72,13 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 
    public static class LM_shortImpl extends PrimitiveImpl implements Ap.short_
    {
-      public LM_shortImpl(Context context, PrimitiveType primitiveTypeMirror)
+      public LM_shortImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
          super(context, primitiveTypeMirror, "short");
       }
    }
 
-   private PrimitiveImpl(Context context, PrimitiveType primitiveTypeMirror, String name)
+   private PrimitiveImpl(SimpleContext context, PrimitiveType primitiveTypeMirror, String name)
    {
       super(context, primitiveTypeMirror);
       this.name = name;

@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
-import io.determann.shadow.internal.annotation_processing.ApContextImpl;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
+import io.determann.shadow.internal.annotation_processing.processor.ContextImpl;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -20,9 +20,9 @@ import static java.util.Optional.ofNullable;
 public abstract class VariableImpl
 {
    private final VariableElement variableElement;
-   private final Context context;
+   private final SimpleContext context;
 
-   protected VariableImpl(Context context, VariableElement variableElement)
+   protected VariableImpl(SimpleContext context, VariableElement variableElement)
    {
       this.context = context;
       this.variableElement = variableElement;
@@ -30,7 +30,7 @@ public abstract class VariableImpl
 
    public Set<Modifier> getModifiers()
    {
-      return ApContextImpl.getModifiers(getElement());
+      return ContextImpl.getModifiers(getElement());
    }
 
    public boolean isSubtypeOf(Ap.Type type)
@@ -88,7 +88,7 @@ public abstract class VariableImpl
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return context;
    }

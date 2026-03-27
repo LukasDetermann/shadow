@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.annotation_processing.annotationvalue;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.Origin;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.annotation_usage.AnnotationUsageNameStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.AnnotationMirror;
@@ -18,11 +18,11 @@ import static io.determann.shadow.internal.annotation_processing.annotationvalue
 public class AnnotationUsageImpl
       implements Ap.AnnotationUsage
 {
-   private final Context context;
+   private final SimpleContext context;
    private final AnnotationMirror annotationMirror;
    private static AnnotatedConstruct annotated;
 
-   public static List<Ap.AnnotationUsage> from(Context langModelContext,
+   public static List<Ap.AnnotationUsage> from(SimpleContext langModelContext,
                                                AnnotatedConstruct annotated,
                                                Collection<? extends AnnotationMirror> annotationMirrors)
    {
@@ -30,12 +30,12 @@ public class AnnotationUsageImpl
       return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
-   static Ap.AnnotationUsage from(Context langModelContext, AnnotationMirror annotationMirror)
+   static Ap.AnnotationUsage from(SimpleContext langModelContext, AnnotationMirror annotationMirror)
    {
       return new AnnotationUsageImpl(langModelContext, annotationMirror);
    }
 
-   private AnnotationUsageImpl(Context context, AnnotationMirror annotationMirror)
+   private AnnotationUsageImpl(SimpleContext context, AnnotationMirror annotationMirror)
    {
       this.context = context;
       this.annotationMirror = annotationMirror;
@@ -82,7 +82,7 @@ public class AnnotationUsageImpl
       return annotationMirror;
    }
 
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return context;
    }

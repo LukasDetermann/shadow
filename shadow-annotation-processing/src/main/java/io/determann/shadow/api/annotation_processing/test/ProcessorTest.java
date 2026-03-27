@@ -1,5 +1,6 @@
 package io.determann.shadow.api.annotation_processing.test;
 
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.internal.test.ProcessorTestImpl;
 
 import javax.annotation.processing.Processor;
@@ -12,7 +13,7 @@ import java.util.Arrays;
  */
 public interface ProcessorTest
 {
-   static ProcessorTest process(ProcessingCallback processingCallback)
+   static ProcessorTest process(ProcessingCallback<SimpleContext> processingCallback)
    {
       return new ProcessorTestImpl(processingCallback);
    }

@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -13,10 +13,10 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.receiver
 
 public class ReceiverImpl implements Ap.Receiver
 {
-   private final Context context;
+   private final SimpleContext context;
    private final TypeMirror typeMirror;
 
-   ReceiverImpl(Context context, TypeMirror typeMirror)
+   ReceiverImpl(SimpleContext context, TypeMirror typeMirror)
    {
       this.context = context;
       this.typeMirror = typeMirror;

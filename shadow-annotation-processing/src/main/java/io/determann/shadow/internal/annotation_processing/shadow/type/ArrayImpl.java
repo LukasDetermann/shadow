@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.type.ArrayType;
 import java.util.List;
@@ -13,7 +13,7 @@ import static io.determann.shadow.api.annotation_processing.adapter.Adapters.ada
 public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
 {
 
-   public ArrayImpl(Context context, ArrayType arrayType)
+   public ArrayImpl(SimpleContext context, ArrayType arrayType)
    {
       super(context, arrayType);
    }

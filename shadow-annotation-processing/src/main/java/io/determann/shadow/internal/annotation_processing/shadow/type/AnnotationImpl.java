@@ -1,8 +1,8 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -12,12 +12,12 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.innerAnn
 
 public class AnnotationImpl extends DeclaredImpl implements Ap.Annotation
 {
-   public AnnotationImpl(Context context, DeclaredType declaredTypeMirror)
+   public AnnotationImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public AnnotationImpl(Context context, TypeElement typeElement)
+   public AnnotationImpl(SimpleContext context, TypeElement typeElement)
    {
       super(context, typeElement);
    }

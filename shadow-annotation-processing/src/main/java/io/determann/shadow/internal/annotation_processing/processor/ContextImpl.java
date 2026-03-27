@@ -1,8 +1,13 @@
-package io.determann.shadow.internal.annotation_processing;
+package io.determann.shadow.internal.annotation_processing.processor;
 
-import io.determann.shadow.api.annotation_processing.*;
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.Modifier;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
+import io.determann.shadow.api.annotation_processing.processor.Constants;
+import io.determann.shadow.api.annotation_processing.processor.Context;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
+import io.determann.shadow.internal.annotation_processing.ApConstantsImpl;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -12,87 +17,38 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.BiConsumer;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.determann.shadow.api.annotation_processing.adapter.Adapters.adapt;
-import static java.lang.System.out;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 
-public class ApContextImpl
-      implements Context
+public class ContextImpl
+      implements Context<Object>
 {
    private final ProcessingEnvironment processingEnv;
    private final RoundEnvironment roundEnv;
+   @Nullable private final Function<Map<String, String>, Object> optionsMapper;
    private final int processingRound;
    private final Types types;
    private final Elements elements;
-   private BiConsumer<Context, Throwable> exceptionHandler = (context, throwable) ->
-   {
-      StringWriter stringWriter = new StringWriter();
-      PrintWriter printWriter = new PrintWriter(stringWriter);
-      throwable.printStackTrace(printWriter);
-      logAndRaiseError(stringWriter.toString());
-      throw new RuntimeException(throwable);
-   };
-   private BiConsumer<Context, DiagnosticContext> diagnosticHandler = (context, diagnosticContext) ->
-   {
-      if (!context.isProcessingOver())
-      {
-         String duration = Duration.between(diagnosticContext.getStart(), diagnosticContext.getEnd()).toString()
-                                   .substring(2)
-                                   .replaceAll("(\\d[HMS])(?!$)", "$1 ")
-                                   .toLowerCase();
+   private Object optionsCache;
 
-         logInfo(diagnosticContext.getProcessorName() +
-                 " took " +
-                 duration +
-                 " in round " +
-                 diagnosticContext.getProcessingRound() +
-                 "\n");
-      }
-   };
-   private BiConsumer<Context, String> systemOutHandler = (context, s) ->
-   {
-      if (!getProcessingEnv().toString().startsWith("javac"))
-      {
-         logWarning(s);
-      }
-   };
-
-   public ApContextImpl(ProcessingEnvironment processingEnv, RoundEnvironment roundEnv, int processingRound)
+   public ContextImpl(ProcessingEnvironment processingEnv,
+                      RoundEnvironment roundEnv,
+                      int processingRound,
+                      @Nullable Function<Map<String, String>, Object> optionsMapper)
    {
       types = processingEnv.getTypeUtils();
       elements = processingEnv.getElementUtils();
       this.processingRound = processingRound;
       this.processingEnv = processingEnv;
       this.roundEnv = roundEnv;
-
-      proxySystemOut();
-   }
-
-   private void proxySystemOut()
-   {
-      PrintStream printStream = new PrintStream(out, false, out.charset())
-      {
-         @Override
-         public void println(String x)
-         {
-            super.println(x);
-            if (x != null && systemOutHandler != null)
-            {
-               systemOutHandler.accept(ApContextImpl.this, x);
-            }
-         }
-      };
-      System.setOut(printStream);
+      this.optionsMapper = optionsMapper;
    }
 
    private <TYPE> Set<TYPE> getAnnotated(String qualifiedAnnotation, java.lang.Class<TYPE> typeClass)
@@ -374,42 +330,6 @@ public class ApContextImpl
    }
 
    @Override
-   public void setExceptionHandler(BiConsumer<Context, Throwable> exceptionHandler)
-   {
-      this.exceptionHandler = exceptionHandler;
-   }
-
-   @Override
-   public BiConsumer<Context, Throwable> getExceptionHandler()
-   {
-      return exceptionHandler;
-   }
-
-   @Override
-   public void setDiagnosticHandler(BiConsumer<Context, DiagnosticContext> diagnosticHandler)
-   {
-      this.diagnosticHandler = diagnosticHandler;
-   }
-
-   @Override
-   public BiConsumer<Context, DiagnosticContext> getDiagnosticHandler()
-   {
-      return diagnosticHandler;
-   }
-
-   @Override
-   public void setSystemOutHandler(BiConsumer<Context, String> systemOutHandler)
-   {
-      this.systemOutHandler = systemOutHandler;
-   }
-
-   @Override
-   public BiConsumer<Context, String> getSystemOutHandler()
-   {
-      return systemOutHandler;
-   }
-
-   @Override
    public void logAndRaiseError(String msg)
    {
       processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg);
@@ -536,7 +456,7 @@ public class ApContextImpl
 
    public static Set<Modifier> getModifiers(Element element)
    {
-      Set<Modifier> result = element.getModifiers().stream().map(ApContextImpl::mapModifier).collect(Collectors.toSet());
+      Set<Modifier> result = element.getModifiers().stream().map(ContextImpl::mapModifier).collect(Collectors.toSet());
       if ((element.getKind().isExecutable() || element.getKind().isDeclaredType() || element.getKind().isVariable()) &&
           !result.contains(Modifier.PUBLIC) &&
           !result.contains(Modifier.PROTECTED) &&
@@ -568,6 +488,20 @@ public class ApContextImpl
       };
    }
 
+   @Override
+   public Object getOptions()
+   {
+      if (optionsMapper == null)
+      {
+         throw new IllegalStateException();
+      }
+      if (optionsCache == null)
+      {
+         optionsCache = optionsMapper.apply(processingEnv.getOptions());
+      }
+      return optionsCache;
+   }
+
    public Types getTypes()
    {
       return types;
@@ -578,17 +512,17 @@ public class ApContextImpl
       return elements;
    }
 
-   public Context getApi()
+   public SimpleContext getApi()
    {
       return this;
    }
 
-   private ProcessingEnvironment getProcessingEnv()
+   public ProcessingEnvironment getProcessingEnv()
    {
       return processingEnv;
    }
 
-   private RoundEnvironment getRoundEnv()
+   public RoundEnvironment getRoundEnv()
    {
       return roundEnv;
    }

@@ -1,13 +1,15 @@
 package io.determann.shadow.internal.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
-import io.determann.shadow.api.annotation_processing.Processor;
 import io.determann.shadow.api.annotation_processing.dsl.JavaDsl;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.interface_.InterfaceGenericStep;
 import io.determann.shadow.api.annotation_processing.dsl.method.MethodRenderable;
+import io.determann.shadow.api.annotation_processing.processor.Processor;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorBuilder;
+import io.determann.shadow.api.annotation_processing.processor.ProcessorConfiguration;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import org.jetbrains.annotations.NotNullByDefault;
 
 import java.util.Collection;
@@ -29,7 +31,12 @@ public class TypesafeUsageGenerator
    private static final String GENERATE_TYPESAFE_USAGE_FOR_NAME = "io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsageFor";
 
    @Override
-   public void process(Context context)
+   public ProcessorConfiguration buildProcessor(ProcessorBuilder processorBuilder)
+   {
+      return processorBuilder.process(TypesafeUsageGenerator::process);
+   }
+
+   private static void process(SimpleContext context)
    {
       for (Ap.Annotation annotated : getAnnotated(context))
       {
@@ -37,12 +44,10 @@ public class TypesafeUsageGenerator
       }
    }
 
-   private static Set<Ap.Annotation> getAnnotated(Context context)
+   private static Set<Ap.Annotation> getAnnotated(SimpleContext context)
    {
       Ap.Annotation genMetaModel = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_NAME);
-      Ap.Annotation
-            genMetaModelFor
-            = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_FOR_NAME);
+      Ap.Annotation genMetaModelFor = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_FOR_NAME);
 
       //noinspection unchecked
       return concat(context.getAnnotationsAnnotatedWith(genMetaModel).stream(),

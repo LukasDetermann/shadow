@@ -1,5 +1,6 @@
-package io.determann.shadow.api.annotation_processing;
+package io.determann.shadow.api.annotation_processing.processor;
 
+import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.dsl.declared.DeclaredRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.module.ModuleRenderable;
 import io.determann.shadow.api.annotation_processing.dsl.package_.PackageRenderable;
@@ -10,12 +11,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
 
 /**
- * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link Context} is transient. Meaning you can
+ * This is the core class for a lightweight wrapper around the java annotationProcessor api. The {@link SimpleContext} is transient. Meaning you can
  * transition between using the shadow and the java annotation processor api from line to line if you so wish.
  * <br><br>
  *
@@ -31,7 +31,7 @@ import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext
  * @see Processor
  * @see Ap.Type
  */
-public interface Context
+public interface SimpleContext
 {
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -391,38 +391,6 @@ public interface Context
     * starts at 0
     */
    int getProcessingRound();
-
-   /**
-    * Consumer to handle exceptions that occur in this annotation processor.
-    * If you want the compilation to stop because of it just throw any expedition.
-    */
-   void setExceptionHandler(BiConsumer<Context, Throwable> exceptionHandler);
-
-   /**
-    * @see #setExceptionHandler(BiConsumer)
-    */
-   BiConsumer<Context, Throwable> getExceptionHandler();
-
-   /**
-    * Executed at the end of each round.
-    * When the processing is over each Processor gets called one more time with {@link #isProcessingOver()} = true.
-    */
-   void setDiagnosticHandler(BiConsumer<Context, DiagnosticContext> diagnosticHandler);
-
-   /**
-    * @see #setDiagnosticHandler(BiConsumer)
-    */
-   BiConsumer<Context, DiagnosticContext> getDiagnosticHandler();
-
-   /**
-    * Some {@link javax.tools.Tool} don't support {@link System#out}. By default, it is proxied and redirected to the logger as warning
-    */
-   void setSystemOutHandler(BiConsumer<Context, String> systemOutHandler);
-
-   /**
-    * @see #setSystemOutHandler(BiConsumer)
-    */
-   BiConsumer<Context, String> getSystemOutHandler();
 
    void logAndRaiseError(String msg);
 

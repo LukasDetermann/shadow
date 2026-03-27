@@ -1,10 +1,10 @@
 package io.determann.shadow.internal.annotation_processing.shadow.structure;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.field.FieldInitializationStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -13,7 +13,7 @@ import static io.determann.shadow.api.annotation_processing.dsl.JavaDsl.field;
 
 public class FieldImpl extends VariableImpl implements Ap.Field
 {
-   public FieldImpl(Context context, VariableElement variableElement)
+   public FieldImpl(SimpleContext context, VariableElement variableElement)
    {
       super(context, variableElement);
    }

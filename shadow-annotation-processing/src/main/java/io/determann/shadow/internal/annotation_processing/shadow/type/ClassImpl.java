@@ -1,11 +1,11 @@
 package io.determann.shadow.internal.annotation_processing.shadow.type;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.adapter.TypeAdapter;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
 import io.determann.shadow.api.annotation_processing.dsl.class_.ClassGenericStep;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.internal.annotation_processing.shadow.structure.PropertyFactory;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,12 +26,12 @@ public class ClassImpl
       extends DeclaredImpl
       implements Ap.Class
 {
-   public ClassImpl(Context context, DeclaredType declaredTypeMirror)
+   public ClassImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
       super(context, declaredTypeMirror);
    }
 
-   public ClassImpl(Context context, TypeElement typeElement)
+   public ClassImpl(SimpleContext context, TypeElement typeElement)
    {
       super(context, typeElement);
    }

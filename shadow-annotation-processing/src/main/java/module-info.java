@@ -7,6 +7,7 @@ module io.determann.shadow.annotation.processing {
 
    exports io.determann.shadow.api.annotation_processing;
    exports io.determann.shadow.api.annotation_processing.adapter;
+   exports io.determann.shadow.api.annotation_processing.processor;
    exports io.determann.shadow.api.annotation_processing.test;
 
    exports io.determann.shadow.internal.annotation_processing to io.determann.shadow.annotation.processing.test;
@@ -40,6 +41,7 @@ module io.determann.shadow.annotation.processing {
    exports io.determann.shadow.api.annotation_processing.dsl.uses;
 
    exports io.determann.shadow.internal.annotation_processing.dsl to io.determann.shadow.annotation.processing.test;
+   exports io.determann.shadow.internal.annotation_processing.processor to io.determann.shadow.annotation.processing.test;
 
    provides javax.annotation.processing.Processor with TypesafeUsageGenerator;
 }

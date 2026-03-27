@@ -1,4 +1,6 @@
-package io.determann.shadow.api.annotation_processing;
+package io.determann.shadow.api.annotation_processing.processor;
+
+import io.determann.shadow.api.annotation_processing.Ap;
 
 public interface Constants
 {

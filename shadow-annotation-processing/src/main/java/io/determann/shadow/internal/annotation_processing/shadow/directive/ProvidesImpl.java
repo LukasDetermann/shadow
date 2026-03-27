@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.shadow.directive;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.Context;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.dsl.RenderingContext;
+import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 
 import javax.lang.model.element.ModuleElement;
 import java.util.List;
@@ -15,7 +15,7 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
-   public ProvidesImpl(Context context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
+   public ProvidesImpl(SimpleContext context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
    {
       super(context, declaringModule);
       this.providesDirective = providesDirective;
