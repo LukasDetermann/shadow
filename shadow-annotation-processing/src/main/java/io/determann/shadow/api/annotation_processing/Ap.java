@@ -283,7 +283,7 @@ public interface Ap
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a
-       * {@link java.util.Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
+       * {@link java.util.Collection} {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.isSubtypeOf"}
        */
       boolean isSubtypeOf(Type type);
 
@@ -348,12 +348,12 @@ public interface Ap
       List<Constructor> getConstructors();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenericTypes"}
        */
       List<Type> getGenericUsages();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenerics"}
        */
       List<Generic> getGenericDeclarations();
 
@@ -371,11 +371,11 @@ public interface Ap
       /**
        * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
        * <p>
-       * it answers the question: given {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics.code"}
+       * it answers the question: given {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics.code"}
        * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
        * <p>
        * The code for the example
-       * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics"}
        */
       Class capture();
 
@@ -419,7 +419,7 @@ public interface Ap
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a {@link java.util.Collection}
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.isSubtypeOf"}
        */
       boolean isSubtypeOf(ReferenceType referenceType);
 
@@ -578,12 +578,12 @@ public interface Ap
       List<Declared> getPermittedSubTypes();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenericTypes"}
        */
       List<Type> getGenericUsages();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenerics"}
        */
       List<Generic> getGenericDeclarations();
 
@@ -601,11 +601,11 @@ public interface Ap
       /**
        * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
        * <p>
-       * it answers the question: given {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics.code"}
+       * it answers the question: given {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics.code"}
        * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
        * <p>
        * The code for the example
-       * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics"}
        */
       Interface capture();
 
@@ -643,12 +643,12 @@ public interface Ap
       List<Constructor> getConstructors();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenericTypes"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenericTypes"}
        */
       List<Type> getGenericUsages();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenerics"}
        */
       List<Generic> getGenericDeclarations();
 
@@ -666,11 +666,11 @@ public interface Ap
       /**
        * Used when constructing types to compare to at compile time that contain multiple, on each other depended, generics.
        * <p>
-       * it answers the question: given {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics.code"}
+       * it answers the question: given {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics.code"}
        * and A being {@code String} what can B be by returning the "simplest" possible answer. in this case String
        * <p>
        * The code for the example
-       * {@snippet file = "InterpolateGenericsExample.java" region = "InterpolateGenerics.interpolateGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.InterpolateGenericsTest" region = "InterpolateGenerics.interpolateGenerics"}
        */
       Record capture();
 
@@ -743,7 +743,7 @@ public interface Ap
       Optional<Type> getSuper();
 
       /**
-       * {@snippet file = "WildcardTest.java" region = "Wildcard.contains"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.WildcardTest" region = "Wildcard.contains"}
        */
       boolean contains(ReferenceType referenceType);
 
@@ -800,7 +800,7 @@ public interface Ap
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a
-       * {@link Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
+       * {@link Collection} {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.isSubtypeOf"}
        */
       boolean isSubtypeOf(Type type);
 
@@ -890,25 +890,25 @@ public interface Ap
       Declared getSurrounding();
 
       /**
-       * {@snippet file = "GenericUsageTest.java" region = "GenericUsage.getGenerics"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.getGenerics"}
        */
       List<Generic> getGenericDeclarations();
 
       /**
        * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-       * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.ReceiverUsageTest" region = "ReceiverUsageTest.method"}
        */
       Optional<Declared> getReceiverType();
 
       /**
        * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-       * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.ReceiverUsageTest" region = "ReceiverUsageTest.method"}
        */
       Optional<Receiver> getReceiver();
 
       /**
        * The receiver represents the instance the method is called on. This language feature is barely used, it makes it possible to annotate "this".
-       * {@snippet file = "ReceiverUsageTest.java" region = "ReceiverUsageTest.method"}
+       * {@snippet class = "io.determann.shadow.annotation_processing.javadoc.ReceiverUsageTest" region = "ReceiverUsageTest.method"}
        */
       default Receiver getReceiverOrThrow()
       {
@@ -1334,7 +1334,7 @@ public interface Ap
       /**
        * returns true if this can be cast to that.
        * This can be useful if you want to check if a type implements for example a
-       * {@link Collection} {@snippet file = "GenericUsageTest.java" region = "GenericUsage.isSubtypeOf"}
+       * {@link Collection} {@snippet class = "io.determann.shadow.annotation_processing.javadoc.GenericUsageTest" region = "GenericUsage.isSubtypeOf"}
        */
       boolean isSubtypeOf(Type type);
 

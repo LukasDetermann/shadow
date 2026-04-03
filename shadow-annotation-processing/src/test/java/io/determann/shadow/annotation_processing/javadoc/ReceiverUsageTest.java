@@ -1,4 +1,4 @@
-package io.determann.shadow.javadoc;
+package io.determann.shadow.annotation_processing.javadoc;
 
 import org.junit.jupiter.api.Assertions;
 

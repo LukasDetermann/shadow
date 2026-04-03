@@ -1,4 +1,4 @@
-package io.determann.shadow.javadoc;
+package io.determann.shadow.annotation_processing.javadoc;
 
 import io.determann.shadow.api.annotation_processing.Ap;
 import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-public class InterpolateGenericsExample
+public class InterpolateGenericsTest
 {
    @Test
    void interpolateGenerics()

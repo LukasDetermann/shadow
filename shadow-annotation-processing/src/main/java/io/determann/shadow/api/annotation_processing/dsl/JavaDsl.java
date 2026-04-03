@@ -63,14 +63,14 @@ public interface JavaDsl
       return import_().declared(name);
    }
 
-   /// {@snippet file = "ConstructorDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.ConstructorDslTest" region = "api"}
    @Contract(value = " -> new", pure = true)
    static ConstructorJavaDocStep constructor()
    {
       return new ConstructorDsl();
    }
 
-   /// {@snippet file = "MethodDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.MethodDslTest" region = "api"}
    @Contract(value = " -> new", pure = true)
    static MethodJavaDocStep method()
    {
@@ -131,14 +131,14 @@ public interface JavaDsl
       return new EnumConstantDsl();
    }
 
-   /// {@snippet file = "ModuleDslTest.java" region = api}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.ModuleDslTest" region = api}
    @Contract(value = " -> new", pure = true)
    static ModuleCopyrightHeaderStep moduleInfo()
    {
       return new ModuleDsl();
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-string"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "exports-api-simple-string"}
    ///
    /// @see #exports()
    @Contract(value = "_ -> new", pure = true)
@@ -147,7 +147,7 @@ public interface JavaDsl
       return exports().package_(packageName);
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api-simple-type"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "exports-api-simple-type"}
    ///
    /// @see #exports()
    @Contract(value = "_ -> new", pure = true)
@@ -156,14 +156,14 @@ public interface JavaDsl
       return exports().package_(aPackage);
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "exports-api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "exports-api"}
    @Contract(value = " -> new", pure = true)
    static ExportsPackageStep exports()
    {
       return new ExportsDsl();
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-type"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "opens-api-simple-type"}
    ///
    /// @see #opens()
    @Contract(value = "_ -> new", pure = true)
@@ -172,7 +172,7 @@ public interface JavaDsl
       return opens().package_(aPackage);
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api-simple-string"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "opens-api-simple-string"}
    ///
    /// @see #opens()
    @Contract(value = "_ -> new", pure = true)
@@ -181,35 +181,35 @@ public interface JavaDsl
       return opens().package_(packageName);
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "opens-api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "opens-api"}
    @Contract(value = " -> new", pure = true)
    static OpensPackageStep opens()
    {
       return new OpensDsl();
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "requires-api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "requires-api"}
    @Contract(value = " -> new", pure = true)
    static RequiresModifierStep requires()
    {
       return new RequiresDsl();
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = provides-api}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = provides-api}
    @Contract(value = " -> new", pure = true)
    static ProvidesServiceStep provides()
    {
       return new ProvidesDsl();
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "uses-api-string"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "uses-api-string"}
    @Contract(value = "_ -> new", pure = true)
    static UsesRenderable uses(String serviceName)
    {
       return renderingContext -> "uses " + serviceName + ';';
    }
 
-   /// {@snippet file = "DirectiveDslTest.java" region = "uses-api-type"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.DirectiveDslTest" region = "uses-api-type"}
    @Contract(value = "_ -> new", pure = true)
    static UsesRenderable uses(Ap.Declared service)
    {
@@ -222,14 +222,14 @@ public interface JavaDsl
       return new PackageDsl();
    }
 
-   /// {@snippet file = "ParameterDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.ParameterDslTest" region = "api"}
    @Contract(value = " -> new", pure = true)
    static ParameterAnnotateStep parameter()
    {
       return new ParameterDsl();
    }
 
-   /// {@snippet file = "ParameterDslTest.java" region = "short-api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.ParameterDslTest" region = "short-api"}
    ///
    /// @see #parameter()
    @Contract(value = "_, _ -> new", pure = true)
@@ -240,7 +240,7 @@ public interface JavaDsl
             .name(name);
    }
 
-   /// {@snippet file = "ParameterDslTest.java" region = "short-api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.ParameterDslTest" region = "short-api"}
    ///
    /// @see #parameter()
    @Contract(value = "_, _ -> new", pure = true)
@@ -263,7 +263,7 @@ public interface JavaDsl
       return new RecordComponentDsl();
    }
 
-   /// {@snippet file = "ResultDslTest.java" region = "api"}
+   /// {@snippet class = io.determann.shadow.annotation_processing.dsl.ResultDslTest region = "api"}
    @Contract(value = " -> new", pure = true)
    static ResultAnnotateStep result()
    {
@@ -282,7 +282,7 @@ public interface JavaDsl
       return new AnnotationDsl();
    }
 
-   /// {@snippet file = "AnnotationUsageDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.AnnotationUsageDslTest" region = "api"}
    @Contract(value = " -> new", pure = true)
    static AnnotationUsageTypeStep annotationUsage()
    {
@@ -433,18 +433,18 @@ public interface JavaDsl
       return generic().name(name);
    }
 
-   /// {@snippet file = "GenericDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.GenericDslTest" region = "api"}
    ///
    /// Recursive generics are only possible to declare with a workaround
    ///
-   /// {@snippet file = "GenericDslTest.java" region = "recursive"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.GenericDslTest" region = "recursive"}
    @Contract(value = " -> new", pure = true)
    static GenericAnnotateStep generic()
    {
       return new GenericDsl();
    }
 
-   /// {@snippet file = "FieldDslTest.java" region = "api"}
+   /// {@snippet class = "io.determann.shadow.annotation_processing.dsl.FieldDslTest" region = "api"}
    @Contract(value = " -> new", pure = true)
    static FieldJavaDocStep field()
    {

@@ -8,6 +8,7 @@ module io.determann.shadow.annotation.processing.test {
 
    opens io.determann.shadow.annotation_processing to  org.junit.platform.commons;
    opens io.determann.shadow.annotation_processing.dsl to  org.junit.platform.commons;
+   opens io.determann.shadow.annotation_processing.javadoc to org.junit.platform.commons;
    opens io.determann.shadow.annotation_processing.shadow to  org.junit.platform.commons;
    opens io.determann.shadow.annotation_processing.shadow.type to  org.junit.platform.commons;
    opens io.determann.shadow.annotation_processing.shadow.structure to  org.junit.platform.commons;
