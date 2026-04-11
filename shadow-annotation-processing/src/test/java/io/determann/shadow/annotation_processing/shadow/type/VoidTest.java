@@ -1,8 +1,8 @@
 package io.determann.shadow.annotation_processing.shadow.type;
 
-import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
+import static io.determann.shadow.api.annotation_processing.test.ProcessorTest.processorTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class VoidTest
@@ -10,7 +10,7 @@ class VoidTest
    @Test
    void nonNull()
    {
-      ProcessorTest.process(context -> assertNotNull(context.getConstants().getVoid())).compile();
+      processorTest().process(context -> assertNotNull(context.getConstants().getVoid()));
    }
 }
 

@@ -1,11 +1,11 @@
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static io.determann.shadow.api.annotation_processing.test.ProcessorTest.processorTest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class BuilderTest
@@ -21,18 +21,16 @@ class BuilderTest
    @Test
    void shadow()
    {
-      assertDoesNotThrow(() -> ProcessorTest.process(new ShadowBuilderProcessor())
-                                            .withCodeToCompile(DIR.resolve("BuilderPattern.java"))
-                                            .withCodeToCompile(DIR.resolve("Customer.java"))
-                                            .compile());
+      assertDoesNotThrow(() -> processorTest().withCodeToCompile(DIR.resolve("BuilderPattern.java"))
+                                              .withCodeToCompile(DIR.resolve("Customer.java"))
+                                              .process(new ShadowBuilderProcessor()));
    }
 
    @Test
    void jdk()
    {
-      assertDoesNotThrow(() -> ProcessorTest.process(new JdkBuilderProcessor())
-                                            .withCodeToCompile(DIR.resolve("BuilderPattern.java"))
-                                            .withCodeToCompile(DIR.resolve("Customer.java"))
-                                            .compile());
+      assertDoesNotThrow(() -> processorTest().withCodeToCompile(DIR.resolve("BuilderPattern.java"))
+                                              .withCodeToCompile(DIR.resolve("Customer.java"))
+                                              .process(new JdkBuilderProcessor()));
    }
 }

@@ -14,14 +14,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ProcessorTestImpl implements ProcessorTest
 {
-   private final List<? extends Processor> processors;
+   private List<? extends Processor> processors;
    private final List<JavaFileObject> toCompile;
    private final List<String> options;
    private final List<String> compiledClassNames;
@@ -37,18 +34,8 @@ public class ProcessorTestImpl implements ProcessorTest
       this.compiledClassNames = compiledClassNames;
    }
 
-   public ProcessorTestImpl(ProcessingCallback<SimpleContext> processingCallback)
+   public ProcessorTestImpl()
    {
-      this.processors = Collections.singletonList(createProcessor(processingCallback));
-      toCompile = new ArrayList<>();
-      options = new ArrayList<>();
-      compiledClassNames = new ArrayList<>();
-      compiledClassNames.add("java.lang.Object");
-   }
-
-   public ProcessorTestImpl(List<? extends Processor> processors)
-   {
-      this.processors = processors;
       toCompile = new ArrayList<>();
       options = new ArrayList<>();
       compiledClassNames = new ArrayList<>();
@@ -117,7 +104,20 @@ public class ProcessorTestImpl implements ProcessorTest
    }
 
    @Override
-   public void compile()
+   public void process(ProcessingCallback<SimpleContext> processingCallback)
+   {
+      this.processors = Collections.singletonList(createProcessor(processingCallback));
+      compile();
+   }
+
+   @Override
+   public void process(Processor... processors)
+   {
+      this.processors = Arrays.asList(processors);
+      compile();
+   }
+
+   private void compile()
    {
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
       Objects.requireNonNull(compiler);

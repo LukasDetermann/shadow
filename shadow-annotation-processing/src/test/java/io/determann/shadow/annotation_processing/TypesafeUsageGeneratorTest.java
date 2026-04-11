@@ -1,11 +1,11 @@
 package io.determann.shadow.annotation_processing;
 
 import io.determann.shadow.api.annotation_processing.Ap;
-import io.determann.shadow.api.annotation_processing.test.ProcessorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static io.determann.shadow.api.annotation_processing.dsl.RenderingContext.createRenderingContext;
+import static io.determann.shadow.api.annotation_processing.test.ProcessorTest.processorTest;
 import static io.determann.shadow.internal.annotation_processing.TypesafeUsageGenerator.createTypeSafeUsage;
 
 class TypesafeUsageGeneratorTest
@@ -13,38 +13,37 @@ class TypesafeUsageGeneratorTest
    @Test
    void allParams()
    {
-      ProcessorTest.process(context ->
-                            {
-                               Ap.Annotation myAnnotation = context.getAnnotationOrThrow("MyAnnotation");
+      processorTest().withCodeToCompile("MyOtherAnnotation.java",
+                                        """
+                                        public @interface MyOtherAnnotation {}""")
+                     .withCodeToCompile("MyAnnotation.java",
+                                        """
+                                        public @interface MyAnnotation{
+                                           String string();
+                                           boolean boolean_();
+                                           byte byte_();
+                                           short short_();
+                                           int int_();
+                                           long long_();
+                                           char char_();
+                                           float float_();
+                                           double double_();
+                                           Class<?> type();
+                                           java.lang.annotation.RetentionPolicy enum_();
+                                           MyOtherAnnotation annotation();
+                                           int[] values();
+                                        }""")
+                     .process(context ->
+                              {
+                                 Ap.Annotation myAnnotation = context.getAnnotationOrThrow("MyAnnotation");
 
-                               String declaration = createTypeSafeUsage(myAnnotation).renderDeclaration(createRenderingContext());
-                               String withTimeVariance = declaration.replaceFirst(
-                                     "date = \"\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+\"\\)",
-                                     "date = \"1970-01-01T00:00:00.0000000\")");
+                                 String declaration = createTypeSafeUsage(myAnnotation).renderDeclaration(createRenderingContext());
+                                 String withTimeVariance = declaration.replaceFirst(
+                                       "date = \"\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+\"\\)",
+                                       "date = \"1970-01-01T00:00:00.0000000\")");
 
-                               Assertions.assertEquals(EXPECTED, withTimeVariance);
-                            })
-                   .withCodeToCompile("MyOtherAnnotation.java",
-                                      """
-                                      public @interface MyOtherAnnotation {}""")
-                   .withCodeToCompile("MyAnnotation.java",
-                                      """
-                                      public @interface MyAnnotation{
-                                         String string();
-                                         boolean boolean_();
-                                         byte byte_();
-                                         short short_();
-                                         int int_();
-                                         long long_();
-                                         char char_();
-                                         float float_();
-                                         double double_();
-                                         Class<?> type();
-                                         java.lang.annotation.RetentionPolicy enum_();
-                                         MyOtherAnnotation annotation();
-                                         int[] values();
-                                      }""")
-                   .compile();
+                                 Assertions.assertEquals(EXPECTED, withTimeVariance);
+                              });
    }
 
    private static final String EXPECTED = """

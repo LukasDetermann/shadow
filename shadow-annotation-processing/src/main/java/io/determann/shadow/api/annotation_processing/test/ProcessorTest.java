@@ -6,22 +6,15 @@ import io.determann.shadow.internal.test.ProcessorTestImpl;
 import javax.annotation.processing.Processor;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 /**
- * Builder to test annotation processors
+ * Runs annotation processors. Generated files will not be written to disk
  */
 public interface ProcessorTest
 {
-   static ProcessorTest process(ProcessingCallback<SimpleContext> processingCallback)
+   static ProcessorTest processorTest()
    {
-      return new ProcessorTestImpl(processingCallback);
-   }
-
-   @SafeVarargs
-   static ProcessorTest process(Processor... processors)
-   {
-      return new ProcessorTestImpl(Arrays.asList(processors));
+      return new ProcessorTestImpl();
    }
 
    /**
@@ -71,8 +64,7 @@ public interface ProcessorTest
     */
    ProcessorTest withOption(String option);
 
-   /**
-    * Compiles the classes and invokes the {@link ProcessingCallback}
-    */
-   void compile();
+   void process(ProcessingCallback<SimpleContext> processingCallback);
+
+   void process(Processor... processors);
 }
