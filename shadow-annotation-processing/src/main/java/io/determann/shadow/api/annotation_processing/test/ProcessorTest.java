@@ -11,7 +11,7 @@ import java.nio.file.Path;
 
 /**
  * Runs annotation processors. Generated files will not be written to disk.
- * May get moved it a seperate artifact in the future
+ * May get moved it a separate artifact in the future
  */
 @ApiStatus.Experimental
 public interface ProcessorTest
