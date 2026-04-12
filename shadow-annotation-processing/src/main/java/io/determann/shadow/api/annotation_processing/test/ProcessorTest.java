@@ -2,14 +2,17 @@ package io.determann.shadow.api.annotation_processing.test;
 
 import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.internal.test.ProcessorTestImpl;
+import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.processing.Processor;
 import java.io.File;
 import java.nio.file.Path;
 
 /**
- * Runs annotation processors. Generated files will not be written to disk
+ * Runs annotation processors. Generated files will not be written to disk.
+ * May get moved it a seperate artifact in the future
  */
+@ApiStatus.Experimental
 public interface ProcessorTest
 {
    static ProcessorTest processorTest()
