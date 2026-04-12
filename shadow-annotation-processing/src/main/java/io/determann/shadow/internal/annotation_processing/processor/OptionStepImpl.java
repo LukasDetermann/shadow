@@ -3,7 +3,7 @@ package io.determann.shadow.internal.annotation_processing.processor;
 import io.determann.shadow.api.annotation_processing.processor.Context;
 import io.determann.shadow.api.annotation_processing.processor.HandlerStep;
 import io.determann.shadow.api.annotation_processing.processor.OptionStep;
-import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
+import io.determann.shadow.api.annotation_processing.processor.ProcessingCallback;
 
 import javax.lang.model.SourceVersion;
 import java.util.*;

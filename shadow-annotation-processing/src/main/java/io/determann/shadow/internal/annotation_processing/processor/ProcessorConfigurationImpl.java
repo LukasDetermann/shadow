@@ -1,9 +1,9 @@
 package io.determann.shadow.internal.annotation_processing.processor;
 
 import io.determann.shadow.api.annotation_processing.processor.DiagnosticContext;
+import io.determann.shadow.api.annotation_processing.processor.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.processor.ProcessorConfiguration;
 import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
-import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 
 import javax.lang.model.SourceVersion;
 import java.util.Map;

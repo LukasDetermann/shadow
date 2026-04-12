@@ -1,6 +1,5 @@
 package io.determann.shadow.api.annotation_processing.processor;
 
-import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 import org.jetbrains.annotations.Contract;
 
 import java.util.function.BiConsumer;

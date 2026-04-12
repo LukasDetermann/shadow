@@ -1,5 +1,6 @@
 package io.determann.shadow.api.annotation_processing.test;
 
+import io.determann.shadow.api.annotation_processing.processor.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
 import io.determann.shadow.internal.test.ProcessorTestImpl;
 import org.jetbrains.annotations.ApiStatus;

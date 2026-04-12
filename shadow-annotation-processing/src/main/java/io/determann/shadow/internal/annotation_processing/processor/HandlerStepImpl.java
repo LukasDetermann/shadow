@@ -3,8 +3,8 @@ package io.determann.shadow.internal.annotation_processing.processor;
 import io.determann.shadow.api.annotation_processing.adapter.Adapters;
 import io.determann.shadow.api.annotation_processing.processor.DiagnosticContext;
 import io.determann.shadow.api.annotation_processing.processor.HandlerStep;
+import io.determann.shadow.api.annotation_processing.processor.ProcessingCallback;
 import io.determann.shadow.api.annotation_processing.processor.SimpleContext;
-import io.determann.shadow.api.annotation_processing.test.ProcessingCallback;
 import org.jetbrains.annotations.NotNull;
 
 import javax.lang.model.SourceVersion;
