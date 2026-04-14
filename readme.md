@@ -116,7 +116,7 @@ This Annotation Processor generates Builder
 ``` highlightjs
 package io.determann.shadow.builder;
 
-import io.determann.shadow.api.annotation_processing.Ap;
+import annotation_processing.api.com.derivandi.Ap;
 import io.determann.shadow.api.dsl.Dsl;
 import io.determann.shadow.api.dsl.class_.ClassBodyStep;
 
@@ -137,7 +137,7 @@ public class ShadowBuilderProcessor
    {
       // iterate over every class annotated with the BuilderPattern annotation
       for (Ap.Class toBuild : context
-            .getClassesAnnotatedWith("io.determann.shadow.builder.BuilderPattern"))
+            .getClassesAnnotatedWith("builder.com.derivandi.BuilderPattern"))
       {
          // create the Builder Class
          ClassBodyStep step = Dsl.class_()

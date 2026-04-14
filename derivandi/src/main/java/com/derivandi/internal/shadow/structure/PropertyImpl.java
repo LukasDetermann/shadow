@@ -1,0 +1,102 @@
+package com.derivandi.internal.shadow.structure;
+
+import com.derivandi.api.Ap;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
+
+public class PropertyImpl
+      implements Ap.Property
+{
+   private final String name;
+   private final Ap.VariableType type;
+   private final Ap.Field field;
+   private final Ap.Method getter;
+   private final Ap.Method setter;
+
+   PropertyImpl(String name,
+                Ap.VariableType type,
+                Ap.Field field,
+                Ap.Method getter,
+                Ap.Method setter)
+   {
+      this.name = name;
+      this.type = type;
+      this.field = field;
+      this.getter = getter;
+      this.setter = setter;
+   }
+
+   @Override
+   public String getName()
+   {
+      return name;
+   }
+
+   @Override
+   public Ap.VariableType getType()
+   {
+      return type;
+   }
+
+   @Override
+   public Optional<Ap.Field> getField()
+   {
+      return ofNullable(field);
+   }
+
+   @Override
+   public Ap.Field getFieldOrThrow()
+   {
+      return getField().orElseThrow();
+   }
+
+   @Override
+   public Ap.Method getGetter()
+   {
+      return getter;
+   }
+
+   @Override
+   public Optional<Ap.Method> getSetter()
+   {
+      return ofNullable(setter);
+   }
+
+   @Override
+   public Ap.Method getSetterOrThrow()
+   {
+      return getSetter().orElseThrow();
+   }
+
+   @Override
+   public boolean isMutable()
+   {
+      return getSetter().isPresent();
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      return other instanceof Ap.Property property &&
+             Objects.equals(getName(), property.getName()) &&
+             Objects.equals(getType(), property.getType());
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getName(), getType());
+   }
+
+   @Override
+   public String toString()
+   {
+      return "Property{" +
+             "name='" + getName() + '\'' +
+             ", type=" + getType() +
+             '}';
+   }
+}

@@ -1,0 +1,225 @@
+package com.derivandi.dsl;
+
+import com.derivandi.api.dsl.JavaDsl;
+import com.derivandi.api.dsl.RenderingContext;
+import com.derivandi.api.dsl.class_.ClassGenericStep;
+import org.junit.jupiter.api.Test;
+
+import static com.derivandi.api.dsl.RenderingConfiguration.DEFAULT_CONFIGURATION;
+import static com.derivandi.api.dsl.RenderingConfiguration.renderingConfigurationBuilder;
+import static com.derivandi.api.dsl.RenderingContext.createRenderingContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class AutomaticImportTest
+{
+   @Test
+   void simpleImport()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import other.package_.Foo;
+                   
+                   @Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void nameCollision()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import other.package_.Foo;
+                   
+                   @Foo
+                   @other.package2.Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package2").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void reuse()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import other.package_.Foo;
+                   
+                   @Foo
+                   @Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(RenderingContext.createRenderingContext()));
+   }
+
+   @Test
+   void javaLang()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   class MyClass {
+                      String foo() {}
+                   
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .name("MyClass")
+                          .method(JavaDsl.method().resultType(JavaDsl.class_().package_("java.lang").name("String"))
+                                         .name("foo"))
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void disabled()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   @other.package_.Foo
+                   @org.example.Foo2
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("other.package_").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("org.example").name("Foo2")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext(renderingConfigurationBuilder(DEFAULT_CONFIGURATION)
+                                                                      .withoutAutomaticImports()
+                                                                      .build())));
+   }
+
+   @Test
+   void noPackageKnownType()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   @Foo
+                   @Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void noPackageCollidesWithImported()
+   {
+      ClassGenericStep step = JavaDsl.class_().package_("org.example")
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Foo")))
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                                     .name("MyClass");
+
+      RenderingContext renderingContext = createRenderingContext();
+
+      assertThrows(IllegalStateException.class,
+                   () -> step.renderDeclaration(renderingContext),
+                   "Cannot import type from unnamed package \"Foo\" it clashes with the already imported type \"some.other.Foo\". Use RenderingContextBuilder#withoutAutomaticImports to disable auto importing.");
+   }
+
+   @Test
+   void noPackageCollidesWithJavaLang()
+   {
+      ClassGenericStep step = JavaDsl.class_().package_("org.example")
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                                     .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                                     .name("MyClass");
+
+      RenderingContext renderingContext = createRenderingContext();
+
+      assertThrows(IllegalStateException.class,
+                   () -> step.renderDeclaration(renderingContext),
+                   "Cannot import type from unnamed package \"Foo\" it clashes with the already used type \"java.lang.Foo\". Use RenderingContextBuilder#withoutAutomaticImports to disable auto importing.");
+   }
+
+   @Test
+   void javaLangWithoutImport()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   @Foo
+                   @Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void javaLangImported()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import some.other.Foo;
+                   
+                   @Foo
+                   @java.lang.Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void javaLangNoPackage()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   @Foo
+                   @java.lang.Foo
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().noPackage().name("Foo")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("java.lang").name("Foo")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+
+   @Test
+   void innerClass()
+   {
+      assertEquals("""
+                   package org.example;
+                   
+                   import some.other.Outer;
+                   
+                   @Outer.Inner
+                   @Outer.OtherInner
+                   class MyClass {
+                   }""",
+                   JavaDsl.class_().package_("org.example")
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Outer.Inner")))
+                          .annotate(JavaDsl.annotationUsage().type(JavaDsl.annotation().package_("some.other").name("Outer.OtherInner")))
+                          .name("MyClass")
+                          .renderDeclaration(createRenderingContext()));
+   }
+}

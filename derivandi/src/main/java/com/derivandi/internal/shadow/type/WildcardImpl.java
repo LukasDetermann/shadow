@@ -1,0 +1,107 @@
+package com.derivandi.internal.shadow.type;
+
+import com.derivandi.api.Ap;
+import com.derivandi.api.adapter.Adapters;
+import com.derivandi.api.dsl.RenderingContext;
+import com.derivandi.api.processor.SimpleContext;
+
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.WildcardType;
+import java.util.Objects;
+import java.util.Optional;
+
+import static com.derivandi.api.adapter.Adapters.adapt;
+
+public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
+{
+   public WildcardImpl(SimpleContext context, WildcardType wildcardTypeMirror)
+   {
+      super(context, wildcardTypeMirror);
+   }
+
+   @Override
+   public Optional<Ap.Type> getExtends()
+   {
+      TypeMirror extendsBound = getMirror().getExtendsBound();
+      if (extendsBound == null)
+      {
+         return Optional.empty();
+      }
+      return Optional.of(adapt(getApi(), extendsBound));
+   }
+
+   @Override
+   public Optional<Ap.Type> getSuper()
+   {
+      TypeMirror superBound = getMirror().getSuperBound();
+      if (superBound == null)
+      {
+         return Optional.empty();
+      }
+      return Optional.of(adapt(getApi(), superBound));
+   }
+
+   @Override
+   public boolean contains(Ap.ReferenceType referenceType)
+   {
+      TypeMirror typemirror = switch (referenceType)
+      {
+         case Ap.Array array -> adapt(array).toArrayType();
+         case Ap.Generic generic -> adapt(generic).toTypeVariable();
+         case Ap.Declared declared -> adapt(declared).toDeclaredType();
+      };
+
+      return adapt(getApi()).toTypes().contains(getMirror(), typemirror);
+   }
+
+   @Override
+   public Ap.Wildcard erasure()
+   {
+      return (Ap.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+   }
+
+   @Override
+   public String renderName(RenderingContext renderingContext)
+   {
+      Optional<Ap.Type> superType = getSuper();
+      if (superType.isPresent())
+      {
+         return "? super " + superType.get().renderName(renderingContext);
+      }
+      Optional<Ap.Type> extendsType = getExtends();
+      if (extendsType.isPresent())
+      {
+         return "? extends " + extendsType.get();
+      }
+      return "?";
+   }
+
+   @Override
+   public String renderType(RenderingContext renderingContext)
+   {
+      return renderName(renderingContext);
+   }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      return other instanceof Ap.Wildcard wildcard &&
+             Objects.equals(getExtends(), wildcard.getExtends()) &&
+             Objects.equals(getSuper(), wildcard.getSuper());
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return Objects.hash(getExtends(), getSuper());
+   }
+
+   @Override
+   public String toString()
+   {
+      return "Wildcard{" +
+             "extends=" + getExtends() +
+             ", super=" + getSuper() +
+             '}';
+   }
+}

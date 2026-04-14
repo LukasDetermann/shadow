@@ -1,0 +1,18 @@
+package com.derivandi.internal.dsl;
+
+
+import com.derivandi.api.dsl.JavaDsl;
+import com.derivandi.api.dsl.RenderingContext;
+
+public interface Renderable
+{
+   /// Renders this using the {@link RenderingContext}.
+   /// A representation of java code can be rendered or {@link Renderable}s crated via the {@link JavaDsl}.
+   ///
+   /// If this is not created via the {@link JavaDsl} there are often multiple different way to render it, like a Method declaration or a Method invocation.
+   /// In that case a declaration will be rendered.
+   ///
+   /// @see RenderingContext
+   /// @see JavaDsl
+   String render(RenderingContext renderingContext);
+}

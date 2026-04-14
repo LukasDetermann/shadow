@@ -1,0 +1,15 @@
+package com.derivandi.api.dsl.constructor;
+
+import com.derivandi.api.dsl.RenderingContext;
+
+import static com.derivandi.internal.dsl.AdapterSupport.notImplemented;
+
+/// convenience for creating renderable
+public abstract class ConstructorRenderableAdapter implements ConstructorRenderable
+{
+   @Override
+   public String renderDeclaration(RenderingContext renderingContext)
+   {
+      throw notImplemented();
+   }
+}

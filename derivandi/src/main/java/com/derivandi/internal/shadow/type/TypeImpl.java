@@ -1,0 +1,38 @@
+package com.derivandi.internal.shadow.type;
+
+import com.derivandi.api.Ap;
+import com.derivandi.api.processor.SimpleContext;
+import com.derivandi.internal.ApiHolder;
+
+import javax.lang.model.type.TypeMirror;
+
+import static com.derivandi.api.adapter.Adapters.adapt;
+
+public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
+{
+   private final SimpleContext context;
+
+   private final MIRROR typeMirror;
+
+   protected TypeImpl(SimpleContext context, MIRROR typeMirror)
+   {
+      this.context = context;
+      this.typeMirror = typeMirror;
+   }
+
+   public boolean isSameType(Ap.Type type)
+   {
+      return adapt(getApi()).toTypes().isSameType(getMirror(), adapt(type).toTypeMirror());
+   }
+
+   public MIRROR getMirror()
+   {
+      return typeMirror;
+   }
+
+   @Override
+   public SimpleContext getApi()
+   {
+      return context;
+   }
+}

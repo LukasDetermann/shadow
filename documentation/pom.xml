@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>io.determann</groupId>
-            <artifactId>shadow-annotation-processing</artifactId>
+            <artifactId>derivandi</artifactId>
             <version>0.3.1</version>
             <scope>test</scope>
         </dependency>

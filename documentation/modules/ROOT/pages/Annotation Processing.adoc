@@ -15,7 +15,7 @@ They also can create new Files, including source files, and raise errors or warn
 
 It's normal annotation processing with a better API.
 The setup is the same.
-The differences only start when extending`io.determann.shadow.api.annotation_processing.Ap.Processor` instead of `javax.annotation.processing.AbstractProcessor`.
+The differences only start when extending`annotation_processing.api.com.derivandi.Ap.Processor` instead of `javax.annotation.processing.AbstractProcessor`.
 A good starting point for your own processor is `AnnotationProcessingContext.getAnnotatedWith(java.lang.String)`.
 
 == Setup
@@ -208,7 +208,7 @@ endif::[]
 package io.determann.shadow.builder;
 
 import io.determann.shadow.builder.CustomerShadowBuilder;
-import io.determann.shadow.builder.Customer;
+import builder.com.derivandi.Customer;
 
 class CustomerShadowBuilder {
    private String name;

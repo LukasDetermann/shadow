@@ -1,16 +1,16 @@
 module documentation {
 
-   exports io.determann.shadow.builder;
+   exports com.derivandi.builder;
 
-   requires io.determann.shadow.annotation.processing;
+   requires com.derivandi;
 
    requires org.junit.jupiter.api;
    requires org.apache.commons.lang3;
 
    requires java.compiler;
 
-   opens io.determann.shadow.article.apt_loading to org.junit.platform.commons;
-   opens io.determann.shadow.article.consistency_test to org.junit.platform.commons;
-   opens io.determann.shadow.article.meta_model to org.junit.platform.commons;
-   opens io.determann.shadow.builder to org.junit.platform.commons;
+   opens com.derivandi.article.apt_loading to org.junit.platform.commons;
+   opens com.derivandi.article.consistency_test to org.junit.platform.commons;
+   opens com.derivandi.article.meta_model to org.junit.platform.commons;
+   opens com.derivandi.builder to org.junit.platform.commons;
 }

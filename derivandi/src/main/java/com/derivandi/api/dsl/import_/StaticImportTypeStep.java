@@ -1,0 +1,27 @@
+package com.derivandi.api.dsl.import_;
+
+import com.derivandi.api.dsl.declared.DeclaredRenderable;
+import com.derivandi.api.dsl.field.FieldRenderable;
+import com.derivandi.api.dsl.method.MethodRenderable;
+import org.jetbrains.annotations.Contract;
+
+public interface StaticImportTypeStep
+{
+   @Contract(value = "_ -> new", pure = true)
+   ImportRenderable declared(String name);
+
+   @Contract(value = "_ -> new", pure = true)
+   ImportRenderable declared(DeclaredRenderable declared);
+
+   @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable method(String declared, String method);
+
+   @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable method(DeclaredRenderable declared, MethodRenderable method);
+
+   @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable field(String declared, String field);
+
+   @Contract(value = "_, _ -> new", pure = true)
+   ImportRenderable field(DeclaredRenderable declared, FieldRenderable field);
+}
