@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -15,9 +15,9 @@ class RecordComponentTest
       processorTest().withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .process(context ->
                               {
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Record example = context.getRecordOrThrow("RecordComponentExample");
-                                 Ap.RecordComponent id = example.getRecordComponentOrThrow("id");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Record example = context.getRecordOrThrow("RecordComponentExample");
+                                 D.RecordComponent id = example.getRecordComponentOrThrow("id");
                                  assertTrue(id.isSubtypeOf(number));
                               });
    }
@@ -28,8 +28,8 @@ class RecordComponentTest
       processorTest().withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .process(context ->
                               {
-                                 Ap.Record example = context.getRecordOrThrow("RecordComponentExample");
-                                 Ap.RecordComponent id = example.getRecordComponentOrThrow("id");
+                                 D.Record example = context.getRecordOrThrow("RecordComponentExample");
+                                 D.RecordComponent id = example.getRecordComponentOrThrow("id");
                                  assertTrue(id.isAssignableFrom(context.getConstants().getPrimitiveLong()));
                               });
    }
@@ -40,8 +40,8 @@ class RecordComponentTest
       processorTest().withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .process(context ->
                               {
-                                 Ap.Record example = context.getRecordOrThrow("RecordComponentExample");
-                                 Ap.RecordComponent id = example.getRecordComponentOrThrow("id");
+                                 D.Record example = context.getRecordOrThrow("RecordComponentExample");
+                                 D.RecordComponent id = example.getRecordComponentOrThrow("id");
                                  assertEquals(example, id.getRecord());
                               });
    }
@@ -52,10 +52,10 @@ class RecordComponentTest
       processorTest().withCodeToCompile("RecordComponentExample.java", "public record RecordComponentExample(Long id){}")
                      .process(context ->
                               {
-                                 Ap.Class cLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Class cLong = context.getClassOrThrow("java.lang.Long");
 
-                                 Ap.Record example = context.getRecordOrThrow("RecordComponentExample");
-                                 Ap.RecordComponent id = example.getRecordComponentOrThrow("id");
+                                 D.Record example = context.getRecordOrThrow("RecordComponentExample");
+                                 D.RecordComponent id = example.getRecordComponentOrThrow("id");
                                  assertEquals(cLong, id.getType());
                               });
    }

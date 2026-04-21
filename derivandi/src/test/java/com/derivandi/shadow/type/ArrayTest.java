@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,16 +15,16 @@ class ArrayTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class string = context.getClassOrThrow("java.lang.String");
-                                 Ap.Array stringArray1 = string.asArray();
-                                 Ap.Array stringArray2 = string.asArray();
+                                 D.Class string = context.getClassOrThrow("java.lang.String");
+                                 D.Array stringArray1 = string.asArray();
+                                 D.Array stringArray2 = string.asArray();
 
                                  assertTrue(stringArray1.isSubtypeOf(stringArray2));
 
-                                 Ap.Interface collection = context.getInterfaceOrThrow("java.util.Collection");
-                                 Ap.Array collectionArray = collection.asArray();
-                                 Ap.Interface iterable = context.getInterfaceOrThrow("java.lang.Iterable");
-                                 Ap.Array iterableArray = iterable.asArray();
+                                 D.Interface collection = context.getInterfaceOrThrow("java.util.Collection");
+                                 D.Array collectionArray = collection.asArray();
+                                 D.Interface iterable = context.getInterfaceOrThrow("java.lang.Iterable");
+                                 D.Array iterableArray = iterable.asArray();
                                  assertFalse(collectionArray.isSubtypeOf(iterableArray));
                               });
    }
@@ -34,8 +34,8 @@ class ArrayTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class string = context.getClassOrThrow("java.lang.String");
-                                 Ap.Array stringArray = string.asArray();
+                                 D.Class string = context.getClassOrThrow("java.lang.String");
+                                 D.Array stringArray = string.asArray();
                                  assertEquals(string, stringArray.getComponentType());
                               });
    }
@@ -45,24 +45,24 @@ class ArrayTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class string = context.getClassOrThrow("java.lang.String");
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Array stringArray = string.asArray();
-                                 Ap.Array objectArray = object.asArray();
+                                 D.Class string = context.getClassOrThrow("java.lang.String");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Array stringArray = string.asArray();
+                                 D.Array objectArray = object.asArray();
 
-                                 List<Ap.Type> superTypes = stringArray.getDirectSuperTypes();
+                                 List<D.Type> superTypes = stringArray.getDirectSuperTypes();
                                  assertEquals(1, superTypes.size());
                                  assertEquals(objectArray, superTypes.get(0));
 
-                                 Ap.Primitive cint = context.getConstants().getPrimitiveInt();
+                                 D.Primitive cint = context.getConstants().getPrimitiveInt();
 
-                                 Ap.Array intArray = cint.asArray();
-                                 Ap.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
-                                 Ap.Interface cloneable = context.getInterfaceOrThrow("java.lang.Cloneable");
+                                 D.Array intArray = cint.asArray();
+                                 D.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
+                                 D.Interface cloneable = context.getInterfaceOrThrow("java.lang.Cloneable");
 
-                                 List<Ap.Type> intArraySuperTypes = intArray.getDirectSuperTypes();
+                                 List<D.Type> intArraySuperTypes = intArray.getDirectSuperTypes();
                                  assertEquals(1, intArraySuperTypes.size());
-                                 List<Ap.Type> bounds = ((Ap.Generic) intArraySuperTypes.get(0)).getBounds();
+                                 List<D.Type> bounds = ((D.Generic) intArraySuperTypes.get(0)).getBounds();
                                  assertEquals(List.of(serializable, cloneable), bounds);
                               });
    }

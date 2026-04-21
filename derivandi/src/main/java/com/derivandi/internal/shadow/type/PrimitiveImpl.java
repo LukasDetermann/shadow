@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
@@ -14,7 +14,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
 {
    private final String name;
 
-   public static class LM_booleanImpl extends PrimitiveImpl implements Ap.boolean_
+   public static class LM_booleanImpl extends PrimitiveImpl implements D.boolean_
    {
       public LM_booleanImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -22,7 +22,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_byteImpl extends PrimitiveImpl implements Ap.byte_
+   public static class LM_byteImpl extends PrimitiveImpl implements D.byte_
    {
       public LM_byteImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -30,7 +30,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_charImpl extends PrimitiveImpl implements Ap.char_
+   public static class LM_charImpl extends PrimitiveImpl implements D.char_
    {
       public LM_charImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -38,7 +38,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_doubleImpl extends PrimitiveImpl implements Ap.double_
+   public static class LM_doubleImpl extends PrimitiveImpl implements D.double_
    {
       public LM_doubleImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -46,7 +46,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_floatImpl extends PrimitiveImpl implements Ap.float_
+   public static class LM_floatImpl extends PrimitiveImpl implements D.float_
    {
       public LM_floatImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -54,7 +54,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_intImpl extends PrimitiveImpl implements Ap.int_
+   public static class LM_intImpl extends PrimitiveImpl implements D.int_
    {
       public LM_intImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -62,7 +62,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_longImpl extends PrimitiveImpl implements Ap.long_
+   public static class LM_longImpl extends PrimitiveImpl implements D.long_
    {
       public LM_longImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -70,7 +70,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       }
    }
 
-   public static class LM_shortImpl extends PrimitiveImpl implements Ap.short_
+   public static class LM_shortImpl extends PrimitiveImpl implements D.short_
    {
       public LM_shortImpl(SimpleContext context, PrimitiveType primitiveTypeMirror)
       {
@@ -84,22 +84,22 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
       this.name = name;
    }
 
-   public boolean isSubtypeOf(Ap.Type type)
+   public boolean isSubtypeOf(D.Type type)
    {
       return adapt(getApi()).toTypes().isSubtype(adapt(type).toTypeMirror(), getMirror());
    }
 
-   public boolean isAssignableFrom(Ap.Type type)
+   public boolean isAssignableFrom(D.Type type)
    {
       return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt(type).toTypeMirror());
    }
 
-   public Ap.Class asBoxed()
+   public D.Class asBoxed()
    {
-      return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().boxedClass(getMirror()).asType()));
+      return (D.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().boxedClass(getMirror()).asType()));
    }
 
-   public Ap.Array asArray()
+   public D.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
@@ -122,7 +122,7 @@ public abstract class PrimitiveImpl extends TypeImpl<PrimitiveType>
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Primitive primitive &&
+      return other instanceof D.Primitive primitive &&
              Objects.equals(getName(), primitive.getName());
    }
 

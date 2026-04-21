@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -66,36 +66,36 @@ class ClassTest
                                                                            """)
                      .process(context ->
                               {
-                                 Ap.Class declared = context.getClassOrThrow("InterpolateGenericsExample")
-                                                            .withGenerics(context.getClassOrThrow("java.lang.String"),
+                                 D.Class declared = context.getClassOrThrow("InterpolateGenericsExample")
+                                                           .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                           context.getConstants().getUnboundWildcard());
 
-                                 Ap.Class capture = declared.capture();
-                                 Ap.Type interpolated = Optional.of((Ap.Generic) capture.getGenericUsages().get(1))
-                                                                .map(Ap.Generic::getBound)
-                                                                .map(Ap.Interface.class::cast)
-                                                                .map(Ap.Interface::getGenericUsages)
-                                                                .map(types -> types.get(0))
-                                                                .orElseThrow();
+                                 D.Class capture = declared.capture();
+                                 D.Type interpolated = Optional.of((D.Generic) capture.getGenericUsages().get(1))
+                                                               .map(D.Generic::getBound)
+                                                               .map(D.Interface.class::cast)
+                                                               .map(D.Interface::getGenericUsages)
+                                                               .map(types -> types.get(0))
+                                                               .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                                 Ap.Class independentExample = context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
-                                                                      .withGenerics(context.getConstants().getUnboundWildcard());
+                                 D.Class independentExample = context.getClassOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                     .withGenerics(context.getConstants().getUnboundWildcard());
 
-                                 Ap.Class independentCapture = independentExample.capture();
-                                 Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
-                                                                           .map(Ap.Generic::getBound)
-                                                                           .orElseThrow();
+                                 D.Class independentCapture = independentExample.capture();
+                                 D.Type interpolatedIndependent = Optional.of(((D.Generic) independentCapture.getGenericUsages().get(0)))
+                                                                          .map(D.Generic::getBound)
+                                                                          .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                                 Ap.Class dependentExample = context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                                    .withGenerics(context.getConstants().getUnboundWildcard(),
+                                 D.Class dependentExample = context.getClassOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                   .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                   context.getClassOrThrow("java.lang.String"));
 
-                                 Ap.Class dependentCapture = dependentExample.capture();
-                                 Ap.Type interpolatedDependent = Optional.of(((Ap.Generic) dependentCapture.getGenericUsages().get(0)))
-                                                                         .map(Ap.Generic::getBound)
-                                                                         .orElseThrow();
+                                 D.Class dependentCapture = dependentExample.capture();
+                                 D.Type interpolatedDependent = Optional.of(((D.Generic) dependentCapture.getGenericUsages().get(0)))
+                                                                        .map(D.Generic::getBound)
+                                                                        .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                               });
    }
@@ -105,8 +105,8 @@ class ClassTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class integer = context.getClassOrThrow("java.lang.Integer");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class integer = context.getClassOrThrow("java.lang.Integer");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
                                  assertEquals(integer.getSuperClass(), number);
                               });
    }
@@ -116,7 +116,7 @@ class ClassTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
                                  assertNull(object.getSuperClass());
                               });
    }
@@ -132,9 +132,9 @@ class ClassTest
                                                                            """)
                      .process(context ->
                               {
-                                 List<Ap.Class> expected = List.of(context.getClassOrThrow("PermittedSubClassesExample.Child"));
+                                 List<D.Class> expected = List.of(context.getClassOrThrow("PermittedSubClassesExample.Child"));
 
-                                 Ap.Class permittedSubClassesExample = context.getClassOrThrow("PermittedSubClassesExample");
+                                 D.Class permittedSubClassesExample = context.getClassOrThrow("PermittedSubClassesExample");
                                  assertEquals(expected, permittedSubClassesExample.getPermittedSubClasses());
                               });
    }
@@ -151,8 +151,8 @@ class ClassTest
                                                                         """)
                      .process(context ->
                               {
-                                 Ap.Class child = context.getClassOrThrow("DirectInterfacesExample.Child");
-                                 List<Ap.Interface> directInterfaces = child.getDirectInterfaces();
+                                 D.Class child = context.getClassOrThrow("DirectInterfacesExample.Child");
+                                 List<D.Interface> directInterfaces = child.getDirectInterfaces();
 
                                  assertEquals(1, directInterfaces.size());
                                  assertEquals(context.getDeclaredOrThrow("Direct"), directInterfaces.get(0));
@@ -164,8 +164,8 @@ class ClassTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class declaredLong = context.getClassOrThrow("java.lang.Long");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class declaredLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
 
                                  assertTrue(declaredLong.isSubtypeOf(number));
                                  assertTrue(declaredLong.isSubtypeOf(declaredLong));
@@ -178,9 +178,9 @@ class ClassTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class declaredLong = context.getClassOrThrow("java.lang.Long");
-                                 Ap.Class integer = context.getClassOrThrow("java.lang.Integer");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class declaredLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Class integer = context.getClassOrThrow("java.lang.Integer");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
 
                                  assertTrue(declaredLong.isAssignableFrom(number));
                                  assertTrue(declaredLong.isAssignableFrom(declaredLong));
@@ -198,11 +198,11 @@ class ClassTest
                                         "abstract class ClassMixedParent extends Number implements java.lang.Comparable<ClassMixedParent>, java.util.function.Consumer<ClassMixedParent> {}")
                      .process(context ->
                               {
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Class classParent = context.getClassOrThrow("ClassParent");
-                                 Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
-                                 Ap.Class classMixedParent = context.getClassOrThrow("ClassMixedParent");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class classParent = context.getClassOrThrow("ClassParent");
+                                 D.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Class classMixedParent = context.getClassOrThrow("ClassMixedParent");
 
                                  assertEquals(List.of(number), classParent.getDirectSuperTypes());
 
@@ -219,15 +219,15 @@ class ClassTest
                                         "abstract class ClassMixedParent extends Number implements java.lang.Comparable<ClassMixedParent>, java.util.function.Consumer<ClassMixedParent> {}")
                      .process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
-                                 Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
+                                 D.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
 
                                  assertEquals(Collections.emptySet(), object.getSuperTypes());
 
-                                 Ap.Class mixedParent = context.getClassOrThrow("ClassMixedParent");
+                                 D.Class mixedParent = context.getClassOrThrow("ClassMixedParent");
                                  assertEquals(Set.of(object, number, serializable, comparable, consumer), mixedParent.getSuperTypes());
                               });
    }
@@ -242,8 +242,8 @@ class ClassTest
                                                       """)
                      .process(context ->
                               {
-                                 Ap.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
-                                 Ap.Declared outer = inner.getSurrounding().orElseThrow();
+                                 D.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
+                                 D.Declared outer = inner.getSurrounding().orElseThrow();
                                  assertEquals(context.getDeclaredOrThrow("Outer"), outer);
                               });
    }

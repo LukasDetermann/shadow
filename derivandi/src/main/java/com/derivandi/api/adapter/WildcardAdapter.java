@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.type.WildcardImpl;
 
 import javax.lang.model.type.WildcardType;
 
 public class WildcardAdapter
 {
-   private final Ap.Wildcard wildcard;
+   private final D.Wildcard wildcard;
 
-   WildcardAdapter(Ap.Wildcard wildcard)
+   WildcardAdapter(D.Wildcard wildcard)
    {
       this.wildcard = wildcard;
    }

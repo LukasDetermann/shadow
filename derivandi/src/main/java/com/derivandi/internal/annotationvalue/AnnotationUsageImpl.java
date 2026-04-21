@@ -1,6 +1,6 @@
 package com.derivandi.internal.annotationvalue;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Origin;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.dsl.annotation_usage.AnnotationUsageNameStep;
@@ -16,21 +16,21 @@ import static com.derivandi.api.dsl.JavaDsl.annotationUsage;
 import static com.derivandi.internal.annotationvalue.AnnotationValueImpl.create;
 
 public class AnnotationUsageImpl
-      implements Ap.AnnotationUsage
+      implements D.AnnotationUsage
 {
    private final SimpleContext context;
    private final AnnotationMirror annotationMirror;
    private static AnnotatedConstruct annotated;
 
-   public static List<Ap.AnnotationUsage> from(SimpleContext langModelContext,
-                                               AnnotatedConstruct annotated,
-                                               Collection<? extends AnnotationMirror> annotationMirrors)
+   public static List<D.AnnotationUsage> from(SimpleContext langModelContext,
+                                              AnnotatedConstruct annotated,
+                                              Collection<? extends AnnotationMirror> annotationMirrors)
    {
       AnnotationUsageImpl.annotated = annotated;
       return annotationMirrors.stream().map(annotationMirror -> from(langModelContext, annotationMirror)).toList();
    }
 
-   static Ap.AnnotationUsage from(SimpleContext langModelContext, AnnotationMirror annotationMirror)
+   static D.AnnotationUsage from(SimpleContext langModelContext, AnnotationMirror annotationMirror)
    {
       return new AnnotationUsageImpl(langModelContext, annotationMirror);
    }
@@ -42,9 +42,9 @@ public class AnnotationUsageImpl
    }
 
    @Override
-   public Map<Ap.Method, Ap.AnnotationValue> getValues()
+   public Map<D.Method, D.AnnotationValue> getValues()
    {
-      Map<Ap.Method, Ap.AnnotationValue> result = new LinkedHashMap<>();
+      Map<D.Method, D.AnnotationValue> result = new LinkedHashMap<>();
 
       Map<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> withoutDefaults = annotationMirror.getElementValues();
 
@@ -53,7 +53,7 @@ public class AnnotationUsageImpl
 
       for (Map.Entry<? extends ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> entry : withDefaults.entrySet())
       {
-         result.put((Ap.Method) adapt(getApi(), entry.getKey()),
+         result.put((D.Method) adapt(getApi(), entry.getKey()),
                     create(context, entry.getValue(), !withoutDefaults.containsKey(entry.getKey())));
       }
       return result;
@@ -66,9 +66,9 @@ public class AnnotationUsageImpl
    }
 
    @Override
-   public Ap.Annotation getAnnotation()
+   public D.Annotation getAnnotation()
    {
-      return (Ap.Annotation) adapt(getApi(), annotationMirror.getAnnotationType());
+      return (D.Annotation) adapt(getApi(), annotationMirror.getAnnotationType());
    }
 
    @Override
@@ -92,7 +92,7 @@ public class AnnotationUsageImpl
    {
       AnnotationUsageNameStep nameStep = annotationUsage().type(getAnnotation());
 
-      for (Map.Entry<? extends Ap.Method, ? extends Ap.AnnotationValue> entry : getValues().entrySet())
+      for (Map.Entry<? extends D.Method, ? extends D.AnnotationValue> entry : getValues().entrySet())
       {
          nameStep = nameStep.name(entry.getKey().getName()).value(entry.getValue());
       }
@@ -113,7 +113,7 @@ public class AnnotationUsageImpl
       {
          return true;
       }
-      if (!(other instanceof Ap.AnnotationUsage otherAnnotationUsage))
+      if (!(other instanceof D.AnnotationUsage otherAnnotationUsage))
       {
          return false;
       }

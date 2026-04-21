@@ -1,6 +1,6 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.structure.PackageImpl;
 
 import javax.lang.model.element.PackageElement;
@@ -8,9 +8,9 @@ import javax.lang.model.type.NoType;
 
 public class PackageAdapter
 {
-   private final Ap.Package aPackage;
+   private final D.Package aPackage;
 
-   PackageAdapter(Ap.Package aPackage)
+   PackageAdapter(D.Package aPackage)
    {
       this.aPackage = aPackage;
    }

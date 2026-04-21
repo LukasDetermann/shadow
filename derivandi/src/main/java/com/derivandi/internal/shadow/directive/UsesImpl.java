@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.directive;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.JavaDsl;
 import com.derivandi.api.dsl.RenderingContext;
@@ -9,7 +9,7 @@ import com.derivandi.api.processor.SimpleContext;
 import javax.lang.model.element.ModuleElement;
 import java.util.Objects;
 
-public class UsesImpl extends DirectiveImpl implements Ap.Uses
+public class UsesImpl extends DirectiveImpl implements D.Uses
 {
    private final ModuleElement.UsesDirective usesDirective;
 
@@ -20,7 +20,7 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
    }
 
    @Override
-   public Ap.Declared getService()
+   public D.Declared getService()
    {
       return Adapters.adapt(getApi(), usesDirective.getService());
    }
@@ -40,7 +40,7 @@ public class UsesImpl extends DirectiveImpl implements Ap.Uses
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Uses exports &&
+      return other instanceof D.Uses exports &&
              Objects.equals(getService(), exports.getService());
 
    }

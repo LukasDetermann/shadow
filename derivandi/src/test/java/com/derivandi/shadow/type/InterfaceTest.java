@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -56,36 +56,36 @@ class InterfaceTest
                                                                            """)
                      .process(context ->
                               {
-                                 Ap.Interface declared = context.getInterfaceOrThrow("InterpolateGenericsExample")
-                                                                .withGenerics(context.getClassOrThrow("java.lang.String"),
+                                 D.Interface declared = context.getInterfaceOrThrow("InterpolateGenericsExample")
+                                                               .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                               context.getConstants().getUnboundWildcard());
 
-                                 Ap.Interface capture = declared.capture();
-                                 Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericUsages().get(1)))
-                                                                .map(Ap.Generic::getBound)
-                                                                .map(Ap.Interface.class::cast)
-                                                                .map(Ap.Interface::getGenericUsages)
-                                                                .map(types -> types.get(0))
-                                                                .orElseThrow();
+                                 D.Interface capture = declared.capture();
+                                 D.Type interpolated = Optional.of(((D.Generic) capture.getGenericUsages().get(1)))
+                                                               .map(D.Generic::getBound)
+                                                               .map(D.Interface.class::cast)
+                                                               .map(D.Interface::getGenericUsages)
+                                                               .map(types -> types.get(0))
+                                                               .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                                 Ap.Interface independentExample = context.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric")
-                                                                          .withGenerics(context.getConstants().getUnboundWildcard());
+                                 D.Interface independentExample = context.getInterfaceOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                         .withGenerics(context.getConstants().getUnboundWildcard());
 
-                                 Ap.Interface independentCapture = independentExample.capture();
-                                 Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
-                                                                           .map(Ap.Generic::getBound)
-                                                                           .orElseThrow();
+                                 D.Interface independentCapture = independentExample.capture();
+                                 D.Type interpolatedIndependent = Optional.of(((D.Generic) independentCapture.getGenericUsages().get(0)))
+                                                                          .map(D.Generic::getBound)
+                                                                          .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                                 Ap.Interface dependentExample = context.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                                        .withGenerics(context.getConstants().getUnboundWildcard(),
+                                 D.Interface dependentExample = context.getInterfaceOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                       .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                       context.getClassOrThrow("java.lang.String"));
 
-                                 Ap.Interface dependentCapture = dependentExample.capture();
-                                 Ap.Type interpolatedDependent = Optional.of((Ap.Generic) dependentCapture.getGenericUsages().get(0))
-                                                                         .map(Ap.Generic::getBound)
-                                                                         .orElseThrow();
+                                 D.Interface dependentCapture = dependentExample.capture();
+                                 D.Type interpolatedDependent = Optional.of((D.Generic) dependentCapture.getGenericUsages().get(0))
+                                                                        .map(D.Generic::getBound)
+                                                                        .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                               });
    }
@@ -95,8 +95,8 @@ class InterfaceTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
-                                 Ap.Interface unaryOperator = context.getInterfaceOrThrow("java.util.function.UnaryOperator");
+                                 D.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
+                                 D.Interface unaryOperator = context.getInterfaceOrThrow("java.util.function.UnaryOperator");
 
                                  assertEquals(0, function.getDirectInterfaces().size());
 
@@ -111,7 +111,7 @@ class InterfaceTest
                               {
                                  Predicate<String> isFunctional = name ->
                                  {
-                                    Ap.Interface cInterface = context.getInterfaceOrThrow(name);
+                                    D.Interface cInterface = context.getInterfaceOrThrow(name);
                                     return cInterface.isFunctional();
                                  };
 
@@ -126,9 +126,9 @@ class InterfaceTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Interface function = context.getInterfaceOrThrow("java.util.function.Function");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
 
                                  assertTrue(function.isSubtypeOf(object));
                                  assertTrue(function.isSubtypeOf(function));
@@ -152,14 +152,14 @@ class InterfaceTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
 
-                                 Ap.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
+                                 D.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
                                  assertEquals(List.of(object), noParent.getDirectSuperTypes());
 
-                                 Ap.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
+                                 D.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
                                  assertEquals(List.of(object, comparable, consumer), parent.getDirectSuperTypes());
                               });
    }
@@ -180,14 +180,14 @@ class InterfaceTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
 
-                                 Ap.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
+                                 D.Interface noParent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceNoParent");
                                  assertEquals(Set.of(object), noParent.getSuperTypes());
 
-                                 Ap.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
+                                 D.Interface parent = context.getInterfaceOrThrow("DirektSuperTypeExample.InterfaceParent");
                                  assertEquals(Set.of(object, comparable, consumer), parent.getSuperTypes());
                               });
    }
@@ -202,8 +202,8 @@ class InterfaceTest
                                                       """)
                      .process(context ->
                               {
-                                 Ap.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
-                                 Ap.Declared outer = inner.getSurrounding().orElseThrow();
+                                 D.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
+                                 D.Declared outer = inner.getSurrounding().orElseThrow();
                                  assertEquals(context.getDeclaredOrThrow("Outer"), outer);
                               });
    }

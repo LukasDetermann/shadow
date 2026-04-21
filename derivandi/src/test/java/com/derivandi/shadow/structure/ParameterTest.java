@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -23,13 +23,13 @@ class ParameterTest
                                                                  """)
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("ParameterExample");
-                                 Ap.Method method = example.getMethods("foo").get(0);
-                                 Ap.Parameter foo = method.getParameterOrThrow("foo");
+                                 D.Class example = context.getClassOrThrow("ParameterExample");
+                                 D.Method method = example.getMethods("foo").get(0);
+                                 D.Parameter foo = method.getParameterOrThrow("foo");
                                  assertEquals(method, foo.getSurrounding());
 
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
-                                 Ap.Parameter name = constructor.getParameters().get(0);
+                                 D.Constructor constructor = example.getConstructors().get(0);
+                                 D.Parameter name = constructor.getParameters().get(0);
                                  assertEquals(constructor, name.getSurrounding());
                               });
    }
@@ -45,9 +45,9 @@ class ParameterTest
                                         """)
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("VarArgsExample");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
-                                 List<Ap.Parameter> parameters = constructor.getParameters();
+                                 D.Class example = context.getClassOrThrow("VarArgsExample");
+                                 D.Constructor constructor = example.getConstructors().get(0);
+                                 List<D.Parameter> parameters = constructor.getParameters();
                                  assertFalse(parameters.get(0).isVarArgs());
                                  assertTrue(parameters.get(1).isVarArgs());
                               });

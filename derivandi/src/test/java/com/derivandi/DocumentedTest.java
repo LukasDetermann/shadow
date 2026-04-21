@@ -1,6 +1,6 @@
 package com.derivandi;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -42,7 +42,7 @@ class DocumentedTest
                               {
                                  assertTrue(context.getInterfaceOrThrow("java.util.Collection").getJavaDoc().isEmpty());
 
-                                 Ap.Class aClass = context.getClassOrThrow("JavaDocExample");
+                                 D.Class aClass = context.getClassOrThrow("JavaDocExample");
                                  assertEquals(" Class level doc\n", aClass.getJavaDoc().orElseThrow());
                                  assertEquals(" Method level doc\n", aClass.getMethods("toString").get(0).getJavaDoc().orElseThrow());
                                  assertEquals(" Constructor level doc\n", aClass.getConstructors().get(0).getJavaDoc().orElseThrow());

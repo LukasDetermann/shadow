@@ -1,6 +1,6 @@
 package com.derivandi.javadoc;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,22 +21,22 @@ public class InterpolateGenericsTest
                      .process(context ->
                               {
                                  //@start region="InterpolateGenerics.interpolateGenerics"
-                                 Ap.Class myClass = context.getClassOrThrow("MyClass");
-                                 Ap.Declared string = context.getDeclaredOrThrow("java.lang.String");
+                                 D.Class myClass = context.getClassOrThrow("MyClass");
+                                 D.Declared string = context.getDeclaredOrThrow("java.lang.String");
 
-                                 Ap.Class withGenerics = myClass.withGenerics(string,
-                                                                              //the unboundWildcard will be replaced with the result
-                                                                              context.getConstants().getUnboundWildcard());
+                                 D.Class withGenerics = myClass.withGenerics(string,
+                                                                             //the unboundWildcard will be replaced with the result
+                                                                             context.getConstants().getUnboundWildcard());
 
-                                 Ap.Class capture = withGenerics.capture();
+                                 D.Class capture = withGenerics.capture();
 
-                                 Ap.Type stringRep = Optional.of(capture.getGenericUsages().get(1))
-                                                             .map(Ap.Generic.class::cast)
-                                                             .map(Ap.Generic::getBound)
-                                                             .map(Ap.Interface.class::cast)
-                                                             .map(Ap.Interface::getGenericUsages)
-                                                             .map(types -> types.get(0))
-                                                             .orElseThrow();
+                                 D.Type stringRep = Optional.of(capture.getGenericUsages().get(1))
+                                                            .map(D.Generic.class::cast)
+                                                            .map(D.Generic::getBound)
+                                                            .map(D.Interface.class::cast)
+                                                            .map(D.Interface::getGenericUsages)
+                                                            .map(types -> types.get(0))
+                                                            .orElseThrow();
 
                                  Assertions.assertEquals(string, stringRep);
                                  //@end

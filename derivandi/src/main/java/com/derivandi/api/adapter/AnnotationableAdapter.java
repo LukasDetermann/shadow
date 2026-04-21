@@ -1,14 +1,14 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 
 import javax.lang.model.element.Element;
 
 public class AnnotationableAdapter
 {
-   private final Ap.Annotationable annotationable;
+   private final D.Annotationable annotationable;
 
-   AnnotationableAdapter(Ap.Annotationable annotationable)
+   AnnotationableAdapter(D.Annotationable annotationable)
    {
       this.annotationable = annotationable;
    }
@@ -17,13 +17,13 @@ public class AnnotationableAdapter
    {
       return switch (annotationable)
       {
-         case Ap.Declared declared -> new DeclaredAdapter(declared).toTypeElement();
-         case Ap.Executable executable -> new ExecutableAdapter(executable).toExecutableElement();
-         case Ap.Generic generic -> new GenericAdapter(generic).toTypeParameterElement();
-         case Ap.Module module -> new ModuleAdapter(module).toModuleElement();
-         case Ap.Package aPackage -> new PackageAdapter(aPackage).toPackageElement();
-         case Ap.RecordComponent recordComponent -> new RecordComponentAdapter(recordComponent).toRecordComponentElement();
-         case Ap.Variable variable -> new VariableAdapter(variable).toVariableElement();
+         case D.Declared declared -> new DeclaredAdapter(declared).toTypeElement();
+         case D.Executable executable -> new ExecutableAdapter(executable).toExecutableElement();
+         case D.Generic generic -> new GenericAdapter(generic).toTypeParameterElement();
+         case D.Module module -> new ModuleAdapter(module).toModuleElement();
+         case D.Package aPackage -> new PackageAdapter(aPackage).toPackageElement();
+         case D.RecordComponent recordComponent -> new RecordComponentAdapter(recordComponent).toRecordComponentElement();
+         case D.Variable variable -> new VariableAdapter(variable).toVariableElement();
          case null, default -> throw new IllegalArgumentException();
       };
    }

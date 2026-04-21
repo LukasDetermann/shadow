@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 import com.derivandi.api.Origin;
 import com.derivandi.api.adapter.Adapters;
@@ -40,25 +40,25 @@ public abstract class ExecutableImpl
       return ContextImpl.getModifiers(getElement());
    }
 
-   public Ap.Result getResult()
+   public D.Result getResult()
    {
       return new ResultImpl(getApi(), getMirror().getReturnType());
    }
 
-   public Ap.Type getReturnType()
+   public D.Type getReturnType()
    {
       return adapt(getApi(), getMirror().getReturnType());
    }
 
-   public List<Ap.Type> getParameterTypes()
+   public List<D.Type> getParameterTypes()
    {
       return getMirror().getParameterTypes()
                         .stream()
-                        .map(typeMirror -> Adapters.<Ap.Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<D.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
-   public Optional<Ap.Declared> getReceiverType()
+   public Optional<D.Declared> getReceiverType()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -68,7 +68,7 @@ public abstract class ExecutableImpl
       return Optional.of(adapt(getApi(), ((DeclaredType) receiverType)));
    }
 
-   public Optional<Ap.Receiver> getReceiver()
+   public Optional<D.Receiver> getReceiver()
    {
       TypeMirror receiverType = getMirror().getReceiverType();
       if (receiverType == null || receiverType.getKind().equals(TypeKind.NONE))
@@ -78,12 +78,12 @@ public abstract class ExecutableImpl
       return Optional.of(new ReceiverImpl(getApi(), getMirror().getReceiverType()));
    }
 
-   public List<Ap.Class> getThrows()
+   public List<D.Class> getThrows()
    {
       return getMirror().getThrownTypes()
                         .stream()
-                        .map(typeMirror -> Adapters.<Ap.Class>adapt(getApi(), typeMirror))
-                        .map(Ap.Class.class::cast)
+                        .map(typeMirror -> Adapters.<D.Class>adapt(getApi(), typeMirror))
+                        .map(D.Class.class::cast)
                         .toList();
    }
 
@@ -107,7 +107,7 @@ public abstract class ExecutableImpl
       return getElement().isVarArgs();
    }
 
-   public Ap.Declared getSurrounding()
+   public D.Declared getSurrounding()
    {
       return adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
@@ -117,46 +117,46 @@ public abstract class ExecutableImpl
       return executableElement;
    }
 
-   public boolean overrides(Ap.Method method)
+   public boolean overrides(D.Method method)
    {
       return adapt(getApi()).toElements().overrides(getElement(),
                                                     adapt(method).toExecutableElement(),
                                                     adapt(getSurrounding()).toTypeElement());
    }
 
-   public boolean overwrittenBy(Ap.Method method)
+   public boolean overwrittenBy(D.Method method)
    {
       return adapt(getApi()).toElements().overrides(adapt(method).toExecutableElement(),
                                                     getElement(),
                                                     adapt(method.getSurrounding()).toTypeElement());
    }
 
-   public boolean isSubsignatureOf(Ap.Executable executable)
+   public boolean isSubsignatureOf(D.Executable executable)
    {
       return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt(executable).toExecutableType());
    }
 
-   public boolean isSubsignatureFor(Ap.Executable executable)
+   public boolean isSubsignatureFor(D.Executable executable)
    {
       return adapt(getApi()).toTypes().isSubsignature(adapt(executable).toExecutableType(), getMirror());
    }
 
-   public boolean sameParameterTypes(Ap.Method method)
+   public boolean sameParameterTypes(D.Method method)
    {
       return adapt(getApi()).toTypes().isSubsignature(getMirror(), adapt(method).toExecutableType());
    }
 
-   public List<Ap.Parameter> getParameters()
+   public List<D.Parameter> getParameters()
    {
       return getElement().getParameters()
                          .stream()
                          .map(VariableElement.class::cast)
                          .map(variableElement -> adapt(getApi(), variableElement))
-                         .map(Ap.Parameter.class::cast)
+                         .map(D.Parameter.class::cast)
                          .toList();
    }
 
-   public List<Ap.Generic> getGenericDeclarations()
+   public List<D.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -164,7 +164,7 @@ public abstract class ExecutableImpl
                          .toList();
    }
 
-   public Ap.Module getModule()
+   public D.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -179,12 +179,12 @@ public abstract class ExecutableImpl
       return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
@@ -221,7 +221,7 @@ public abstract class ExecutableImpl
       {
          return true;
       }
-      if (!(other instanceof Ap.Executable otherExecutable))
+      if (!(other instanceof D.Executable otherExecutable))
       {
          return false;
       }

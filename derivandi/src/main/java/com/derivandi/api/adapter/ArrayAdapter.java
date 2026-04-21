@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.type.ArrayImpl;
 
 import javax.lang.model.type.ArrayType;
 
 public class ArrayAdapter
 {
-   private final Ap.Array array;
+   private final D.Array array;
 
-   ArrayAdapter(Ap.Array array)
+   ArrayAdapter(D.Array array)
    {
       this.array = array;
    }

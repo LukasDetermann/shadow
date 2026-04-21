@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,8 +17,8 @@ class ConstructorTest
       processorTest().withCodeToCompile("DefaultConstructorExample.java", "public class DefaultConstructorExample{}")
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("DefaultConstructorExample");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
+                                 D.Class example = context.getClassOrThrow("DefaultConstructorExample");
+                                 D.Constructor constructor = example.getConstructors().get(0);
 
                                  assertEquals(0, constructor.getParameters().size());
                               });
@@ -30,10 +30,10 @@ class ConstructorTest
       processorTest().withCodeToCompile("ConstructorExample.java", "public class ConstructorExample {public ConstructorExample(Long id) {}}")
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("ConstructorExample");
-                                 Ap.Class aLong = context.getClassOrThrow("java.lang.Long");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
-                                 List<Ap.Parameter> parameters = constructor.getParameters();
+                                 D.Class example = context.getClassOrThrow("ConstructorExample");
+                                 D.Class aLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Constructor constructor = example.getConstructors().get(0);
+                                 List<D.Parameter> parameters = constructor.getParameters();
 
                                  assertEquals(1, parameters.size());
                                  assertEquals(aLong, parameters.get(0).getType());
@@ -46,9 +46,9 @@ class ConstructorTest
       processorTest().withCodeToCompile("ConstructorExample.java", "public class ConstructorExample {public ConstructorExample(Long id) {}}")
                      .process(context ->
                               {
-                                 Ap.Class aLong = context.getClassOrThrow("java.lang.Long");
-                                 Ap.Class example = context.getClassOrThrow("ConstructorExample");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
+                                 D.Class aLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Class example = context.getClassOrThrow("ConstructorExample");
+                                 D.Constructor constructor = example.getConstructors().get(0);
 
                                  assertEquals(List.of(aLong), constructor.getParameterTypes());
                               });
@@ -67,9 +67,9 @@ class ConstructorTest
                                                                    """)
                      .process(context ->
                               {
-                                 Ap.Class ioException = context.getClassOrThrow("java.io.IOException");
-                                 Ap.Class example = context.getClassOrThrow("ConstructorExample");
-                                 List<Ap.Constructor> constructors = example.getConstructors();
+                                 D.Class ioException = context.getClassOrThrow("java.io.IOException");
+                                 D.Class example = context.getClassOrThrow("ConstructorExample");
+                                 List<D.Constructor> constructors = example.getConstructors();
 
                                  assertEquals(emptyList(), constructors.get(0).getThrows());
                                  assertEquals(List.of(ioException), constructors.get(1).getThrows());
@@ -89,8 +89,8 @@ class ConstructorTest
                                                                    """)
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("ConstructorExample");
-                                 List<Ap.Constructor> constructors = example.getConstructors();
+                                 D.Class example = context.getClassOrThrow("ConstructorExample");
+                                 List<D.Constructor> constructors = example.getConstructors();
                                  assertFalse(constructors.get(0).isVarArgs());
                                  assertTrue(constructors.get(1).isVarArgs());
                               });
@@ -110,8 +110,8 @@ class ConstructorTest
                                                                    """)
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("ConstructorExample");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
+                                 D.Class example = context.getClassOrThrow("ConstructorExample");
+                                 D.Constructor constructor = example.getConstructors().get(0);
                                  assertEquals(example, constructor.getSurrounding());
                               });
    }
@@ -129,13 +129,13 @@ class ConstructorTest
                                                                 """)
                      .process(context ->
                               {
-                                 Ap.Class defaultConstructorExample = context.getClassOrThrow("DefaultConstructorExample");
-                                 Ap.Constructor defaultConstructor = defaultConstructorExample.getConstructors().get(0);
+                                 D.Class defaultConstructorExample = context.getClassOrThrow("DefaultConstructorExample");
+                                 D.Constructor defaultConstructor = defaultConstructorExample.getConstructors().get(0);
                                  assertTrue(defaultConstructor.getReceiverType().isEmpty());
 
-                                 Ap.Class example = context.getClassOrThrow("ReceiverExample");
-                                 Ap.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
-                                 Ap.Constructor constructor = inner.getConstructors().get(0);
+                                 D.Class example = context.getClassOrThrow("ReceiverExample");
+                                 D.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
+                                 D.Constructor constructor = inner.getConstructors().get(0);
                                  assertEquals(example, constructor.getReceiverType().orElseThrow());
                               });
    }

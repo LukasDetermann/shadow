@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.adapter.Adapters.adapt;
 
-public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
+public final class ArrayImpl extends TypeImpl<ArrayType> implements D.Array
 {
 
    public ArrayImpl(SimpleContext context, ArrayType arrayType)
@@ -19,19 +19,19 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public boolean isSubtypeOf(Ap.Type type)
+   public boolean isSubtypeOf(D.Type type)
    {
       return adapt(getApi()).toTypes().isSubtype(adapt(type).toTypeMirror(), getMirror());
    }
 
    @Override
-   public Ap.Type getComponentType()
+   public D.Type getComponentType()
    {
       return adapt(getApi(), getMirror().getComponentType());
    }
 
    @Override
-   public List<Ap.Type> getDirectSuperTypes()
+   public List<D.Type> getDirectSuperTypes()
    {
       return adapt(getApi()).toTypes()
                        .directSupertypes(getMirror())
@@ -41,31 +41,31 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    }
 
    @Override
-   public Ap.Array asArray()
+   public D.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
    @Override
-   public Ap.Wildcard asExtendsWildcard()
+   public D.Wildcard asExtendsWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
    }
 
    @Override
-   public Ap.Wildcard asSuperWildcard()
+   public D.Wildcard asSuperWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(null, getMirror()));
    }
 
    @Override
-   public boolean isSameType(Ap.Type type)
+   public boolean isSameType(D.Type type)
    {
       return equals(type);
    }
 
    @Override
-   public Ap.Array erasure()
+   public D.Array erasure()
    {
       return adapt(getApi(), ((ArrayType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
@@ -85,7 +85,7 @@ public final class ArrayImpl extends TypeImpl<ArrayType> implements Ap.Array
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Array array &&
+      return other instanceof D.Array array &&
              Objects.equals(getComponentType(), array.getComponentType());
    }
 

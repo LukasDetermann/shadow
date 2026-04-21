@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.dsl.field.FieldInitializationStep;
@@ -11,7 +11,7 @@ import javax.lang.model.element.VariableElement;
 
 import static com.derivandi.api.dsl.JavaDsl.field;
 
-public class FieldImpl extends VariableImpl implements Ap.Field
+public class FieldImpl extends VariableImpl implements D.Field
 {
    public FieldImpl(SimpleContext context, VariableElement variableElement)
    {
@@ -19,7 +19,7 @@ public class FieldImpl extends VariableImpl implements Ap.Field
    }
 
    @Override
-   public Ap.Declared getSurrounding()
+   public D.Declared getSurrounding()
    {
       return Adapters.adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }

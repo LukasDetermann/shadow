@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.directive;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.dsl.JavaDsl.exports;
 
-public class ExportsImpl extends DirectiveImpl implements Ap.Exports
+public class ExportsImpl extends DirectiveImpl implements D.Exports
 {
 
    private final ModuleElement.ExportsDirective exportsDirective;
@@ -24,13 +24,13 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
    }
 
    @Override
-   public Ap.Package getPackage()
+   public D.Package getPackage()
    {
       return Adapters.adapt(getApi(), exportsDirective.getPackage());
    }
 
    @Override
-   public List<Ap.Module> getTargetModules()
+   public List<D.Module> getTargetModules()
    {
       return exportsDirective.getTargetModules() == null ?
              Collections.emptyList() :
@@ -63,7 +63,7 @@ public class ExportsImpl extends DirectiveImpl implements Ap.Exports
    @Override
    public final boolean equals(Object o)
    {
-      return o instanceof Ap.Exports exports &&
+      return o instanceof D.Exports exports &&
              Objects.equals(getPackage(), exports.getPackage()) &&
              Objects.equals(getTargetModules(), exports.getTargetModules());
    }

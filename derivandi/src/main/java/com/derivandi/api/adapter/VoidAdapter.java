@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.type.VoidImpl;
 
 import javax.lang.model.type.NoType;
 
 public class VoidAdapter
 {
-   private final Ap.Void aVoid;
+   private final D.Void aVoid;
 
-   VoidAdapter(Ap.Void aVoid)
+   VoidAdapter(D.Void aVoid)
    {
       this.aVoid = aVoid;
    }

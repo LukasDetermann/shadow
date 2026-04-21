@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
@@ -8,7 +8,7 @@ import javax.lang.model.type.ErrorType;
 
 public class UnresolvedImpl
       extends DeclaredImpl
-      implements Ap.Unresolved
+      implements D.Unresolved
 {
    public UnresolvedImpl(SimpleContext context, ErrorType declaredTypeMirror)
    {
@@ -48,7 +48,7 @@ public class UnresolvedImpl
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Unresolved.class, other);
+      return equals(D.Unresolved.class, other);
    }
 
    @Override

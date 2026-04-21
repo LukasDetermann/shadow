@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Origin;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -14,7 +14,7 @@ import java.util.Objects;
 import static com.derivandi.api.adapter.Adapters.adapt;
 import static com.derivandi.api.dsl.JavaDsl.recordComponent;
 
-public class RecordComponentImpl implements Ap.RecordComponent
+public class RecordComponentImpl implements D.RecordComponent
 {
    private final RecordComponentElement recordComponentElement;
    private final SimpleContext context;
@@ -28,33 +28,33 @@ public class RecordComponentImpl implements Ap.RecordComponent
    }
 
    @Override
-   public boolean isSubtypeOf(Ap.Type type)
+   public boolean isSubtypeOf(D.Type type)
    {
       return adapt(getApi()).toTypes().isSubtype(getMirror(), adapt(type).toTypeMirror());
    }
 
    @Override
-   public boolean isAssignableFrom(Ap.Type type)
+   public boolean isAssignableFrom(D.Type type)
    {
       return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt(type).toTypeMirror());
    }
 
    @Override
-   public Ap.Record getRecord()
+   public D.Record getRecord()
    {
-      return (Ap.Record) adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
+      return (D.Record) adapt(getApi(), ((TypeElement) getElement().getEnclosingElement()));
    }
 
    @Override
-   public Ap.Type getType()
+   public D.Type getType()
    {
       return adapt(getApi(), getElement().asType());
    }
 
    @Override
-   public Ap.Method getGetter()
+   public D.Method getGetter()
    {
-      return (Ap.Method) adapt(getApi(), getElement().getAccessor());
+      return (D.Method) adapt(getApi(), getElement().getAccessor());
    }
 
    @Override
@@ -69,7 +69,7 @@ public class RecordComponentImpl implements Ap.RecordComponent
    }
 
    @Override
-   public Ap.Module getModule()
+   public D.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -81,13 +81,13 @@ public class RecordComponentImpl implements Ap.RecordComponent
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
@@ -120,7 +120,7 @@ public class RecordComponentImpl implements Ap.RecordComponent
       {
          return true;
       }
-      if (!(other instanceof Ap.RecordComponent otherRecordComponent))
+      if (!(other instanceof D.RecordComponent otherRecordComponent))
       {
          return false;
       }

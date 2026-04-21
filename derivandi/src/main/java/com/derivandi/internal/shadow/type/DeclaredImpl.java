@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 import com.derivandi.api.NestingKind;
 import com.derivandi.api.Origin;
@@ -40,13 +40,13 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return ContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(Ap.ReferenceType referenceType)
+   public boolean isSubtypeOf(D.ReferenceType referenceType)
    {
       TypeMirror typemirror = switch (referenceType)
       {
-         case Ap.Array array -> adapt(array).toArrayType();
-         case Ap.Generic generic -> adapt(generic).toTypeVariable();
-         case Ap.Declared declared -> adapt(declared).toDeclaredType();
+         case D.Array array -> adapt(array).toArrayType();
+         case D.Generic generic -> adapt(generic).toTypeVariable();
+         case D.Declared declared -> adapt(declared).toDeclaredType();
       };
 
       return adapt(getApi()).toTypes().isSubtype(getMirror(), typemirror);
@@ -67,36 +67,36 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       };
    }
 
-   public List<Ap.Field> getFields()
+   public List<D.Field> getFields()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> element.getKind().equals(ElementKind.FIELD))
                          .map(VariableElement.class::cast)
                          .map(variableElement -> adapt(getApi(), variableElement))
-                         .map(Ap.Field.class::cast)
+                         .map(D.Field.class::cast)
                          .toList();
    }
 
-   public List<Ap.Method> getMethods()
+   public List<D.Method> getMethods()
    {
       return ElementFilter.methodsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> adapt(getApi(), element))
-                          .map(Ap.Method.class::cast)
+                          .map(D.Method.class::cast)
                           .toList();
    }
 
-   public List<Ap.Constructor> getConstructors()
+   public List<D.Constructor> getConstructors()
    {
       return ElementFilter.constructorsIn(getElement().getEnclosedElements())
                           .stream()
                           .map(element -> adapt(getApi(), element))
-                          .map(Ap.Constructor.class::cast)
+                          .map(D.Constructor.class::cast)
                           .toList();
    }
 
-   public List<Ap.Declared> getDirectSuperTypes()
+   public List<D.Declared> getDirectSuperTypes()
    {
       return adapt(getApi()).toTypes()
                         .directSupertypes(getMirror())
@@ -105,16 +105,16 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
                         .toList();
    }
 
-   public Set<Ap.Declared> getSuperTypes()
+   public Set<D.Declared> getSuperTypes()
    {
-      return findAllSupertypes(new HashSet<>(), ((Ap.Declared) this));
+      return findAllSupertypes(new HashSet<>(), ((D.Declared) this));
    }
 
-   private Set<Ap.Declared> findAllSupertypes(Set<Ap.Declared> found, Ap.Declared declared)
+   private Set<D.Declared> findAllSupertypes(Set<D.Declared> found, D.Declared declared)
    {
-      List<Ap.Declared> directSupertypes = declared.getDirectSuperTypes();
+      List<D.Declared> directSupertypes = declared.getDirectSuperTypes();
       found.addAll(directSupertypes);
-      for (Ap.Declared directSupertype : directSupertypes)
+      for (D.Declared directSupertype : directSupertypes)
       {
          findAllSupertypes(found, directSupertype);
       }
@@ -131,22 +131,22 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return adapt(getApi()).toElements().getBinaryName(getElement()).toString();
    }
 
-   public Ap.Array asArray()
+   public D.Array asArray()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getArrayType(getMirror()));
    }
 
-   public Optional<Ap.Declared> getSurrounding()
+   public Optional<D.Declared> getSurrounding()
    {
       Element enclosingElement = typeElement.getEnclosingElement();
       if (!enclosingElement.getKind().isDeclaredType())
       {
          return Optional.empty();
       }
-      return Optional.of((Ap.Declared) adapt(getApi(), enclosingElement));
+      return Optional.of((D.Declared) adapt(getApi(), enclosingElement));
    }
 
-   public Optional<Ap.Declared> getOutermostSurrounding()
+   public Optional<D.Declared> getOutermostSurrounding()
    {
       TypeElement outermost = adapt(getApi()).toElements().getOutermostTypeElement(getElement());
       if (outermost == null)
@@ -161,39 +161,39 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
    }
 
-   public Ap.Wildcard asExtendsWildcard()
+   public D.Wildcard asExtendsWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(getMirror(), null));
    }
 
-   public Ap.Wildcard asSuperWildcard()
+   public D.Wildcard asSuperWildcard()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().getWildcardType(null, getMirror()));
    }
 
-   public List<Ap.Interface> getDirectInterfaces()
+   public List<D.Interface> getDirectInterfaces()
    {
       return getElement().getInterfaces()
                          .stream()
                          .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
-                         .map(Ap.Interface.class::cast)
+                         .map(D.Interface.class::cast)
                          .toList();
    }
 
-   public List<Ap.Interface> getInterfaces()
+   public List<D.Interface> getInterfaces()
    {
       return getSuperTypes().stream()
-                            .filter(declared -> declared instanceof Ap.Interface)
-                            .map(Ap.Interface.class::cast)
+                            .filter(declared -> declared instanceof D.Interface)
+                            .map(D.Interface.class::cast)
                             .toList();
    }
 
-   public Ap.Package getPackage()
+   public D.Package getPackage()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getPackageOf(getElement()));
    }
 
-   public Ap.Module getModule()
+   public D.Module getModule()
    {
       return adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -208,20 +208,20 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
 
    @Override
-   public boolean isSameType(Ap.Type type)
+   public boolean isSameType(D.Type type)
    {
-      return type instanceof Ap.Declared declared &&
+      return type instanceof D.Declared declared &&
              adapt(getApi()).toTypes().isSameType(getMirror(), adapt(declared).toDeclaredType());
    }
 
@@ -231,7 +231,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       return Objects.hash(getQualifiedName());
    }
 
-   protected boolean equals(Class<? extends Ap.Declared> type, Object other)
+   protected boolean equals(Class<? extends D.Declared> type, Object other)
    {
       if (other == this)
       {
@@ -241,7 +241,7 @@ public class DeclaredImpl extends TypeImpl<DeclaredType>
       {
          return false;
       }
-      Ap.Declared declared = (Ap.Declared) other;
+      D.Declared declared = (D.Declared) other;
 
       return Objects.equals(getQualifiedName(), declared.getQualifiedName());
    }

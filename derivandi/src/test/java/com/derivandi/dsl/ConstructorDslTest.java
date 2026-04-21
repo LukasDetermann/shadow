@@ -1,7 +1,7 @@
 package com.derivandi.dsl;
 
 import com.derivandi.TestFactory;
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 import com.derivandi.api.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
@@ -62,9 +62,9 @@ class ConstructorDslTest
    @Test
    void type()
    {
-      Ap.Enum cEnum = TestFactory.create(Ap.Enum.class, "renderSimpleName", "MyEnum");
-      Ap.Class cClass = TestFactory.create(Ap.Class.class, "renderSimpleName", "MyClass");
-      Ap.Record cRecord = TestFactory.create(Ap.Record.class, "renderSimpleName", "MyRecord");
+      D.Enum cEnum = TestFactory.create(D.Enum.class, "renderSimpleName", "MyEnum");
+      D.Class cClass = TestFactory.create(D.Class.class, "renderSimpleName", "MyClass");
+      D.Record cRecord = TestFactory.create(D.Record.class, "renderSimpleName", "MyRecord");
 
       assertEquals("MyEnum2() {}", JavaDsl.constructor().type("MyEnum2").renderDeclaration(createRenderingContext()));
       assertEquals("MyEnum() {}", JavaDsl.constructor().type(cEnum).renderDeclaration(createRenderingContext()));
@@ -95,7 +95,7 @@ class ConstructorDslTest
    @Test
    void throws_()
    {
-      Ap.Class cClass = TestFactory.create(Ap.Class.class, "renderName", "MyException3");
+      D.Class cClass = TestFactory.create(D.Class.class, "renderName", "MyException3");
 
       assertEquals("MyType() throws MyException1, MyException2, MyException3 {}",
                    JavaDsl.constructor()

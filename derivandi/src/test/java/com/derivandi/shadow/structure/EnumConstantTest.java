@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +13,8 @@ class EnumConstantTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Enum retentionPolicy = context.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
-                                 Ap.EnumConstant source = retentionPolicy.getEnumConstantOrThrow("SOURCE");
+                                 D.Enum retentionPolicy = context.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
+                                 D.EnumConstant source = retentionPolicy.getEnumConstantOrThrow("SOURCE");
                                  Assertions.assertEquals(retentionPolicy, source.getSurrounding());
                               });
    }

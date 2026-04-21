@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.directive;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.dsl.JavaDsl.opens;
 
-public class OpensImpl extends DirectiveImpl implements Ap.Opens
+public class OpensImpl extends DirectiveImpl implements D.Opens
 {
    private final ModuleElement.OpensDirective opensDirective;
 
@@ -22,13 +22,13 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
    }
 
    @Override
-   public Ap.Package getPackage()
+   public D.Package getPackage()
    {
       return Adapters.adapt(getApi(), opensDirective.getPackage());
    }
 
    @Override
-   public List<Ap.Module> getTargetModules()
+   public List<D.Module> getTargetModules()
    {
       return opensDirective.getTargetModules()
                            .stream()
@@ -59,7 +59,7 @@ public class OpensImpl extends DirectiveImpl implements Ap.Opens
    @Override
    public final boolean equals(Object o)
    {
-      return o instanceof Ap.Opens opens &&
+      return o instanceof D.Opens opens &&
              Objects.equals(getPackage(), opens.getPackage()) &&
              Objects.equals(getTargetModules(), opens.getTargetModules());
    }

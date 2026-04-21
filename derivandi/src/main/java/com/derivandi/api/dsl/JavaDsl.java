@@ -1,6 +1,6 @@
 package com.derivandi.api.dsl;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.annotation.AnnotationCopyrightHeaderStep;
 import com.derivandi.api.dsl.annotation.AnnotationOuterStep;
 import com.derivandi.api.dsl.annotation_usage.AnnotationUsageNameStep;
@@ -211,7 +211,7 @@ public interface JavaDsl
 
    /// {@snippet class = "com.derivandi.dsl.DirectiveDslTest" region = "uses-api-type"}
    @Contract(value = "_ -> new", pure = true)
-   static UsesRenderable uses(Ap.Declared service)
+   static UsesRenderable uses(D.Declared service)
    {
       return uses(service.getQualifiedName());
    }
@@ -355,7 +355,7 @@ public interface JavaDsl
 
    /// {@code Dsl.annotationValue(cEnumConstant).render(DEFAULT)} -> {@code org.example.Enum.CONSTANT}
    @Contract(value = "_ -> new", pure = true)
-   static AnnotationValueRenderable annotationValue(Ap.EnumConstant value)
+   static AnnotationValueRenderable annotationValue(D.EnumConstant value)
    {
       requireNonNull(value);
       return value::renderDeclaration;
@@ -379,26 +379,26 @@ public interface JavaDsl
 
    /// {@code Dsl.annotationValue(cArray).render(DEFAULT)} -> {@code boolean[].class}
    @Contract(value = "_ -> new", pure = true)
-   static AnnotationValueRenderable annotationValue(Ap.Type value)
+   static AnnotationValueRenderable annotationValue(D.Type value)
    {
       requireNonNull(value);
       return renderingContext ->
             switch (value)
             {
-               case Ap.Array array -> array.renderType(renderingContext);
-               case Ap.Declared declared -> declared.getQualifiedName();
-               case Ap.Generic unused -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
-               case Ap.Null unused -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
-               case Ap.Void unused -> "void";
-               case Ap.Wildcard unused -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
-               case Ap.Primitive primitive -> primitive.renderType(renderingContext);
+               case D.Array array -> array.renderType(renderingContext);
+               case D.Declared declared -> declared.getQualifiedName();
+               case D.Generic unused -> throw new IllegalArgumentException("generic can not be used as an Annotation Value " + value);
+               case D.Null unused -> throw new IllegalArgumentException("null can not be used as an Annotation Value " + value);
+               case D.Void unused -> "void";
+               case D.Wildcard unused -> throw new IllegalArgumentException("Wildcard can not be used as an Annotation Value " + value);
+               case D.Primitive primitive -> primitive.renderType(renderingContext);
             }
             + ".class";
    }
 
    /// {@code Dsl.annotationValue(cAnnotationUsage).render(DEFAULT)} -> {@code @org.example.MyAnnotation}
    @Contract(value = "_ -> new", pure = true)
-   static AnnotationValueRenderable annotationValue(Ap.AnnotationUsage value)
+   static AnnotationValueRenderable annotationValue(D.AnnotationUsage value)
    {
       requireNonNull(value);
       return value::renderDeclaration;

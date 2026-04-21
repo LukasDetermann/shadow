@@ -1,13 +1,13 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
 import javax.lang.model.type.NullType;
 import java.util.Objects;
 
-public class NullImpl extends TypeImpl<NullType> implements Ap.Null
+public class NullImpl extends TypeImpl<NullType> implements D.Null
 {
    public NullImpl(SimpleContext context, NullType nullType)
    {
@@ -15,9 +15,9 @@ public class NullImpl extends TypeImpl<NullType> implements Ap.Null
    }
 
    @Override
-   public boolean isSameType(Ap.Type type)
+   public boolean isSameType(D.Type type)
    {
-      return type instanceof Ap.Null;
+      return type instanceof D.Null;
    }
 
    @Override
@@ -35,13 +35,13 @@ public class NullImpl extends TypeImpl<NullType> implements Ap.Null
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Null;
+      return other instanceof D.Null;
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(Ap.Null.class);
+      return Objects.hash(D.Null.class);
    }
 
    @Override

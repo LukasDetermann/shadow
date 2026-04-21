@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import static com.derivandi.api.dsl.JavaDsl.result;
 
 public class ResultImpl
-      implements Ap.Result
+      implements D.Result
 {
    private final SimpleContext context;
    private final TypeMirror typeMirror;
@@ -24,19 +24,19 @@ public class ResultImpl
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return getDirectAnnotationUsages();
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return Adapters.adapt(context, getTypeMirror(), getTypeMirror().getAnnotationMirrors());
    }
 
    @Override
-   public Ap.Type getType()
+   public D.Type getType()
    {
       return Adapters.adapt(context, getTypeMirror());
    }
@@ -67,7 +67,7 @@ public class ResultImpl
       {
          return true;
       }
-      if (!(other instanceof Ap.Result otherReturn))
+      if (!(other instanceof D.Result otherReturn))
       {
          return false;
       }

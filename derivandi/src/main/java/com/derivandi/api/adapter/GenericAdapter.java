@@ -1,6 +1,6 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.type.GenericImpl;
 
 import javax.lang.model.element.TypeParameterElement;
@@ -8,9 +8,9 @@ import javax.lang.model.type.TypeVariable;
 
 public class GenericAdapter
 {
-   private final Ap.Generic generic;
+   private final D.Generic generic;
 
-   GenericAdapter(Ap.Generic generic)
+   GenericAdapter(D.Generic generic)
    {
       this.generic = generic;
    }

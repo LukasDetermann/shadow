@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,10 +22,10 @@ class ReceiverTest
                                                                 """)
                      .process(context ->
                               {
-                                 Ap.Class outer = context.getClassOrThrow("ReceiverExample");
-                                 Ap.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
-                                 Ap.Constructor cConstructor = inner.getConstructors().get(0);
-                                 Ap.Receiver cReceiver = cConstructor.getReceiverOrThrow();
+                                 D.Class outer = context.getClassOrThrow("ReceiverExample");
+                                 D.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
+                                 D.Constructor cConstructor = inner.getConstructors().get(0);
+                                 D.Receiver cReceiver = cConstructor.getReceiverOrThrow();
 
                                  assertEquals(outer, cReceiver.getType());
                               });
@@ -45,16 +45,16 @@ class ReceiverTest
                                                                 """)
                      .process(context ->
                               {
-                                 Ap.Class outer = context.getClassOrThrow("ReceiverExample");
-                                 Ap.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
-                                 Ap.Constructor cConstructor = inner.getConstructors().get(0);
-                                 Ap.Receiver cReceiver = cConstructor.getReceiverOrThrow();
+                                 D.Class outer = context.getClassOrThrow("ReceiverExample");
+                                 D.Class inner = context.getClassOrThrow("ReceiverExample.Inner");
+                                 D.Constructor cConstructor = inner.getConstructors().get(0);
+                                 D.Receiver cReceiver = cConstructor.getReceiverOrThrow();
 
                                  assertEquals(outer, cReceiver.getType());
 
-                                 List<Ap.AnnotationUsage> usages = cReceiver.getAnnotationUsages();
+                                 List<D.AnnotationUsage> usages = cReceiver.getAnnotationUsages();
                                  assertEquals(1, usages.size());
-                                 Ap.AnnotationValue annotationValue = usages.get(0).getValueOrThrow("value");
+                                 D.AnnotationValue annotationValue = usages.get(0).getValueOrThrow("value");
                                  assertEquals(2, annotationValue.getValue());
                               });
    }

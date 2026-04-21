@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,9 +16,9 @@ class AnnotationTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Annotation overwrite = context.getAnnotationOrThrow("java.lang.Override");
-                                 Ap.Interface annotation = context.getInterfaceOrThrow("java.lang.annotation.Annotation");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Annotation overwrite = context.getAnnotationOrThrow("java.lang.Override");
+                                 D.Interface annotation = context.getInterfaceOrThrow("java.lang.annotation.Annotation");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
 
                                  assertTrue(overwrite.isSubtypeOf(annotation));
                                  assertTrue(overwrite.isSubtypeOf(overwrite));
@@ -36,10 +36,10 @@ class AnnotationTest
                                                                        """)
                      .process(context ->
                               {
-                                 List<Ap.Declared> expected = List.of(context.getClassOrThrow("java.lang.Object"),
-                                                                      context.getInterfaceOrThrow("java.lang.annotation.Annotation"));
+                                 List<D.Declared> expected = List.of(context.getClassOrThrow("java.lang.Object"),
+                                                                     context.getInterfaceOrThrow("java.lang.annotation.Annotation"));
 
-                                 Ap.Annotation annotation = context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent");
+                                 D.Annotation annotation = context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent");
                                  assertEquals(expected, annotation.getDirectSuperTypes());
                               });
    }
@@ -54,10 +54,10 @@ class AnnotationTest
                                                                        """)
                      .process(context ->
                               {
-                                 Set<Ap.Declared> expected = Set.of(context.getClassOrThrow("java.lang.Object"),
-                                                                    context.getInterfaceOrThrow("java.lang.annotation.Annotation"));
+                                 Set<D.Declared> expected = Set.of(context.getClassOrThrow("java.lang.Object"),
+                                                                   context.getInterfaceOrThrow("java.lang.annotation.Annotation"));
 
-                                 Ap.Annotation annotation = context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent");
+                                 D.Annotation annotation = context.getAnnotationOrThrow("DirektSuperTypeExample.AnnotationNoParent");
                                  assertEquals(expected, annotation.getSuperTypes());
                               });
    }
@@ -72,8 +72,8 @@ class AnnotationTest
                                                       """)
                      .process(context ->
                               {
-                                 Ap.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
-                                 Ap.Declared outer = inner.getSurrounding().orElseThrow();
+                                 D.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
+                                 D.Declared outer = inner.getSurrounding().orElseThrow();
                                  assertEquals(context.getDeclaredOrThrow("Outer"), outer);
                               });
    }

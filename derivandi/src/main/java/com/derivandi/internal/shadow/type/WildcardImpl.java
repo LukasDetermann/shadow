@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static com.derivandi.api.adapter.Adapters.adapt;
 
-public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
+public class WildcardImpl extends TypeImpl<WildcardType> implements D.Wildcard
 {
    public WildcardImpl(SimpleContext context, WildcardType wildcardTypeMirror)
    {
@@ -20,7 +20,7 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public Optional<Ap.Type> getExtends()
+   public Optional<D.Type> getExtends()
    {
       TypeMirror extendsBound = getMirror().getExtendsBound();
       if (extendsBound == null)
@@ -31,7 +31,7 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public Optional<Ap.Type> getSuper()
+   public Optional<D.Type> getSuper()
    {
       TypeMirror superBound = getMirror().getSuperBound();
       if (superBound == null)
@@ -42,33 +42,33 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    }
 
    @Override
-   public boolean contains(Ap.ReferenceType referenceType)
+   public boolean contains(D.ReferenceType referenceType)
    {
       TypeMirror typemirror = switch (referenceType)
       {
-         case Ap.Array array -> adapt(array).toArrayType();
-         case Ap.Generic generic -> adapt(generic).toTypeVariable();
-         case Ap.Declared declared -> adapt(declared).toDeclaredType();
+         case D.Array array -> adapt(array).toArrayType();
+         case D.Generic generic -> adapt(generic).toTypeVariable();
+         case D.Declared declared -> adapt(declared).toDeclaredType();
       };
 
       return adapt(getApi()).toTypes().contains(getMirror(), typemirror);
    }
 
    @Override
-   public Ap.Wildcard erasure()
+   public D.Wildcard erasure()
    {
-      return (Ap.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
+      return (D.Wildcard) Adapters.adapt(getApi(), adapt(getApi()).toTypes().erasure(getMirror()));
    }
 
    @Override
    public String renderName(RenderingContext renderingContext)
    {
-      Optional<Ap.Type> superType = getSuper();
+      Optional<D.Type> superType = getSuper();
       if (superType.isPresent())
       {
          return "? super " + superType.get().renderName(renderingContext);
       }
-      Optional<Ap.Type> extendsType = getExtends();
+      Optional<D.Type> extendsType = getExtends();
       if (extendsType.isPresent())
       {
          return "? extends " + extendsType.get();
@@ -85,7 +85,7 @@ public class WildcardImpl extends TypeImpl<WildcardType> implements Ap.Wildcard
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Wildcard wildcard &&
+      return other instanceof D.Wildcard wildcard &&
              Objects.equals(getExtends(), wildcard.getExtends()) &&
              Objects.equals(getSuper(), wildcard.getSuper());
    }

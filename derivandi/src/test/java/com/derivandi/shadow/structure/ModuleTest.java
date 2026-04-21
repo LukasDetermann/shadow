@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class ModuleTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Module module = context.getModuleOrThrow("java.logging");
+                                 D.Module module = context.getModuleOrThrow("java.logging");
                                  Assertions.assertEquals(context.getPackage("java.util.logging"), module.getPackages());
                               });
    }
@@ -28,7 +28,7 @@ class ModuleTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Module module = context.getModuleOrThrow("java.logging");
+                                 D.Module module = context.getModuleOrThrow("java.logging");
                                  assertFalse(module.isOpen());
                               });
    }
@@ -38,7 +38,7 @@ class ModuleTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Module module = context.getModuleOrThrow("java.logging");
+                                 D.Module module = context.getModuleOrThrow("java.logging");
                                  assertFalse(module.isUnnamed());
                               });
    }
@@ -48,7 +48,7 @@ class ModuleTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Module module = context.getModuleOrThrow("java.logging");
+                                 D.Module module = context.getModuleOrThrow("java.logging");
                                  assertFalse(module.isAutomatic());
                               });
    }
@@ -58,7 +58,7 @@ class ModuleTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Module module = context.getModuleOrThrow("java.logging");
+                                 D.Module module = context.getModuleOrThrow("java.logging");
                                  assertEquals("Requires{static=false, transitive=false, dependency=java.base}, " +
                                               "Exports{package=java.util.logging, targetModules=[]}, " +
                                               "Provides{service=Class{qualifiedName='jdk.internal.logger.DefaultLoggerFinder'}, " +

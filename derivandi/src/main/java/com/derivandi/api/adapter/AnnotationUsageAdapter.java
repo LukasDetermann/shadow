@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.annotationvalue.AnnotationUsageImpl;
 
 import javax.lang.model.element.AnnotationMirror;
 
 public class AnnotationUsageAdapter
 {
-   private final Ap.AnnotationUsage annotationUsage;
+   private final D.AnnotationUsage annotationUsage;
 
-   AnnotationUsageAdapter(Ap.AnnotationUsage annotationUsage)
+   AnnotationUsageAdapter(D.AnnotationUsage annotationUsage)
    {
       this.annotationUsage = annotationUsage;
    }

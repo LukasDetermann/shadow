@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.dsl.parameter.ParameterAnnotateStep;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.dsl.JavaDsl.parameter;
 
-public class ParameterImpl extends VariableImpl implements Ap.Parameter
+public class ParameterImpl extends VariableImpl implements D.Parameter
 {
    public ParameterImpl(SimpleContext context, VariableElement variableElement)
    {
@@ -25,7 +25,7 @@ public class ParameterImpl extends VariableImpl implements Ap.Parameter
    @Override
    public boolean isVarArgs()
    {
-      List<Ap.Parameter> parameters = getSurrounding().getParameters();
+      List<D.Parameter> parameters = getSurrounding().getParameters();
       return getSurrounding().isVarArgs() &&
              parameters.get(parameters.size() - 1).equals(this);
    }
@@ -66,7 +66,7 @@ public class ParameterImpl extends VariableImpl implements Ap.Parameter
    }
 
    @Override
-   public Ap.Executable getSurrounding()
+   public D.Executable getSurrounding()
    {
       return Adapters.adapt(getApi(), ((ExecutableElement) getElement().getEnclosingElement()));
    }
@@ -78,7 +78,7 @@ public class ParameterImpl extends VariableImpl implements Ap.Parameter
       {
          return true;
       }
-      if (!(other instanceof Ap.Parameter otherVariable))
+      if (!(other instanceof D.Parameter otherVariable))
       {
          return false;
       }

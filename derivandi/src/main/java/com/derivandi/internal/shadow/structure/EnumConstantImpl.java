@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -9,7 +9,7 @@ import javax.lang.model.element.VariableElement;
 
 import static com.derivandi.api.dsl.JavaDsl.enumConstant;
 
-public class EnumConstantImpl extends VariableImpl implements Ap.EnumConstant
+public class EnumConstantImpl extends VariableImpl implements D.EnumConstant
 {
    public EnumConstantImpl(SimpleContext context, VariableElement variableElement)
    {
@@ -17,9 +17,9 @@ public class EnumConstantImpl extends VariableImpl implements Ap.EnumConstant
    }
 
    @Override
-   public Ap.Enum getSurrounding()
+   public D.Enum getSurrounding()
    {
-      return (Ap.Enum) Adapters.adapt(getApi(), getElement().getEnclosingElement());
+      return (D.Enum) Adapters.adapt(getApi(), getElement().getEnclosingElement());
    }
 
    @Override

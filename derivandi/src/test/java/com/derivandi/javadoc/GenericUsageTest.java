@@ -1,6 +1,6 @@
 package com.derivandi.javadoc;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +17,9 @@ public class GenericUsageTest
       processorTest().process(context ->
                               {
                                  //@start region="GenericUsage.isSubtypeOf"
-                                 Ap.Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
-                                 Ap.Interface erasure = interfaceToTest.erasure();
-                                 Ap.Interface erasedCollection = context.getInterfaceOrThrow("java.util.Collection").erasure();
+                                 D.Interface interfaceToTest = context.getInterfaceOrThrow("java.util.List");
+                                 D.Interface erasure = interfaceToTest.erasure();
+                                 D.Interface erasedCollection = context.getInterfaceOrThrow("java.util.Collection").erasure();
                                  Assertions.assertTrue(erasure.isSubtypeOf(erasedCollection));//@highlight substring="isSubtypeOf"
                                  //@end
                               });

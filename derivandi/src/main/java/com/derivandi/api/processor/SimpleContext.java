@@ -1,6 +1,6 @@
 package com.derivandi.api.processor;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.declared.DeclaredRenderable;
 import com.derivandi.api.dsl.module.ModuleRenderable;
 import com.derivandi.api.dsl.package_.PackageRenderable;
@@ -25,11 +25,11 @@ import static com.derivandi.api.dsl.RenderingContext.createRenderingContext;
  *    <li>get anything that is annotated {@link #getAnnotatedWith(String)}</li>
  *    <li>get already compiled sources {@link #getDeclaredOrThrow(String)} for example</li>
  *    <li>get constants {@link #getConstants()}</li>
- *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(Ap.Annotationable, String)}</li>
+ *    <li>log using {@link #logAndRaiseError(String)} or log at {@link #logAndRaiseErrorAt(D.Annotationable, String)}</li>
  * </ul>
  *
  * @see Processor
- * @see Ap.Type
+ * @see D.Type
  */
 public interface SimpleContext
 {
@@ -41,7 +41,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Annotationable> getAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Annotationable> getAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -51,7 +51,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Annotationable> getAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Annotationable> getAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -61,7 +61,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Declared> getDeclaredAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -71,7 +71,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Declared> getDeclaredAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Declared> getDeclaredAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -81,7 +81,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Class> getClassesAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Class> getClassesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -91,7 +91,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Class> getClassesAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Class> getClassesAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -101,7 +101,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Enum> getEnumsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Enum> getEnumsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -111,7 +111,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Enum> getEnumsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Enum> getEnumsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -121,7 +121,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Interface> getInterfacesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -131,7 +131,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Interface> getInterfacesAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Interface> getInterfacesAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -141,7 +141,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Record> getRecordsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Record> getRecordsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -151,7 +151,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Record> getRecordsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Record> getRecordsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -161,7 +161,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Field> getFieldsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Field> getFieldsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -171,7 +171,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Field> getFieldsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Field> getFieldsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -181,7 +181,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Parameter> getParametersAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Parameter> getParametersAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -191,7 +191,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Parameter> getParametersAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Parameter> getParametersAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -201,7 +201,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Method> getMethodsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Method> getMethodsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -211,7 +211,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Method> getMethodsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Method> getMethodsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -221,7 +221,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Constructor> getConstructorsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -231,7 +231,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Constructor> getConstructorsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Constructor> getConstructorsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -241,7 +241,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Annotation> getAnnotationsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -251,7 +251,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Annotation> getAnnotationsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Annotation> getAnnotationsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -261,7 +261,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Package> getPackagesAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Package> getPackagesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -271,7 +271,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Package> gePackagesAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Package> gePackagesAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -281,7 +281,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Generic> getGenericDeclarationsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Generic> getGenericDeclarationsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -291,7 +291,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Generic> geGenericsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Generic> geGenericsAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -301,7 +301,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Module> getModulesAnnotatedWith(String qualifiedAnnotation);
+   Set<D.Module> getModulesAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -311,7 +311,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.Module> geModulesAnnotatedWith(Ap.Annotation annotation);
+   Set<D.Module> geModulesAnnotatedWith(D.Annotation annotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -321,7 +321,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation);
+   Set<D.RecordComponent> getRecordComponentsAnnotatedWith(String qualifiedAnnotation);
 
    /**
     * Looks up annotated elements in currently compiled code. <br>
@@ -331,7 +331,7 @@ public interface SimpleContext
     * @see #writeAndCompileSourceFile(String, String)
     * @see #writeClassFile(String, String)
     */
-   Set<Ap.RecordComponent> geRecordComponentsAnnotatedWith(Ap.Annotation annotation);
+   Set<D.RecordComponent> geRecordComponentsAnnotatedWith(D.Annotation annotation);
 
    /**
     * the created file will be registered for the next annotation processor round. writes .java files
@@ -398,131 +398,131 @@ public interface SimpleContext
 
    void logWarning(String msg);
 
-   void logAndRaiseErrorAt(Ap.Annotationable annotationable, String msg);
+   void logAndRaiseErrorAt(D.Annotationable annotationable, String msg);
 
-   void logInfoAt(Ap.Annotationable annotationable, String msg);
+   void logInfoAt(D.Annotationable annotationable, String msg);
 
-   void logWarningAt(Ap.Annotationable annotationable, String msg);
+   void logWarningAt(D.Annotationable annotationable, String msg);
 
-   List<Ap.Declared> getDeclared();
+   List<D.Declared> getDeclared();
 
-   Optional<Ap.Declared> getDeclared(String qualifiedName);
+   Optional<D.Declared> getDeclared(String qualifiedName);
 
-   default Ap.Declared getDeclaredOrThrow(String qualifiedName)
+   default D.Declared getDeclaredOrThrow(String qualifiedName)
    {
       return getDeclared(qualifiedName).orElseThrow();
    }
 
-   default List<Ap.Annotation> getAnnotations()
+   default List<D.Annotation> getAnnotations()
    {
       return getDeclared().stream()
-                          .filter(Ap.Annotation.class::isInstance)
-                          .map(Ap.Annotation.class::cast)
+                          .filter(D.Annotation.class::isInstance)
+                          .map(D.Annotation.class::cast)
                           .toList();
    }
 
-   default Optional<Ap.Annotation> getAnnotation(String qualifiedName)
+   default Optional<D.Annotation> getAnnotation(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Ap.Annotation.class::cast);
+      return getDeclared(qualifiedName).map(D.Annotation.class::cast);
    }
 
-   default Ap.Annotation getAnnotationOrThrow(String qualifiedName)
+   default D.Annotation getAnnotationOrThrow(String qualifiedName)
    {
-      return ((Ap.Annotation) getDeclaredOrThrow(qualifiedName));
+      return ((D.Annotation) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Ap.Class> getClasses()
+   default List<D.Class> getClasses()
    {
       return getDeclared().stream()
-                          .filter(Ap.Class.class::isInstance)
-                          .map(Ap.Class.class::cast)
+                          .filter(D.Class.class::isInstance)
+                          .map(D.Class.class::cast)
                           .toList();
    }
 
-   default Optional<Ap.Class> getClass(String qualifiedName)
+   default Optional<D.Class> getClass(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Ap.Class.class::cast);
+      return getDeclared(qualifiedName).map(D.Class.class::cast);
    }
 
-   default Ap.Class getClassOrThrow(String qualifiedName)
+   default D.Class getClassOrThrow(String qualifiedName)
    {
-      return ((Ap.Class) getDeclaredOrThrow(qualifiedName));
+      return ((D.Class) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Ap.Enum> getEnums()
+   default List<D.Enum> getEnums()
    {
       return getDeclared().stream()
-                          .filter(Ap.Enum.class::isInstance)
-                          .map(Ap.Enum.class::cast)
+                          .filter(D.Enum.class::isInstance)
+                          .map(D.Enum.class::cast)
                           .toList();
    }
 
-   default Optional<Ap.Enum> getEnum(String qualifiedName)
+   default Optional<D.Enum> getEnum(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Ap.Enum.class::cast);
+      return getDeclared(qualifiedName).map(D.Enum.class::cast);
    }
 
-   default Ap.Enum getEnumOrThrow(String qualifiedName)
+   default D.Enum getEnumOrThrow(String qualifiedName)
    {
-      return ((Ap.Enum) getDeclaredOrThrow(qualifiedName));
+      return ((D.Enum) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Ap.Interface> getInterfaces()
+   default List<D.Interface> getInterfaces()
    {
       return getDeclared().stream()
-                          .filter(Ap.Interface.class::isInstance)
-                          .map(Ap.Interface.class::cast)
+                          .filter(D.Interface.class::isInstance)
+                          .map(D.Interface.class::cast)
                           .toList();
    }
 
-   default Optional<Ap.Interface> getInterface(String qualifiedName)
+   default Optional<D.Interface> getInterface(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Ap.Interface.class::cast);
+      return getDeclared(qualifiedName).map(D.Interface.class::cast);
    }
 
-   default Ap.Interface getInterfaceOrThrow(String qualifiedName)
+   default D.Interface getInterfaceOrThrow(String qualifiedName)
    {
-      return ((Ap.Interface) getDeclaredOrThrow(qualifiedName));
+      return ((D.Interface) getDeclaredOrThrow(qualifiedName));
    }
 
-   default List<Ap.Record> getRecords()
+   default List<D.Record> getRecords()
    {
       return getDeclared().stream()
-                          .filter(Ap.Record.class::isInstance)
-                          .map(Ap.Record.class::cast)
+                          .filter(D.Record.class::isInstance)
+                          .map(D.Record.class::cast)
                           .toList();
    }
 
-   default Optional<Ap.Record> getRecord(String qualifiedName)
+   default Optional<D.Record> getRecord(String qualifiedName)
    {
-      return getDeclared(qualifiedName).map(Ap.Record.class::cast);
+      return getDeclared(qualifiedName).map(D.Record.class::cast);
    }
 
-   default Ap.Record getRecordOrThrow(String qualifiedName)
+   default D.Record getRecordOrThrow(String qualifiedName)
    {
-      return ((Ap.Record) getDeclaredOrThrow(qualifiedName));
+      return ((D.Record) getDeclaredOrThrow(qualifiedName));
    }
 
-   List<Ap.Module> getModules();
+   List<D.Module> getModules();
 
-   Optional<Ap.Module> getModule(String name);
+   Optional<D.Module> getModule(String name);
 
-   Ap.Module getModuleOrThrow(String name);
+   D.Module getModuleOrThrow(String name);
 
    /**
     * a package is unique per module. With multiple modules there can be multiple packages with the same name
     */
-   List<Ap.Package> getPackage(String qualifiedName);
+   List<D.Package> getPackage(String qualifiedName);
 
-   List<Ap.Package> getPackages();
+   List<D.Package> getPackages();
 
-   Optional<Ap.Package> getPackage(String qualifiedModuleName, String qualifiedPackageName);
+   Optional<D.Package> getPackage(String qualifiedModuleName, String qualifiedPackageName);
 
-   Ap.Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
+   D.Package getPackageOrThrow(String qualifiedModuleName, String qualifiedPackageName);
 
-   Optional<Ap.Package> getPackage(Ap.Module module, String qualifiedPackageName);
+   Optional<D.Package> getPackage(D.Module module, String qualifiedPackageName);
 
-   Ap.Package getPackageOrThrow(Ap.Module module, String qualifiedPackageName);
+   D.Package getPackageOrThrow(D.Module module, String qualifiedPackageName);
 
    Constants getConstants();
 }

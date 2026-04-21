@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -8,19 +8,19 @@ import java.util.Optional;
 import static java.util.Optional.ofNullable;
 
 public class PropertyImpl
-      implements Ap.Property
+      implements D.Property
 {
    private final String name;
-   private final Ap.VariableType type;
-   private final Ap.Field field;
-   private final Ap.Method getter;
-   private final Ap.Method setter;
+   private final D.VariableType type;
+   private final D.Field field;
+   private final D.Method getter;
+   private final D.Method setter;
 
    PropertyImpl(String name,
-                Ap.VariableType type,
-                Ap.Field field,
-                Ap.Method getter,
-                Ap.Method setter)
+                D.VariableType type,
+                D.Field field,
+                D.Method getter,
+                D.Method setter)
    {
       this.name = name;
       this.type = type;
@@ -36,37 +36,37 @@ public class PropertyImpl
    }
 
    @Override
-   public Ap.VariableType getType()
+   public D.VariableType getType()
    {
       return type;
    }
 
    @Override
-   public Optional<Ap.Field> getField()
+   public Optional<D.Field> getField()
    {
       return ofNullable(field);
    }
 
    @Override
-   public Ap.Field getFieldOrThrow()
+   public D.Field getFieldOrThrow()
    {
       return getField().orElseThrow();
    }
 
    @Override
-   public Ap.Method getGetter()
+   public D.Method getGetter()
    {
       return getter;
    }
 
    @Override
-   public Optional<Ap.Method> getSetter()
+   public Optional<D.Method> getSetter()
    {
       return ofNullable(setter);
    }
 
    @Override
-   public Ap.Method getSetterOrThrow()
+   public D.Method getSetterOrThrow()
    {
       return getSetter().orElseThrow();
    }
@@ -80,7 +80,7 @@ public class PropertyImpl
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Property property &&
+      return other instanceof D.Property property &&
              Objects.equals(getName(), property.getName()) &&
              Objects.equals(getType(), property.getType());
    }

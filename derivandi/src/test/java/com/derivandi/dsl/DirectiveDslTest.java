@@ -1,7 +1,7 @@
 package com.derivandi.dsl;
 
 import com.derivandi.TestFactory;
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +19,8 @@ class DirectiveDslTest
 
       assertEquals("exports org.example to module;", JavaDsl.exports().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
 
-      Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
-      Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
+      D.Package aPackage = TestFactory.create(D.Package.class, "renderQualifiedName", "org.example");
+      D.Module module = TestFactory.create(D.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="exports-api-simple-type"
       assertEquals("exports org.example;", JavaDsl.exports(aPackage).renderDeclaration(createRenderingContext()));
@@ -45,7 +45,7 @@ class DirectiveDslTest
       assertEquals("uses org.example.MySpi;", JavaDsl.uses("org.example.MySpi").renderDeclaration(createRenderingContext()));
       //@end
 
-      Ap.Class service = TestFactory.create(Ap.Class.class, "getQualifiedName", "org.example.MySpi");
+      D.Class service = TestFactory.create(D.Class.class, "getQualifiedName", "org.example.MySpi");
 
       //@start region="uses-api-type"
       assertEquals("uses org.example.MySpi;", JavaDsl.uses(service).renderDeclaration(createRenderingContext()));
@@ -61,8 +61,8 @@ class DirectiveDslTest
 
       assertEquals("opens org.example to module;", JavaDsl.opens().package_("org.example").to("module").renderDeclaration(createRenderingContext()));
 
-      Ap.Package aPackage = TestFactory.create(Ap.Package.class, "renderQualifiedName", "org.example");
-      Ap.Module module = TestFactory.create(Ap.Module.class, "renderQualifiedName", "andAnotherOne");
+      D.Package aPackage = TestFactory.create(D.Package.class, "renderQualifiedName", "org.example");
+      D.Module module = TestFactory.create(D.Module.class, "renderQualifiedName", "andAnotherOne");
 
       //@start region="opens-api-simple-type"
       assertEquals("opens org.example;", JavaDsl.opens(aPackage).renderDeclaration(createRenderingContext()));

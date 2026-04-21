@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Origin;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
@@ -17,7 +17,7 @@ import static com.derivandi.api.adapter.Adapters.adapt;
 import static com.derivandi.api.dsl.JavaDsl.packageInfo;
 import static java.util.Optional.ofNullable;
 
-public class PackageImpl implements Ap.Package
+public class PackageImpl implements D.Package
 {
    private final PackageElement packageElement;
    private final SimpleContext context;
@@ -60,17 +60,17 @@ public class PackageImpl implements Ap.Package
    }
 
    @Override
-   public List<Ap.Declared> getDeclared()
+   public List<D.Declared> getDeclared()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .map(TypeElement.class::cast)
-                         .map(typeElement -> Adapters.<Ap.Declared>adapt(getApi(), typeElement))
+                         .map(typeElement -> Adapters.<D.Declared>adapt(getApi(), typeElement))
                          .toList();
    }
 
    @Override
-   public Optional<Ap.Declared> getDeclared(String qualifiedName)
+   public Optional<D.Declared> getDeclared(String qualifiedName)
    {
       return getDeclared().stream()
                           .filter(declared -> declared.getQualifiedName().equals(qualifiedName))
@@ -78,7 +78,7 @@ public class PackageImpl implements Ap.Package
    }
 
    @Override
-   public Ap.Module getModule()
+   public D.Module getModule()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -96,13 +96,13 @@ public class PackageImpl implements Ap.Package
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), getMirror(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
@@ -140,7 +140,7 @@ public class PackageImpl implements Ap.Package
       {
          return true;
       }
-      if (!(other instanceof Ap.Package otherPackage))
+      if (!(other instanceof D.Package otherPackage))
       {
          return false;
       }

@@ -1,6 +1,6 @@
 package com.derivandi.shadow;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +16,7 @@ class AnnotationableTest
       processorTest().withCodeToCompile("NotAnnotated.java", "class NotAnnotated{}")
                      .process(context ->
                               {
-                                 Ap.Declared cDeclared = context.getDeclaredOrThrow("NotAnnotated");
+                                 D.Declared cDeclared = context.getDeclaredOrThrow("NotAnnotated");
                                  assertTrue(cDeclared.getAnnotationUsages().isEmpty());
                                  assertTrue(cDeclared.getDirectAnnotationUsages().isEmpty());
                               });
@@ -31,9 +31,9 @@ class AnnotationableTest
                      .withCodeToCompile("Child.java", "class Child extends Parent{}")
                      .process(context ->
                               {
-                                 Ap.Declared cDeclared = context.getDeclaredOrThrow("Child");
-                                 Ap.Annotation standaloneAnnotation = context.getAnnotationOrThrow("StandaloneAnnotation");
-                                 Ap.Annotation inheritedAnnotation = context.getAnnotationOrThrow("InheritedAnnotation");
+                                 D.Declared cDeclared = context.getDeclaredOrThrow("Child");
+                                 D.Annotation standaloneAnnotation = context.getAnnotationOrThrow("StandaloneAnnotation");
+                                 D.Annotation inheritedAnnotation = context.getAnnotationOrThrow("InheritedAnnotation");
 
                                  //direct
                                  assertTrue(cDeclared.getDirectAnnotationUsages().isEmpty());
@@ -44,9 +44,9 @@ class AnnotationableTest
                                  assertTrue(cDeclared.getDirectUsagesOf(inheritedAnnotation).isEmpty());
 
                                  //inherited
-                                 List<Ap.AnnotationUsage> usages = cDeclared.getAnnotationUsages();
+                                 List<D.AnnotationUsage> usages = cDeclared.getAnnotationUsages();
                                  assertEquals(1, usages.size());
-                                 Ap.Annotation cAnnotation = usages.get(0).getAnnotation();
+                                 D.Annotation cAnnotation = usages.get(0).getAnnotation();
                                  assertEquals("InheritedAnnotation", cAnnotation.getQualifiedName());
                                  assertFalse(cDeclared.isAnnotatedWith(standaloneAnnotation));
                                  assertTrue(cDeclared.isAnnotatedWith(inheritedAnnotation));

@@ -1,6 +1,6 @@
 package com.derivandi.internal;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.processor.Constants;
 import com.derivandi.api.processor.SimpleContext;
@@ -19,68 +19,68 @@ public class ApConstantsImpl
    }
 
    @Override
-   public Ap.Wildcard getUnboundWildcard()
+   public D.Wildcard getUnboundWildcard()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getWildcardType(null, null));
    }
 
    @Override
-   public Ap.Null getNull()
+   public D.Null getNull()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getNullType());
    }
 
    @Override
-   public Ap.Void getVoid()
+   public D.Void getVoid()
    {
       return Adapters.adapt(context, adapt(context).toTypes().getNoType(VOID));
    }
 
    @Override
-   public Ap.boolean_ getPrimitiveBoolean()
+   public D.boolean_ getPrimitiveBoolean()
    {
-      return (Ap.boolean_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
+      return (D.boolean_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BOOLEAN));
    }
 
    @Override
-   public Ap.byte_ getPrimitiveByte()
+   public D.byte_ getPrimitiveByte()
    {
-      return (Ap.byte_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
+      return (D.byte_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(BYTE));
    }
 
    @Override
-   public Ap.short_ getPrimitiveShort()
+   public D.short_ getPrimitiveShort()
    {
-      return (Ap.short_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
+      return (D.short_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(SHORT));
    }
 
    @Override
-   public Ap.int_ getPrimitiveInt()
+   public D.int_ getPrimitiveInt()
    {
-      return (Ap.int_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
+      return (D.int_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(INT));
    }
 
    @Override
-   public Ap.long_ getPrimitiveLong()
+   public D.long_ getPrimitiveLong()
    {
-      return (Ap.long_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
+      return (D.long_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(LONG));
    }
 
    @Override
-   public Ap.char_ getPrimitiveChar()
+   public D.char_ getPrimitiveChar()
    {
-      return (Ap.char_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
+      return (D.char_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(CHAR));
    }
 
    @Override
-   public Ap.float_ getPrimitiveFloat()
+   public D.float_ getPrimitiveFloat()
    {
-      return (Ap.float_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
+      return (D.float_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(FLOAT));
    }
 
    @Override
-   public Ap.double_ getPrimitiveDouble()
+   public D.double_ getPrimitiveDouble()
    {
-      return (Ap.double_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
+      return (D.double_) Adapters.adapt(context, adapt(context).toTypes().getPrimitiveType(DOUBLE));
    }
 }

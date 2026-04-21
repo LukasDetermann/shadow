@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.adapter.TypeAdapter;
 import com.derivandi.api.dsl.RenderingContext;
@@ -24,7 +24,7 @@ import static java.util.Optional.ofNullable;
 
 public class ClassImpl
       extends DeclaredImpl
-      implements Ap.Class
+      implements D.Class
 {
    public ClassImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
@@ -37,50 +37,50 @@ public class ClassImpl
    }
 
    @Override
-   public boolean isAssignableFrom(Ap.Type type)
+   public boolean isAssignableFrom(D.Type type)
    {
       return adapt(getApi()).toTypes().isAssignable(getMirror(), adapt(type).toTypeMirror());
    }
 
    @Nullable
    @Override
-   public Ap.Class getSuperClass()
+   public D.Class getSuperClass()
    {
       TypeMirror superclass = getElement().getSuperclass();
       if (TypeKind.NONE.equals(superclass.getKind()))
       {
          return null;
       }
-      return (Ap.Class) adapt(getApi(), ((DeclaredType) superclass));
+      return (D.Class) adapt(getApi(), ((DeclaredType) superclass));
    }
 
    @Override
-   public List<Ap.Class> getPermittedSubClasses()
+   public List<D.Class> getPermittedSubClasses()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
                          .map(typeMirror -> adapt(getApi(), ((DeclaredType) typeMirror)))
-                         .map(Ap.Class.class::cast)
+                         .map(D.Class.class::cast)
                          .toList();
    }
 
    @Override
-   public List<Ap.Property> getProperties()
+   public List<D.Property> getProperties()
    {
       return PropertyFactory.of(this);
    }
 
    @Override
-   public List<Ap.Type> getGenericUsages()
+   public List<D.Type> getGenericUsages()
    {
       return getMirror().getTypeArguments()
                         .stream()
-                        .map(typeMirror -> Adapters.<Ap.Type>adapt(getApi(), typeMirror))
+                        .map(typeMirror -> Adapters.<D.Type>adapt(getApi(), typeMirror))
                         .toList();
    }
 
    @Override
-   public List<Ap.Generic> getGenericDeclarations()
+   public List<D.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -89,7 +89,7 @@ public class ClassImpl
    }
 
    @Override
-   public Ap.Class withGenerics(Ap.Type... generics)
+   public D.Class withGenerics(D.Type... generics)
    {
       if (generics.length == 0 || getGenericDeclarations().size() != generics.length)
       {
@@ -100,11 +100,11 @@ public class ClassImpl
                                             generics.length +
                                             " are provided");
       }
-      Optional<Ap.Declared> outerType = getSurrounding();
+      Optional<D.Declared> outerType = getSurrounding();
       if (!isStatic() && outerType.isPresent() &&
-          (outerType.get() instanceof Ap.Interface anInterface &&
+          (outerType.get() instanceof D.Interface anInterface &&
            !anInterface.getGenericDeclarations().isEmpty() ||
-           outerType.get() instanceof Ap.Class aClass1 && !aClass1.getGenericDeclarations().isEmpty()))
+           outerType.get() instanceof D.Class aClass1 && !aClass1.getGenericDeclarations().isEmpty()))
       {
          throw new IllegalArgumentException("cant add generics to " +
                                             getQualifiedName() +
@@ -115,33 +115,33 @@ public class ClassImpl
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (Ap.Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (D.Class) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public Ap.Class withGenerics(String... qualifiedGenerics)
+   public D.Class withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(Ap.Type[]::new));
+                                .toArray(D.Type[]::new));
    }
 
    @Override
-   public Ap.Class capture()
+   public D.Class capture()
    {
-      return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (D.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public Ap.Primitive asUnboxed()
+   public D.Primitive asUnboxed()
    {
       return adapt(getApi(), adapt(getApi()).toTypes().unboxedType(getMirror()));
    }
 
    @Override
-   public Ap.Class erasure()
+   public D.Class erasure()
    {
-      return (Ap.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (D.Class) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override
@@ -202,7 +202,7 @@ public class ClassImpl
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Class.class, other);
+      return equals(D.Class.class, other);
    }
 
    @Override

@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.adapter.TypeAdapter;
 import com.derivandi.api.dsl.RenderingContext;
@@ -18,7 +18,7 @@ import static java.util.Arrays.stream;
 
 public class InterfaceImpl
       extends DeclaredImpl
-      implements Ap.Interface
+      implements D.Interface
 {
    public InterfaceImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
@@ -38,7 +38,7 @@ public class InterfaceImpl
    }
 
    @Override
-   public List<Ap.Declared> getPermittedSubTypes()
+   public List<D.Declared> getPermittedSubTypes()
    {
       return getElement().getPermittedSubclasses()
                          .stream()
@@ -47,7 +47,7 @@ public class InterfaceImpl
    }
 
    @Override
-   public List<Ap.Type> getGenericUsages()
+   public List<D.Type> getGenericUsages()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -56,7 +56,7 @@ public class InterfaceImpl
    }
 
    @Override
-   public List<Ap.Generic> getGenericDeclarations()
+   public List<D.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -65,7 +65,7 @@ public class InterfaceImpl
    }
 
    @Override
-   public Ap.Interface withGenerics(Ap.Type... generics)
+   public D.Interface withGenerics(D.Type... generics)
    {
       if (generics.length == 0 || getGenericDeclarations().size() != generics.length)
       {
@@ -81,27 +81,27 @@ public class InterfaceImpl
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (Ap.Interface) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (D.Interface) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public Ap.Interface withGenerics(String... qualifiedGenerics)
+   public D.Interface withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(Ap.Type[]::new));
+                                .toArray(D.Type[]::new));
    }
 
    @Override
-   public Ap.Interface capture()
+   public D.Interface capture()
    {
-      return (Ap.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (D.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public Ap.Interface erasure()
+   public D.Interface erasure()
    {
-      return (Ap.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (D.Interface) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override
@@ -157,7 +157,7 @@ public class InterfaceImpl
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Interface.class, other);
+      return equals(D.Interface.class, other);
    }
 
    @Override

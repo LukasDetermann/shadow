@@ -1,6 +1,6 @@
 package com.derivandi.javadoc;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ public class WildcardTest
       processorTest().process(context ->
                               {
                                  //@start region="Wildcard.contains"
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Wildcard wildcard = number.asExtendsWildcard();
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Wildcard wildcard = number.asExtendsWildcard();
                                  Assertions.assertTrue(wildcard.contains(context.getClassOrThrow("java.lang.Long")));//@highlight substring="contains"
                                  //@end
                               });

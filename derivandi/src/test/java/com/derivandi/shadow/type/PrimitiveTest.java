@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -15,10 +15,10 @@ class PrimitiveTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Primitive primitiveInt = context.getConstants().getPrimitiveInt();
+                                 D.Primitive primitiveInt = context.getConstants().getPrimitiveInt();
 
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Class string = context.getClassOrThrow("java.lang.String");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class string = context.getClassOrThrow("java.lang.String");
 
                                  assertTrue(primitiveInt.isAssignableFrom(number));
                                  assertTrue(primitiveInt.isAssignableFrom(primitiveInt));

@@ -1,6 +1,6 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Origin;
 import com.derivandi.api.processor.SimpleContext;
 import com.derivandi.internal.annotationvalue.AnnotationUsageImpl;
@@ -25,109 +25,109 @@ public interface Adapters
 {
    //shadow -> jdk
 
-   static AnnotationUsageAdapter adapt(Ap.AnnotationUsage annotationUsage)
+   static AnnotationUsageAdapter adapt(D.AnnotationUsage annotationUsage)
    {
       return new AnnotationUsageAdapter(annotationUsage);
    }
 
-   static DeclaredAdapter adapt(Ap.Declared declared)
+   static DeclaredAdapter adapt(D.Declared declared)
    {
       return new DeclaredAdapter(declared);
    }
 
-   static ArrayAdapter adapt(Ap.Array array)
+   static ArrayAdapter adapt(D.Array array)
    {
       return new ArrayAdapter(array);
    }
 
-   static ExecutableAdapter adapt(Ap.Executable executable)
+   static ExecutableAdapter adapt(D.Executable executable)
    {
       return new ExecutableAdapter(executable);
    }
 
-   static TypeAdapter adapt(Ap.Type type)
+   static TypeAdapter adapt(D.Type type)
    {
       return new TypeAdapter(type);
    }
 
-   static GenericAdapter adapt(Ap.Generic generic)
+   static GenericAdapter adapt(D.Generic generic)
    {
       return new GenericAdapter(generic);
    }
 
-   static ModuleAdapter adapt(Ap.Module module)
+   static ModuleAdapter adapt(D.Module module)
    {
       return new ModuleAdapter(module);
    }
 
-   static NullAdapter adapt(Ap.Null aNull)
+   static NullAdapter adapt(D.Null aNull)
    {
       return new NullAdapter(aNull);
    }
 
-   static PackageAdapter adapt(Ap.Package aPackage)
+   static PackageAdapter adapt(D.Package aPackage)
    {
       return new PackageAdapter(aPackage);
    }
 
-   static PrimitiveAdapter adapt(Ap.Primitive primitive)
+   static PrimitiveAdapter adapt(D.Primitive primitive)
    {
       return new PrimitiveAdapter(primitive);
    }
 
-   static VoidAdapter adapt(Ap.Void aVoid)
+   static VoidAdapter adapt(D.Void aVoid)
    {
       return new VoidAdapter(aVoid);
    }
 
-   static WildcardAdapter adapt(Ap.Wildcard wildcard)
+   static WildcardAdapter adapt(D.Wildcard wildcard)
    {
       return new WildcardAdapter(wildcard);
    }
 
-   static AnnotationableAdapter adapt(Ap.Annotationable annotationable)
+   static AnnotationableAdapter adapt(D.Annotationable annotationable)
    {
       return new AnnotationableAdapter(annotationable);
    }
 
-   static RecordComponentAdapter adapt(Ap.RecordComponent recordComponent)
+   static RecordComponentAdapter adapt(D.RecordComponent recordComponent)
    {
       return new RecordComponentAdapter(recordComponent);
    }
 
-   static VariableAdapter adapt(Ap.Variable variable)
+   static VariableAdapter adapt(D.Variable variable)
    {
       return new VariableAdapter(variable);
    }
 
-   static ExportsAdapter adapt(Ap.Exports exports)
+   static ExportsAdapter adapt(D.Exports exports)
    {
       return new ExportsAdapter(exports);
    }
 
-   static OpensAdapter adapt(Ap.Opens opens)
+   static OpensAdapter adapt(D.Opens opens)
    {
       return new OpensAdapter(opens);
    }
 
-   static ProvidesAdapter adapt(Ap.Provides provides)
+   static ProvidesAdapter adapt(D.Provides provides)
    {
       return new ProvidesAdapter(provides);
    }
 
-   static RequiresAdapter adapt(Ap.Requires requires)
+   static RequiresAdapter adapt(D.Requires requires)
    {
       return new RequiresAdapter(requires);
    }
 
-   static UsesAdapter adapt(Ap.Uses uses)
+   static UsesAdapter adapt(D.Uses uses)
    {
       return new UsesAdapter(uses);
    }
 
    //jdk -> shadow
 
-   static Ap.Executable adapt(SimpleContext context, ExecutableElement element)
+   static D.Executable adapt(SimpleContext context, ExecutableElement element)
    {
       return switch (element.getKind())
       {
@@ -138,7 +138,7 @@ public interface Adapters
       };
    }
 
-   static Ap.Variable adapt(SimpleContext context, VariableElement element)
+   static D.Variable adapt(SimpleContext context, VariableElement element)
    {
       return switch (element.getKind())
       {
@@ -150,22 +150,22 @@ public interface Adapters
       };
    }
 
-   static Ap.RecordComponent adapt(SimpleContext context, RecordComponentElement recordComponentElement)
+   static D.RecordComponent adapt(SimpleContext context, RecordComponentElement recordComponentElement)
    {
       return new RecordComponentImpl(context, recordComponentElement);
    }
 
-   static Ap.Module adapt(SimpleContext context, ModuleElement moduleElement)
+   static D.Module adapt(SimpleContext context, ModuleElement moduleElement)
    {
       return new ModuleImpl(context, moduleElement);
    }
 
-   static Ap.Wildcard adapt(SimpleContext context, WildcardType wildcardType)
+   static D.Wildcard adapt(SimpleContext context, WildcardType wildcardType)
    {
       return new WildcardImpl(context, wildcardType);
    }
 
-   static Ap.Declared adapt(SimpleContext context, TypeElement typeElement)
+   static D.Declared adapt(SimpleContext context, TypeElement typeElement)
    {
       return switch (typeElement.getKind())
       {
@@ -179,7 +179,7 @@ public interface Adapters
       };
    }
 
-   static Ap.Generic adapt(SimpleContext context, TypeParameterElement typeParameterElement)
+   static D.Generic adapt(SimpleContext context, TypeParameterElement typeParameterElement)
    {
       return new GenericImpl(context, typeParameterElement);
    }
@@ -203,12 +203,12 @@ public interface Adapters
       };
    }
 
-   /// This Method constructs [Ap.Type]s based on [TypeMirror]s. They represent the abstract code. `List<T>` for example.
+   /// This Method constructs [D.Type]s based on [TypeMirror]s. They represent the abstract code. `List<T>` for example.
    /// If you want a specific usage like `List<String>` then you should use the specific [Element].
    ///
    /// [TypeKind#EXECUTABLE], [TypeKind#NONE], [TypeKind#PACKAGE], [TypeKind#MODULE] can not be used with this method as information would be
    /// missing, that is needed for there creation. Use [Element]s to create them.
-   static Ap.Type adapt(SimpleContext context, TypeMirror typeMirror)
+   static D.Type adapt(SimpleContext context, TypeMirror typeMirror)
    {
       return switch (typeMirror.getKind())
       {
@@ -224,13 +224,13 @@ public interface Adapters
          case EXECUTABLE, NONE, PACKAGE, MODULE -> throw new IllegalArgumentException(
                "for " +
                typeMirror.getKind() +
-               " use Ap.Adapters.adapt(LM_Context, javax.lang.model.element.Element) as they don't extend " + Ap.Type.class.getSimpleName());
+               " use Ap.Adapters.adapt(LM_Context, javax.lang.model.element.Element) as they don't extend " + D.Type.class.getSimpleName());
          case OTHER, UNION ->
                throw new IllegalArgumentException(typeMirror.getKind() + " is not exposed through annotation processing and not supported");
       };
    }
 
-   static Ap.Declared adapt(SimpleContext context, DeclaredType declaredType)
+   static D.Declared adapt(SimpleContext context, DeclaredType declaredType)
    {
       if (TypeKind.ERROR.equals(declaredType.getKind()))
       {
@@ -249,15 +249,15 @@ public interface Adapters
       };
    }
 
-   static Ap.Unresolved adapt(SimpleContext context, ErrorType errorType)
+   static D.Unresolved adapt(SimpleContext context, ErrorType errorType)
    {
       return new UnresolvedImpl(context, errorType);
    }
 
-   /// used to create [Ap.Void].
+   /// used to create [D.Void].
    /// For [TypeKind#PACKAGE] use [#adapt(SimpleContext , PackageElement)] and for [TypeKind#MODULE] use [#adapt(SimpleContext , ModuleElement)].
    /// javax.lang.model has no specific type that represents [Void], this api can therefore not be more specific.
-   static Ap.Void adapt(SimpleContext context, NoType noType)
+   static D.Void adapt(SimpleContext context, NoType noType)
    {
       if (!TypeKind.VOID.equals(noType.getKind()))
       {
@@ -267,27 +267,27 @@ public interface Adapters
       return new VoidImpl(context, noType);
    }
 
-   static Ap.Generic adapt(SimpleContext context, IntersectionType intersectionType)
+   static D.Generic adapt(SimpleContext context, IntersectionType intersectionType)
    {
       return new IntersectionImpl(context, intersectionType);
    }
 
-   static Ap.Generic adapt(SimpleContext context, TypeVariable typeVariable)
+   static D.Generic adapt(SimpleContext context, TypeVariable typeVariable)
    {
       return new GenericImpl(context, typeVariable);
    }
 
-   static Ap.Null adapt(SimpleContext context, NullType nullType)
+   static D.Null adapt(SimpleContext context, NullType nullType)
    {
       return new NullImpl(context, nullType);
    }
 
-   static Ap.Array adapt(SimpleContext context, ArrayType arrayType)
+   static D.Array adapt(SimpleContext context, ArrayType arrayType)
    {
       return new ArrayImpl(context, arrayType);
    }
 
-   static Ap.Primitive adapt(SimpleContext context, PrimitiveType primitiveType)
+   static D.Primitive adapt(SimpleContext context, PrimitiveType primitiveType)
    {
       return switch (primitiveType.getKind())
       {
@@ -305,22 +305,22 @@ public interface Adapters
       };
    }
 
-   static Ap.Package adapt(SimpleContext context, PackageElement packageElement)
+   static D.Package adapt(SimpleContext context, PackageElement packageElement)
    {
       return new PackageImpl(context, packageElement);
    }
 
-   static Ap.AnnotationUsage adapt(SimpleContext context, AnnotatedConstruct annotated, AnnotationMirror annotationMirror)
+   static D.AnnotationUsage adapt(SimpleContext context, AnnotatedConstruct annotated, AnnotationMirror annotationMirror)
    {
       return adapt(context, annotated, singletonList(annotationMirror)).get(0);
    }
 
-   static List<Ap.AnnotationUsage> adapt(SimpleContext context, AnnotatedConstruct annotated, List<? extends AnnotationMirror> annotationMirrors)
+   static List<D.AnnotationUsage> adapt(SimpleContext context, AnnotatedConstruct annotated, List<? extends AnnotationMirror> annotationMirrors)
    {
       return AnnotationUsageImpl.from(context, annotated, annotationMirrors);
    }
 
-   static Ap.Directive adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.Directive directive)
+   static D.Directive adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.Directive directive)
    {
       return switch (directive.getKind())
       {
@@ -332,27 +332,27 @@ public interface Adapters
       };
    }
 
-   static Ap.Exports adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
+   static D.Exports adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.ExportsDirective exportsDirective)
    {
       return new ExportsImpl(context, declaringModule, exportsDirective);
    }
 
-   static Ap.Opens adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
+   static D.Opens adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.OpensDirective opensDirective)
    {
       return new OpensImpl(context, declaringModule, opensDirective);
    }
 
-   static Ap.Provides adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
+   static D.Provides adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.ProvidesDirective providesDirective)
    {
       return new ProvidesImpl(context, declaringModule, providesDirective);
    }
 
-   static Ap.Requires adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
+   static D.Requires adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.RequiresDirective requiresDirective)
    {
       return new RequiresImpl(context, declaringModule, requiresDirective);
    }
 
-   static Ap.Uses adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
+   static D.Uses adapt(SimpleContext context, ModuleElement declaringModule, ModuleElement.UsesDirective usesDirective)
    {
       return new UsesImpl(context, declaringModule, usesDirective);
    }

@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.structure.VariableImpl;
 
 import javax.lang.model.element.VariableElement;
 
 public class VariableAdapter
 {
-   private final Ap.Variable variable;
+   private final D.Variable variable;
 
-   VariableAdapter(Ap.Variable variable)
+   VariableAdapter(D.Variable variable)
    {
       this.variable = variable;
    }

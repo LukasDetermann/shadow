@@ -1,7 +1,7 @@
 package com.derivandi.dsl;
 
 import com.derivandi.TestFactory;
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 import com.derivandi.api.dsl.JavaDsl;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ class MethodDslTest
    @Test
    void type()
    {
-      Ap.Enum cEnum = TestFactory.create(Ap.Enum.class, "renderType", "MyEnum");
+      D.Enum cEnum = TestFactory.create(D.Enum.class, "renderType", "MyEnum");
 
       assertEquals("MyEnum foo() {}", JavaDsl.method().resultType(cEnum).name("foo").renderDeclaration(createRenderingContext()));
    }
@@ -101,7 +101,7 @@ class MethodDslTest
    @Test
    void throws_()
    {
-      Ap.Class cClass = TestFactory.create(Ap.Class.class, "renderName", "MyException3");
+      D.Class cClass = TestFactory.create(D.Class.class, "renderName", "MyException3");
 
       assertEquals("MyType foo() throws MyException1, MyException2, MyException3 {}",
                    JavaDsl.method()

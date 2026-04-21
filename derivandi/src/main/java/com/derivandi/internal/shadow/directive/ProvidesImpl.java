@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.directive;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.dsl.JavaDsl.provides;
 
-public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
+public class ProvidesImpl extends DirectiveImpl implements D.Provides
 {
    private final ModuleElement.ProvidesDirective providesDirective;
 
@@ -22,7 +22,7 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    }
 
    @Override
-   public Ap.Declared getService()
+   public D.Declared getService()
    {
       return Adapters.adapt(getApi(), providesDirective.getService());
    }
@@ -34,11 +34,11 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    }
 
    @Override
-   public List<Ap.Declared> getImplementations()
+   public List<D.Declared> getImplementations()
    {
       return providesDirective.getImplementations()
                               .stream()
-                              .map(typeElement -> Adapters.<Ap.Declared>adapt(getApi(), typeElement))
+                              .map(typeElement -> Adapters.<D.Declared>adapt(getApi(), typeElement))
                               .toList();
    }
 
@@ -53,7 +53,7 @@ public class ProvidesImpl extends DirectiveImpl implements Ap.Provides
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Provides provides &&
+      return other instanceof D.Provides provides &&
              Objects.equals(getImplementations(), provides.getImplementations()) &&
              Objects.equals(getService(), provides.getService());
    }

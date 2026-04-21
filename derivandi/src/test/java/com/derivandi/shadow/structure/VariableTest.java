@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -21,10 +21,10 @@ abstract class VariableTest
                                                                  """)
                      .process(context ->
                               {
-                                 Ap.Class string = context.getClassOrThrow("java.lang.String");
-                                 Ap.Class example = context.getClassOrThrow("ParameterExample");
-                                 Ap.Constructor constructor = example.getConstructors().get(0);
-                                 Ap.Parameter parameter = constructor.getParameters().get(0);
+                                 D.Class string = context.getClassOrThrow("java.lang.String");
+                                 D.Class example = context.getClassOrThrow("ParameterExample");
+                                 D.Constructor constructor = example.getConstructors().get(0);
+                                 D.Parameter parameter = constructor.getParameters().get(0);
                                  assertTrue(parameter.isSubtypeOf(string));
                               });
    }
@@ -35,9 +35,9 @@ abstract class VariableTest
       processorTest().withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .process(context ->
                               {
-                                 Ap.Class integer = context.getClassOrThrow("java.lang.Integer");
-                                 Ap.Class example = context.getClassOrThrow("FieldExample");
-                                 Ap.Field field = example.getFields().get(0);
+                                 D.Class integer = context.getClassOrThrow("java.lang.Integer");
+                                 D.Class example = context.getClassOrThrow("FieldExample");
+                                 D.Field field = example.getFields().get(0);
                                  assertTrue(field.isAssignableFrom(integer));
                               });
    }

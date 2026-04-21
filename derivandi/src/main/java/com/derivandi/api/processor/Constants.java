@@ -1,28 +1,28 @@
 package com.derivandi.api.processor;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 
 public interface Constants
 {
-   Ap.Wildcard getUnboundWildcard();
+   D.Wildcard getUnboundWildcard();
 
-   Ap.Null getNull();
+   D.Null getNull();
 
-   Ap.Void getVoid();
+   D.Void getVoid();
 
-   Ap.boolean_ getPrimitiveBoolean();
+   D.boolean_ getPrimitiveBoolean();
 
-   Ap.byte_ getPrimitiveByte();
+   D.byte_ getPrimitiveByte();
 
-   Ap.short_ getPrimitiveShort();
+   D.short_ getPrimitiveShort();
 
-   Ap.int_ getPrimitiveInt();
+   D.int_ getPrimitiveInt();
 
-   Ap.long_ getPrimitiveLong();
+   D.long_ getPrimitiveLong();
 
-   Ap.char_ getPrimitiveChar();
+   D.char_ getPrimitiveChar();
 
-   Ap.float_ getPrimitiveFloat();
+   D.float_ getPrimitiveFloat();
 
-   Ap.double_ getPrimitiveDouble();
+   D.double_ getPrimitiveDouble();
 }

@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -15,9 +15,9 @@ class GenericTest
                                         "public class GenericsExample<T extends Number>{}")
                      .process(context ->
                               {
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
-                                 Ap.Class genericsExample = context.getClassOrThrow("GenericsExample");
-                                 Ap.Generic generic = (Ap.Generic) genericsExample.getGenericUsages().get(0);
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Class genericsExample = context.getClassOrThrow("GenericsExample");
+                                 D.Generic generic = (D.Generic) genericsExample.getGenericUsages().get(0);
                                  assertEquals(number, generic.getBound());
                               });
    }
@@ -29,8 +29,8 @@ class GenericTest
                                         "public class GenericsExample<T extends Number>{}")
                      .process(context ->
                               {
-                                 Ap.Class genericsExample = context.getClassOrThrow("GenericsExample");
-                                 Ap.Generic generic = (Ap.Generic) genericsExample.getGenericUsages().get(0);
+                                 D.Class genericsExample = context.getClassOrThrow("GenericsExample");
+                                 D.Generic generic = (D.Generic) genericsExample.getGenericUsages().get(0);
                                  assertEquals(genericsExample, generic.getEnclosing());
                               });
    }

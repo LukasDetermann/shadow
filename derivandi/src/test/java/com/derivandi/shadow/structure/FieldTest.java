@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import static com.derivandi.api.test.ProcessorTest.processorTest;
@@ -15,8 +15,8 @@ class FieldTest
       processorTest().withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("FieldExample");
-                                 Ap.Field field = example.getFieldOrThrow("ID");
+                                 D.Class example = context.getClassOrThrow("FieldExample");
+                                 D.Field field = example.getFieldOrThrow("ID");
                                  assertEquals(example, field.getSurrounding());
                               });
    }
@@ -27,8 +27,8 @@ class FieldTest
       processorTest().withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("FieldExample");
-                                 Ap.Field field = example.getFieldOrThrow("ID");
+                                 D.Class example = context.getClassOrThrow("FieldExample");
+                                 D.Field field = example.getFieldOrThrow("ID");
                                  assertTrue(field.isConstant());
                               });
    }
@@ -39,8 +39,8 @@ class FieldTest
       processorTest().withCodeToCompile("FieldExample.java", "public class FieldExample{public static final int ID = 2;}")
                      .process(context ->
                               {
-                                 Ap.Class example = context.getClassOrThrow("FieldExample");
-                                 Ap.Field field = example.getFieldOrThrow("ID");
+                                 D.Class example = context.getClassOrThrow("FieldExample");
+                                 D.Field field = example.getFieldOrThrow("ID");
                                  assertEquals(2, field.getConstantValue());
                               });
    }

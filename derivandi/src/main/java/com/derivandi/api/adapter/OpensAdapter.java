@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.directive.OpensImpl;
 
 import javax.lang.model.element.ModuleElement;
 
 public class OpensAdapter
 {
-   private final Ap.Opens opens;
+   private final D.Opens opens;
 
-   OpensAdapter(Ap.Opens opens)
+   OpensAdapter(D.Opens opens)
    {
       this.opens = opens;
    }

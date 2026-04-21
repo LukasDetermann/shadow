@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.directive;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.dsl.requires.RequiresNameStep;
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static com.derivandi.api.dsl.JavaDsl.requires;
 
-public class RequiresImpl extends DirectiveImpl implements Ap.Requires
+public class RequiresImpl extends DirectiveImpl implements D.Requires
 {
    private final ModuleElement.RequiresDirective requiresDirective;
 
@@ -34,7 +34,7 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
    }
 
    @Override
-   public Ap.Module getDependency()
+   public D.Module getDependency()
    {
       return Adapters.adapt(getApi(), requiresDirective.getDependency());
    }
@@ -67,7 +67,7 @@ public class RequiresImpl extends DirectiveImpl implements Ap.Requires
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Requires requires &&
+      return other instanceof D.Requires requires &&
              Objects.equals(isStatic(), requires.isStatic()) &&
              Objects.equals(isTransitive(), requires.isTransitive()) &&
              Objects.equals(getDependency(), requires.getDependency());

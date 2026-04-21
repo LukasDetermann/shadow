@@ -1,6 +1,6 @@
 package com.derivandi.shadow;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,8 +25,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals("string Value", defaultValues.getValueOrThrow("stingValue").getValue());
                               });
@@ -47,8 +47,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(false, defaultValues.getValueOrThrow("booleanValue").getValue());
                               });
@@ -69,8 +69,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals((byte) 1, defaultValues.getValueOrThrow("byteValue").getValue());
                               });
@@ -91,8 +91,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals((short) 2, defaultValues.getValueOrThrow("shortValue").getValue());
                               });
@@ -113,8 +113,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(3, defaultValues.getValueOrThrow("intValue").getValue());
                               });
@@ -135,8 +135,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(4L, defaultValues.getValueOrThrow("longValue").getValue());
                               });
@@ -157,8 +157,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals('a', defaultValues.getValueOrThrow("charValue").getValue());
                               });
@@ -179,8 +179,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(5f, defaultValues.getValueOrThrow("floatValue").getValue());
                               });
@@ -201,8 +201,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(6D, defaultValues.getValueOrThrow("doubleValue").getValue());
                               });
@@ -223,8 +223,8 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertEquals(context.getClassOrThrow("java.lang.String"),
                                               defaultValues.getValueOrThrow("typeValue").getValue());
@@ -248,11 +248,11 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
-                                 Ap.Enum elementType = context.getEnumOrThrow("java.lang.annotation.ElementType");
-                                 Ap.EnumConstant annotationType = elementType.getEnumConstantOrThrow("ANNOTATION_TYPE");
+                                 D.Enum elementType = context.getEnumOrThrow("java.lang.annotation.ElementType");
+                                 D.EnumConstant annotationType = elementType.getEnumConstantOrThrow("ANNOTATION_TYPE");
                                  assertEquals(annotationType, defaultValues.getValueOrThrow("enumValue").getValue());
                               });
    }
@@ -275,15 +275,15 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
-                                 Ap.Enum retentionPolicy = context.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
-                                 Ap.EnumConstant classPolicy = retentionPolicy.getEnumConstantOrThrow("CLASS");
+                                 D.Enum retentionPolicy = context.getEnumOrThrow("java.lang.annotation.RetentionPolicy");
+                                 D.EnumConstant classPolicy = retentionPolicy.getEnumConstantOrThrow("CLASS");
 
-                                 Ap.AnnotationUsage defaultUsage = (Ap.AnnotationUsage) defaultValues.getValueOrThrow("annotationUsageValue")
-                                                                                                     .getValue();
-                                 Ap.AnnotationValue defaultRetentionValue = defaultUsage.getValueOrThrow("value");
+                                 D.AnnotationUsage defaultUsage = (D.AnnotationUsage) defaultValues.getValueOrThrow("annotationUsageValue")
+                                                                                                   .getValue();
+                                 D.AnnotationValue defaultRetentionValue = defaultUsage.getValueOrThrow("value");
                                  assertEquals(classPolicy, defaultRetentionValue.getValue());
                               });
    }
@@ -303,13 +303,13 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  //noinspection unchecked
-                                 List<Ap.AnnotationValue> values = (List<Ap.AnnotationValue>) defaultValues.getValueOrThrow("asListOfValues")
-                                                                                                           .getValue();
-                                 List<Object> list = values.stream().map(Ap.AnnotationValue::getValue).toList();
+                                 List<D.AnnotationValue> values = (List<D.AnnotationValue>) defaultValues.getValueOrThrow("asListOfValues")
+                                                                                                         .getValue();
+                                 List<Object> list = values.stream().map(D.AnnotationValue::getValue).toList();
                               });
    }
 
@@ -344,12 +344,12 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.AnnotationUsage defaultValues = cClass.getAnnotationUsages().get(0);
 
                                  assertTrue(defaultValues.getValues().values()
                                                          .stream()
-                                                         .allMatch(Ap.AnnotationValue::isDefault));
+                                                         .allMatch(D.AnnotationValue::isDefault));
                               });
    }
 
@@ -370,10 +370,10 @@ class AnnotationUsageTest
                                                                        """)
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
-                                 Ap.Field field = cClass.getFieldOrThrow("testField");
-                                 Ap.AnnotationUsage overwrittenStringValue = field.getAnnotationUsages().get(0);
-                                 Ap.AnnotationValue annotationValue = overwrittenStringValue.getValueOrThrow("stingValue");
+                                 D.Class cClass = context.getClassOrThrow("AnnotationUsageExample");
+                                 D.Field field = cClass.getFieldOrThrow("testField");
+                                 D.AnnotationUsage overwrittenStringValue = field.getAnnotationUsages().get(0);
+                                 D.AnnotationValue annotationValue = overwrittenStringValue.getValueOrThrow("stingValue");
                                  assertFalse(annotationValue.isDefault());
                                  assertEquals("custom Value", annotationValue.getValue());
                               });

@@ -1,6 +1,6 @@
 package com.derivandi;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,7 @@ class TypesafeUsageGeneratorTest
                                         }""")
                      .process(context ->
                               {
-                                 Ap.Annotation myAnnotation = context.getAnnotationOrThrow("MyAnnotation");
+                                 D.Annotation myAnnotation = context.getAnnotationOrThrow("MyAnnotation");
 
                                  String declaration = createTypeSafeUsage(myAnnotation).renderDeclaration(createRenderingContext());
                                  String withTimeVariance = declaration.replaceFirst(

@@ -1,6 +1,6 @@
 package com.derivandi.builder;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.JavaDsl;
 import com.derivandi.api.dsl.class_.ClassBodyStep;
 import com.derivandi.api.processor.Processor;
@@ -28,7 +28,7 @@ public class ShadowBuilderProcessor
    private static void process(SimpleContext context)
    {
       // iterate over every class annotated with the BuilderPattern annotation
-      for (Ap.Class toBuild : context
+      for (D.Class toBuild : context
             .getClassesAnnotatedWith("com.derivandi.builder.BuilderPattern"))
       {
          // create the Builder Class
@@ -40,10 +40,10 @@ public class ShadowBuilderProcessor
          List<String> setterInvocations = new ArrayList<>();
 
          // create a record holding the code needed to render a property in the builder
-         for (Ap.Property property : toBuild.getProperties()
-                                            .stream()
-                                            .filter(Ap.Property::isMutable)
-                                            .toList())
+         for (D.Property property : toBuild.getProperties()
+                                           .stream()
+                                           .filter(D.Property::isMutable)
+                                           .toList())
          {
             String propertyName = property.getName();
 

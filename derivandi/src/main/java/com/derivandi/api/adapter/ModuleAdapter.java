@@ -1,6 +1,6 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.structure.ModuleImpl;
 
 import javax.lang.model.element.ModuleElement;
@@ -8,9 +8,9 @@ import javax.lang.model.type.NoType;
 
 public class ModuleAdapter
 {
-   private final Ap.Module module;
+   private final D.Module module;
 
-   ModuleAdapter(Ap.Module module)
+   ModuleAdapter(D.Module module)
    {
       this.module = module;
    }

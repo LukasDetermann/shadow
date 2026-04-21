@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,8 +19,8 @@ class DeclaredTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
-                                 Ap.Generic generics = comparable.getGenericDeclarations().get(0);
+                                 D.Interface comparable = context.getInterfaceOrThrow("java.lang.Comparable");
+                                 D.Generic generics = comparable.getGenericDeclarations().get(0);
                                  assertEquals("T", generics.getName());
                               });
    }
@@ -31,10 +31,10 @@ class DeclaredTest
       processorTest().withCodeToCompile("NestingExample.java", "public class NestingExample {private class Inner{}}")
                      .process(context ->
                               {
-                                 Ap.Class outer = context.getClassOrThrow("NestingExample");
+                                 D.Class outer = context.getClassOrThrow("NestingExample");
                                  assertEquals(OUTER, outer.getNesting());
 
-                                 Ap.Class inner = context.getClassOrThrow("NestingExample.Inner");
+                                 D.Class inner = context.getClassOrThrow("NestingExample.Inner");
                                  assertEquals(INNER, inner.getNesting());
                               });
    }
@@ -44,8 +44,8 @@ class DeclaredTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class math = context.getClassOrThrow("java.lang.Math");
-                                 Ap.Field e = math.getFieldOrThrow("E");
+                                 D.Class math = context.getClassOrThrow("java.lang.Math");
+                                 D.Field e = math.getFieldOrThrow("E");
                                  assertEquals(2.7182818284590452354D, e.getConstantValue());
                               });
    }
@@ -56,10 +56,10 @@ class DeclaredTest
       processorTest().withCodeToCompile("MyClass.java", "class MyClass{int a,b; private static final long C = 5;}")
                      .process(context ->
                               {
-                                 Ap.Class myClass = context.getClassOrThrow("MyClass");
+                                 D.Class myClass = context.getClassOrThrow("MyClass");
                                  List<String> fields = myClass.getFields()
                                                               .stream()
-                                                              .map(Ap.Nameable::getName)
+                                                              .map(D.Nameable::getName)
                                                               .toList();
                                  assertEquals(Arrays.asList("a", "b", "C"), fields);
                               });
@@ -72,10 +72,10 @@ class DeclaredTest
                                         "class MyClass{int fooMethod(){return 0;}@Override public String toString() {return \"\";}}")
                      .process(context ->
                               {
-                                 Ap.Class myClass = context.getClassOrThrow("MyClass");
+                                 D.Class myClass = context.getClassOrThrow("MyClass");
                                  String methods = myClass.getMethods()
                                                          .stream()
-                                                         .map(Ap.Nameable::getName)
+                                                         .map(D.Nameable::getName)
                                                          .collect(Collectors.joining(", "));
                                  assertEquals("fooMethod, toString", methods);
                               });
@@ -87,7 +87,7 @@ class DeclaredTest
       processorTest().withCodeToCompile("Test.java", "class Test{}")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
+                                 D.Class cClass = context.getClassOrThrow("Test");
                                  assertEquals(1, cClass.getConstructors().size());
                               });
    }
@@ -97,8 +97,8 @@ class DeclaredTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Package cPackage = object.getPackage();
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Package cPackage = object.getPackage();
                                  assertEquals("java.lang", cPackage.getQualifiedName());
                               });
    }
@@ -108,10 +108,10 @@ class DeclaredTest
    {
       processorTest().process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
                                  assertEquals("java.lang.Object", object.getBinaryName());
 
-                                 Ap.Class randomNumberGeneratorHolder = context.getClassOrThrow("java.lang.Math.RandomNumberGeneratorHolder");
+                                 D.Class randomNumberGeneratorHolder = context.getClassOrThrow("java.lang.Math.RandomNumberGeneratorHolder");
                                  assertEquals("java.lang.Math$RandomNumberGeneratorHolder", randomNumberGeneratorHolder.getBinaryName());
                               });
    }

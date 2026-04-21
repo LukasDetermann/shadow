@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Origin;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
@@ -18,7 +18,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collector.Characteristics.IDENTITY_FINISH;
 import static java.util.stream.Collector.of;
 
-public class ModuleImpl implements Ap.Module
+public class ModuleImpl implements D.Module
 {
    private final ModuleElement moduleElement;
    private final NoType noType;
@@ -38,7 +38,7 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
-   public List<Ap.Package> getPackages()
+   public List<D.Package> getPackages()
    {
       return getElement().getEnclosedElements()
                          .stream()
@@ -54,13 +54,13 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
-   public List<Ap.Declared> getDeclared()
+   public List<D.Declared> getDeclared()
    {
       return getPackages().stream().flatMap(aPackage -> aPackage.getDeclared().stream()).toList();
    }
 
    @Override
-   public Optional<Ap.Declared> getDeclared(String qualifiedName)
+   public Optional<D.Declared> getDeclared(String qualifiedName)
    {
       return ofNullable(adapt(getApi()).toElements().getTypeElement(getElement(), qualifiedName))
             .map(typeElement -> Adapters.adapt(getApi(), typeElement));
@@ -97,24 +97,24 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
-   public List<Ap.Directive> getDirectives()
+   public List<D.Directive> getDirectives()
    {
       return getElement().getDirectives()
                          .stream()
                          .map(directive -> adapt(context, getElement(), directive))
-                         .collect(of((Supplier<List<Ap.Directive>>) ArrayList::new,
+                         .collect(of((Supplier<List<D.Directive>>) ArrayList::new,
                                      (directives, directive) ->
                                      {
-                                        if (!(directive instanceof Ap.Provides provides))
+                                        if (!(directive instanceof D.Provides provides))
                                         {
                                            directives.add(directive);
                                            return;
                                         }
 
-                                        Optional<Ap.Provides> existing =
+                                        Optional<D.Provides> existing =
                                               directives.stream()
-                                                        .filter(Ap.Provides.class::isInstance)
-                                                        .map(Ap.Provides.class::cast)
+                                                        .filter(D.Provides.class::isInstance)
+                                                        .map(D.Provides.class::cast)
                                                         .filter(collected -> collected.getService().isSameType(provides.getService()))
                                                         .findAny();
 
@@ -153,13 +153,13 @@ public class ModuleImpl implements Ap.Module
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
    @Override
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
@@ -177,15 +177,15 @@ public class ModuleImpl implements Ap.Module
    @Override
    public String renderModuleInfo(RenderingContext renderingContext)
    {
-      List<? extends Ap.Directive> directives = getDirectives();
+      List<? extends D.Directive> directives = getDirectives();
 
       return moduleInfo().annotate(getAnnotationUsages())
                          .name(getName())
-                         .requires(directives.stream().filter(Ap.Requires.class::isInstance).map(Ap.Requires.class::cast).toList())
-                         .exports(directives.stream().filter(Ap.Exports.class::isInstance).map(Ap.Exports.class::cast).toList())
-                         .opens(directives.stream().filter(Ap.Opens.class::isInstance).map(Ap.Opens.class::cast).toList())
-                         .uses(directives.stream().filter(Ap.Uses.class::isInstance).map(Ap.Uses.class::cast).toList())
-                         .provides(directives.stream().filter(Ap.Provides.class::isInstance).map(Ap.Provides.class::cast).toList())
+                         .requires(directives.stream().filter(D.Requires.class::isInstance).map(D.Requires.class::cast).toList())
+                         .exports(directives.stream().filter(D.Exports.class::isInstance).map(D.Exports.class::cast).toList())
+                         .opens(directives.stream().filter(D.Opens.class::isInstance).map(D.Opens.class::cast).toList())
+                         .uses(directives.stream().filter(D.Uses.class::isInstance).map(D.Uses.class::cast).toList())
+                         .provides(directives.stream().filter(D.Provides.class::isInstance).map(D.Provides.class::cast).toList())
                          .renderModuleInfo(renderingContext);
    }
 
@@ -214,7 +214,7 @@ public class ModuleImpl implements Ap.Module
       {
          return true;
       }
-      if (!(other instanceof Ap.Module otherModule))
+      if (!(other instanceof D.Module otherModule))
       {
          return false;
       }

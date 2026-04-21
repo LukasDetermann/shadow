@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
@@ -10,7 +10,7 @@ import javax.lang.model.type.DeclaredType;
 import static com.derivandi.api.dsl.JavaDsl.annotation;
 import static com.derivandi.api.dsl.JavaDsl.innerAnnotation;
 
-public class AnnotationImpl extends DeclaredImpl implements Ap.Annotation
+public class AnnotationImpl extends DeclaredImpl implements D.Annotation
 {
    public AnnotationImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
@@ -69,7 +69,7 @@ public class AnnotationImpl extends DeclaredImpl implements Ap.Annotation
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Annotation.class, other);
+      return equals(D.Annotation.class, other);
    }
 
    @Override

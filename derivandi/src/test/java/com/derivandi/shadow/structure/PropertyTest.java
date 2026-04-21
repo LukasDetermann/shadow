@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,21 +21,21 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
 
                                  assertEquals("id", properties.get(1).getName());
                                  assertTrue(properties.get(1).isMutable());
-                                 Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
+                                 D.Nameable type = ((D.Nameable) properties.get(1).getType());
                                  assertEquals("Long", type.getName());
-                                 Ap.Field field = properties.get(1).getFieldOrThrow();
+                                 D.Field field = properties.get(1).getFieldOrThrow();
                                  assertEquals("id", field.getName());
-                                 Ap.Method getter = properties.get(1).getGetter();
+                                 D.Method getter = properties.get(1).getGetter();
                                  assertEquals("getId", getter.getName());
-                                 Ap.Method setter = properties.get(1).getSetterOrThrow();
+                                 D.Method setter = properties.get(1).getSetterOrThrow();
                                  assertEquals("setId", setter.getName());
                               });
    }
@@ -50,18 +50,18 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
 
                                  assertEquals("valid", properties.get(1).getName());
                                  assertFalse(properties.get(1).isMutable());
-                                 Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
+                                 D.Nameable type = ((D.Nameable) properties.get(1).getType());
                                  assertEquals("boolean", type.getName());
                                  assertTrue(properties.get(1).getField().isEmpty());
-                                 Ap.Method getter = properties.get(1).getGetter();
+                                 D.Method getter = properties.get(1).getGetter();
                                  assertEquals("isValid", getter.getName());
                                  assertTrue(properties.get(1).getSetter().isEmpty());
                               });
@@ -78,21 +78,21 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
 
                                  assertEquals("values", properties.get(1).getName());
                                  assertTrue(properties.get(1).isMutable());
-                                 Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
+                                 D.Nameable type = ((D.Nameable) properties.get(1).getType());
                                  assertEquals("List", type.getName());
-                                 Ap.Field field = properties.get(1).getFieldOrThrow();
+                                 D.Field field = properties.get(1).getFieldOrThrow();
                                  assertEquals("values", field.getName());
-                                 Ap.Method getter = properties.get(1).getGetter();
+                                 D.Method getter = properties.get(1).getGetter();
                                  assertEquals("getValues", getter.getName());
-                                 Ap.Method setter = properties.get(1).getSetterOrThrow();
+                                 D.Method setter = properties.get(1).getSetterOrThrow();
                                  assertEquals("setValues", setter.getName());
                               });
    }
@@ -108,21 +108,21 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
 
                                  assertEquals("sTrangeCase", properties.get(1).getName());
                                  assertTrue(properties.get(1).isMutable());
-                                 Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
+                                 D.Nameable type = ((D.Nameable) properties.get(1).getType());
                                  assertEquals("String", type.getName());
-                                 Ap.Field field = properties.get(1).getFieldOrThrow();
+                                 D.Field field = properties.get(1).getFieldOrThrow();
                                  assertEquals("sTrangeCase", field.getName());
-                                 Ap.Method getter = properties.get(1).getGetter();
+                                 D.Method getter = properties.get(1).getGetter();
                                  assertEquals("getsTrangeCase", getter.getName());
-                                 Ap.Method setter = properties.get(1).getSetterOrThrow();
+                                 D.Method setter = properties.get(1).getSetterOrThrow();
                                  assertEquals("setsTrangeCase", setter.getName());
                               });
    }
@@ -138,21 +138,21 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
 
                                  assertEquals("NOT_A_CONSTANT", properties.get(1).getName());
                                  assertTrue(properties.get(1).isMutable());
-                                 Ap.Nameable type = ((Ap.Nameable) properties.get(1).getType());
+                                 D.Nameable type = ((D.Nameable) properties.get(1).getType());
                                  assertEquals("String", type.getName());
-                                 Ap.Field field = properties.get(1).getFieldOrThrow();
+                                 D.Field field = properties.get(1).getFieldOrThrow();
                                  assertEquals("NOT_A_CONSTANT", field.getName());
-                                 Ap.Method getter = properties.get(1).getGetter();
+                                 D.Method getter = properties.get(1).getGetter();
                                  assertEquals("getNOT_A_CONSTANT", getter.getName());
-                                 Ap.Method setter = properties.get(1).getSetterOrThrow();
+                                 D.Method setter = properties.get(1).getSetterOrThrow();
                                  assertEquals("setNOT_A_CONSTANT", setter.getName());
                               });
    }
@@ -166,8 +166,8 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(1, properties.size());
                                  assertEquals("class", properties.get(0).getName());
@@ -181,15 +181,15 @@ class PropertyTest
                      .withCodeToCompile("Child", "abstract class Child extends Parent{public abstract Long getId();}")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Child");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Child");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
                                  assertEquals("id", properties.get(1).getName());
 
-                                 Ap.Method getter = properties.get(1).getGetter();
-                                 Ap.Declared cDeclared = getter.getSurrounding();
+                                 D.Method getter = properties.get(1).getGetter();
+                                 D.Declared cDeclared = getter.getSurrounding();
                                  assertEquals("Child", cDeclared.getName());
                               });
    }
@@ -205,15 +205,15 @@ class PropertyTest
                                                 }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Pojo");
-                                 List<Ap.Property> properties = cClass.getProperties();
+                                 D.Class cClass = context.getClassOrThrow("Pojo");
+                                 List<D.Property> properties = cClass.getProperties();
 
                                  assertEquals(2, properties.size());
                                  assertEquals("class", properties.get(0).getName());
                                  assertEquals("flag", properties.get(1).getName());
-                                 Ap.Field field = properties.get(1).getFieldOrThrow();
+                                 D.Field field = properties.get(1).getFieldOrThrow();
                                  assertEquals("flag", field.getName());
-                                 Ap.QualifiedNameable fieldType = (Ap.QualifiedNameable) field.getType();
+                                 D.QualifiedNameable fieldType = (D.QualifiedNameable) field.getType();
                                  assertEquals("java.lang.Boolean", fieldType.getQualifiedName());
                               });
    }

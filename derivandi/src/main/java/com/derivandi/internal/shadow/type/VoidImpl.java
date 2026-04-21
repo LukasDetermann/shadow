@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
 
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class VoidImpl
       extends TypeImpl<NoType>
-      implements Ap.Void
+      implements D.Void
 {
    public VoidImpl(SimpleContext context, NoType typeMirror)
    {
@@ -19,13 +19,13 @@ public class VoidImpl
    @Override
    public boolean equals(Object other)
    {
-      return other instanceof Ap.Void;
+      return other instanceof D.Void;
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(Ap.Void.class);
+      return Objects.hash(D.Void.class);
    }
 
    @Override

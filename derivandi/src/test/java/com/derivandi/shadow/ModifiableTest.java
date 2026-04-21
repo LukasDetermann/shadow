@@ -1,6 +1,6 @@
 package com.derivandi.shadow;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Constructor constructor = cClass.getConstructors().get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Constructor constructor = cClass.getConstructors().get(0);
                                  Assertions.assertTrue(constructor.hasModifier(PUBLIC));
                               });
    }
@@ -33,8 +33,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Constructor constructor = cClass.getConstructors().get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Constructor constructor = cClass.getConstructors().get(0);
                                  Assertions.assertTrue(constructor.hasModifier(PROTECTED));
                               });
    }
@@ -48,8 +48,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Constructor constructor = cClass.getConstructors().get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Constructor constructor = cClass.getConstructors().get(0);
                                  Assertions.assertTrue(constructor.hasModifier(PRIVATE));
                               });
    }
@@ -60,7 +60,7 @@ class ModifiableTest
       processorTest().withCodeToCompile("Test.java", "abstract class Test{}")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
+                                 D.Class cClass = context.getClassOrThrow("Test");
                                  Assertions.assertTrue(cClass.hasModifier(ABSTRACT));
                               });
    }
@@ -71,7 +71,7 @@ class ModifiableTest
       processorTest().withCodeToCompile("Test.java", "interface Test{}")
                      .process(context ->
                               {
-                                 Ap.Interface cInterface = context.getInterfaceOrThrow("Test");
+                                 D.Interface cInterface = context.getInterfaceOrThrow("Test");
                                  Assertions.assertTrue(cInterface.hasModifier(PACKAGE_PRIVATE));
                               });
    }
@@ -85,8 +85,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Interface cInterface = context.getInterfaceOrThrow("Test");
-                                 Ap.Method method = cInterface.getMethods("test").get(0);
+                                 D.Interface cInterface = context.getInterfaceOrThrow("Test");
+                                 D.Method method = cInterface.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(DEFAULT));
                               });
    }
@@ -100,8 +100,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Method method = cClass.getMethods("test").get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Method method = cClass.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(STATIC));
                               });
    }
@@ -113,7 +113,7 @@ class ModifiableTest
                      .withCodeToCompile("Child.java", "non-sealed interface Child extends Parent {}")
                      .process(context ->
                               {
-                                 Ap.Interface cInterface = context.getInterfaceOrThrow("Parent");
+                                 D.Interface cInterface = context.getInterfaceOrThrow("Parent");
                                  Assertions.assertTrue(cInterface.hasModifier(SEALED));
                               });
    }
@@ -125,7 +125,7 @@ class ModifiableTest
                      .withCodeToCompile("Child.java", "non-sealed interface Child extends Parent {}")
                      .process(context ->
                               {
-                                 Ap.Interface cInterface = context.getInterfaceOrThrow("Child");
+                                 D.Interface cInterface = context.getInterfaceOrThrow("Child");
                                  Assertions.assertTrue(cInterface.hasModifier(NON_SEALED));
                               });
    }
@@ -139,8 +139,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Method method = cClass.getMethods("test").get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Method method = cClass.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(FINAL));
                               });
    }
@@ -154,8 +154,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Field field = cClass.getFieldOrThrow("foo");
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Field field = cClass.getFieldOrThrow("foo");
                                  Assertions.assertTrue(field.hasModifier(TRANSIENT));
                               });
    }
@@ -169,8 +169,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Field field = cClass.getFieldOrThrow("foo");
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Field field = cClass.getFieldOrThrow("foo");
                                  Assertions.assertTrue(field.hasModifier(VOLATILE));
                               });
    }
@@ -184,8 +184,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Method method = cClass.getMethods("test").get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Method method = cClass.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(SYNCHRONIZED));
                               });
    }
@@ -199,8 +199,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Method method = cClass.getMethods("test").get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Method method = cClass.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(NATIVE));
                               });
    }
@@ -214,8 +214,8 @@ class ModifiableTest
                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cClass = context.getClassOrThrow("Test");
-                                 Ap.Method method = cClass.getMethods("test").get(0);
+                                 D.Class cClass = context.getClassOrThrow("Test");
+                                 D.Method method = cClass.getMethods("test").get(0);
                                  Assertions.assertTrue(method.hasModifier(STRICTFP));
                               });
    }

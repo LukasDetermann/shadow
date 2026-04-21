@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.processor.SimpleContext;
 import com.derivandi.internal.ApiHolder;
 
@@ -20,7 +20,7 @@ public abstract class TypeImpl<MIRROR extends TypeMirror> implements ApiHolder
       this.typeMirror = typeMirror;
    }
 
-   public boolean isSameType(Ap.Type type)
+   public boolean isSameType(D.Type type)
    {
       return adapt(getApi()).toTypes().isSameType(getMirror(), adapt(type).toTypeMirror());
    }

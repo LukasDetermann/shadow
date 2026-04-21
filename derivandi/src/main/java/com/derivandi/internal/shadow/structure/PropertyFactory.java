@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.*;
 
 public class PropertyFactory
 {
-   private record Accessor(Ap.Method method,
+   private record Accessor(D.Method method,
                            AccessorType type,
                            String prefix,
                            String name,
@@ -34,11 +34,11 @@ public class PropertyFactory
 
    private PropertyFactory() {}
 
-   public static List<Ap.Property> of(Ap.Declared declared)
+   public static List<D.Property> of(D.Declared declared)
    {
-      Map<String, Ap.Field> nameField = declared.getFields().stream()
-                                                .filter(field -> !field.hasModifier(Modifier.STATIC))
-                                                .collect(toMap(Ap.Nameable::getName, Function.identity()));
+      Map<String, D.Field> nameField = declared.getFields().stream()
+                                               .filter(field -> !field.hasModifier(Modifier.STATIC))
+                                               .collect(toMap(D.Nameable::getName, Function.identity()));
 
       //we should keep the ordering
       AtomicInteger position = new AtomicInteger();
@@ -57,10 +57,10 @@ public class PropertyFactory
                                    {
                                       Accessor getter = findGetter(entry.getValue());
                                       String name = entry.getKey();
-                                      Ap.VariableType type = ((Ap.VariableType) getter.method().getReturnType());
+                                      D.VariableType type = ((D.VariableType) getter.method().getReturnType());
 
-                                      Ap.Method setter = findSetter(entry.getValue(), type).orElse(null);
-                                      Ap.Field field = findField(nameField, type, name).orElse(null);
+                                      D.Method setter = findSetter(entry.getValue(), type).orElse(null);
+                                      D.Field field = findField(nameField, type, name).orElse(null);
 
                                       PropertyImpl template = new PropertyImpl(name, type, field, getter.method(), setter);
 
@@ -68,35 +68,35 @@ public class PropertyFactory
                                    })
                               .sorted((Map.Entry.comparingByKey()))
                               .map(Map.Entry::getValue)
-                              .map(Ap.Property.class::cast)
+                              .map(D.Property.class::cast)
                               .toList();
    }
 
-   private static List<? extends Ap.Method> getMethods(Ap.Declared declared)
+   private static List<? extends D.Method> getMethods(D.Declared declared)
    {
-      if (!(declared instanceof Ap.Class aClass))
+      if (!(declared instanceof D.Class aClass))
       {
          return declared.getMethods();
       }
-      List<Ap.Class> superClasses = Stream.iterate((aClass),
-                                                   Objects::nonNull,
-                                                   Ap.Class::getSuperClass).collect(toList());
+      List<D.Class> superClasses = Stream.iterate((aClass),
+                                                  Objects::nonNull,
+                                                  D.Class::getSuperClass).collect(toList());
 
       Collections.reverse(superClasses);
 
-      List<? extends Ap.Method> methods = superClasses.stream()
-                                                      .map(Ap.Declared::getMethods)
-                                                      .flatMap(Collection::stream)
-                                                      .toList();
+      List<? extends D.Method> methods = superClasses.stream()
+                                                     .map(D.Declared::getMethods)
+                                                     .flatMap(Collection::stream)
+                                                     .toList();
 
       return methods.stream()
                     .filter(method -> methods.stream().noneMatch(method::overwrittenBy))
                     .toList();
    }
 
-   private static Optional<Ap.Field> findField(Map<String, Ap.Field> nameField, Ap.Type type, String name)
+   private static Optional<D.Field> findField(Map<String, D.Field> nameField, D.Type type, String name)
    {
-      Ap.Field field = nameField.get(name);
+      D.Field field = nameField.get(name);
       if (field == null || !field.getType().isSameType(type))
       {
          return Optional.empty();
@@ -104,7 +104,7 @@ public class PropertyFactory
       return Optional.of(field);
    }
 
-   private static Optional<Ap.Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, Ap.Type type)
+   private static Optional<D.Method> findSetter(Map<AccessorType, List<Accessor>> typeAccessors, D.Type type)
    {
       List<Accessor> setters = typeAccessors.get(SETTER);
       if (setters == null ||
@@ -142,18 +142,18 @@ public class PropertyFactory
       throw new IllegalStateException();
    }
 
-   private static Optional<Accessor> toAccessor(Ap.Method method, int position)
+   private static Optional<Accessor> toAccessor(D.Method method, int position)
    {
       String name = method.getName();
-      List<? extends Ap.Parameter> parameters = method.getParameters();
-      Ap.Type returnType = method.getReturnType();
+      List<? extends D.Parameter> parameters = method.getParameters();
+      D.Type returnType = method.getReturnType();
 
       //getter
-      if (!(returnType instanceof Ap.Void))
+      if (!(returnType instanceof D.Void))
       {
          boolean hasGetPrefix = name.startsWith(GET_PREFIX) && name.length() > 3;
-         boolean hasIsPrefix = (returnType instanceof Ap.boolean_ ||
-                                returnType instanceof Ap.Declared declared &&
+         boolean hasIsPrefix = (returnType instanceof D.boolean_ ||
+                                returnType instanceof D.Declared declared &&
                                 "java.lang.Boolean".equals(declared.getQualifiedName())) &&
                                name.startsWith(IS_PREFIX) &&
                                name.length() > 2;
@@ -181,7 +181,7 @@ public class PropertyFactory
       return Optional.empty();
    }
 
-   private static String toPropertyName(Ap.Method method, String prefix)
+   private static String toPropertyName(D.Method method, String prefix)
    {
       String name = method.getName().substring(prefix.length());
 

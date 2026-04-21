@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,10 +20,10 @@ class ResultTest
                                                               """)
                      .process(context ->
                               {
-                                 Ap.Class integer = context.getClassOrThrow("java.lang.Integer");
-                                 Ap.Class returnExample = context.getClassOrThrow("ReturnExample");
-                                 Ap.Method method = returnExample.getMethods().get(0);
-                                 Ap.Result cReturn = method.getResult();
+                                 D.Class integer = context.getClassOrThrow("java.lang.Integer");
+                                 D.Class returnExample = context.getClassOrThrow("ReturnExample");
+                                 D.Method method = returnExample.getMethods().get(0);
+                                 D.Result cReturn = method.getResult();
 
                                  assertEquals(integer, cReturn.getType());
                               });
@@ -41,13 +41,13 @@ class ResultTest
                                                               """)
                      .process(context ->
                               {
-                                 Ap.Class returnExample = context.getClassOrThrow("ReturnExample");
-                                 Ap.Method method = returnExample.getMethods().get(0);
-                                 Ap.Result cReturn = method.getResult();
+                                 D.Class returnExample = context.getClassOrThrow("ReturnExample");
+                                 D.Method method = returnExample.getMethods().get(0);
+                                 D.Result cReturn = method.getResult();
 
-                                 List<Ap.AnnotationUsage> usages = cReturn.getAnnotationUsages();
+                                 List<D.AnnotationUsage> usages = cReturn.getAnnotationUsages();
                                  assertEquals(1, usages.size());
-                                 Ap.AnnotationValue annotationValue = usages.get(0).getValueOrThrow("value");
+                                 D.AnnotationValue annotationValue = usages.get(0).getValueOrThrow("value");
                                  assertEquals(2, annotationValue.getValue());
                               });
    }

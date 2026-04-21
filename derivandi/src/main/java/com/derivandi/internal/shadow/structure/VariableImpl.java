@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.Modifier;
 import com.derivandi.api.Origin;
 import com.derivandi.api.adapter.Adapters;
@@ -33,14 +33,14 @@ public abstract class VariableImpl
       return ContextImpl.getModifiers(getElement());
    }
 
-   public boolean isSubtypeOf(Ap.Type type)
+   public boolean isSubtypeOf(D.Type type)
    {
-      return adapt(getApi()).toTypes().isSubtype(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
+      return adapt(getApi()).toTypes().isSubtype(adapt((D.Declared) type).toDeclaredType(), getMirror());
    }
 
-   public boolean isAssignableFrom(Ap.Type type)
+   public boolean isAssignableFrom(D.Type type)
    {
-      return adapt(getApi()).toTypes().isAssignable(adapt((Ap.Declared) type).toDeclaredType(), getMirror());
+      return adapt(getApi()).toTypes().isAssignable(adapt((D.Declared) type).toDeclaredType(), getMirror());
    }
 
    public boolean isDeprecated()
@@ -53,9 +53,9 @@ public abstract class VariableImpl
       return adapt(adapt(getApi()).toElements().getOrigin(getElement()));
    }
 
-   public Ap.VariableType getType()
+   public D.VariableType getType()
    {
-      return (Ap.VariableType) adapt(getApi(), getElement().asType());
+      return (D.VariableType) adapt(getApi(), getElement().asType());
    }
 
    public VariableElement getElement()
@@ -63,7 +63,7 @@ public abstract class VariableImpl
       return variableElement;
    }
 
-   public Ap.Module getModule()
+   public D.Module getModule()
    {
       return Adapters.adapt(getApi(), adapt(getApi()).toElements().getModuleOf(getElement()));
    }
@@ -78,12 +78,12 @@ public abstract class VariableImpl
       return ofNullable(adapt(getApi()).toElements().getDocComment(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getAnnotationUsages()
+   public List<D.AnnotationUsage> getAnnotationUsages()
    {
       return Adapters.adapt(getApi(), getElement(), adapt(getApi()).toElements().getAllAnnotationMirrors(getElement()));
    }
 
-   public List<Ap.AnnotationUsage> getDirectAnnotationUsages()
+   public List<D.AnnotationUsage> getDirectAnnotationUsages()
    {
       return adapt(getApi(), getElement(), getElement().getAnnotationMirrors());
    }
@@ -119,7 +119,7 @@ public abstract class VariableImpl
       {
          return true;
       }
-      if (!(other instanceof Ap.Variable otherVariable))
+      if (!(other instanceof D.Variable otherVariable))
       {
          return false;
       }

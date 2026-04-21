@@ -1,6 +1,6 @@
 package com.derivandi.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -23,11 +23,11 @@ class PackageTest
                               {
                                  assertTrue(context.getPackage("asdkfh").isEmpty());
 
-                                 Ap.Class anyClass = context.getClassOrThrow(
+                                 D.Class anyClass = context.getClassOrThrow(
                                        "io.determann.shadow.example.processed.test.packagee.not_empty.AnyClass");
 
-                                 Ap.Package cPackage = context.getPackage("io.determann.shadow.example.processed.test.packagee.not_empty")
-                                                              .get(0);
+                                 D.Package cPackage = context.getPackage("io.determann.shadow.example.processed.test.packagee.not_empty")
+                                                             .get(0);
 
                                  assertEquals(List.of(anyClass), cPackage.getDeclared());
                               });

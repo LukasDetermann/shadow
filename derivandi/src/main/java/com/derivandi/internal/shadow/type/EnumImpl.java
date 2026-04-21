@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.processor.SimpleContext;
@@ -16,7 +16,7 @@ import static com.derivandi.api.dsl.JavaDsl.innerEnum;
 
 public class EnumImpl
       extends DeclaredImpl
-      implements Ap.Enum
+      implements D.Enum
 {
    public EnumImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
@@ -29,14 +29,14 @@ public class EnumImpl
    }
 
    @Override
-   public List<Ap.EnumConstant> getEnumConstants()
+   public List<D.EnumConstant> getEnumConstants()
    {
       return getElement().getEnclosedElements()
                          .stream()
                          .filter(element -> ElementKind.ENUM_CONSTANT.equals(element.getKind()))
                          .map(VariableElement.class::cast)
                          .map(variableElement -> Adapters.adapt(getApi(), variableElement))
-                         .map(Ap.EnumConstant.class::cast)
+                         .map(D.EnumConstant.class::cast)
                          .toList();
    }
 
@@ -90,7 +90,7 @@ public class EnumImpl
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Enum.class, other);
+      return equals(D.Enum.class, other);
    }
 
    @Override

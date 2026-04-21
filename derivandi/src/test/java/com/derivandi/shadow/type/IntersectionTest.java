@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,12 +17,12 @@ class IntersectionTest
                                         "public class IntersectionExample<T extends java.util.Collection & java.io.Serializable>{}")
                      .process(context ->
                               {
-                                 Ap.Interface collection = context.getInterfaceOrThrow("java.util.Collection");
-                                 Ap.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
-                                 List<Ap.Interface> expected = List.of(collection, serializable);
+                                 D.Interface collection = context.getInterfaceOrThrow("java.util.Collection");
+                                 D.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
+                                 List<D.Interface> expected = List.of(collection, serializable);
 
-                                 Ap.Class intersectionExample = context.getClassOrThrow("IntersectionExample");
-                                 Ap.Generic generic = intersectionExample.getGenericDeclarations().get(0);
+                                 D.Class intersectionExample = context.getClassOrThrow("IntersectionExample");
+                                 D.Generic generic = intersectionExample.getGenericDeclarations().get(0);
 
                                  assertEquals(expected, generic.getBounds());
                               });

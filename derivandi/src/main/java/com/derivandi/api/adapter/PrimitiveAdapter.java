@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.type.PrimitiveImpl;
 
 import javax.lang.model.type.PrimitiveType;
 
 public class PrimitiveAdapter
 {
-   private final Ap.Primitive primitive;
+   private final D.Primitive primitive;
 
-   PrimitiveAdapter(Ap.Primitive primitive)
+   PrimitiveAdapter(D.Primitive primitive)
    {
       this.primitive = primitive;
    }

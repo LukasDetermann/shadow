@@ -36,7 +36,7 @@ import java.util.*;
 
 import static com.derivandi.api.Modifier.*;
 
-public interface Ap
+public interface D
 {
    /// anything that can be annotated
    interface Annotationable

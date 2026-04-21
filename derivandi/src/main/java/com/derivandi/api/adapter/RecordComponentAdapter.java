@@ -1,15 +1,15 @@
 package com.derivandi.api.adapter;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.internal.shadow.structure.RecordComponentImpl;
 
 import javax.lang.model.element.RecordComponentElement;
 
 public class RecordComponentAdapter
 {
-   private final Ap.RecordComponent recordComponent;
+   private final D.RecordComponent recordComponent;
 
-   RecordComponentAdapter(Ap.RecordComponent recordComponent)
+   RecordComponentAdapter(D.RecordComponent recordComponent)
    {
       this.recordComponent = recordComponent;
    }

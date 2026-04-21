@@ -1,6 +1,6 @@
 package com.derivandi.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -60,36 +60,36 @@ class RecordTest
                                                                            """)
                      .process(context ->
                               {
-                                 Ap.Record declared = context.getRecordOrThrow("InterpolateGenericsExample")
-                                                             .withGenerics(context.getClassOrThrow("java.lang.String"),
+                                 D.Record declared = context.getRecordOrThrow("InterpolateGenericsExample")
+                                                            .withGenerics(context.getClassOrThrow("java.lang.String"),
                                                                            context.getConstants().getUnboundWildcard());
 
-                                 Ap.Record capture = declared.capture();
-                                 Ap.Type interpolated = Optional.of(((Ap.Generic) capture.getGenericUsages().get(1)))
-                                                                .map(Ap.Generic::getBound)
-                                                                .map(Ap.Interface.class::cast)
-                                                                .map(Ap.Interface::getGenericUsages)
-                                                                .map(types -> types.get(0))
-                                                                .orElseThrow();
+                                 D.Record capture = declared.capture();
+                                 D.Type interpolated = Optional.of(((D.Generic) capture.getGenericUsages().get(1)))
+                                                               .map(D.Generic::getBound)
+                                                               .map(D.Interface.class::cast)
+                                                               .map(D.Interface::getGenericUsages)
+                                                               .map(types -> types.get(0))
+                                                               .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolated);
 
-                                 Ap.Record independentExample = context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
-                                                                       .withGenerics(context.getConstants().getUnboundWildcard());
+                                 D.Record independentExample = context.getRecordOrThrow("InterpolateGenericsExample.IndependentGeneric")
+                                                                      .withGenerics(context.getConstants().getUnboundWildcard());
 
-                                 Ap.Record independentCapture = independentExample.capture();
-                                 Ap.Type interpolatedIndependent = Optional.of(((Ap.Generic) independentCapture.getGenericUsages().get(0)))
-                                                                           .map(Ap.Generic::getBound)
-                                                                           .orElseThrow();
+                                 D.Record independentCapture = independentExample.capture();
+                                 D.Type interpolatedIndependent = Optional.of(((D.Generic) independentCapture.getGenericUsages().get(0)))
+                                                                          .map(D.Generic::getBound)
+                                                                          .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.Object"), interpolatedIndependent);
 
-                                 Ap.Record dependentExample = context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
-                                                                     .withGenerics(context.getConstants().getUnboundWildcard(),
+                                 D.Record dependentExample = context.getRecordOrThrow("InterpolateGenericsExample.DependentGeneric")
+                                                                    .withGenerics(context.getConstants().getUnboundWildcard(),
                                                                                    context.getClassOrThrow("java.lang.String"));
 
-                                 Ap.Record dependentCapture = dependentExample.capture();
-                                 Ap.Type interpolatedDependent = Optional.of(((Ap.Generic) dependentCapture.getGenericUsages().get(0)))
-                                                                         .map(Ap.Generic::getBound)
-                                                                         .orElseThrow();
+                                 D.Record dependentCapture = dependentExample.capture();
+                                 D.Type interpolatedDependent = Optional.of(((D.Generic) dependentCapture.getGenericUsages().get(0)))
+                                                                        .map(D.Generic::getBound)
+                                                                        .orElseThrow();
                                  assertEquals(context.getClassOrThrow("java.lang.String"), interpolatedDependent);
                               });
    }
@@ -100,10 +100,10 @@ class RecordTest
       processorTest().withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                      .process(context ->
                               {
-                                 Ap.Record example = context.getRecordOrThrow("RecordExample");
-                                 Ap.Class cLong = context.getClassOrThrow("java.lang.Long");
+                                 D.Record example = context.getRecordOrThrow("RecordExample");
+                                 D.Class cLong = context.getClassOrThrow("java.lang.Long");
 
-                                 Ap.RecordComponent id = example.getRecordComponentOrThrow("id");
+                                 D.RecordComponent id = example.getRecordComponentOrThrow("id");
                                  assertEquals("id", id.getName());
                                  assertEquals(cLong, id.getType());
 
@@ -117,8 +117,8 @@ class RecordTest
       processorTest().withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                      .process(context ->
                               {
-                                 Ap.Record example = context.getRecordOrThrow("RecordExample");
-                                 Ap.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
+                                 D.Record example = context.getRecordOrThrow("RecordExample");
+                                 D.Interface serializable = context.getInterfaceOrThrow("java.io.Serializable");
 
                                  assertEquals(List.of(serializable), example.getDirectInterfaces());
                               });
@@ -130,9 +130,9 @@ class RecordTest
       processorTest().withCodeToCompile("RecordExample.java", "public record RecordExample(Long id) implements java.io.Serializable{}")
                      .process(context ->
                               {
-                                 Ap.Record example = context.getRecordOrThrow("RecordExample");
-                                 Ap.Class cRecord = context.getClassOrThrow("java.lang.Record");
-                                 Ap.Class number = context.getClassOrThrow("java.lang.Number");
+                                 D.Record example = context.getRecordOrThrow("RecordExample");
+                                 D.Class cRecord = context.getClassOrThrow("java.lang.Record");
+                                 D.Class number = context.getClassOrThrow("java.lang.Number");
 
                                  assertTrue(example.isSubtypeOf(cRecord));
                                  assertTrue(example.isSubtypeOf(example));
@@ -154,14 +154,14 @@ class RecordTest
                                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class cRecord = context.getClassOrThrow("java.lang.Record");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
-                                 Ap.Interface supplier = context.getInterfaceOrThrow("java.util.function.Supplier");
+                                 D.Class cRecord = context.getClassOrThrow("java.lang.Record");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Interface supplier = context.getInterfaceOrThrow("java.util.function.Supplier");
 
-                                 Ap.Record noParent = context.getRecordOrThrow("RecordNoParent");
+                                 D.Record noParent = context.getRecordOrThrow("RecordNoParent");
                                  assertEquals(List.of(cRecord), noParent.getDirectSuperTypes());
 
-                                 Ap.Record multiParent = context.getRecordOrThrow("RecordMultiParent");
+                                 D.Record multiParent = context.getRecordOrThrow("RecordMultiParent");
                                  assertEquals(List.of(cRecord, consumer, supplier), multiParent.getDirectSuperTypes());
                               });
    }
@@ -180,16 +180,16 @@ class RecordTest
                                                                      }""")
                      .process(context ->
                               {
-                                 Ap.Class object = context.getClassOrThrow("java.lang.Object");
-                                 Ap.Class cRecord = context.getClassOrThrow("java.lang.Record");
-                                 Ap.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
-                                 Ap.Interface supplier = context.getInterfaceOrThrow("java.util.function.Supplier");
+                                 D.Class object = context.getClassOrThrow("java.lang.Object");
+                                 D.Class cRecord = context.getClassOrThrow("java.lang.Record");
+                                 D.Interface consumer = context.getInterfaceOrThrow("java.util.function.Consumer");
+                                 D.Interface supplier = context.getInterfaceOrThrow("java.util.function.Supplier");
 
-                                 Ap.Record noParent = context.getRecordOrThrow("RecordNoParent");
+                                 D.Record noParent = context.getRecordOrThrow("RecordNoParent");
 
                                  assertEquals(Set.of(object, cRecord), noParent.getSuperTypes());
 
-                                 Ap.Record multiParent = context.getRecordOrThrow("RecordMultiParent");
+                                 D.Record multiParent = context.getRecordOrThrow("RecordMultiParent");
                                  assertEquals(Set.of(object, cRecord, consumer, supplier), multiParent.getSuperTypes());
                               });
    }
@@ -204,8 +204,8 @@ class RecordTest
                                                       """)
                      .process(context ->
                               {
-                                 Ap.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
-                                 Ap.Declared outer = inner.getSurrounding().orElseThrow();
+                                 D.Declared inner = context.getDeclaredOrThrow("Outer.Inner");
+                                 D.Declared outer = inner.getSurrounding().orElseThrow();
                                  assertEquals(context.getDeclaredOrThrow("Outer"), outer);
                               });
    }

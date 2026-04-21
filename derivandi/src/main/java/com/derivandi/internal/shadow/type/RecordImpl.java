@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.type;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.adapter.Adapters;
 import com.derivandi.api.adapter.TypeAdapter;
 import com.derivandi.api.dsl.RenderingContext;
@@ -18,7 +18,7 @@ import static java.util.Arrays.stream;
 
 public class RecordImpl
       extends DeclaredImpl
-      implements Ap.Record
+      implements D.Record
 {
    public RecordImpl(SimpleContext context, DeclaredType declaredTypeMirror)
    {
@@ -31,7 +31,7 @@ public class RecordImpl
    }
 
    @Override
-   public List<Ap.RecordComponent> getRecordComponents()
+   public List<D.RecordComponent> getRecordComponents()
    {
       return getElement().getRecordComponents()
                          .stream()
@@ -40,7 +40,7 @@ public class RecordImpl
    }
 
    @Override
-   public List<Ap.Type> getGenericUsages()
+   public List<D.Type> getGenericUsages()
    {
       return getMirror().getTypeArguments()
                         .stream()
@@ -49,7 +49,7 @@ public class RecordImpl
    }
 
    @Override
-   public List<Ap.Generic> getGenericDeclarations()
+   public List<D.Generic> getGenericDeclarations()
    {
       return getElement().getTypeParameters()
                          .stream()
@@ -58,7 +58,7 @@ public class RecordImpl
    }
 
    @Override
-   public Ap.Record withGenerics(Ap.Type... generics)
+   public D.Record withGenerics(D.Type... generics)
    {
       if (generics.length == 0 || getGenericDeclarations().size() != generics.length)
       {
@@ -74,27 +74,27 @@ public class RecordImpl
             .map(TypeAdapter::toTypeMirror)
             .toArray(TypeMirror[]::new);
 
-      return (Ap.Record) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
+      return (D.Record) adapt(getApi(), adapt(getApi()).toTypes().getDeclaredType(getElement(), typeMirrors));
    }
 
    @Override
-   public Ap.Record withGenerics(String... qualifiedGenerics)
+   public D.Record withGenerics(String... qualifiedGenerics)
    {
       return withGenerics(stream(qualifiedGenerics)
                                 .map(name -> getApi().getDeclaredOrThrow(name))
-                                .toArray(Ap.Type[]::new));
+                                .toArray(D.Type[]::new));
    }
 
    @Override
-   public Ap.Record capture()
+   public D.Record capture()
    {
-      return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
+      return (D.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().capture(getMirror())));
    }
 
    @Override
-   public Ap.Record erasure()
+   public D.Record erasure()
    {
-      return (Ap.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
+      return (D.Record) adapt(getApi(), ((DeclaredType) adapt(getApi()).toTypes().erasure(getMirror())));
    }
 
    @Override
@@ -151,7 +151,7 @@ public class RecordImpl
    @Override
    public boolean equals(Object other)
    {
-      return equals(Ap.Record.class, other);
+      return equals(D.Record.class, other);
    }
 
    @Override

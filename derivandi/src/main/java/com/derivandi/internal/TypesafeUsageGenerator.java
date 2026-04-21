@@ -1,6 +1,6 @@
 package com.derivandi.internal;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.JavaDsl;
 import com.derivandi.api.dsl.class_.ClassRenderable;
 import com.derivandi.api.dsl.declared.DeclaredRenderable;
@@ -38,16 +38,16 @@ public class TypesafeUsageGenerator
 
    private static void process(SimpleContext context)
    {
-      for (Ap.Annotation annotated : getAnnotated(context))
+      for (D.Annotation annotated : getAnnotated(context))
       {
          context.writeAndCompileSourceFile(createTypeSafeUsage(annotated));
       }
    }
 
-   private static Set<Ap.Annotation> getAnnotated(SimpleContext context)
+   private static Set<D.Annotation> getAnnotated(SimpleContext context)
    {
-      Ap.Annotation genMetaModel = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_NAME);
-      Ap.Annotation genMetaModelFor = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_FOR_NAME);
+      D.Annotation genMetaModel = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_NAME);
+      D.Annotation genMetaModelFor = context.getAnnotationOrThrow(GENERATE_TYPESAFE_USAGE_FOR_NAME);
 
       //noinspection unchecked
       return concat(context.getAnnotationsAnnotatedWith(genMetaModel).stream(),
@@ -55,16 +55,16 @@ public class TypesafeUsageGenerator
                            .stream()
                            .map(annotation -> annotation.getUsageOfOrThrow(genMetaModelFor))
                            .map(annotationUsage -> annotationUsage.getValueOrThrow("value"))
-                           .map(annotationValue -> ((Ap.AnnotationValue.Values<Ap.AnnotationValue.TypeValue>) annotationValue))
-                           .map(Ap.AnnotationValue.Values::getValue)
+                           .map(annotationValue -> ((D.AnnotationValue.Values<D.AnnotationValue.TypeValue>) annotationValue))
+                           .map(D.AnnotationValue.Values::getValue)
                            .flatMap(Collection::stream)
-                           .map(Ap.AnnotationValue.TypeValue::getValue)
-                           .filter(Ap.Annotation.class::isInstance)
-                           .map(Ap.Annotation.class::cast))
+                           .map(D.AnnotationValue.TypeValue::getValue)
+                           .filter(D.Annotation.class::isInstance)
+                           .map(D.Annotation.class::cast))
             .collect(Collectors.toSet());
    }
 
-   public static ClassRenderable createTypeSafeUsage(Ap.Annotation annotation)
+   public static ClassRenderable createTypeSafeUsage(D.Annotation annotation)
    {
       String fieldName = getFieldName(annotation);
 
@@ -118,17 +118,17 @@ public class TypesafeUsageGenerator
                              }""".formatted(fieldName));
    }
 
-   private static String getFieldName(Ap.Annotation annotation)
+   private static String getFieldName(D.Annotation annotation)
    {
       String typeName = annotation.getName();
       return toLowerCase(typeName.charAt(0)) + typeName.substring(1);
    }
 
-   private static List<MethodRenderable> createAccessors(Ap.Annotation annotation, String fieldName)
+   private static List<MethodRenderable> createAccessors(D.Annotation annotation, String fieldName)
    {
       return annotation.getMethods().stream().map(method ->
                                                   {
-                                                     Ap.Type returnType = method.getReturnType();
+                                                     D.Type returnType = method.getReturnType();
 
                                                      DeclaredRenderable accessorType = createAccessorType(returnType);
 
@@ -141,28 +141,28 @@ public class TypesafeUsageGenerator
                                                   }).toList();
    }
 
-   private static DeclaredRenderable createAccessorType(Ap.Type returnType)
+   private static DeclaredRenderable createAccessorType(D.Type returnType)
    {
       InterfaceGenericStep genericStep =
             JavaDsl.interface_().package_("io.determann.shadow.api.annotation_processing")
                    .name(switch (returnType)
                      {
-                        case Ap.Class aClass when "java.lang.String".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.StringValue";
-                        case Ap.Class aClass when "java.lang.Class".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.TypeValue";
-                        case Ap.boolean_ aBoolean -> "Ap.AnnotationValue.BooleanValue";
-                        case Ap.byte_ aByte -> "Ap.AnnotationValue.ByteValue";
-                        case Ap.short_ aShort -> "Ap.AnnotationValue.ShortValue";
-                        case Ap.int_ anInt -> "Ap.AnnotationValue.IntegerValue";
-                        case Ap.long_ aLong -> "Ap.AnnotationValue.LongValue";
-                        case Ap.char_ aChar -> "Ap.AnnotationValue.CharacterValue";
-                        case Ap.float_ aFloat -> "Ap.AnnotationValue.FloatValue";
-                        case Ap.double_ aDouble -> "Ap.AnnotationValue.DoubleValue";
-                        case Ap.Enum anEnum -> "Ap.AnnotationValue.EnumValue";
-                        case Ap.Annotation annotation -> "Ap.AnnotationValue.AnnotationUsageValue";
-                        case Ap.Array array -> "Ap.AnnotationValue.Values";
+                        case D.Class aClass when "java.lang.String".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.StringValue";
+                        case D.Class aClass when "java.lang.Class".equals(aClass.getQualifiedName()) -> "Ap.AnnotationValue.TypeValue";
+                        case D.boolean_ aBoolean -> "Ap.AnnotationValue.BooleanValue";
+                        case D.byte_ aByte -> "Ap.AnnotationValue.ByteValue";
+                        case D.short_ aShort -> "Ap.AnnotationValue.ShortValue";
+                        case D.int_ anInt -> "Ap.AnnotationValue.IntegerValue";
+                        case D.long_ aLong -> "Ap.AnnotationValue.LongValue";
+                        case D.char_ aChar -> "Ap.AnnotationValue.CharacterValue";
+                        case D.float_ aFloat -> "Ap.AnnotationValue.FloatValue";
+                        case D.double_ aDouble -> "Ap.AnnotationValue.DoubleValue";
+                        case D.Enum anEnum -> "Ap.AnnotationValue.EnumValue";
+                        case D.Annotation annotation -> "Ap.AnnotationValue.AnnotationUsageValue";
+                        case D.Array array -> "Ap.AnnotationValue.Values";
                         default -> throw new IllegalStateException();
                      });
-      if (!(returnType instanceof Ap.Array array))
+      if (!(returnType instanceof D.Array array))
       {
          return genericStep;
       }

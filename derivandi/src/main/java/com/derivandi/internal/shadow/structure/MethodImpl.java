@@ -1,6 +1,6 @@
 package com.derivandi.internal.shadow.structure;
 
-import com.derivandi.api.Ap;
+import com.derivandi.api.D;
 import com.derivandi.api.dsl.RenderingContext;
 import com.derivandi.api.dsl.method.MethodReceiverStep;
 import com.derivandi.api.processor.SimpleContext;
@@ -11,7 +11,7 @@ import static com.derivandi.api.dsl.JavaDsl.method;
 
 public class MethodImpl
       extends ExecutableImpl
-      implements Ap.Method
+      implements D.Method
 {
    public MethodImpl(SimpleContext context, ExecutableElement executableElement)
    {
