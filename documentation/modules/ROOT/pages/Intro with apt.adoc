@@ -1,0 +1,76 @@
+== Overview
+
+This guide is for people proficient in APT. Other guides are xref:index.adoc[available].
+
+This project wraps and extends the Java APT API. It also adds a source file DSL API.
+
+
+== One Data Structure
+
+The Java APT API has two partially overlapping data structures:
+`javax.lang.model.element` and `javax.lang.model.type`, with the conversion from element to type being lossy.
+This project provides one unified data structure, resulting in a single representation of a type.
+
+== Type for Type
+
+Declared types are separated into Annotation, Enum, Interface, Class and Record.
+Executables are separated into Constructor and Method.
+
+TypeParameter/TypeVariable and IntersectionType are combined into Generic.
+
+== Method location
+
+Methods from `javax.lang.model.util.Elements` and `javax.lang.model.util.Types` are moved to the respective Types when apropiate. This way `javax.lang.model.util.Elements.overrides` becomes Method#overrides and Method#overridenBy.
+
+== One Context
+
+- `javax.annotation.processing.RoundEnvironment`
+- `javax.annotation.processing.ProcessingEnvironment`
+- `javax.lang.model.util.Elements`
+- `javax.lang.model.util.Types`
+
+are combined to one Context
+
+== Source File DSL
+
+The Source File DSL simplifies generation.
+It starts with Copyright Headers and supports everything up to method parameters - including lesser known Java features like bidirectional generics or receiver types.
+
+CAUTION: Code blocks are not supported.
+
+== JavaBeans Support
+
+Supports iterating over the properties of a class as defined by the JavaBeans 1.01 specification.
+A property consists of:
+
+* Name
+* Type
+* Getter
+* Optional Setter
+* Optional Field
+
+== Consistent API
+
+The more comprehensive data structure allows methods to exist only on the specific leaf types.
+For example, it is not possible to check whether an enum is a functional interface or whether it has type parameters.
+
+For invalid arguments, the Java APT API may return null, throw exceptions or return `TypeKind.NONE`.
+This API uses Optional and is null safe.
+
+== Typesafe Annotation Mirrors
+
+The generation of Typesafe Annotation Mirrors is possible using `io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsage` or `io.determann.shadow.api.annotation_processing.generate.GenerateTypesafeUsageFor`
+
+== Processor Builder
+
+The `io.determann.shadow.api.annotation_processing.processor.ProcessorBuilder` guides when writing an Annotation Processor with sensible defaults.
+
+== System out and Exception Handling
+
+Both just work out of the box.
+
+Processor specific Exception handling and usage of the proper logging APIs is recommended.
+
+== Adapters
+
+There are Adapters for every conversion. You can use any other APT Tooling in addition to this library.

@@ -1,5 +1,3 @@
-* xref:Annotation Processing.adoc[]
-** xref:AptLoading.adoc[Loading]
-* xref:Reflection.adoc[]
+* xref:index.adoc[Overview]
 * Articles
-** xref:Meta Model.adoc[]
+** xref:AptLoading.adoc[]

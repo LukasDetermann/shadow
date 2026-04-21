@@ -1,75 +1,51 @@
 :stylesheet: ../../style.css
 
-= Shadow Api
+= Derivandi
 
-Java SE and the Java ecosystem offer a multitude of Metaprogramming Apis.
-They serve the same purpose just in different contexts.
-Annotation processing to analyse classes in the during compilation process, or Reflection to do the same at runtime.
-Each having unique concepts and quirks.
-This makes Metaprogramming harder to understand and creates a maintenance overhead.
-It's very hard to switch from one Api to another.
-Once something is written with java.lang.reflect it's hard to change it to an Annotation Processor.
-Some JDK Apis are not up to the normal standard.
+**Source code analysis and generation at compile time**
 
-This project is an Abstraction for Metaprogramming
+Based on Annotation Processing, also called Annotation Processing Tool (APT).
 
-image::ROOT:Overview.svg[width= 80%]
+Depending on your background, there are different guides:
 
-It has two Types of Apis
+- xref:Intro for new.adoc[new to metaprogramming]
+- xref:Intro with meta.adoc[proficient in reflection or another metaprogramming API]
+- xref:Intro with apt.adoc[proficient in annotation processing]
 
-== General Purpose Api
 
-This Api works with any kind of Metaprogramming, but the featureset is limited to common operations
+== When to use APT?
 
-.Example
-[%collapsible]
-====
-The Api is request based.
-As a caller you can request for example a field of a class.
-Accessing fields may or may not be supported.
-[%linenums,java]
-----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=request]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=request]
-endif::[]
-----
+* The feedback cycle is as fast as possible. If generated sources are invalid the compiler will tell you
+* It’s harder to make mistakes, as the compiler validates everything
+* Meta Programming is always complex irespektve of the technology or api. Limiting it to compile time:
+** Enforces separation of concerns with a hard boundary for architecture erosion
+** Reasoning about an Annotation Processors impact on runtime is limited to the generated files and can therefore be drastically simpler
+* No lock-in - generated sources can be added to the source tree and the generator removed
 
-Or use a convenience method if `+Optional.empty()+` or throwing an Exception is a fitting default behavior.
+== When not to use APT?
 
-[%linenums,java]
-----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=requestOrEmpty]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=requestOrEmpty]
-endif::[]
-----
-[%linenums,java]
-----
-ifndef::site-gen-antora[]
-include::../../../src/test/java/io/determann/shadow/article/consistency_test/ApiExampleTest.java[tag=requestOrThrow]
-endif::[]
-ifdef::site-gen-antora[]
-include::Shadow-Api::example$article/consistency_test/ApiExampleTest.java[tag=requestOrThrow]
-endif::[]
-----
-====
+* Annotation Processors are limited to compile time, if you need Meta Programming at runtime and generating behavioral patterns like Strategy is not enough
+* Knowledge about the reflection is very common. Adding a new Technology increases the maintenance burden at least temporally
 
-== Specific Apis
+== Why this Library?
 
-There is one Api for each kind of Metaprogramming.
-One for Annotation processing and another very similar one for reflection.
-Each being able to support the complete featureset.
+This project is easier to use and avoids common pitfalls of the Java APT API, It provides adapters so you’re not locked in and can easily work with other APT tooling.
 
-.Example
+Some key features are
+
+- dependency free
+- nulls save
+- One Data Structure instead of two partially overlapping ones
+- Types for Leafs of the abstract syntax tree, like Class, Enum or Method
+- Java Source File DSL for easy generation
+- Java Beans Support
+- Generation of typesafe Annotation Representations
+
+== Examples
+.Builder Generator
 [%collapsible]
 ====
 
-.This Annotation Processor generates Builder
 [%linenums,java]
 ----
 ifndef::site-gen-antora[]
@@ -81,20 +57,8 @@ endif::[]
 ----
 ====
 
-== Supported
-
-- xref:Annotation Processing.adoc[]
-
-- xref:Reflection.adoc[] (experimental)
-
 == Next Goals
 
-* Improve Annotation Processing Support
-** Add support for specific Annotations
-* Improve Support for other Metaprogramming Apis
-** Move more of the implementation to the `+shadow-implementation-support+`
-module for better consistency and easier support of multiple
-implementations
-** Support the complete Lexical Structure
-** Create a maven archetype to reduce the effort of supporting new
-Metaprogramming Implementations
+* Simplify the API
+* Add DSL support for method body contents
+* More examples
