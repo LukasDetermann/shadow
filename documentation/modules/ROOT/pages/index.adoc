@@ -59,6 +59,5 @@ endif::[]
 
 == Next Goals
 
-* Simplify the API
 * Add DSL support for method body contents
 * More examples

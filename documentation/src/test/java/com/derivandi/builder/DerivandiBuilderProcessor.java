@@ -16,25 +16,24 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /// Builds a companion Builder class for each annotated class
-public class ShadowBuilderProcessor
+public class DerivandiBuilderProcessor
       extends Processor
 {
    @Override
    public ProcessorConfiguration buildProcessor(ProcessorBuilder processorBuilder)
    {
-      return processorBuilder.process(ShadowBuilderProcessor::process);
+      return processorBuilder.process(DerivandiBuilderProcessor::process);
    }
 
    private static void process(SimpleContext context)
    {
       // iterate over every class annotated with the BuilderPattern annotation
-      for (D.Class toBuild : context
-            .getClassesAnnotatedWith("com.derivandi.builder.BuilderPattern"))
+      for (D.Class toBuild : context.getClassesAnnotatedWith("com.derivandi.builder.BuilderPattern"))
       {
          // create the Builder Class
          ClassBodyStep step = JavaDsl.class_()
                                      .package_(toBuild.getPackage().getQualifiedName())
-                                     .name(toBuild.getName() + "ShadowBuilder");
+                                     .name(toBuild.getName() + "DerivandiBuilder");
 
          String toBuildVariableName = uncapitalize(toBuild.getName());
          List<String> setterInvocations = new ArrayList<>();
